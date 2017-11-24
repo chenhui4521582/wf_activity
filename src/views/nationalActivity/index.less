@@ -1,0 +1,269 @@
+.national-wrap{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,#3d3030 30%,#2b1d1c 50%,#20110f);
+    overflow-y: scroll;
+    .back{
+        position: absolute;
+        top: .3rem;
+        right: .3rem;
+        width: 1.13rem;
+        height: .44rem;
+        background: url(../../images/nationalActivity/backbtn.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .national-bg{
+        position: relative;
+        margin: .55rem auto;
+        width: 92%;
+        height: 11.6rem;
+        background: url(../../images/nationalActivity/bg.png) no-repeat;
+        background-size: 100% 100%;
+        >p{
+            position: absolute;
+            top: 24.5%;
+            width: 100%;
+            color: #fff;
+            text-align: center;
+            font-size: .24rem;
+            font-weight: bold;
+            i{
+                color: #fbbd4a;
+            }
+        }
+        .giftbg{
+            position: absolute;
+            top: 28%;
+            display: flex;
+            padding: .6rem .3rem 0;
+            width: 100%;
+            height: 3.32rem;
+            text-align: center;
+            background: url(../../images/nationalActivity/giftbg.png) no-repeat;
+            background-size: 100% 100%;
+            font-weight: bold;
+            overflow: auto;
+            box-sizing: border-box;
+            div{
+                flex: 1;
+                &:first-child{
+                    float: left;
+                }
+                &:last-child{
+                    float: right;
+                    padding-left: .2rem;
+                    .gift-detail{
+                        padding-left: .15rem;
+                    }
+                }
+                p{
+                    margin: 0 auto;
+                    width: 90%;
+                }
+            }
+            .giftimg{
+                margin: 0 auto;
+                width: 2.6rem;
+                height: 1rem;
+                background: url(../../images/nationalActivity/888gift.png) no-repeat;
+                background-size: 100% 100%;
+                &.gift88{
+                    background: url(../../images/nationalActivity/88gift.png) no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            .gift-detail{
+                height: .7rem;
+                line-height: .35rem;
+                font-size: .22rem;
+                color: #751414;
+            }
+            .buybtn{
+                margin: .15rem auto .05rem;
+                font-size: .28rem;
+                color: #571f14;
+                width: 1.6rem;
+                height: .47rem;
+                line-height: .48rem;
+                background: url(../../images/nationalActivity/buybtn.png) no-repeat;
+                background-size: 100% 100%;
+                &.gray{
+                    background: url(../../images/nationalActivity/btn_enable.png) no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            .leftnum{
+                font-size: .18rem;
+                color: #bebbb1;
+            }
+        }
+        .lotterybg{
+            position: absolute;
+            bottom: .2rem;
+            width: 100%;
+            height: 4.6rem;
+            background: url(../../images/nationalActivity/lotterybg.png) no-repeat;
+            background-size: 100% 100%;
+            .icon{
+                position: absolute;
+                right: -.2rem;
+                top: -.3rem;
+                width: 1.4rem;
+                height: 1.4rem;
+                background: url(../../images/nationalActivity/icon.png) no-repeat;
+                background-size: 100% 100%;
+            }
+            .marqueen-wrap{
+                margin: .1rem 0;
+                height: .45rem;
+                overflow: hidden;
+                box-sizing: border-box;
+            }
+            .marqueen{
+                position: relative;
+                margin: 0 auto;
+                width: 60%;
+                color: #fff;
+                text-align: center;
+                transition: top 0.5s;
+                &.no-trans{
+                    transition: top 0s;
+                }
+                li{
+                    line-height: .5rem;
+                    padding: 0 .3rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space:nowrap;
+                    i{color: #fee796;}
+                }
+            }
+            .lottery-detail{
+                height: 4rem;
+                padding: .32rem .45rem;
+                box-sizing: border-box;
+                display: flex;
+                flex-wrap: wrap;
+                li{
+                    margin-right: .26rem;
+                    margin-bottom: .2rem;
+                    width: 29.8%;
+                    height: 1rem;
+                    text-align: center;
+                    background: url(../../images/nationalActivity/nocheck.png) no-repeat;
+                    background-size: 100% 100%;
+                    &.checked{
+                        background: url(../../images/nationalActivity/checked.png) no-repeat;
+                        background-size: 100% 100%;
+                    }
+                    span{
+                        display: inline-block;
+                        margin-top: .15rem;
+                        width: 1.38rem;
+                        height:.7rem;
+                        &.nowidth{width: auto;}
+                    }
+                    img{
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                    &:nth-of-type(3n){margin-right: 0;}
+                    &:nth-of-type(5){
+                        padding-top: .1rem;
+                        background: url(../../images/nationalActivity/lotterybtn.png) no-repeat;
+                        background-size: 100% 100%;
+                        box-sizing: border-box;
+                        font-weight: bold;
+                        line-height: .3rem;
+                        i:first-child{
+                            font-size: .36rem;
+                            color: #5d2508;
+                        }
+                        i:last-child{
+                            font-size: .2rem;
+                            color: #f3ff35;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.center{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.lottery-pop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%;
+    background: rgba(0,0,0,.6);
+    .shineing{
+        margin: .5rem auto 0;
+        top: .5rem;
+        width:6.14rem;
+        height:6.29rem;
+        background: url(../../images/nationalActivity/rotatebg.png) no-repeat;
+        background-size: 100% 100%;
+        z-index: 1;
+        animation: rotate 2s infinite linear;
+    }
+    .lottery-bg{
+        .center;
+        top: 2.5rem;
+        width: 5.97rem;
+        height:6.43rem;
+        text-align: center;
+        background: url(../../images/nationalActivity/receivebg.png) no-repeat;
+        background-size: 100% 100%;
+        z-index: 2;
+        .lottery-detail{
+            margin-top: 2.5rem;
+            font-size: .35rem;
+            color: #fff;
+            span{
+                display: inline-block;
+                margin-bottom: .2rem;
+                width: 1.92rem;
+                height: .88rem;
+                img{
+                    max-width: 100%;
+                    max-height: auto;
+                }
+            }
+            i{
+                display: inline-block;
+                margin-top: .2rem;
+                font-size: .24rem;
+            }
+        }
+        .closebtn{
+            .center;
+            bottom: .7rem;
+            width: 2.19rem;
+            height: .63rem;
+            line-height: .64rem;
+            color: #5a2c04;
+            font-weight: bold;
+            font-size: .24rem;
+            background: url(../../images/nationalActivity/closebtn.png) no-repeat;
+            background-size: 100% 100%;
+        }
+    }
+}
+@keyframes rotate {
+    from{transform:  rotate(0);}
+    to{transform: rotate(360deg);}
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
