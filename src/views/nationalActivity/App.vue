@@ -31,22 +31,22 @@
                     <ul class="lottery-detail">
                         <li class="checked rotate1">
                             <span>
-                                <img src="../../images/nationalActivity/awards/1.png">
+                                <img src="./images/awards/1.png">
                             </span>
                         </li>
                         <li class="rotate2">
                             <span>
-                                <img src="../../images/nationalActivity/awards/2.png">
+                                <img src="./images/awards/2.png">
                             </span>
                         </li>
                         <li class="rotate3">
                             <span>
-                                <img src="../../images/nationalActivity/awards/3.png">
+                                <img src="./images/awards/3.png">
                             </span>
                         </li>
                         <li class="rotate0">
                             <span>
-                                <img src="../../images/nationalActivity/awards/0.png">
+                                <img src="./images/awards/0.png">
                             </span>
                         </li>
                         <li>
@@ -57,22 +57,22 @@
                         </li>
                         <li class="rotate4">
                             <span>
-                                <img src="../../images/nationalActivity/awards/4.png">
+                                <img src="./images/awards/4.png">
                             </span>
                         </li>
                         <li class="rotate7">
                             <span>
-                                <img src="../../images/nationalActivity/awards/7.png">
+                                <img src="./images/awards/7.png">
                             </span>
                         </li>
                         <li class="rotate6">
                             <span>
-                                <img src="../../images/nationalActivity/awards/6.png">
+                                <img src="./images/awards/6.png">
                             </span>
                         </li>
                         <li class="rotate5">
                             <span>
-                                <img src="../../images/nationalActivity/awards/5.png">
+                                <img src="./images/awards/5.png">
                             </span>
                         </li>
                     </ul>
@@ -101,8 +101,8 @@
 </template>
 
 <script>
-import utils from '../../common/utils.js'
-import AppCall from '../../common/AppCall.js';
+import utils from '../../common/js/utils.js'
+import AppCall from '../../common/js/AppCall.js';
 import API from '../../api';
 import loading from '../../components/common/loading.vue'
 export default {
@@ -304,7 +304,7 @@ export default {
                 this.step=this.stopStep;
                 this.isShow = true;
                 // this.stopStep = this.step%8
-                this.imgNum = require('../../images/nationalActivity/awards/'+num+'.png')
+                this.imgNum = require('./images/awards/'+num+'.png')
                 this.showAwardspop = true
                 clearTimeout(this.runT);//停止转动
                 this.stopStep = this.currentId;
@@ -333,8 +333,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-@import '../../common/base.css';
+<style lang="less" scoped>
+@import '../../common/css/base.css';
 @import './index.less';
 
 #app {

@@ -1,0 +1,171 @@
+@import '../../common/css/base.css';
+
+// 转盘样式
+.turn-wrap{
+    position: fixed;
+    top: -.05rem;
+    width: 100%;
+    height: 101%;
+    background: url('./images/luckybg.png') no-repeat;
+    background-size: 100% 100%;
+    .turn-content{
+        position: relative;
+        margin: 40% auto 0;
+        padding-top: 12%;
+        width: 94%;
+        height: 6.8rem;
+        background: url('./images/turnbg.png') no-repeat;
+        background-size: 100%;
+        z-index: 1;
+        box-sizing: border-box;
+        .turn-bg{
+            margin: 0 auto;
+            width: 73%;
+            height: 5rem;
+            background: url('./images/giftbg.png') no-repeat;
+            background-size: 100% 100%;
+            transition: all 3s cubic-bezier(0.68, 0.01, 0.13, 1);
+        }
+        ul{
+            position: relative;
+            height: 5rem;
+            // transform: rotate(180deg);
+            li{
+                position: absolute;
+        		top: 0;
+        		bottom: 0;
+                left: 0;
+                right: 0;
+                margin:  auto;
+                width: 34%;
+                height: 4.6rem;
+                color: #fff;
+                font-size: .28rem;
+                font-weight: bold;
+                text-align: center;
+                img{
+                    vertical-align: middle;
+                    width: 1rem;
+                    height: 1rem;
+                }
+                span{
+                    margin-bottom: .1rem;
+                    display: inline-block;
+                    vertical-align: bottom;
+                }
+                &:nth-of-type(2n-1){
+                    span{
+                        color: #5a94ff;
+                    }
+                }
+            }
+        }
+        .turn-btn{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%,-50%,0);
+            width: 1.48rem;
+            height: 1.54rem;
+            background: url('./images/turnbtn.png') no-repeat;
+            background-size: 100%;
+        }
+    }
+}
+
+.recharge-wrap{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url('./images/tipsbg.png') no-repeat;
+    background-size: 100% 100%;
+    .recharge-text{
+        position: relative;
+        margin: .7rem auto 0;
+        width: 79%;
+        height: 1.7rem;
+        background: url('./images/luckcontent.png') no-repeat;
+        background-size: 100%;
+        z-index: 2;
+    }
+    .recharge-content{
+        position: relative;
+        margin: -.8rem auto ;
+        padding: 4rem auto;
+        width: 86%;
+        height: 9rem;
+        background: url('./images/tipscontent.png') no-repeat;
+        background-size: 100% ;
+        z-index: 1;
+        .joinbtn{
+            position: absolute;
+            top: 2.7rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2.55rem;
+            height: .84rem;
+            background: url('./images/joinbtn.png') no-repeat;
+            background-size: 100%;
+        }
+        ul{
+            padding: .2rem .3rem;
+            position: absolute;
+            top: 3.85rem;
+            left: 9%;
+            width: 75%;
+            li{
+                font-size: .24rem;
+                line-height: .4rem;
+                color: #b36b06;
+                &:first-child{
+                    margin-bottom: .1rem;
+                    text-align: center;
+                    font-size: .28rem;
+                    font-weight: bold;
+                    .line{
+                        position: absolute;
+                        top: .35rem;
+                        width: .7rem;
+                        border-top: 2px solid #b36b06;
+                        z-index: 1;
+                    }
+                    .left{left: 20%;}
+                    .right{right: 20%;}
+                }
+            }
+        }
+    }
+}
+
+@media (max-width:350px){
+    .turn-wrap{
+        .turn-bg{
+            height: 4.4rem !important;
+        }
+        .turn-btn{
+            top: 45% !important;
+        }
+        ul{
+            height: 4.4rem !important;
+            li{
+                height: 4.1rem !important;
+                img{
+                    margin-top: -.1rem !important;
+                }
+            }
+        }
+    }
+    .recharge-wrap{
+        .recharge-content{margin-top: -1rem;}
+        .joinbtn{
+            top: 2.4rem !important;
+        }
+        ul{
+            top: 3.3rem !important;
+            li{
+                line-height: .37rem !important;
+            }
+        }
+    }
+}

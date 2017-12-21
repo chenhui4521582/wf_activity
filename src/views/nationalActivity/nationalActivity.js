@@ -6,9 +6,6 @@ import App from './App'
 // import router from './router'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
-// import 'element-ui/lib/theme-default/index.css';
-
-// Vue.use(Mint);
 
 // document.addEventListener('touchmove',function(event){event.preventDefault(); },false);
 Vue.use(Toast);

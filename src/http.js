@@ -6,9 +6,15 @@
 import axios from 'axios'
 // import router from './router'
 import Vue from 'vue'
-
+import utils from './common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000;
+
+let channel = utils.getUrlParam('channel'),
+    url_token = utils.getUrlParam('token')
+localStorage.setItem('ACCESS_TOKEN',url_token),
+localStorage.setItem('APP_CHANNEL',channel)
+localStorage.setItem('APP_VERSION','1.0.0')
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -40,59 +46,59 @@ axios.interceptors.response.use(
         if(res && res.code && res.code != 200) {
             switch (res.code) {
                 case 400:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '请求处理失败',
                         duration: 1500
                     });
                     break;
                 case 401:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '未授权，请登录！',
                         duration: 1500
                     });
                     break;
                 case 404:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '请求地址出错！',
                         duration: 1500
                     });
                     break;
                  case 408:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '请求超时',
                         duration: 1500
                     });
                     break;
                 case 500:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '服务器内部错误',
                         duration: 1500
                     });
                     break;
 
                 case 501:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '服务未实现',
                         duration: 1500
                     });
                     break;
 
                 case 502:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '网关错误',
                         duration: 1500
                     });
                     break;
 
                 case 503:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '服务不可用',
                         duration: 1500
                     });
                     break;
 
                 case 504:
-                    Vue.$toast({
+                    Vue.prototype.$toast.show({
                         message: '网关超时',
                         duration: 1500
                     });
@@ -107,7 +113,7 @@ axios.interceptors.response.use(
                             break;
                         }
                      }
-                     Vue.$toast({
+                     Vue.prototype.$toast.show({
                         message: res.message,
                         duration: 1500
                     });
@@ -126,7 +132,7 @@ axios.interceptors.response.use(
         }else {
             error = JSON.stringify(error);
             if(error.indexOf('timeout') != -1) {
-                Vue.$toast({
+                Vue.prototype.$toast.show({
                     message: '请求超时',
                     duration: 1500
                 });
