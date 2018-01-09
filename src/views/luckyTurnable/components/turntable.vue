@@ -148,24 +148,24 @@ export default {
             // 最终奖品
             this.getFinalAwards()
         },
-        operation(wheel,ran,fn) {
-    		if(!this.isStatr){
+        operation(wheel, ran, fn) {
+            if (!this.isStatr) {
                 this.isStatr = true;
                 this.lenCloc++;
-    			let sun = 9 * 360 //最小圈数 * 360
-        		if(ran >= 6) {
-        			ran = 0;
-        		}
-        		var soBuom = parseInt(Math.floor(Math.random() * 60) -30);
-        		/*    旋转度数 = 上次度数+  + 当前数字 * 60 +随机角度  = 最终旋转度数     */
-        		wheel.style.transform = "rotate(" + ((this.lenCloc * sun + ran * 60) + soBuom) + "deg)";
-        		setTimeout(function() {
-        			if(fn) {
-        				fn();
-        			}
-        		}, 3000);
+                let sun = 9 * 360 //最小圈数 * 360
+                if (ran >= 6) {
+                    ran = 0;
+                }
+                var soBuom = parseInt(Math.floor(Math.random() * 60) - 30);
+                /*    旋转度数 = 上次度数+  + 当前数字 * 60 +随机角度  = 最终旋转度数     */
+                wheel.style.transform = "rotate(-" + ((this.lenCloc * sun + ran * 60) + soBuom) + "deg)";
+                setTimeout(function () {
+                    if (fn) {
+                        fn();
+                    }
+                }, 3000);
             }
-    	}
+        }
     }
 }
 </script>
