@@ -14,4 +14,17 @@ export default {
         }
         return Request[ename];
     },
+    //获取地址栏问号后面的参数值新
+    getUrlParamObj: function (ename) {
+        var url = window.location.href;
+        var Request = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.split('?')[1];
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+            }
+        }
+        return ename ? (Request[ename] ? Request[ename].split('#')[0] : '') : Request;
+    }
 }

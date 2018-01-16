@@ -12,8 +12,6 @@ Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 Vue.prototype.axios = axios;
-
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
