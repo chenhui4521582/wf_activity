@@ -7,7 +7,6 @@
     import utils from '../../common/js/utils.js'
     import AppCall from '../../common/js/AppCall.js';
     import API from '../../api';
-    import * as cookie from 'js-cookie';
     export default {
         name: 'app',
         mounted(){
@@ -26,25 +25,23 @@
 //            4、链接为:https://wap.beeplay123.com/loading?type=recharge&channel=xxxxx&token=yyyyy，
 //            对应跳转：https://wap.beeplay123.com/payment/#/shopping?channel=xxxxx&token=yyyyy
             let syBg = document.getElementById('app');
-
-            if(localStorage.getItem('showLoadPage') != ''){
+            if (localStorage.getItem('showLoadPage') != '') {
                 localStorage.removeItem('showLoadPage')
                 //setTimeout(() => {
                 //syBg.style.display = 'none';
                 //}, 1000)
-            }else{
+            } else {
                 //setTimeout(() => {
                 //syBg.style.display = 'none';
                 //}, 1000)
             }
             var urlObj = utils.getUrlParamObj();
-            var that=this;
-            var jumped = cookie.get('HASJUMPED');
             if (urlObj.channel) {
+                var that=this;
                 AppCall.getAppData(function (params) {
-                    if(params.islogin && !jumped){
+                    if (params.islogin) {
                         that.qiukuAccessToken(params, urlObj);
-                    }else{
+                    } else {
                         AppCall.gameLogin();
                     }
                 })
@@ -52,8 +49,9 @@
         },
         methods: {
             qiukuAccessToken(cParams, urlObj){
+                let qktoken=cParams.token;
                 this.axios.post(API.UserLogin, {
-                    token: cParams.token,
+                    token: qktoken,
                     userID: cParams.UserID,
                     userType: cParams.usertype,
                     appVersion: cParams.appVersion,
@@ -66,19 +64,41 @@
                         }).then((response) => {
                             if (response.data.code == 200) {
                                 let accessToken = response.data.data && response.data.data.accessToken;
-                                cookie.set('HASJUMPED', 1);
-                                window.location.replace(this.getUrl(urlObj, accessToken));
+                                localStorage.setItem(qktoken,accessToken);
+                                if(urlObj.type == 'match'){
+                                    this.axios.get(API.qiukuIsExistBowlsMatch,
+                                        {
+                                            params: {
+                                                pts: new Date().getTime(),
+                                                pcode: 'h5',
+                                                version: '1.0',
+                                                platform: 'game',
+                                                matchId: urlObj.mid
+                                            }
+                                        }
+                                    ).then((response) => {
+                                        if (response.data.code == 1) {
+                                            window.location.replace(this.getUrl(urlObj, accessToken,response.data.data));
+                                        }else{
+                                            window.location.replace(this.getUrl(urlObj, accessToken,false));
+                                        }
+                                    }).catch(ex=>{
+                                        window.location.replace(this.getUrl(urlObj, accessToken,false));
+                                    })
+                                }else{
+                                    window.location.replace(this.getUrl(urlObj, accessToken));
+                                }
                             }
                         });
                     }
                 })
             },
-            getUrl(urlObj, token) {//球酷要求的跳转地址
+            getUrl(urlObj, token,isExistBowlsMatch) {//球酷要求的跳转地址
                 if (urlObj.type == 'home') {
                     return `https://databiger-h5.beeplay123.com/game/#/quizzes/hot?token=${token}&channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'match') {
-                    return `https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&token=${token}&channel=${urlObj.channel}`
+                    return !isExistBowlsMatch?`https://databiger-h5.beeplay123.com/game/#/quizzes/hot?token=${token}&channel=${urlObj.channel}`:`https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&token=${token}&channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'record') {
                     return `https://databiger-h5.beeplay123.com/game/#/betrecord?token=${token}&channel=${urlObj.channel}`;
@@ -101,7 +121,7 @@
         left: 0;
         top: 0;
         z-index: 100;
-        background:url('./images/sy-bg.jpg') no-repeat;
+        background: url('./images/sy-bg.jpg') no-repeat;
         background-size: 100% 100%;
     }
 </style>
