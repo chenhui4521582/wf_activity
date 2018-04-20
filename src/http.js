@@ -10,11 +10,22 @@ import utils from './common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000;
 
+
 let channel = utils.getUrlParam('channel'),
-    url_token = utils.getUrlParam('token')
-localStorage.setItem('ACCESS_TOKEN',url_token),
+    url_token = utils.getUrlParam('token'),
+    everyDayLottery = utils.getUrlParam('everyDayLottery')
+
+
+
+localStorage.setItem('ACCESS_TOKEN',url_token)
 localStorage.setItem('APP_CHANNEL',channel)
-localStorage.setItem('APP_VERSION','1.0.0')
+if(everyDayLottery == 1) {
+    localStorage.setItem('APP_VERSION','1.0.0')
+}else {
+    localStorage.setItem('APP_VERSION','3.0.0.0')
+}
+
+
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
