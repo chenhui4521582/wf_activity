@@ -1,4 +1,10 @@
 window.GLOBALS = {
+	get shopUrl() {
+        localStorage.setItem('showLoadPage', false)
+        let url='';
+        url = '../../../payment/#/mall';
+        return url;
+    },
 	loopTime(_this,obj) {
 		var date = new Date();
 		var hours = date.getHours();
@@ -39,4 +45,13 @@ window.GLOBALS = {
 		if(obj<10) return "0" +""+ obj;
 	    else return obj;
 	}
+}
+
+
+// 与游戏对接方法
+window.WapCall = {
+    openGame(url) {
+        location.href = url + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN');
+    },
+    
 }

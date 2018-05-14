@@ -19,11 +19,17 @@ let channel = utils.getUrlParam('channel'),
 
 localStorage.setItem('ACCESS_TOKEN',url_token)
 localStorage.setItem('APP_CHANNEL',channel)
-if(everyDayLottery == 1) {
-    localStorage.setItem('APP_VERSION','1.0.0')
-}else {
+if(localStorage.getItem('APP_CHANNEL') == '100022') {
     localStorage.setItem('APP_VERSION','3.0.0.0')
+}else {
+   if(everyDayLottery == 1) {
+        localStorage.setItem('APP_VERSION','1.0.0')
+    }else {
+        localStorage.setItem('APP_VERSION','3.0.0.0')
+    } 
 }
+
+
 
 
 

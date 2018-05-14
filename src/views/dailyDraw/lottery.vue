@@ -162,6 +162,12 @@
 		            this.$emit('isAwardMessage', this.awardResult);
 		            clearTimeout(this.runT);//停止转动
 		            this.curAwardIndex = 1;
+
+		            this.$toast.show({
+	                    message: '恭喜您获得'+this.awardResult.awardsName,
+	                    duration: 3500
+	                });
+
 		            if(!this.beginAwardData.bettingTimes) {
 		            	this.isEnd = true;
 		            }
@@ -262,11 +268,15 @@
 		i {
 			font-size: 0.22rem;
 			font-weight: bold;
+			font-style: normal;
 		}
 	}
 	.start-btn {
 		display: block;
 		height: 1.06rem;
+		em {
+			font-style: normal;	
+		}
 	}
 	.luck-draw-active {
 		color:#ff0000;

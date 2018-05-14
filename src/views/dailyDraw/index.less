@@ -5,28 +5,25 @@
 a {
     text-decoration: none;
 }
+
 .dailyMain {
-    z-index: 18;
-}
-.daily-wrap {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -5.33rem;
-    margin-left: -3.6rem;
-    z-index: 10;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background: url(./images/big-bg.png) no-repeat center top;
+    background-size: 100% 100%;
 }
 .daily-draw {
-    width: 7.2rem;
-    height: 10.66rem;
-    background: url(./images/bg.png) no-repeat center top;
-    background-size: 100% 100%;
+    width: 100%;
     .close {
         width: 0.53rem;
         height: 0.53rem;
         position: absolute;
-        right: 0.49rem;
-        top: 0;
+        right: 0.09rem;
+        top: 0.1rem;
         cursor: pointer;
     }
     .cj_box {
@@ -34,10 +31,8 @@ a {
         height: 3.83rem;
         background: url(./images/cj_bg.png) no-repeat center top;
         background-size: 100% 100%;
-        position: absolute;
-        left: 50%;
-        top: 1.6rem;
-        transform: translateX(-50%);
+        margin: 2rem auto 0;
+        position: relative;
         .luck-draw{
             position: relative;
             top: 0.68rem;
@@ -52,20 +47,18 @@ a {
         }
     }
     .f-tz-text{
-        position: absolute;
-        top: 5.62rem;
-        left: 0;
+        margin: 0.15rem 0;
     }
 }
 .cy-box {
     width: 5.6rem;
-    height: 4.2rem;
+    /*height: 4.2rem;*/
     position: absolute;
+    top: 6.35rem;
     left: 50%;
-    bottom: 0.4rem;
     margin-left: -2.8rem;
+    bottom: 0.5rem;
     overflow: auto;
-    
 }
 .cy-container{
     width: 5.6rem;
@@ -87,7 +80,7 @@ a {
             font-size: 0.2rem;
             color:rgba(255,255,255,1);
             display: inline-block;
-            margin: 0 0.2rem;
+            margin: 0 3.2%;
             img {
                 width: 0.88rem;
                 height: 0.88rem;
@@ -107,6 +100,14 @@ a {
 .anim{
     transition: all 1s;
     top: -0.45rem !important;
+}
+.top-text {
+    width: 7.2rem;
+    height: 6.66rem;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -3.6rem;
 }
 .l-title {
     width: 3.85rem;
@@ -140,12 +141,14 @@ a {
         height: 0.45rem;
         line-height: 0.45rem;
         font-size: 0.22rem;
+        color: #fff;
         word-break:keep-all;
         white-space:nowrap; 
         overflow:hidden;
         text-overflow:ellipsis; 
         text-align: center;
         i {
+            font-style: normal;
             color: #fee644;
         }
     }

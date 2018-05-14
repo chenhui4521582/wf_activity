@@ -1,9 +1,9 @@
 <template>
-    <div id="app">
+    <div id="app" class="daily-main">
         <div class="pop-window dailyMain">
-            <div class="pop-mask"></div>
             <div class="daily-wrap" v-if="!showLoading">
                 <div class="daily-draw">
+                    <img src="./images/top-text.png" class="top-text">
                     <img src="./images/close.png" class="close" @click="closeDailtDraw">
                     <div class="cj_box">
                         <img src="./images/hd_entry.png" class="hd_entry" @click="openHdXq">
@@ -70,7 +70,7 @@
                                         <p>每天单笔充值≥10元可获赠1张抽奖券</p>
                                     </div>
                                     <div class="btn-box">
-                                        <a href="javascript:" class="btn btn-wc" v-if="!bettingStatArr.pay10" @click="goShopping">玩游戏</a>
+                                        <a href="javascript:" class="btn btn-wc" v-if="!bettingStatArr.pay10" @click="goShopping">去充值</a>
                                         <a href="javascript:" class="btn btn-gray" v-else>已完成</a>
                                     </div>
                                 </li>
@@ -107,9 +107,9 @@
                         <p>2、累计消耗金叶子条件：</p>
                         <p>当天累计消耗≥500金叶子，得一张抽奖券。</p>
                         <p>当天累计消耗≥1500金叶子，得一张抽奖券。</p>
-                        <p>当天累计消耗≥500金叶子，得一张抽奖券。</p>
+                        <p>当天累计消耗≥5000金叶子，得一张抽奖券。</p>
                         <p>当天累计消耗≥24000金叶子，得一张抽奖券。</p>
-                        <p>当天累计充值10元，得一张抽奖券。</p>
+                        <p>当天单笔充值≥10元，得一张抽奖券。</p>
                     </div>
                 </div>
             </div>
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import '../../common/js/window.js';
 import API from '../../api';
 import lottery from './lottery';
 
@@ -148,27 +149,25 @@ export default {
             goShopping() {
                 localStorage.setItem('showLoadPage',false)
                 setTimeout(() => {
-                    window.location.href = GLOBALS.shopUrl;
+                    parent.location.href = '../../../payment/#/mall';
                 })
             },
             goGame(type) {
                 if(type.indexOf('external=1') != -1){
-                    let url = this.trimStr(type) + '&channel=' + GLOBALS.channel + '&token=' + GLOBALS.accessToken+'&gurl='+ type.split('?')[0]+'&pf=wap';
-                    location.replace(url)
+                    let url = this.trimStr(type) + '&channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')+'&gurl='+ type.split('?')[0]+'&pf=wap';
+                    parent.location.href = url;
                     return;
                 }
                 // 这里区分澳客（游戏地址不一样）
-                if (GLOBALS.channel === GLOBALS.channelEnum.okooo.channel) {
-                    location.href = '../../../channel/newokooo' + type + '?channel=' + GLOBALS.channel + '&token=' + GLOBALS.accessToken
+                if (localStorage.getItem('APP_CHANNEL') == 100006) {
+                    parent.location.href = '../../../channel/newokooo' + type + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')
                 } else {
-                    WapCall.openGame(type);
+                    parent.location.href = type + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN');
                 }
             },
             closeDailtDraw() {
                 if(parent.closeWebView){
                     parent.closeWebView()
-                }else{
-                    this.$emit('closeDailtDraw',true)
                 }
             },
             openHdXq() {
@@ -176,14 +175,6 @@ export default {
             },
             closeHdXq() {
                 this.isHdXq = false;
-            },
-            goGame(item) {
-                // 这里区分澳客（游戏地址不一样）
-                if (GLOBALS.channel === GLOBALS.channelEnum.okooo.channel) {
-                    location.href = '../../../channel/newokooo' + item.url + '?channel=' + GLOBALS.channel + '&token=' + GLOBALS.accessToken
-                } else {
-                    WapCall.openGame(item.url);
-                }
             },  
             getRichwheel (val) {
                 this.axios.post(API.richwheel, {
@@ -216,9 +207,6 @@ export default {
                             message: '领取成功',
                             duration: 1500
                         });
-                        if(str == 'refresh') {
-                            bus.$emit('isAlsoGetUserTansInfo', true);
-                        }
                     }
                 })
             },
@@ -239,11 +227,15 @@ export default {
             // 跑马灯滚动
             scroll(){
                 this.isMove = true
+                if(!(this.lamp&&this.lamp.length)) {
+                    return;
+                }
                 setTimeout(() => {
                     this.lamp.push(this.lamp[0]);
                     this.lamp.shift();
                     this.isMove= false; 
                 },1000)
+                
             },
             getBettingStat() {
                 this.axios.post(API.bettingStat).then((response) => {
@@ -254,7 +246,6 @@ export default {
             }
         },
         mounted() {
-        
             this.getBettingStat();
             // 转盘
             this.getRichwheel(4);
