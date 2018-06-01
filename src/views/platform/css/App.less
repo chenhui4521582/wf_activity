@@ -2,10 +2,15 @@
     .banner {
         height: 2.76rem;
         width: 100%;
+        overflow: hidden;
         .scroll-banner {
+            display: flex;
             margin: 0;
+            width: 200%;
             .scroll-list {
+                width: 100%;
                 img {
+                    width: 100%;
                     height: 2.76rem;
                 }
             }
@@ -46,19 +51,19 @@
                 transition: all ease 1s;
             } */
             .nav {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
+                // width: 1.2rem;
+                text-align: center; // padding-left: 0.45rem;
+                // padding-right: 0.45rem;
                 font-size: 0.3rem;
                 color: #d73c1e;
             }
             .tab-slider {
                 position: absolute;
                 bottom: 0;
-                background-color: #D73C1E;
-                width: 1.25rem;
-                height: 0.02rem;
-                transform: translateX(-192%);
+                background-color: #D73C1E; // width: 1.1rem;
+                height: 0.04rem; // transform: translateX(-176%);
                 transition: all 0.2s ease;
+                z-index: 100;
             }
         }
         .tabs {
@@ -68,7 +73,7 @@
             bottom: 0;
             overflow: hidden;
             .tabs-content {
-                position: absolute; //
+                // position: absolute;
                 width: 300%;
                 height: 100%;
                 display: flex;
@@ -76,6 +81,12 @@
                 .tab-content {
                     width: 33.33%;
                     height: 100%;
+                    .none {
+                        width: 3.76rem;
+                        height: 3.2rem;
+                        display: block;
+                        margin: 25% auto 10% auto
+                    }
                     .first-tab {
                         overflow: hidden;
                         .first-tab-content {
@@ -165,6 +176,7 @@
                             }
                             .midImg {
                                 width: 1.1rem;
+                                height: 1.1rem;
                             }
                             .mid-content {
                                 display: flex;
@@ -220,12 +232,18 @@
                             }
                         }
                     }
+                    &.specialThird {
+                        display: flex;
+                        flex-direction: column;
+                    }
                     .thirdTabNav-wrap {
                         width: 100%;
                         height: 2.46rem;
                         display: flex;
                         position: relative;
                         overflow: hidden;
+                        background-color: #fff;
+                        z-index: 100;
                         &::after {
                             content: "";
                             pointer-events: none;
@@ -264,54 +282,64 @@
                             }
                         }
                     }
-                    .third-tab {
-                        .third-tab-content {
-                            height: 2.05rem;
-                            padding: 0.32rem 0.28rem 0.31rem 0.3rem;
-                            position: relative;
-                            display: flex;
-                            box-sizing: border-box;
-                            &::after {
-                                content: "";
-                                pointer-events: none;
-                                /* 防止点击触发 */
-                                box-sizing: border-box;
-                                position: absolute;
-                                width: 200%;
-                                height: 200%;
-                                left: 0;
-                                top: 0;
-                                border-bottom: 1px solid #E5E5E5;
-                                transform: scale(0.5);
-                                transform-origin: 0 0;
-                            }
-                            .coverImg {
-                                // width: 1.92rem;
-                                height: 1.42rem;
-                            }
-                            .third-tab-contents {
-                                margin-left: 0.21rem;
-                                color: #3C3C3C;
-                                width: 100%;
+                    .thirdTabWrap {
+                        /* position: absolute;
+                      width: 100%;
+                      top: 2.46rem;
+                      bottom: 0;
+                      height: 100%; */
+                        flex-grow: 1;
+                        overflow: hidden;
+                        .third-tab {
+                            position: absolute;
+                            .third-tab-content {
+                                height: 2.05rem;
+                                padding: 0.32rem 0.28rem 0.31rem 0.3rem;
                                 position: relative;
-                                .third-tab-content-title {
-                                    font-size: 0.3rem;
-                                    line-height: 0.4rem;
-                                    font-weight: bold;
-                                }
-                                .third-tab-content-stat {
+                                display: flex;
+                                box-sizing: border-box;
+                                &::after {
+                                    content: "";
+                                    pointer-events: none;
+                                    /* 防止点击触发 */
+                                    box-sizing: border-box;
                                     position: absolute;
-                                    bottom: 0;
-                                    color: #666;
+                                    width: 200%;
+                                    height: 200%;
+                                    left: 0;
+                                    top: 0;
+                                    border-bottom: 1px solid #E5E5E5;
+                                    transform: scale(0.5);
+                                    transform-origin: 0 0;
+                                }
+                                .coverImg {
+                                    // width: 1.92rem;
+                                    height: 1.42rem;
+                                }
+                                .third-tab-contents {
+                                    margin-left: 0.21rem;
+                                    color: #3C3C3C;
                                     width: 100%;
-                                    font-size: 0.2rem;
-                                    display: flex;
-                                    justify-content: space-between;
-                                    .third-tab-content-time {}
-                                    .third-tab-content-views {
-                                        .third-tab-content-views-eye {
-                                            width: 0.32rem;
-                                            height: 0.18rem;
+                                    position: relative;
+                                    .third-tab-content-title {
+                                        font-size: 0.3rem;
+                                        line-height: 0.4rem;
+                                        font-weight: bold;
+                                    }
+                                    .third-tab-content-stat {
+                                        position: absolute;
+                                        bottom: 0;
+                                        color: #666;
+                                        width: 100%;
+                                        font-size: 0.2rem;
+                                        display: flex;
+                                        justify-content: space-between;
+                                        .third-tab-content-time {}
+                                        .third-tab-content-views {
+                                            .third-tab-content-views-eye {
+                                                width: 0.32rem;
+                                                height: 0.18rem;
+                                            }
                                         }
                                     }
                                 }
