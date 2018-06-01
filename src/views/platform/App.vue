@@ -145,7 +145,8 @@ export default {
             // stepX: 0,
             threshold: 0.3,
             speed: 400
-          }
+          },
+          click: true
         },
         Tabs: {
           scrollX: true,
@@ -156,11 +157,13 @@ export default {
             threshold: 0.3
             // stepX: document.documentElement.clientWidth
           },
-          probeType: 3
+          probeType: 3,
+          click: true
         },
         body: {
           scrollX: false,
-          scrollY: true
+          scrollY: true,
+          click: true
           // scrollbar: true
         }
       },
@@ -348,11 +351,8 @@ export default {
       return Request[ename];
     },
     goToGame(booleans, item) {
-      console.log(booleans,'sss');
       if (booleans) {
-        console.log(booleans,'1 11');
         if (item && item.url.indexOf("external=1") != -1) {
-          console.log(booleans,'222');
           let url =
             this.trimStr(item.url) +
             "&channel=" +
@@ -380,74 +380,73 @@ export default {
         item.url.split("?")[0] +
         "&pf=" +
         this.getUrlParam("from");
-      console.log(url);
-      // window.location.href = url;
+      window.location.href = url;
     },
-    getNewServer() {
-      this.axios
-        .post(API.newServer, /* qs.stringify */ this.pageInfo.tab2)
-        .then(res => {
-          /* let res={}
-          res.data={}
-          res.data.data = [
-            {
-              createTime: "2018-05-29 11:49:41",
-              deleteFlag: 0,
-              enable: 1,
-              endTime: "2018-06-07 11:49:37",
-              gameId: 3,
-              gameImg: "/group1/M00/00/4F/CiFVy1sNF7KAfZ_4AAEpSTQrppo036.png",
-              gameName: "消消乐",
-              id: 3,
-              name: "33",
-              openTime: "2018-06-01 23:39:35",
-              operationUsername: "admin",
-              partition: "游戏2分区-22",
-              redisField: null,
-              startTime: "2018-05-29 11:49:36",
-              top: 0,
-              updateTime: "2018-06-01 17:11:20",
-              url: "/crush/"
-            }
-          ]; */
-          for (let i in res.data.data) {
-            let overTime, openDate;
-            overTime =
-              (new Date(res.data.data[i].openTime).getTime() -
-                this.currentTime) /
-              1000 /
-              60 /
-              60;
-            openDate = new Date(res.data.data[i].openTime).getDate();
-            res.data.data[i].canGo = false;
-            if (openDate == this.currentDate) {
-              if (overTime < 0) {
-                res.data.data[i].overTime =
-                  "已开服" + Math.ceil(Math.abs(overTime)) + "小时";
-                res.data.data[i].canGo = true;
-              } else {
-                res.data.data[i].overTime =
-                  "今日" +
-                  moment(res.data.data[i].openTime).format("ah:mm") +
-                  "<br>" +
-                  "开服";
-              }
-            } else if (openDate == this.currentDate + 1) {
-              res.data.data[i].overTime =
-                "明日" +
-                moment(res.data.data[i].openTime).format("ah:mm") +
-                "<br>" +
-                "开服";
-            } else if (openDate > this.currentDate + 1) {
-              res.data.data[i].overTime =
-                moment(res.data.data[i].openTime).format("MMMDoah:mm") +
-                "<br>" +
-                "开服";
-            }
-          }
-          this.stats.tab2 = this.stats.tab2.concat(res.data.data);
-        });
-    }
+    // getNewServer() {
+    //   this.axios
+    //     .post(API.newServer, /* qs.stringify */ this.pageInfo.tab2)
+    //     .then(res => {
+    //       /* let res={}
+    //       res.data={}
+    //       res.data.data = [
+    //         {
+    //           createTime: "2018-05-29 11:49:41",
+    //           deleteFlag: 0,
+    //           enable: 1,
+    //           endTime: "2018-06-07 11:49:37",
+    //           gameId: 3,
+    //           gameImg: "/group1/M00/00/4F/CiFVy1sNF7KAfZ_4AAEpSTQrppo036.png",
+    //           gameName: "消消乐",
+    //           id: 3,
+    //           name: "33",
+    //           openTime: "2018-06-01 23:39:35",
+    //           operationUsername: "admin",
+    //           partition: "游戏2分区-22",
+    //           redisField: null,
+    //           startTime: "2018-05-29 11:49:36",
+    //           top: 0,
+    //           updateTime: "2018-06-01 17:11:20",
+    //           url: "/crush/"
+    //         }
+    //       ]; */
+    //       for (let i in res.data.data) {
+    //         let overTime, openDate;
+    //         overTime =
+    //           (new Date(res.data.data[i].openTime).getTime() -
+    //             this.currentTime) /
+    //           1000 /
+    //           60 /
+    //           60;
+    //         openDate = new Date(res.data.data[i].openTime).getDate();
+    //         res.data.data[i].canGo = false;
+    //         if (openDate == this.currentDate) {
+    //           if (overTime < 0) {
+    //             res.data.data[i].overTime =
+    //               "已开服" + Math.ceil(Math.abs(overTime)) + "小时";
+    //             res.data.data[i].canGo = true;
+    //           } else {
+    //             res.data.data[i].overTime =
+    //               "今日" +
+    //               moment(res.data.data[i].openTime).format("ah:mm") +
+    //               "<br>" +
+    //               "开服";
+    //           }
+    //         } else if (openDate == this.currentDate + 1) {
+    //           res.data.data[i].overTime =
+    //             "明日" +
+    //             moment(res.data.data[i].openTime).format("ah:mm") +
+    //             "<br>" +
+    //             "开服";
+    //         } else if (openDate > this.currentDate + 1) {
+    //           res.data.data[i].overTime =
+    //             moment(res.data.data[i].openTime).format("MMMDoah:mm") +
+    //             "<br>" +
+    //             "开服";
+    //         }
+    //       }
+    //       this.stats.tab2 = this.stats.tab2.concat(res.data.data);
+    //     });
+    // }
   },
   created() {
     // this.getNewServer();
