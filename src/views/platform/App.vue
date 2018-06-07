@@ -8,11 +8,14 @@
         </div>
     </slider> -->
     <div ref="scrollBanner" class="banner">
-      <ul ref="slideGroup" class="scroll-banner" :style="{width:bannerWidth}">
-        <li class="scroll-list" v-for="item in stats.banner" @click="staticgoToGame(item)">
-          <img :src="item.img" alt="">
+      <ul ref="slideGroup" class="scroll-banner">
+        <li class="scroll-list" v-for="item in bannerList" @click="staticgoToGame(item)">
+          <img :src="item.img|filter" :alt="item.name">
         </li>
       </ul>
+      <div class="bannerDots">
+        <span v-for="(item,index) in dots" class="bannerDot" :class="{active:index==currentPageIndex}"></span>
+      </div>
     </div>
     <div class="body">
       <ul class="navs">
@@ -24,32 +27,35 @@
       <div ref="scrollTabs" class="tabs">
         <ul class="tabs-content">
           <li ref="firstTab" class="tab-content">
-            <img class="none" v-if="true" src="./image/none.png" alt="">
+            <img class="none" v-if="newHotActivitiesInfo.length==0" src="./image/none.png" alt="">
             <ul v-else class="first-tab">
-              <li class="first-tab-content" v-for="list in 13">
-                <img class="bigImg" src="./image/圆角矩形 1@2x.png" alt="">
+              <li class="first-tab-content" v-for="item in newHotActivitiesInfo" @click="gotoActivity(item,$event)">
+                <img class="bigImg" :src="item.img|filter" alt="">
                 <div class="left-content">
                   <p class="content-title">
-                    梦想桌球6月赢话费活动
+                    {{item.title}}
                   </p>
                   <p class="content-time">
-                    活动时间：2018/05/26-2018/06/15
+                    活动时间：{{item.showStartTime+'-'+item.showEndTime}}
                   </p>
                 </div>
-                <div class="right-btn">
-                  进行中
+                <div class="right-btn" :style="{color:item.underStatus=='underWay'?'#D73C1E':'#8F8F8F',border:item.underStatus=='underWay'?'1px solid #D73C1E':'1px solid #8F8F8F'}">
+                  {{item.underStatus=='underWay'?'进行中':item.underStatus=='notYet'?'未开始':'已结束'}}
                 </div>
+                <img v-if="item.underStatus=='notYet'" src="./image/未开始印章.png" alt="未开始" class="tip">
+                <img v-if="item.underStatus=='already'" src="./image/已结束印章 @2x.png" alt="已结束" class="tip">
               </li>
               <li class="nomore">
                 - 没有更多内容了，到底了 -
               </li>
             </ul>
+            <img :class="{backToTopInActive:!backToTop.first}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop('first')">
           </li>
           <li ref="secondTab" class="tab-content">
-            <img class="none" v-if="false" src="./image/none.png" alt="">
+            <img class="none" v-if="newServerList.length==0" src="./image/none.png" alt="">
             <ul v-else class="second-tab">
-              <li class="second-tab-content" v-for="list in stats.tab2">
-                <img class="midImg" :src="list.gameImg" alt="">
+              <li class="second-tab-content" v-for="list in newServerList">
+                <img class="midImg" :src="list.gameImg|filter" alt="">
                 <div class="mid-content">
                   <div class="mid-content1">
                     <div class="mid-content1-top">
@@ -64,58 +70,63 @@
                       {{list.name}}{{list.partition}}
                     </div>
                   </div>
-                  <div class="mid-content2" :style="{color:list.overTime.substr(0,1)=='已'?'#A4A4A4':'#D73C1E'}" v-html="list.overTime">
+                  <div class="mid-content2" :style="{color:list.overTime.substr(0,1)!=='已'?'#A4A4A4':'#D73C1E'}" v-html="list.overTime">
 
                   </div>
                 </div>
-                <div class="right-btn" @click="goToGame(list.canGo,list)" :style="{backgroundColor:list.overTime.substr(0,1)!=='已'?'#D73C1E':'#B1B1B1'}">
+                <div class="right-btn" @click="goToGame(list.canGo,list)" :style="{backgroundColor:list.overTime.substr(0,1)=='已'?'#D73C1E':'#B1B1B1'}">
                   {{list.canGo?'进入游戏':'即将开服'}}
                 </div>
               </li>
-              <li class="nomore">
+              <li v-if="newServerList.length>0" class="nomore">
                 - 没有更多内容了，到底了 -
               </li>
             </ul>
+            <img :class="{backToTopInActive:!backToTop.second}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop('second')">
           </li>
-          <li class="tab-content specialThird">
-            <img class="none" v-if="true" src="./image/none.png" alt="">
-            <div v-else>
-              <div ref="thirdTabNavWrap" class="thirdTabNav-wrap" @touchstart="destroyTabScroll">
+          <li class="tab-content specialThird" @touchstart="initTabScroll(2,$event)">
+            <img class="none" v-if="false" src="./image/none.png">
+            <div class="else" v-else>
+              <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
                 <ul class="thirdTab-navs">
-                  <li v-for="i in 10" class="thirdTab-nav">
-                    <img class="thirdTab-nav-icon" src="./image/椭圆 3@2x.png">
+                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.id,item.name)">
+                    <img class="thirdTab-nav-icon" :src="item.img|filter" :alt="item.name">
                     <div class="thirdTab-nav-title">
-                      去玩斗地主
+                      {{item.name}}
                     </div>
-                    <div class="thirdTab-nav-subTitle">
+                    <!-- <div class="thirdTab-nav-subTitle">
                       玩法攻略
-                    </div>
+                    </div> -->
                   </li>
                 </ul>
               </div>
-              <div @touchstart="initTabScroll(2)" ref="thirdTab" class="thirdTabWrap">
+              <div ref="thirdTab" class="thirdTabWrap">
                 <ul class="third-tab">
-                  <li class="third-tab-content" v-for="list in 16">
-                    <img class="coverImg" src="./image/矩形 4@2x.png" alt="">
+                  <li class="third-tab-content" v-for="item in newsListInfo" @click="gotoPage(item)">
+                    <img class="coverImg" :src="item.img|filter" :alt="item.gameName">
                     <div class="third-tab-contents">
                       <div class="third-tab-content-title">
-                        《欢乐斗地主》6月返利活动 多投多得投资1万得10万
+                        {{item.mainTitle}}
+                      </div>
+                      <div class="third-tab-content-abstract">
+                        {{item.subTitle}}
                       </div>
                       <div class="third-tab-content-stat">
                         <span class="third-tab-content-time">
-                          14分钟前
+                          {{item.editTime}}
                         </span>
-                        <span class="third-tab-content-views">
+                        <!-- <span class="third-tab-content-views">
                           <img src="" alt="" class="third-tab-content-views-eye">
                           2000
-                        </span>
+                        </span> -->
                       </div>
                     </div>
                   </li>
-                  <li class="nomore">
+                  <li v-if="newsListGameGroup.length>0&&newsListInfo.length>0" class="nomore">
                     - 没有更多内容了，到底了 -
                   </li>
                 </ul>
+                <img :class="{backToTopInActive:!backToTop.third}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop('third')">
               </div>
             </div>
           </li>
@@ -127,12 +138,10 @@
 
 <script>
 import BScroll from "better-scroll";
-import API from "./js/api.js";
-import moment from "moment";
-moment.locale("zh-cn");
+import { mapGetters } from "vuex";
+import { jumpToGame } from "./js/utils.js";
 
 export default {
-  name: "app",
   data() {
     return {
       Config: {
@@ -151,7 +160,20 @@ export default {
         Tabs: {
           scrollX: true,
           scrollY: false,
-          // startX: 200,
+          // startX: -320,
+          snap: {
+            loop: false,
+            threshold: 0.3
+            // stepX: -document.documentElement.clientWidth
+          },
+          probeType: 3,
+          disableTouch: true
+          // click: true
+        },
+        thirdTab: {
+          scrollX: true,
+          scrollY: false,
+          // startX: 1200,
           snap: {
             loop: false,
             threshold: 0.3
@@ -163,11 +185,17 @@ export default {
         body: {
           scrollX: false,
           scrollY: true,
-          click: true
+          click: true,
+          pullUpLoad: {
+            threshold: 200
+          },
+          probeType: 3
           // scrollbar: true
         }
       },
-      tabNames: ["热门活动", "最新开服", "资讯"],
+      currentPageIndex: 0,
+      dots: [],
+      tabNames: ["热门活动", "最新开服", "攻略资讯"],
       stats: {
         banner: [
           {
@@ -217,9 +245,23 @@ export default {
           pageSize: 10
         }
       },
-      currentTime: new Date().getTime(),
-      currentDate: new Date().getDate()
+      scrollEnd: false,
+      children: null,
+      backToTop: {
+        first: false,
+        second: false,
+        third: false
+      }
     };
+  },
+  computed: {
+    ...mapGetters([
+      "newsListInfo",
+      "newsListGameGroup",
+      "newServerList",
+      "newHotActivitiesInfo",
+      "bannerList"
+    ])
   },
   methods: {
     Switch(e, index) {
@@ -253,8 +295,9 @@ export default {
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
       }
     },
-    initTabScroll(index) {
+    initTabScroll(index, e) {
       if (!this.scrollTabs) {
+        // index && (this.Config.Tabs.startX = -index * this.clientWidth);
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
         this.scrollTabs.on("scroll", coordinate => {
           /* this.translateX = `translateX(${-(
@@ -265,25 +308,115 @@ export default {
           // this.width =
           // console.log(this.clientWidth)
           let index1 = -coordinate.x / (this.clientWidth * 2);
-          this.left = this.leftAll * index1 + 40 + "px";
+          // leftFirst = this.$refs.tabWidth[0].offsetLeft;
+          this.left = this.leftAll * index1 + "px";
           /* if(index1<1&&index1>0.5){
             -(this.widthArr[2]-this.widthArr[0])*index1
           } */
-          if (index1 > 0.5) {
+          /* if (index1 > 0.5) {
             this.width = this.widthArr[2] + "px";
           } else {
             this.width = this.widthArr[0] + "px";
-          }
+          } */
         });
-        return;
       }
+      this.scrollTabs.on("scrollEnd", coordinate => {
+        if (this.scrollEnd) return;
+        if (-coordinate.x == this.clientWidth * 2) {
+          // this.destroyTabScroll();
+          if (
+            this.newsListInfo.length !== 0 &&
+            this.newsListGameGroup.length !== 0
+          ) {
+            setTimeout(() => {
+              /* this.$refs.thirdTab &&
+                (this.thirdTab = new BScroll(
+                  this.$refs.thirdTab,
+                  this.Config.body
+                )); */
+              /* this.$refs.thirdTabNavWrap &&
+                  (this.thirdTabNavWrap = new BScroll(
+                    this.$refs.thirdTabNavWrap,
+                    this.Config.thirdTab
+                  )); */
+            }, 0);
+            this.scrollEnd = false;
+            return;
+          } else {
+            this.scrollEnd = true;
+            this.$store.dispatch("GetNewsList").then(res => {
+              this.$nextTick(_ => {
+                this.$refs.thirdTab &&
+                  (this.thirdTab = new BScroll(
+                    this.$refs.thirdTab,
+                    this.Config.body
+                  ));
+                this.thirdTab.on("scroll", position => {
+                  this.position(position, this, "third");
+                });
+                /* this.$refs.thirdTabNavWrap &&
+                    (this.thirdTabNavWrap = new BScroll(
+                      this.$refs.thirdTabNavWrap,
+                      this.Config.thirdTab
+                    )); */
+              });
+              this.scrollEnd = false;
+            });
+          }
+        } else if (-coordinate.x == this.clientWidth) {
+          if (this.scrollEnd) return;
+          if (this.newServerList.length !== 0&&this.secondTab) {
+            return;
+          } else {
+            this.scrollEnd = true;
+            this.$store
+              .dispatch("getNewServer", { page: 1, pageSize: 10 })
+              .then(
+                res => {
+                  this.$refs.secondTab &&
+                    (this.secondTab = new BScroll(
+                      this.$refs.secondTab,
+                      this.Config.body
+                    ));
+                  this.secondTab.on("pullingUp", _ => {
+                    // if(this.secondTab.maxScrollY<=this.secondTab.absStartY)
+                    this.$store.dispatch("getNewServer").then(
+                      res => {
+                        this.secondTab.refresh();
+                        this.secondTab.finishPullUp();
+                      },
+                      rej => {
+                        this.$toast.show({
+                          message: "没有更多内容"
+                        });
+                      }
+                    );
+                  });
+                  this.secondTab.on("scroll", position => {
+                    this.position(position, this, "second");
+                  });
+                  this.scrollEnd = false;
+                },
+                rej => {
+                  this.$toast.show({
+                    message: "没有更多内容"
+                  });
+                  this.scrollEnd = false;
+                }
+              );
+          }
+        }
+      });
+      index && this.scrollTabs.goToPage(index, 0, 0);
+      this.left = index / 2 * this.leftAll + "px";
+
       if (this.scrollTabs.enabled) {
         return;
       } else {
         this.scrollTabs.enable();
       }
-      if (index)
-        this.Config.Tabs.startX = -index * document.documentElement.clientWidth;
+      /* if (index)
+        this.Config.Tabs.startX = -index * document.documentElement.clientWidth; */
     },
     destroyTabScroll() {
       if (this.scrollTabs.enable) this.scrollTabs.disable();
@@ -332,6 +465,9 @@ export default {
         this._play();
       }
     },
+    _initDots() {
+      this.dots = new Array(this.children.length);
+    },
     trimStr(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
     },
@@ -350,132 +486,155 @@ export default {
       }
       return Request[ename];
     },
+    // 最新开服跳转游戏
     goToGame(booleans, item) {
       if (booleans) {
-        if (item && item.url.indexOf("external=1") != -1) {
-          let url =
-            this.trimStr(item.url) +
+        jumpToGame(item);
+      } else {
+        return;
+      }
+    },
+    //轮播图跳转游戏
+    staticgoToGame(item) {
+      jumpToGame(item);
+    },
+    // 资讯列表获取分类信息，跳转分类页面
+    getGroupList(
+      gameId,
+      gameName,
+      pageInfo = { page: 1, pageSize: 10 },
+      firstClick = true
+    ) {
+      /* let loading = this.$loading({
+        target: this.$refs.thirdTab,
+        text: "拼命加载中"
+      }); */
+      this.$router.push({ name: "gameNews", params: { gameId, gameName } });
+    },
+    // 跳转资讯详情
+    gotoPage(item) {
+      this.$router.push({
+        name: "gameNewsDetails",
+        params: { id: item.id, item, fromWhichList: -1 }
+      });
+    },
+    gotoActivity(item, e) {
+      // if (item.underStatus == "underWay") {
+      /* if (url && url.indexOf("external=1") != -1) {
+          let _url =
+            this.trimStr(url) +
             "&channel=" +
             localStorage.getItem("APP_CHANNEL") +
             "&token=" +
             localStorage.getItem("ACCESS_TOKEN") +
             "&gurl=" +
-            item.url.split("?")[0] +
+            url.split("?")[0] +
             "&pf=" +
             this.getUrlParam("from");
 
-          window.location.href = url;
+          window.location.href = _url;
           return;
+        } */
+      this.$router.push({
+        name: "activityDetails",
+        params: {
+          item,
+          id: item.id
         }
+      });
+      // }
+    },
+    scrollToTop(page) {
+      this[`${page}Tab`].scrollTo(0, 0, 300);
+    },
+    position(position, vm, page) {
+      // debugger
+      if (position.y < 0) {
+        vm.backToTop[page] = true;
+      } else if (position.y >= 0) {
+        vm.backToTop[page] = false;
       }
-    },
-    staticgoToGame(item) {
-      let url =
-        item.url +
-        "&channel=" +
-        localStorage.getItem("APP_CHANNEL") +
-        "&token=" +
-        localStorage.getItem("ACCESS_TOKEN") +
-        "&gurl=" +
-        item.url.split("?")[0] +
-        "&pf=" +
-        this.getUrlParam("from");
-      window.location.href = url;
-    },
-    // getNewServer() {
-    //   this.axios
-    //     .post(API.newServer, /* qs.stringify */ this.pageInfo.tab2)
-    //     .then(res => {
-    //       /* let res={}
-    //       res.data={}
-    //       res.data.data = [
-    //         {
-    //           createTime: "2018-05-29 11:49:41",
-    //           deleteFlag: 0,
-    //           enable: 1,
-    //           endTime: "2018-06-07 11:49:37",
-    //           gameId: 3,
-    //           gameImg: "/group1/M00/00/4F/CiFVy1sNF7KAfZ_4AAEpSTQrppo036.png",
-    //           gameName: "消消乐",
-    //           id: 3,
-    //           name: "33",
-    //           openTime: "2018-06-01 23:39:35",
-    //           operationUsername: "admin",
-    //           partition: "游戏2分区-22",
-    //           redisField: null,
-    //           startTime: "2018-05-29 11:49:36",
-    //           top: 0,
-    //           updateTime: "2018-06-01 17:11:20",
-    //           url: "/crush/"
-    //         }
-    //       ]; */
-    //       for (let i in res.data.data) {
-    //         let overTime, openDate;
-    //         overTime =
-    //           (new Date(res.data.data[i].openTime).getTime() -
-    //             this.currentTime) /
-    //           1000 /
-    //           60 /
-    //           60;
-    //         openDate = new Date(res.data.data[i].openTime).getDate();
-    //         res.data.data[i].canGo = false;
-    //         if (openDate == this.currentDate) {
-    //           if (overTime < 0) {
-    //             res.data.data[i].overTime =
-    //               "已开服" + Math.ceil(Math.abs(overTime)) + "小时";
-    //             res.data.data[i].canGo = true;
-    //           } else {
-    //             res.data.data[i].overTime =
-    //               "今日" +
-    //               moment(res.data.data[i].openTime).format("ah:mm") +
-    //               "<br>" +
-    //               "开服";
-    //           }
-    //         } else if (openDate == this.currentDate + 1) {
-    //           res.data.data[i].overTime =
-    //             "明日" +
-    //             moment(res.data.data[i].openTime).format("ah:mm") +
-    //             "<br>" +
-    //             "开服";
-    //         } else if (openDate > this.currentDate + 1) {
-    //           res.data.data[i].overTime =
-    //             moment(res.data.data[i].openTime).format("MMMDoah:mm") +
-    //             "<br>" +
-    //             "开服";
-    //         }
-    //       }
-    //       this.stats.tab2 = this.stats.tab2.concat(res.data.data);
-    //     });
-    // }
+    }
   },
-  created() {
-    // this.getNewServer();
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.$nextTick(_ => {
+        /* !vm.scrollTabs && */ vm.initTabScroll(to.params.tab);
+        vm.$store.dispatch("GetNewsList").then(res => {
+          vm.$nextTick(_ => {
+            vm.$refs.thirdTab &&
+              (vm.thirdTab = new BScroll(vm.$refs.thirdTab, vm.Config.body));
+            vm.thirdTab.on("scroll", position => {
+              vm.position(position, vm, "third");
+            });
+            /* vm.$refs.thirdTabNavWrap &&
+                    (vm.thirdTabNavWrap = new BScroll(
+                      vm.$refs.thirdTabNavWrap,
+                      vm.Config.thirdTab
+                    )); */
+          });
+          vm.scrollEnd = false;
+        });
+      });
+    });
+  },
+  beforeCreate() {
+    this.$store
+      .dispatch("getNewActivitiesInfo", { page: 1, pageSize: 10 })
+      .then(
+        _ => {
+          // setTimeout(() => {
+          this.$refs.firstTab &&
+            (this.firstTab = new BScroll(
+              this.$refs.firstTab,
+              this.Config.body
+            ));
+          this.firstTab.on("pullingUp", _ => {
+            this.$store.dispatch("getNewActivitiesInfo").then(
+              res => {
+                this.firstTab.refresh();
+                this.firstTab.finishPullUp();
+              },
+              rej => {
+                this.$toast.show({
+                  message: "没有更多活动内容"
+                });
+              }
+            );
+          });
+          this.firstTab.on("scroll", position => {
+            this.position(position, this, "first");
+          });
+          // }, 0);
+          /* this.$nextTick(()=>{
+        this.$refs.firstTab &&
+        (this.firstTab = new BScroll(this.$refs.firstTab, this.Config.body));
+      }) */
+        },
+        rej => {
+          this.$toast.show({
+            message: "没有更多活动内容"
+          });
+        }
+      );
+    this.$store.dispatch("getBannerList").then(_ => {
+      this._setSlideWidth();
+      this._initDots();
+      this._initBanner();
+      this._play();
+    });
   },
   mounted() {
     this.$nextTick(() => {
-      this.initTabScroll();
-      this.$refs.firstTab &&
-        (this.firstTab = new BScroll(this.$refs.firstTab, this.Config.body));
-      this.$refs.secondTab &&
-        (this.secondTab = new BScroll(this.$refs.secondTab, this.Config.body));
-      this.$refs.thirdTab &&
-        (this.thirdTab = new BScroll(this.$refs.thirdTab, this.Config.body));
-      this.$refs.thirdTabNavWrap &&
-        (this.thirdTabNavWrap = new BScroll(
-          this.$refs.thirdTabNavWrap,
-          this.Config.Tabs
-        ));
-      this.width = this.$refs.tabWidth[0].offsetWidth + "px";
-      this.left = this.$refs.tabWidth[0].offsetLeft + "px";
+      // !this.scrollTabs && this.initTabScroll();
+      // this.width = this.$refs.tabWidth[0].offsetWidth + "px";
+      // this.left = this.$refs.tabWidth[0].offsetLeft + "px";
       let leftArr = [];
       for (let i in this.$refs.tabWidth) {
         leftArr.push(this.$refs.tabWidth[i].offsetLeft);
         this.widthArr.push(this.$refs.tabWidth[i].offsetWidth);
       }
       this.leftAll = leftArr[leftArr.length - 1] - leftArr[0];
-      this._setSlideWidth();
-      this._initBanner();
-      this._play();
       // this.bannerWidth=100*this.banner.length+'%';
     });
   }

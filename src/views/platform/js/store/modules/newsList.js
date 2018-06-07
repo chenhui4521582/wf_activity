@@ -1,0 +1,143 @@
+import axios from '../../fetch'
+import api from '../../api'
+import moment from 'moment'
+
+moment.locale('zh-cn')
+const getnewsList = () => {
+  return axios.post(api.newsList)
+}
+
+const getgroupList = (gameId, pageInfo) => {
+  return axios.post(api.gameGroupList, {
+    page: pageInfo.page,
+    pageSize: pageInfo.pageSize,
+    gameId
+  })
+}
+
+const checkTime = (data) => {
+  /* let currentTime = new Date(data.news[0].currentTime || data[0].currentTime).getTime()
+  let currentDate = new Date(data.news[0].currentTime || data[0].currentTime).getDate() */
+  if (data.news) {
+    for (let i of data.news) {
+      if (moment(i.currentTime).diff(i.updateTime, 'hours') > 24) {
+        i.editTime = moment(i.updateTime).format('MM-DD')
+      } else {
+        // if(moment(i.updateTime).from(i.currentTime)){
+        i.editTime = moment(i.updateTime).from(i.currentTime)
+        // }
+      }
+    }
+  } else {
+    for (let i of data) {
+      if (moment(i.currentTime).diff(i.updateTime, 'hours') > 24) {
+        i.editTime = moment(i.updateTime).format('MM-DD')
+      } else {
+        // if(moment(i.updateTime).from(i.currentTime)){
+        i.editTime = moment(i.updateTime).from(i.currentTime)
+        // }
+      }
+    }
+  }
+}
+
+const newsListInfo = {
+  state: {
+    list: {
+      data: []
+    },
+    gameGroup: {
+      data: []
+    },
+    single: {
+      data: null
+    },
+    singleGame: {
+      gameId: 0,
+      pageInfo: {
+        page: 0,
+        pageSize: 10
+      },
+      data: [],
+      gameName: ''
+    }
+  },
+  mutations: {
+    // 第三个tab
+    GETNEWSLIST: (state, data) => {
+      state.list.data = data.news
+      state.gameGroup.data = data.games
+    },
+    // 分类详情
+    GETGROUPLIST: (state, data) => {
+      state.singleGame.pageInfo = data.pageInfo
+      state.singleGame.gameId = data.gameId
+      state.singleGame.gameName = data.gameName
+      if (data.pageInfo.page !== 2) {
+        state.singleGame.data = state.singleGame.data.concat(data.res)
+      } else {
+        state.singleGame.data = data.res
+      }
+    }
+  },
+  actions: {
+    // 第三个tab
+    GetNewsList ({
+      commit
+    }) {
+      getnewsList().then(res => {
+        checkTime(res.data)
+        commit('GETNEWSLIST', res.data)
+      })
+    },
+    // 分类详情
+    GetGroupList ({
+      commit,
+      state
+    }, params) {
+      return new Promise((resolve, reject) => {
+        getgroupList(params.gameId, params.pageInfo || {
+          page: state.singleGame.pageInfo.page + 1,
+          pageSize: state.singleGame.pageInfo.pageSize
+        }).then(res => {
+          if (params.gameId != state.singleGame.gameId) {
+            // if (res.data.length > 0) {
+            if (res.data.length > 0) checkTime(res.data)
+            commit('GETGROUPLIST', {
+              gameId: params.gameId,
+              res: res.data,
+              pageInfo: {
+                page: params.pageInfo.page + 1 || state.singleGame.pageInfo.page + 1,
+                pageSize: 10
+              },
+              firstClick: params.firstClick,
+              gameName: res.data.length ? res.data[0].gameName : params.gameName
+            })
+            resolve()
+            // } else {
+            //   reject()
+            // }
+          } else {
+            if (res.data.length > 0) {
+              checkTime(res.data)
+              commit('GETGROUPLIST', {
+                gameId: params.gameId,
+                res: res.data,
+                pageInfo: {
+                  page: params.pageInfo.page + 1 || state.singleGame.pageInfo.page + 1,
+                  pageSize: 10
+                },
+                firstClick: params.firstClick,
+                gameName: res.data[0].gameName
+              })
+              resolve()
+            } else {
+              reject()
+            }
+          }
+        })
+      })
+    }
+  }
+}
+export default newsListInfo

@@ -1,17 +1,40 @@
 .container {
     .banner {
+        position: relative;
         height: 2.76rem;
         width: 100%;
         overflow: hidden;
         .scroll-banner {
             display: flex;
-            margin: 0;
-            width: 200%;
+            margin: 0; // width: 200%;
             .scroll-list {
-                width: 100%;
+                height: 2.76rem;
                 img {
                     width: 100%;
                     height: 2.76rem;
+                }
+            }
+        }
+        .bannerDots {
+            position: absolute;
+            bottom: 0.16rem;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            .bannerDot {
+                // display: block;
+                width: 0.12rem;
+                height: 0.12rem;
+                border-radius: 50%;
+                background-color: #e6e6e6;
+                margin-left: 0.06rem;
+                margin-right: 0.06rem;
+                transition: all 0.1s ease-in;
+                opacity: 0.37;
+                &.active {
+                    // width: 0.4rem;
+                    background-color: #fff;
+                    opacity: 1;
                 }
             }
         }
@@ -64,6 +87,8 @@
                 height: 0.04rem; // transform: translateX(-176%);
                 transition: all 0.2s ease;
                 z-index: 100;
+                width: 33.33%;
+                left: 0;
             }
         }
         .tabs {
@@ -81,6 +106,7 @@
                 .tab-content {
                     width: 33.33%;
                     height: 100%;
+                    position: relative;
                     .none {
                         width: 3.76rem;
                         height: 3.2rem;
@@ -89,6 +115,7 @@
                     }
                     .first-tab {
                         overflow: hidden;
+                        position: relative;
                         .first-tab-content {
                             position: relative;
                             height: 4rem;
@@ -111,7 +138,8 @@
                                 transform-origin: 0 0;
                             }
                             .bigImg {
-                                width: 6.58rem;
+                                // width: 6.58rem;
+                                width: 100%;
                                 height: 2.6rem;
                                 display: inline-block;
                             }
@@ -145,6 +173,12 @@
                                 right: 0.32rem;
                                 bottom: 0.29rem;
                                 color: #D73C1E;
+                            }
+                            .tip {
+                                position: absolute;
+                                right: 0.24rem;
+                                top: 0.16rem;
+                                width: 1.35rem;
                             }
                         }
                     }
@@ -210,6 +244,7 @@
                                     .mid-content1-bottom {
                                         font-size: 0.24rem;
                                         color: #A4A4A4;
+                                        max-width: 1.72rem;
                                     }
                                 }
                                 .mid-content2 {
@@ -236,109 +271,128 @@
                         display: flex;
                         flex-direction: column;
                     }
-                    .thirdTabNav-wrap {
-                        width: 100%;
-                        height: 2.46rem;
-                        display: flex;
+                    .else {
+                        height: 100%;
                         position: relative;
-                        overflow: hidden;
-                        background-color: #fff;
-                        z-index: 100;
-                        &::after {
-                            content: "";
-                            pointer-events: none;
-                            /* 防止点击触发 */
-                            box-sizing: border-box;
-                            position: absolute;
-                            width: 200%;
-                            height: 200%;
-                            left: 0;
-                            top: 0;
-                            border-bottom: 1px solid #E5E5E5;
-                            transform: scale(0.5);
-                            transform-origin: 0 0;
-                        }
-                        .thirdTab-navs {
-                            padding-top: 0.31rem;
+                        .thirdTabNav-wrap {
+                            width: 100%;
+                            height: 2.26rem;
                             display: flex;
                             position: relative;
-                            .thirdTab-nav {
-                                font-size: 0;
-                                width: 1.8rem;
-                                height: 100%;
-                                text-align: center;
-                                .thirdTab-nav-icon {
-                                    width: 0.86rem;
-                                }
-                                .thirdTab-nav-title {
-                                    font-size: 0.28rem;
-                                    color: #3c3c3c;
-                                    margin-top: 0.09rem; // margin-bottom: 0.09rem;
-                                }
-                                .thirdTab-nav-subTitle {
-                                    font-size: 0.24rem;
-                                    color: #a4a4a4;
+                            overflow: auto;
+                            background-color: #fff;
+                            z-index: 100;
+                            .thirdTab-navs {
+                                padding-top: 0.31rem;
+                                display: flex;
+                                position: relative;
+                                z-index: 100;
+                                .thirdTab-nav {
+                                    font-size: 0;
+                                    max-width: 1.8rem;
+                                    min-width: 1.8rem;
+                                    height: 100%;
+                                    flex: 1;
+                                    text-align: center;
+                                    .thirdTab-nav-icon {
+                                        width: 0.86rem;
+                                        height: 0.86rem;
+                                        border-radius: 50%;
+                                    }
+                                    .thirdTab-nav-title {
+                                        font-size: 0.24rem;
+                                        color: #3c3c3c;
+                                        margin-top: 0.09rem; // margin-bottom: 0.09rem;
+                                    }
+                                    .thirdTab-nav-subTitle {
+                                        font-size: 0.24rem;
+                                        color: #a4a4a4;
+                                    }
                                 }
                             }
                         }
-                    }
-                    .thirdTabWrap {
-                        /* position: absolute;
-                      width: 100%;
-                      top: 2.46rem;
-                      bottom: 0;
-                      height: 100%; */
-                        flex-grow: 1;
-                        overflow: hidden;
-                        .third-tab {
+                        .thirdTabWrap {
                             position: absolute;
-                            .third-tab-content {
-                                height: 2.05rem;
-                                padding: 0.32rem 0.28rem 0.31rem 0.3rem;
-                                position: relative;
-                                display: flex;
+                            width: 100%;
+                            left: 0;
+                            top: 2.26rem;
+                            bottom: 0; // height: 100%;
+                            // flex-grow: 1;
+                            // overflow: hidden;
+                            &::after {
+                                content: "";
+                                pointer-events: none;
+                                /* 防止点击触发 */
                                 box-sizing: border-box;
-                                &::after {
-                                    content: "";
-                                    pointer-events: none;
-                                    /* 防止点击触发 */
-                                    box-sizing: border-box;
-                                    position: absolute;
-                                    width: 200%;
-                                    height: 200%;
-                                    left: 0;
-                                    top: 0;
-                                    border-bottom: 1px solid #E5E5E5;
-                                    transform: scale(0.5);
-                                    transform-origin: 0 0;
-                                }
-                                .coverImg {
-                                    // width: 1.92rem;
-                                    height: 1.42rem;
-                                }
-                                .third-tab-contents {
-                                    margin-left: 0.21rem;
-                                    color: #3C3C3C;
-                                    width: 100%;
+                                position: absolute;
+                                width: 200%;
+                                height: 200%;
+                                left: 0;
+                                top: 0;
+                                border-top: 1px solid #E5E5E5;
+                                transform: scale(0.5);
+                                transform-origin: 0 0;
+                            }
+                            .third-tab {
+                                width: 100%;
+                                .third-tab-content {
+                                    height: 2.05rem;
+                                    padding: 0.32rem 0.28rem 0.31rem 0.3rem;
                                     position: relative;
-                                    .third-tab-content-title {
-                                        font-size: 0.3rem;
-                                        line-height: 0.4rem;
-                                        font-weight: bold;
-                                    }
-                                    .third-tab-content-stat {
+                                    display: flex;
+                                    box-sizing: border-box;
+                                    &::after {
+                                        content: "";
+                                        pointer-events: none;
+                                        /* 防止点击触发 */
+                                        box-sizing: border-box;
                                         position: absolute;
-                                        bottom: 0;
-                                        color: #666;
-                                        width: 100%;
+                                        width: 200%;
+                                        height: 200%;
+                                        left: 0;
+                                        top: 0;
+                                        border-bottom: 1px solid #E5E5E5;
+                                        transform: scale(0.5);
+                                        transform-origin: 0 0;
+                                    }
+                                    .coverImg {
                                         font-size: 0.2rem;
-                                        display: flex;
-                                        justify-content: space-between;
-                                        .third-tab-content-time {}
-                                        .third-tab-content-views {
-                                            .third-tab-content-views-eye {
-                                                width: 0.32rem;
-                                                height: 0.18rem;
+                                        width: 1.92rem; // height: 1.42rem;
+                                    }
+                                    .third-tab-contents {
+                                        margin-left: 0.21rem;
+                                        color: #3C3C3C;
+                                        width: 100%;
+                                        position: relative;
+                                        .third-tab-content-title {
+                                            font-size: 0.3rem;
+                                            line-height: 0.4rem;
+                                            font-weight: bold;
+                                        }
+                                        .third-tab-content-abstract {
+                                            // width: 4.49rem;
+                                            overflow: hidden;
+                                            color: #a4a4a4;
+                                            font-size: 0.24rem;
+                                            line-height: 0.34rem;
+                                            display: -webkit-box;
+                                            -webkit-box-orient: vertical;
+                                            -webkit-line-clamp: 2;
+                                        }
+                                        .third-tab-content-stat {
+                                            position: absolute;
+                                            bottom: 0;
+                                            color: #666;
+                                            width: 100%;
+                                            font-size: 0.2rem;
+                                            display: flex;
+                                            justify-content: space-between;
+                                            .third-tab-content-time {}
+                                            .third-tab-content-views {
+                                                .third-tab-content-views-eye {
+                                                    width: 0.32rem;
+                                                    height: 0.18rem;
+                                                }
                                             }
                                         }
                                     }
@@ -358,4 +412,14 @@
     text-align: center;
     margin-top: 0.31rem;
     margin-bottom: 0.42rem;
+}
+.backToTop {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    transition: all 0.5s ease;
+}
+
+.backToTopInActive {
+    bottom: -1rem;
 }
