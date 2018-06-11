@@ -44,10 +44,32 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (vm.$route.params.id) {
-        vm.$store.dispatch("GetActivity", { id: vm.$route.params.id });
+        vm.$store
+          .dispatch("GetActivity", { id: vm.$route.params.id })
+          .then(_ => {
+            vm.$nextTick(_ => {
+              setTimeout(() => {
+                let imgArr = document.getElementsByTagName("img");
+                for (let i of imgArr) {
+                  i.style.width = 100 + "%";
+                }
+              }, 1);
+            });
+          });
       } else {
         vm.$router.push({ name: "app" });
       }
+    });
+  },
+  mounted() {
+    this.$nextTick(_ => {
+      setTimeout(() => {
+        let imgArr = document.getElementsByTagName("img");
+        for (let i of imgArr) {
+          console.log(1);
+          i.style.width = 100 + "%";
+        }
+      }, 1);
     });
   },
   beforeRouteUpdate(to, from, next) {
@@ -97,7 +119,7 @@ export default {
     .content {
       font-size: 0.32rem;
       color: #2c2c2c;
-      text-indent: 2em;
+      // text-indent: 2em;
     }
   }
   .footer {

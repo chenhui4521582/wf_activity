@@ -13,7 +13,7 @@ const getnewServer = (pageInfo) => {
 const newServerInfo = {
   state: {
     pageInfo: {
-      page: 0,
+      page: 1,
       pageSize: 10
     },
     data: []
@@ -47,9 +47,9 @@ const newServerInfo = {
             singleData.canGo = true
           } else {
             singleData.overTime =
-              '今日'  +
-              moment(singleData.openTime).format('HH:mm')+
-              '<br>'  +
+              '今日' +
+              moment(singleData.openTime).format('HH:mm') +
+              '<br>' +
               '开服'
           }
         } else if (openDate == currentDate + 1) {
@@ -60,7 +60,7 @@ const newServerInfo = {
             '开服'
         } else if (openDate > currentDate + 1) {
           singleData.overTime =
-            moment(singleData.openTime).format('MMMDoHH:mm')  +
+            moment(singleData.openTime).format('MMMDoHH:mm') +
             '<br>开服'
         } else if (openDate < currentDate) {
           singleData.overTime = '已开服'
@@ -81,20 +81,19 @@ const newServerInfo = {
       state
     }, params) {
       return new Promise((resolve, reject) => {
-        console.log(state.pageInfo.pageSize)
-        getnewServer(params || {
-          page: state.pageInfo.page + 1,
+        getnewServer({
+          page: state.pageInfo.page,
           pageSize: state.pageInfo.pageSize
         }).then(res => {
           if (res.data.length > 0) {
             commit('GETNEWSERVER', {
               res: res.data,
               pageInfo: {
-                page: params.page + 1 || state.singleGame.pageInfo.page + 1,
+                page: state.pageInfo.page + 1,
                 pageSize: 10
               }
             })
-            resolve()
+            resolve(res.data)
           } else {
             reject()
           }

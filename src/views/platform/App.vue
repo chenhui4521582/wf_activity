@@ -46,7 +46,7 @@
                 <img v-if="item.underStatus=='already'" src="./image/已结束印章 @2x.png" alt="已结束" class="tip">
               </li>
               <li class="nomore">
-                - 没有更多内容了，到底了 -
+                {{more.first}}
               </li>
             </ul>
             <img :class="{backToTopInActive:!backToTop.first}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop('first')">
@@ -79,12 +79,12 @@
                 </div>
               </li>
               <li v-if="newServerList.length>0" class="nomore">
-                - 没有更多内容了，到底了 -
+                {{more.second}}
               </li>
             </ul>
             <img :class="{backToTopInActive:!backToTop.second}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop('second')">
           </li>
-          <li class="tab-content specialThird" @touchstart="initTabScroll(2,$event)">
+          <li class="tab-content specialThird">
             <img class="none" v-if="false" src="./image/none.png">
             <div class="else" v-else>
               <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
@@ -187,7 +187,7 @@ export default {
           scrollY: true,
           click: true,
           pullUpLoad: {
-            threshold: 200
+            threshold: 20
           },
           probeType: 3
           // scrollbar: true
@@ -251,6 +251,15 @@ export default {
         first: false,
         second: false,
         third: false
+      },
+      more: {
+        first: "",
+        second: "",
+        third: ""
+      },
+      post: {
+        first: true,
+        second: true
       }
     };
   },
@@ -299,27 +308,27 @@ export default {
       if (!this.scrollTabs) {
         // index && (this.Config.Tabs.startX = -index * this.clientWidth);
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
-        this.scrollTabs.on("scroll", coordinate => {
-          /* this.translateX = `translateX(${-(
+      }
+      this.scrollTabs.on("scroll", coordinate => {
+        /* this.translateX = `translateX(${-(
             coordinate.x /
             document.documentElement.clientWidth *
             176
           ) - 176}%)`; */
-          // this.width =
-          // console.log(this.clientWidth)
-          let index1 = -coordinate.x / (this.clientWidth * 2);
-          // leftFirst = this.$refs.tabWidth[0].offsetLeft;
-          this.left = this.leftAll * index1 + "px";
-          /* if(index1<1&&index1>0.5){
+        // this.width =
+        // console.log(this.clientWidth)
+        let index1 = -coordinate.x / (this.clientWidth * 2);
+        // leftFirst = this.$refs.tabWidth[0].offsetLeft;
+        this.left = this.leftAll * index1 + "px";
+        /* if(index1<1&&index1>0.5){
             -(this.widthArr[2]-this.widthArr[0])*index1
           } */
-          /* if (index1 > 0.5) {
+        /* if (index1 > 0.5) {
             this.width = this.widthArr[2] + "px";
           } else {
             this.width = this.widthArr[0] + "px";
           } */
-        });
-      }
+      });
       this.scrollTabs.on("scrollEnd", coordinate => {
         if (this.scrollEnd) return;
         if (-coordinate.x == this.clientWidth * 2) {
@@ -328,18 +337,18 @@ export default {
             this.newsListInfo.length !== 0 &&
             this.newsListGameGroup.length !== 0
           ) {
-            setTimeout(() => {
-              /* this.$refs.thirdTab &&
-                (this.thirdTab = new BScroll(
-                  this.$refs.thirdTab,
-                  this.Config.body
-                )); */
-              /* this.$refs.thirdTabNavWrap &&
-                  (this.thirdTabNavWrap = new BScroll(
-                    this.$refs.thirdTabNavWrap,
-                    this.Config.thirdTab
-                  )); */
-            }, 0);
+            // setTimeout(() => {
+            //   /* this.$refs.thirdTab &&
+            //     (this.thirdTab = new BScroll(
+            //       this.$refs.thirdTab,
+            //       this.Config.body
+            //     )); */
+            //   /* this.$refs.thirdTabNavWrap &&
+            //       (this.thirdTabNavWrap = new BScroll(
+            //         this.$refs.thirdTabNavWrap,
+            //         this.Config.thirdTab
+            //       )); */
+            // }, 0);
             this.scrollEnd = false;
             return;
           } else {
@@ -365,50 +374,57 @@ export default {
           }
         } else if (-coordinate.x == this.clientWidth) {
           if (this.scrollEnd) return;
-          if (this.newServerList.length !== 0&&this.secondTab) {
+          if (this.newServerList.length !== 0 && this.secondTab) {
             return;
           } else {
             this.scrollEnd = true;
             this.$store
               .dispatch("getNewServer", { page: 1, pageSize: 10 })
-              .then(
-                res => {
-                  this.$refs.secondTab &&
-                    (this.secondTab = new BScroll(
-                      this.$refs.secondTab,
-                      this.Config.body
-                    ));
-                  this.secondTab.on("pullingUp", _ => {
+              .then(res => {
+                this.more.second =
+                  res.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
+                this.$refs.secondTab &&
+                  (this.secondTab = new BScroll(
+                    this.$refs.secondTab,
+                    this.Config.body
+                  ));
+                this.secondTab.on("pullingUp", async _ => {
+                  if (this.post.second) {
+                    this.more.second = "加载中...";
+                    this.post.second = false;
                     // if(this.secondTab.maxScrollY<=this.secondTab.absStartY)
-                    this.$store.dispatch("getNewServer").then(
+                    await this.$store.dispatch("getNewServer").then(
                       res => {
+                        this.post.second = res.length >= 10 ? true : false;
+                        this.more.second =
+                          res.length >= 10
+                            ? "上拉加载"
+                            : "- 没有更多内容了，到底了 -";
                         this.secondTab.refresh();
-                        this.secondTab.finishPullUp();
                       },
                       rej => {
-                        this.$toast.show({
+                        this.more.second = "- 没有更多内容了，到底了 -";
+                        /* this.$toast.show({
                           message: "没有更多内容"
-                        });
+                        }); */
                       }
                     );
-                  });
-                  this.secondTab.on("scroll", position => {
-                    this.position(position, this, "second");
-                  });
-                  this.scrollEnd = false;
-                },
-                rej => {
-                  this.$toast.show({
-                    message: "没有更多内容"
-                  });
-                  this.scrollEnd = false;
-                }
-              );
+                    this.secondTab.finishPullUp();
+                  }
+                });
+                this.secondTab.on("scroll", position => {
+                  this.position(position, this, "second");
+                });
+                this.scrollEnd = false;
+              });
           }
         }
       });
-      index && this.scrollTabs.goToPage(index, 0, 0);
-      this.left = index / 2 * this.leftAll + "px";
+      // debugger
+      if (index) {
+        this.scrollTabs.goToPage(index, 0, 0);
+      }
+      // this.left = index / 2 * this.leftAll + "px";
 
       if (this.scrollTabs.enabled) {
         return;
@@ -558,24 +574,25 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.$nextTick(_ => {
-        /* !vm.scrollTabs && */ vm.initTabScroll(to.params.tab);
-        vm.$store.dispatch("GetNewsList").then(res => {
-          vm.$nextTick(_ => {
-            vm.$refs.thirdTab &&
-              (vm.thirdTab = new BScroll(vm.$refs.thirdTab, vm.Config.body));
-            vm.thirdTab.on("scroll", position => {
-              vm.position(position, vm, "third");
-            });
-            /* vm.$refs.thirdTabNavWrap &&
+      // vm.$nextTick(_ => {
+      !vm.scrollTabs && vm.initTabScroll(to.params.tab);
+      // vm.scrollTabs &&vm.scrollTabs.goToPage(2,0,500)
+      vm.$store.dispatch("GetNewsList").then(res => {
+        vm.$nextTick(_ => {
+          vm.$refs.thirdTab &&
+            (vm.thirdTab = new BScroll(vm.$refs.thirdTab, vm.Config.body));
+          vm.thirdTab.on("scroll", position => {
+            vm.position(position, vm, "third");
+          });
+          /* vm.$refs.thirdTabNavWrap &&
                     (vm.thirdTabNavWrap = new BScroll(
                       vm.$refs.thirdTabNavWrap,
                       vm.Config.thirdTab
                     )); */
-          });
-          vm.scrollEnd = false;
         });
+        vm.scrollEnd = false;
       });
+      // });
     });
   },
   beforeCreate() {
@@ -583,24 +600,36 @@ export default {
       .dispatch("getNewActivitiesInfo", { page: 1, pageSize: 10 })
       .then(
         _ => {
+          this.more.first =
+            _.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
           // setTimeout(() => {
           this.$refs.firstTab &&
             (this.firstTab = new BScroll(
               this.$refs.firstTab,
               this.Config.body
             ));
-          this.firstTab.on("pullingUp", _ => {
-            this.$store.dispatch("getNewActivitiesInfo").then(
-              res => {
-                this.firstTab.refresh();
-                this.firstTab.finishPullUp();
-              },
-              rej => {
-                this.$toast.show({
-                  message: "没有更多活动内容"
-                });
-              }
-            );
+          this.firstTab.on("pullingUp", async _ => {
+            if (this.post.first) {
+              this.post.first = false;
+              this.more.first = "加载中...";
+              await this.$store.dispatch("getNewActivitiesInfo").then(
+                res => {
+                  this.post.first = res.length >= 10 ? true : false;
+                  this.more.first =
+                    res.length >= 10
+                      ? "上拉加载"
+                      : "- 没有更多内容了，到底了 -";
+                  this.firstTab.refresh();
+                },
+                rej => {
+                  this.more.first = "- 没有更多内容了，到底了 -";
+                  /* this.$toast.show({
+                    message: "没有更多活动内容"
+                  }); */
+                }
+              );
+              this.firstTab.finishPullUp();
+            }
           });
           this.firstTab.on("scroll", position => {
             this.position(position, this, "first");
@@ -612,9 +641,9 @@ export default {
       }) */
         },
         rej => {
-          this.$toast.show({
+          /* this.$toast.show({
             message: "没有更多活动内容"
-          });
+          }); */
         }
       );
     this.$store.dispatch("getBannerList").then(_ => {
@@ -626,7 +655,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // !this.scrollTabs && this.initTabScroll();
+      !this.scrollTabs && this.initTabScroll();
       // this.width = this.$refs.tabWidth[0].offsetWidth + "px";
       // this.left = this.$refs.tabWidth[0].offsetLeft + "px";
       let leftArr = [];

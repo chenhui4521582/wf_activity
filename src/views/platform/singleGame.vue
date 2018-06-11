@@ -27,7 +27,7 @@
           </div>
         </li>
         <li v-if="singleGameList" class="nomore">
-          - 没有更多内容了，到底了 -
+          {{more}}
         </li>
       </ul>
       <img :class="{backToTopInActive:!backToTop}" src="./image/back-to-top.svg" alt="回到顶部" class="backToTop" @touchend="scrollToTop">
@@ -48,11 +48,14 @@ export default {
           scrollY: true,
           click: true,
           pullUpLoad: {
-            threshold: 200
+            threshold: 20
           }
-        },preventDefault:false
+        },
+        preventDefault: false
       },
-      backToTop: false
+      backToTop: false,
+      more: "",
+      post: true
     };
   },
   methods: {
@@ -68,11 +71,11 @@ export default {
       if (this.$router) {
         this.$router.push({ name: "app", params: { tab: 2 } });
       } else {
-        window.location = "/platform.html";
+        window.location.href = "/activities/platform.html";
+        // history.go(0)
       }
     },
     scrollToTop() {
-      console.log(1)
       this.scroll.scrollTo(0, 0, 300);
     }
   },
@@ -81,6 +84,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.post = true;
       // vm.GetGroupList({ gameId: vm.$route.params.gameId });
       vm.$store
         .dispatch("GetGroupList", {
@@ -90,25 +94,38 @@ export default {
         })
         .then(
           a => {
+            vm.more =
+              a.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
+            // vm.post = a.length >= 10 ? true : false;
             vm.scroll =
               vm.$refs.scroll && new BScroll(vm.$refs.scroll, vm.Config.body);
-            vm.scroll.on("pullingUp", _ => {
-              vm.$store
-                .dispatch("GetGroupList", {
-                  gameId: vm.$route.params.gameId,
-                  gameName: vm.$route.params.gameName
-                })
-                .then(
-                  a => {
-                    vm.scroll.refresh();
-                    vm.scroll.finishPullUp();
-                  },
-                  rej => {
-                    vm.$toast.show({
-                      message: "没有更多内容啦"
-                    });
-                  }
-                );
+            vm.scroll.on("pullingUp", async _ => {
+              if (vm.post) {
+                vm.more = "加载中...";
+                vm.post = false;
+                await vm.$store
+                  .dispatch("GetGroupList", {
+                    gameId: vm.$route.params.gameId,
+                    gameName: vm.$route.params.gameName
+                  })
+                  .then(
+                    a => {
+                      vm.post = a.length >= 10 ? true : false;
+                      vm.more =
+                        a.length >= 10
+                          ? "上拉加载"
+                          : "- 没有更多内容了，到底了 -";
+                      vm.scroll.refresh();
+                    },
+                    rej => {
+                      vm.more = "- 没有更多内容了，到底了 -";
+                      /* vm.$toast.show({
+                        message: "没有更多内容啦"
+                      }); */
+                    }
+                  );
+              }
+              vm.scroll.finishPullUp();
             });
             vm.scroll.on("scroll", position => {
               if (position.y < 0) {
@@ -119,9 +136,9 @@ export default {
             });
           },
           rej => {
-            vm.$toast.show({
+            /* vm.$toast.show({
               message: "没有更多内容啦"
-            });
+            }); */
           }
         );
     });
@@ -134,10 +151,50 @@ export default {
           pageInfo: { page: 1, pageSize: 10 },
           gameName: from.params.gameName
         })
+        .then(res => {
+          {
+            this.more =
+              res.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
+            this.scroll =
+              this.$refs.scroll &&
+              new BScroll(this.$refs.scroll, this.Config.body);
+            this.scroll.on("pullingUp", async _ => {
+              this.more = "加载中...";
+              await this.$store
+                .dispatch("GetGroupList", {
+                  gameId: this.$route.params.gameId,
+                  gameName: this.$route.params.gameName
+                })
+                .then(
+                  a => {
+                    this.more =
+                      a.length >= 10
+                        ? "上拉加载"
+                        : "- 没有更多内容了，到底了 -";
+                    this.scroll.refresh();
+                  },
+                  rej => {
+                    this.more = "- 没有更多内容了，到底了 -";
+                   /*  this.$toast.show({
+                      message: "没有更多内容啦"
+                    }); */
+                  }
+                );
+              this.scroll.finishPullUp();
+            });
+            this.scroll.on("scroll", position => {
+              if (position.y < 0) {
+                this.backToTop = true;
+              } else if (position.y >= 0) {
+                this.backToTop = false;
+              }
+            });
+          }
+        })
         .catch(rej => {
-          this.$toast.show({
+          /* this.$toast.show({
             message: "没有更多内容啦"
-          });
+          }); */
         });
     }
     next();

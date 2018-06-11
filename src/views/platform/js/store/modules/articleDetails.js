@@ -17,7 +17,7 @@ const articleDetailsInfo = {
   state: {
     data: {},
     fromWhichList: '',
-    activityData: {}
+    activityData: {}// 单个活动内容
   },
   mutations: {
     GETARTICLE: (state, data) => {

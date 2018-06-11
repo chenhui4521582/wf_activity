@@ -14,14 +14,14 @@ const newActivitiesInfo = {
   state: {
     data: [],
     pageInfo: {
-      page: 0,
+      page: 1,
       pageSize: 10
     }
   },
   mutations: {
     GETNEWACTIVITIESINFO: (state, data) => {
       data.pageInfo && (state.pageInfo = data.pageInfo)
-      if (data.pageInfo.page !== 2) {
+      if (data.pageInfo.page !== 2) { // 说明不是第一次请求了
         state.data = state.data.concat(data.res)
       } else {
         state.data = data.res
@@ -34,8 +34,8 @@ const newActivitiesInfo = {
       state
     }, params) {
       return new Promise((resolve, reject) => {
-        getnewactivitiesInfo(params || {
-          page: state.pageInfo.page + 1,
+        getnewactivitiesInfo({
+          page: state.pageInfo.page,
           pageSize: state.pageInfo.pageSize
         }).then(res => {
           if (res.data.length > 0) {
@@ -50,11 +50,11 @@ const newActivitiesInfo = {
             commit('GETNEWACTIVITIESINFO', {
               res: res.data,
               pageInfo: {
-                page: params.page + 1 || state.singleGame.pageInfo.page + 1,
-                pageSize: params.pageSize + 1 || state.singleGame.pageInfo.pageSize
+                page: state.pageInfo.page + 1,
+                pageSize: 10
               }
             })
-            resolve()
+            resolve(res.data)
           } else {
             reject()
           }

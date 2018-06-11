@@ -55,7 +55,7 @@ const newsListInfo = {
     singleGame: {
       gameId: 0,
       pageInfo: {
-        page: 0,
+        page: 1,
         pageSize: 10
       },
       data: [],
@@ -96,45 +96,62 @@ const newsListInfo = {
       state
     }, params) {
       return new Promise((resolve, reject) => {
-        getgroupList(params.gameId, params.pageInfo || {
-          page: state.singleGame.pageInfo.page + 1,
-          pageSize: state.singleGame.pageInfo.pageSize
-        }).then(res => {
-          if (params.gameId != state.singleGame.gameId) {
+        let curPage = {
+          page: 1,
+          pageSize: 10
+        }
+        if (params.gameId == state.singleGame.gameId) {
+          curPage = {
+            page: state.singleGame.pageInfo.page,
+            pageSize: state.singleGame.pageInfo.pageSize
+          }
+        }
+        getgroupList(params.gameId, curPage).then(res => {
+          /* if (params.gameId != state.singleGame.gameId) {
             // if (res.data.length > 0) {
             if (res.data.length > 0) checkTime(res.data)
             commit('GETGROUPLIST', {
               gameId: params.gameId,
               res: res.data,
               pageInfo: {
-                page: params.pageInfo.page + 1 || state.singleGame.pageInfo.page + 1,
+                page: state.singleGame.pageInfo.page + 1,
                 pageSize: 10
               },
               firstClick: params.firstClick,
               gameName: res.data.length ? res.data[0].gameName : params.gameName
             })
-            resolve()
+            resolve(res.data)
             // } else {
             //   reject()
             // }
+          } else { */
+          if (res.data.length > 0) {
+            checkTime(res.data)
+            commit('GETGROUPLIST', {
+              gameId: params.gameId,
+              res: res.data,
+              pageInfo: {
+                page: curPage.page + 1,
+                pageSize: 10
+              },
+              firstClick: params.firstClick,
+              gameName: res.data[0].gameName
+            })
+            resolve(res.data)
           } else {
-            if (res.data.length > 0) {
-              checkTime(res.data)
-              commit('GETGROUPLIST', {
-                gameId: params.gameId,
-                res: res.data,
-                pageInfo: {
-                  page: params.pageInfo.page + 1 || state.singleGame.pageInfo.page + 1,
-                  pageSize: 10
-                },
-                firstClick: params.firstClick,
-                gameName: res.data[0].gameName
-              })
-              resolve()
-            } else {
-              reject()
-            }
+            commit('GETGROUPLIST', {
+              gameId: params.gameId,
+              res: res.data,
+              pageInfo: {
+                page: curPage.page + 1,
+                pageSize: 10
+              },
+              firstClick: params.firstClick,
+              gameName: params.gameName
+            })
+            reject()
           }
+          // }
         })
       })
     }

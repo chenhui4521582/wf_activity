@@ -32,9 +32,11 @@ import { jumpToGame } from "./js/utils";
 export default {
   methods: {
     backtolist() {
-      if (this.$route) {
+      if (this.$router) {
         if (this.fromWhichList == -1) {
-          this.$router.push({ name: "app", params: { tab: 2 } });
+          // this.$router.push({ name: "app", params: { tab: 2 } });
+          // history.go(-1)
+          location.href = "/activities/platform.html";
         } else {
           this.$router.push({
             name: "gameNews",
@@ -53,6 +55,16 @@ export default {
   computed: {
     ...mapGetters(["articleDetails", "fromWhichList"])
   },
+  mounted() {
+    this.$nextTick(_ => {
+      setTimeout(() => {
+        let imgArr = document.getElementsByTagName("img");
+        for (let i of imgArr) {
+          i.style.width = 100 + "%";
+        }
+      }, 1);
+    });
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.$store
@@ -60,7 +72,16 @@ export default {
           id: vm.$route.params.id,
           fromWhichList: vm.$route.params.fromWhichList
         })
-        .then(a => {});
+        .then(_ => {
+          vm.$nextTick(_ => {
+            setTimeout(() => {
+              let imgArr = document.getElementsByTagName("img");
+              for (let i of imgArr) {
+                i.style.width = 100 + "%";
+              }
+            }, 1);
+          });
+        });
     });
   },
   beforeRouteUpdate(to, from, next) {
@@ -86,6 +107,10 @@ export default {
 
 <style lang="less" scoped>
 .container {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   .header {
     font-size: 0.3rem;
     color: #fff;
@@ -114,7 +139,7 @@ export default {
     .content {
       font-size: 0.32rem;
       color: #2c2c2c;
-      text-indent: 2em;
+      // text-indent: 2em;
     }
   }
   .footer {
@@ -140,3 +165,4 @@ export default {
   }
 }
 </style>
+
