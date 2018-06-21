@@ -1,5 +1,5 @@
 export default {
-  'newServer': '//platform-api.beeplay123.com/wap/api/promotion/server', // 最新开服
+  'newServer': '//platform-api.beeplay123.com/wap/api/promotion/open', // 最新开服
   'bannerPic': '//platform-api.beeplay123.com/wap/api/promotion/banner', // 轮播图
   'hotActivities': '//platform-api.beeplay123.com/wap/api/promotion/activity/list', // 热门活动列表
   'singleHotActivities': '//platform-api.beeplay123.com/wap/api/promotion/activity/one', // 热门活动单条信息详情

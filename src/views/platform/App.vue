@@ -7,6 +7,9 @@
             </div>
         </div>
     </slider> -->
+    <div @touchstart="backToWap" class="backToWap">
+      返回页面
+    </div>
     <div ref="scrollBanner" class="banner">
       <ul ref="slideGroup" class="scroll-banner">
         <li class="scroll-list" v-for="item in bannerList" @click="staticgoToGame(item)">
@@ -19,7 +22,7 @@
     </div>
     <div class="body">
       <ul class="navs">
-        <li ref="tabWidth" @touchstart="Switch($event,index)" class="nav" v-for="(tabName,index) in tabNames">
+        <li ref="tabWidth" @touchstart="Switch($event,index)" class="nav" :class="{activeNav:index==scrollTabsPage}" v-for="(tabName,index) in tabNames">
           {{tabName}}
         </li>
         <div class="tab-slider" :style="{width,left}"></div>
@@ -67,7 +70,7 @@
                       </span> -->
                     </div>
                     <div class="mid-content1-bottom">
-                      {{list.name}}{{list.partition}}
+                      {{list.name}}{{list.region}}
                     </div>
                   </div>
                   <div class="mid-content2" :style="{color:list.overTime.substr(0,1)!=='已'?'#A4A4A4':'#D73C1E'}" v-html="list.overTime">
@@ -89,7 +92,7 @@
             <div class="else" v-else>
               <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
                 <ul class="thirdTab-navs">
-                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.id,item.name)">
+                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.gameType,item.name)">
                     <img class="thirdTab-nav-icon" :src="item.img|filter" :alt="item.name">
                     <div class="thirdTab-nav-title">
                       {{item.name}}
@@ -247,6 +250,7 @@ export default {
       },
       scrollEnd: false,
       children: null,
+      scrollTabsPage:0,
       backToTop: {
         first: false,
         second: false,
@@ -273,6 +277,9 @@ export default {
     ])
   },
   methods: {
+    backToWap(){
+      location.href = '../jsWap'
+    },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
       if (this.scrollTabs) {
@@ -300,6 +307,7 @@ export default {
           }
         });
         // this.translateX = `translateX(${(index - 1) * 176}%)`;
+        this.scrollTabsPage = this.scrollTabs.getCurrentPage().pageX
       } else {
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
       }
@@ -516,7 +524,7 @@ export default {
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
-      gameId,
+      gameType,
       gameName,
       pageInfo = { page: 1, pageSize: 10 },
       firstClick = true
@@ -525,7 +533,7 @@ export default {
         target: this.$refs.thirdTab,
         text: "拼命加载中"
       }); */
-      this.$router.push({ name: "gameNews", params: { gameId, gameName } });
+      this.$router.push({ name: "gameNews", params: { gameType, gameName } });
     },
     // 跳转资讯详情
     gotoPage(item) {

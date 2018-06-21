@@ -6,7 +6,7 @@
     </div>
     <div ref="scroll" class="body">
       <ul class="third-tab">
-        <li class="third-tab-content" v-for="item in singleGameList" @click="gotoPage(item.id,item.gameId)">
+        <li class="third-tab-content" v-for="item in singleGameList" @click="gotoPage(item.id,item.gameType)">
           <img class="coverImg" :src="item.img|filter" :alt="item.gameName">
           <div class="third-tab-contents">
             <div class="third-tab-content-title">
@@ -61,10 +61,10 @@ export default {
   methods: {
     ...mapActions(["GetGroupList"]),
     // 跳转资讯详情
-    gotoPage(id, gameId) {
+    gotoPage(id, gameType) {
       this.$router.push({
         name: "gameNewsDetails",
-        params: { id, fromWhichList: gameId }
+        params: { id, fromWhichList: gameType }
       });
     },
     back() {
@@ -85,10 +85,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.post = true;
-      // vm.GetGroupList({ gameId: vm.$route.params.gameId });
+      // vm.GetGroupList({ gameType: vm.$route.params.gameType });
       vm.$store
         .dispatch("GetGroupList", {
-          gameId: vm.$route.params.gameId,
+          gameType: vm.$route.params.gameType,
           pageInfo: { page: 1, pageSize: 10 },
           gameName: vm.$route.params.gameName
         })
@@ -105,7 +105,7 @@ export default {
                 vm.post = false;
                 await vm.$store
                   .dispatch("GetGroupList", {
-                    gameId: vm.$route.params.gameId,
+                    gameType: vm.$route.params.gameType,
                     gameName: vm.$route.params.gameName
                   })
                   .then(
@@ -144,10 +144,10 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.params.gameId) {
+    if (to.params.gameType) {
       this.$store
         .dispatch("GetGroupList", {
-          gameId: to.params.gameId,
+          gameType: to.params.gameType,
           pageInfo: { page: 1, pageSize: 10 },
           gameName: from.params.gameName
         })
@@ -162,7 +162,7 @@ export default {
               this.more = "加载中...";
               await this.$store
                 .dispatch("GetGroupList", {
-                  gameId: this.$route.params.gameId,
+                  gameType: this.$route.params.gameType,
                   gameName: this.$route.params.gameName
                 })
                 .then(
