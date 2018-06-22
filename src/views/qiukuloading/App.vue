@@ -24,28 +24,33 @@
 //
 //            4、链接为:https://wap.beeplay123.com/loading?type=recharge&channel=xxxxx&token=yyyyy，
 //            对应跳转：https://wap.beeplay123.com/payment/#/shopping?channel=xxxxx&token=yyyyy
-            let syBg = document.getElementById('app');
-            if (localStorage.getItem('showLoadPage') != '') {
-                localStorage.removeItem('showLoadPage')
-                //setTimeout(() => {
-                //syBg.style.display = 'none';
-                //}, 1000)
-            } else {
-                //setTimeout(() => {
-                //syBg.style.display = 'none';
-                //}, 1000)
-            }
+
+            
+
+            let curAccessToken = localStorage.getItem('ACCESS_TOKEN');
             var urlObj = utils.getUrlParamObj();
-            if (urlObj.channel) {
-                var that=this;
-                AppCall.getAppData(function (params) {
-                    if (params.islogin) {
-                        that.qiukuAccessToken(params, urlObj);
-                    } else {
-                        AppCall.gameLogin();
-                    }
-                })
+            
+            if(curAccessToken) {
+                window.location.replace(this.getUrl(urlObj, curAccessToken,false));
+            }else {
+                let syBg = document.getElementById('app');
+                if (localStorage.getItem('showLoadPage') != '') {
+                    localStorage.removeItem('showLoadPage')
+                }
+                
+                if (urlObj.channel) {
+                    var that=this;
+                    AppCall.getAppData(function (params) {
+                        if (params.islogin) {
+                            that.qiukuAccessToken(params, urlObj);
+                        } else {
+                            AppCall.gameLogin();
+                        }
+                    })
+                }
             }
+
+            
         },
         methods: {
             qiukuAccessToken(cParams, urlObj){
