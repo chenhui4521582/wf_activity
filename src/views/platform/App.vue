@@ -278,7 +278,7 @@ export default {
   },
   methods: {
     backToWap(){
-      location.href = '../jsWap'
+      location.href = '../'+this.getUrlParam('from')
     },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
