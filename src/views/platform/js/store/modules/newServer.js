@@ -86,7 +86,6 @@ const newServerInfo = {
           pageSize: state.pageInfo.pageSize
         }).then(res => {
           try {
-            debugger
             if (res.code == 200) {
               if (res.data.length > 0) {
                 commit('GETNEWSERVER', {
