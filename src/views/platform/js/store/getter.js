@@ -15,6 +15,9 @@ const getters = {
   articleDetails: state => state.articleDetailsInfo.data, // 单个文章内容
   fromWhichList: state => state.articleDetailsInfo.fromWhichList, // 点击详情内的返回列表时判断返回哪个列表
   bannerList: state => state.bannerInfo.data, // 轮播图列表
-  activityInfo: state => state.articleDetailsInfo.activityData // 活动内容
+  activityInfo: state => state.articleDetailsInfo.activityData, // 活动内容
+  userAmount: state => state.userInfo.amount, // 用户金叶子数
+  userId: state => state.userInfo.userId, // 用户ID
+  userInfo: state => state.userInfo
 }
 export default getters

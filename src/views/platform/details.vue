@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="backtolist" @click="backtolist(articleDetails.gameType)">
+      <div class="backtolist" @click="backtolist(articleDetails)">
         返回列表
       </div>
       <div class="gotogame" @click="gotogame(articleDetails)">
@@ -31,7 +31,15 @@ import { jumpToGame } from "./js/utils";
 
 export default {
   methods: {
-    backtolist() {
+    backtolist(item) {
+      let params = {
+        awards_name: item.mainTitle,
+        awards_id: item.id,
+        project_id: item.gameType,
+        event_name: "资讯-返回列表",
+        event_id: 1202040102
+      };
+      this.checkPoint(params, this.userInfo, this);
       if (this.$router) {
         if (this.fromWhichList == -1) {
           // this.$router.push({ name: "app", params: { tab: 2 } });
@@ -49,11 +57,19 @@ export default {
       }
     },
     gotogame(item) {
+      let params = {
+        awards_name: item.mainTitle,
+        awards_id: item.id,
+        project_id: item.gameType,
+        event_name: "资讯-进入游戏",
+        event_id: 1202040101
+      };
+      this.checkPoint(params, this.userInfo, this);
       jumpToGame(item);
     }
   },
   computed: {
-    ...mapGetters(["articleDetails", "fromWhichList"])
+    ...mapGetters(["articleDetails", "fromWhichList", "userInfo"])
   },
   mounted() {
     this.$nextTick(_ => {

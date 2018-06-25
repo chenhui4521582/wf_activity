@@ -39,7 +39,7 @@
                     {{item.title}}
                   </p>
                   <p class="content-time">
-                    活动时间：{{item.showStartTime+'-'+item.showEndTime}}
+                    活动时间：{{item.replacedStartTime+'-'+item.replacedEndTime}}
                   </p>
                 </div>
                 <div class="right-btn" :style="{color:item.underStatus=='underWay'?'#D73C1E':'#8F8F8F',border:item.underStatus=='underWay'?'1px solid #D73C1E':'1px solid #8F8F8F'}">
@@ -92,7 +92,7 @@
             <div class="else" v-else>
               <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
                 <ul class="thirdTab-navs">
-                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.gameType,item.name)">
+                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item,item.gameType,item.name)">
                     <img class="thirdTab-nav-icon" :src="item.img|filter" :alt="item.name">
                     <div class="thirdTab-nav-title">
                       {{item.name}}
@@ -250,7 +250,7 @@ export default {
       },
       scrollEnd: false,
       children: null,
-      scrollTabsPage:0,
+      scrollTabsPage: 0,
       backToTop: {
         first: false,
         second: false,
@@ -273,15 +273,22 @@ export default {
       "newsListGameGroup",
       "newServerList",
       "newHotActivitiesInfo",
-      "bannerList"
+      "bannerList",
+      "userInfo"
     ])
   },
   methods: {
-    backToWap(){
-      location.href = '../'+this.getUrlParam('from')
+    backToWap() {
+      location.href = "../" + this.getUrlParam("from");
     },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
+      let event_id_Arr = [1202010002, 1202010003, 1202030004];
+      let params = {
+        event_id: event_id_Arr[index],
+        event_name: this.tabNames[index]
+      };
+      this.checkPoint(params, this.userInfo, this);
       if (this.scrollTabs) {
         this.scrollTabs.goToPage(index, 0, 200, {
           // easeOutQuint
@@ -307,7 +314,7 @@ export default {
           }
         });
         // this.translateX = `translateX(${(index - 1) * 176}%)`;
-        this.scrollTabsPage = this.scrollTabs.getCurrentPage().pageX
+        this.scrollTabsPage = this.scrollTabs.getCurrentPage().pageX;
       } else {
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
       }
@@ -513,17 +520,33 @@ export default {
     // 最新开服跳转游戏
     goToGame(booleans, item) {
       if (booleans) {
-        jumpToGame(item);
+        let params = {
+          project_id: item.gameType,
+          offline_time: Number(item.accuOverTime),
+          event_name: "最新开服-进入游戏",
+          event_id: 1202030001
+        };
+        this.checkPoint(params, this.userInfo, this);
+        // jumpToGame(item);
       } else {
         return;
       }
     },
     //轮播图跳转游戏
     staticgoToGame(item) {
-      jumpToGame(item);
+      let params = {
+        // awards_id:item.id,
+        awards_name: item.name,
+        event_id: 1202010001,
+        event_name: "首页轮播图"
+      };
+      this.checkPoint(params, this.userInfo, this).then(res => {
+        jumpToGame(item);
+      });
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
+      item,
       gameType,
       gameName,
       pageInfo = { page: 1, pageSize: 10 },
@@ -533,10 +556,25 @@ export default {
         target: this.$refs.thirdTab,
         text: "拼命加载中"
       }); */
+      let params = {
+        project_id: gameType,
+        awards_id: item.id,
+        event_name: "游戏选择",
+        event_id: 1202040001
+      };
+      this.checkPoint(params, this.userInfo, this);
       this.$router.push({ name: "gameNews", params: { gameType, gameName } });
     },
     // 跳转资讯详情
     gotoPage(item) {
+      let params = {
+        awards_id: item.id,
+        awards_name: item.mainTitle,
+        project_id: item.gameType,
+        event_id: 1202040002,
+        event_name: "资讯详情"
+      };
+      this.checkPoint(params, this.userInfo, this);
       this.$router.push({
         name: "gameNewsDetails",
         params: { id: item.id, item, fromWhichList: -1 }
@@ -559,6 +597,14 @@ export default {
           window.location.href = _url;
           return;
         } */
+      let params = {
+        awards_id: item.id,
+        awards_name: item.name,
+        game_phase: item.activityStartTime + "-" + item.activityEndTime,
+        event_id: 1202020001,
+        event_name: "活动点击"
+      };
+      this.checkPoint(params, this.userInfo, this);
       this.$router.push({
         name: "activityDetails",
         params: {

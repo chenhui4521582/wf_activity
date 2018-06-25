@@ -37,9 +37,11 @@ const newServerInfo = {
         if (openDate == currentDate) {
           if (overTime.slice(-1) == '前') {
             if (overTime.slice(-3, -2) == '小') {
+              singleData.accuOverTime = overTime.slice(0, -4)
               singleData.overTime =
                 '已开服<br>' + overTime.slice(0, -4) + '小时'
             } else {
+              singleData.accuOverTime = 1
               singleData.overTime =
                 '已开服<br>' + 1 + '小时'
             }
