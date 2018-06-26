@@ -6,7 +6,7 @@
     </div>
     <div ref="scroll" class="body">
       <ul class="third-tab">
-        <li class="third-tab-content" v-for="item in singleGameList" @click="gotoPage(item.id,item.gameType,item)">
+        <li class="third-tab-content" v-for="(item,index) in singleGameList" @click="gotoPage(item.id,item.gameType,item,index)">
           <img class="coverImg" :src="item.img|filter" :alt="item.gameName">
           <div class="third-tab-contents">
             <div class="third-tab-content-title">
@@ -61,12 +61,13 @@ export default {
   methods: {
     ...mapActions(["GetGroupList"]),
     // 跳转资讯详情
-    gotoPage(id, gameType, item) {
+    gotoPage(id, gameType, item, index) {
       let params = {
         awards_name: item.mainTitle,
-        project_id: item.gameType,
+        target_project_id: item.gameType,
         event_id: 1202040002,
-        event_name: "资讯详情"
+        event_name: "资讯详情",
+        room_level: index + 1
       };
       this.checkPoint(params, this.userInfo, this);
       this.$router.push({
@@ -78,7 +79,7 @@ export default {
       let params = {
         event_id: 1202000002,
         event_name: "返回页面",
-        project_id: this.gameType
+        target_project_id: this.$route.params.gameType
       };
       this.checkPoint(params, this.userInfo, this);
       if (this.$router) {

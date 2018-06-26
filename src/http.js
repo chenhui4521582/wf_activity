@@ -26,7 +26,7 @@ if(localStorage.getItem('APP_CHANNEL') == '100022') {
         localStorage.setItem('APP_VERSION','1.0.0')
     }else {
         localStorage.setItem('APP_VERSION','3.0.0.0')
-    } 
+    }
 }
 
 
@@ -126,7 +126,7 @@ axios.interceptors.response.use(
                     var  result = response.config && response.config.data;
                      if(result) {
                         result = JSON.parse(result);
-                        if(result && result.isShowTotast == 'false') {
+                        if(result && result.isShowToast == 'false') {
                             break;
                         }
                      }

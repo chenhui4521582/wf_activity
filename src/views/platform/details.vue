@@ -35,7 +35,7 @@ export default {
       let params = {
         awards_name: item.mainTitle,
         awards_id: item.id,
-        project_id: item.gameType,
+        target_project_id: item.gameType,
         event_name: "资讯-返回列表",
         event_id: 1202040102
       };
@@ -60,7 +60,7 @@ export default {
       let params = {
         awards_name: item.mainTitle,
         awards_id: item.id,
-        project_id: item.gameType,
+        target_project_id: item.gameType,
         event_name: "资讯-进入游戏",
         event_id: 1202040101
       };

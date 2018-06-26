@@ -12,7 +12,7 @@
     </div>
     <div ref="scrollBanner" class="banner">
       <ul ref="slideGroup" class="scroll-banner">
-        <li class="scroll-list" v-for="item in bannerList" @click="staticgoToGame(item)">
+        <li class="scroll-list" v-for="(item,index) in bannerList" @click="staticgoToGame(item,index)">
           <img :src="item.img|filter" :alt="item.name">
         </li>
       </ul>
@@ -32,7 +32,7 @@
           <li ref="firstTab" class="tab-content">
             <img class="none" v-if="newHotActivitiesInfo.length==0" src="./image/none.png" alt="">
             <ul v-else class="first-tab">
-              <li class="first-tab-content" v-for="item in newHotActivitiesInfo" @click="gotoActivity(item,$event)">
+              <li class="first-tab-content" v-for="(item,index) in newHotActivitiesInfo" @click="gotoActivity(item,$event,index)">
                 <img class="bigImg" :src="item.img|filter" alt="">
                 <div class="left-content">
                   <p class="content-title">
@@ -57,7 +57,7 @@
           <li ref="secondTab" class="tab-content">
             <img class="none" v-if="newServerList.length==0" src="./image/none.png" alt="">
             <ul v-else class="second-tab">
-              <li class="second-tab-content" v-for="list in newServerList">
+              <li class="second-tab-content" v-for="(list,index) in newServerList">
                 <img class="midImg" :src="list.gameImg|filter" alt="">
                 <div class="mid-content">
                   <div class="mid-content1">
@@ -77,7 +77,7 @@
 
                   </div>
                 </div>
-                <div class="right-btn" @click="goToGame(list.canGo,list)" :style="{backgroundColor:list.overTime.substr(0,1)=='已'?'#D73C1E':'#B1B1B1'}">
+                <div class="right-btn" @click="goToGame(list.canGo,list,index)" :style="{backgroundColor:list.overTime.substr(0,1)=='已'?'#D73C1E':'#B1B1B1'}">
                   {{list.canGo?'进入游戏':'即将开服'}}
                 </div>
               </li>
@@ -92,7 +92,7 @@
             <div class="else" v-else>
               <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
                 <ul class="thirdTab-navs">
-                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item,item.gameType,item.name)">
+                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item,item.gameType,item.name,null,null,index)">
                     <img class="thirdTab-nav-icon" :src="item.img|filter" :alt="item.name">
                     <div class="thirdTab-nav-title">
                       {{item.name}}
@@ -105,7 +105,7 @@
               </div>
               <div ref="thirdTab" class="thirdTabWrap">
                 <ul class="third-tab">
-                  <li class="third-tab-content" v-for="item in newsListInfo" @click="gotoPage(item)">
+                  <li class="third-tab-content" v-for="(item,index) in newsListInfo" @click="gotoPage(item,index)">
                     <img class="coverImg" :src="item.img|filter" :alt="item.gameName">
                     <div class="third-tab-contents">
                       <div class="third-tab-content-title">
@@ -518,13 +518,14 @@ export default {
       return Request[ename];
     },
     // 最新开服跳转游戏
-    goToGame(booleans, item) {
+    goToGame(booleans, item, index) {
       if (booleans) {
         let params = {
-          project_id: item.gameType,
+          target_project_id: item.gameType,
           offline_time: Number(item.accuOverTime),
           event_name: "最新开服-进入游戏",
-          event_id: 1202030001
+          event_id: 1202030001,
+          room_level: index + 1
         };
         this.checkPoint(params, this.userInfo, this);
         // jumpToGame(item);
@@ -533,12 +534,14 @@ export default {
       }
     },
     //轮播图跳转游戏
-    staticgoToGame(item) {
+    staticgoToGame(item, index) {
       let params = {
         // awards_id:item.id,
+        target_project_id: item.gameType,
         awards_name: item.name,
         event_id: 1202010001,
-        event_name: "首页轮播图"
+        event_name: "首页轮播图",
+        room_level: index + 1
       };
       this.checkPoint(params, this.userInfo, this).then(res => {
         jumpToGame(item);
@@ -550,29 +553,32 @@ export default {
       gameType,
       gameName,
       pageInfo = { page: 1, pageSize: 10 },
-      firstClick = true
+      firstClick = true,
+      index
     ) {
       /* let loading = this.$loading({
         target: this.$refs.thirdTab,
         text: "拼命加载中"
       }); */
       let params = {
-        project_id: gameType,
+        target_project_id: gameType,
         awards_id: item.id,
         event_name: "游戏选择",
-        event_id: 1202040001
+        event_id: 1202040001,
+        room_level: index + 1
       };
       this.checkPoint(params, this.userInfo, this);
       this.$router.push({ name: "gameNews", params: { gameType, gameName } });
     },
     // 跳转资讯详情
-    gotoPage(item) {
+    gotoPage(item, index) {
       let params = {
         awards_id: item.id,
         awards_name: item.mainTitle,
-        project_id: item.gameType,
+        target_project_id: item.gameType,
         event_id: 1202040002,
-        event_name: "资讯详情"
+        event_name: "资讯详情",
+        room_level: index + 1
       };
       this.checkPoint(params, this.userInfo, this);
       this.$router.push({
@@ -580,7 +586,7 @@ export default {
         params: { id: item.id, item, fromWhichList: -1 }
       });
     },
-    gotoActivity(item, e) {
+    gotoActivity(item, e, index) {
       // if (item.underStatus == "underWay") {
       /* if (url && url.indexOf("external=1") != -1) {
           let _url =
@@ -599,10 +605,12 @@ export default {
         } */
       let params = {
         awards_id: item.id,
-        awards_name: item.name,
+        awards_name: item.title,
         game_phase: item.activityStartTime + "-" + item.activityEndTime,
         event_id: 1202020001,
-        event_name: "活动点击"
+        event_name: "活动点击",
+        room_level: index + 1,
+        target_project_id: item.gameType
       };
       this.checkPoint(params, this.userInfo, this);
       this.$router.push({

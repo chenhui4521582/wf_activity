@@ -36,6 +36,7 @@ export default {
   methods: {
     backtolist(item) {
       let params = {
+        target_project_id: item.gameType,
         awards_id: item.id,
         awards_name: item.name,
         game_phase: item.activityStartTime + "-" + item.activityEndTime,
@@ -47,6 +48,7 @@ export default {
     },
     gotogame(item) {
       let params = {
+        target_project_id: item.gameType,
         awards_id: item.id,
         awards_name: item.name,
         game_phase: item.activityStartTime + "-" + item.activityEndTime,
