@@ -13,7 +13,7 @@ export default new Router({
     name: 'app',
     component: _import('App')
   }, {
-    path: '/gameNews/:gameId',
+    path: '/gameNews/:gameType',
     name: 'gameNews',
     component: _import('singleGame')
   }, {

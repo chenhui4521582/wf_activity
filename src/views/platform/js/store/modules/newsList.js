@@ -7,11 +7,11 @@ const getnewsList = () => {
   return axios.post(api.newsList)
 }
 
-const getgroupList = (gameId, pageInfo) => {
+const getgroupList = (gameType, pageInfo) => {
   return axios.post(api.gameGroupList, {
     page: pageInfo.page,
     pageSize: pageInfo.pageSize,
-    gameId
+    gameType
   })
 }
 
@@ -53,7 +53,7 @@ const newsListInfo = {
       data: null
     },
     singleGame: {
-      gameId: 0,
+      gameType: 0,
       pageInfo: {
         page: 1,
         pageSize: 10
@@ -71,7 +71,7 @@ const newsListInfo = {
     // 分类详情
     GETGROUPLIST: (state, data) => {
       state.singleGame.pageInfo = data.pageInfo
-      state.singleGame.gameId = data.gameId
+      state.singleGame.gameType = data.gameType
       state.singleGame.gameName = data.gameName
       if (data.pageInfo.page !== 2) {
         state.singleGame.data = state.singleGame.data.concat(data.res)
@@ -100,18 +100,18 @@ const newsListInfo = {
           page: 1,
           pageSize: 10
         }
-        if (params.gameId == state.singleGame.gameId) {
+        if (params.gameType == state.singleGame.gameType) {
           curPage = {
             page: state.singleGame.pageInfo.page,
             pageSize: state.singleGame.pageInfo.pageSize
           }
         }
-        getgroupList(params.gameId, curPage).then(res => {
-          /* if (params.gameId != state.singleGame.gameId) {
+        getgroupList(params.gameType, curPage).then(res => {
+          /* if (params.gameType != state.singleGame.gameType) {
             // if (res.data.length > 0) {
             if (res.data.length > 0) checkTime(res.data)
             commit('GETGROUPLIST', {
-              gameId: params.gameId,
+              gameType: params.gameType,
               res: res.data,
               pageInfo: {
                 page: state.singleGame.pageInfo.page + 1,
@@ -128,7 +128,7 @@ const newsListInfo = {
           if (res.data.length > 0) {
             checkTime(res.data)
             commit('GETGROUPLIST', {
-              gameId: params.gameId,
+              gameType: params.gameType,
               res: res.data,
               pageInfo: {
                 page: curPage.page + 1,
@@ -140,7 +140,7 @@ const newsListInfo = {
             resolve(res.data)
           } else {
             commit('GETGROUPLIST', {
-              gameId: params.gameId,
+              gameType: params.gameType,
               res: res.data,
               pageInfo: {
                 page: curPage.page + 1,

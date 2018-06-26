@@ -67,7 +67,7 @@
                       </span> -->
                     </div>
                     <div class="mid-content1-bottom">
-                      {{list.name}}{{list.partition}}
+                      {{list.name}}{{list.region}}
                     </div>
                   </div>
                   <div class="mid-content2" :style="{color:list.overTime.substr(0,1)!=='已'?'#A4A4A4':'#D73C1E'}" v-html="list.overTime">
@@ -89,7 +89,7 @@
             <div class="else" v-else>
               <div ref="thirdTabNavWrap" class="thirdTabNav-wrap">
                 <ul class="thirdTab-navs">
-                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.id,item.name)">
+                  <li v-for="(item,index) in newsListGameGroup" :key="index" class="thirdTab-nav" @click="getGroupList(item.gameType,item.name)">
                     <img class="thirdTab-nav-icon" :src="item.img|filter" :alt="item.name">
                     <div class="thirdTab-nav-title">
                       {{item.name}}
@@ -516,7 +516,7 @@ export default {
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
-      gameId,
+      gameType,
       gameName,
       pageInfo = { page: 1, pageSize: 10 },
       firstClick = true
@@ -525,7 +525,7 @@ export default {
         target: this.$refs.thirdTab,
         text: "拼命加载中"
       }); */
-      this.$router.push({ name: "gameNews", params: { gameId, gameName } });
+      this.$router.push({ name: "gameNews", params: { gameType, gameName } });
     },
     // 跳转资讯详情
     gotoPage(item) {

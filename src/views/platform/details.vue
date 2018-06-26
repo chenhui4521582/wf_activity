@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="backtolist" @click="backtolist(articleDetails.gameId)">
+      <div class="backtolist" @click="backtolist(articleDetails.gameType)">
         返回列表
       </div>
       <div class="gotogame" @click="gotogame(articleDetails)">
@@ -41,7 +41,7 @@ export default {
           this.$router.push({
             name: "gameNews",
             params: {
-              gameId: this.fromWhichList,
+              gameType: this.fromWhichList,
               gameName: this.articleDetails.gameName
             }
           });
