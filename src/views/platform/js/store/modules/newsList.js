@@ -86,8 +86,14 @@ const newsListInfo = {
       commit
     }) {
       getnewsList().then(res => {
-        checkTime(res.data)
-        commit('GETNEWSLIST', res.data)
+        try {
+          // if (res.code == 200) {
+          checkTime(res.data)
+          commit('GETNEWSLIST', res.data)
+          // }
+        } catch (error) {
+          console.error(error)
+        }
       })
     },
     // 分类详情

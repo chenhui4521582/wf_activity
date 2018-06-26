@@ -7,6 +7,9 @@
             </div>
         </div>
     </slider> -->
+    <div @touchstart="backToWap" class="backToWap">
+      返回页面
+    </div>
     <div ref="scrollBanner" class="banner">
       <ul ref="slideGroup" class="scroll-banner">
         <li class="scroll-list" v-for="item in bannerList" @click="staticgoToGame(item)">
@@ -19,7 +22,7 @@
     </div>
     <div class="body">
       <ul class="navs">
-        <li ref="tabWidth" @touchstart="Switch($event,index)" class="nav" v-for="(tabName,index) in tabNames">
+        <li ref="tabWidth" @touchstart="Switch($event,index)" class="nav" :class="{activeNav:index==scrollTabsPage}" v-for="(tabName,index) in tabNames">
           {{tabName}}
         </li>
         <div class="tab-slider" :style="{width,left}"></div>
@@ -247,6 +250,7 @@ export default {
       },
       scrollEnd: false,
       children: null,
+      scrollTabsPage:0,
       backToTop: {
         first: false,
         second: false,
@@ -273,6 +277,9 @@ export default {
     ])
   },
   methods: {
+    backToWap(){
+      location.href = '../'+this.getUrlParam('from')
+    },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
       if (this.scrollTabs) {
@@ -300,6 +307,7 @@ export default {
           }
         });
         // this.translateX = `translateX(${(index - 1) * 176}%)`;
+        this.scrollTabsPage = this.scrollTabs.getCurrentPage().pageX
       } else {
         this.scrollTabs = new BScroll(this.$refs.scrollTabs, this.Config.Tabs);
       }

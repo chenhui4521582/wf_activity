@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import "babel-polyfill";
 import Vue from 'vue'
-import axios from '../../http'
+import axios from './http'
 import App from './App'
 // import router from './router'
 import fastclick from 'fastclick'

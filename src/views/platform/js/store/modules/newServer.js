@@ -85,18 +85,26 @@ const newServerInfo = {
           page: state.pageInfo.page,
           pageSize: state.pageInfo.pageSize
         }).then(res => {
-          if (res.data.length > 0) {
-            commit('GETNEWSERVER', {
-              res: res.data,
-              pageInfo: {
-                page: state.pageInfo.page + 1,
-                pageSize: 10
+          try {
+            if (res.code == 200) {
+              if (res.data.length > 0) {
+                commit('GETNEWSERVER', {
+                  res: res.data,
+                  pageInfo: {
+                    page: state.pageInfo.page + 1,
+                    pageSize: 10
+                  }
+                })
+                resolve(res.data)
+              } else {
+                reject()
               }
-            })
-            resolve(res.data)
-          } else {
-            reject()
+            }
+          } catch (error) {
+
           }
+        }, rej => {
+
         })
       })
     }
