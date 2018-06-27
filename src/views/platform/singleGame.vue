@@ -6,7 +6,7 @@
     </div>
     <div ref="scroll" class="body">
       <ul class="third-tab">
-        <li class="third-tab-content" v-for="item in singleGameList" @click="gotoPage(item.id,item.gameType)">
+        <li class="third-tab-content" v-for="(item,index) in singleGameList" @click="gotoPage(item.id,item.gameType,item,index)">
           <img class="coverImg" :src="item.img|filter" :alt="item.gameName">
           <div class="third-tab-contents">
             <div class="third-tab-content-title">
@@ -61,13 +61,27 @@ export default {
   methods: {
     ...mapActions(["GetGroupList"]),
     // 跳转资讯详情
-    gotoPage(id, gameType) {
+    gotoPage(id, gameType, item, index) {
+      let params = {
+        awards_name: item.mainTitle,
+        target_project_id: item.gameType,
+        event_id: 1202040002,
+        event_name: "资讯详情",
+        room_level: index + 1
+      };
+      this.checkPoint(params, this.userInfo, this);
       this.$router.push({
         name: "gameNewsDetails",
         params: { id, fromWhichList: gameType }
       });
     },
     back() {
+      let params = {
+        event_id: 1202000002,
+        event_name: "返回页面",
+        target_project_id: this.$route.params.gameType
+      };
+      this.checkPoint(params, this.userInfo, this);
       if (this.$router) {
         this.$router.push({ name: "app", params: { tab: 2 } });
       } else {
@@ -80,7 +94,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["singleGameList", "singleGameName"])
+    ...mapGetters(["singleGameList", "singleGameName", "userInfo"])
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -175,7 +189,7 @@ export default {
                   },
                   rej => {
                     this.more = "- 没有更多内容了，到底了 -";
-                   /*  this.$toast.show({
+                    /*  this.$toast.show({
                       message: "没有更多内容啦"
                     }); */
                   }

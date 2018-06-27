@@ -121,7 +121,7 @@ axios.interceptors.response.use(
                     var  result = response.config && response.config.data;
                      if(result) {
                         result = JSON.parse(result);
-                        if(result && result.isShowTotast == 'false') {
+                        if(result && result.isShowToast == 'false') {
                             break;
                         }
                      }

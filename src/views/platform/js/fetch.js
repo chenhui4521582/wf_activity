@@ -16,6 +16,8 @@ axios.interceptors.request.use(function (config) {
   config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
   config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
   config.headers['App-Version'] = localStorage.getItem('APP_VERSION');
+  config.headers['Content-Type'] = 'application/json';
+  config.headers['Repeated-Submission'] = 1;
   return config
 }, function (error) {
   // 对请求错误做些什么
@@ -92,7 +94,7 @@ axios.interceptors.response.use(
           var result = response.config && response.config.data
           if (result) {
             result = JSON.parse(result)
-            if (result && result.isShowTotast === 'false') {
+            if (result && result.isShowToast === 'false') {
               break
             }
           }
@@ -112,14 +114,14 @@ axios.interceptors.response.use(
     if (error && error.response) {
 
     } else {
-      error = JSON.stringify(error)
+      /* error = JSON.stringify(error)
       if (error.indexOf('timeout') != -1) {
         Vue.prototype.$toast.show({
           message: '请求超时',
           duration: 1500
         })
         return
-      }
+      } */
     }
     return Promise.reject(error)
     // return '';

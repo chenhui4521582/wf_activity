@@ -44,8 +44,8 @@ const newActivitiesInfo = {
               if (moment(new Date()).isBetween(i.activityStartTime, i.activityEndTime)) i.underStatus = 'underWay'
               if (moment(new Date()).isBefore(i.activityStartTime)) i.underStatus = 'notYet'
               if (moment(new Date()).isAfter(i.activityEndTime)) i.underStatus = 'already'
-              i.showEndTime = i.activityEndTime.substr(0, 10).replace(/-/g, '/')
-              i.showStartTime = i.activityStartTime.substr(0, 10).replace(/-/g, '/')
+              i.replacedEndTime = i.activityEndTime.substr(0, 10).replace(/-/g, '/')
+              i.replacedStartTime = i.activityStartTime.substr(0, 10).replace(/-/g, '/')
             }
             commit('GETNEWACTIVITIESINFO', {
               res: res.data,

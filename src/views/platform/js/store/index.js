@@ -5,6 +5,7 @@ import newServerInfo from './modules/newServer'
 import newActivitiesInfo from './modules/hotActivities'
 import articleDetailsInfo from './modules/articleDetails'
 import bannerInfo from './modules/bannerInfo'
+import userInfo from './modules/userInfo'
 import getters from './getter'
 
 Vue.use(Vuex)
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
     newServerInfo,
     newActivitiesInfo,
     articleDetailsInfo,
-    bannerInfo
+    bannerInfo,
+    userInfo
   },
   getters
 })

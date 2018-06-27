@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="backtolist" @click="backtolist(activityInfo.url)">
+      <div class="backtolist" @click="backtolist(activityInfo)">
         返回列表
       </div>
       <div class="gotogame" @click="gotogame(activityInfo)">
@@ -31,13 +31,31 @@ import { jumpToGame } from "./js/utils";
 
 export default {
   computed: {
-    ...mapGetters(["activityInfo"])
+    ...mapGetters(["activityInfo", "userInfo"])
   },
   methods: {
-    backtolist() {
+    backtolist(item) {
+      let params = {
+        target_project_id: item.gameType,
+        awards_id: item.id,
+        awards_name: item.name,
+        game_phase: item.activityStartTime + "-" + item.activityEndTime,
+        event_id: 1202020101,
+        event_name: "活动-返回列表"
+      };
+      this.checkPoint(params, this.userInfo, this);
       this.$router.push({ name: "app", params: { tab: 0 } });
     },
     gotogame(item) {
+      let params = {
+        target_project_id: item.gameType,
+        awards_id: item.id,
+        awards_name: item.name,
+        game_phase: item.activityStartTime + "-" + item.activityEndTime,
+        event_name: "活动-进入游戏",
+        event_id: 1202020102
+      };
+      this.checkPoint(params, this.userInfo, this);
       jumpToGame(item);
     }
   },
