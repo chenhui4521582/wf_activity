@@ -29,7 +29,7 @@ Vue.prototype.checkPoint = (params, userInfo, _this) => {
   params.generate_time = now.format('HH:mm:ss') // 操作时间
   params.generate_date = now.format('YYYY-MM-DD') // 操作日期
   params.project_id = 0
-  params.isShowToast = false
+  // params.isShowToast = false
   if (userInfo && userInfo.amount != '' && userInfo.userId != '') {
     params.user_id = userInfo.userId
     params.residual_gold = userInfo.amount
