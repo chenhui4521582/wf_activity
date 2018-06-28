@@ -279,7 +279,18 @@ export default {
   },
   methods: {
     backToWap() {
-      location.href = "../" + this.getUrlParam("from");
+      const from = this.getUrlParam("from");
+      if (from.includes("#")) {
+        const href = from.split("#")[0];
+        switch (href) {
+          case "jsWap":
+            location.href = "../jsWap";
+            break;
+          case "wap":
+            location.href = "../wap/home";
+            break;
+        }
+      }
     },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
