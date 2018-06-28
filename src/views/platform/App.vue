@@ -554,9 +554,10 @@ export default {
         event_name: "首页轮播图",
         room_level: index + 1
       };
-      this.checkPoint(params, this.userInfo, this).then(res => {
+      this.checkPoint(params, this.userInfo, this);
+      try {
         jumpToGame(item);
-      });
+      } catch (error) {}
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
