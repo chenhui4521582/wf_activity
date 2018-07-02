@@ -70,7 +70,7 @@
                       </span> -->
                     </div>
                     <div class="mid-content1-bottom">
-                      {{list.name}}{{list.region}}
+                      {{list.region}}-{{list.name}}
                     </div>
                   </div>
                   <div class="mid-content2" :style="{color:list.overTime.substr(0,1)!=='已'?'#A4A4A4':'#D73C1E'}" v-html="list.overTime">
@@ -155,7 +155,7 @@ export default {
           snap: {
             loop: true,
             // stepX: 0,
-            threshold: 0.3,
+            threshold: document.documentElement.clientWidth/1.2,
             speed: 400
           },
           click: true
@@ -279,7 +279,21 @@ export default {
   },
   methods: {
     backToWap() {
-      const from = this.getUrlParam("from");
+      function getUrlParam(ename) {
+        var url = localStorage.getItem("backToWap");
+        var Request = new Object();
+        if (url.indexOf("?") != -1) {
+          var str = url.split("?")[1];
+          var strs = str.split("&");
+          for (var i = 0; i < strs.length; i++) {
+            Request[strs[i].split("=")[0]] = strs[i].split("=")[1];
+          }
+        } else {
+          return "";
+        }
+        return Request[ename];
+      }
+      const from = getUrlParam("from");
       if (from.includes("#")) {
         const href = from.split("#")[0];
         switch (href) {
@@ -539,7 +553,7 @@ export default {
           room_level: index + 1
         };
         this.checkPoint(params, this.userInfo, this);
-        // jumpToGame(item);
+        jumpToGame(item);
       } else {
         return;
       }
@@ -729,6 +743,9 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      if (!localStorage.getItem("backToWap")) {
+        localStorage.setItem("backToWap", location.href);
+      }
       !this.scrollTabs && this.initTabScroll();
       // this.width = this.$refs.tabWidth[0].offsetWidth + "px";
       // this.left = this.$refs.tabWidth[0].offsetLeft + "px";
