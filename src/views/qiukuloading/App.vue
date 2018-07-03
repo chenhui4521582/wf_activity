@@ -25,11 +25,11 @@
 //            4、链接为:https://wap.beeplay123.com/loading?type=recharge&channel=xxxxx&token=yyyyy，
 //            对应跳转：https://wap.beeplay123.com/payment/#/shopping?channel=xxxxx&token=yyyyy
 
-            
+
 
             let curAccessToken = localStorage.getItem('ACCESS_TOKEN');
             var urlObj = utils.getUrlParamObj();
-            
+
             if(curAccessToken) {
                 window.location.replace(this.getUrl(urlObj, curAccessToken,false));
             }else {
@@ -37,7 +37,7 @@
                 if (localStorage.getItem('showLoadPage') != '') {
                     localStorage.removeItem('showLoadPage')
                 }
-                
+
                 if (urlObj.channel) {
                     var that=this;
                     AppCall.getAppData(function (params) {
@@ -50,7 +50,7 @@
                 }
             }
 
-            
+
         },
         methods: {
             qiukuAccessToken(cParams, urlObj){
@@ -107,6 +107,9 @@
                 }
                 if (urlObj.type == 'record') {
                     return `https://databiger-h5.beeplay123.com/game/#/betrecord?token=${token}&channel=${urlObj.channel}`;
+                }
+                if (urlObj.type == 'recharge') {
+                    return `https://wap.beeplay123.com/payment/#/shopping?token=${token}&channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'recharge') {
                     return `https://wap.beeplay123.com/payment/#/shopping?token=${token}&channel=${urlObj.channel}`
