@@ -111,8 +111,8 @@
                 if (urlObj.type == 'recharge') {
                     return `https://wap.beeplay123.com/payment/#/shopping?token=${token}&channel=${urlObj.channel}`
                 }
-                if (urlObj.type == 'recharge') {
-                    return `https://wap.beeplay123.com/payment/#/shopping?token=${token}&channel=${urlObj.channel}`
+                if (urlObj.type == 'center') {
+                    return `https://databiger-h5.beeplay123.com/center/?token=${token}&channel=${urlObj.channel}`
                 }
             }
         }
