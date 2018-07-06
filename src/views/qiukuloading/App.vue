@@ -27,30 +27,29 @@
 
 
 
-            let curAccessToken = localStorage.getItem('ACCESS_TOKEN');
+            let curAccessTokens_qk = localStorage.getItem('ACCESS_TOKEN');
+
             var urlObj = utils.getUrlParamObj();
 
-            if(curAccessToken) {
-                window.location.replace(this.getUrl(urlObj, curAccessToken,false));
-            }else {
-                let syBg = document.getElementById('app');
+            let syBg = document.getElementById('app');
                 if (localStorage.getItem('showLoadPage') != '') {
                     localStorage.removeItem('showLoadPage')
                 }
-
                 if (urlObj.channel) {
                     var that=this;
                     AppCall.getAppData(function (params) {
                         if (params.islogin) {
-                            that.qiukuAccessToken(params, urlObj);
+                            if(!curAccessTokens_qk || localStorage.getItem('currentToken') != params.token) {
+                                that.qiukuAccessToken(params, urlObj);
+                                localStorage.setItem('currentToken', params.token);
+                            }else {
+                                window.location.replace(that.getUrl(urlObj, curAccessTokens_qk,false));
+                            }
                         } else {
                             AppCall.gameLogin();
                         }
                     })
                 }
-            }
-
-
         },
         methods: {
             qiukuAccessToken(cParams, urlObj){
@@ -70,6 +69,7 @@
                             if (response.data.code == 200) {
                                 let accessToken = response.data.data && response.data.data.accessToken;
                                 localStorage.setItem(qktoken,accessToken);
+                                localStorage.setItem('ACCESS_TOKEN', accessToken);
                                 if(urlObj.type == 'match'){
                                     this.axios.get(API.qiukuIsExistBowlsMatch,
                                         {
