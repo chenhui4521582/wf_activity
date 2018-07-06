@@ -114,6 +114,13 @@
                 if (urlObj.type == 'center') {
                     return `https://databiger-h5.beeplay123.com/center/?token=${token}&channel=${urlObj.channel}`
                 }
+                if (urlObj.type == 'ring') {
+                    return `https://wap.beeplay123.com/ring?token=${token}&channel=${urlObj.channel}`
+                }
+                if (urlObj.type == 'cat') {
+                    return `https://wap.beeplay123.com/cat?token=${token}&channel=${urlObj.channel}`
+                }
+
             }
         }
     }
