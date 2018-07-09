@@ -8,7 +8,7 @@
         </div>
     </slider> -->
     <div @touchstart="backToWap" class="backToWap">
-      返回页面
+      游戏大厅
     </div>
     <div ref="scrollBanner" class="banner">
       <ul ref="slideGroup" class="scroll-banner">
