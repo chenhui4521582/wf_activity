@@ -155,7 +155,7 @@ export default {
           snap: {
             loop: true,
             // stepX: 0,
-            threshold: document.documentElement.clientWidth/1.2,
+            threshold: document.documentElement.clientWidth / 1.2,
             speed: 400
           },
           click: true
@@ -297,6 +297,15 @@ export default {
       if (from.includes("#")) {
         const href = from.split("#")[0];
         switch (href) {
+          case "jsWap":
+            location.href = "../jsWap";
+            break;
+          case "wap":
+            location.href = "../wap/home";
+            break;
+        }
+      } else {
+        switch (from) {
           case "jsWap":
             location.href = "../jsWap";
             break;
