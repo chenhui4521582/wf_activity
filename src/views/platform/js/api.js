@@ -7,5 +7,6 @@ export default {
   singleHotActivities: '//platform-api.beeplay123.com/wap/api/promotion/activity/one', // 热门活动单条信息详情
   newsList: '//platform-api.beeplay123.com/wap/api/promotion/news/featured', // 资讯列表
   singleNews: '//platform-api.beeplay123.com/wap/api/promotion/news/one', // 单条资讯
-  gameGroupList: '//platform-api.beeplay123.com/wap/api/promotion/news/grouping' // 根据游戏分类获取列表
+  gameGroupList: '//platform-api.beeplay123.com/wap/api/promotion/news/grouping', // 根据游戏分类获取列表
+  saveNewUserGuidePositionUrl:'//platform-api.beeplay123.com/wap/api/plat/newUser/guidePoint/${step}', // 保存新用户引导步骤接口
 }

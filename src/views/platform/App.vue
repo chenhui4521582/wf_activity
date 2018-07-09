@@ -143,7 +143,7 @@
 import BScroll from "better-scroll";
 import { mapGetters } from "vuex";
 import { jumpToGame } from "./js/utils.js";
-
+import axios from './js/fetch'
 export default {
   data() {
     return {
@@ -278,6 +278,11 @@ export default {
     ])
   },
   methods: {
+    saveNewUserGuidePosition() {
+        return axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/guidePoint/1001').then(r=>{
+            return r&&r.data
+        })
+    },
     backToWap() {
       function getUrlParam(ename) {
         var url = localStorage.getItem("backToWap");
@@ -751,6 +756,7 @@ export default {
     });
   },
   mounted() {
+    this.saveNewUserGuidePosition()
     this.$nextTick(() => {
       if (!localStorage.getItem("backToWap")) {
         localStorage.setItem("backToWap", location.href);
