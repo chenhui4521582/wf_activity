@@ -1,16 +1,9 @@
 <template>
   <div class="container">
-    <!-- <slider>
-        <div v-for="item in 5" >
-            <div>
-                <img src="./image/图层 3@2x.png" alt="">
-            </div>
-        </div>
-    </slider> -->
     <div @touchstart="backToWap" class="backToWap">
       游戏大厅
     </div>
-    <div ref="scrollBanner" class="banner">
+    <!-- <div ref="scrollBanner" class="banner">
       <ul ref="slideGroup" class="scroll-banner">
         <li class="scroll-list" v-for="(item,index) in bannerList" @click="staticgoToGame(item,index)">
           <img :src="item.img|filter" :alt="item.name">
@@ -19,7 +12,12 @@
       <div class="bannerDots">
         <span v-for="(item,index) in dots" class="bannerDot" :class="{active:index==currentPageIndex}"></span>
       </div>
-    </div>
+    </div> -->
+    <banner v-if="bannerList.length>0">
+        <div class="scroll-list" v-for="(item,index) in bannerList" @click="staticgoToGame(item,index)">
+          <img :src="item.img|filter" :alt="item.name">
+        </div>
+    </banner>
     <div class="body">
       <ul class="navs">
         <li ref="tabWidth" @touchstart="Switch($event,index)" class="nav" :class="{activeNav:index==scrollTabsPage}" v-for="(tabName,index) in tabNames">
@@ -143,7 +141,7 @@
 import BScroll from "better-scroll";
 import { mapGetters } from "vuex";
 import { jumpToGame } from "./js/utils.js";
-import axios from './js/fetch'
+import axios from "./js/fetch";
 export default {
   data() {
     return {
@@ -155,7 +153,7 @@ export default {
           snap: {
             loop: true,
             // stepX: 0,
-            threshold: document.documentElement.clientWidth / 1.2,
+            threshold: 0.3,
             speed: 400
           },
           click: true
@@ -277,11 +275,18 @@ export default {
       "userInfo"
     ])
   },
+  components: {
+    banner: () => import("./components/banner.vue")
+  },
   methods: {
     saveNewUserGuidePosition() {
-        return axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/guidePoint/1001').then(r=>{
-            return r&&r.data
-        })
+      return axios
+        .post(
+          "//platform-api.beeplay123.com/wap/api/plat/newUser/guidePoint/1001"
+        )
+        .then(r => {
+          return r && r.data;
+        });
     },
     backToWap() {
       function getUrlParam(ename) {
@@ -487,56 +492,6 @@ export default {
       }
       /* if (index)
         this.Config.Tabs.startX = -index * document.documentElement.clientWidth; */
-    },
-    destroyTabScroll() {
-      if (this.scrollTabs.enable) this.scrollTabs.disable();
-    },
-    _setSlideWidth(isResize) {
-      this.children = this.$refs.slideGroup.children;
-      let width = 0;
-      let slideWidth = this.$refs.scrollBanner.clientWidth;
-      for (let i = 0; i < this.children.length; i++) {
-        let child = this.children[i];
-        child.style.width = slideWidth + "px";
-        width += slideWidth;
-      }
-      if (this.Config.banner.snap.loop && !isResize) {
-        width += 2 * slideWidth;
-      }
-      this.$refs.slideGroup.style.width = width + "px";
-    },
-    _play() {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.scrollBanner.next();
-      }, this.interval);
-    },
-    _initBanner() {
-      this.scrollBanner = new BScroll(
-        this.$refs.scrollBanner,
-        this.Config.banner
-      );
-      this.scrollBanner.on("scrollEnd", this._onScrollEnd);
-      this.scrollBanner.on("touchEnd", () => {
-        if (this.autoPlay) {
-          this._play();
-        }
-      });
-      this.scrollBanner.on("beforeScrollStart", () => {
-        if (this.autoPlay) {
-          clearTimeout(this.timer);
-        }
-      });
-    },
-    _onScrollEnd() {
-      let pageIndex = this.scrollBanner.getCurrentPage().pageX;
-      this.currentPageIndex = pageIndex;
-      if (this.autoPlay) {
-        this._play();
-      }
-    },
-    _initDots() {
-      this.dots = new Array(this.children.length);
     },
     trimStr(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -748,15 +703,10 @@ export default {
           }); */
         }
       );
-    this.$store.dispatch("getBannerList").then(_ => {
-      this._setSlideWidth();
-      this._initDots();
-      this._initBanner();
-      this._play();
-    });
+    this.$store.dispatch("getBannerList")
   },
   mounted() {
-    this.saveNewUserGuidePosition()
+    this.saveNewUserGuidePosition();
     this.$nextTick(() => {
       if (!localStorage.getItem("backToWap")) {
         localStorage.setItem("backToWap", location.href);
@@ -770,7 +720,6 @@ export default {
         this.widthArr.push(this.$refs.tabWidth[i].offsetWidth);
       }
       this.leftAll = leftArr[leftArr.length - 1] - leftArr[0];
-      // this.bannerWidth=100*this.banner.length+'%';
     });
   }
 };
