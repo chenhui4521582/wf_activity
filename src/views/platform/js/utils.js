@@ -1,3 +1,4 @@
+import base64url from 'base64-url'
 const jumpToGame = (item) => {
   function getUrlParam (ename) {
     var url = window.location.href
@@ -18,7 +19,7 @@ const jumpToGame = (item) => {
     return str.replace(/(^\s*)|(\s*$)/g, '')
   }
   if (item && item.url.indexOf('external=1') != -1) {
-    let url =
+    /* let url =
       trimStr(item.url) +
       '&channel=' +
       localStorage.getItem('APP_CHANNEL') +
@@ -30,6 +31,32 @@ const jumpToGame = (item) => {
       getUrlParam('from')
 
     window.location.href = url
+    return */
+    if (item.url.includes('?external=1')) {
+      let url =
+        trimStr(item.url) +
+        '&channel=' +
+        localStorage.getItem('APP_CHANNEL') +
+        '&token=' +
+        localStorage.getItem('ACCESS_TOKEN') +
+        '&gurl=' +
+        item.url.split('?')[0] +
+        '&pf=' +
+        getUrlParam('from')
+      window.location.href = url
+    } else {
+      let url =
+        trimStr(item.url) +
+        '&channel=' +
+        localStorage.getItem('APP_CHANNEL') +
+        '&token=' +
+        localStorage.getItem('ACCESS_TOKEN') +
+        '&gurl=' +
+        base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+        '&pf=' +
+        getUrlParam('from')
+      window.location.href = url
+    }
     return
   }
   if (item && item.url.indexOf('databiger-h5') != -1) {
