@@ -229,6 +229,9 @@ AppCall.extend({
     clickEvent : function (callback) {
         return this.call("clickEvent",callback);
     },
+    downloadApk: function (callback) {
+        return this.call("downloadApk",callback);
+    },
 });
 
 export default AppCall;
