@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 window.GLOBALS = {
 	get shopUrl() {
         localStorage.setItem('showLoadPage', false)
@@ -44,7 +46,13 @@ window.GLOBALS = {
 	Appendzero(obj) {
 		if(obj<10) return "0" +""+ obj;
 	    else return obj;
-	}
+	},
+	buryingPoint(id) {
+        axios.post('//data-api.beeplay123.com/data/api/behaviorRecord/point', {
+            behaviorEventId: id
+        })
+    },
+	
 }
 
 

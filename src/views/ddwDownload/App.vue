@@ -2,10 +2,15 @@
     <div id="app">
        <div class="bg">
            <div class="bg-top">
+               <img src="./images/bg_top.png" alt="">
+                <div class="title">多&nbsp;&nbsp;&nbsp;多&nbsp;&nbsp;&nbsp;玩&nbsp;&nbsp;&nbsp;发
+                    &nbsp;&nbsp;&nbsp;现&nbsp;&nbsp;&nbsp;更&nbsp;&nbsp;&nbsp;多
+                    &nbsp;&nbsp;&nbsp;惊&nbsp;&nbsp;&nbsp;喜</div>
                 <div class="tips">下载体验<i>多多玩APP</i>即可参与抽奖</div>
                 <div class="time">活动时间：2018/7/19-2018/7/25</div>
            </div>
            <div class="bg-bottom">
+               <img src="./images/bg_bottom.png" alt="">
                <div class="awards">
                     <p class="desc">部分奖品展示</p>
                     <div>
@@ -48,10 +53,15 @@ export default {
     },
     methods:{
         goDownload(){
+            if(utils.getUrlParam('from') == 'msg'){
+                GLOBALS.buryingPoint(4001000201)
+            }else{
+                GLOBALS.buryingPoint(4001000101)
+            }
             if(this.isIOS){
                 location.href = 'https://itunes.apple.com/cn/app/id1320447707?mt=8'
             }else{
-                AppCall.downloadApk()
+                AppCall.downloadApk('http://wap.beeplay123.com/aaaa/app123.apk')
             }
         }
     }
@@ -60,18 +70,34 @@ export default {
 
 <style lang="less" scoped>
 @import '../../common/css/base.css';
-
+.bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 .bg-top{
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 60%;
-    background: url(./images/bg_top.png) no-repeat;
-    background-size: 100% 100%;
+    img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .title{
+        position: absolute;
+        top: 10%;
+        width: 100%;
+        text-align: center;
+        font-size: .24rem;
+        color: #F21B35;
+    }
     .tips{
         position: absolute;
-        top: 32%;
+        top: 33%;
         left: 50%;
         transform: translateX(-50%);
         width: 72%;
@@ -89,7 +115,7 @@ export default {
     }
     .time{
         position: absolute;
-        bottom: .25rem;
+        bottom: .1rem;
         left: 50%;
         width: 50%;
         height: .44rem;
@@ -102,14 +128,16 @@ export default {
         color: #fff;
     }
 }
-.bg-bottom{
+.bg-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 40%;
-    background: url(./images/bg_bottom.png) no-repeat;
-    background-size: 100% 100%;
+    img{
+        width: 100%;
+        height: 100%;
+    }
 }
 .btn-download{
     position: absolute;

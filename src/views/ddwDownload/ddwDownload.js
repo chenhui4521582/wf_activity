@@ -7,6 +7,7 @@ import axios from '../../http'
 import App from './App'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
+import '../../common/js/window'
 
 Vue.use(Toast);
 Vue.config.productionTip = false
