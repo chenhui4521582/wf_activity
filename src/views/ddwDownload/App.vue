@@ -54,12 +54,16 @@ export default {
     methods:{
         goDownload(){
             if(utils.getUrlParam('from') == 'msg'){
-                GLOBALS.buryingPoint(4001000201)
+                GLOBALS.buriedPoint(4001000201,'手机短信-下载');//事件ID 事件名称 游戏ID 游戏位置
             }else{
-                GLOBALS.buryingPoint(4001000101)
+                GLOBALS.buriedPoint(4001000101,'微竞猜-引流页面-立即下载');//事件ID 事件名称 游戏ID 游戏位置
             }
             if(this.isIOS){
-                location.href = 'https://itunes.apple.com/cn/app/id1320447707?mt=8'
+                var _obj = {
+                    prepay_url: 'https://itunes.apple.com/cn/app/id1320447707?mt=8',
+                    orderNum: ''
+                }
+                AppCall.openUrl(_obj);
             }else{
                 AppCall.downloadApk('http://wap.beeplay123.com/aaaa/app123.apk')
             }

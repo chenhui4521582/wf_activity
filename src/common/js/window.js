@@ -51,6 +51,37 @@ window.GLOBALS = {
         axios.post('//data-api.beeplay123.com/data/api/behaviorRecord/point', {
             behaviorEventId: id
         })
+	},
+	async buriedPoint(event_id,event_name,game_id,game_pos){
+        //操作日期
+        let date = moment().format('YYYY-MM-DD');
+        //操作时间
+        let time = moment().format('HH:mm:ss');
+        //用户信息
+        var userInfo = JSON.parse(localStorage.getItem('user_Info'));
+        if(!userInfo){
+            let r = await axios.post(API.UserTransInfo);
+            userInfo = r.data.data;
+            localStorage.setItem('user_Info',JSON.stringify(userInfo))
+        };
+        // let userInfo = localStorage.getItem('user_Info');
+        //渠道id
+        let _channel = localStorage.getItem('APP_CHANNEL') || 100001;
+        //请求
+        axios.post('//hadoop-data.beeplay123.com', {
+            event_id: event_id,//时间id
+            event_name: event_name,//事件名称
+            user_id: userInfo.userId,//用户id
+            project_id: 0,//项目id
+            project_name: '平台',//项目名称
+            target_project_id: game_id,//游戏id
+            // target_project_name: game_name,//游戏名称
+            game_position: game_pos,//游戏位置
+            channel_id: _channel,//渠道id
+            generate_date: date,//行为发生日期
+            generate_time: time,//行为发生时间
+            residual_gold: userInfo.amount//金叶子余额
+        })
     },
 	
 }
