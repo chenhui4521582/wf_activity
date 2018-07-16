@@ -65,7 +65,7 @@ export default {
                 }
                 AppCall.openUrl(_obj);
             }else{
-                AppCall.downloadApk('http://wap.beeplay123.com/aaaa/app123.apk')
+                AppCall.downloadApk('http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk')
             }
         }
     }
