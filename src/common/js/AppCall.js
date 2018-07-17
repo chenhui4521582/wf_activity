@@ -232,6 +232,9 @@ AppCall.extend({
     downloadApk: function (callback) {
         return this.call("downloadApk",callback);
     },
+    jumpOutAppMethod :function(callback) {
+        return this.call("jumpOutAppMethod",callback);
+    },
 });
 
 export default AppCall;

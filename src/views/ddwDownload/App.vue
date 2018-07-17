@@ -44,28 +44,33 @@ export default {
     name : 'app',
     data(){
         return{
-            isIOS : true
+            isIOS : false
         }
     },
     beforeMount(){
-        let ua = navigator.userAgent.toLowerCase();
+        let ua = navigator.userAgent;
         this.isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
     },
     methods:{
         goDownload(){
             if(utils.getUrlParam('from') == 'msg'){
                 GLOBALS.buriedPoint(4001000201,'手机短信-下载');//事件ID 事件名称 游戏ID 游戏位置
+                if(this.isIOS){
+                    location.href = 'https://itunes.apple.com/cn/app/id1320447707?mt=8'
+                }else{
+                    location.href = 'http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk'
+                }
             }else{
                 GLOBALS.buriedPoint(4001000101,'微竞猜-引流页面-立即下载');//事件ID 事件名称 游戏ID 游戏位置
-            }
-            if(this.isIOS){
-                var _obj = {
-                    prepay_url: 'https://itunes.apple.com/cn/app/id1320447707?mt=8',
-                    orderNum: ''
+                if(this.isIOS){
+                    var _obj = {
+                        prepay_url: 'https://itunes.apple.com/cn/app/id1320447707?mt=8',
+                        orderNum: ''
+                    }
+                    AppCall.jumpOutAppMethod({'prepayurl': _obj, 'currenturl': location.href})
+                }else{
+                    AppCall.downloadApk('http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk')
                 }
-                AppCall.openUrl(_obj);
-            }else{
-                AppCall.downloadApk('http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk')
             }
         }
     }
