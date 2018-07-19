@@ -14,9 +14,9 @@
       </div>
     </div> -->
     <banner v-if="bannerList.length>0">
-        <div class="scroll-list" v-for="(item,index) in bannerList" @click="staticgoToGame(item,index)">
-          <img :src="item.img|filter" :alt="item.name">
-        </div>
+      <div class="scroll-list" v-for="(item,index) in bannerList" @click="staticgoToGame(item,index)">
+        <img :src="item.img|filter" :alt="item.name">
+      </div>
     </banner>
     <div class="body">
       <ul class="navs">
@@ -308,19 +308,19 @@ export default {
         const href = from.split("#")[0];
         switch (href) {
           case "jsWap":
-            location.href = "../jsWap";
+            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home";
+            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       } else {
         switch (from) {
           case "jsWap":
-            location.href = "../jsWap";
+            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home";
+            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       }
@@ -703,7 +703,7 @@ export default {
           }); */
         }
       );
-    this.$store.dispatch("getBannerList")
+    this.$store.dispatch("getBannerList");
   },
   mounted() {
     this.saveNewUserGuidePosition();
