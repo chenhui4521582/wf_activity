@@ -522,6 +522,7 @@ export default {
           room_level: index + 1
         };
         this.checkPoint(params, this.userInfo, this);
+        this.$load.show();
         jumpToGame(item);
       } else {
         return;
@@ -539,6 +540,7 @@ export default {
       };
       this.checkPoint(params, this.userInfo, this);
       try {
+        this.$load.show();
         jumpToGame(item);
       } catch (error) {}
     },

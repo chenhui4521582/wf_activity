@@ -65,6 +65,7 @@ export default {
         event_id: 1202040101
       };
       this.checkPoint(params, this.userInfo, this);
+      this.$load.show();
       jumpToGame(item);
     }
   },
