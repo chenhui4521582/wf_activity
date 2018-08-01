@@ -7,7 +7,7 @@
                     &nbsp;&nbsp;&nbsp;现&nbsp;&nbsp;&nbsp;更&nbsp;&nbsp;&nbsp;多
                     &nbsp;&nbsp;&nbsp;惊&nbsp;&nbsp;&nbsp;喜</div>
                 <div class="tips">下载体验<i>多多玩APP</i>即可参与抽奖</div>
-                <div class="time">活动时间：2018/7/19-2018/7/25</div>
+                <!-- <div class="time">活动时间：2018/7/19-2018/7/25</div> -->
            </div>
            <div class="bg-bottom">
                <img src="./images/bg_bottom.png" alt="">
@@ -44,7 +44,6 @@ export default {
     data(){
         return{
             isIOS : false,
-            androidAPK : ''
         }
     },
     beforeMount(){
@@ -52,10 +51,23 @@ export default {
         this.isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
     },
     methods:{
-        getAndroidAPK(){
-            this.axios.post('https://wap.beeplay123.com/games/download.json').then(res => {
-                this.androidAPK = res.android
+        getAndroidAPK(href){
+            var apk
+            $.ajax({
+                type:'get',
+                url : '//wap.beeplay123.com/games/download.json',
+                dataType : 'json',
+                success : (data) => {
+                    if(href = 'inapp'){
+                        AppCall.downloadApk(data.android)
+                    }else{
+                        location.href = data.android
+                    }
+                }
             })
+            // this.axios.get('https://wap.beeplay123.com/games/download.json').then(res => {
+            //     this.androidAPK = res.android
+            // })
         },
         goDownload(){
             if(utils.getUrlParam('from') == 'msg'){
@@ -63,7 +75,7 @@ export default {
                 if(this.isIOS){
                     location.href = 'https://itunes.apple.com/cn/app/id1320447707?mt=8'
                 }else{
-                    location.href = this.androidAPK
+                    this.getAndroidAPK()
                     // location.href = 'http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk'
                 }
             }else{
@@ -75,7 +87,8 @@ export default {
                     }
                     AppCall.jumpOutAppMethod({'prepayurl': _obj, 'currenturl': location.href})
                 }else{
-                    AppCall.downloadApk(this.androidAPK)
+                    this.getAndroidAPK('inapp')
+
                 }
             }
         }
