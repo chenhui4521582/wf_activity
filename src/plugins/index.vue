@@ -47,7 +47,7 @@ export default {
         left: 50%;
         padding: 0 .3rem;
         min-width: 1.5rem;
-        height: .7rem;
+        /*height: .7rem;*/
         line-height: .7rem;
         border-radius: .1rem;
         transform: translate(-50%,-50%);
