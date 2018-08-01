@@ -160,7 +160,7 @@
                 });
             },
             back(){
-//                window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
+                window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
             }
         },
         computed: {
