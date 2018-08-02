@@ -52,13 +52,12 @@ export default {
     },
     methods:{
         getAndroidAPK(href){
-            var apk
             $.ajax({
                 type:'get',
                 url : '//wap.beeplay123.com/games/download.json',
                 dataType : 'json',
                 success : (data) => {
-                    if(href = 'inapp'){
+                    if(href == 'inapp'){
                         AppCall.downloadApk(data.android)
                     }else{
                         location.href = data.android

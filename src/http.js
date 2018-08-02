@@ -148,13 +148,13 @@ axios.interceptors.response.use(
 
         }else {
             error = JSON.stringify(error);
-            if(error.indexOf('timeout') != -1) {
-                Vue.prototype.$toast.show({
-                    message: '请求超时',
-                    duration: 1500
-                });
-                return;
-            }
+            // if(error.indexOf('timeout') != -1) {
+            //     Vue.prototype.$toast.show({
+            //         message: '请求超时',
+            //         duration: 1500
+            //     });
+            //     return;
+            // }
         }
         return Promise.reject(error);
         // return '';
