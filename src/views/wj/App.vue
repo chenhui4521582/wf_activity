@@ -4,10 +4,11 @@
       <div class="wf-pop" id="wf-pop">
         <div class="header">
           <div class="h-tx">
-            <img src="./images/img_photo.png" class="pic-tx pull-fl" />
+            <img :src="userInfo.head | filter" class="pic-tx pull-fl" v-if="userInfo&&userInfo.head"/>
+            <img src="./images/img_photo.png" class="pic-tx pull-fl" v-else/>
             <div class="tx-box pull-fl" id="tx-box">
               <img src="./images/icon-leaf.png" class="pic-leaf" />
-              <div class="leaf-num">sdfsf</div>
+              <div class="leaf-num">{{userInfo&&userInfo.amount}}</div>
               <img src="./images/icon-add.png" alt="" class="icon-add" />
             </div>
           </div>
@@ -17,23 +18,35 @@
         </div>
         <div class="wf-title">
           <h4 class="pull-fl"><img src="./images/icon-pac.png" alt="" class="icon-pac"/>免费大礼包</h4>
-          <a href="javascript:" class="pull-fr btn-useage" id="btn-useage">使用方法<em class="icon-ys icon-xl"></em></a>
+          <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
         </div>
         <div class="groups">
-          <div></div>
           <div>
-            <div class="useage-methods">
+            <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
             <ul id="sUl">
-              <li v-for="item in 10">
-                <h4 class="g-title">这是标题
-                    <a href="javascript:" class="btn-normal btn-lq btnLQ">免费领取</a>
-                </h4>
-                <p class="g-text">这是描述信息这是描述信息这是描述信息这是描述信息这是描述信息这是描述信息</p>
-                <div class="g-exchange">
-                  <span>兑换码：<i id="foo">gpofpsdfdfdgdsf</i></span>
-                  <a href="javascript:" class="btn-fz">复制兑换码</a>
+              <li v-for="item in cdkArr">
+                <div v-if="item.IF_GET">
+                  <h4 class="g-title">{{item.gameCdkeyRsp.name}}</h4>
+                  <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
+                  <div class="g-exchange">
+                    <span>兑换码：<i>{{item.gameCdkeyRsp.cdKey}}</i></span>
+                    <a href="javascript:" class="btn-fz"
+                      v-clipboard:copy=item.gameCdkeyRsp.cdKey
+                      v-clipboard:success="onCopy"
+                      v-clipboard:error="onError"
+                    >复制兑换码</a>
+                  </div>
+                </div>
+                <div v-else>
+                  <h4 class="g-title">{{item.gameCdkeyRsp.name}}
+                    <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="getAward(item)">免费领取</a>
+                  </h4>
+                  <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
+                  <div class="g-percent">
+                    <div class="g-percent-bg" :style="{width: item.gameCdkeyRsp.remainNum*100+'%'}">{{item.gameCdkeyRsp.remainNum*100}}%剩余</div>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -45,9 +58,69 @@
 </template>
 <script>
 export default {
-  name: 'app',
+  data() {
+      return {
+        userInfo: null,
+        cdkArr: null,
+        isTabUse: false,
+        curlink: null
+      }
+  },
   mounted() {
-    //       
+    let cururl = window.location.href
+    this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?')[0] : cururl
+
+    
+    this.getUserInfo()
+    this.getCdkeyStatus()
+  },
+  methods: {
+    onCopy() {
+      this.$toast.show({
+        message: '复制成功！',
+        duration: 1500
+      });
+    },
+    onError() {
+      this.$toast.show({
+        message: '复制失败！',
+        duration: 1500
+      });
+    },
+    getAward(item) {
+      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/getAwards', {
+        value: item.gameCdkeyRsp.batchId
+      }).then((res)=> {
+        if(res.data.code == 200) {
+          this.$toast.show({
+            message: '领取成功',
+            duration: 1500
+          })
+          this.getCdkeyStatus()
+        }
+      })
+    },
+    handleTabUse() {
+      this.isTabUse = !this.isTabUse
+    },
+    getUserInfo() {
+      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo')
+        .then((res)=> {
+          if(res.data.code == 200) {
+            this.userInfo = res.data.data
+          }
+        })
+    },
+    getCdkeyStatus() {
+      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
+        // value: this.curlink
+        value: 'http://www.5idhf.com/sssj'
+      }).then((res)=> {
+        if(res.data.code == 200) {
+          this.cdkArr = res.data.data
+        }
+      })
+    }
   }
 
 }
@@ -76,13 +149,13 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
-#wf-iframe {
+/*#wf-iframe {
   width: 100%;
   height: 100%;
   position: fixed;
   left: 0;
   top: 0;
-}
+}*/
 
 a {
   text-decoration: none;
@@ -97,10 +170,14 @@ img {
   width: 91%;
   font-size: .2rem;
   color: #CCDDFF;
-
   margin: 0 auto;
   box-sizing: border-box;
   line-height: .35rem;
+  &.useage-tips {
+    height: 0;
+    overflow: hidden;  
+  }
+  
 }
 
 .useage-methods span {
@@ -110,7 +187,7 @@ img {
   margin-bottom: .4rem;
 }
 
-#wf-mask {
+/*#wf-mask {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -118,10 +195,9 @@ img {
   top: 0;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 10000;
   transition: all 0s;
   display: none;
-}
+}*/
 
 .g-exchange {
   display: flex;
@@ -140,12 +216,11 @@ img {
 .wf-pop {
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   overflow: hidden;
   background: #0F1B33;
-  z-index: 10001;
   transition: right .2s;
 }
 

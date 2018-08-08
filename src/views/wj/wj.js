@@ -7,12 +7,23 @@ import App from './App'
 // import router from './router'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
+import VueClipboard from 'vue-clipboard2'
 
 // document.addEventListener('touchmove',function(event){event.preventDefault(); },false);
 Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 Vue.prototype.axios = axios;
+
+// 复制
+Vue.use(VueClipboard)
+Vue.filter('filter', function (url) {
+    if (url && !url.includes('http')) {
+        return '//file.beeplay123.com' + url
+    } else {
+        return url
+    }
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
