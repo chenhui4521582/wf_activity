@@ -1,3 +1,4 @@
+import base64url from 'base64-url'
 export default {
     //获取地址栏问号后面的参数值
     getUrlParam: function(ename) {
@@ -52,4 +53,60 @@ export default {
             return false
         }
     },
+    jumpToGame:function (item) {
+        if (item && item.url.indexOf('external=1') != -1) {
+            if (item.url.includes('?external=1')) {
+                let url =
+                    this.trimStr(item.url) +
+                    '&channel=' +
+                    localStorage.getItem('APP_CHANNEL') +
+                    '&token=' +
+                    localStorage.getItem('ACCESS_TOKEN') +
+                    '&gurl=' +
+                    item.url.split('?')[0] +
+                    '&pf=wap'
+                window.location.href = url
+            } else {
+                let url =
+                   this.trimStr(item.url) +
+                    '&channel=' +
+                    localStorage.getItem('APP_CHANNEL') +
+                    '&token=' +
+                    localStorage.getItem('ACCESS_TOKEN') +
+                    '&gurl=' +
+                    base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+                    '&pf=wap'
+                window.location.href = url
+            }
+            return
+        }
+        if (item && item.url.indexOf('databiger-h5') != -1) {
+            let url =
+                this.trimStr(item.url) +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+            window.location.href = url
+            return
+        }
+        if (localStorage.getItem('APP_CHANNEL') == '100006') {
+            location.href =
+                '../../../channel/newokooo/billiards/' +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+        } else {
+            location.href =
+                item.url +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+        }
+    },
+    trimStr:function(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, '')
+    }
 }

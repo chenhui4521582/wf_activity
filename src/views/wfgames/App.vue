@@ -160,15 +160,63 @@
                 });
             },
             back(){
-                window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
-            }
+                if(this.channel==100037){
+                    window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
+                }
+                if(this.channel.includes('100038')){
+                    this.getJumpURL(this.platSource)
+                }
+            },
+            async getJumpURL(val){
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/plat/entranceRedirect', {
+                    value: val,
+                })
+                if(data.code == 200){
+                    if(localStorage.getItem('APP_CHANNEL') == 100033){
+                        GLOBALS.jumpOutsideGame(data.data.redirect)
+                    }else{
+                        let params = data.data.redirect,
+                            // 自己游戏跳转
+                            keyWords = val && val.includes('inside'),
+                            // 外部游戏跳转
+                            outsideGame = val && val.includes('outside')
+
+                        let llw = localStorage.getItem('APP_CHANNEL')
+                        if(llw == '110002') {
+                            llw = '110002002'
+                        }
+
+                        if(keyWords){
+                            location.href = data.data.redirect+'?channel='+llw+'&token='+localStorage.getItem('ACCESS_TOKEN')
+                        } else if(outsideGame){
+                            GLOBALS.jumpOutsideGame(data.data.redirect)
+                        }else{
+                            if(params == 'plat'){
+                                if(localStorage.getItem('APP_CHANNEL') == 100001||this.channel.includes('100038')){
+                                    location.href = 'https://wap.beeplay123.com/jsWap?channel='+llw+'&isNewLogin=1&from='+this.platSource
+                                }else{
+                                    location.href = 'https://wap.beeplay123.com/wap/home?channel='+llw+'&isNewLogin=1&from='+this.platSource
+
+                                }
+                            }else{
+                                location.href = params+'?channel='+llw+'&isNewLogin=1&from='+this.platSource
+                            }
+                        }
+
+                    }
+
+                }
+            },
         },
         computed: {
             channel(){
-                return utils.getUrlParamObj('channel')
+                return utils.getUrlParamObj('channel')||localStorage.getItem('APP_CHANNEL')
             },
             gurl(){
                 return utils.getUrlParamObj('extgameurl') && base64url.decode(utils.getUrlParamObj('extgameurl'))
+            },
+            platSource(){
+                return utils.getUrlParamObj('from')
             }
         },
         mounted(){
