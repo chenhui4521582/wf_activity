@@ -42,9 +42,9 @@ export default {
       this.checkPoint(params, this.userInfo, this);
       if (this.$router) {
         if (this.fromWhichList == -1) {
-          // this.$router.push({ name: "app", params: { tab: 2 } });
+          this.$router.push({ name: "app", params: { tab: 2 } });
           // history.go(-1)
-          location.href = "/activities/platform.html";
+          // location.href = "/activities/platform.html";
         } else {
           this.$router.push({
             name: "gameNews",
@@ -84,6 +84,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.$load.show()
       vm.$store
         .dispatch("GetArticle", {
           id: vm.$route.params.id,
@@ -91,6 +92,7 @@ export default {
         })
         .then(_ => {
           vm.$nextTick(_ => {
+            vm.$load.hide()
             setTimeout(() => {
               let imgArr = document.getElementsByTagName("img");
               for (let i of imgArr) {

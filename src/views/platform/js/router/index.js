@@ -11,18 +11,22 @@ export default new Router({
   routes: [{
     path: '',
     name: 'app',
-    component: _import('App')
+    component: _import('App'),
+    meta: {index: 0}
   }, {
     path: '/gameNews/:gameType',
     name: 'gameNews',
-    component: _import('singleGame')
+    component: _import('singleGame'),
+    meta: {index: 1}
   }, {
     path: '/gameNewsDetails/:id/:fromWhichList',
     name: 'gameNewsDetails',
-    component: _import('details')
+    component: _import('details'),
+    meta: {index: 2}
   }, {
     path: '/activityDetails/:id',
     name: 'activityDetails',
-    component: _import('activityDetails')
+    component: _import('activityDetails'),
+    meta: {index: 1}
   }]
 })

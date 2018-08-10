@@ -62,11 +62,13 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.$load.show()
       if (vm.$route.params.id) {
         vm.$store
           .dispatch("GetActivity", { id: vm.$route.params.id })
           .then(_ => {
             vm.$nextTick(_ => {
+              vm.$load.hide()
               setTimeout(() => {
                 let imgArr = document.getElementsByTagName("img");
                 for (let i of imgArr) {
@@ -85,7 +87,6 @@ export default {
       setTimeout(() => {
         let imgArr = document.getElementsByTagName("img");
         for (let i of imgArr) {
-          console.log(1);
           i.style.width = 100 + "%";
         }
       }, 1);

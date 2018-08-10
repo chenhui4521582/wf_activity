@@ -308,19 +308,23 @@ export default {
         const href = from.split("#")[0];
         switch (href) {
           case "jsWap":
-            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       } else {
         switch (from) {
           case "jsWap":
-            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       }
@@ -542,7 +546,9 @@ export default {
       try {
         this.$load.show();
         jumpToGame(item);
-      } catch (error) {}
+      } catch (error) {
+        // jumpToGame(item)
+      }
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
@@ -636,6 +642,12 @@ export default {
       // vm.$nextTick(_ => {
       !vm.scrollTabs && vm.initTabScroll(to.params.tab);
       // vm.scrollTabs &&vm.scrollTabs.goToPage(2,0,500)
+      vm.$nextTick(_ => {
+        if (to.params.tab == 2) {
+          vm.scrollTabsPage = to.params.tab;
+          vm.left = vm.leftAll * (to.params.tab - 1) + "px";
+        }
+      });
       vm.$store.dispatch("GetNewsList").then(res => {
         vm.$nextTick(_ => {
           vm.$refs.thirdTab &&
