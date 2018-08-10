@@ -6,7 +6,7 @@
 import axios from 'axios'
 // import router from './router'
 import Vue from 'vue'
-import utils from './common/js/utils'
+import utils from '../../common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000;
 
@@ -15,18 +15,13 @@ let channel = utils.getUrlParam('channel'),
     url_token = utils.getUrlParam('token'),
     everyDayLottery = utils.getUrlParam('everyDayLottery')
 
-
-
-localStorage.setItem('ACCESS_TOKEN',url_token)
 localStorage.setItem('APP_CHANNEL',channel)
-if(localStorage.getItem('APP_CHANNEL') == '100022') {
-    localStorage.setItem('APP_VERSION','3.0.0.0')
+
+
+if(localStorage.getItem('APP_CHANNEL') == '100001') {
+    localStorage.setItem('APP_VERSION','2.9.4.1')
 }else {
-   if(everyDayLottery == 1) {
-        localStorage.setItem('APP_VERSION','1.0.0')
-    }else {
-        localStorage.setItem('APP_VERSION','3.0.0.0')
-    }
+    localStorage.setItem('APP_VERSION','3.0.0.0')
 }
 
 
@@ -148,13 +143,13 @@ axios.interceptors.response.use(
 
         }else {
             error = JSON.stringify(error);
-            // if(error.indexOf('timeout') != -1) {
-            //     Vue.prototype.$toast.show({
-            //         message: '请求超时',
-            //         duration: 1500
-            //     });
-            //     return;
-            // }
+            if(error.indexOf('timeout') != -1) {
+                Vue.prototype.$toast.show({
+                    message: '请求超时',
+                    duration: 1500
+                });
+                return;
+            }
         }
         return Promise.reject(error);
         // return '';
