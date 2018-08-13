@@ -113,8 +113,8 @@ export default {
     },
     getCdkeyStatus() {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
-        // value: this.curlink
-        value: 'http://www.5idhf.com/sssj'
+        value: this.curlink
+        // value: 'http://www.5idhf.com/sssj'
       }).then((res)=> {
         if(res.data.code == 200) {
           this.cdkArr = res.data.data
