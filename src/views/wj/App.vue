@@ -90,9 +90,9 @@ export default {
   methods: {
     goMenu() {
       if(window.sdkLink.includes(this.curChannel)) {
-        parent.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
+        top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
       }else {
-        parent.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
+        top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
       }
     },
     onCopy() {
