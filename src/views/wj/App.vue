@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     let cururl = window.location.href
-    this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?')[0] : cururl
+    this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
 
     console.log()
     this.getUserInfo()
