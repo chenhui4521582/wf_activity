@@ -11,19 +11,11 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 5000;
 
 
-let channel = utils.getUrlParam('channel'),
-    url_token = utils.getUrlParam('token'),
+let url_token = utils.getUrlParam('token'),
     everyDayLottery = utils.getUrlParam('everyDayLottery')
 
-localStorage.setItem('APP_CHANNEL',channel)
 
-
-if(localStorage.getItem('APP_CHANNEL') == '100001') {
-    localStorage.setItem('APP_VERSION','2.9.4.1')
-}else {
-    localStorage.setItem('APP_VERSION','3.0.0.0')
-}
-
+localStorage.setItem('APP_VERSION','2.9.4.1')
 
 
 

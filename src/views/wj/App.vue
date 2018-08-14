@@ -12,7 +12,7 @@
               <img src="./images/icon-add.png" alt="" class="icon-add" />
             </div>
           </div>
-          <div class="wf-back">
+          <div class="wf-back" v-if="!isHideMenu" @click.stop="goMenu">
             <img src="./images/icon-home.png" alt="" class="icon-home" />游戏大厅
           </div>
         </div>
@@ -41,7 +41,8 @@
                 </div>
                 <div v-else>
                   <h4 class="g-title">{{item.gameCdkeyRsp.name}}
-                    <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="getAward(item)">免费领取</a>
+                    <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="getAward(item)" v-if="item.gameCdkeyRsp.remainNum*100 > 0">免费领取</a>
+                    <a href="javascript:" class="btn-normal btn-gq btnLQ" v-else>已领完</a>
                   </h4>
                   <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
                   <div class="g-percent">
@@ -63,18 +64,33 @@ export default {
         userInfo: null,
         cdkArr: null,
         isTabUse: false,
-        curlink: null
+        curlink: null,
+        hideBackArr: ['100037'],
+        curChannel: localStorage.getItem('APP_CHANNEL')
       }
   },
   mounted() {
     let cururl = window.location.href
     this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?')[0] : cururl
 
-    
+    console.log()
     this.getUserInfo()
     this.getCdkeyStatus()
   },
+  computed: {
+    isHideMenu() {
+      console.log(this.curChannel)
+      return this.hideBackArr.includes(this.curChannel)
+    }
+  },
   methods: {
+    goMenu() {
+      if(window.sdkLink.includes(this.curChannel)) {
+        parent.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
+      }else {
+        parent.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
+      }
+    },
     onCopy() {
       this.$toast.show({
         message: '复制成功！',
@@ -168,7 +184,7 @@ img {
 
 .useage-methods {
   width: 91%;
-  font-size: .2rem;
+  font-size: .24rem;
   color: #CCDDFF;
   margin: 0 auto;
   box-sizing: border-box;
@@ -324,13 +340,13 @@ img {
 }
 
 .wf-pop .wf-title .btn-useage {
-  font-size: .20rem;
+  font-size: .24rem;
   color: #fff;
   display: flex;
   align-items: center;
   position: absolute;
   right: .30rem;
-  bottom: .02rem;
+  bottom: .06rem;
 }
 
 .wf-pop .btn-useage .icon-ys {
@@ -391,6 +407,10 @@ img {
 
 .wf-pop .groups li a.btn-lq {
   background: url(./images/btn-lq.png) no-repeat;
+  background-size: 100% 100%;
+}
+.wf-pop .groups li a.btn-gq {
+  background: url(./images/btn-gq.png) no-repeat;
   background-size: 100% 100%;
 }
 
