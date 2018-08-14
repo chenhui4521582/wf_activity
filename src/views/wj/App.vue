@@ -25,7 +25,7 @@
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
-            <ul id="sUl">
+            <ul id="sUl" v-if="cdkArr && cdkArr.length">
               <li v-for="item in cdkArr">
                 <div v-if="item.IF_GET">
                   <h4 class="g-title">{{item.gameCdkeyRsp.name}}</h4>
@@ -51,6 +51,10 @@
                 </div>
               </li>
             </ul>
+            <div class="nodata-box" v-else>
+              <img src="./images/nodata.png" class="nodata">
+              <p>礼包正在路上，下次再来看看吧~</p>
+            </div>
           </div>
         </div>
       </div>
@@ -449,11 +453,21 @@ img {
   text-align: center;
 }
 
+.wf-pop .groups .nodata-box {
+  text-align: center;
+  p {
+    font-size: 0.24rem;
+    color: #CCDDFF;
+    padding-top: 0.3rem
+  }
+}
+
 .wf-pop .groups .nodata {
   font-size: .22rem;
   color: #CCDDFF;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 10%;
+
 }
 
 .wf-pop .groups .nodata img {
