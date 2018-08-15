@@ -639,6 +639,34 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.more.first = "上拉加载";
+      // setTimeout(() => {
+      vm.$refs.firstTab &&
+        (vm.firstTab = new BScroll(vm.$refs.firstTab, vm.Config.body));
+      vm.firstTab.on("pullingUp", async _ => {
+        if (vm.post.first) {
+          vm.post.first = false;
+          vm.more.first = "加载中...";
+          await vm.$store.dispatch("getNewActivitiesInfo").then(
+            res => {
+              vm.post.first = res.length >= 10 ? true : false;
+              vm.more.first =
+                res.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
+              vm.firstTab.refresh();
+            },
+            rej => {
+              vm.more.first = "- 没有更多内容了，到底了 -";
+              /* vm.$toast.show({
+                    message: "没有更多活动内容"
+                  }); */
+            }
+          );
+          vm.firstTab.finishPullUp();
+        }
+      });
+      vm.firstTab.on("scroll", position => {
+        vm.position(position, vm, "first");
+      });
       // vm.$nextTick(_ => {
       !vm.scrollTabs && vm.initTabScroll(to.params.tab);
       // vm.scrollTabs &&vm.scrollTabs.goToPage(2,0,500)
