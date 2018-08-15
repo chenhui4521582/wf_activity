@@ -67,6 +67,10 @@ export default {
       this.checkPoint(params, this.userInfo, this);
       this.$load.show();
       jumpToGame(item);
+      var _this = this;
+      setTimeout(() => {
+        _this.$load.hide()
+      }, 2000);
     }
   },
   computed: {

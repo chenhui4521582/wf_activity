@@ -528,6 +528,10 @@ export default {
         this.checkPoint(params, this.userInfo, this);
         this.$load.show();
         jumpToGame(item);
+        var _this = this;
+        setTimeout(() => {
+          _this.$load.hide()
+        }, 2000);
       } else {
         return;
       }
@@ -546,6 +550,10 @@ export default {
       try {
         this.$load.show();
         jumpToGame(item);
+        var _this = this;
+        setTimeout(() => {
+          _this.$load.hide()
+        }, 2000);
       } catch (error) {
         // jumpToGame(item)
       }
