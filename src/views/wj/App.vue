@@ -75,20 +75,16 @@ export default {
       }
   },
   mounted() {
-
-    // console.log('refffer:::',document.referrer)
-    // console.log('href::', window.location.href)
-    // console.log('APP_CHANNEL:::',localStorage.getItem('APP_CHANNEL'))
+    
 
     this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):this.getUrlParam('channel')
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
 
-    console.log('channel:::',this.curChannel)
-    console.log('token:::',this.curToken)
+    
 
     let cururl = window.location.href
     this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
-    if(this.curChannel.indexOf('100') != -1) {
+    if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
     }
