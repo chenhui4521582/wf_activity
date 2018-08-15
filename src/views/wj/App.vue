@@ -133,7 +133,12 @@ export default {
     getAward(item) {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
-      }).then((res)=> {
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res)=> {
         if(res.data.code == 200) {
           this.$toast.show({
             message: '领取成功',
