@@ -70,24 +70,41 @@ export default {
         isTabUse: false,
         curlink: null,
         hideBackArr: ['100037'],
-        curChannel: localStorage.getItem('APP_CHANNEL')
+        curChannel: this.getUrlParam('channel'),
+        curToken: this.getUrlParam('token')
       }
   },
   mounted() {
+
+   
+
     let cururl = window.location.href
     this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
 
-    console.log()
     this.getUserInfo()
     this.getCdkeyStatus()
   },
   computed: {
     isHideMenu() {
-      console.log(this.curChannel)
       return this.hideBackArr.includes(this.curChannel)
     }
   },
   methods: {
+    //获取地址栏问号后面的参数值
+    getUrlParam: function (ename) {
+        var url = document.referrer;
+        var Request = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.split('?')[1];
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+            }
+        } else {
+            return '';
+        }
+        return Request[ename];
+    },
     goMenu() {
       if(window.sdkLink.includes(this.curChannel)) {
         top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
@@ -124,7 +141,12 @@ export default {
       this.isTabUse = !this.isTabUse
     },
     getUserInfo() {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo')
+      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo',{},{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        })
         .then((res)=> {
           if(res.data.code == 200) {
             this.userInfo = res.data.data
@@ -135,7 +157,12 @@ export default {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
         value: this.curlink
         // value: 'http://www.5idhf.com/sssj'
-      }).then((res)=> {
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res)=> {
         if(res.data.code == 200) {
           this.cdkArr = res.data.data
         }

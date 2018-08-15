@@ -8,32 +8,29 @@ import axios from 'axios'
 import Vue from 'vue'
 import utils from '../../common/js/utils'
 // axios 配置
-axios.defaults.timeout = 5000;
-
-
-let url_token = utils.getUrlParam('token'),
-    everyDayLottery = utils.getUrlParam('everyDayLottery')
-
-
-localStorage.setItem('APP_VERSION','2.9.4.1')
-
+axios.defaults.timeout = 10000;
 
 
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-    config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
+    if(!config.headers.Authorization) {
+        config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
+    }
+    
+    if(!config.headers['App-Channel']) {
+        config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
+    }
+    
     // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
     // config.headers['App-Channel'] = '100006';
-    config.headers['App-Version'] = localStorage.getItem('APP_VERSION');
+    localStorage.setItem('APP_VERSION','2.9.4.1')
     return config;
-  }, function (error) {
+}, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);
-    // return '';
-  });
+});
 
 // 添加响应拦截器
 // axios.interceptors.response.use(function (response) {
