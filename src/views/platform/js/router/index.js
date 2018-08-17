@@ -12,21 +12,33 @@ export default new Router({
     path: '',
     name: 'app',
     component: _import('App'),
-    meta: {index: 0}
+    meta: {
+      index: 0
+    }
   }, {
     path: '/gameNews/:gameType',
     name: 'gameNews',
     component: _import('singleGame'),
-    meta: {index: 1}
+    meta: {
+      index: 1
+    }
   }, {
     path: '/gameNewsDetails/:id/:fromWhichList',
     name: 'gameNewsDetails',
     component: _import('details'),
-    meta: {index: 2}
+    meta: {
+      index: 2
+    }
   }, {
     path: '/activityDetails/:id',
     name: 'activityDetails',
     component: _import('activityDetails'),
-    meta: {index: 1}
+    meta: {
+      index: 1
+    }
+  }, {
+    path: '/adver',
+    name: 'adver',
+    component: _import('adver')
   }]
 })

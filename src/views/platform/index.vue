@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "app",
+  name: "thisisroot",
   data() {
     return {
       transitionName: ""

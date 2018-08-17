@@ -197,7 +197,7 @@ export default {
       currentPageIndex: 0,
       dots: [],
       tabNames: ["热门活动", "最新开服", "攻略资讯"],
-      stats: {
+      stats: {/*
         banner: [
           {
             img: require("./image/banner蜀山世界.jpg"),
@@ -226,7 +226,7 @@ export default {
             canGo: true,
             url: "http://zll.allrace.com/zll_sdk/wanfeng?external=1"
           }
-        ]
+        ] */
       },
       translateX: "",
       width: "",
