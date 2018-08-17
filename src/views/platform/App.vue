@@ -758,9 +758,6 @@ export default {
   mounted() {
     this.saveNewUserGuidePosition();
     this.$nextTick(() => {
-      if (!localStorage.getItem("backToWap")) {
-        localStorage.setItem("backToWap", location.href);
-      }
       !this.scrollTabs && this.initTabScroll();
       // this.width = this.$refs.tabWidth[0].offsetWidth + "px";
       // this.left = this.$refs.tabWidth[0].offsetLeft + "px";

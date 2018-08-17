@@ -61,5 +61,10 @@ new Vue({
   template: '<App/>',
   components: {
     App
+  },
+  mounted () {
+    if (!localStorage.getItem('backToWap')) {
+      localStorage.setItem('backToWap', location.href)
+    }
   }
 })
