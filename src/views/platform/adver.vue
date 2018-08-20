@@ -30,8 +30,8 @@ export default {
   methods: {
     gotodetail() {
       let params = {
-        event_id: 1207000902,
-        event_name: "H5平台-逐日战神限时活动悬浮-开始游戏",
+        event_id: 1207000903,
+        event_name: "H5平台-逐日战神限时活动悬浮-查看详情",
         platform_id: 40000,
         project_name: "平台"
       };
@@ -40,8 +40,8 @@ export default {
     },
     gotogame() {
       let params = {
-        event_id: 1207000903,
-        event_name: "H5平台-逐日战神限时活动悬浮-查看详情",
+        event_id: 1207000902,
+        event_name: "H5平台-逐日战神限时活动悬浮-开始游戏",
         platform_id: 40000,
         project_name: "平台"
       };
