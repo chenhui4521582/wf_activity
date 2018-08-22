@@ -60,19 +60,19 @@ export default {
       jumpToGame(item);
       var _this = this;
       setTimeout(() => {
-        _this.$load.hide()
+        _this.$load.hide();
       }, 2000);
     }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.$load.show()
+      vm.$load.show();
       if (vm.$route.params.id) {
         vm.$store
           .dispatch("GetActivity", { id: vm.$route.params.id })
           .then(_ => {
             vm.$nextTick(_ => {
-              vm.$load.hide()
+              vm.$load.hide();
               setTimeout(() => {
                 let imgArr = document.getElementsByTagName("img");
                 for (let i of imgArr) {
@@ -92,6 +92,16 @@ export default {
         let imgArr = document.getElementsByTagName("img");
         for (let i of imgArr) {
           i.style.width = 100 + "%";
+        }
+        let gotogame = document.querySelector(".game");
+        try {
+          gotogame.addEventListener("click", e => {
+            this.gotogame(this.activityInfo);
+          });
+        } catch (err) {
+          this.$toast.show({
+            message: "错误"
+          });
         }
       }, 1);
     });
