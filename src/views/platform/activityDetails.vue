@@ -95,12 +95,13 @@ export default {
         }
         try {
           let gotogame = document.querySelector(".game");
-          gotogame.addEventListener("click", e => {
-            this.gotogame(this.activityInfo);
-          });
+          gotogame &&
+            gotogame.addEventListener("click", e => {
+              this.gotogame(this.activityInfo);
+            });
         } catch (err) {
           this.$toast.show({
-            message: "错误"
+            message: "发生错误"
           });
         }
       }, 1);
