@@ -93,8 +93,8 @@ export default {
         for (let i of imgArr) {
           i.style.width = 100 + "%";
         }
-        let gotogame = document.querySelector(".game");
         try {
+          let gotogame = document.querySelector(".game");
           gotogame.addEventListener("click", e => {
             this.gotogame(this.activityInfo);
           });
