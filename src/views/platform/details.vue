@@ -83,17 +83,6 @@ export default {
         for (let i of imgArr) {
           i.style.width = 100 + "%";
         }
-        try {
-          let gotogame = document.querySelector(".game");
-          gotogame &&
-            gotogame.addEventListener("click", e => {
-              this.gotogame(this.activityInfo);
-            });
-        } catch (err) {
-          this.$toast.show({
-            message: "发生错误"
-          });
-        }
       }, 1);
     });
   },
@@ -113,6 +102,20 @@ export default {
               for (let i of imgArr) {
                 i.style.width = 100 + "%";
               }
+              try {
+                  let aTags = document.getElementsByTagName("a");
+                  document.addEventListener("click", e => {
+                    if (e.target.href == "javascript:") {
+                      e.preventDefault();
+                      vm.gotogame(vm.activityInfo);
+                    }
+                  });
+                } catch (err) {
+                  console.log(err);
+                  vm.$toast.show({
+                    message: "发生错误"
+                  });
+                }
             }, 1);
           });
         });
