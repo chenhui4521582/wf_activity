@@ -24,18 +24,7 @@
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
-            <ul>
-              <li >
-                <div >
-                  <h4 class="g-title">第三方第三方</h4>
-                  <p class="g-text">fdsfdfffffffffffffffffffffffffffff</p>
-                  <div class="g-exchange">
-                    <span>兑换码：<i>dsfdsfsfdffsfssdfsdfdsfdfdsfsfsdff</i></span>
-                    <a href="javascript:" class="btn-fz">复制兑换码</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
+            
             <ul id="sUl" v-if="cdkArr && cdkArr.length">
               <li v-for="item in cdkArr">
                 <div v-if="item.IF_GET">
