@@ -275,7 +275,7 @@ img {
 }
 .g-exchange span {
   display: inline-block;
-  max-width: 4.0rem;
+  max-width: 3.0rem;
   word-break:keep-all;
   white-space:nowrap;
   overflow:hidden;
