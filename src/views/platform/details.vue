@@ -69,7 +69,7 @@ export default {
       jumpToGame(item);
       var _this = this;
       setTimeout(() => {
-        _this.$load.hide()
+        _this.$load.hide();
       }, 2000);
     }
   },
@@ -88,7 +88,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.$load.show()
+      vm.$load.show();
       vm.$store
         .dispatch("GetArticle", {
           id: vm.$route.params.id,
@@ -96,12 +96,26 @@ export default {
         })
         .then(_ => {
           vm.$nextTick(_ => {
-            vm.$load.hide()
+            vm.$load.hide();
             setTimeout(() => {
               let imgArr = document.getElementsByTagName("img");
               for (let i of imgArr) {
                 i.style.width = 100 + "%";
               }
+              try {
+                  let aTags = document.getElementsByTagName("a");
+                  document.addEventListener("click", e => {
+                    if (e.target.href == "javascript:") {
+                      e.preventDefault();
+                      vm.gotogame(vm.activityInfo);
+                    }
+                  });
+                } catch (err) {
+                  console.log(err);
+                  vm.$toast.show({
+                    message: "发生错误"
+                  });
+                }
             }, 1);
           });
         });
