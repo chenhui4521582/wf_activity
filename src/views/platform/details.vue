@@ -109,7 +109,7 @@ export default {
                     if (i.href == "javascript:") {
                       i.addEventListener("click", e => {
                         e.preventDefault();
-                        vm.gotogame(vm.activityInfo);
+                        vm.gotogame(vm.articleDetails);
                       });
                     }
                   }
