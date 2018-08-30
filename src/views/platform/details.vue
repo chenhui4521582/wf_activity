@@ -103,19 +103,22 @@ export default {
                 i.style.width = 100 + "%";
               }
               try {
-                  let aTags = document.getElementsByTagName("a");
-                  document.addEventListener("click", e => {
-                    if (e.target.href == "javascript:") {
+                let aTags = document.getElementsByTagName("a");
+                document.addEventListener("click", e => {
+                  for (let i of e.path) {
+                    if (i.tagName == "A" && i.href == "javascript:") {
                       e.preventDefault();
                       vm.gotogame(vm.activityInfo);
+                      break;
                     }
-                  });
-                } catch (err) {
-                  console.log(err);
-                  vm.$toast.show({
-                    message: "发生错误"
-                  });
-                }
+                  }
+                });
+              } catch (err) {
+                console.log(err);
+                vm.$toast.show({
+                  message: "发生错误"
+                });
+              }
             }, 1);
           });
         });

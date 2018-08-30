@@ -81,9 +81,12 @@ export default {
                 try {
                   let aTags = document.getElementsByTagName("a");
                   document.addEventListener("click", e => {
-                    if (e.target.href == "javascript:") {
-                      e.preventDefault();
-                      vm.gotogame(vm.activityInfo);
+                    for (let i of e.path) {
+                      if (i.tagName == "A" && i.href == "javascript:") {
+                        e.preventDefault();
+                        vm.gotogame(vm.activityInfo);
+                        break;
+                      }
                     }
                   });
                 } catch (err) {
