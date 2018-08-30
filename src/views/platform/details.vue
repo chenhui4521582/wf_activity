@@ -104,15 +104,16 @@ export default {
               }
               try {
                 let aTags = document.getElementsByTagName("a");
-                document.addEventListener("click", e => {
-                  for (let i of e.path) {
-                    if (i.tagName == "A" && i.href == "javascript:") {
-                      e.preventDefault();
-                      vm.gotogame(vm.activityInfo);
-                      break;
+                if (aTags) {
+                  for (let i of aTags) {
+                    if (i.href == "javascript:") {
+                      i.addEventListener("click", e => {
+                        e.preventDefault();
+                        vm.gotogame(vm.activityInfo);
+                      });
                     }
                   }
-                });
+                }
               } catch (err) {
                 console.log(err);
                 vm.$toast.show({
