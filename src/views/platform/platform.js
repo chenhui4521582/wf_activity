@@ -11,10 +11,12 @@ import router from './js/router'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast'
 import api from './js/api'
+import load from './plugins/loading'
 
 // document.addEventListener('touchmove',function(event){event.preventDefault(); },false);
 // Vue.use(Loading)
 Vue.use(Toast)
+Vue.use(load)
 Vue.config.productionTip = false
 fastclick.attach(document.body)
 Vue.prototype.axios = axios
@@ -59,5 +61,10 @@ new Vue({
   template: '<App/>',
   components: {
     App
+  },
+  mounted () {
+    if (!localStorage.getItem('backToWap')) {
+      localStorage.setItem('backToWap', location.href)
+    }
   }
 })

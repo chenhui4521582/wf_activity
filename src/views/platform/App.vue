@@ -197,7 +197,7 @@ export default {
       currentPageIndex: 0,
       dots: [],
       tabNames: ["热门活动", "最新开服", "攻略资讯"],
-      stats: {
+      stats: {/*
         banner: [
           {
             img: require("./image/banner蜀山世界.jpg"),
@@ -226,7 +226,7 @@ export default {
             canGo: true,
             url: "http://zll.allrace.com/zll_sdk/wanfeng?external=1"
           }
-        ]
+        ] */
       },
       translateX: "",
       width: "",
@@ -308,19 +308,23 @@ export default {
         const href = from.split("#")[0];
         switch (href) {
           case "jsWap":
-            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       } else {
         switch (from) {
           case "jsWap":
-            location.href = "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
-            location.href = "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
+            location.href =
+              "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       }
@@ -522,7 +526,12 @@ export default {
           room_level: index + 1
         };
         this.checkPoint(params, this.userInfo, this);
+        this.$load.show();
         jumpToGame(item);
+        var _this = this;
+        setTimeout(() => {
+          _this.$load.hide()
+        }, 2000);
       } else {
         return;
       }
@@ -539,8 +548,15 @@ export default {
       };
       this.checkPoint(params, this.userInfo, this);
       try {
+        this.$load.show();
         jumpToGame(item);
-      } catch (error) {}
+        var _this = this;
+        setTimeout(() => {
+          _this.$load.hide()
+        }, 2000);
+      } catch (error) {
+        // jumpToGame(item)
+      }
     },
     // 资讯列表获取分类信息，跳转分类页面
     getGroupList(
@@ -631,9 +647,43 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.more.first = "上拉加载";
+      // setTimeout(() => {
+      vm.$refs.firstTab &&
+        (vm.firstTab = new BScroll(vm.$refs.firstTab, vm.Config.body));
+      vm.firstTab.on("pullingUp", async _ => {
+        if (vm.post.first) {
+          vm.post.first = false;
+          vm.more.first = "加载中...";
+          await vm.$store.dispatch("getNewActivitiesInfo").then(
+            res => {
+              vm.post.first = res.length >= 10 ? true : false;
+              vm.more.first =
+                res.length >= 10 ? "上拉加载" : "- 没有更多内容了，到底了 -";
+              vm.firstTab.refresh();
+            },
+            rej => {
+              vm.more.first = "- 没有更多内容了，到底了 -";
+              /* vm.$toast.show({
+                    message: "没有更多活动内容"
+                  }); */
+            }
+          );
+          vm.firstTab.finishPullUp();
+        }
+      });
+      vm.firstTab.on("scroll", position => {
+        vm.position(position, vm, "first");
+      });
       // vm.$nextTick(_ => {
       !vm.scrollTabs && vm.initTabScroll(to.params.tab);
       // vm.scrollTabs &&vm.scrollTabs.goToPage(2,0,500)
+      vm.$nextTick(_ => {
+        if (to.params.tab == 2) {
+          vm.scrollTabsPage = to.params.tab;
+          vm.left = vm.leftAll * (to.params.tab - 1) + "px";
+        }
+      });
       vm.$store.dispatch("GetNewsList").then(res => {
         vm.$nextTick(_ => {
           vm.$refs.thirdTab &&
@@ -708,9 +758,6 @@ export default {
   mounted() {
     this.saveNewUserGuidePosition();
     this.$nextTick(() => {
-      if (!localStorage.getItem("backToWap")) {
-        localStorage.setItem("backToWap", location.href);
-      }
       !this.scrollTabs && this.initTabScroll();
       // this.width = this.$refs.tabWidth[0].offsetWidth + "px";
       // this.left = this.$refs.tabWidth[0].offsetLeft + "px";
