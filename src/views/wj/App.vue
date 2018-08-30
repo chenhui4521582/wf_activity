@@ -9,7 +9,6 @@
             <div class="tx-box pull-fl" id="tx-box">
               <img src="./images/icon-leaf.png" class="pic-leaf" />
               <div class="leaf-num">{{userInfo&&userInfo.amount}}</div>
-              <img src="./images/icon-add.png" alt="" class="icon-add" />
             </div>
           </div>
           <div class="wf-back" v-if="!isHideMenu" @click.stop="goMenu">
@@ -25,6 +24,7 @@
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
+            
             <ul id="sUl" v-if="cdkArr && cdkArr.length">
               <li v-for="item in cdkArr">
                 <div v-if="item.IF_GET">
@@ -262,13 +262,21 @@ img {
   justify-content: space-between;
   font-size: 0.24rem;
 }
-
+.g-exchange span {
+  display: inline-block;
+  max-width: 3.0rem;
+  word-break:keep-all;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis; 
+}
 .g-exchange a {
   color: #FF9933;
 }
 
 .g-exchange i {
   font-style: normal;
+  font-size: 0.22rem;
 }
 
 .wf-pop {
@@ -310,7 +318,7 @@ img {
 .wf-pop .h-tx .tx-box {
   width: 2.16rem;
   height: .54rem;
-  background: url(./images/leaf_bg.png);
+  background: url(./images/leaf-bg.png) no-repeat;
   background-size: 100% 100%;
   display: flex;
   align-items: center;
@@ -328,7 +336,7 @@ img {
 }
 
 .wf-pop .leaf-num {
-  width: 1.3rem;
+  width: 1.1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
