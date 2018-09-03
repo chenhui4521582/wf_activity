@@ -114,6 +114,8 @@ export default {
     goMenu() {
       if(window.sdkLink.includes(this.curChannel)) {
         top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
+      }else if(this.curChannel== '100039'){
+        top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel
       }else {
         top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
       }
