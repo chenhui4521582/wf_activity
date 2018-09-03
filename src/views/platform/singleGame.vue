@@ -150,6 +150,7 @@ export default {
             });
           },
           rej => {
+            vm.more = '- 没有更多内容了，到底了 -'
             /* vm.$toast.show({
               message: "没有更多内容啦"
             }); */
@@ -218,8 +219,13 @@ export default {
 
 <style scoped lang="less">
 .container {
-  position: relative;
+  position: absolute;
   height: 100%;
+  // padding-top: 0.88rem;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   .header {
     position: fixed;
     top: 0;
@@ -231,6 +237,7 @@ export default {
     font-size: 0.3rem;
     line-height: 0.88rem;
     text-align: center;
+    z-index: 10;
     .back {
       position: absolute;
       left: 0.12rem;
@@ -244,7 +251,7 @@ export default {
     }
   }
   .body {
-    overflow: hidden;
+    // overflow: hidden;
     // height: 100%;
     position: absolute;
     width: 100%;

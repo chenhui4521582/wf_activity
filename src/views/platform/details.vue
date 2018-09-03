@@ -103,19 +103,23 @@ export default {
                 i.style.width = 100 + "%";
               }
               try {
-                  let aTags = document.getElementsByTagName("a");
-                  document.addEventListener("click", e => {
-                    if (e.target.href == "javascript:") {
-                      e.preventDefault();
-                      vm.gotogame(vm.activityInfo);
+                let aTags = document.getElementsByTagName("a");
+                if (aTags) {
+                  for (let i of aTags) {
+                    if (i.href == "javascript:") {
+                      i.addEventListener("click", e => {
+                        e.preventDefault();
+                        vm.gotogame(vm.articleDetails);
+                      });
                     }
-                  });
-                } catch (err) {
-                  console.log(err);
-                  vm.$toast.show({
-                    message: "发生错误"
-                  });
+                  }
                 }
+              } catch (err) {
+                console.log(err);
+                vm.$toast.show({
+                  message: "发生错误"
+                });
+              }
             }, 1);
           });
         });

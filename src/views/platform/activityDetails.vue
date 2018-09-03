@@ -44,7 +44,12 @@ export default {
         event_name: "活动-返回列表"
       };
       this.checkPoint(params, this.userInfo, this);
-      this.$router.push({ name: "app", params: { tab: 0 } });
+      this.$router.push({
+        name: "app",
+        params: {
+          tab: 0
+        }
+      });
     },
     gotogame(item) {
       let params = {
@@ -69,7 +74,9 @@ export default {
       vm.$load.show();
       if (vm.$route.params.id) {
         vm.$store
-          .dispatch("GetActivity", { id: vm.$route.params.id })
+          .dispatch("GetActivity", {
+            id: vm.$route.params.id
+          })
           .then(_ => {
             vm.$nextTick(_ => {
               vm.$load.hide();
@@ -80,12 +87,16 @@ export default {
                 }
                 try {
                   let aTags = document.getElementsByTagName("a");
-                  document.addEventListener("click", e => {
-                    if (e.target.href == "javascript:") {
-                      e.preventDefault();
-                      vm.gotogame(vm.activityInfo);
+                  if (aTags) {
+                    for (let i of aTags) {
+                      if (i.href == "javascript:") {
+                        i.addEventListener("click", e => {
+                          e.preventDefault();
+                          vm.gotogame(vm.activityInfo);
+                        });
+                      }
                     }
-                  });
+                  }
                 } catch (err) {
                   console.log(err);
                   vm.$toast.show({
@@ -96,7 +107,9 @@ export default {
             });
           });
       } else {
-        vm.$router.push({ name: "app" });
+        vm.$router.push({
+          name: "app"
+        });
       }
     });
   },
@@ -113,15 +126,21 @@ export default {
   beforeRouteUpdate(to, from, next) {
     if (to.params.id) {
       this.$store
-        .dispatch("GetActivity", { id: this.$route.params.id })
+        .dispatch("GetActivity", {
+          id: this.$route.params.id
+        })
         .then(_ => {
           next();
         })
         .catch(_ => {
-          this.$router.push({ name: "app" });
+          this.$router.push({
+            name: "app"
+          });
         });
     } else {
-      this.$router.push({ name: "app" });
+      this.$router.push({
+        name: "app"
+      });
     }
   }
 };
@@ -156,8 +175,7 @@ export default {
     }
     .content {
       font-size: 0.32rem;
-      color: #2c2c2c;
-      // text-indent: 2em;
+      color: #2c2c2c; // text-indent: 2em;
     }
   }
   .footer {
