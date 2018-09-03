@@ -197,7 +197,8 @@ export default {
       currentPageIndex: 0,
       dots: [],
       tabNames: ["热门活动", "最新开服", "攻略资讯"],
-      stats: {/*
+      stats: {
+        /*
         banner: [
           {
             img: require("./image/banner蜀山世界.jpg"),
@@ -315,6 +316,10 @@ export default {
             location.href =
               "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
+          case "bdWap":
+            location.href =
+              "../bdWap?channel=" + localStorage.getItem("APP_CHANNEL");
+            break;
         }
       } else {
         switch (from) {
@@ -325,6 +330,10 @@ export default {
           case "wap":
             location.href =
               "../wap/home?channel=" + localStorage.getItem("APP_CHANNEL");
+            break;
+          case "bdWap":
+            location.href =
+              "../bdWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
         }
       }
@@ -530,7 +539,7 @@ export default {
         jumpToGame(item);
         var _this = this;
         setTimeout(() => {
-          _this.$load.hide()
+          _this.$load.hide();
         }, 2000);
       } else {
         return;
@@ -552,7 +561,7 @@ export default {
         jumpToGame(item);
         var _this = this;
         setTimeout(() => {
-          _this.$load.hide()
+          _this.$load.hide();
         }, 2000);
       } catch (error) {
         // jumpToGame(item)
@@ -647,7 +656,10 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.more.first = "上拉加载";
+      vm.more.first =
+        vm.newHotActivitiesInfo.length >= 10
+          ? "上拉加载"
+          : "- 没有更多内容了，到底了 -";
       // setTimeout(() => {
       vm.$refs.firstTab &&
         (vm.firstTab = new BScroll(vm.$refs.firstTab, vm.Config.body));
