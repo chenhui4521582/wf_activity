@@ -290,6 +290,10 @@ export default {
         });
     },
     backToWap() {
+      if(localStorage.getItem("APP_CHANNEL") == '700002') {
+        location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
+        return
+      }
       function getUrlParam(ename) {
         var url = localStorage.getItem("backToWap");
         var Request = new Object();
@@ -337,6 +341,9 @@ export default {
             break;
         }
       }
+
+
+
     },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
