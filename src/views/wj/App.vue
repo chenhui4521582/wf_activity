@@ -83,7 +83,9 @@ export default {
     
 
     let cururl = window.location.href
-    this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
+    // this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
+    this.curlink = this.getUrlParam('wf_cur_link')
+    // console.log('this.curlink:::', this.curlink)
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
@@ -98,7 +100,8 @@ export default {
   methods: {
     //获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-        var url = document.referrer;
+        // var url = document.referrer;
+        var url = window.location.href;
         var Request = new Object();
         if (url.indexOf("?") != -1) {
             var str = url.split('?')[1];
@@ -114,6 +117,8 @@ export default {
     goMenu() {
       if(window.sdkLink.includes(this.curChannel)) {
         top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
+      }else if(this.curChannel== '100039'){
+        top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel
       }else {
         top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
       }
