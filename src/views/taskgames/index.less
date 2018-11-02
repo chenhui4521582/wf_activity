@@ -70,6 +70,10 @@
         position: relative;
         margin-bottom: 0.2rem;
         border-radius:0.04rem;
+        .actived {
+          opacity: 0.5;
+          filter: opacity(50);
+        }
       }
       .label {
           background: #2e3f5f;
@@ -111,8 +115,16 @@
         color: #FFD338;
         display: flex;
         align-items: center;
+        padding-right: 0.1rem;
+        i {
+          display: block;
+          width: 1.76rem;
+          white-space: nowrap;
+          text-overflow:ellipsis;
+          overflow: hidden;
+        }
         img {
-          height: 0.2rem;  
+          height: 0.24rem;
           margin-right: 0.05rem;
         }
       }

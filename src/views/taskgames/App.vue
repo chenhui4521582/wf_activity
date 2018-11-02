@@ -11,22 +11,24 @@
           <h4 class="h-title h-first-title">当前游戏任务</h4>
           <ul class="t-items">
             <li v-for="item in currentGamesItems">
-              <div class="pic">
-                <img :src="item.icon | filter" alt="">
-              </div>
-              <div class="item-text">
-                <p class="title" v-html="item.taskDescShow"></p>
-                <div class="percent-container">
-                  <div class="percent-box">
-                      <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                      <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                   </div>
-                  <span class="item-award"><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</span>
                 </div>
               </div>
               <p class="btn-box">
                 <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
-                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
                 <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
               </p>
             </li>
@@ -51,18 +53,20 @@
             <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
               <ul class="t-items">
                 <li >
-                  <div class="pic">
-                    <img :src="newUserTaskobj.icon | filter" alt="">
-                    <span  class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
-                  </div>
-                  <div class="item-text">
-                    <p class="title" v-html="newUserTaskobj.taskName"></p>
-                    <div class="percent-container">
-                      <div class="percent-box">
-                          <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
-                          <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
+                  <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
+                    <div class="pic">
+                      <img :src="newUserTaskobj.icon | filter" alt="">
+                      <span  class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
+                    </div>
+                    <div class="item-text">
+                      <p class="title" v-html="newUserTaskobj.taskName"></p>
+                      <div class="percent-container">
+                        <div class="percent-box">
+                            <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
+                            <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
+                        </div>
+                        <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</i></span>
                       </div>
-                      <span class="item-award"><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</span>
                     </div>
                   </div>
                   <p class="btn-box">
@@ -95,18 +99,20 @@
           <!-- 其他任务 -->
           <h4 class="h-title h-third-title">其他任务</h4>
           <ul class="t-items">
-            <li v-for="item in otherGamesItems">
-              <div class="pic">
-                <img :src="item.icon | filter" alt="">
-              </div>
-              <div class="item-text">
-                <p class="title" v-html="item.taskDescShow"></p>
-                <div class="percent-container">
-                  <div class="percent-box">
-                      <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                      <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+            <li v-for="item in otherGamesItems" >
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                   </div>
-                  <span class="item-award"><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</span>
                 </div>
               </div>
               <p class="btn-box">
@@ -200,6 +206,11 @@
         }
     },
     methods: {
+      goFinishs() {
+        if(parent.closeTaksPage) {
+          parent.closeTaksPage()
+        }
+      },
       //获取地址栏问号后面的参数值
       getUrlParam: function (ename) {
           var url = window.location.href;
