@@ -63,7 +63,7 @@
         position: fixed;
         z-index: 3;
         width: 130%;
-        top: 0%;
+        top: 5%;
         left: 50%;
         margin-left: -65%;
         animation: rotate 2s linear infinite;
