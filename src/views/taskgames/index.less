@@ -32,6 +32,10 @@
         background: url(./images/leaf.png) no-repeat 0.08rem center;
         background-size: 0.18rem 0.18rem;
       }
+      &.hf-fragment {
+        background: url(./images/hf-fragment.png) no-repeat 0.08rem center;
+        background-size: 0.18rem 0.2rem;
+      }
     }
   }
   .t-content {
@@ -77,8 +81,8 @@
       }
       .label {
           background: #2e3f5f;
-          width: 0.8rem;
-          font-size: 10px;
+          width: 0.6rem;
+          font-size: 0.18rem;
           position: absolute;
           text-align: center;
           padding: 0.03rem 0;
@@ -133,8 +137,12 @@
       display: flex;
       align-items: center;
   }
+  .bigNum {
+          width: auto;
+          padding: 0 .1rem 0;
+        }
   .percent-box {
-        width:1.64rem;
+        width:1.8rem;
         height:0.24rem;
         background:rgba(0,0,0,1);
         border-radius:0.08rem;
@@ -146,10 +154,8 @@
           height: 100%;
           font-size: 0.2rem;
           line-height: 0.24rem;
-          position: absolute;
-          left: 0;
-          top: 0;
           text-align: center;
+          position: relative;
           z-index: 2;
         }
         em {
