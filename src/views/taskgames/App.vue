@@ -6,8 +6,9 @@
          <li class="hf-fragment">{{telFragment&&telFragment[0].price}}</li>
        </ul>
      </div>
+     
      <div class="t-content" >
-        <div v-if="currentGamesItems">
+        <div v-if="currentGamesItems&&currentGamesItems.length">
           <h4 class="h-title h-first-title">当前游戏任务</h4>
           <ul class="t-items">
             <li v-for="item in currentGamesItems">
@@ -70,7 +71,7 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                      <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj)">领取</a>
+                      <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
                       <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj)">去完成</a>
                       <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
                   </p>
@@ -124,12 +125,16 @@
           </ul>
         </div>
 
+        <poplog v-if="isPopLog" @close="closePopLog" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask"></poplog>
+
      </div>
   </div>
 </template>
 <script type="text/javascript">
+  import poplog from './poplog'
   export default {
     data() {
+
       return {
         newTaskItems: null,
         currentGamesItems: null,
@@ -137,11 +142,13 @@
         token: null,
         channel: null,
         userInfo: null,
-        telFragment: null
+        telFragment: null,
+        awardItem: null,
+        isPopLog: false,
+        isNewTask: false
       }
     },
     mounted() {
-      
       if(parent.loadTaksPage) {
         parent.loadTaksPage()
       }
@@ -205,6 +212,9 @@
           }
         }
     },
+    components: {
+      poplog
+    },
     methods: {
       goFinishs() {
         if(parent.closeTaksPage) {
@@ -231,6 +241,7 @@
       },
       goFinish({gameType, url, action}) {
         let actionsArr = [39,35,34,32]
+
         // 跳转到首页（关闭）
         if(action == 36) {
             parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
@@ -257,16 +268,23 @@
         }
         parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
       },
+      closePopLog() {
+        this.isPopLog = false
+      },
       receive(item, type) {
+
         this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/finish', {
           taskId: item.taskId,
           taskLogId: item.taskLogId
         }).then((res)=> {
           if(res.data.code == 200) {
-            this.$toast.show({
-                message: '领取成功',
-                duration: 1500
-            })
+            if(type == 'newtask') {
+              this.isNewTask = true
+            }
+            // 弹窗弹出
+            this.awardItem = item
+            this.isPopLog = true
+
             this.getTransInfo()
             this.getPhoneFragment()
             switch(type) {
