@@ -3,7 +3,7 @@
      <div class="header">
        <ul>
          <li class="leaf">{{userInfo&&userInfo.amount}}</li>
-         <li class="leaf">{{telFragment&&telFragment[0].price}}</li>
+         <li class="hf-fragment">{{telFragment&&telFragment[0].price}}</li>
        </ul>
      </div>
      <div class="t-content" >
@@ -107,7 +107,7 @@
                 <div class="item-text">
                   <p class="title" v-html="item.taskDescShow"></p>
                   <div class="percent-container">
-                    <div class="percent-box">
+                    <div class="percent-box"  :class="{'bigNum': item.taskOps > 10000}">
                         <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                         <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                     </div>
