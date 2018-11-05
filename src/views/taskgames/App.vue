@@ -239,39 +239,59 @@
       trimStr(str) {
           return str.replace(/(^\s*)|(\s*$)/g, "")
       },
-      goFinish({gameType, url, action}) {
+      goFinish({gameType, url, action, taskId}) {
         let actionsArr = [39,35,34,32]
 
-        // 跳转到首页（关闭）
-        if(action == 36) {
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
-            return
-        }
-        // 跳转商城
-        if (gameType == 0 && actionsArr.includes(action)) {
-            parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
-        }
-        // 跳平台(关闭)
-        if (gameType == 0 && action == 2) {
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
-        }
+        GLOBALS.thirdSetsPoint({
+          "event_name": "游戏内任务-去完成",
+          "task_id": taskId,
+          "event_id": 1210040803,
+          "project_id": gameType
+        })
 
-        // 球酷
-        if (url.indexOf('databiger-h5') != -1) {
-            let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
-            return parent.location.href = gameUrl
-        }
-        //其他外接游戏external=1
-        if (url.indexOf('external=1') != -1) {
-            let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-            return parent.location.href = gameUrl
-        }
-        parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+        setTimeout(() => {
+
+            // 跳转到首页（关闭）
+            if(action == 36) {
+                parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                return
+            }
+            // 跳转商城
+            if (gameType == 0 && actionsArr.includes(action)) {
+                parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+            }
+            // 跳平台(关闭)
+            if (gameType == 0 && action == 2) {
+                parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+            }
+
+            // 球酷
+            if (url.indexOf('databiger-h5') != -1) {
+                let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
+                return parent.location.href = gameUrl
+            }
+            //其他外接游戏external=1
+            if (url.indexOf('external=1') != -1) {
+                let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+                return parent.location.href = gameUrl
+            }
+            parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+
+        }, 500)
+
+        
       },
       closePopLog() {
         this.isPopLog = false
       },
       receive(item, type) {
+        
+        GLOBALS.thirdSetsPoint({
+          "event_name": "游戏内任务-去完成",
+          "task_id": item.taskId,
+          "event_id": 1210040803,
+          "project_id": item.gameType
+        })
 
         this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/finish', {
           taskId: item.taskId,

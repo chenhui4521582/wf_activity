@@ -4,9 +4,11 @@
  */
 
 import axios from 'axios'
+
 // import router from './router'
 import Vue from 'vue'
 import utils from '../../common/js/utils'
+import '../../common/js/window'
 // axios 配置
 axios.defaults.timeout = 10000;
 
@@ -21,7 +23,6 @@ axios.interceptors.request.use(function (config) {
     if(!config.headers['App-Channel']) {
         config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
     }
-    
     
 
     localStorage.setItem('APP_VERSION','2.9.4.1')
@@ -123,16 +124,13 @@ axios.interceptors.response.use(
 
         }else {
             error = JSON.stringify(error);
+            console.log('error::', error)
             if(error.indexOf('timeout') != -1) {
-                Vue.prototype.$toast.show({
-                    message: '请求超时',
-                    duration: 1500
-                });
+                
                 return;
             }
         }
         return Promise.reject(error);
-        // return '';
     }
 )
 export default axios;
