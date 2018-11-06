@@ -11,7 +11,7 @@
                 </div>
                 <p class="num">{{awardItem.awardsName}}</p>
                 
-                <div class="text progress" v-if="isNewTask">
+                <div class="text progress" v-if="isNewTask && motherTask">
                     <p>任务进度</p>
                     <div class="progress-bg">
                     	<div class="progress-bar" :style="{width:motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%'}"></div><span>{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</span></div>

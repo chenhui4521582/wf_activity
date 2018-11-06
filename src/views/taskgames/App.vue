@@ -192,9 +192,12 @@
           let finishedTaskNum = list.filter(item=>{
               return item.taskStatus == 2
           }).length
-          motherTask.allTaskNum = list.length
-          motherTask.hasFinishedNum = finishedTaskNum
-          return motherTask  
+          if(motherTask) {
+            motherTask.allTaskNum = list.length
+            motherTask.hasFinishedNum = finishedTaskNum
+            return motherTask 
+          }
+          return ''
       },
     },
     filters:{
