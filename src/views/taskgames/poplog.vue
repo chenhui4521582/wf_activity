@@ -69,6 +69,11 @@
         animation: rotate 2s linear infinite;
         z-index: 6;
     }
+
+    @keyframes rotate{
+      from{transform:  rotate(0);}
+      to{transform:  rotate(360deg);}
+    }
     .mask {
     	width: 100%;
     	height: 100%;
