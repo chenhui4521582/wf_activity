@@ -300,8 +300,16 @@
 		/*background-size: 100% 100%;*/
 	}
 	.r-phone {
-		background: #193b73;
-		padding-left: 1.2/2rem;
+		/*background: #193b73;*/
+		margin-left: 1.2/2rem;
+        width: 6.3rem;
+        background: #fff;
+        border: 1px solid #bdbdbd;
+        border-radius: .45rem;
+        height: 0.9rem;
+        box-sizing: border-box;
+        padding-left: .1rem;
+        margin-bottom: .5rem;
 	}
 	.phone-tip {
 		width: 0.48/2rem;
@@ -318,7 +326,7 @@
 			display: flex;
 			align-items: center;
 			font-size: .6/2rem;
-			color: #fff;
+			color: #000;
 			&:after {
 				content: '';
 				width: 0.08/2rem;
@@ -333,18 +341,19 @@
 		.r-right {
 			flex: 1;
 			input {
-				width: 100%;
+				width: 90%;
 				/*height: 1.9/2rem;*/
-				background: #193b73;
+				/*background: #193b73;*/
 				font-size: .6/2rem;
-				color: #fff;
+				color: #000;
                 padding-top: .65/2rem;
 			}
 		}
 	}
 	.group-input {
 		padding: 0 0 0 1.2/2rem;
-		background: #193b73;
+		/*background: #193b73;*/
+        color:#000
 
 	}
 	.page-login {

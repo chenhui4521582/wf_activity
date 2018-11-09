@@ -88,7 +88,7 @@
 </script>
 <style lang="less" scoped>
 	.group-input {
-		background: #193b73;
+		/*background: #193b73;*/
 	}
 	.btn-verification {
 		position: absolute;
@@ -116,22 +116,18 @@
 	}
 	.input-box {
 		position: relative;
-		width: 100%;
+        width: 6.3rem;
 		/*height: 1.9/2rem;*/
 		line-height: 1.9/2rem;
 		box-sizing: border-box;
 		position: relative;
 		display: flex;
 		align-items: center;
-		&.group-line:after {
-			content: '';
-			width: 100%;
-			height: 0.04/2rem;
-			background: #3b5888;
-			position: absolute;
-			left: 0;
-			bottom: 0;
-		}
+        border: 1px solid #bdbdbd;
+        border-radius: .45rem;
+        margin-bottom: .5rem;
+        padding-left: .1rem;
+        box-sizing: border-box;
 		/*.input-box {
 			position: relative;
 			display: flex;
@@ -139,9 +135,9 @@
 		.group-name {
 			float: left;
 			/*margin-top: .3/2rem;*/
-			flex:0 0 3.2/2rem;
+            flex: 0 0 1.3rem;
 			font-size: 0.6/2rem;
-			color: #fff;
+			color: #000;
 		}
 		.input-btn {
 			display: block;
@@ -150,14 +146,14 @@
 			
 		}
 		input {
-			flex: 1;
+			flex:.9;
 			border: none;
 			outline: none;
 			height: 1.8/2rem;
             line-height: 1.8/2rem;
 			font-size: 0.56/2rem;
-			background: #193b73;
-			color: #fff;
+			/*background: #193b73;*/
+			color: #000;
 		}
 	}
 </style>
