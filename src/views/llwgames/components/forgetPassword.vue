@@ -4,7 +4,7 @@
         <div class="r-phone">
             <div class="r-box">
                 <div class="r-left">
-                    <img src="" class="phone-tip">+86
+                    +86
                 </div>
                 <div class="r-right">
                     <input type="text" placeholder="手机号" ref="rPhoneNumber" />
