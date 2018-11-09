@@ -63,7 +63,7 @@
         position: fixed;
         z-index: 3;
         width: 130%;
-        top: 5%;
+        top: 0%;
         left: 50%;
         margin-left: -65%;
         animation: rotate 2s linear infinite;
@@ -90,7 +90,7 @@
         width: 70%;
         left: 50%;
         margin-left: -35%;
-        top:20%;
+        top:12%;
         z-index: 7;
         .bg{
             width: 100%;
