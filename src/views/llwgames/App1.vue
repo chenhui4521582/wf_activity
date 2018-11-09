@@ -49,6 +49,7 @@
                 location.href = `//uic-api.beeplay123.com/uic/api/wap/qq/toLogin2?channel=${this.channel}&source=1&a=${new Date().getTime()}&redirectwfurl=${encodeURIComponent(location.href)}`
             },
             submit() {
+               
                 let vAccount = utils.checkValidate('phone', this.mobile);
                 let veCode = utils.checkValidate('code', this.code);
                 if (this.mobile == '') {
@@ -77,8 +78,7 @@
                     });
                     return;
                 }
-                var requestTokenurl
-                requestTokenurl = '//uic-api.beeplay123.com/uic/api/user/login/sms/requestToken';
+                var requestTokenurl = '//uic-api.beeplay123.com/uic/api/user/login/sms/requestToken';
                 var paramsObj = {
                     username: this.mobile,
                     smsCode: this.code,
@@ -121,6 +121,7 @@
                 })
             },
             sendcode(){
+
                 var self = this;
                 var vAccount = utils.checkValidate('phone', this.mobile);
                 if (vAccount) {
