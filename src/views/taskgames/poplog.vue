@@ -11,7 +11,7 @@
                 </div>
                 <p class="num">{{awardItem.awardsName}}</p>
                 
-                <div class="text progress" v-if="isNewTask">
+                <div class="text progress" v-if="isNewTask && motherTask">
                     <p>任务进度</p>
                     <div class="progress-bg">
                     	<div class="progress-bar" :style="{width:motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%'}"></div><span>{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</span></div>
@@ -63,11 +63,16 @@
         position: fixed;
         z-index: 3;
         width: 130%;
-        top: 5%;
+        top: 0%;
         left: 50%;
         margin-left: -65%;
         animation: rotate 2s linear infinite;
         z-index: 6;
+    }
+
+    @keyframes rotate{
+      from{transform:  rotate(0);}
+      to{transform:  rotate(360deg);}
     }
     .mask {
     	width: 100%;
@@ -85,7 +90,7 @@
         width: 70%;
         left: 50%;
         margin-left: -35%;
-        top:20%;
+        top:12%;
         z-index: 7;
         .bg{
             width: 100%;

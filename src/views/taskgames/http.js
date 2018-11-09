@@ -124,7 +124,6 @@ axios.interceptors.response.use(
 
         }else {
             error = JSON.stringify(error);
-            console.log('error::', error)
             if(error.indexOf('timeout') != -1) {
                 
                 return;
