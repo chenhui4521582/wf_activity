@@ -141,8 +141,7 @@
 	                return;
 	            }
 
-
-				this.$http.post('//uic-api.beeplay123.com/uic/api/user/password/sendForgetCode',{
+				this.axios.post('//uic-api.beeplay123.com/uic/api/user/password/sendForgetCode',{
 	                username: this.vAccount
 	            }).then((response) => {
 	            	if(response.data.code == 200) {
