@@ -4,7 +4,7 @@ import "babel-polyfill";
 import Vue from 'vue'
 import axios from './http'
 import App from './App'
-// import router from './router'
+import router from './router'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
 
@@ -17,7 +17,7 @@ Vue.prototype.axios = axios;
 new Vue({
   el: '#app',
   axios,
-//   router,
+  router,
   template: '<App/>',
   components: { App }
 })
