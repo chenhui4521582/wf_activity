@@ -109,7 +109,7 @@
                 GLOBALS.buriedPoint(1207001603,'H5平台-大神攻略-点赞')
                 
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/wap/coterie/praise', {
-                    value: this.coterieList.id,
+                    value: this.coterieList && this.coterieList.id,
                 })
                 if(data.code == 101){
                     this.isZan = true
