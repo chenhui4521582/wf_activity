@@ -1,7 +1,10 @@
 <template>
 	<div class="pop-log">
 		<div class="mask"></div>
-        <img class="shine"  src="./img/dialog/shine.png" alt="">
+        <div class="shine-box">
+            <img class="shine"  src="./img/dialog/shine.png" alt="">
+        </div>
+        
         <div class="content-box" >
             <img class="bg" src="./img/dialog/bg.png" alt="">
             <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
@@ -60,14 +63,19 @@
         box-sizing: border-box;
     }
     .shine{
-        position: fixed;
-        z-index: 3;
-        width: 130%;
-        top: 5%;
-        left: 50%;
-        margin-left: -65%;
+        display: block;
+        width: 86%;
         animation: rotate 2s linear infinite;
+        margin: 0 auto;
+        
+    }
+    .shine-box {
+        width: 100%;
+        position: absolute;
+        top: 5%;
+        left: 0%;
         z-index: 6;
+        overflow: hidden;
     }
 
     @keyframes rotate{
@@ -85,13 +93,14 @@
     	z-index: 5;
     }
     .content-box{
-        position: fixed;
-        z-index: 4;
-        width: 70%;
+        position: absolute; 
+         width: 70%;
         left: 50%;
         margin-left: -35%;
-        top:20%;
+        top: 10%;
         z-index: 7;
+        transform: scale(0.8);
+        
         .bg{
             width: 100%;
             display: block;
