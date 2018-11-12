@@ -129,6 +129,24 @@ window.GLOBALS = {
     jumpOutsideGame (url){
         util.jumpToGame({url:url})
     },
+    async thirdSetsPoint(parmas){
+      //操作日期
+      let date = moment().format('YYYY-MM-DD');
+      //操作时间
+      let time = moment().format('HH:mm:ss');
+      //渠道id
+      let _channel = localStorage.getItem('APP_CHANNEL') || 100001;
+      let defaultState = {
+        project_id: 0,//项目id
+        project_name: '平台',//项目名称
+        channel_id: _channel,//渠道id
+        generate_date: date,//行为发生日期
+        generate_time: time,//行为发生时间
+      }
+      //请求
+      return axios.post('//hadoop-data.beeplay123.com', Object.assign(defaultState,parmas))
+    },
+
 }
 
 

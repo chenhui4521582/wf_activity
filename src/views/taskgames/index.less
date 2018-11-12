@@ -1,0 +1,281 @@
+.task-games {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background:rgba(15,23,38,1);
+    padding-bottom: 0.3rem;
+  }
+  .header {
+    height:0.8rem;
+    background:rgba(25,38,64,1);
+    color: #fff;
+    display: flex;
+    align-items:  center;
+    ul {
+      padding-left: 0.08rem;
+    }
+    li {
+      min-width: 1.0rem;
+      padding: 0 0.15rem 0 0.35rem;
+      height:0.4rem;
+      line-height:0.4rem;
+      background:rgba(5,8,13,1);
+      border:1px solid rgba(53,79,127,1);
+      border-radius:0.08rem;
+      float: left;
+      text-align: center;
+      margin-left: 0.21rem;
+      font-size: 0.22rem;
+      color: #fff;
+      text-align: left;
+      &.leaf {
+        background: url(./images/leaf.png) no-repeat 0.08rem center;
+        background-size: 0.18rem 0.18rem;
+      }
+      &.hf-fragment {
+        background: url(./images/hf-fragment.png) no-repeat 0.08rem center;
+        background-size: 0.18rem 0.2rem;
+      }
+    }
+  }
+  .t-content {
+    padding: 0 0.3rem;
+    color: #fff;
+    .h-title {
+      display: flex;
+      align-items: center;
+      height: 0.4rem;
+      font-size: 0.28rem;
+      position: relative;
+      .text {
+        position: absolute;
+        right: 0;
+        font-weight: normal;
+        font-size: 0.18rem;
+        opacity: 0.5;
+        display: flex;
+        align-items: center;
+        img {
+          display: inline-block;
+          width: 0.2rem;
+          height: 0.2rem;
+          margin-right: 0.05rem;
+        }
+      }
+    }
+  }
+  .t-items {
+      margin: 0 auto;  
+      li {
+        height: 0.9rem;
+        background: #141F33;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-bottom: 0.2rem;
+        border-radius:0.04rem;
+        .actived {
+          opacity: 0.5;
+          filter: opacity(50);
+        }
+      }
+      .label {
+          background: #2e3f5f;
+          width: 0.6rem;
+          font-size: 0.18rem;
+          position: absolute;
+          text-align: center;
+          padding: 0.03rem 0;
+          top: 0;
+          left: 0;
+          border-radius: 0 0 0.04rem 0;
+      }
+      .pic {
+        width:0.6rem;
+        height:0.6rem;
+        border-radius:12px;
+        float: left;
+        margin: 0 0.13rem 0 0.16rem;
+        img {
+          width:0.6rem;
+          height:0.6rem;
+        }
+      }
+      .item-text {
+        .title {
+          font-size: 0.24rem;
+          margin-bottom: 0.08rem;
+        }
+      }
+      .percent-box {
+        margin-right: 0.16rem;
+        em {
+          max-width: 100% !important;
+        }
+      }
+      
+      .item-award {
+        font-size: 0.2rem;
+        color: #FFD338;
+        display: flex;
+        align-items: center;
+        padding-right: 0.1rem;
+        i {
+          display: block;
+          width: 1.76rem;
+          white-space: nowrap;
+          text-overflow:ellipsis;
+          overflow: hidden;
+        }
+        img {
+          height: 0.24rem;
+          margin-right: 0.05rem;
+        }
+      }
+  }
+  .percent-container {
+      display: flex;
+      align-items: center;
+  }
+  .bigNum {
+          width: auto;
+          padding: 0 .1rem 0;
+        }
+  .percent-box {
+        width:1.8rem;
+        height:0.24rem;
+        background:rgba(0,0,0,1);
+        border-radius:0.08rem;
+        position: relative;
+        float: left;
+
+        .text {
+          width: 100%;
+          height: 100%;
+          font-size: 0.2rem;
+          line-height: 0.24rem;
+          text-align: center;
+          position: relative;
+          z-index: 2;
+        }
+        em {
+          width: 50%;
+          height: 100%;
+          background: #507BCC;
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-radius:0.08rem;
+        }
+      }
+  .h-first-title {
+    margin: 0.38rem 0 0.28rem 0;
+  }
+  .h-second-title {
+    margin: 0.59rem 0 0.18rem 0;
+    p {
+      float: left;
+      position: relative;  
+    }
+    &.icon-tips p:before {
+      content: '';
+      width: 0.9rem;
+      height: 0.25rem;
+      background: url(./images/xs-tips.png) no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: -0.94rem;
+      top: 0;
+    }
+  }
+  .h-third-title {
+    margin: 0.5rem 0 0.3rem 0;
+  }
+  .btn-box {
+    position: absolute;
+    right: 0.16rem;
+    .btn {
+      display: block;
+      width: 0.8rem;
+      height: 0.4rem;
+      line-height: 0.4rem;
+      border-radius:0.08rem;
+      text-align: center;
+      font-size: 0.2rem;
+      color: #fff;
+      &.btn-play {
+        background:#1976D2;
+      }
+      &.btn-receive {
+        background:rgba(238,111,11,1);
+      }
+      &.btn-gray {
+        background: #4E5666;
+        color: #0F1726;
+      }
+    }
+  }
+
+  .newTask {
+    display: flex;
+    align-items: center;
+    font-size: 0.2rem;
+    margin-bottom: 0.17rem;
+    span {
+      color: #FFD338;
+      margin: 0 0.11rem 0 0.08rem;
+    }
+    .percent-box {
+      width: 1.09rem;
+    }
+    ul {
+      display: inline-block;
+    }
+  }
+.finish {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    background: #f05835;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    li {
+      word-break: keep-all;
+      white-space: nowrap;
+      &:first-child{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 80%;
+        p:last-child {
+          font-size: 0.24rem;
+          margin-top: 6%;
+        }
+      };
+      &:last-child{
+        color: #f05835;
+        font-weight: 700;
+        font-size: 0.24rem;
+        background: #fff;
+        padding: 2% 5%;
+        border-radius: 0.04rem;
+      };
+      .head-img {
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 0.06rem;
+        overflow: hidden;
+        margin-right: 3%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      p {
+        font-size: 0.28rem;
+        font-weight: 700;
+      }
+    }
+}
