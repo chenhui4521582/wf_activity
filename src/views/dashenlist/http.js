@@ -84,8 +84,8 @@ axios.interceptors.response.use(
                     });
                     break;
                 case 122:
-                     128:
-                     101:
+                case 128:
+                case 101:
                     break;
                 default:
                     var result = response.config && response.config.data;
