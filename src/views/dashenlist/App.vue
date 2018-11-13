@@ -150,7 +150,27 @@
             },
             guide(val){
                 if(val == 'home'){
-                    location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
+                    console.log(localStorage.getItem('APP_CHANNEL'));
+                    
+                    switch(localStorage.getItem('APP_CHANNEL')){
+                        case '100001' :
+                        case '100022':
+                        case '100035':
+                        case '100038':
+                        case '100036':
+                            location.href = 'https://wap.beeplay123.com/jsWap?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                        case '100039':
+                        case '100040':
+                        case '100041':
+                        case '100042':
+                            location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                        case '100006':
+                        case '110002':
+                            location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                    }
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
                     location.href = 'https://wap.beeplay123.com/wf_zhengjiling/'
