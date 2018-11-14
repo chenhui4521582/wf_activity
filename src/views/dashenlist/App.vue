@@ -170,6 +170,8 @@
                         case '110002':
                             location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
                             break;
+                        default:
+                            history.go(-1)
                     }
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
