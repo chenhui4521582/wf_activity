@@ -9,7 +9,7 @@
      
      <div class="t-content" >
         <div v-if="currentGamesItems&&currentGamesItems.length">
-          <h4 class="h-title h-first-title">当前游戏任务</h4>
+          <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
             <li v-for="item in currentGamesItems">
               <div :class="{'actived': item.taskStatus == 2}">
@@ -149,6 +149,7 @@
       }
     },
     mounted() {
+      
       if(parent.loadTaksPage) {
         parent.loadTaksPage()
       }
@@ -343,11 +344,12 @@
           value: 'dayTask'
         }).then((res)=> {
           if(res.data.code == 200) {
+
             this.currentGamesItems = res.data.data.filter((item)=> {
-              return item.gameType == this.getUrlParam('gametype')
+              return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
             })
             this.otherGamesItems = res.data.data.filter((item)=> {
-              return item.gameType != this.getUrlParam('gametype')
+              return (item.gameType != this.getUrlParam('gametype') && item.taskStatus != 2)
             })
 
           }

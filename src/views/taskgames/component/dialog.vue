@@ -66,12 +66,14 @@
         animation: rotate 2s linear infinite;
     }
     .content-box{
-        position: fixed;
-        z-index: 4;
-        width: 70%;
+        position: absolute;
+        width: 80%;
         left: 50%;
-        margin-left: -35%;
-        top:20%;
+        margin-left: -40%;
+        top: 10%;
+        z-index: 7;
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
         .bg{
             width: 100%;
             display: block;
@@ -113,12 +115,12 @@
                 margin-top: 10%;
             }
             .num{
-                font-size: 14px;
+                font-size: .28rem;
                 text-align: center;
                 margin-top: 3%;
             }
             .text{
-                font-size: 14px;
+                font-size: 16px;
                 text-align: center;
                 margin-top: 6%;
                 &.progress{
@@ -126,14 +128,14 @@
                     justify-content: center;
                     align-items: center;
                     p{
-                        font-size: 12px;
+                        font-size: .26rem;
                         margin-right: 4px;
                     }
                     .progress-bg{
                         background: #DD3317;
                         width: 46%;
                         position: relative;
-                        height: 12px;
+                        height: .22rem;
                         border-radius: 3px;
                         overflow: hidden;
                         .progress-bar{
@@ -149,8 +151,8 @@
                             height: 100%;
                             color: #fff;
                             left: 0;
-                            font-size: 11px;
-                            line-height: 12px;
+                            font-size: 0.22rem;
+                            line-height: .22rem;
                             text-align: center;
                         }
                     }
@@ -158,7 +160,7 @@
             }
             .close{
                 color: #A34C00;
-                font-size: 14px;
+                font-size: .28rem;
                 background: #FFCF52;
                 width: 50%;
                 font-weight: bold;
