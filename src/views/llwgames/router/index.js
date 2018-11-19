@@ -6,12 +6,17 @@ import login from '../login'
 import forgetpwd from '../components/forgetPassword'
 import register from '../components/register'
 import home from '../components/home'
+import entry from '../components/entry'
 
 export default new VueRouter({
-    // mode: 'history',
   routes: [
       {
           path: '/',
+          name: 'entry',
+          component: entry,
+      },
+      {
+          path: '/login',
           name: 'login',
           component: login,
       },
