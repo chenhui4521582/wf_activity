@@ -154,7 +154,7 @@
         parent.loadTaksPage()
       }
       this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
-      this.channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
+      this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
 
       localStorage.setItem('ACCESS_TOKEN', this.token)
       localStorage.setItem('APP_CHANNEL', this.channel)
@@ -229,7 +229,7 @@
       getUrlParam: function (ename) {
           var url = window.location.href;
           var Request = new Object();
-          if (url.indexOf("?") != -1) {
+          if (url && url.indexOf("?") != -1) {
               var str = url.split('?')[1];
               var strs = str.split("&");
               for (var i = 0; i < strs.length; i++) {
@@ -270,12 +270,12 @@
             }
 
             // 球酷
-            if (url.indexOf('databiger-h5') != -1) {
+            if (url && url.indexOf('databiger-h5') != -1) {
                 let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
                 return parent.location.href = gameUrl
             }
             //其他外接游戏external=1
-            if (url.indexOf('external=1') != -1) {
+            if (url && url.indexOf('external=1') != -1) {
                 let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
                 return parent.location.href = gameUrl
             }
