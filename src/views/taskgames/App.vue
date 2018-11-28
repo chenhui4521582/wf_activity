@@ -263,10 +263,12 @@
             // 跳转商城
             if (gameType == 0 && actionsArr.includes(action)) {
                 parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+                return
             }
             // 跳平台(关闭)
             if (gameType == 0 && action == 2) {
                 parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                return
             }
 
             // 球酷
