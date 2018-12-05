@@ -31,12 +31,12 @@ axios.interceptors.response.use(
         var res = JSON.parse(response.request.response);
         if (res && res.code && res.code != 200) {
             switch (res.code) {
-                case 400:
-                    Vue.prototype.$toast.show({
-                        message: '请求处理失败',
-                        duration: 1500
-                    });
-                    break;
+                // case 400:
+                //     Vue.prototype.$toast.show({
+                //         message: '请求处理失败',
+                //         duration: 1500
+                //     });
+                //     break;
                 case 404:
                     Vue.prototype.$toast.show({
                         message: '请求地址出错！',
@@ -84,8 +84,8 @@ axios.interceptors.response.use(
                     });
                     break;
                 case 122:
-                     128:
-                     101:
+                case 128:
+                case 101:
                     break;
                 default:
                     var result = response.config && response.config.data;
@@ -115,13 +115,13 @@ axios.interceptors.response.use(
 
         } else {
             error = JSON.stringify(error);
-            if (error.indexOf('timeout') != -1) {
-                Vue.prototype.$toast.show({
-                    message: '请求超时',
-                    duration: 1500
-                });
-                return;
-            }
+            // if (error.indexOf('timeout') != -1) {
+            //     Vue.prototype.$toast.show({
+            //         message: '请求超时',
+            //         duration: 1500
+            //     });
+            //     return;
+            // }
         }
         return Promise.reject(error);
         // return '';

@@ -1,9 +1,14 @@
+body {
+  background:rgba(15,23,38,1);
+}
 .task-games {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
     background:rgba(15,23,38,1);
     padding-bottom: 0.3rem;
+    width: 100%;
+    height: 100%;
   }
   .header {
     height:0.8rem;
@@ -39,22 +44,33 @@
     }
   }
   .t-content {
-    padding: 0 0.3rem;
+    padding: 0.22rem 0.3rem 0;
     color: #fff;
+    .h-new-title {
+      padding: 0.12rem 0 0.06rem 0;
+    }
     .h-title {
       display: flex;
       align-items: center;
       height: 0.4rem;
       font-size: 0.28rem;
       position: relative;
+      .xr-icon {
+        width: 1.21rem;
+        height: 0.29rem;
+      }
+      .small-xs-tips {
+        width: 0.78rem;
+        height: 0.21rem;
+      }
       .text {
         position: absolute;
         right: 0;
         font-weight: normal;
         font-size: 0.18rem;
-        opacity: 0.5;
         display: flex;
         align-items: center;
+        opacity: 0.5;
         img {
           display: inline-block;
           width: 0.2rem;
@@ -80,7 +96,7 @@
         }
       }
       .label {
-          background: #2e3f5f;
+          background: #DD2C00;
           width: 0.6rem;
           font-size: 0.18rem;
           position: absolute;
@@ -89,6 +105,9 @@
           top: 0;
           left: 0;
           border-radius: 0 0 0.04rem 0;
+          &.active {
+            background: #2e3f5f;
+          }
       }
       .pic {
         width:0.6rem;
@@ -103,8 +122,9 @@
       }
       .item-text {
         .title {
-          font-size: 0.24rem;
-          margin-bottom: 0.08rem;
+          width: 112%;
+          font-size: 0.23rem;
+          margin-bottom: 0.1rem;
         }
       }
       .percent-box {
@@ -117,11 +137,10 @@
       .item-award {
         font-size: 0.2rem;
         color: #FFD338;
-        display: flex;
-        align-items: center;
         padding-right: 0.1rem;
         i {
-          display: block;
+          display: flex;
+          align-items: center;
           width: 1.76rem;
           white-space: nowrap;
           text-overflow:ellipsis;
@@ -169,23 +188,23 @@
         }
       }
   .h-first-title {
-    margin: 0.38rem 0 0.28rem 0;
+    margin: 0.35rem 0 0.28rem 0;
   }
   .h-second-title {
-    margin: 0.59rem 0 0.18rem 0;
+    /*margin: 0.59rem 0 0.18rem 0;*/
     p {
       float: left;
       position: relative;  
     }
     &.icon-tips p:before {
       content: '';
-      width: 0.9rem;
-      height: 0.25rem;
+      width: 0.78rem;
+      height: 0.21rem;
       background: url(./images/xs-tips.png) no-repeat;
       background-size: 100% 100%;
       position: absolute;
-      right: -0.94rem;
-      top: 0;
+      right: -0.88rem;
+      top: 0.06rem;
     }
   }
   .h-third-title {
@@ -216,20 +235,32 @@
     }
   }
 
+
   .newTask {
-    display: flex;
-    align-items: center;
+    di/*splay: flex;
+    align-items: center;*/
     font-size: 0.2rem;
     margin-bottom: 0.17rem;
     span {
       color: #FFD338;
       margin: 0 0.11rem 0 0.08rem;
     }
+    .percent-lq {
+      height: 0.24rem;
+      line-height: 0.2rem;
+      margin-top: 0.15rem;
+    }
     .percent-box {
-      width: 1.09rem;
+      width: 2.44rem;
     }
     ul {
-      display: inline-block;
+      /*display: inline-block;*/
+    }
+  }
+  .percent-lq {
+    span {
+      font-size: 0.18rem;
+      color: #fff;
     }
   }
 .finish {
@@ -278,4 +309,69 @@
         font-weight: 700;
       }
     }
+}
+
+/*新人任务*/
+.new-task {
+  background: #141F33;
+  .xr-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.16rem 0 0.12rem 0;
+    .xr-icon {
+      width: 1.21rem;
+      height: 0.29rem;
+    }
+    .small-xs-tips {
+      width: 0.78rem;
+      height: 0.21rem;
+    }
+  }
+  .xr-text {
+    font-size: 0.22rem;
+    span {
+      color: #FFD338;
+      margin-left: 0.07rem;
+      margin-right: 0.1rem;
+    }
+  }
+  .clock {
+    font-size: 0.18rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 0.03rem;
+    img {
+      width: 0.2rem;
+      height: 0.2rem;
+      margin-right: 0.09rem;
+    }
+  }
+  .new-task-box {
+    padding: 0 0.17rem 0 0.24rem;
+  }
+  .new-task-container {
+    width: 100%;
+    height: 1.01rem;
+    background: url(./img/new-task.png) no-repeat;
+    background-size: 100% 100%;
+    .percent-box {
+      width: 1.1rem;
+      float: none;
+      display: inline-block;
+      em {
+        max-width: 100% !important;
+      }
+    }
+  }
+}
+.new-task-header {
+  width: 100%;
+    height: 1.37rem;
+    background: url(./img/new-task-bg.png) no-repeat;
+    background-size: 100% 100%;
+}
+.new-task-inner {
+  padding: 0 0.17rem 0 0.24rem;
 }

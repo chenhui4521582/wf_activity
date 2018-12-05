@@ -84,7 +84,7 @@
             <p class="zan" @click="zanFn('click')">
                 <span class="trans" v-if="isAnimate">+1</span><br>
                 <span class="thumb" :class="{'yizan':isZan}"></span><br>
-                <span>20</span>
+                <span>{{this.coterieList && this.coterieList.praise}}</span>
             </p>
         </div> 
         <div class="bottom" @click="guide('tougao')">有奖投稿</div>
@@ -107,25 +107,21 @@
         methods: {
             async zanFn(val){
                 GLOBALS.buriedPoint(1207001603,'H5平台-大神攻略-点赞')
-                
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/wap/coterie/praise', {
-                    value: this.coterieList.id,
+                    value: this.coterieList && this.coterieList.id,
                 })
                 if(data.code == 101){
                     this.isZan = true
                 }else if(val == 'click'){
                     if(data.code == 200){
-                        if(data.data == 1){
-                            this.isZan = true
-                            this.isAnimate = true
-                            setTimeout(() => {
-                                this.isAnimate = false
-                            }, 2000);
-                        }else{
-                            this.isZan = false
-                        }
-                    }else{
                         this.isZan = true
+                        this.isAnimate = true
+                        setTimeout(() => {
+                            this.isAnimate = false
+                        }, 2000);
+                        this.getCoterieList()
+                    }else{
+                        this.isZan = false
                         this.$toast.show({
                             message: data.message,
                             duration: 1500
@@ -143,16 +139,40 @@
                 })
                 if(data.code == 200){
                     this.coterieList = data.data.raiders
+                    // 1点过赞
+                    if(this.coterieList.havePraise == 1) this.isZan = true
                 }
             },
             goGame(){
                 GLOBALS.buriedPoint(1207001602,'H5平台-大神攻略-三国游戏跳转')
 
-                location.href = this.coterieList.addr + '&channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')
+                location.href = this.coterieList.addr + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')
             },
             guide(val){
                 if(val == 'home'){
-                    location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
+                    console.log(localStorage.getItem('APP_CHANNEL'));
+                    
+                    switch(localStorage.getItem('APP_CHANNEL')){
+                        case '100001' :
+                        case '100022':
+                        case '100035':
+                        case '100038':
+                        case '100036':
+                            location.href = 'https://wap.beeplay123.com/jsWap?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                        case '100039':
+                        case '100040':
+                        case '100041':
+                        case '100042':
+                            location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                        case '100006':
+                        case '110002':
+                            location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
+                            break;
+                        default:
+                            history.go(-1)
+                    }
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
                     location.href = 'https://wap.beeplay123.com/wf_zhengjiling/'
@@ -161,7 +181,7 @@
         },
         mounted(){
             this.getCoterieList()
-            this.zanFn()
+            
             GLOBALS.buriedPoint(1207001601,'H5平台-大神攻略加载页')
         }
     }
