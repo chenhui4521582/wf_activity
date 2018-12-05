@@ -6,51 +6,33 @@
          <li class="hf-fragment">{{telFragment&&telFragment[0].price}}</li>
        </ul>
      </div>
-     
+
+
      <div class="t-content" >
-        <div v-if="currentGamesItems&&currentGamesItems.length">
-          <h4 class="h-title h-first-title">当前游戏每日任务</h4>
-          <ul class="t-items">
-            <li v-for="item in currentGamesItems">
-              <div :class="{'actived': item.taskStatus == 2}">
-                <div class="pic">
-                  <img :src="item.icon | filter" alt="">
-                </div>
-                <div class="item-text">
-                  <p class="title" v-html="item.taskDescShow"></p>
-                  <div class="percent-container">
-                    <div class="percent-box">
-                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
-                    </div>
-                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
-                  </div>
-                </div>
-              </div>
-              <p class="btn-box">
-                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
-                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
-                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-              </p>
-            </li>
-          </ul>
-        </div>
         <div v-if="newTaskItems && newTaskItems.isNew">
-            <h4 class="h-title h-second-title icon-tips">
-              <p>新人任务</p>
-              <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
-            </h4>
-            <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
-                <ul >
-                  <li>
-                    <div class="percent-box">
-                          <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
-                          <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
-                      </div>
-                  </li>
-                </ul>
+            <div class="new-task-header">
+              <div class="new-task-inner">
+                  <h4 class="h-title h-new-title icon-tips">
+                    <p class="h-subtitle">
+                      <img src="./images/xr-icon.png" class="xr-icon">
+                      <img src="./images/small-xs-tips.png" class="small-xs-tips">
+                    </p>
+                    <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
+                  </h4>
+                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
+                      <ul >
+                        <li class="percent-lq">
+                          <div class="percent-box">
+                                <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
+                                <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
+                            </div><span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span>
+                        </li>
+                      </ul>
+                  </div>
+                   <div class="newTask" v-else>恭喜！新人任务已全部完成！</div>
+               </div>
             </div>
-            <div class="newTask" v-else>恭喜！新人任务已全部完成！</div>
+           
             <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
               <ul class="t-items">
                 <li >
@@ -93,6 +75,37 @@
               </ul>
             </div>
         </div>
+
+ 
+
+        <div v-if="currentGamesItems&&currentGamesItems.length">
+          <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+          <ul class="t-items">
+            <li v-for="item in currentGamesItems">
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                  </div>
+                </div>
+              </div>
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        
 
         
         
