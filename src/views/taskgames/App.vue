@@ -25,7 +25,8 @@
                           <div class="percent-box">
                                 <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
                                 <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
-                            </div><span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span>
+                            </div>
+                            <!-- <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span> -->
                         </li>
                       </ul>
                   </div>
