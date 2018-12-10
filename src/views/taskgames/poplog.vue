@@ -1,7 +1,10 @@
 <template>
 	<div class="pop-log">
 		<div class="mask"></div>
-        <img class="shine"  src="./img/dialog/shine.png" alt="">
+        <div class="shine-box">
+            <img class="shine"  src="./img/dialog/shine.png" alt="">
+        </div>
+        
         <div class="content-box" >
             <img class="bg" src="./img/dialog/bg.png" alt="">
             <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
@@ -60,14 +63,19 @@
         box-sizing: border-box;
     }
     .shine{
-        position: fixed;
-        z-index: 3;
-        width: 130%;
-        top: 5%;
-        left: 50%;
-        margin-left: -65%;
+        display: block;
+        width: 86%;
         animation: rotate 2s linear infinite;
+        margin: 0 auto;
+        
+    }
+    .shine-box {
+        width: 100%;
+        position: absolute;
+        top: 5%;
+        left: 0%;
         z-index: 6;
+        overflow: hidden;
     }
 
     @keyframes rotate{
@@ -85,13 +93,15 @@
     	z-index: 5;
     }
     .content-box{
-        position: fixed;
-        z-index: 4;
-        width: 70%;
+        position: absolute;
+        width: 80%;
         left: 50%;
-        margin-left: -35%;
-        top:20%;
+        margin-left: -40%;
+        top: 10%;
         z-index: 7;
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        
         .bg{
             width: 100%;
             display: block;
@@ -133,7 +143,7 @@
                 margin-top: 10%;
             }
             .num{
-                font-size: 14px;
+                font-size: .28rem;
                 text-align: center;
                 margin-top: 3%;
             }
@@ -146,14 +156,14 @@
                     justify-content: center;
                     align-items: center;
                     p{
-                        font-size: 12px;
+                        font-size: .26rem;
                         margin-right: 4px;
                     }
                     .progress-bg{
                         background: #DD3317;
                         width: 46%;
                         position: relative;
-                        height: 12px;
+                        height: .22rem;
                         border-radius: 3px;
                         overflow: hidden;
                         .progress-bar{
@@ -169,8 +179,8 @@
                             height: 100%;
                             color: #fff;
                             left: 0;
-                            font-size: 11px;
-                            line-height: 12px;
+                            font-size: 0.22rem;
+                            line-height: .22rem;
                             text-align: center;
                         }
                     }
@@ -178,7 +188,7 @@
             }
             .close{
                 color: #A34C00;
-                font-size: 14px;
+                font-size: .28rem;
                 background: #FFCF52;
                 width: 50%;
                 font-weight: bold;

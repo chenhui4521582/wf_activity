@@ -6,51 +6,34 @@
          <li class="hf-fragment">{{telFragment&&telFragment[0].price}}</li>
        </ul>
      </div>
-     
+
+
      <div class="t-content" >
-        <div v-if="currentGamesItems&&currentGamesItems.length">
-          <h4 class="h-title h-first-title">当前游戏任务</h4>
-          <ul class="t-items">
-            <li v-for="item in currentGamesItems">
-              <div :class="{'actived': item.taskStatus == 2}">
-                <div class="pic">
-                  <img :src="item.icon | filter" alt="">
-                </div>
-                <div class="item-text">
-                  <p class="title" v-html="item.taskDescShow"></p>
-                  <div class="percent-container">
-                    <div class="percent-box">
-                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
-                    </div>
-                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
-                  </div>
-                </div>
-              </div>
-              <p class="btn-box">
-                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
-                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
-                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-              </p>
-            </li>
-          </ul>
-        </div>
         <div v-if="newTaskItems && newTaskItems.isNew">
-            <h4 class="h-title h-second-title icon-tips">
-              <p>新人任务</p>
-              <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
-            </h4>
-            <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
-                <ul >
-                  <li>
-                    <div class="percent-box">
-                          <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
-                          <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
-                      </div>
-                  </li>
-                </ul>
+            <div class="new-task-header">
+              <div class="new-task-inner">
+                  <h4 class="h-title h-new-title icon-tips">
+                    <p class="h-subtitle">
+                      <img src="./images/xr-icon.png" class="xr-icon">
+                      <img src="./images/small-xs-tips.png" class="small-xs-tips">
+                    </p>
+                    <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
+                  </h4>
+                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
+                      <ul >
+                        <li class="percent-lq">
+                          <div class="percent-box">
+                                <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
+                                <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
+                            </div>
+                            <!-- <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span> -->
+                        </li>
+                      </ul>
+                  </div>
+                   <div class="newTask" v-else>恭喜！新人任务已全部完成！</div>
+               </div>
             </div>
-            <div class="newTask" v-else>恭喜！新人任务已全部完成！</div>
+           
             <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
               <ul class="t-items">
                 <li >
@@ -93,6 +76,37 @@
               </ul>
             </div>
         </div>
+
+ 
+
+        <div v-if="currentGamesItems&&currentGamesItems.length">
+          <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+          <ul class="t-items">
+            <li v-for="item in currentGamesItems">
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                  </div>
+                </div>
+              </div>
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        
 
         
         
@@ -149,11 +163,12 @@
       }
     },
     mounted() {
+      
       if(parent.loadTaksPage) {
         parent.loadTaksPage()
       }
       this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
-      this.channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
+      this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
 
       localStorage.setItem('ACCESS_TOKEN', this.token)
       localStorage.setItem('APP_CHANNEL', this.channel)
@@ -228,7 +243,7 @@
       getUrlParam: function (ename) {
           var url = window.location.href;
           var Request = new Object();
-          if (url.indexOf("?") != -1) {
+          if (url && url.indexOf("?") != -1) {
               var str = url.split('?')[1];
               var strs = str.split("&");
               for (var i = 0; i < strs.length; i++) {
@@ -262,19 +277,21 @@
             // 跳转商城
             if (gameType == 0 && actionsArr.includes(action)) {
                 parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+                return
             }
             // 跳平台(关闭)
             if (gameType == 0 && action == 2) {
                 parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                return
             }
 
             // 球酷
-            if (url.indexOf('databiger-h5') != -1) {
+            if (url && url.indexOf('databiger-h5') != -1) {
                 let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
                 return parent.location.href = gameUrl
             }
             //其他外接游戏external=1
-            if (url.indexOf('external=1') != -1) {
+            if (url && url.indexOf('external=1') != -1) {
                 let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
                 return parent.location.href = gameUrl
             }
@@ -343,11 +360,12 @@
           value: 'dayTask'
         }).then((res)=> {
           if(res.data.code == 200) {
+
             this.currentGamesItems = res.data.data.filter((item)=> {
-              return item.gameType == this.getUrlParam('gametype')
+              return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
             })
             this.otherGamesItems = res.data.data.filter((item)=> {
-              return item.gameType != this.getUrlParam('gametype')
+              return (item.gameType != this.getUrlParam('gametype') && item.taskStatus != 2)
             })
 
           }
