@@ -39,15 +39,15 @@
         left: 0;
         top: 0;
         z-index: 100;
-        background: url('./images/bg.png') no-repeat;
+        background: url('images/bg.png') no-repeat;
         background-size: 100% 100%;
         .btn{
             position: absolute;
-            top: 10.99rem;
+            bottom:1.01rem ;
             left: .69rem;
             width:5.78rem;
             height:.8rem;
-            background: url('./images/bottom_btn.png') no-repeat;
+            background: url('images/bottom_btn.png') no-repeat;
             background-size: 100% 100%;
             text-align: center;
             line-height: .8rem;
