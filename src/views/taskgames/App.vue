@@ -26,7 +26,7 @@
                                 <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
                                 <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
                             </div>
-                            <!-- <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span> -->
+                            <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span>
                         </li>
                       </ul>
                   </div>
@@ -283,6 +283,12 @@
             if (gameType == 0 && action == 2) {
                 parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
                 return
+            }
+            // 跳转固定入口
+            if(url && url.indexOf('?fixedEntry') != -1) {
+                let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
+                window.location.href = url1;
+                return;
             }
 
             // 球酷
