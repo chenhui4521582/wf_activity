@@ -1,5 +1,9 @@
 <template>
     <div id="app">
+        <div  v-show="isWx">
+            <img src="./images/background.png" class="wx-mask">
+            <img src="./images/arrow.png" class="arrow">
+        </div>
         <div class="btn" @click="download">立即安装</div>
     </div>
 </template>
@@ -10,8 +14,14 @@
     import API from '../../api';
     export default {
         name: 'app',
+        data() {
+            return {
+                isWx: false
+            }
+        },
         methods: {
             download(){
+                
                 GLOBALS.buriedPoint(1207002404,'H5平台-下载引导页加载-立即安装');
                 var u = navigator.userAgent;
                 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
@@ -20,10 +30,24 @@
                    window.location.href='https://wap.beeplay123.com/m/baohaowan/app-baohaowan-release.apk'
                 }else{
                     window.location.href='itms-services:///?action=download-manifest&url=https://wap.beeplay123.com/m/baohaowan/bhw.plist'
+                    setTimeout(()=> {
+                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html'
+                    }, 3000)
+                }
+            },
+            isWeixn() {
+                var ua = navigator.userAgent.toLowerCase();
+                if(ua.match(/MicroMessenger/i) == "micromessenger") {
+                    return true;
+                } else {
+                    return false;
                 }
             }
         },
         mounted(){
+            if(this.isWeixn()) {
+                this.isWx = true;
+            }
             GLOBALS.buriedPoint(1207002403,'H5平台-下载引导页加载');
         }
     }
@@ -31,7 +55,22 @@
 
 <style lang="less" scoped>
     @import '../../common/css/base.css';
-
+    .wx-mask {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 10;
+    }
+    .arrow {
+        width: 1.51rem;
+        height: 1.26rem;
+        position: absolute;
+        right: 0.05rem;
+        top: 0.06rem;
+        z-index: 11;
+    }
     #app {
         width: 100%;
         height: 100%;
