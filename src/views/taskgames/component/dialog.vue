@@ -1,60 +1,62 @@
 <template>
-    <div>
-        <div class="mask"></div>1111111111111111111
-        <img class="shine"  src="../img/dialog/shine.png" alt="">
-        <!-- <div class="content-box">
-            <img class="bg" src="../img/dialog/bg.png" alt="">
-            <div class="content" >
+    <main>
+        <div class="mask"></div>
+        <img class="shine" src="../img/dialog/shine.png" alt="">
+        <div class="content-box">
+            <img class="bg no-process" src="../img/dialog/bg.png">
+            <div class="content">
                 <img class="title" src="../img/dialog/congratulations-text.png" alt="">
-                <div class="icon" v-if="taskview.receiveData.awardsImage">
-                    <img   class="hb-icon" src="../img/dialog/leaf.png" alt=""  v-show="isSignPart">
-                    <img :src="taskview.receiveData.awardsImage | filter" alt=""  v-show="!isSignPart">
+                    <!-- 糖果勋章 -->
+                <div v-if="receiveData.showMedalImg" class="crush-wrap">
+                    <img class="medeal-icon" :src="receiveData.medalimg">
                 </div>
                 <img v-else  class="hb-icon" src="../img/dialog/leaf.png" alt="">
-                <p class="num">10话费</p>
+                <p class="num">{{receiveData.awardsName}}</p>
+            </div>
                 
-                <div class="text progress">
-                    <p>任务进度</p>
-                    <div class="progress-bg">
-                        <div class="progress-bar"></div>
-                        <span>1/10</span>
-                    </div>
-                </div>
-                <div class="close" @click="close">朕收下了</div>
-            </div> -->
-            <!-- <div class="content" >
-                <img class="title" src="../img/dialog/new-user-task-text.png" alt="">
-                <img class="hb-icon" src="../img/dialog/hb-icon.png" alt="">
-                <p class="num">30元话费</p>
-                <div class="text">完成新人任务即可获得话费</div>
-                <div class="close" @click="close">朕知道了</div>
-            </div> -->
+            <div class="close" @click="close">朕收下了</div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>
+    import { mapState, mapActions, mapMutations } from 'vuex'
     export default {
-        computed:{
-        },
+        
         props: {
-            
+            receiveData: {
+                default: false
+            },
         },
         methods:{
+            ...mapMutations({
+                setDialog:'taskview/SET_SHOW_DIALOG'
+            }),
             close () {
+                let index = this.receiveData.index,curTaskList = this.taskview.crushTaskList.allTask[index]
+                if(this.receiveData.showMedalImg){
+                    this.$emit('showMedalPop','change')
+                }else if(this.receiveData.awardsFlag == 'mother_crush_task'){
+                    this.$emit('showMedalPop')
+                }else if(curTaskList && curTaskList.parentTask.taskStatus == 1){
+                    this.$emit('showMedalPop','showMedalAnimate')
+                }
                 this.setDialog(false)
             }
         },
         mounted() {
-            console.log('000000000000000000')
-            alert(0)
         },
     }
 </script>
-
 <style lang='less' scoped>
     * {
         box-sizing: border-box;
+    }
+    .medeal-icon{
+        width: 1.49rem;
+        height: 1.98rem;
+        margin: .15rem auto 0;
+        display: block;
     }
     .shine{
         position: fixed;
@@ -65,6 +67,31 @@
         margin-left: -65%;
         animation: rotate 2s linear infinite;
     }
+    .no-process{height: 5.3rem ;}
+    
+    .shine-box {
+        width: 100%;
+        position: absolute;
+        top: 5%;
+        left: 0%;
+        z-index: 6;
+        overflow: hidden;
+    }
+
+    @keyframes rotate{
+      from{transform:  rotate(0);}
+      to{transform:  rotate(360deg);}
+    }
+    .mask {
+    	width: 100%;
+    	height: 100%;
+    	position: fixed;
+    	left: 0;
+    	top: 0;
+    	background: #000;
+    	opacity: 0.6;
+    	z-index: 5;
+    }
     .content-box{
         position: absolute;
         width: 80%;
@@ -74,6 +101,7 @@
         z-index: 7;
         -webkit-transform: scale(0.8);
         transform: scale(0.8);
+        
         .bg{
             width: 100%;
             display: block;
@@ -120,7 +148,7 @@
                 margin-top: 3%;
             }
             .text{
-                font-size: 16px;
+                font-size: 14px;
                 text-align: center;
                 margin-top: 6%;
                 &.progress{
@@ -158,18 +186,22 @@
                     }
                 }
             }
-            .close{
-                color: #A34C00;
-                font-size: .28rem;
-                background: #FFCF52;
-                width: 50%;
-                font-weight: bold;
-                margin: 0 auto;
-                text-align: center;
-                margin-top: 10%;
-                padding: 3.5% 0;
-                border-radius: 6px;
-            }
+            
+        }
+        .close{
+            color: #A34C00;
+            font-size: 14px;
+            background: #FFCF52;
+            width: 50%;
+            font-weight: bold;
+            margin: 0 auto;
+            text-align: center;
+            position: absolute;
+            left:50%;
+            margin-left:-25%;
+            bottom: 11%;
+            padding: 3.5% 0;
+            border-radius: 6px;
         }
     }
 </style>
