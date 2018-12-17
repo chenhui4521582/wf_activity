@@ -4,8 +4,20 @@
         <div class="shine-box">
             <img class="shine"  src="./img/dialog/shine.png" alt="">
         </div>
-        
-        <div class="content-box" >
+        <div class="content-box master-box" v-if="masterTask">
+            <img class="bg no-process" src="./img/dialog/bg.png">
+            <div class="content" :class="{'big':awardItem.showMedalImg}">
+                <img class="title" src="./img/dialog/congratulations-text.png" alt="">
+                    <!-- 糖果勋章 -->
+                <div v-if="awardItem.showMedalImg" class="crush-wrap">
+                    <img class="medeal-icon" :src="awardItem.medalimg">
+                </div>
+                <img v-else  class="hb-icon" src="./img/crushMasterTask/task_huafei.png" alt="">
+                <p class="num">{{awardItem.awardsName}}</p>
+                <div class="close" @click="close">朕收下了</div>
+            </div>
+        </div>
+        <div class="content-box" v-else >
             <img class="bg" src="./img/dialog/bg.png" alt="">
             <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
                 <img class="title" src="./img/dialog/congratulations-text.png" alt="">
@@ -42,16 +54,30 @@
 			},
 			newTaskItems: {
 				default: null
-			},
+            },
+            crushTaskList: {
+				default: null
+            },
 			isNewTask: {
 				default: false
-			}
+            },
+            masterTask : {
+				default: false
+            },
 		},
 		mounted() {
-
+            
 		},
 		methods: {
 			close(){
+                let index = this.awardItem.index,curTaskList = this.crushTaskList.allTask[index]
+                if(this.awardItem.showMedalImg){
+                    this.$emit('close','change')
+                }else if(this.awardItem.awardsFlag == 'mother_crush_task'){
+                    this.$emit('close','showReceiveMedal')
+                }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
+                    this.$emit('close','showMedalAnimate')
+                }
 				this.$emit('close')
 			}
 		}
@@ -59,6 +85,21 @@
 </script>
 
 <style lang='less' scoped>
+    .crush-wrap{
+        margin: .4rem auto;
+        width: 2.23rem;
+        height: 2.3rem;
+        text-align: center;
+        background: #da4027;
+        border-radius: .08rem;
+        border: .01rem solid #fff;
+    }
+    .medeal-icon{
+        width: 1.49rem;
+        height: 1.98rem;
+        margin: .15rem auto 0;
+        display: block;
+    }
     * {
         box-sizing: border-box;
     }
@@ -113,6 +154,7 @@
             padding: 10% 2%;
             padding-bottom: 8%;
             height: 100%;
+            &.big{padding: 8% 2%;.close{margin-top: 7% !important;}}
             .title{
                 height: 24px;
                 display: block;
@@ -197,6 +239,7 @@
                 margin-top: 10%;
                 padding: 3.5% 0;
                 border-radius: 6px;
+                
             }
         }
     }
