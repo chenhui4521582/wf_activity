@@ -7,8 +7,8 @@
                    <img src="../img/crushMasterTask/chengjiu_title.png" alt="">
                </span>
                <span>
-                   <i>全部完成奖励</i><br>
-                   <i><em>100</em>元京东卡</i>
+                   <i>全部完成共得</i><br>
+                   <i><em>505</em>元奖励</i>
                </span>
            </p>
            <div class="probar-ball">
@@ -58,7 +58,7 @@
             <div class="medals-lock unlock" v-if="isShowMasterUnlocked ">
                 <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
                 <img :src="imgPath(currentMedalList.medealIng)" class="medeal">
-                <p>解锁前提条件<br>获得“{{currentMedalList.name.split('-')[0]}}”称号</p>
+                <p>解锁前提条件<br>获得“{{medalList[currentMedalList.index-1].name.split('-')[0]}}”称号</p>
             </div>
        </div>
        <div class="medal-wrap">
@@ -234,6 +234,7 @@ export default {
             this.sethighLight(value)
             console.log('切换勋章tab---'+value.name+'--勋章tab母任务状态---'+status);
             this.currentMedalList = value 
+            this.checkFinishedList(index)
             // 未解锁勋章逻辑  前一任务未完成  即taskstatus=1
             if(index >0 && currentStatus == 1){// 
                 this.showUnLockedMedal()
@@ -253,6 +254,20 @@ export default {
                 }
             }
             this.checkMedalStatus(index,medalNum,'Medal')
+        },
+        checkFinishedList(i){
+            let currentTask = this.crushTaskList.allTask[i],
+                currentLength = currentTask.subListA.length + currentTask.subListB.length,
+                finishLength = 0
+            currentTask.subListA.map(item => {
+                item.taskStatus == 2 ? finishLength += 1 : ''
+            })
+            currentTask.subListB.map(item => {
+                item.taskStatus == 2 ? finishLength += 1 : ''
+            })
+            
+            this.crushTaskList.finishLength = finishLength
+            this.crushTaskList.currentLength = currentLength
         },
         // 显示勋章类型图片
         checkMedalStatus(index,medalNum,medalName,nextList){

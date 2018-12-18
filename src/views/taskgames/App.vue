@@ -78,7 +78,7 @@
         </div>
 
         <!-- 糖果大师任务 -->
-        <crush-master-task v-if="crushTaskList && crushTaskList.hasFinishedTask < crushTaskList.totalTask && !newTaskItems.isNew"
+        <crush-master-task v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
         :crushTaskList="crushTaskList" @receive="receive" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" 
         :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false"></crush-master-task>
                         totalTask
@@ -392,7 +392,7 @@
                         this.masterTask = true
                         this.currentMedalImg = medalimg
                         this.currentMedalIndex = index
-                        if(index < 3) this.getCrushTask()
+                        this.getCrushTask()
                         break
                     default:
                         item.taskStatus = 2
