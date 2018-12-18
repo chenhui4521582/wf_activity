@@ -71,7 +71,7 @@
 		methods: {
 			close(){
                 let index = this.awardItem && this.awardItem.index,
-                    curTaskList = index && this.crushTaskList.allTask[index]
+                    curTaskList = this.crushTaskList.allTask[index]
                 if(this.awardItem.showMedalImg){
                     this.$emit('close','change')
                 }else if(this.awardItem.awardsFlag == 'mother_crush_task'){
