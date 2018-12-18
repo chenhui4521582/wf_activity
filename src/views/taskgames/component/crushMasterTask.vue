@@ -309,6 +309,7 @@ export default {
         },
         showMedalAnimate(newIndex, oldIndex){
             if(newIndex){
+                this.checkFinishedList(this.currentMedalIndex)
                 this.checkMedalStatus(this.currentMedalIndex,3)
                 this.checkMedalStatus(this.currentMedalIndex+1,2,'',this.medalList[this.currentMedalIndex+1])
                 this.showReceiveAward()

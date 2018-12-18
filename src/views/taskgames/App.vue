@@ -81,7 +81,6 @@
         <crush-master-task v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
         :crushTaskList="crushTaskList" @receive="receive" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" 
         :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false"></crush-master-task>
-                        totalTask
         <div v-if="currentGamesItems&&currentGamesItems.length">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
@@ -247,10 +246,13 @@
             if(item.taskStatus == 0){
                 this.receive(item,type,index)
             }else if(item.taskStatus == 1){
-                this.goFinish(item, type)
+                this.goFinishs(item,type)
             }
         },
-        goFinishs() {
+        goFinishs({gameType, url, action, taskId},type) {
+            if(type == 'crush_task' || type == 'mother_crush_task'){
+                GLOBALS.buriedPoint(1210040825, 'H5平台-游戏内成就任务页-去完成', gameType,null,{taskId:taskId}) //事件ID 事件名称 游戏ID 游戏位置
+            }
             if(parent.closeTaksPage) {
                 parent.closeTaksPage()
             }
@@ -275,16 +277,13 @@
         },
         goFinish({gameType, url, action, taskId},type) {
             let actionsArr = [39,35,34,32]
-            if(type == 'crush_task' || type == 'mother_crush_task'){
-                GLOBALS.buriedPoint(1210040825, 'H5平台-游戏内成就任务页-去完成', gameType,null,{taskId:taskId}) //事件ID 事件名称 游戏ID 游戏位置
-            }else{
-                GLOBALS.thirdSetsPoint({
-                    "event_name": "游戏内任务-去完成",
-                    "task_id": taskId,
-                    "event_id": 1210040803,
-                    "project_id": gameType
-                })
-            }
+            GLOBALS.thirdSetsPoint({
+                "event_name": "游戏内任务-去完成",
+                "task_id": taskId,
+                "event_id": 1210040803,
+                "project_id": gameType
+            })
+            
 
             setTimeout(() => {
 
