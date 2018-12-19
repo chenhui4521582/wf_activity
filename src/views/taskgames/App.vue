@@ -164,7 +164,8 @@
             showReceiveMedal :false,
             showMedalAnimate :false,
             currentMedalIndex : 0,
-            receiveData : null
+            receiveData : null,
+            masterTask : false
         }
     },
     mounted() {
