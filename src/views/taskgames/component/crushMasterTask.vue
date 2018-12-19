@@ -303,6 +303,7 @@ export default {
         medalList(newIndex, oldIndex){},
         showReceiveMedal(newIndex, oldIndex){
             if(newIndex){
+                this.checkFinishedList(this.currentMedalIndex)
                 this.checkMedalStatus(this.currentMedalIndex,2,'Medal')
                 this.showReceivedMedal()
             }
