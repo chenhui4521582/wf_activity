@@ -323,7 +323,7 @@ export default {
 div{box-sizing: border-box}
 .master-task-list{
     background: #203252;
-    padding: 3%;
+    padding: 4% 3%;
     >li{
         display: flex;
         justify-content: space-between;
@@ -348,8 +348,8 @@ div{box-sizing: border-box}
             align-items: center;
             width: 80%;
             .head-img{
-                width: 44px;
-                height: 44px;
+                width: .6rem;
+                height: .6rem;
                 border-radius: 6px;
                 overflow: hidden;
                 margin-right: 3%;
@@ -360,7 +360,7 @@ div{box-sizing: border-box}
             }
             .content{
                 >p{
-                    font-size: 14px;
+                    font-size: .23rem;
                     font-weight: bold;
                     margin-bottom: 5%;
                 }
@@ -370,11 +370,12 @@ div{box-sizing: border-box}
 
                     .num{
                         img{
-                            height: 12px;
+                            width: .32rem;
+                            height: .23rem;
                             display: inline;
                         }
                         span{
-                            font-size: 12px;
+                            font-size: .2rem;
                             color: #FFD338;
                         }
                     }
@@ -384,7 +385,7 @@ div{box-sizing: border-box}
         .btn{
             color: #fff;
             font-weight: bold;
-            font-size: 12px;
+            font-size: .2rem;
             background: #EE6F0B;
             padding:2% 4%;
             border-radius: 4px;
@@ -576,13 +577,13 @@ div{box-sizing: border-box}
     }
     .master-task-list{
         background: #232432;
-        height: 2rem;
+        height: 1.8rem;
         >li:not(:last-child){
             border-bottom: 1px solid #383A58;
         }
     }
     .medal-wrap{
-        padding: 0 .2rem;
+        padding: 0 3%;
         width: 100%;
         height: 1.15rem;
         background: url(../img/crushMasterTask/master_bottom.png) no-repeat;
@@ -593,7 +594,8 @@ div{box-sizing: border-box}
                 float: left;
                 width: .99rem;
                 height: 1.15rem;
-                padding: .2rem .1rem;
+                text-align: center;
+                padding: .2rem 0;
                 box-sizing: border-box;
                 &:not(:last-child){
                     margin-right: .34rem;
