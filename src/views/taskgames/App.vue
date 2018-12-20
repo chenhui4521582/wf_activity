@@ -80,7 +80,8 @@
         <!-- 糖果大师任务 -->
         <crush-master-task v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
         :crushTaskList="crushTaskList" @receive="receive" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" 
-        :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false"></crush-master-task>
+        :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false"
+        @refreshTask="refreshTask"></crush-master-task>
         <div v-if="currentGamesItems&&currentGamesItems.length">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
@@ -328,10 +329,13 @@
         },
         closePopLog(val) {
             this.showMedalAnimate = false
+            this.showReceiveMedal = false
             this.isPopLog = false
             if(val == 'change'){
                 // 显示获得勋章页
-                this.showReceiveMedal = true
+                setTimeout(() => {
+                    this.showReceiveMedal = true
+                }, 0);
             }else if(val == 'showMedalAnimate'){
                 setTimeout(() => {
                     this.showMedalAnimate = true
@@ -347,6 +351,9 @@
                 }, 0);
             }
             
+        },
+        refreshTask(index,type){
+            this.getCrushTask(index,type)
         },
         receive(item, type,index,medalimg) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
@@ -392,7 +399,7 @@
                         this.masterTask = true
                         this.currentMedalImg = medalimg
                         this.currentMedalIndex = index
-                        if(type != 'mother_crush_task') this.getCrushTask(this.currentMedalIndex)
+                        this.getCrushTask(this.currentMedalIndex)
                         break
                     default:
                         item.taskStatus = 2
@@ -451,23 +458,31 @@
             })
             
         },
-        async getCrushTask(finishindex){
+        async getCrushTask(finishindex,type){
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:'crush-achievement'})
             if(data.code == 200){
-
-                    let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex
-                    currentParentTask = crushList.find((item,index) =>{
-                        if(index < 3){
-                            // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                            if(finishindex && crushList[finishindex].parentTask.taskStatus == 0){
-                                return item.parentTask.taskStatus == 0
+                    let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
+                        finishStatus = finishindex >= 0 ? crushList[finishindex].parentTask.taskStatus : -1,
+                        curType = type && type == 'checkMode'
+                    if(curType){
+                        currentParentTask = crushList[finishindex]
+                    }else{
+                        currentParentTask = crushList.find((item,index) =>{
+                            if(index < 3){
+                                // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                                if(finishStatus == 0){
+                                    return item.parentTask.taskStatus == 0
+                                }else if(finishStatus == 2){
+                                    return item.parentTask.taskStatus == 2
+                                }else{
+                                    return item.parentTask.taskStatus == 1 
+                                }
                             }else{
-                                return item.parentTask.taskStatus == 1 
+                                return crushList[index]
                             }
-                        }else{
-                            return crushList[index]
-                        }
-                    })
+                        })
+                    }
+                    
 
                     crushList.map((item,index) =>{
                         if(item && item.parentTask.taskName == currentParentTask.parentTask.taskName){

@@ -98,11 +98,10 @@ export default {
             isShowList : true,//是否显示任务列表
             flag :1,
             changeAnimation : false,
+            isMotherType : true
         }
     },
     beforeMount(){
-        console.log(this.crushTaskList );
-        
         this.medalList = masterData.medalList
         //taskStatus 0 已完成未领取 1 去完成 2 已领取
         // 判断当前是第几个母任务类型;
@@ -230,12 +229,11 @@ export default {
             let index = value.index,
                 currentStatus = index>0 && this.crushTaskList.allTask[index-1].parentTask.taskStatus,medalNum,
                 status = this.crushTaskList.allTask[index].parentTask.taskStatus
-            this.checkFinishedList(index,this.showMedalAnimate)
+            this.checkFinishedList(index,'checkMode')
             this.$emit('hideMedalAnimate')
             this.sethighLight(value)
             console.log('切换勋章tab---'+value.name+'--勋章tab母任务状态---'+status);
             this.currentMedalList = value 
-            this.checkFinishedList(index)
             // 未解锁勋章逻辑  前一任务未完成  即taskstatus=1
             if(index >0 && currentStatus == 1){// 
                 this.showUnLockedMedal()
@@ -256,24 +254,8 @@ export default {
             }
             this.checkMedalStatus(index,medalNum,'Medal')
         },
-       checkFinishedList(i,val){
-            if(val){
-                this.getCrushTaskList({
-                    body:{value:'crush-achievement'},
-                })
-            }
-            let currentTask = this.crushTaskList.allTask[i],
-                currentLength = currentTask.subListA.length + currentTask.subListB.length,
-                finishLength = 0
-            currentTask.subListA.map(item => {
-                item.taskStatus == 2 ? finishLength += 1 : ''
-            })
-            currentTask.subListB.map(item => {
-                item.taskStatus == 2 ? finishLength += 1 : ''
-            })
-            
-            this.crushTaskList.finishLength = finishLength
-            this.crushTaskList.currentLength = currentLength
+       checkFinishedList(i,type){
+            this.$emit('refreshTask',i,type)
         },
         // 显示勋章类型图片
         checkMedalStatus(index,medalNum,medalName,nextList){
@@ -301,6 +283,7 @@ export default {
         },
         // 领取奖励
         receive(item,type){
+            this.isMotherType = true
             this.checkMedalStatus(item.index,2,'Medal')
             this.$emit('receive',this.crushTaskList.allTask[item.index].parentTask,'mother_crush_task',item.index,this.imgPath(item.medealIng))
         }
