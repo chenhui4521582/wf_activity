@@ -329,10 +329,13 @@
         },
         closePopLog(val) {
             this.showMedalAnimate = false
+            this.showReceiveMedal = false
             this.isPopLog = false
             if(val == 'change'){
                 // 显示获得勋章页
-                this.showReceiveMedal = true
+                setTimeout(() => {
+                    this.showReceiveMedal = true
+                }, 0);
             }else if(val == 'showMedalAnimate'){
                 setTimeout(() => {
                     this.showMedalAnimate = true
@@ -349,8 +352,8 @@
             }
             
         },
-        refreshTask(index){
-            this.getCrushTask(index)
+        refreshTask(index,type){
+            this.getCrushTask(index,type)
         },
         receive(item, type,index,medalimg) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
@@ -455,26 +458,31 @@
             })
             
         },
-        async getCrushTask(finishindex){
+        async getCrushTask(finishindex,type){
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:'crush-achievement'})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = finishindex >= 0 ? crushList[finishindex].parentTask.taskStatus : -1
-                        
-                    currentParentTask = crushList.find((item,index) =>{
-                        if(index < 3){
-                            // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                            if(finishStatus == 0){
-                                return item.parentTask.taskStatus == 0
-                            }else if(finishStatus == 2){
-                                return item.parentTask.taskStatus == 2
+                        finishStatus = finishindex >= 0 ? crushList[finishindex].parentTask.taskStatus : -1,
+                        curType = type && type == 'checkMode'
+                    if(curType){
+                        currentParentTask = crushList[finishindex]
+                    }else{
+                        currentParentTask = crushList.find((item,index) =>{
+                            if(index < 3){
+                                // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                                if(finishStatus == 0){
+                                    return item.parentTask.taskStatus == 0
+                                }else if(finishStatus == 2){
+                                    return item.parentTask.taskStatus == 2
+                                }else{
+                                    return item.parentTask.taskStatus == 1 
+                                }
                             }else{
-                                return item.parentTask.taskStatus == 1 
+                                return crushList[index]
                             }
-                        }else{
-                            return crushList[index]
-                        }
-                    })
+                        })
+                    }
+                    
 
                     crushList.map((item,index) =>{
                         if(item && item.parentTask.taskName == currentParentTask.parentTask.taskName){

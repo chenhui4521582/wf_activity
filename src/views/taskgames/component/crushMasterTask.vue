@@ -229,7 +229,7 @@ export default {
             let index = value.index,
                 currentStatus = index>0 && this.crushTaskList.allTask[index-1].parentTask.taskStatus,medalNum,
                 status = this.crushTaskList.allTask[index].parentTask.taskStatus
-            this.checkFinishedList(index,this.isMotherType)
+            this.checkFinishedList(index,'checkMode')
             this.$emit('hideMedalAnimate')
             this.sethighLight(value)
             console.log('切换勋章tab---'+value.name+'--勋章tab母任务状态---'+status);
@@ -254,23 +254,8 @@ export default {
             }
             this.checkMedalStatus(index,medalNum,'Medal')
         },
-       checkFinishedList(i,val){
-            if(val){
-                this.isMotherType = false
-                this.$emit('refreshTask',i)
-            }
-            let currentTask = this.crushTaskList.allTask[i],
-                currentLength = currentTask.subListA.length + currentTask.subListB.length,
-                finishLength = 0
-            currentTask.subListA.map(item => {
-                item.taskStatus == 2 ? finishLength += 1 : ''
-            })
-            currentTask.subListB.map(item => {
-                item.taskStatus == 2 ? finishLength += 1 : ''
-            })
-            
-            this.crushTaskList.finishLength = finishLength
-            this.crushTaskList.currentLength = currentLength
+       checkFinishedList(i,type){
+            this.$emit('refreshTask',i,type)
         },
         // 显示勋章类型图片
         checkMedalStatus(index,medalNum,medalName,nextList){
