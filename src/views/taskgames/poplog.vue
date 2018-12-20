@@ -4,15 +4,18 @@
         <div class="shine-box">
             <img class="shine"  src="./img/dialog/shine.png" alt="">
         </div>
-        <div class="content-box master-box" v-if="masterTask">
-            <img class="bg no-process" src="./img/dialog/bg.png">
-            <div class="content" :class="{'big':awardItem.showMedalImg}">
+        <div class="content-box" v-if="masterTask">
+            <img class="bg" src="./img/dialog/bg.png">
+            <div class="content">
                 <img class="title" src="./img/dialog/congratulations-text.png" alt="">
                     <!-- 糖果勋章 -->
                 <div v-if="awardItem.showMedalImg" class="crush-wrap">
                     <img class="medeal-icon" :src="awardItem.medalimg">
                 </div>
-                <img v-else  class="hb-icon" src="./img/crushMasterTask/task_huafei.png" alt="">
+                <div class="icon" v-else>
+                    <img class="hb-icon" src="./img/crushMasterTask/task_huafei.png" alt="">
+                </div>
+                
                 <p class="num">{{awardItem.awardsName}}</p>
                 <div class="close" @click="close">朕收下了</div>
             </div>
@@ -22,7 +25,7 @@
             <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
                 <img class="title" src="./img/dialog/congratulations-text.png" alt="">
                 <div class="icon" >
-                    <img   class="hb-icon" :src="awardItem.awardsImage" alt=""  >
+                    <img class="hb-icon" :src="awardItem.awardsImage" alt=""  >
                 </div>
                 <p class="num">{{awardItem.awardsName}}</p>
                 
@@ -72,9 +75,9 @@
 			close(){
                 let index = this.awardItem && this.awardItem.index,
                     curTaskList = this.crushTaskList.allTask[index]
-                if(this.awardItem.showMedalImg){
+                if(this.awardItem && this.awardItem.showMedalImg){
                     this.$emit('close','change')
-                }else if(this.awardItem.awardsFlag == 'mother_crush_task'){
+                }else if(this.awardItem && this.awardItem.awardsFlag == 'mother_crush_task'){
                     this.$emit('close','showReceiveMedal')
                 }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
                     this.$emit('close','showMedalAnimate')
@@ -155,7 +158,6 @@
             padding: 10% 2%;
             padding-bottom: 8%;
             height: 100%;
-            &.big{padding: 8% 2%;.close{margin-top: 7% !important;}}
             .title{
                 height: 24px;
                 display: block;

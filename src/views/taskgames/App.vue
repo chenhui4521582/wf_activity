@@ -392,7 +392,7 @@
                         this.masterTask = true
                         this.currentMedalImg = medalimg
                         this.currentMedalIndex = index
-                        this.getCrushTask()
+                        if(type != 'mother_crush_task') this.getCrushTask(this.currentMedalIndex)
                         break
                     default:
                         item.taskStatus = 2
@@ -451,25 +451,29 @@
             })
             
         },
-        async getCrushTask(){
+        async getCrushTask(finishindex){
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:'crush-achievement'})
             if(data.code == 200){
+
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex
                     currentParentTask = crushList.find((item,index) =>{
                         if(index < 3){
-                            return item.parentTask.taskStatus == 1 
+                            // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                            if(finishindex && crushList[finishindex].parentTask.taskStatus == 0){
+                                return item.parentTask.taskStatus == 0
+                            }else{
+                                return item.parentTask.taskStatus == 1 
+                            }
                         }else{
-                            return data.data.list[index]
+                            return crushList[index]
                         }
                     })
-                    
+
                     crushList.map((item,index) =>{
                         if(item && item.parentTask.taskName == currentParentTask.parentTask.taskName){
                             currentIndex = index
                         }
                     })
-                    
-
                     let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
                         finishLength = 0
                     currentParentTask.subListA.map(item => {
