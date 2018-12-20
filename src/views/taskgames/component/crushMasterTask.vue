@@ -227,10 +227,11 @@ export default {
         },
         // 点击切换显示勋章内容（已获得 未解锁 进行中）
         checkMedals(value){
-            this.$emit('hideMedalAnimate')
             let index = value.index,
                 currentStatus = index>0 && this.crushTaskList.allTask[index-1].parentTask.taskStatus,medalNum,
                 status = this.crushTaskList.allTask[index].parentTask.taskStatus
+            this.checkFinishedList(index,this.showMedalAnimate)
+            this.$emit('hideMedalAnimate')
             this.sethighLight(value)
             console.log('切换勋章tab---'+value.name+'--勋章tab母任务状态---'+status);
             this.currentMedalList = value 
@@ -255,7 +256,12 @@ export default {
             }
             this.checkMedalStatus(index,medalNum,'Medal')
         },
-        checkFinishedList(i){
+       checkFinishedList(i,val){
+            if(val){
+                this.getCrushTaskList({
+                    body:{value:'crush-achievement'},
+                })
+            }
             let currentTask = this.crushTaskList.allTask[i],
                 currentLength = currentTask.subListA.length + currentTask.subListB.length,
                 finishLength = 0
