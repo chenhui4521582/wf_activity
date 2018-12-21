@@ -73,14 +73,16 @@
 		},
 		methods: {
 			close(){
-                let index = this.awardItem && this.awardItem.index,
-                    curTaskList = this.crushTaskList.allTask[index]
-                if(this.awardItem && this.awardItem.showMedalImg){
-                    this.$emit('close','change')
-                }else if(this.awardItem && this.awardItem.awardsFlag == 'mother_crush_task'){
-                    this.$emit('close','showReceiveMedal')
-                }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
-                    this.$emit('close','showMedalAnimate')
+                if(this.masterTask){
+                    let index = this.awardItem && this.awardItem.index,
+                        curTaskList = this.crushTaskList.allTask[index]
+                    if(this.awardItem && this.awardItem.showMedalImg){
+                        this.$emit('close','change')
+                    }else if(this.awardItem && this.awardItem.awardsFlag == 'mother_crush_task'){
+                        this.$emit('close','showReceiveMedal')
+                    }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
+                        this.$emit('close','showMedalAnimate')
+                    }
                 }
 				this.$emit('close')
 			}
