@@ -25,7 +25,7 @@ axios.interceptors.request.use(function (config) {
     }
     
 
-    localStorage.setItem('APP_VERSION','2.9.4.1')
+    config.headers['App-Version'] = '1.0.0';
     return config;
 }, function (error) {
     // 对请求错误做些什么

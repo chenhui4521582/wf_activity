@@ -19,9 +19,9 @@ localStorage.setItem('APP_CHANNEL',channel)
 
 
 if(localStorage.getItem('APP_CHANNEL') == '100001') {
-    localStorage.setItem('APP_VERSION','2.9.4.1')
+    localStorage.setItem('APP_VERSION','1.0.0')
 }else {
-    localStorage.setItem('APP_VERSION','3.0.0.0')
+    localStorage.setItem('APP_VERSION','1.0.0')
 }
 
 

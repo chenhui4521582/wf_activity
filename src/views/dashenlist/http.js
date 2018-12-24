@@ -10,7 +10,7 @@ import Vue from 'vue'
 axios.defaults.timeout = 5000;
 
 
-localStorage.setItem('APP_VERSION', '3.0.0.0')
+localStorage.setItem('APP_VERSION', '1.0.0')
 
 
 // 添加请求拦截器
@@ -18,7 +18,7 @@ axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
     config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
     config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
-    config.headers['App-Version'] = '3.0.0.0';
+    config.headers['App-Version'] = '1.0.0';
     return config;
 }, function (error) {
     // 对请求错误做些什么
