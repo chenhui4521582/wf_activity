@@ -166,7 +166,8 @@
             showMedalAnimate :false,
             currentMedalIndex : 0,
             receiveData : null,
-            masterTask : false
+            masterTask : false,
+            currentGameType : 0
         }
     },
     mounted() {
@@ -175,7 +176,7 @@
       }
       this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
       this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
-
+      this.currentGameType = this.getUrlParam('gametype')
       localStorage.setItem('ACCESS_TOKEN', this.token)
       localStorage.setItem('APP_CHANNEL', this.channel)
 
@@ -183,7 +184,7 @@
       this.getDayTask()
       this.getNewTask()
       this.getPhoneFragment()
-      if(this.getUrlParam('gametype') == 12) this.getCrushTask()
+      if(this.currentGameType == 12) this.getCrushTask()
     },
     computed: {
       // 子任务
@@ -278,15 +279,17 @@
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
         goFinish({gameType, url, action, taskId},type) {
+            
             let actionsArr = [39,35,34,32]
             GLOBALS.thirdSetsPoint({
                 "event_name": "游戏内任务-去完成",
                 "task_id": taskId,
                 "event_id": 1210040803,
-                "project_id": gameType
+                "project_id": this.currentGameType,//当前游戏ID
+                "target_project_id" : gameType//跳转到的游戏ID
             })
-            
 
+            
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
@@ -307,7 +310,7 @@
                 // 跳转固定入口
                 if(url && url.indexOf('?fixedEntry') != -1) {
                     let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
-                    window.location.href = url1;
+                    parent.location.href = url1;
                     return;
                 }
 

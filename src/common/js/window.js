@@ -111,10 +111,10 @@ window.GLOBALS = {
         //操作时间
         let time = moment().format('HH:mm:ss');
         //渠道id
-        let _channel = localStorage.getItem('APP_CHANNEL') || 100001;
+        let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL') 
         //请求
         let userInfo = JSON.parse(localStorage.getItem('user_Info'))
-        axios.post('//hadoop-data.beeplay123.com', {
+        let obj =  {
             event_id: event_id,//时间id
             event_name: event_name,//事件名称
             user_id: userInfo && userInfo.userId,//用户id
@@ -125,7 +125,10 @@ window.GLOBALS = {
             channel_id: _channel,//渠道id
             generate_date: date,//行为发生日期
             generate_time: time,//行为发生时间
-        })
+        }
+        console.log(obj);
+        
+        axios.post('//hadoop-data.beeplay123.com', obj)
     },
     //跳转外接游戏方法
     jumpOutsideGame (url){
@@ -137,7 +140,7 @@ window.GLOBALS = {
       //操作时间
       let time = moment().format('HH:mm:ss');
       //渠道id
-      let _channel = localStorage.getItem('APP_CHANNEL') || 100001;
+      let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL') 
       //请求
       let userInfo = JSON.parse(localStorage.getItem('user_Info'))
       let defaultState = {
@@ -148,8 +151,23 @@ window.GLOBALS = {
         generate_date: date,//行为发生日期
         generate_time: time,//行为发生时间
       }
+      
       //请求
       return axios.post('//hadoop-data.beeplay123.com', Object.assign(defaultState,parmas))
+    },
+    getUrlParam: function(ename) {
+        var url = window.location.href;
+        var Request = new Object();
+        if(url.indexOf("?") != -1) {
+            var str = url.split('?')[1];
+            var strs = str.split("&");
+            for(var i = 0;i<strs.length;i++) {
+                Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+            }
+        }else {
+            return '';
+        }
+        return Request[ename];
     },
 
 }
