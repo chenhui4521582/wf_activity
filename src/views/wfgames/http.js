@@ -19,9 +19,9 @@ localStorage.setItem('APP_CHANNEL', channel)
 
 
 if (localStorage.getItem('APP_CHANNEL') == '100001') {
-    localStorage.setItem('APP_VERSION', '2.9.4.1')
+    localStorage.setItem('APP_VERSION', '1.0.0')
 } else {
-    localStorage.setItem('APP_VERSION', '3.0.0.0')
+    localStorage.setItem('APP_VERSION', '1.0.0')
 }
 
 
@@ -30,7 +30,7 @@ axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
     config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
     config.headers['App-Channel'] = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL');
-    config.headers['App-Version'] = '3.0.0.0';
+    config.headers['App-Version'] = '1.0.0';
     return config;
 }, function (error) {
     // 对请求错误做些什么

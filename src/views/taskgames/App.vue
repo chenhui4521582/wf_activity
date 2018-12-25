@@ -288,6 +288,7 @@
                 "project_id": this.currentGameType,//当前游戏ID
                 "target_project_id" : gameType//跳转到的游戏ID
             })
+
             
             setTimeout(() => {
 
@@ -309,7 +310,7 @@
                 // 跳转固定入口
                 if(url && url.indexOf('?fixedEntry') != -1) {
                     let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
-                    window.location.href = url1;
+                    parent.location.href = url1;
                     return;
                 }
 
