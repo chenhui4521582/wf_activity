@@ -285,6 +285,7 @@
                 "event_id": 1210040803,
                 "project_id": gameType
             })
+
             
 
             setTimeout(() => {
@@ -307,7 +308,7 @@
                 // 跳转固定入口
                 if(url && url.indexOf('?fixedEntry') != -1) {
                     let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
-                    window.location.href = url1;
+                    parent.location.href = url1;
                     return;
                 }
 
