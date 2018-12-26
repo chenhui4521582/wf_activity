@@ -26,7 +26,7 @@
                                 <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
                                 <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
                             </div>
-                            <!-- <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span> -->
+                            <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span>
                         </li>
                       </ul>
                   </div>
@@ -259,7 +259,6 @@
       },
       goFinish({gameType, url, action, taskId}) {
         let actionsArr = [39,35,34,32]
-
         GLOBALS.thirdSetsPoint({
           "event_name": "游戏内任务-去完成",
           "task_id": taskId,
@@ -271,7 +270,8 @@
 
             // 跳转到首页（关闭）
             if(action == 36) {
-                parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                this.backIndexPage()
                 return
             }
             // 跳转商城
@@ -281,8 +281,15 @@
             }
             // 跳平台(关闭)
             if (gameType == 0 && action == 2) {
-                parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                this.backIndexPage()
                 return
+            }
+            // 跳转固定入口
+            if(url && url.indexOf('?fixedEntry') != -1) {
+                let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
+                window.location.href = url1;
+                return;
             }
 
             // 球酷
@@ -299,13 +306,13 @@
 
         }, 500)
 
-        
+
       },
       closePopLog() {
         this.isPopLog = false
       },
       receive(item, type) {
-        
+
         GLOBALS.thirdSetsPoint({
           "event_name": "游戏内任务-去完成",
           "task_id": item.taskId,
@@ -370,7 +377,7 @@
 
           }
         })
-        
+
       },
       getTransInfo() {
         this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res)=> {
@@ -390,9 +397,29 @@
             })
           }
         })
-        
-      }
 
+      },
+      backIndexPage(){//回到平台首页
+        let from=this.getUrlParam('from')
+        if(parent.CONFIG&&parent.CONFIG.onBackHome){//cocos返回大厅的方法
+          parent.CONFIG.onBackHome()
+        }else if(from&&['wap','jsWap','bdWap'].includes(from)){
+          parent.location.href =from!='wap'?`https://wap.beeplay123.com/${from}/?channel=${this.channel}`:`https://wap.beeplay123.com/${from}/home?channel=${this.channel}`
+        }else{//暂行方式
+          const wapChannels=['100002','100004','100005'];
+          const jsWapChannels=['100001','100006','100022','100023','100026','100028','100027','100029','100035','100036','100038'];
+          const bdWapChannels=['100039','100040','100041','100042'];
+          if(this.channel=='100032'){
+            parent.location.href =`https://wap.beeplay123.com/qingWap/?channel=${this.channel}`
+          }else if(jsWapChannels.includes(this.channel)){
+            parent.location.href =`https://wap.beeplay123.com/jsWap/?channel=${this.channel}`
+          }else if(bdWapChannels.includes(this.channel)){
+            parent.location.href =`https://wap.beeplay123.com/bdWap/?channel=${this.channel}`
+          }else{
+            parent.location.href =`https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+          }
+        }
+      }
     }
   }
 </script>
