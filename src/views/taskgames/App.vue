@@ -293,7 +293,7 @@
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
-                if(action == 36) {
+                if(action == 36 || url == '/plat/') {
                     parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
                     return
                 }
