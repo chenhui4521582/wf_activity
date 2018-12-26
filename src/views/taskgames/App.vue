@@ -293,9 +293,8 @@
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
-                if(action == 36) {
-                // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
-                this.backIndexPage()
+                if(action == 36 || url == '/plat/') {
+                    this.backIndexPage()
                     return
                 }
                 // 跳转商城
