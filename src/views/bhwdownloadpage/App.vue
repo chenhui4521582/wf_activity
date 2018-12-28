@@ -32,7 +32,7 @@
                 }else{
                     window.location.href='itms-services:///?action=download-manifest&url=https://wap.beeplay123.com/m/baohaowan/bhw.plist'
                     setTimeout(()=> {
-                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html'
+                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html?channel='+GLOBALS.getUrlParam('channel')
                     }, 3000)
                 }
             },
