@@ -46,10 +46,12 @@
             }
         },
         mounted(){
-            GLOBALS.buriedPoint(1207002409,'H5平台-下载页加载');
+            
             if(this.isWeixn()) {
                 this.isWx = true;
                 GLOBALS.buriedPoint(1207002403,'H5平台-下载引导页加载');
+            }else{
+                GLOBALS.buriedPoint(1207002409,'H5平台-下载页加载');
             }
             
         }
