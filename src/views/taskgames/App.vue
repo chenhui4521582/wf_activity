@@ -592,7 +592,7 @@
 }
 @keyframes touch {
     0%{
-        transform : translateX(-.3rem) 
+        transform : translateX(-.2rem) 
     }
     100%{
         transform : translateX(0) 
