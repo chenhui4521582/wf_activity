@@ -426,7 +426,7 @@
         },
         getDayTask() {
             this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platTaskByBatch', {
-            value: 'dayTask'
+            value: 'dayTask',from:'sdk'
             }).then((res)=> {
             if(res.data.code == 200) {
 
