@@ -3,10 +3,14 @@
      <div class="header">
        <ul>
          <li class="leaf">{{userInfo&&userInfo.amount}}</li>
-         <li class="hf-fragment">{{telFragment&&telFragment[0].price}}</li>
+         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment[0].price}}
+            <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i> 
+        </li>
+        <p class="figure" v-if="!huafeiShow">
+            <img src="./images/fighur.png" class="touch">
+            快去领！</p>
        </ul>
      </div>
-
 
      <div class="t-content" >
         <div v-if="newTaskItems && newTaskItems.isNew">
@@ -167,7 +171,8 @@
             currentMedalIndex : 0,
             receiveData : null,
             masterTask : false,
-            currentGameType : 0
+            currentGameType : 0,
+            huafeiNum : 0
         }
     },
     mounted() {
@@ -184,44 +189,48 @@
       this.getDayTask()
       this.getNewTask()
       this.getPhoneFragment()
+      this.getHuafeiNum()
       if(this.currentGameType == 12) this.getCrushTask()
     },
     computed: {
-      // 子任务
-      newUserTaskobj () {
-          let list = this.newTaskItems && this.newTaskItems.taskList || []
-          let taskObj = null
-          list = list.filter(item => { // 刷选出子任务
-              return !item.subTask
-          })
-          // 找到当前需要展示的任务，第一个taskStatus不为2的任务
-          for(let i=0; i<list.length; i++){
-              if(list[i].taskStatus != 2){  // taskStatus: 0-带领取 1-未完成 2-已领取
-                  taskObj = list[i]
-                  break
-              }
-          }
-          return taskObj
-      },
-      // 母任务
-      motherTask () {
-          let list = this.newTaskItems && this.newTaskItems.taskList || []
-          let motherTask = list.filter(item=>{
-              return item.subTask
-          })[0]
-          list = list.filter(item => {
-              return !item.subTask
-          })
-          let finishedTaskNum = list.filter(item=>{
-              return item.taskStatus == 2
-          }).length
-          if(motherTask) {
-            motherTask.allTaskNum = list.length
-            motherTask.hasFinishedNum = finishedTaskNum
-            return motherTask 
-          }
-          return ''
-      },
+        huafeiShow(){
+            return this.telFragment[0].price.split('元')[0] < this.huafeiNum
+        },
+        // 子任务
+        newUserTaskobj () {
+            let list = this.newTaskItems && this.newTaskItems.taskList || []
+            let taskObj = null
+            list = list.filter(item => { // 刷选出子任务
+                return !item.subTask
+            })
+            // 找到当前需要展示的任务，第一个taskStatus不为2的任务
+            for(let i=0; i<list.length; i++){
+                if(list[i].taskStatus != 2){  // taskStatus: 0-带领取 1-未完成 2-已领取
+                    taskObj = list[i]
+                    break
+                }
+            }
+            return taskObj
+        },
+        // 母任务
+        motherTask () {
+            let list = this.newTaskItems && this.newTaskItems.taskList || []
+            let motherTask = list.filter(item=>{
+                return item.subTask
+            })[0]
+            list = list.filter(item => {
+                return !item.subTask
+            })
+            let finishedTaskNum = list.filter(item=>{
+                return item.taskStatus == 2
+            }).length
+            if(motherTask) {
+                motherTask.allTaskNum = list.length
+                motherTask.hasFinishedNum = finishedTaskNum
+                return motherTask 
+            }
+            return ''
+        },
 
     },
     filters:{
@@ -245,6 +254,26 @@
         masterPop :() =>import('./component/dialog'),
     },
     methods: {
+        jumpMine(){
+            parent.location.href = this.jumpToPlat()+'#/personal'
+        },
+        jumpToPlat(){
+            let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
+                baiduChannel = ['100039','100040','100041','100042']
+            if(jsChannel.includes(this.channel)){
+                return `https://wap.beeplay123.com/jsWap?channel=${this.channel}`
+            }else if(baiduChannel.includes(this.channel)){
+                return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
+            } else if(this.channel == '700002'){
+                return `https://wap.beeplay123.com/llwWap?channel=700002`
+            }else{
+               return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+            }
+        },
+        async getHuafeiNum(){
+            let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+            this.huafeiNum = data.data 
+        },
         checkTaskStatus(item,type,index){
             if(item.taskStatus == 0){
                 this.receive(item,type,index)
@@ -294,8 +323,7 @@
 
                 // 跳转到首页（关闭）
                 if(action == 36 || url == '/plat/') {
-                // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
-                this.backIndexPage()
+                    this.backIndexPage()
                     return
                 }
                 // 跳转商城
@@ -306,7 +334,7 @@
                 // 跳平台(关闭)
                 if (gameType == 0 && action == 2) {
                 // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
-                this.backIndexPage()
+                    this.backIndexPage()
                     return
                 }
                 // 跳转固定入口
@@ -564,4 +592,32 @@
 <style lang="less" scoped>
 @import '../../common/css/base.css';
 @import './index';
+.huafeifont,.figure{color: #FFD338}
+.figure{
+    display: inline-block;
+    position: relative;
+    padding-left: .5rem;
+    margin-top: .03rem;
+    margin-left: .05rem;
+    font-size: .16rem;
+    height: .4rem;
+    line-height: .46rem;
+    img{
+        position: absolute;
+        left: 0;
+        width: .47rem;
+        height: .38rem;
+        
+    }
+    animation: touch .8s ease-in-out alternate infinite;
+}
+@keyframes touch {
+    0%{
+        transform : translateX(-.3rem) 
+    }
+    100%{
+        transform : translateX(0) 
+
+    }
+}
 </style>
