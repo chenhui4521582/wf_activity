@@ -293,7 +293,7 @@
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
-                if(action == 36) {
+                if(action == 36 || url == '/plat/') {
                 // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
                 this.backIndexPage()
                     return
@@ -428,7 +428,7 @@
         },
         getDayTask() {
             this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platTaskByBatch', {
-            value: 'dayTask'
+            value: 'dayTask',from:'sdk'
             }).then((res)=> {
             if(res.data.code == 200) {
 
