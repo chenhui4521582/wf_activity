@@ -23,7 +23,7 @@
                     </p>
                     <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
                   </h4>
-                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
+                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">全部完成<span>再得30元话费</span>
                       <ul >
                         <li class="percent-lq">
                           <div class="percent-box">
@@ -194,7 +194,7 @@
     },
     computed: {
         huafeiShow(){
-            return this.telFragment[0].price.split('元')[0] < this.huafeiNum
+            return this.telFragment && this.telFragment[0].price.split('元')[0] < this.huafeiNum
         },
         // 子任务
         newUserTaskobj () {
@@ -613,7 +613,7 @@
 }
 @keyframes touch {
     0%{
-        transform : translateX(-.3rem) 
+        transform : translateX(-.2rem) 
     }
     100%{
         transform : translateX(0) 
