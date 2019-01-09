@@ -69,7 +69,7 @@ export default {
         cdkArr: null,
         isTabUse: false,
         curlink: null,
-        hideBackArr: ['100037'],
+        hideBackArr: ['100037','100033001'],
         curChannel: null,
         curToken: null
       }

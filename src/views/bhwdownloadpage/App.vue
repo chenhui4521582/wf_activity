@@ -23,7 +23,6 @@
         },
         methods: {
             download(){
-                
                 GLOBALS.buriedPoint(1207002404,'H5平台-下载引导页加载-立即安装');
                 var u = navigator.userAgent;
                 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
@@ -33,7 +32,7 @@
                 }else{
                     window.location.href='itms-services:///?action=download-manifest&url=https://wap.beeplay123.com/m/baohaowan/bhw.plist'
                     setTimeout(()=> {
-                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html'
+                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html?channel='+GLOBALS.getUrlParam('channel')
                     }, 3000)
                 }
             },
@@ -47,10 +46,14 @@
             }
         },
         mounted(){
+            
             if(this.isWeixn()) {
                 this.isWx = true;
+                GLOBALS.buriedPoint(1207002403,'H5平台-下载引导页加载');
+            }else{
+                GLOBALS.buriedPoint(1207002409,'H5平台-下载页加载');
             }
-            GLOBALS.buriedPoint(1207002403,'H5平台-下载引导页加载');
+            
         }
     }
 </script>
