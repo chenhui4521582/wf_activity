@@ -23,7 +23,7 @@
                     </p>
                     <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
                   </h4>
-                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">完成任务必得<span>30元话费</span>
+                  <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">全部完成<span>再得30元话费</span>
                       <ul >
                         <li class="percent-lq">
                           <div class="percent-box">
