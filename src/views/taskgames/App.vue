@@ -263,7 +263,7 @@
     },
     methods: {
         getDegradeTaskStatus() {
-          this.axios.post('//platform-api.beeplay123.com//wap/api/degrade/task/status')
+          this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
                 .then(res => {
                   if(res.data.code == 200) {
                     this.isTfStatus = res.data.data.isOpen
