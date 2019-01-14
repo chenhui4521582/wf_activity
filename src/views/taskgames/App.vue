@@ -435,7 +435,7 @@
                 // 弹窗弹出
                 this.awardItem = item
                 this.isPopLog = true
-
+                localStorage.setItem('sdkTaskRecevieStatus', true)
                 this.getTransInfo()
                 this.getPhoneFragment()
                 switch(type) {
