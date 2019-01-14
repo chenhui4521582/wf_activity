@@ -3,7 +3,7 @@
      <div class="header">
        <ul>
          <li class="leaf">{{userInfo&&userInfo.amount}}</li>
-         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment[0].price}}
+         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment&&telFragment[0].price}}
             <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i> 
         </li>
         <p class="figure" v-if="!huafeiShow">
@@ -12,7 +12,7 @@
        </ul>
      </div>
 
-     <div class="t-content" >
+     <div class="t-content" v-if="!isTfStatus">
         <div v-if="newTaskItems && newTaskItems.isNew">
             <div class="new-task-header">
               <div class="new-task-inner">
@@ -147,6 +147,12 @@
         :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask"></poplog>
         
      </div>
+
+     <div class="t-content"  v-show="isTfStatus">
+       <img src="./images/tf-task-bg.png" class="tf-task-bg">
+     </div>
+
+
   </div>
 </template>
 <script type="text/javascript">
@@ -172,7 +178,8 @@
             receiveData : null,
             masterTask : false,
             currentGameType : 0,
-            huafeiNum : 0
+            huafeiNum : 0,
+            isTfStatus: false
         }
     },
     mounted() {
@@ -186,15 +193,16 @@
       localStorage.setItem('APP_CHANNEL', this.channel)
 
       this.getTransInfo()
-      this.getDayTask()
-      this.getNewTask()
+      
       this.getPhoneFragment()
       this.getHuafeiNum()
+
+      this.getDegradeTaskStatus()
       if(this.currentGameType == 12) this.getCrushTask()
     },
     computed: {
         huafeiShow(){
-            return this.telFragment && this.telFragment[0].price.split('元')[0] < this.huafeiNum
+            return this.telFragment&&(this.telFragment[0].price.split('元')[0] < this.huafeiNum)
         },
         // 子任务
         newUserTaskobj () {
@@ -254,6 +262,18 @@
         masterPop :() =>import('./component/dialog'),
     },
     methods: {
+        getDegradeTaskStatus() {
+          this.axios.post('//platform-api.beeplay123.com//wap/api/degrade/task/status')
+                .then(res => {
+                  if(res.data.code == 200) {
+                    this.isTfStatus = res.data.data.isOpen
+                    if(!this.isTfStatus) {
+                      this.getDayTask()
+                      this.getNewTask()
+                    }
+                  }
+                })
+        },
         jumpMine(){
             parent.location.href = this.jumpToPlat()+'#/personal'
         },
@@ -416,7 +436,7 @@
                 // 弹窗弹出
                 this.awardItem = item
                 this.isPopLog = true
-
+                localStorage.setItem('sdkTaskRecevieStatus', true)
                 this.getTransInfo()
                 this.getPhoneFragment()
                 switch(type) {
@@ -610,6 +630,12 @@
         
     }
     animation: touch .8s ease-in-out alternate infinite;
+}
+.tf-task-bg {
+  width: 3.63rem;
+  height: 3.71rem;
+  display: block;
+  margin: 2.1rem auto 0;
 }
 @keyframes touch {
     0%{
