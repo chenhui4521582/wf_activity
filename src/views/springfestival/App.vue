@@ -20,12 +20,17 @@
         </div>
         <!--红包榜-->
         <div class="bonusrecord"></div>
-        <div class="section1">
+        <!--回到顶部-->
+        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'"></div>
+        <!--第一屏-->
+        <div class="section1" id="section1">
             <!--返回按钮-->
-            <div class="back"></div>
-            <div class="openbonus opened"></div>
+            <div class="back" @click="back"></div>
+            <!--<div class="openbonus opened"></div>-->
+            <div class="openbonus"></div>
             <div class="text">待开启 <br> 50个红包</div>
         </div>
+        <!--任务-->
         <div class="section2">
             <div class="gainbonusbtn"></div>
             <ul>
@@ -48,7 +53,7 @@
                         <div class="item_item_item">每日最高领100个红包</div>
                     </div>
                     <!--<div class="item_item">今日已完成</div>-->
-                    <div class="item_item unfinished">去完成</div>
+                    <div class="item_item unfinished" @click="back('taskview')">去完成</div>
                 </li>
                 <li class="item">
                     <div class="item_item">
@@ -85,6 +90,7 @@
                 </li>
             </ul>
         </div>
+        <!--加赠红包-->
         <div class="section3" id="section3">
             <div class="sec1"></div>
             <div class="sec2">
@@ -92,6 +98,7 @@
                 <div class="item"><i>充值所得红包数量</i>1696个</div>
             </div>
         </div>
+        <!--礼包开福-->
         <div class="section4" id="section4">
             <div class="package">
                 <div class="item">
@@ -102,8 +109,9 @@
                 </div>
             </div>
         </div>
+        <!--规则-->
         <div class="section5" :class="{fold:isFoldRule,expand:!isFoldRule}" id="section5">
-            <div class="title" @click="isFoldRule=!isFoldRule">活动说明
+            <div class="title" @click="ruleClick">活动说明
                 <div :class="{fold:isFoldRule,expand:!isFoldRule}"></div>
             </div>
             <div class="content" v-if="!isFoldRule">
@@ -145,7 +153,8 @@
                 curChannel: null,
                 curToken: null,
                 isFoldRule: true,
-                anchorID:''
+                anchorID:'',
+                isShowTopIcon:false
             }
         },
         mounted() {
@@ -154,11 +163,19 @@
             if (this.curChannel && this.curChannel.indexOf('100') != -1) {
                 this.getUserInfo()
             }
-            console.log()
+            window.onscroll=()=>{
+                // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                //     || document.documentElement.clientHeight
+                //     || document.body.clientHeight)
+                this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>0
+            }
         },
         computed: {
             isHideMenu() {
                 return this.hideBackArr.includes(this.curChannel)
+            },
+            backUrl(){
+                return (this.getUrlParam('from')||'').toLowerCase();
             }
         },
         methods: {
@@ -191,9 +208,29 @@
                         }
                     })
             },
-            goAnchor(selector) {
-                var anchor = this.$el.querySelector(selector)
-                document.documentElement.scrollTop = anchor.offsetTop
+            ruleClick(){
+                this.isFoldRule=!this.isFoldRule
+                this.$nextTick(()=>{
+                    document.body.scrollTop =document.getElementById('section5').offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76
+                    !document.body.scrollTop&&(document.documentElement.scrollTop =document.getElementById('section5').offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76)
+                })
+            },
+            back(page){
+                if(this.backUrl){
+                    if(!page){
+                        switch (this.backUrl) {
+                            case 'wap':top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel;break;
+                            case 'jswap':top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel;break;
+                            case 'bdwap':top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel;break;
+                        }
+                    }else{
+                        switch (this.backUrl) {
+                            case 'wap':top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel+'#/'+page;break;
+                            case 'jswap':top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel+'#/'+page;break;
+                            case 'bdwap':top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel+'#/'+page;break;
+                        }
+                    }
+                }
             }
         }
 
@@ -261,6 +298,16 @@
         width: .84rem;
         height: 1.34rem;
         background: url("./images/bonusrecordicon.png");
+        background-size: 100% 100%;
+        z-index: 10;
+    }
+    .backTop{
+        position: fixed;
+        bottom: 1.32rem;
+        right: 0;
+        width: .7rem;
+        height: .7rem;
+        background: url("./images/backtop.png");
         background-size: 100% 100%;
         z-index: 10;
     }
@@ -537,6 +584,7 @@
                 height: .24rem;
                 background: url("./images/ruledownicon.png");
                 background-size: 100% 100%;
+                margin-left: .1rem;
             }
         }
         .content {
