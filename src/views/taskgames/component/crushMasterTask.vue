@@ -436,12 +436,13 @@ div{box-sizing: border-box}
                 font-size: .16rem;
                 width: 1.45rem;
                 height: .24rem;
-                line-height: .24rem;
+                line-height: .2rem;
                 background: url(../../taskListHome/images/bg_awards.png);
                 background-size: 100% 100%;
                 i{
                     font-size: .22rem;
                     font-weight: bold;
+                    line-height: .22rem;
                 }
             }
         }

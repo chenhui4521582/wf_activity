@@ -156,9 +156,7 @@
                     let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
 
                     if(data.data.hasFinishedTask == data.data.totalTask){
-                        currentParentTask = masterList.find((item,index) =>{
-                            return item.parentTask
-                        }) 
+                        currentParentTask = masterList[3]
                     }else{
                         currentParentTask = masterList.find((item,index) =>{
                             return item.parentTask.taskStatus != 2
