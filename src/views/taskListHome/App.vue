@@ -123,7 +123,7 @@
                 return Request[ename];
             },
             backHome(){
-                location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/`
+                location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/#/taskview`
             },
             checkTaskStatus(item,type,curParentTask){
                 if(item.taskStatus == 0){
