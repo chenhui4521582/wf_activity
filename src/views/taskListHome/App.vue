@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="title">
-            <span class="btn-back">
+            <span class="btn-back" @click="backHome">
                 <img src="./images/btn_back.png" alt="">
             </span>
             <img src="./images/title.png">
@@ -107,6 +107,24 @@
             awardsPop :() =>import('./components/dialog'),
         },
         methods: {
+            //获取地址栏问号后面的参数值
+            getUrlParam: function (ename) {
+                var url = window.location.href;
+                var Request = new Object();
+                if (url && url.indexOf("?") != -1) {
+                    var str = url.split('?')[1];
+                    var strs = str.split("&");
+                    for (var i = 0; i < strs.length; i++) {
+                        Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+                    }
+                } else {
+                    return '';
+                }
+                return Request[ename];
+            },
+            backHome(){
+                location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/`
+            },
             checkTaskStatus(item,type,curParentTask){
                 if(item.taskStatus == 0){
                     this.receive(item,type,'',curParentTask)
