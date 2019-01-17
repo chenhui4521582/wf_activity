@@ -1,24 +1,24 @@
 <template>
     <div class="crush-master-wrap">
        <div class="head">
+            <img :src="crushTaskList.bgIcon | filter" alt="">
            <p class="title">
                <span>
                    <i>成就任务</i>
-                   <img class="name-title" src="../img/crushMasterTask/name_title.png" alt="">
-                    <img v-for="item in nameList" v-if="item.name == currentName" :src="item.img" class="xunzhang-title">
+                   <img class="name-title" :src="crushTaskList.gameNameIcon | filter" alt="">
+                    <!-- <img v-for="item in nameList" v-if="item.name == currentName" :src="item.img" class="xunzhang-title"> -->
                </span>
-               <span>
-                   <i>全部完成共得</i><br>
-                   <i><img src="../img/crushMasterTask/awards_icon.png" alt=""></i>
+               <span class="reware-bg">
+                   共得<i>{{crushTaskList.reward}}</i>奖励
                </span>
            </p>
-           <div>
+           <div class="process">
                <div class="probar-ball">
                     <div class="bar" :style="{width:crushTaskList.finishLength/crushTaskList.currentLength * 100 + '%'}"></div>
                 </div>
                 <p class="tips">
                     <span>{{transUint(crushTaskList.finishLength,crushTaskList.currentLength)}}</span>
-                    <span>完成当前进度<i>{{crushTaskList.currentParentTask.parentTask.awardsName}}</i></span>
+                    <span>完成当前进度<i>加赠{{crushTaskList.currentParentTask.parentTask.awardsName}}</i></span>
                 </p>
            </div>
        </div>
@@ -53,23 +53,23 @@
 
             <div class="medals-locked" v-if="isShowFinished">
                 <img src="../img/crushMasterTask/chengjiu_bg.png">
-                <p class="btn" @click="receive(currentMedalList,'mother_crush_task')">获取成就奖励</p>
+                <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
             </div>
             <div class="medals-lock" v-if="isShowMasterLocked">
                 <img src="../img/crushMasterTask/chengjiu_locked_title.png">
-                <img :src="imgPath(currentMedalList.medealIng)" class="medeal">
+                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
                 <!-- <p>获取日期<br>2018-12-13</p> -->
             </div>
             <div class="medals-lock unlock" v-if="isShowMasterUnlocked ">
                 <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
-                <img :src="imgPath(currentMedalList.medealIng)" class="medeal">
-                <p>解锁前提条件<br>获得“{{medalList[currentMedalList.index-1].name.split('-')[0]}}”称号</p>
+                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+                <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
             </div>
        </div>
        <div class="medal-wrap">
            <ul>
-               <li v-for="(item,i) in medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
-                   <img :src="imgPath(item.image)" :class="{'animate':item.selected && showMedalAnimate}">
+                <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
+                   <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
                 </li>
            </ul>
        </div>
@@ -121,16 +121,16 @@ export default {
                     name : '大师',
                     img : require('../img/crushMasterTask/name_master.png')
                 },
-            ]
+            ],
         }
     },
     beforeMount(){
-        this.medalList = masterData.medalList
         //taskStatus 0 已完成未领取 1 去完成 2 已领取
         // 判断当前是第几个母任务类型;
-        this.currentMedalList = this.medalList[this.crushTaskList.currentIndex]
+        this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
         this.checWhickTask(this.crushTaskList.currentParentTask,this.crushTaskList.currentIndex)
         GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
+        
     },
     computed:{
         currentName(){
@@ -185,12 +185,6 @@ export default {
         },
         // 判断当前是第几个母任务类型
         checWhickTask(list,i){
-            // 显示已完成状态勋章
-            this.crushTaskList.allTask.map((item,index) =>{
-                if(index < i) this.checkMedalsShow(item.parentTask,index)
-            })
-            this.checkMedalsShow(list.parentTask,i)
-            this.currentMedalList = this.medalList[i]
             // 判断糖果大师任务已完成类型状态 
             if(i == 3 && list.parentTask.taskStatus != 1){
                 let medalNum
@@ -199,55 +193,8 @@ export default {
                 }else{
                     this.showReceivedMedal()
                 }
-                this.checkMedalStatus(i,2,'Medal')
                 return
             }
-        },
-        //判断当前显示勋章类型
-        checkMedalsShow(list,i){
-            switch(i){
-                case 0:
-                    this.checkMedalHighlight(list,i,'new')
-                    break;
-                case 1:
-                    this.checkMedalHighlight(list,i,'daren')
-                    break;
-                case 2:
-                    this.checkMedalHighlight(list,i,'higher')
-                    break;
-                case 3:
-                    this.checkMedalHighlight(list,i,'master')
-                    break;
-            }
-        },
-        //设置底部勋章类型
-        checkMedalHighlight(list,i,imgname){
-            if(list && list.taskStatus == 1){
-                this.$set(this.medalList[i],'image',`${imgname+2}`)
-                this.sethighLight(this.medalList[i])
-            }else{
-                this.$set(this.medalList[i],'image',`${imgname+3}`)
-                if(i!=3){
-                    this.$set(this.medalList[i+1],'image',`${imgname+2}`)
-                    this.sethighLight(this.medalList[i+1])
-                }else{
-                    this.sethighLight(this.medalList[i])
-                }
-            }
-        },
-        // 设置底部高亮背景
-        sethighLight(item){
-            this.medalList.map((val,index) =>{
-                if(val.name == item.name){
-                    // this.changeAnimation = true
-                    this.$set(val,'selected',true)
-                }else{
-                    this.$set(val,'selected',false)
-                }
-            })
-        },
-        imgPath (img) {
-            return require(`../img/crushMasterTask/crush_${img}.png`)
         },
         transUint(finishNum,taskOps){
             let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
@@ -261,47 +208,29 @@ export default {
                 status = this.crushTaskList.allTask[index].parentTask.taskStatus
             this.checkFinishedList(index,'checkMode')
             this.$emit('hideMedalAnimate')
-            this.sethighLight(value)
-            console.log('切换勋章tab---'+value.name+'--勋章tab母任务状态---'+status);
             this.currentMedalList = value 
             // 未解锁勋章逻辑  前一任务未完成  即taskstatus=1
             if(index >0 && currentStatus == 1){// 
                 this.showUnLockedMedal()
-                medalNum = 1
             }else{
                 if(status == 1){ // 进行中
                     this.ShowInTask()
                 }else if(status == 0){ //已完成未领取 -- 领取奖励tab
                     this.showReceiveAward()
-                    medalNum = 2
                 }else if(status == 2){//已完成 -- 完成勋章
                     this.showReceivedMedal()
-                    medalNum = 2
+                }else if(status == 4){
+                    this.showUnLockedMedal()
                 }
             }
-            this.checkMedalStatus(index,medalNum,'Medal')
         },
        checkFinishedList(i,type){
             this.$emit('refreshTask',i,type)
         },
-        // 显示勋章类型图片
-        checkMedalStatus(index,medalNum,medalName,nextList){
-                console.log('勋章medalName='+medalName+'--勋章medalNum='+medalNum);
-            let isBigMedal = medalName ? 'medealIng' : 'image',imgName = medalName ? medalName : '',
-                curList = nextList ? nextList : this.currentMedalList
-            switch(index){
-                case 0:
-                    this.$set(curList,isBigMedal,`new${imgName}${medalNum}`)
-                    break;
-                case 1:
-                    this.$set(curList,isBigMedal,`daren${imgName}${medalNum}`)
-                    break;
-                case 2:
-                    this.$set(curList,isBigMedal,`higher${imgName}${medalNum}`)
-                    break;
-                case 3:
-                    this.$set(curList,isBigMedal,`master${imgName}${medalNum}`)
-                    break;
+        getCurentIcon(){
+            let curMedelIcon
+            if(this.crushTaskList.currentParentTask.medalIcon.includes('medal-1')){
+                return this.crushTaskList.currentParentTask.medalIcon.replace('medal-1','medal-2')
             }
         },
         // 完成任务
@@ -311,8 +240,7 @@ export default {
         // 领取奖励
         receive(item,type){
             this.isMotherType = true
-            this.checkMedalStatus(item.index,2,'Medal')
-            this.$emit('receive',this.crushTaskList.allTask[item.index].parentTask,'mother_crush_task',item.index,this.imgPath(item.medealIng))
+            this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
         }
     },
     watch:{
@@ -320,22 +248,15 @@ export default {
         showReceiveMedal(newIndex, oldIndex){
             if(newIndex){
                 if(this.currentMedalIndex != 3){
-                    this.currentMedalList.index = this.currentMedalIndex + 1
-                    this.checkFinishedList(this.currentMedalList.index)
-                    this.checkMedalsShow(this.crushTaskList.allTask[this.currentMedalList.index].parentTask,this.currentMedalList.index)
+                    this.checkFinishedList(this.currentMedalIndex+1)
                     this.ShowInTask()
                 }else{
-                    this.checkFinishedList(this.currentMedalIndex)
-                    this.checkMedalStatus(this.currentMedalIndex,2,'Medal')
                     this.showReceivedMedal()
                 }
             }
         },
         showMedalAnimate(newIndex, oldIndex){
             if(newIndex){
-                this.checkFinishedList(this.currentMedalIndex)
-                this.checkMedalStatus(this.currentMedalIndex,3)
-                this.checkMedalStatus(this.currentMedalIndex+1,2,'',this.medalList[this.currentMedalIndex+1])
                 this.showReceiveAward()
             }
         },
@@ -459,12 +380,22 @@ div{box-sizing: border-box}
         }
     }
     .head{
+        position: relative;
         padding: .32rem .2rem;
         width: 100%;
         height: 1.45rem;
-        background: url(../img/crushMasterTask/master_head.png) no-repeat;
-        background-size: 100% 100%;
+        img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1.45rem;
+        }
+        // background: url(../img/crushMasterTask/master_head.png) no-repeat;
+        // background-size: 100% 100%;
         .title{
+            position: relative;
+            z-index: 2;
             width: 100%;
             height: .45rem;
             margin-bottom: .17rem;
@@ -496,29 +427,28 @@ div{box-sizing: border-box}
             }
             
             span:last-child{
-                float: right;
-                text-align: right;
+                position: absolute;
+                left: 1.5rem;
+                bottom: 0;
+                text-align: center;
                 margin-top: -.05rem;
+                color: #32344B;
+                font-size: .16rem;
+                width: 1.45rem;
+                height: .24rem;
+                line-height: .2rem;
+                background: url(../../taskListHome/images/bg_awards.png);
+                background-size: 100% 100%;
                 i{
-                    &:first-child{
-                        margin-bottom: .03rem;
-                        display: inline-block;
-                        width: 1.01rem;
-                        height: .2rem;
-                        text-align: center;
-                        line-height: .2rem;
-                        color: #FEDFAC;
-                        font-size: .16rem;
-                        border-radius: .06rem;
-                    }
-                    &:last-child{
-                        img{
-                            width: 1.31rem;
-                            height: .29rem;
-                        }
-                    }
+                    font-size: .22rem;
+                    font-weight: bold;
+                    line-height: .22rem;
                 }
             }
+        }
+        .process{
+            position: relative;
+            z-index: 2;
         }
         .probar-ball{
             position: relative;
@@ -557,7 +487,7 @@ div{box-sizing: border-box}
                 float: right;
                 font-size: .2rem;
                 color: #666879;
-                i{color: #9395AB}
+                i{color: #E3E5F8}
             }
         }
     }
