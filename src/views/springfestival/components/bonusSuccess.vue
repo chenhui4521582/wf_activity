@@ -13,14 +13,16 @@
     export default {
         data() {
             return {
-                // show:false,
-                count:0
             }
         },
         props:{
             show:{
                 type: Boolean,
                 default: false
+            },
+            count:{
+                type:  Number,
+                default: '0'
             }
         },
         methods: {

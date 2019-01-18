@@ -157,9 +157,9 @@
             </div>
         </div>
         <!--以下都是弹窗-->
-        <!--红包领取成功-->
-        <bonus-success :show="isshowBonusSuccess"></bonus-success>
-        <!--去完成-->
+        <!--加赠红包领取成功-->
+        <bonus-success :show="isshowBonusSuccess" :count="jiazengbonusNumber"></bonus-success>
+        <!--加赠红包点击去完成-->
         <bonus-failure :show="isshowBonusFailure"></bonus-failure>
         <!--红包记录-->
         <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
@@ -188,37 +188,32 @@
                 isShowTopIcon: false,//是否显示回到顶部图标
                 isshowHand: true,//是否显示小手
                 noticeList: [],//广播
-                currentNoticeIndex: 0,
-                height: '.76rem',
-                isshowBonusList: false,
-                isshowBonusRecoed: false,
-                isshowBonusSuccess: false,
-                isshowBonusFailure: false,
-                isshowBonusOpened: false,
-                bonusListData: null,
-                bonusRecordData: null,
-                bonusOpenedData: null,
-                bonusSuccessData: null,
-                detailData: null,
-                countdown: {
+                isshowBonusList: false,//是否显示红包榜弹窗
+                isshowBonusRecoed: false,//是否显示红包记录弹窗
+                isshowBonusSuccess: false,//是否显示加赠红包获得弹窗
+                isshowBonusFailure: false,//是否显示加赠红包点击去完成弹窗
+                isshowBonusOpened: false,//是否显示开启红包弹窗
+                bonusListData: null,//红包榜数据
+                bonusRecordData: null,//红包记录数据
+                bonusOpenedData: null,//红包开启数据
+                detailData: null,//myDetail接口数据
+                countdown: {//红包榜外显倒计时，最后一天显示
                     time: ''
                 },
-                packageData:[]
+                packageData:[],//福袋开福礼包数据
+                jiazengbonusNumber:0//加赠红包点击领取获得红包个数
             }
         },
         mounted() {
-            this.burryPoint('1207003000','春节红包加载页',{poker_value:this.getUrlParamObj('source')})
+            this.burryPoint('1207003000','春节红包加载页',{poker_value:this.getUrlParam('source')})
             //4秒后隐藏小手
             setTimeout(() => {
                 this.isshowHand = false
             }, 4000)
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
-            // if (this.curChannel && this.curChannel.indexOf('100') != -1) {
-            //     this.getUserInfo()
-            // }
-            this.myDetails()
-            this.getPackage()
+            this.myDetails()//myDetail接口数据
+            this.getPackage()//福袋礼包数据
             window.onscroll = () => {
                 // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
                 //     || document.documentElement.clientHeight
@@ -231,10 +226,7 @@
             backUrl() {
                 return (this.getUrlParam('from') || '').toLowerCase();
             },
-            list() {
-                return this.data && this.data.rankingItemList || []
-            },
-            countdownText() {
+            countdownText() {//倒计时文案 红包榜外显倒计时，最后一天显示
                 if (this.countdown.time) {
                     let hourText = this.countdown.time.split(':')[0]
                     let days = Math.floor(hourText / 24)
@@ -265,19 +257,6 @@
                 }
                 return Request[ename];
             },
-            getUserInfo() {
-                this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo', {}, {
-                    headers: {
-                        'App-Channel': this.curChannel,
-                        'Authorization': this.curToken
-                    }
-                })
-                    .then((res) => {
-                        if (res.data.code == 200) {
-                            this.userInfo = res.data.data
-                        }
-                    })
-            },
             getAnchor(name) {
                 document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
                 !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
@@ -287,7 +266,7 @@
                 this.$nextTick(() => {
                     this.getAnchor('section5')
                 })
-            },
+            },//点击规则按钮 展开折叠
             back(page) {
                 if (this.backUrl) {
                     if (!page) {
@@ -318,14 +297,14 @@
                         }
                     }
                 }
-            },
+            },//回到首页、平台任务页面逻辑
             gainbonus() {
                 this.burryPoint('1207003002','春节红包-获取更多红包')
                 this.isshowHand = false;
                 this.$nextTick(() => {
                     this.getAnchor('section2')
                 })
-            },
+            },//页面“获取更多红包”按钮
             getComputedStyle(ele, attr) {
                 return window.getComputedStyle(ele, null)[attr]
             },
@@ -401,7 +380,7 @@
                         }
                     }
                 });
-            },
+            },//走马灯
             fetch(url, params) {
                 if (url.startsWith('/ops/api')) {
                     url = '//ops-api.beeplay123.com' + url
@@ -413,7 +392,7 @@
                     url = '//shop-api.beeplay123.com' + url
                 }
                 return this.axios.post(url, params)
-            },
+            },//请求封装方法
             async bonusListClick() {
                 this.burryPoint('1207003023','春节红包-红包榜')
                 try {
@@ -428,7 +407,7 @@
                 } catch (e) {
 
                 }
-            },//红包榜
+            },//点击红包榜
             async bonusRecordClick() {
                 this.burryPoint('1207003020','春节红包-红包记录')
                 try {
@@ -443,7 +422,7 @@
                 } catch (e) {
 
                 }
-            },//红包记录
+            },//点击红包记录
             async myDetails() {
                 this.burryPoint('1207003022','春节红包-下级奖励和当前排名')
                 try {
@@ -471,8 +450,8 @@
                 } catch (e) {
 
                 }
-            },
-            async openBonus() {//开启红包
+            },//获取myDetails数据
+            async openBonus() {//点击开启红包
                 // //测试代码
                 // this.bonusOpenedData ={awardList:[{
                 //         "awardAmount": 100,
@@ -501,7 +480,7 @@
                     }
                 }
             },
-            async getPackage(){
+            async getPackage(){//获取福袋礼包数据
                 try {
                     const res = await this.axios.get('//shop-api.beeplay123.com/shop/api/activity/spring')
                     if (res.data.code == 200 && res.data.data) {
@@ -524,13 +503,13 @@
                 }else{
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
                 }
-            },
+            },//福袋礼包购买
             burryPoint(id,name,params){
                 GLOBALS.buriedPoint(id,name,null,null,params||{})
-            },
+            },//埋点方法封装
             share(){
                 this.burryPoint('1207003060','春节红包-邀好友得红包-去分享')
-            }
+            }//去分享
         },
         components: {
             bonusSuccess, bonusFailure, bonusList, bonusOpened, bonusRecord
