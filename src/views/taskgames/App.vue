@@ -259,10 +259,12 @@
             switch(this.currentGameType){
                 // 糖果
                 case '12' : 
+                    GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
                     return 'crush-achievement'
                     break
                 // 桌球
                 case '2': 
+                    GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement'
                     break
             }
