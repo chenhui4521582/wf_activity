@@ -249,11 +249,10 @@
                                 }
                             }
                         })
-                        
-
                     }else{  
                         this.allTaskList.push(masterTaskList)
                     }
+                    this.showCurDetails(0)
                     type == 'first' ? this.$set(this.allTaskList[0],'selected',false) :''
                 }
             },
