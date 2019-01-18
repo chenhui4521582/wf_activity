@@ -49,12 +49,6 @@ axios.interceptors.response.use(
                         duration: 1500
                     });
                     break;
-                case 500:
-                    Vue.prototype.$toast.show({
-                        message: '服务器内部错误',
-                        duration: 1500
-                    });
-                    break;
 
                 case 501:
                     Vue.prototype.$toast.show({
@@ -86,6 +80,7 @@ axios.interceptors.response.use(
                 case 122:
                 case 128:
                 case 101:
+                case 500:
                     break;
                 default:
                     var result = response.config && response.config.data;
