@@ -26,6 +26,9 @@
             btnsure(){
                 GLOBALS.buriedPoint(1207003044,'春节红包-加赠红包-去完成')
                 top.location.href='https://wap.beeplay123.com/payment/#/mall'
+            },
+            close(){
+                this.$emit('close')
             }
         },
         mounted(){

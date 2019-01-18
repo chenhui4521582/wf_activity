@@ -108,7 +108,28 @@
         </div>
         <!--加赠红包-->
         <div class="section3" id="section3">
-            <div class="sec1"></div>
+            <div class="sec1">
+                <div class="hb-task-box">
+                    <div class="percent-box">
+                        <div class="percent-number"></div>
+                    </div>
+                    <ul>
+                        <li v-for="item in envelopsItem" v-if="!item.dot">
+                            <h2>累计充值</h2>
+                            <h4>满{{item.taskOps}}元</h4>
+                            <div class="hb-line"></div>
+                            <div class="envelopes">{{item.taskOps}}个</div>
+                            <a href="javasript:" class="btn btn-complete" v-if="item.taskStatus == 2">已领取</a>
+                            <a href="javasript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="getjiazbonus(item)">领取</a>
+                            <a href="javasript:" class="btn btn-default" v-if="item.taskStatus == 1" @click="gotocomplete">去完成</a>
+                        </li>
+                        <li class="hb-dot-box" v-else>
+                            <span class="hb-dot hb-dot1"></span>
+                            <span class="hb-dot"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="sec2">
                 <div class="item"><i>领下级红包还需消费</i>10元</div>
                 <div class="item"><i>获得加赠红包个数</i>1个</div>
@@ -117,7 +138,8 @@
         <!--礼包开福-->
         <div class="section4" id="section4">
             <div class="package">
-                <div class="item" v-for="item in packageData" :class="{item188:item.price==188,item1888:item.price==1888}" @click="gotopay(item)">
+                <div class="item" v-for="item in packageData"
+                     :class="{item188:item.price==188,item1888:item.price==1888}" @click="gotopay(item)">
 
                 </div>
             </div>
@@ -158,9 +180,9 @@
         </div>
         <!--以下都是弹窗-->
         <!--加赠红包领取成功-->
-        <bonus-success :show="isshowBonusSuccess" :count="jiazengbonusNumber"></bonus-success>
+        <bonus-success :show="isshowBonusSuccess" :count="jiazengbonusNumber" @close="isshowBonusSuccess=false"></bonus-success>
         <!--加赠红包点击去完成-->
-        <bonus-failure :show="isshowBonusFailure"></bonus-failure>
+        <bonus-failure :show="isshowBonusFailure" @close="isshowBonusFailure=false"></bonus-failure>
         <!--红包记录-->
         <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
         <!--红包榜-->
@@ -200,12 +222,190 @@
                 countdown: {//红包榜外显倒计时，最后一天显示
                     time: ''
                 },
-                packageData:[],//福袋开福礼包数据
-                jiazengbonusNumber:0//加赠红包点击领取获得红包个数
+                packageData: [],//福袋开福礼包数据
+                jiazengbonusNumber: 0,//加赠红包点击领取获得红包个数
+                hbTestData: [{
+                    "taskId": 412,
+                    "taskName": "糖果11",
+                    "gameType": 12,
+                    "taskDesc": "糖果sdk288金叶子",
+                    "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                    "taskOps": 1,
+                    "finishNum": 0,
+                    "taskStatus": 1,
+                    "taskLogId": null,
+                    "cycle": 2,
+                    "awardsType": 1,
+                    "awardsName": "288金叶子",
+                    "url": "/crush/",
+                    "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                    "taskDescShow": "糖果sdk",
+                    "awardsNum": 0,
+                    "taskType": 2,
+                    "subTask": "",
+                    "preTask": null,
+                    "startDate": "01月01日",
+                    "endDate": "04月04日",
+                    "action": 1,
+                    "sort": 100
+                },
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果33",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 28,
+                        "finishNum": 0,
+                        "taskStatus": 2,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    },
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果22",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 10,
+                        "finishNum": 0,
+                        "taskStatus": 2,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    },
+
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果55",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 58,
+                        "finishNum": 0,
+                        "taskStatus": 1,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    },
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果44",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 38,
+                        "finishNum": 0,
+                        "taskStatus": 0,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    },
+
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果66",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 88,
+                        "finishNum": 0,
+                        "taskStatus": 1,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    },
+                    {
+                        "taskId": 412,
+                        "taskName": "糖果77",
+                        "gameType": 12,
+                        "taskDesc": "糖果sdk288金叶子",
+                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
+                        "taskOps": 1888,
+                        "finishNum": 0,
+                        "taskStatus": 1,
+                        "taskLogId": null,
+                        "cycle": 2,
+                        "awardsType": 1,
+                        "awardsName": "288金叶子",
+                        "url": "/crush/",
+                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
+                        "taskDescShow": "糖果sdk",
+                        "awardsNum": 0,
+                        "taskType": 2,
+                        "subTask": "",
+                        "preTask": null,
+                        "startDate": "01月01日",
+                        "endDate": "04月04日",
+                        "action": 1,
+                        "sort": 100
+                    }],
+                hbItems: null,
             }
         },
         mounted() {
-            this.burryPoint('1207003000','春节红包加载页',{poker_value:this.getUrlParam('source')})
+            this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
             setTimeout(() => {
                 this.isshowHand = false
@@ -221,6 +421,8 @@
                 //超过一屏就显示回到顶部的图标
                 this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
             }
+            // 测试
+            this.hbItems = this.hbTestData
         },
         computed: {
             backUrl() {
@@ -238,6 +440,37 @@
                 } else {
                     return ''
                 }
+            },
+            envelopsItem() {
+                console.log('this.hbItems',this.hbItems)
+                if (!this.hbItems) {
+                    return
+                }
+                let nArr = this.hbItems.filter((item) => {
+                    return item.taskStatus != 2
+                }).sort((a, b) => {
+                    return a.taskOps - b.taskOps
+                })
+                let tArr = this.hbItems.filter((item) => {
+                    return item.taskStatus == 2
+                }).sort((a, b) => {
+                    return a.taskOps - b.taskOps
+                })
+                let result = []
+                if (nArr.length > 5) {
+                    result = nArr.splice(0, 4)
+                    result.push(nArr.pop())
+                    // 个数大于5个的时候加个dot
+                    result.splice(4, 0, {dot: true})
+                    return result
+                } else if (nArr.length == 5) {
+                    result = nArr.splice(0, 4)
+                    result.push(nArr.pop())
+                    return result
+                } else {
+                    return this.getList(nArr, tArr)
+                }
+
             }
         },
         methods: {
@@ -270,7 +503,7 @@
             back(page) {
                 if (this.backUrl) {
                     if (!page) {
-                        this.burryPoint('1207003003','春节红包-回到平台')
+                        this.burryPoint('1207003003', '春节红包-回到平台')
                         switch (this.backUrl) {
                             case 'wap':
                                 top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
@@ -283,7 +516,7 @@
                                 break;
                         }
                     } else {
-                        this.burryPoint('1207003030','春节红包-玩游戏得红包(每日任务)')
+                        this.burryPoint('1207003030', '春节红包-玩游戏得红包(每日任务)')
                         switch (this.backUrl) {
                             case 'wap':
                                 top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
@@ -299,7 +532,7 @@
                 }
             },//回到首页、平台任务页面逻辑
             gainbonus() {
-                this.burryPoint('1207003002','春节红包-获取更多红包')
+                this.burryPoint('1207003002', '春节红包-获取更多红包')
                 this.isshowHand = false;
                 this.$nextTick(() => {
                     this.getAnchor('section2')
@@ -388,13 +621,13 @@
                 if (url.startsWith('/wap/api')) {
                     url = '//platform-api.beeplay123.com' + url
                 }
-                if(url.startsWith('/wap/api')){
+                if (url.startsWith('/wap/api')) {
                     url = '//shop-api.beeplay123.com' + url
                 }
                 return this.axios.post(url, params)
             },//请求封装方法
             async bonusListClick() {
-                this.burryPoint('1207003023','春节红包-红包榜')
+                this.burryPoint('1207003023', '春节红包-红包榜')
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
                         page: 1,
@@ -409,7 +642,7 @@
                 }
             },//点击红包榜
             async bonusRecordClick() {
-                this.burryPoint('1207003020','春节红包-红包记录')
+                this.burryPoint('1207003020', '春节红包-红包记录')
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/receiveLog', {
                         page: 1,
@@ -424,7 +657,7 @@
                 }
             },//点击红包记录
             async myDetails() {
-                this.burryPoint('1207003022','春节红包-下级奖励和当前排名')
+                this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/myDetails')
                     if (res.data.code == 200 && res.data.data) {
@@ -466,7 +699,7 @@
                 // this.bonusOpenedData.num=this.detailData&&this.detailData.availableAmount||0
                 // this.isshowBonusOpened = true
                 if (this.detailData && this.detailData.availableAmount) {
-                    this.burryPoint('1207003025','春节红包-开红包')
+                    this.burryPoint('1207003025', '春节红包-开红包')
                     try {
                         const res = await this.fetch('/ops/api/springFestival/redEnvelope/open')
                         if (res.data.code == 200 && res.data.data) {
@@ -480,7 +713,7 @@
                     }
                 }
             },
-            async getPackage(){//获取福袋礼包数据
+            async getPackage() {//获取福袋礼包数据
                 try {
                     const res = await this.axios.get('//shop-api.beeplay123.com/shop/api/activity/spring')
                     if (res.data.code == 200 && res.data.data) {
@@ -490,26 +723,45 @@
 
                 }
             },
-            gotopay(val){
-                if(val.price==188){
-                    this.burryPoint(1207003051,'春节红包-开福袋领红包-立即购买188')
+            gotopay(val) {
+                if (val.price == 188) {
+                    this.burryPoint(1207003051, '春节红包-开福袋领红包-立即购买188')
                 }
-                if(val.price==1888){
-                    this.burryPoint(1207003052,'春节红包-开福袋领红包-立即购买1888')
+                if (val.price == 1888) {
+                    this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-                if(this.curChannel==100039||this.curChannel==100042){//好看、全民小视频
+                if (this.curChannel == 100039 || this.curChannel == 100042) {//好看、全民小视频
                     top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
-                }else{
+                } else {
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
                 }
             },//福袋礼包购买
-            burryPoint(id,name,params){
-                GLOBALS.buriedPoint(id,name,null,null,params||{})
+            burryPoint(id, name, params) {
+                GLOBALS.buriedPoint(id, name, null, null, params || {})
             },//埋点方法封装
-            share(){
-                this.burryPoint('1207003060','春节红包-邀好友得红包-去分享')
-            }//去分享
+            share() {
+                this.burryPoint('1207003060', '春节红包-邀好友得红包-去分享')
+            },//去分享
+            getList(newArr, completeArr) {
+                if (newArr.length < 5) {
+                    var len = 5 - newArr.length;
+                    return newArr.concat(completeArr.splice(completeArr.length - len, len)).sort(function (a, b) {
+                        return a.taskOps - b.taskOps
+                    })
+                }
+            },
+            getjiazbonus(item){//点击加赠红包领取
+                this.jiazengbonusNumber=item.taskOps
+                this.isshowBonusSuccess=true;
+                //刷新
+                //加赠红包接口
+                //详情数据
+                this.myDetails()
+            },
+            gotocomplete(){//点击加赠红包去完成
+                this.isshowBonusFailure=true
+            }
         },
         components: {
             bonusSuccess, bonusFailure, bonusList, bonusOpened, bonusRecord
@@ -832,6 +1084,114 @@
             height: 3.07rem;
             background: url("./images/plusbonusbottom1.png");
             background-size: 100% 100%;
+            .hb-task-box {
+                padding: 0 0.07rem;
+                ul {
+                    display: flex;
+                }
+                .percent-box {
+                    width: 5.86rem;
+                    height: 0.15rem;
+                    background: #fff;
+                    border-radius: 0.05rem;
+                    position: absolute;
+                    left: 0.3rem;
+                    top: 1.01rem;
+                    border-radius: 0.08rem;
+                    .percent-number {
+                        width: 40%;
+                        height: 0.15rem;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        background: #C93B34;
+                        border-radius: 0.08rem;
+                        &:after {
+                            content: '';
+                            width: 0.23rem;
+                            height: 0.23rem;
+                            background: url(./images/percent-dot.png) no-repeat;
+                            background-size: 100% 100%;
+                            position: absolute;
+                            right: -0.1rem;
+                            top: -0.04rem;
+                        }
+                    ;
+                    }
+                }
+                li {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    h2 {
+                        font-size: 0.2rem;
+                        font-weight: 500;
+                        color: rgba(239, 97, 62, 1);
+                        padding-top: 0.28rem;
+                    }
+                    h4 {
+                        font-size: 0.22rem;
+                        font-weight: 800;
+                        color: rgba(245, 49, 0, 1);
+                        margin: 0.1rem auto 0.05rem;
+                    }
+                    .hb-line {
+                        width: 2px;
+                        height: 0.48rem;
+                        background: rgba(242, 171, 67, 1);
+                        border-radius: 1px;
+                    }
+                    &.hb-dot-box {
+                        flex: 0 0 .6rem;
+                    }
+                    .hb-dot {
+                        display: block;
+                        width: 0.27rem;
+                        height: 0.06rem;
+                        background: url(./images/dot.png) no-repeat;
+                        background-size: 100% 100%;
+                        &.hb-dot1 {
+                            margin: 0.54rem auto 1.15rem;
+                        }
+                    }
+                    .envelopes {
+                        width: 0.59rem;
+                        height: 0.3rem;
+                        background: url(./images/envelopes.png) no-repeat;
+                        background-size: 100% 100%;
+                        margin: 0.04rem auto 0.11rem;
+                        font-size: 0.2rem;
+                        color: #fff;
+                        text-align: center;
+                        padding-top: 0.51rem;
+                    }
+                    .btn {
+                        display: block;
+                        width: 0.89rem;
+                        height: 0.46rem;
+                        font-size: 0.24rem;
+                        font-weight: bold;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        &.btn-receive {
+                            background: url(./images/btn-receive.png) no-repeat;
+                            background-size: 100% 100%;
+                            color: rgba(255, 236, 203, 1);
+                        }
+                        &.btn-default {
+                            background: url(./images/btn-default.png) no-repeat;
+                            background-size: 100% 100%;
+                            color: #FFECCB;
+                        }
+                        &.btn-complete {
+                            font-size: 0.24rem;
+                            color: #EA8C12;
+                        }
+                    }
+                }
+            }
         }
         .sec2 {
             position: absolute;
