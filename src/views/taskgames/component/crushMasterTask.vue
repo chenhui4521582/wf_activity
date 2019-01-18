@@ -129,8 +129,6 @@ export default {
         // 判断当前是第几个母任务类型;
         this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
         this.checWhickTask(this.crushTaskList.currentParentTask,this.crushTaskList.currentIndex)
-        GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
-        
     },
     computed:{
         currentName(){
