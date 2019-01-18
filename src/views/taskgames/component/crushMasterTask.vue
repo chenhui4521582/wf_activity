@@ -6,7 +6,6 @@
                <span>
                    <i>成就任务</i>
                    <img class="name-title" :src="crushTaskList.gameNameIcon | filter" alt="">
-                    <!-- <img v-for="item in nameList" v-if="item.name == currentName" :src="item.img" class="xunzhang-title"> -->
                </span>
                <span class="reware-bg">
                    共得<i>{{crushTaskList.reward}}</i>奖励
@@ -129,28 +128,6 @@ export default {
         // 判断当前是第几个母任务类型;
         this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
         this.checWhickTask(this.crushTaskList.currentParentTask,this.crushTaskList.currentIndex)
-    },
-    computed:{
-        currentName(){
-            switch(this.currentMedalList.index){
-                case 0:
-                    GLOBALS.buriedPoint(1210040821,"H5平台-游戏内成就任务页-糖果新贵点击");
-                    return '新贵'
-                    break;
-                case 1:
-                    GLOBALS.buriedPoint(1210040822,"H5平台-游戏内成就任务页-糖果达人点击");
-                    return '达人'
-                    break;
-                case 2:
-                    GLOBALS.buriedPoint(1210040823,"H5平台-游戏内成就任务页-糖果高手点击");
-                    return '高手'
-                    break;
-                case 3:
-                    GLOBALS.buriedPoint(1210040824,"H5平台-游戏内成就任务页-糖果大师点击");
-                    return '大师'
-                    break;
-            }
-        }
     },
     methods:{
         // 显示获得勋章
