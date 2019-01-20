@@ -169,7 +169,29 @@ window.GLOBALS = {
         }
         return Request[ename];
     },
+    remainingTime(_this, millisecond, obj, fn) {
+        var that = this;
+        timer();
+        var t = setInterval(timer, 1000);
 
+        function timer() {
+            if (millisecond <= 1) {
+                _this.$set(obj, 'time', '');
+                clearInterval(t);
+                if (fn) {
+                    fn();
+                }
+                return;
+            }
+            var day = Math.floor(millisecond / (1000 * 60 * 60 * 24));
+            var hour = Math.floor((millisecond % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minute = that.Appendzero(Math.floor((millisecond % (1000 * 60 * 60)) / (1000 * 60)));
+            var second = that.Appendzero(Math.floor((millisecond % (1000 * 60)) / 1000));
+            var hours = that.Appendzero(day * 24 + hour);
+            _this.$set(obj, 'time', hours + ':' + minute + ':' + second);
+            millisecond = millisecond - 1000;
+        }
+    },
 }
 
 
