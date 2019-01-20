@@ -74,9 +74,9 @@
                         <div class="item_item_item">加赠红包 超值回馈</div>
                         <div class="item_item_item">1696个红包等你来领</div>
                     </div>
-                    <!--加赠红包最后一档已领取表示该任务已完成-->
+                    <!--加赠红包领取个数是1696已完成-->
                     <div class="item_item"
-                         v-if="envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==2">
+                         v-if="detailData&&detailData.receiveByCumulativeTask==1696">
                         已完成
                     </div>
                     <!--1.有没有待领取的红包 2.没有待领取-->
