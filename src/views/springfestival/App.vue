@@ -4,11 +4,11 @@
             <div class="left" @click="bonusRecordClick">
             </div>
             <div class="right">
-                <div class="item"  @click="bonusRecordClick">
+                <div class="item" @click="bonusRecordClick">
                     <div class="r-item1">拥有红包</div>
                     <div class="r-item2">{{detailData&&detailData.totalAmount}}个</div>
                 </div>
-                <div class="item"  @click="bonusRecordClick">
+                <div class="item" @click="bonusRecordClick">
                     <div class="r-item1">待开启红包</div>
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
@@ -42,7 +42,7 @@
             </div>
         </div>
         <!--任务-->
-        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039}">
+        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039}" v-if="showTask">
             <div class="gainbonusbtn" @click="gainbonus"></div>
             <ul>
                 <li class="item">
@@ -81,7 +81,8 @@
                     </div>
                     <!--1.有没有待领取的红包 2.没有待领取-->
                     <template v-else>
-                        <div class="item_item unfinished" :class="{baidu:curChannel==100039}"
+                        <div class="item_item unfinished"
+                             :class="{baidu:curChannel==100039,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
                              style="display: flex;flex-direction: column;text-align: center"
                              v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
                             <div class="item_item_item" v-anchor="'section3'">去领红包</div>
@@ -117,7 +118,7 @@
             </ul>
         </div>
         <!--加赠红包-->
-        <div class="section3" id="section3">
+        <div class="section3" id="section3" v-if="showTask">
             <div class="sec1">
                 <div class="hb-task-box">
                     <div class="percent-box">
@@ -159,7 +160,7 @@
             </div>
         </div>
         <!--礼包开福-->
-        <div class="section4" id="section4">
+        <div class="section4" id="section4" v-if="showTask">
             <div class="package">
                 <div class="item" v-for="item in packageData"
                      :class="{item188:item.price==188,item1888:item.price==1888}" @click="gotopay(item)">
@@ -168,9 +169,9 @@
             </div>
         </div>
         <!--规则-->
-        <div class="section5" :class="{fold:isFoldRule,expand:!isFoldRule}" id="section5">
+        <div class="section5" :class="{fold:isFoldRule,expand:!isFoldRule,only:!showTask}" id="section5">
             <div class="title" @click="ruleClick">活动说明
-                <div :class="{fold:isFoldRule,expand:!isFoldRule}"></div>
+                <div :class="{fold:!isFoldRule,expand:isFoldRule}"></div>
             </div>
             <div class="content" v-if="!isFoldRule">
                 <p> 1. 活动时间：1月25日至2月20日；
@@ -387,7 +388,7 @@
                 return minUnfinished.taskOps - minUnfinished.finishNum
             },
             wpercent() {
-                if (!this.hbItems) {
+                if (!this.hbItems||this.hbItems.length==0) {
                     return
                 }
                 if (this.hbItems && this.envelopsItem) {
@@ -399,25 +400,23 @@
                         }).sort((a, b) => {
                             return a.taskOps - b.taskOps
                         })[0]
-                        console.log(minUnfinished.taskId)
-                        console.log([...this.envelopsItem.map(c => c.taskId)])
                         let idArr = [...this.envelopsItem.map(c => c.taskId)].indexOf(minUnfinished.taskId)
                         if (this.envelopsItem.length == 6) {
                             if (idArr == -1) {//在省略号里
                                 console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
                                 return parseFloat(5 * 100 / 6).toFixed(2) + '%'
                             } else {
-                                if(idArr==0){
-                                    return parseFloat((idArr+minUnfinished.finishNum/(minUnfinished.taskOps)) * 100 / 12) + '%'
-                                }else{
-                                    return parseFloat((1/12+(idArr-1)/6+minUnfinished.finishNum/(minUnfinished.taskOps)/6) * 100) + '%'
+                                if (idArr == 0) {
+                                    return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
+                                } else {
+                                    return parseFloat((1 / 12 + (idArr - 1) / 6 + minUnfinished.finishNum / (minUnfinished.taskOps) / 6) * 100) + '%'
                                 }
                             }
                         } else {
-                            if(idArr==0){
-                                return parseFloat((idArr+minUnfinished.finishNum/(minUnfinished.taskOps)) * 100 /12) + '%'
-                            }else{
-                                return parseFloat((1/12+(idArr-1)*5/24+minUnfinished.finishNum/(minUnfinished.taskOps)*5/24) * 100) + '%'
+                            if (idArr == 0) {
+                                return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
+                            } else {
+                                return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + minUnfinished.finishNum / (minUnfinished.taskOps) * 5 / 24) * 100) + '%'
                             }
                         }
                     }
@@ -425,6 +424,10 @@
                     return 0
                 }
 
+            },
+            showTask(){
+                console.log(this.countdown.time&&this.countdown.time!='00:00:00')
+                return this.countdown.time&&this.countdown.time!='00:00:00'
             }
         },
         methods: {
@@ -665,7 +668,7 @@
                     } catch (e) {
 
                     }
-                }else{
+                } else {
                     this.$nextTick(() => {
                         this.getAnchor('section2')
                     })
@@ -964,6 +967,7 @@
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
+                position: relative;
                 .item_item {
                     &:nth-child(1) {
                         width: .83rem;
@@ -993,7 +997,9 @@
                     &:nth-child(3) {
                         width: 1.28rem;
                         position: absolute;
-                        left: 4.3rem;
+                        left: 4.4rem;
+                        top: 50%;
+                        transform: translateY(-50%);
                         align-self: center;
                         margin-right: 0;
                         font-size: .24rem;
@@ -1007,9 +1013,18 @@
                             line-height: .46rem;
                             background: url("./images/taskbtnbottom.png") no-repeat;
                             background-size: 100% 100%;
-                            &.baidu {
+                            &.baidu, &.have {
                                 align-self: start;
                                 margin-top: .15rem;
+                                top: .3rem;
+                                .text {
+                                    font-size: 0.18rem;
+                                    color: rgb(240, 150, 118);
+                                    font-weight: 500;
+                                    /*margin-top: .2rem;*/
+                                    position: absolute;
+                                    top:.4rem;
+                                }
                             }
                         }
                     }
@@ -1248,6 +1263,9 @@
         }
         &.expand {
             height: 8.63rem;
+        }
+        &.only{//活动结束后
+            top:12rem;
         }
         .title {
             position: absolute;
