@@ -5,15 +5,33 @@
       <div class="header">
         <img src="./images/f-back.png" class="back">
         <div class="f-strategy-box">
-          <span class="f-strategy">赚红包攻略</span>
+          <span class="f-strategy"  @click="isRuleStatus = true">赚红包攻略</span>
         </div>
         <div class=""></div>
-        <div class="fx-text">首次分享成功<br/>立得<span class="fx-number">1</span>个红包</div>
+        <div class="fx-text">每邀请1个好友<br/>再得<span class="fx-number">2</span>个红包</div>
         <a href="javascript:" class="btn-share" @click="openPanel">分享赚红包</a>
+        <div class="friend-text">好友帮你赚了{{envelopeStatusCon&&envelopeStatusCon.receiveBySharing}}个红包
+          <a href="javascript:">去开启<img src="./images/arrow-right.png" class="f-back"></a>
+        </div>
       </div>
-      <div class="horn-box"><img src="./images/horn.png" class="pic-horn">100000人已赚到红包</div>
+      <div class="horn-box"><img src="./images/horn.png" class="pic-horn">{{envelopeStatusCon&&envelopeStatusCon.totalRecipients}}人已赚到红包</div>
     </div>
-
+    <!-- 红包攻略 -->
+    <div class="envelop-strategy-box" v-show="isRuleStatus">
+      <div class="pop-mask"></div>
+      <div class="envelop-strategy">
+          <div class="e-header">分享红包攻略<img src="./images/close.png" class="close" @click="isRuleStatus = false"></div>
+          <div class="e-content">
+              <p>1.活动开始时间：2019.01.25 00:00:00 至 2019.2.20 24:00:00。</p>
+              <p>2. 您邀请的好友必须是《好看视频》新用户，且登陆游戏平台，您才能获得邀请奖励，同时。好友也可获得1个红包。</p>
+              <p>3.红包奖励会在邀请成功后的48小时内发放入您的账号，您可在“首页-开红包”查看。</p>
+              <p>4.分享赚红包规则：每邀请1个好友即得1个红包，每个红包最高开出100元京东卡，每日通过分享最高可通过邀请好友方式获得5个红包，活动期间最多通过邀请好友方式获得20个红包。</p>
+              <p>5.活动所得红包仅限本人使用，不可赠送他人，同一登录账号，同一手机号，同一终端设备号，同一支付账户，同一IP或其他合理显示为同一用户的情形，均视为同一用户。</p>
+              <p>6.对于以任何不正当方式参与活动的用户，包括但不限于侵犯第三人合法权益、作弊、扰乱系统、实施网络攻击、批量注册、用机器注册账户、用机器模拟客户端等，《好看视频》有权取消其参与和获得红包资格。</p>
+              <p>7.活动期间，如出现不可抗力或情势变更的情况（包括但不限于重大灾害事件、黑客攻击、系统故障、活动受政府机关指令需停止举办或调整的），《好看视频》可依相关法律法规</p>
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -21,7 +39,9 @@
   export default {
     data() {
       return {
-        envelopeStatusCon: null
+        envelopeStatusCon: null,
+        isRuleStatus: false,
+        curChannel: localStorage.getItem('APP_CHANNEL')
       }
     },
 
@@ -31,10 +51,25 @@
         this.envelopeStatusCon = res.data.data
       }
       // this.getInvideCode()
+     
+      
     },
     methods: {
       openPanel() {
-          window.location.href = 'baiduhaokan://action/share/?title=%e8%bf%99%e4%b8%aa%e6%98%af%e5%88%86%e4%ba%ab%e9%9d%a2%e6%9d%bf&content=%e5%88%86%e4%ba%ab%e9%9d%a2%e6%9d%bf%e5%86%85%e5%ae%b9&image_url=123&url_key=https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022128e&type=0&activity_type=1&refresh_type=1|0&tab=123&tag=123&source=123&wfInvitationCode='+this.envelopeStatusCon.inviteCode
+        if(this.curChannel == '100039') {
+          this.openHkPanel()
+        }else if(this.curChannel == '100042') {
+          this.openVideoPanel()
+        }
+      },
+      openVideoPanel() {
+         window.createFun('shareFun', (res) => {
+            alert('aa1234')
+          })
+        window.location.href = 'bdminivideo://utils/share?params=%7b%22title%22%3a%22%e7%a1%ae%e8%ae%a4%e8%bf%87%e7%9c%bc%e7%a5%9e%ef%bc%8c%e4%bd%a0%e5%b0%b1%e6%98%af%e7%99%be%e4%b8%87%e5%a5%96%e9%87%91%e8%a6%81%e6%89%be%e7%9a%84%e4%ba%ba%ef%bc%81%22%2c%22content%22%3a%22%e6%88%91%e7%9e%ac%e9%97%b4%e5%86%b3%e5%ae%9a%ef%bc%8c%e6%8a%8a%e7%8e%b0%e9%87%91%e4%b9%9f%e9%80%81%e4%bd%a0%e4%b8%80%e4%bb%bd%ef%bd%9e%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%2c%22type%22%3a%225%22%2c%22tab%22%3a%22%22%2c%22tag%22%3a%22%22%2c%22source%22%3a%22%22%2c%22weixin_friend%22%3a%7b%22title%22%3a%22weixin_friendtitle%22%2c%22content%22%3a%22weixin_friendcontent%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%7d%2c%22weixin%22%3a%7b%22title%22%3a%22weixintilte%22%2c%22content%22%3a%22weixincontent%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%7d%2c%22qq_friend%22%3a%7b%22title%22%3a%22qq_friendtitle%22%2c%22content%22%3a%22qq_friendcontent%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%7d%2c%22qq_zone%22%3a%7b%22title%22%3a%22qq_zonetitle%22%2c%22content%22%3a%22qq_zonecontent%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%7d%2c%22weibo%22%3a%7b%22title%22%3a%22weibotilte%22%2c%22content%22%3a%22weibocontent%22%2c%22icon%22%3a%22https%3a%2f%2fb.bdstatic.com%2fsearchbox%2ficms%2fsearchbox%2fimg%2fhbshareIcon.jpg%22%2c%22link%22%3a%22http%3a%2f%2fshaoyanhui2.rmb.rmb.otp.baidu.com%2fvideotool%2findex.html%22%7d%2c%22channel%22%3a0%2c%22onsuccess%22%3a%22window.shareFun%22%7d&callback=window.shareFun'
+      },
+      openHkPanel() {
+          window.location.href = 'baiduhaokan://action/share/?title=%e8%bf%99%e4%b8%aa%e6%98%af%e5%88%86%e4%ba%ab%e9%9d%a2%e6%9d%bf&content=%e5%88%86%e4%ba%ab%e9%9d%a2%e6%9d%bf%e5%86%85%e5%ae%b9&image_url=123&url_key=https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022128e&type=0&activity_type=1&refresh_type=1|0&tab=123&tag=123&source=123&wfInvitationCode='
       },
       async getInvideStatus() {
         return this.axios.post('//ops-api.beeplay123.com/ops/api/springFestival/redEnvelope/status')
@@ -69,6 +104,55 @@ html,body {
   height: 100%;
 
 }
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.6;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+.envelop-strategy {
+  width:6.24rem;
+  height:8.84rem;
+  background:rgba(224,154,126,1);
+  border-radius:0.2rem;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -3.12rem;
+  margin-top: -4.42rem;
+  z-index: 12;
+  .e-header {
+    height: 1.09rem;
+    line-height: 1.09rem;
+    background: #964431;
+    font-size: 0.38rem;
+    color: #FCBCA2;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    .close {
+      width: 0.58rem;
+      height: 0.58rem;
+      position: absolute;
+      right: 0.24rem;
+      top: 0.24rem;
+    }
+  }
+  .e-content {
+    height: 6.74rem;
+    font-size: 0.24rem;
+    color: #7F2F1C;
+    line-height: 0.4rem;
+    padding: 0 0.34rem;
+    overflow: auto;
+    margin-top: 0.36rem;
+  }
+}
 .packet-sharing {
   min-height: 100vh;
   background: #fff6e5;
@@ -91,7 +175,7 @@ html,body {
     font-size: 0.24rem;
     color: #F12F35;
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 0.95rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,7 +210,8 @@ html,body {
     color: #fff;
     text-align: center;
     line-height: 0.6rem;
-    margin-top: 100%;
+    margin-top: 98%;
+    letter-spacing:2px;
     .fx-number {
       color: yellow;
     }
@@ -150,13 +235,46 @@ html,body {
     line-height: 0.9rem;
     background: url(./images/btn.png) no-repeat center top;
     background-size: 100% 100%;
-    margin: 0.69rem auto 0;
+    margin: 9% auto 0;
     font-size: 0.38rem;
     color: #9D4B08;
     display: flex;
     justify-content: center;
   }
+  .f-back {
+    width: 0.28rem;
+    height: 0.28rem;
+  }
+  .friend-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.28rem;
+    font-weight: 500;
+    color: #F8CF95;
+    margin-top: 0.3rem;
+    a {
+      display: flex;
+      align-items: center;
+      color: #FFF6E5;
+      margin-left: 0.41rem;
+      img {
+        margin-left: 0.11rem;
+      }
+    }
+  }
 }
 
+@media screen and (max-width: 320px) {
+  .packet-box {
+    .btn-share {
+      margin: 5% auto 0;
+    }
+    .fx-text {
+      margin-top: 95%;
+    }
+  }
+
+}
 
 </style>

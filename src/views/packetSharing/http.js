@@ -11,6 +11,9 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 10000;
 
 
+window.createFun = function(name,cb){
+    window[name] = cb;
+}
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -22,10 +25,9 @@ axios.interceptors.request.use(function (config) {
     if(!config.headers['App-Channel']) {
         config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
     }
-    
     // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
     // config.headers['App-Channel'] = '100006';
-    localStorage.setItem('APP_VERSION','1.0.0')
+    config.headers['App-Version'] = '1.0.0';
     return config;
 }, function (error) {
     // 对请求错误做些什么
