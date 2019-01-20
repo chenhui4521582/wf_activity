@@ -1,18 +1,18 @@
 <template>
     <div id="app">
-        <div class="section0" @click="bonusRecordClick">
-            <div class="left">
+        <div class="section0">
+            <div class="left" @click="bonusRecordClick">
             </div>
             <div class="right">
-                <div class="item">
+                <div class="item"  @click="bonusRecordClick">
                     <div class="r-item1">拥有红包</div>
                     <div class="r-item2">{{detailData&&detailData.totalAmount}}个</div>
                 </div>
-                <div class="item">
+                <div class="item"  @click="bonusRecordClick">
                     <div class="r-item1">待开启红包</div>
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
-                <div class="item">
+                <div class="item" @click.stop="bonusListClick">
                     <div class="r-item1">下级奖励</div>
                     <div class="r-item2">{{detailData&&detailData.nextAwardName||''}}</div>
                 </div>
@@ -75,13 +75,18 @@
                         <div class="item_item_item">1696个红包等你来领</div>
                     </div>
                     <!--加赠红包最后一档已领取表示该任务已完成-->
-                    <div class="item_item" v-if="envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==2">已完成</div>
+                    <div class="item_item"
+                         v-if="envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==2">
+                        已完成
+                    </div>
                     <!--1.有没有待领取的红包 2.没有待领取-->
                     <template v-else>
                         <div class="item_item unfinished" :class="{baidu:curChannel==100039}"
-                             style="display: flex;flex-direction: column;text-align: center" v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
+                             style="display: flex;flex-direction: column;text-align: center"
+                             v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
                             <div class="item_item_item" v-anchor="'section3'">去领红包</div>
-                            <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">您有红包待领取
+                            <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">
+                                您有红包待领取
                             </div>
                         </div>
                         <div class="item_item unfinished" v-anchor="'section3'" v-else>去领红包</div>
@@ -116,7 +121,8 @@
             <div class="sec1">
                 <div class="hb-task-box">
                     <div class="percent-box">
-                        <div class="percent-number"></div>
+                        <!--:style="{width:wpercent}"-->
+                        <div class="percent-number" :style="{width:wpercent}"></div>
                     </div>
                     <ul>
                         <li v-for="item in envelopsItem" v-if="!item.dot">
@@ -137,7 +143,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="sec2" :class="{unfinished:envelopsItem&&envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==1}">
+            <div class="sec2"
+                 :class="{unfinished:envelopsItem&&envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==1}">
                 <template v-if="envelopsItem[envelopsItem.length-1]">
                     <!--最后一项未完成-->
                     <template v-if="envelopsItem[envelopsItem.length-1].taskStatus==1">
@@ -173,7 +180,7 @@
                 </p>
                 <P>每日登录游戏中心免费领1个红包；
                 </P>
-                <P> 首次分享成功立得1个红包，之后每成功邀请1个好友玩游戏即可再
+                <P v-if="curChannel==100039"> 首次分享成功立得1个红包，之后每成功邀请1个好友玩游戏即可再
                     得1个红包（每天最多可获得8个红包）；
                 </P>
                 <P>完成每日任务可领红包；
@@ -245,64 +252,64 @@
                     "taskId": 412,
                     "taskOps": 10,
                     "finishNum": 0,
-                    "taskStatus": 0,
+                    "taskStatus": 2,
                     "awardsNum": 1,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 413,
                     "taskOps": 28,
                     "finishNum": 0,
-                    "taskStatus": 0,
+                    "taskStatus": 2,
                     "awardsNum": 2,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 414,
                     "taskOps": 58,
-                    "finishNum": 0,
-                    "taskStatus": 0,
+                    "finishNum": 57,
+                    "taskStatus": 2,
                     "awardsNum": 3,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 415,
                     "taskOps": 128,
-                    "finishNum": 0,
-                    "taskStatus": 0,
+                    "finishNum": 64,
+                    "taskStatus": 2,
                     "awardsNum": 6,
-                },{
-                    "taskId": 412,
-                    "taskOps":320,
-                    "finishNum": 0,
-                    "taskStatus": 0,
+                }, {
+                    "taskId": 416,
+                    "taskOps": 320,
+                    "finishNum": 2,
+                    "taskStatus": 2,
                     "awardsNum": 20,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 417,
                     "taskOps": 620,
                     "finishNum": 0,
                     "taskStatus": 2,
                     "awardsNum": 30,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 418,
                     "taskOps": 1200,
-                    "finishNum": 0,
-                    "taskStatus": 1,
+                    "finishNum": 1200,
+                    "taskStatus": 0,
                     "awardsNum": 58,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 419,
                     "taskOps": 3080,
-                    "finishNum": 0,
+                    "finishNum": 1540,
                     "taskStatus": 1,
                     "awardsNum": 188,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 420,
                     "taskOps": 8080,
                     "finishNum": 0,
                     "taskStatus": 1,
                     "awardsNum": 500,
-                },{
-                    "taskId": 412,
+                }, {
+                    "taskId": 421,
                     "taskOps": 16960,
                     "finishNum": 0,
                     "taskStatus": 1,
                     "awardsNum": 888,
                 }],
-                hbItems: null,
+                hbItems: null
             }
         },
         mounted() {
@@ -343,7 +350,7 @@
             },
             envelopsItem() {
                 if (!this.hbItems) {
-                    return[]
+                    return []
                 }
                 let nArr = this.hbItems.filter((item) => {
                     return item.taskStatus != 2
@@ -371,13 +378,53 @@
                 }
 
             },
-            jiazengyuan(){//领下级红包还需消费多少元
-                let minUnfinished=this.hbItems.filter((item) => {
+            jiazengyuan() {//领下级红包还需消费多少元
+                let minUnfinished = this.hbItems.filter((item) => {
                     return item.taskStatus == 1
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
                 })[0]
-                return minUnfinished.taskOps-minUnfinished.finishNum
+                return minUnfinished.taskOps - minUnfinished.finishNum
+            },
+            wpercent() {
+                if (!this.hbItems) {
+                    return
+                }
+                if (this.hbItems && this.envelopsItem) {
+                    if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].taskStatus != 1) {
+                        return '100%'
+                    } else {
+                        let minUnfinished = this.hbItems.filter((item) => {
+                            return item.taskStatus == 1
+                        }).sort((a, b) => {
+                            return a.taskOps - b.taskOps
+                        })[0]
+                        console.log(minUnfinished.taskId)
+                        console.log([...this.envelopsItem.map(c => c.taskId)])
+                        let idArr = [...this.envelopsItem.map(c => c.taskId)].indexOf(minUnfinished.taskId)
+                        if (this.envelopsItem.length == 6) {
+                            if (idArr == -1) {//在省略号里
+                                console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
+                                return parseFloat(5 * 100 / 6).toFixed(2) + '%'
+                            } else {
+                                if(idArr==0){
+                                    return parseFloat((idArr+minUnfinished.finishNum/(minUnfinished.taskOps)) * 100 / 12) + '%'
+                                }else{
+                                    return parseFloat((1/12+(idArr-1)/6+minUnfinished.finishNum/(minUnfinished.taskOps)/6) * 100) + '%'
+                                }
+                            }
+                        } else {
+                            if(idArr==0){
+                                return parseFloat((idArr+minUnfinished.finishNum/(minUnfinished.taskOps)) * 100 /12) + '%'
+                            }else{
+                                return parseFloat((1/12+(idArr-1)*5/24+minUnfinished.finishNum/(minUnfinished.taskOps)*5/24) * 100) + '%'
+                            }
+                        }
+                    }
+                } else {
+                    return 0
+                }
+
             }
         },
         methods: {
@@ -531,9 +578,7 @@
                 if (url.startsWith('/wap/api')) {
                     url = '//shop-api.beeplay123.com' + url
                 }
-                return this.axios.post(url, params,{
-
-                })
+                return this.axios.post(url, params, {})
             },//请求封装方法
             async bonusListClick() {
                 this.burryPoint('1207003023', '春节红包-红包榜')
@@ -620,6 +665,10 @@
                     } catch (e) {
 
                     }
+                }else{
+                    this.$nextTick(() => {
+                        this.getAnchor('section2')
+                    })
                 }
             },
             async getPackage() {//获取福袋礼包数据
@@ -1020,7 +1069,7 @@
                     top: 1.01rem;
                     border-radius: 0.08rem;
                     .percent-number {
-                        width: 40%;
+                        /*width: 40%;*/
                         height: 0.15rem;
                         position: absolute;
                         left: 0;

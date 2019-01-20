@@ -3,7 +3,7 @@
         <div class="pop-mask" @touchmove.prevent></div>
         <div class="bonus-list">
             <div class="counttime" v-if="data">
-                发榜倒计时: {{countdownText}}
+                {{countdownText}}
             </div>
             <!--amount: 0-->
             <!--awardName: "暂无奖励"-->
@@ -95,10 +95,20 @@
                 if(this.countdown.time){
                     let hourText=this.countdown.time.split(':')[0]
                     let days=Math.floor(hourText/24)
-                    if(days==0){
-                       return  this.countdown.time
+                    let hour=parseInt(this.countdown.time.split(':')[0])-Math.floor(hourText/24)*24
+                    //发榜倒计时: {{countdownText}}
+                    if(days<3){
+                        if(days){
+                            return `结算倒计时：${days}天${[hour,...this.countdown.time.split(':').splice(1)].join(':')}`
+                        }else{
+                            if(this.countdown.time=='00:00:00'){
+                                return `结算倒计时：提奖时间：2月23日`
+                            }else{
+                                return `结算倒计时：${this.countdown.time}`
+                            }
+                        }
                     }else{
-                        return Math.floor(hourText/24)+'天'
+                        return  `结算时间：${this.data.settlementTime}`
                     }
                 }else{
                     return ''
