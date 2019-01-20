@@ -35,7 +35,7 @@
                 <div ref="hornDiv" class="c-horn-text">
                     <ul ref="hornUl">
                         <li v-for="(item,index) in noticeList" ref="hornLi">
-                            <span v-html="item" style="white-space:normal;line-height: .25rem"></span>
+                            <span v-html="item" style="white-space:normal;"></span>
                         </li>
                     </ul>
                 </div>
@@ -893,25 +893,25 @@
                 }
                 li {
                     width: 1.86rem;
-                    height: .86rem;
                     float: left;
                     overflow: auto;
                     white-space: nowrap;
                     transition: all 1s ease 0.5s;
                     overflow: hidden;
-                    padding-bottom: .1rem;
                     box-sizing: border-box;
                     span {
                         display: inline-block;
                         height: 0.76rem;
+                        line-height: 0.76rem;
                         width: 1.86rem;
                         font-size: .2rem;
                         font-weight: 400;
                         color: rgba(255, 255, 255, 1);
                         background: url("./images/horn.png");
                         background-size: 100% 100%;
-                        padding: .16rem;
                         box-sizing: border-box;
+                        margin: 0.05rem 0;
+                        text-align: center;
                     }
                 }
             }
