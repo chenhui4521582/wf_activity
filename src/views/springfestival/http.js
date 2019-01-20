@@ -16,11 +16,11 @@ axios.defaults.timeout = 10000;
 axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
     if(!config.headers.Authorization) {
-        config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
+        config.headers.Authorization = (utils.getUrlParamObj('token') && utils.getUrlParam("token").split("#/")[0]) || localStorage.getItem('ACCESS_TOKEN');
     }
     
     if(!config.headers['App-Channel']) {
-        config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
+        config.headers['App-Channel'] = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL');;
     }
     
     // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';

@@ -74,13 +74,18 @@
                         <div class="item_item_item">加赠红包 超值回馈</div>
                         <div class="item_item_item">1696个红包等你来领</div>
                     </div>
-                    <!--<div class="item_item">今日已领取</div>-->
-                    <div class="item_item unfinished" :class="{baidu:curChannel==100039}"
-                         style="display: flex;flex-direction: column;text-align: center">
-                        <div class="item_item_item" v-anchor="'section3'">去领红包</div>
-                        <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">您有红包待领取
+                    <!--加赠红包最后一档已领取表示该任务已完成-->
+                    <div class="item_item" v-if="envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==2">已完成</div>
+                    <!--1.有没有待领取的红包 2.没有待领取-->
+                    <template v-else>
+                        <div class="item_item unfinished" :class="{baidu:curChannel==100039}"
+                             style="display: flex;flex-direction: column;text-align: center" v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
+                            <div class="item_item_item" v-anchor="'section3'">去领红包</div>
+                            <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">您有红包待领取
+                            </div>
                         </div>
-                    </div>
+                        <div class="item_item unfinished" v-anchor="'section3'" v-else>去领红包</div>
+                    </template>
                 </li>
                 <li class="item">
                     <div class="item_item">
@@ -118,10 +123,12 @@
                             <h2>累计充值</h2>
                             <h4>满{{item.taskOps}}元</h4>
                             <div class="hb-line"></div>
-                            <div class="envelopes">{{item.taskOps}}个</div>
+                            <div class="envelopes">{{item.awardsNum}}个</div>
                             <a href="javasript:" class="btn btn-complete" v-if="item.taskStatus == 2">已领取</a>
-                            <a href="javasript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="getjiazbonus(item)">领取</a>
-                            <a href="javasript:" class="btn btn-default" v-if="item.taskStatus == 1" @click="gotocomplete">去完成</a>
+                            <a href="javasript:" class="btn btn-receive" v-if="item.taskStatus == 0"
+                               @click="getjiazbonus(item)">领取</a>
+                            <a href="javasript:" class="btn btn-default" v-if="item.taskStatus == 1"
+                               @click="gotocomplete">去完成</a>
                         </li>
                         <li class="hb-dot-box" v-else>
                             <span class="hb-dot hb-dot1"></span>
@@ -130,9 +137,18 @@
                     </ul>
                 </div>
             </div>
-            <div class="sec2">
-                <div class="item"><i>领下级红包还需消费</i>10元</div>
-                <div class="item"><i>获得加赠红包个数</i>1个</div>
+            <div class="sec2" :class="{unfinished:envelopsItem&&envelopsItem[envelopsItem.length-1]&&envelopsItem[envelopsItem.length-1].taskStatus==1}">
+                <template v-if="envelopsItem[envelopsItem.length-1]">
+                    <!--最后一项未完成-->
+                    <template v-if="envelopsItem[envelopsItem.length-1].taskStatus==1">
+                        <div class="item"><i>领下级红包还需消费</i>{{jiazengyuan}}元</div>
+                        <div class="item"><i>获得加赠红包个数</i>{{detailData&&detailData.receiveByCumulativeTask||0}}个</div>
+                    </template>
+                    <!--最后一项已完成-->
+                    <template v-else>
+                        <div class="item">恭喜你完成了加赠红包活动，快去参与"福袋开福"获取更多红包吧</div>
+                    </template>
+                </template>
             </div>
         </div>
         <!--礼包开福-->
@@ -180,7 +196,8 @@
         </div>
         <!--以下都是弹窗-->
         <!--加赠红包领取成功-->
-        <bonus-success :show="isshowBonusSuccess" :count="jiazengbonusNumber" @close="isshowBonusSuccess=false"></bonus-success>
+        <bonus-success :show="isshowBonusSuccess" :count="jiazengbonusNumber"
+                       @close="isshowBonusSuccess=false"></bonus-success>
         <!--加赠红包点击去完成-->
         <bonus-failure :show="isshowBonusFailure" @close="isshowBonusFailure=false"></bonus-failure>
         <!--红包记录-->
@@ -226,181 +243,65 @@
                 jiazengbonusNumber: 0,//加赠红包点击领取获得红包个数
                 hbTestData: [{
                     "taskId": 412,
-                    "taskName": "糖果11",
-                    "gameType": 12,
-                    "taskDesc": "糖果sdk288金叶子",
-                    "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                    "taskOps": 1,
+                    "taskOps": 10,
+                    "finishNum": 0,
+                    "taskStatus": 0,
+                    "awardsNum": 1,
+                },{
+                    "taskId": 412,
+                    "taskOps": 28,
+                    "finishNum": 0,
+                    "taskStatus": 0,
+                    "awardsNum": 2,
+                },{
+                    "taskId": 412,
+                    "taskOps": 58,
+                    "finishNum": 0,
+                    "taskStatus": 0,
+                    "awardsNum": 3,
+                },{
+                    "taskId": 412,
+                    "taskOps": 128,
+                    "finishNum": 0,
+                    "taskStatus": 0,
+                    "awardsNum": 6,
+                },{
+                    "taskId": 412,
+                    "taskOps":320,
+                    "finishNum": 0,
+                    "taskStatus": 0,
+                    "awardsNum": 20,
+                },{
+                    "taskId": 412,
+                    "taskOps": 620,
+                    "finishNum": 0,
+                    "taskStatus": 2,
+                    "awardsNum": 30,
+                },{
+                    "taskId": 412,
+                    "taskOps": 1200,
                     "finishNum": 0,
                     "taskStatus": 1,
-                    "taskLogId": null,
-                    "cycle": 2,
-                    "awardsType": 1,
-                    "awardsName": "288金叶子",
-                    "url": "/crush/",
-                    "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                    "taskDescShow": "糖果sdk",
-                    "awardsNum": 0,
-                    "taskType": 2,
-                    "subTask": "",
-                    "preTask": null,
-                    "startDate": "01月01日",
-                    "endDate": "04月04日",
-                    "action": 1,
-                    "sort": 100
-                },
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果33",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 28,
-                        "finishNum": 0,
-                        "taskStatus": 2,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    },
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果22",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 10,
-                        "finishNum": 0,
-                        "taskStatus": 2,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    },
-
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果55",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 58,
-                        "finishNum": 0,
-                        "taskStatus": 1,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    },
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果44",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 38,
-                        "finishNum": 0,
-                        "taskStatus": 0,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    },
-
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果66",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 88,
-                        "finishNum": 0,
-                        "taskStatus": 1,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    },
-                    {
-                        "taskId": 412,
-                        "taskName": "糖果77",
-                        "gameType": 12,
-                        "taskDesc": "糖果sdk288金叶子",
-                        "icon": "https://file.beeplay123.com/group1/M00/00/83/CiFVy1wvAiyAWNx8AAAiU--VNUY985.png",
-                        "taskOps": 1888,
-                        "finishNum": 0,
-                        "taskStatus": 1,
-                        "taskLogId": null,
-                        "cycle": 2,
-                        "awardsType": 1,
-                        "awardsName": "288金叶子",
-                        "url": "/crush/",
-                        "awardsImage": "https://file.beeplay123.comhttp://www.jddfun.com/cdn/app/operating_position/chest_open.png",
-                        "taskDescShow": "糖果sdk",
-                        "awardsNum": 0,
-                        "taskType": 2,
-                        "subTask": "",
-                        "preTask": null,
-                        "startDate": "01月01日",
-                        "endDate": "04月04日",
-                        "action": 1,
-                        "sort": 100
-                    }],
+                    "awardsNum": 58,
+                },{
+                    "taskId": 412,
+                    "taskOps": 3080,
+                    "finishNum": 0,
+                    "taskStatus": 1,
+                    "awardsNum": 188,
+                },{
+                    "taskId": 412,
+                    "taskOps": 8080,
+                    "finishNum": 0,
+                    "taskStatus": 1,
+                    "awardsNum": 500,
+                },{
+                    "taskId": 412,
+                    "taskOps": 16960,
+                    "finishNum": 0,
+                    "taskStatus": 1,
+                    "awardsNum": 888,
+                }],
                 hbItems: null,
             }
         },
@@ -413,6 +314,7 @@
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             this.myDetails()//myDetail接口数据
+            this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
             window.onscroll = () => {
                 // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
@@ -421,8 +323,6 @@
                 //超过一屏就显示回到顶部的图标
                 this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
             }
-            // 测试
-            this.hbItems = this.hbTestData
         },
         computed: {
             backUrl() {
@@ -442,9 +342,8 @@
                 }
             },
             envelopsItem() {
-                console.log('this.hbItems',this.hbItems)
                 if (!this.hbItems) {
-                    return
+                    return[]
                 }
                 let nArr = this.hbItems.filter((item) => {
                     return item.taskStatus != 2
@@ -471,6 +370,14 @@
                     return this.getList(nArr, tArr)
                 }
 
+            },
+            jiazengyuan(){//领下级红包还需消费多少元
+                let minUnfinished=this.hbItems.filter((item) => {
+                    return item.taskStatus == 1
+                }).sort((a, b) => {
+                    return a.taskOps - b.taskOps
+                })[0]
+                return minUnfinished.taskOps-minUnfinished.finishNum
             }
         },
         methods: {
@@ -624,7 +531,9 @@
                 if (url.startsWith('/wap/api')) {
                     url = '//shop-api.beeplay123.com' + url
                 }
-                return this.axios.post(url, params)
+                return this.axios.post(url, params,{
+
+                })
             },//请求封装方法
             async bonusListClick() {
                 this.burryPoint('1207003023', '春节红包-红包榜')
@@ -743,6 +652,17 @@
             share() {
                 this.burryPoint('1207003060', '春节红包-邀好友得红包-去分享')
             },//去分享
+            // 获取红包任务列表
+            getEnvelopesList() {
+                this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platCommonTaskByBatch', {
+                    value: "SpringFestival-recharge"
+                }).then((res) => {
+                    if (res.data.code == 200) {
+                        this.hbItems = res.data.data
+                        // this.hbItems = this.hbTestData
+                    }
+                })
+            },
             getList(newArr, completeArr) {
                 if (newArr.length < 5) {
                     var len = 5 - newArr.length;
@@ -751,16 +671,17 @@
                     })
                 }
             },
-            getjiazbonus(item){//点击加赠红包领取
-                this.jiazengbonusNumber=item.taskOps
-                this.isshowBonusSuccess=true;
+            getjiazbonus(item) {//点击加赠红包领取
+                this.jiazengbonusNumber = item.awardsNum
+                this.isshowBonusSuccess = true;
                 //刷新
                 //加赠红包接口
                 //详情数据
+                this.getEnvelopesList()
                 this.myDetails()
             },
-            gotocomplete(){//点击加赠红包去完成
-                this.isshowBonusFailure=true
+            gotocomplete() {//点击加赠红包去完成
+                this.isshowBonusFailure = true
             }
         },
         components: {
@@ -1219,7 +1140,7 @@
             i {
                 color: rgba(255, 216, 59, 1);
             }
-            &:before {
+            &.unfinished:before {
                 content: '';
                 position: absolute;
                 left: 3.27rem;
