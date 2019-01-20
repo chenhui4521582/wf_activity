@@ -153,7 +153,7 @@
                     </template>
                     <!--最后一项已完成-->
                     <template v-else>
-                        <div class="item">恭喜你完成了加赠红包活动，快去参与"福袋开福"获取更多红包吧</div>
+                        <div class="item">已完成该活动，参与"福袋开福"</div>
                     </template>
                 </template>
             </div>
