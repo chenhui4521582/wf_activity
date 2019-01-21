@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" :class="{aoke:curChannel==100006}">
         <div class="section0">
             <div class="left" @click="bonusRecordClick">
             </div>
@@ -777,7 +777,9 @@
 </script>
 <style lang="less" scoped>
     @import '../../common/css/base.css';
-
+    .aoke{
+        overflow-y: scroll;
+    }
     .section0 {
         position: fixed;
         width: 7.2rem;
