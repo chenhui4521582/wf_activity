@@ -723,6 +723,7 @@
             },//埋点方法封装
             share() {
                 this.burryPoint('1207003060', '春节红包-邀好友得红包-去分享')
+                window.location.href='https://wap.beeplay123.com/activities/packetSharing.html'
             },//去分享
             // 获取红包任务列表
             getEnvelopesList() {
