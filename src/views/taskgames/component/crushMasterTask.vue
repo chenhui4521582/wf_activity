@@ -172,8 +172,8 @@ export default {
             }
         },
         transUint(finishNum,taskOps){
-            let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
-                ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
+            let finish = finishNum >= 10000 ? (finishNum/10000).toFixed(1) + '万' : finishNum,
+                ops = taskOps >= 10000 ? taskOps/10000+'万' : taskOps
             return  finish+'/'+ops
         },
         // 点击切换显示勋章内容（已获得 未解锁 进行中）
@@ -330,10 +330,10 @@ div{box-sizing: border-box}
     height: auto;
     .progress-bg{
         background: #0F1726;
-        width: 90px;
+        width: 1.6rem;
         margin-right: 5px;
         position: relative;
-        height: 15px;
+        height: .25rem;
         border-radius: 3px;
         overflow: hidden;
         .progress-bar{
@@ -350,7 +350,7 @@ div{box-sizing: border-box}
             color: #fff;
             font-size: .2rem;
             left: 0;
-            line-height: 15px;
+            line-height: .25rem;
             text-align: center;
         }
     }
