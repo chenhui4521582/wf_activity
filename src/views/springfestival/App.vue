@@ -27,7 +27,7 @@
         <!--返回按钮-->
         <div class="back" @click="back('')"></div>
         <!--第一屏-->
-        <div class="section1" id="section1">
+        <div class="section1" id="section1" :class="{only:!showTask}">
             <div class="openbonus" :class="{opened:!detailData||!detailData.availableAmount}" @click="openBonus"></div>
             <div class="text" v-if="detailData&&detailData.availableAmount">待开启 <br>{{detailData&&detailData.availableAmount}}个红包
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="item_item">
                         <div class="item_item_item">春节好运到 送你大红包</div>
-                        <div class="item_item_item">登录成功即领1个红包</div>
+                        <div class="item_item_item">每日登录即领1个红包</div>
                     </div>
                     <div class="item_item">今日已领取</div>
                 </li>
@@ -63,8 +63,21 @@
                         <div class="item_item_item">玩游戏 得红包</div>
                         <div class="item_item_item">金叶话费京东卡 海量奖励不设限</div>
                     </div>
-                    <!--<div class="item_item">今日已完成</div>-->
-                    <div class="item_item unfinished" @click="back('taskview')">去完成</div>
+                    <template v-if="batchRedDotData">
+                        <div class="item_item unfinished"
+                             :class="{baidu:curChannel==100039,have:true}"
+                             style="display: flex;flex-direction: column;text-align: center" v-if="batchRedDotData.taskStatus==0">
+                            <div class="item_item_item" @click="back('taskview')">去完成</div>
+                            <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">
+                                您有红包待领取
+                            </div>
+                        </div>
+                        <div class="item_item unfinished" @click="back('taskview')" v-if="batchRedDotData.taskStatus==1">去完成</div>
+                        <div class="item_item" v-if="batchRedDotData.taskStatus==2">今日已完成</div>
+                    </template>
+                    <template v-else>
+                        <div class="item_item unfinished" @click="back('taskview')">去完成</div>
+                    </template>
                 </li>
                 <li class="item">
                     <div class="item_item">
@@ -170,10 +183,16 @@
         </div>
         <!--规则-->
         <div class="section5" :class="{fold:isFoldRule,expand:!isFoldRule,only:!showTask}" id="section5">
-            <div class="title" @click="ruleClick">活动说明
-                <div :class="{fold:!isFoldRule,expand:isFoldRule}"></div>
-            </div>
-            <div class="content" v-if="!isFoldRule">
+            <template v-if="showTask">
+                <div class="title" @click="ruleClick">活动说明
+                    <div :class="{fold:!isFoldRule,expand:isFoldRule,only:!showTask}"></div>
+                </div>
+            </template>
+            <template v-else>
+                <div class="title">活动说明
+                </div>
+            </template>
+            <div class="content" v-if="!isFoldRule||!showTask">
                 <p> 1. 活动时间：1月25日至2月22日；
                 </p>
                 <P>榜单结算时间：2月20日23:59:59。</P>
@@ -310,7 +329,8 @@
                     "taskStatus": 1,
                     "awardsNum": 888,
                 }],
-                hbItems: null
+                hbItems: null,
+                batchRedDotData:null
             }
         },
         mounted() {
@@ -322,7 +342,7 @@
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             this.myDetails()//myDetail接口数据
-            // this.getBatchRedDot()
+            this.getBatchRedDot()
             this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
             window.onscroll = () => {
@@ -427,7 +447,6 @@
 
             },
             showTask(){
-                console.log(this.countdown.time&&this.countdown.time!='00:00:00')
                 return this.countdown.time&&this.countdown.time!='00:00:00'
             }
         },
@@ -739,14 +758,14 @@
             gotocomplete() {//点击加赠红包去完成
                 this.isshowBonusFailure = true
             },
-            // async getBatchRedDot(){
-            //     let res= await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/batchRedDot',{
-            //         value:'dayTask'
-            //     })
-            //     if(res.data.code==200){
-            //         console.log(res.data.code)
-            //     }
-            // }
+            async getBatchRedDot(){
+                let res= await this.fetch('/wap/api/usertask/batchTaskStatus',{
+                    value:'dayTask'
+                })
+                if(res.data.code==200){
+                    this.batchRedDotData=res.data.data;
+                }
+            }
         },
         components: {
             bonusSuccess, bonusFailure, bonusList, bonusOpened, bonusRecord
@@ -859,6 +878,11 @@
         height: 11.66rem;
         background: url("./images/headimg.png");
         background-size: 100% 100%;
+        &.only{
+            height: 18.58rem;
+            background: url("./images/headimg1.png");
+            background-size: 100% 100%;
+        }
         .text {
             position: absolute;
             top: 6.45rem;
@@ -1009,6 +1033,7 @@
                         }
                     }
                     &:nth-child(3) {
+                        text-align: center;
                         width: 1.28rem;
                         position: absolute;
                         left: 4.4rem;
@@ -1274,12 +1299,15 @@
         background: #92140E;
         &.fold {
             height: 1.17rem;
+            &.only{
+                height:0;
+            }
         }
         &.expand {
             height: 8.63rem;
-        }
-        &.only{//活动结束后
-            top:12rem;
+            &.only{
+                height:0;
+            }
         }
         .title {
             position: absolute;
@@ -1297,6 +1325,10 @@
                 background-size: 100% 100%;
                 transform: rotate(180deg);
                 margin-left: .1rem;
+                /*&.only{*/
+                    /*background: url("./images/ruledownicon1.png");*/
+                    /*background-size: 100% 100%;*/
+                /*}*/
             }
             .expand {
                 width: .24rem;
@@ -1304,6 +1336,10 @@
                 background: url("./images/ruledownicon.png");
                 background-size: 100% 100%;
                 margin-left: .1rem;
+                /*&.only{*/
+                    /*background: url("./images/ruledownicon1.png");*/
+                    /*background-size: 100% 100%;*/
+                /*}*/
             }
         }
         .content {
@@ -1317,6 +1353,13 @@
             line-height: .3rem;
             p:last-child {
                 margin-top: .5rem;
+            }
+        }
+        &.only{//活动结束后
+            top:11.56rem;
+            background: transparent;
+            .title,.content{
+                color:rgba(255,255,255,1);
             }
         }
     }

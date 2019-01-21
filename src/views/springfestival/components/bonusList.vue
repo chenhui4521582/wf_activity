@@ -101,7 +101,7 @@
                         if(days){
                             return `结算倒计时：${days}天${[hour,...this.countdown.time.split(':').splice(1)].join(':')}`
                         }else{
-                            if(this.countdown.time=='00:00:00'){
+                            if(!this.countdown.time||this.countdown.time=='00:00:00'){
                                 return `提奖时间：2月23日起奖励将在消息中心发放`
                             }else{
                                 return `结算倒计时：${this.countdown.time}`
