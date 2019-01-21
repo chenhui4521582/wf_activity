@@ -268,7 +268,9 @@
                     if(!this.isTfStatus) {
                         this.getDayTask()
                         this.getNewTask()
-                        this.getCrushTask('','',this.checkCurrentTask())
+                        if(this.checkCurrentTask() != ''){
+                            this.getCrushTask('','',this.checkCurrentTask())
+                        }
                     }
                   }
                 })
@@ -285,6 +287,8 @@
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement'
                     break
+                default : 
+                    return ''
             }
         },
         jumpMine(){
