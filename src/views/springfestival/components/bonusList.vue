@@ -34,7 +34,7 @@
             <div class="content">
                 <scroll :data="list">
                     <ul>
-                        <li v-for="(item,index) in list">
+                        <li v-for="(item,index) in list" :class="{rank:data&&data.myRanking==item.ranking}">
                             <!--amount: 88-->
                             <!--awardName: "1000万金叶子+加赠5000元京东卡"-->
                             <!--nickname: "曹翠"-->
@@ -259,19 +259,21 @@
                     display: flex;
                     align-items: center;
                     color: rgba(196, 119, 35, 1);
+                    position: relative;
                     div {
                         text-align: center;
                         &:nth-child(1) {
-                            width: .72rem;
+                            width: .75rem;
                         }
                         &:nth-child(2) {
-                            width: 1.4rem;
+                            width: 1.2rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            white-space: nowrap
+                            white-space: nowrap;
+                            text-align: left;
                         }
                         &:nth-child(3) {
-                            width: .86rem;
+                            width: 1rem;
                             text-align: center;
                         }
                         &:nth-child(4) {
@@ -284,6 +286,24 @@
                     }
                     &:nth-child(2n+1) {
                         background: rgba(244, 214, 163, 1);
+                    }
+                    &.rank{
+                        color:#CF2C29;
+                        &:nth-child(1) {
+                            width: .75rem;
+                        }
+                        &:before{
+                            content: '';
+                            position: absolute;
+                            left: .05rem;
+                            width:0;
+                            height:0;
+                            border-width:.06rem 0 .06rem .06rem;
+                            border-style:solid;
+                            border-color:transparent transparent transparent #CF2C29;/*透明 透明 透明 灰*/
+                            /*margin:40px auto;*/
+                            /*position:relative;*/
+                        }
                     }
                 }
             }

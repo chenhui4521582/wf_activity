@@ -174,9 +174,9 @@
                 <div :class="{fold:!isFoldRule,expand:isFoldRule}"></div>
             </div>
             <div class="content" v-if="!isFoldRule">
-                <p> 1. 活动时间：1月25日至2月20日；
+                <p> 1. 活动时间：1月25日至2月22日；
                 </p>
-                <P>红包榜单结算时间：2月20日18点整。</P>
+                <P>榜单结算时间：2月20日23:59:59。</P>
                 <p> 2. 红包获取途径：
                 </p>
                 <P>每日登录游戏中心免费领1个红包；
@@ -190,7 +190,7 @@
                     冲击榜单。</P>
                 <p> 3. 奖励发放：
                 </p>
-                <P> 榜单结算后，对应奖励在3个工作日内发放。</P>
+                <P> 对应奖励将在2月23日开始，通过消息中心发放。</P>
                 <p> 4. 注意事项：
                 </p>
                 <P> 游戏里发放的红包不计入此活动；榜单刷新可能延时；
@@ -316,12 +316,13 @@
         mounted() {
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
-            // setTimeout(() => {
-            //     this.isshowHand = false
-            // }, 4000)
+            setTimeout(() => {
+                this.isshowHand = false
+            }, 4000)
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             this.myDetails()//myDetail接口数据
+            // this.getBatchRedDot()
             this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
             window.onscroll = () => {
@@ -588,7 +589,7 @@
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
                         page: 1,
-                        pageSize: 100
+                        pageSize: 500
                     })
                     if (res.data.code == 200 && res.data.data) {
                         this.isshowBonusList = true
@@ -724,7 +725,7 @@
                 }
             },
             async getjiazbonus(item) {//点击加赠红包领取
-                let res=await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish')
+                let res=await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish',{taskId:item.taskId})
                 if(res.data.code==200){
                     this.jiazengbonusNumber = item.awardsNum
                     this.isshowBonusSuccess = true;
@@ -737,7 +738,15 @@
             },
             gotocomplete() {//点击加赠红包去完成
                 this.isshowBonusFailure = true
-            }
+            },
+            // async getBatchRedDot(){
+            //     let res= await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/batchRedDot',{
+            //         value:'dayTask'
+            //     })
+            //     if(res.data.code==200){
+            //         console.log(res.data.code)
+            //     }
+            // }
         },
         components: {
             bonusSuccess, bonusFailure, bonusList, bonusOpened, bonusRecord
@@ -908,13 +917,14 @@
                     span {
                         display: inline-block;
                         height: 0.76rem;
-                        line-height: 0.76rem;
+                        /*line-height: 0.1rem;*/
                         width: 1.86rem;
                         font-size: .2rem;
                         font-weight: 400;
                         color: rgba(255, 255, 255, 1);
                         background: url("./images/horn.png");
                         background-size: 100% 100%;
+                        padding: .2rem;
                         box-sizing: border-box;
                         margin: 0.05rem 0;
                         text-align: center;
@@ -954,7 +964,8 @@
             height: 1.39rem;
             background: url("./images/hand.png");
             background-size: 100% 100%;
-            z-index: 1
+            z-index: 1;
+            animation: myPlay1 2s ease-in infinite;;
         }
         ul {
             position: absolute;
@@ -1316,6 +1327,14 @@
         }
         100% {
             transform: scale(.8);
+        }
+    }
+    @keyframes myPlay1 {
+        0% {
+            transform: translateY(10%);
+        }
+        100% {
+            transform: translateY(-10%);
         }
     }
 </style>
