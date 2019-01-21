@@ -24,10 +24,10 @@
         </div>
         <!--回到顶部-->
         <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'"></div>
+        <!--返回按钮-->
+        <div class="back" @click="back('')"></div>
         <!--第一屏-->
         <div class="section1" id="section1">
-            <!--返回按钮-->
-            <div class="back" @click="back"></div>
             <div class="openbonus" :class="{opened:!detailData||!detailData.availableAmount}" @click="openBonus"></div>
             <div class="text" v-if="detailData&&detailData.availableAmount">待开启 <br>{{detailData&&detailData.availableAmount}}个红包
             </div>
@@ -231,7 +231,7 @@
                 userInfo: null,
                 curChannel: null,
                 curToken: null,
-                isFoldRule: true,//折叠规则默认折叠
+                isFoldRule: false,//折叠规则默认折叠
                 isShowTopIcon: false,//是否显示回到顶部图标
                 isshowHand: true,//是否显示小手
                 noticeList: [],//广播
@@ -316,9 +316,9 @@
         mounted() {
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
-            setTimeout(() => {
-                this.isshowHand = false
-            }, 4000)
+            // setTimeout(() => {
+            //     this.isshowHand = false
+            // }, 4000)
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             this.myDetails()//myDetail接口数据
@@ -723,14 +723,17 @@
                     })
                 }
             },
-            getjiazbonus(item) {//点击加赠红包领取
-                this.jiazengbonusNumber = item.awardsNum
-                this.isshowBonusSuccess = true;
-                //刷新
-                //加赠红包接口
-                //详情数据
-                this.getEnvelopesList()
-                this.myDetails()
+            async getjiazbonus(item) {//点击加赠红包领取
+                let res=await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish')
+                if(res.data.code==200){
+                    this.jiazengbonusNumber = item.awardsNum
+                    this.isshowBonusSuccess = true;
+                    //刷新
+                    //加赠红包接口
+                    //详情数据
+                    this.getEnvelopesList()
+                    this.myDetails()
+                }
             },
             gotocomplete() {//点击加赠红包去完成
                 this.isshowBonusFailure = true
@@ -768,7 +771,7 @@
             display: flex;
             .item {
                 font-size: .22rem;
-                flex: 1;
+                flex: .9;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -777,13 +780,13 @@
                     content: '';
                     position: absolute;
                     top: .1rem;
-                    right: .27rem;
+                    right: .1rem;
                     width: .01rem;
                     height: .4rem;
                     background: rgba(255, 246, 205, .5);
                 }
                 &:nth-child(3) {
-                    flex: 2;
+                    flex: 2.5;
                 }
                 .r-item1 {
                     font-weight: 800;
@@ -831,7 +834,15 @@
         background-size: 100% 100%;
         z-index: 10;
     }
-
+    .back {
+        position: fixed;
+        top: 1rem;
+        width: .75rem;
+        height: .58rem;
+        background: url("./images/backhome.png");
+        background-size: 100% 100%;
+        z-index: 10;
+    }
     .section1 {
         position: relative;
         top: .57rem;
@@ -839,14 +850,6 @@
         height: 11.66rem;
         background: url("./images/headimg.png");
         background-size: 100% 100%;
-        .back {
-            position: absolute;
-            top: .46rem;
-            width: .75rem;
-            height: .58rem;
-            background: url("./images/backhome.png");
-            background-size: 100% 100%;
-        }
         .text {
             position: absolute;
             top: 6.45rem;
@@ -1309,13 +1312,10 @@
 
     @keyframes myPlay {
         0% {
-            transform: scale(.5);
-        }
-        50% {
-            transform: scale(.8);
+            transform: scale(1);
         }
         100% {
-            transform: scale(1);
+            transform: scale(.8);
         }
     }
 </style>
