@@ -111,7 +111,7 @@
                         return  `结算时间：${this.data.settlementTime}`
                     }
                 }else{
-                    return ''
+                    return `提奖时间：2月23日起奖励将在消息中心发放`
                 }
             }
         },
