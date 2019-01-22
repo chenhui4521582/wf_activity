@@ -181,6 +181,25 @@
                 </div>
             </div>
         </div>
+        <!--更多游戏活动-->
+        <div class="section6" id="section6" v-if="showTask">
+            <div class="package">
+                <div class="item" v-for="item in 3" @click="gotoplay(item)">
+                    <div class="pic">
+                        <div class="text" v-if="item==1">
+                            捕鱼贺新春<br>话费疯狂送
+                        </div>
+                        <div class="text" v-if="item==2">
+                            金猪报喜<br>一杆最高4500万
+                        </div>
+                        <div class="text" v-if="item==3">
+                            糖果新春版<br>来玩就送505元
+                        </div>
+                    </div>
+                    <div class="btn"></div>
+                </div>
+            </div>
+        </div>
         <!--规则-->
         <div class="section5" :class="{fold:isFoldRule,expand:!isFoldRule,only:!showTask}" id="section5">
             <template v-if="showTask">
@@ -243,7 +262,7 @@
     import bonusList from './components/bonusList'
     import bonusOpened from './components/bonusOpened'
     import bonusRecord from './components/bonusRecord'
-
+    import common from "../../common/js/utils";
     export default {
         data() {
             return {
@@ -459,7 +478,7 @@
 
             },
             showTask(){
-                return this.countdown.time&&this.countdown.time!='00:00:00'
+                return !this.countdown.time||this.countdown.time!='00:00:00'
             }
         },
         methods: {
@@ -779,6 +798,15 @@
                 if(res.data.code==200){
                     this.batchRedDotData=res.data.data;
                 }
+            },
+            gotoplay(index){
+                if(index==1){
+                    common.jumpToGame({url:'/fish'})
+                }else if(index==2){
+                    common.jumpToGame({url:'/billiards'})
+                }else{
+                    common.jumpToGame({url:'/crush'})
+                }
             }
         },
         components: {
@@ -964,7 +992,7 @@
                         color: rgba(255, 255, 255, 1);
                         background: url("./images/horn.png");
                         background-size: 100% 100%;
-                        padding: .2rem;
+                        padding: .2rem 0.1rem;
                         box-sizing: border-box;
                         margin: 0.05rem 0;
                         text-align: center;
@@ -1313,10 +1341,87 @@
             }
         }
     }
-
-    .section5 {
+    .section6 {
         position: absolute;
         top: 30.04rem;
+        width: 7.2rem;
+        height: 6.2rem;
+        background: #92140E;
+        z-index: 1;
+        &:before {
+            content: '';
+            position: absolute;
+            top: .66rem;
+            left: .42rem;
+            width: 6.3rem;
+            height: 1.27rem;
+            background: url("./images/playtitle.png");
+            background-size: 100% 100%;
+        }
+        .package {
+            width: 100%;
+            position: absolute;
+            top: 1.93rem;
+            display: flex;
+            justify-content: space-around;
+            .item {
+                width: 2rem;
+                height: 3.68rem;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                &:nth-child(1) .pic{
+                    content: '';
+                    position: absolute;
+                    width: 2rem;
+                    height: 2.96rem;
+                    background: url("./images/playfish.png");
+                    background-size: 100% 100%;
+                }
+                &:nth-child(2) .pic{
+                    content: '';
+                    position: absolute;
+                    width: 2rem;
+                    height: 2.96rem;
+                    background: url("./images/playbrilliant.png");
+                    background-size: 100% 100%;
+                }
+                &:nth-child(3) .pic{
+                    content: '';
+                    position: absolute;
+                    width: 2rem;
+                    height: 2.96rem;
+                    background: url("./images/playcrush.png");
+                    background-size: 100% 100%;
+                }
+                .pic .text{
+                    position: absolute;
+                    top:2.25rem;
+                    left: .2rem;
+                    right: .2rem;
+                    text-align: center;
+                    font-size:.22rem;
+                    font-weight:bold;
+                    color:rgba(255,216,59,1);
+                    line-height:.3rem;
+                }
+                .btn{
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    width: 1.97rem;
+                    height: .56rem;
+                    background: url("./images/playbtn.png");
+                    background-size: 100% 100%;
+                }
+            }
+        }
+    }
+    .section5 {
+        position: absolute;
+        top: 35.6rem;
         width: 100%;
         background: #92140E;
         &.fold {
