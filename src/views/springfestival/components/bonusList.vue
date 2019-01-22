@@ -291,9 +291,9 @@
                     }
                     &.rank{
                         color:#CF2C29;
-                        &:nth-child(1) {
-                            width: .75rem;
-                        }
+                        /*&:nth-child(1) {*/
+                            /*width: .75rem;*/
+                        /*}*/
                         &:before{
                             content: '';
                             position: absolute;
