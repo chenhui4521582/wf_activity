@@ -801,10 +801,13 @@
             },
             gotoplay(index){
                 if(index==1){
+                    this.burryPoint('1207003080', '春节红包-更多游戏-去玩游戏捕鱼')
                     common.jumpToGame({url:'/fish'})
                 }else if(index==2){
+                    this.burryPoint('1207003081', '春节红包-更多游戏-去玩游戏桌球')
                     common.jumpToGame({url:'/billiards'})
                 }else{
+                    this.burryPoint('1207003082', '春节红包-更多游戏-去玩游戏糖果')
                     common.jumpToGame({url:'/crush'})
                 }
             }
