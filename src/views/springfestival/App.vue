@@ -290,7 +290,7 @@
                     "taskId": 415,
                     "taskOps": 128,
                     "finishNum": 64,
-                    "taskStatus": 2,
+                    "taskStatus": 0,
                     "awardsNum": 6,
                 }, {
                     "taskId": 416,
@@ -311,23 +311,23 @@
                     "taskStatus": 0,
                     "awardsNum": 58,
                 }, {
+                    "taskId": 421,
+                    "taskOps": 16961,
+                    "finishNum": 2,
+                    "taskStatus": 2,
+                    "awardsNum": 888,
+                }, {
                     "taskId": 419,
                     "taskOps": 3080,
                     "finishNum": 1540,
-                    "taskStatus": 1,
+                    "taskStatus": 2,
                     "awardsNum": 188,
                 }, {
                     "taskId": 420,
                     "taskOps": 8080,
                     "finishNum": 0,
-                    "taskStatus": 1,
+                    "taskStatus": 2,
                     "awardsNum": 500,
-                }, {
-                    "taskId": 421,
-                    "taskOps": 16960,
-                    "finishNum": 0,
-                    "taskStatus": 1,
-                    "awardsNum": 888,
                 }],
                 hbItems: null,
                 batchRedDotData:null
@@ -374,6 +374,16 @@
                 if (!this.hbItems) {
                     return []
                 }
+                
+                // 获取最大值
+                let maxItem = this.hbItems&&this.hbItems.length&&this.hbItems.sort((a, b) => {
+                    return a.taskOps - b.taskOps
+                })[this.hbItems.length - 1]
+
+                // 删除数组最后一位
+                this.hbItems.pop()
+                
+                
                 let nArr = this.hbItems.filter((item) => {
                     return item.taskStatus != 2
                 }).sort((a, b) => {
@@ -385,18 +395,20 @@
                     return a.taskOps - b.taskOps
                 })
                 let result = []
-                if (nArr.length > 5) {
+                if (nArr.length > 4) {
                     result = nArr.splice(0, 4)
-                    result.push(nArr.pop())
+                    // result.push(nArr.pop())
                     // 个数大于5个的时候加个dot
                     result.splice(4, 0, {dot: true})
+                    result.push(maxItem)
                     return result
-                } else if (nArr.length == 5) {
+                } else if (nArr.length == 4) {
                     result = nArr.splice(0, 4)
-                    result.push(nArr.pop())
+                    result.push(maxItem)
                     return result
                 } else {
-                    return this.getList(nArr, tArr)
+                    result = [...this.getList(nArr, tArr), maxItem]
+                    return result
                 }
 
             },
@@ -733,12 +745,13 @@
                     if (res.data.code == 200) {
                         this.hbItems = res.data.data
                         // this.hbItems = this.hbTestData
+
                     }
                 })
             },
-            getList(newArr, completeArr) {
-                if (newArr.length < 5) {
-                    var len = 5 - newArr.length;
+            getList(newArr, completeArr, maxItem) {
+                if (newArr.length < 4) {
+                    var len = 4 - newArr.length;
                     return newArr.concat(completeArr.splice(completeArr.length - len, len)).sort(function (a, b) {
                         return a.taskOps - b.taskOps
                     })
@@ -1162,7 +1175,13 @@
                         font-weight: 800;
                         color: rgba(245, 49, 0, 1);
                         margin: 0.1rem auto 0.05rem;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap
                     }
+                    &:last-child h4 {
+                        max-width: 1.2rem;
+                    };
                     .hb-line {
                         width: 2px;
                         height: 0.48rem;
