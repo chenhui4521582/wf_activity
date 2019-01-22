@@ -186,15 +186,6 @@
             <div class="package">
                 <div class="item" v-for="item in 3" @click="gotoplay(item)">
                     <div class="pic">
-                        <div class="text" v-if="item==1">
-                            捕鱼贺新春<br>话费疯狂送
-                        </div>
-                        <div class="text" v-if="item==2">
-                            金猪报喜<br>一杆最高4500万
-                        </div>
-                        <div class="text" v-if="item==3">
-                            糖果新春版<br>来玩就送505元
-                        </div>
                     </div>
                     <div class="btn"></div>
                 </div>
@@ -795,7 +786,8 @@
             },
             gotocomplete() {//点击加赠红包去完成
                 this.burryPoint('1207003044', '春节红包-加赠红包-去完成')
-                this.isshowBonusFailure = true
+                // this.isshowBonusFailure = true
+                top.location.href='https://wap.beeplay123.com/payment/#/mall'
             },
             async getBatchRedDot(){
                 let res= await this.fetch('/wap/api/usertask/batchTaskStatus',{
@@ -1043,7 +1035,7 @@
             background: url("./images/hand.png");
             background-size: 100% 100%;
             z-index: 1;
-            animation: myPlay1 2s ease-in infinite;;
+            animation: myPlay1 4s ease-in infinite;;
         }
         ul {
             position: absolute;

@@ -262,11 +262,13 @@
                     position: relative;
                     div {
                         text-align: center;
+                        height: 100%;
+                        line-height: .36rem;
                         &:nth-child(1) {
                             width: .75rem;
                         }
                         &:nth-child(2) {
-                            width: 1.2rem;
+                            width: 1.3rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
@@ -289,9 +291,9 @@
                     }
                     &.rank{
                         color:#CF2C29;
-                        &:nth-child(1) {
-                            width: .75rem;
-                        }
+                        /*&:nth-child(1) {*/
+                            /*width: .75rem;*/
+                        /*}*/
                         &:before{
                             content: '';
                             position: absolute;
