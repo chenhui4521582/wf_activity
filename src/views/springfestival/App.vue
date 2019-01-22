@@ -478,7 +478,7 @@
 
             },
             showTask(){
-                return !this.countdown.time||this.countdown.time!='00:00:00'
+                return this.countdown.time&&this.countdown.time!='00:00:00'
             }
         },
         methods: {
