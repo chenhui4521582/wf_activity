@@ -31,12 +31,6 @@ axios.interceptors.response.use(
         var res = JSON.parse(response.request.response);
         if (res && res.code && res.code != 200) {
             switch (res.code) {
-                // case 400:
-                //     Vue.prototype.$toast.show({
-                //         message: '请求处理失败',
-                //         duration: 1500
-                //     });
-                //     break;
                 case 404:
                     Vue.prototype.$toast.show({
                         message: '请求地址出错！',
@@ -84,14 +78,12 @@ axios.interceptors.response.use(
                     break;
                 default:
                     var result = response.config && response.config.data;
-                    console.log('result', response.config)
                     if (result && (result == '{"isShowTotast":false}') || result == '{isShowTotast:"false"}' || result == '{"isShowTotast":"false"}' || result == '{isShowTotast:false}') {
                         result = JSON.parse(result);
                         if (result && !JSON.parse(result.isShowTotast)) {
                             break;
                         }
                     }
-
                     Vue.prototype.$toast.show({
                         message: res.message,
                         duration: 1500
