@@ -144,11 +144,11 @@
                             <h4>满{{item.taskOps}}元</h4>
                             <div class="hb-line"></div>
                             <div class="envelopes">{{item.awardsNum}}个</div>
-                            <a href="javasript:" class="btn btn-complete" v-if="item.taskStatus == 2">已领取</a>
-                            <a href="javasript:" class="btn btn-receive" v-if="item.taskStatus == 0"
-                               @click="getjiazbonus(item)">领取</a>
-                            <a href="javasript:" class="btn btn-default" v-if="item.taskStatus == 1"
-                               @click="gotocomplete">去完成</a>
+                            <div href="javasript:" class="btn btn-complete" v-if="item.taskStatus == 2">已领取</div>
+                            <div href="javasript:" class="btn btn-receive" v-if="item.taskStatus == 0"
+                               @click="getjiazbonus(item)">领取</div>
+                            <div href="javasript:" class="btn btn-default" v-if="item.taskStatus == 1"
+                               @click="gotocomplete">去完成</div>
                         </li>
                         <li class="hb-dot-box" v-else>
                             <span class="hb-dot hb-dot1"></span>
