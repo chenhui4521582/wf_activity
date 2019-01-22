@@ -12,14 +12,14 @@
                     <div class="r-item1">待开启红包</div>
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
-                <div class="item" @click.stop="bonusListClick">
+                <div class="item" @click.stop="bonusListClick('top')">
                     <div class="r-item1">下级奖励</div>
                     <div class="r-item2">{{detailData&&detailData.nextAwardName||''}}</div>
                 </div>
             </div>
         </div>
         <!--红包榜-->
-        <div class="bonusrecord" @click.stop="bonusListClick">
+        <div class="bonusrecord" @click.stop="bonusListClick('')">
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
@@ -634,8 +634,12 @@
                 }
                 return this.axios.post(url, params, {})
             },//请求封装方法
-            async bonusListClick() {
-                this.burryPoint('1207003023', '春节红包-红包榜')
+            async bonusListClick(val) {
+                if(val){
+                    this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
+                }else{
+                    this.burryPoint('1207003023', '春节红包-红包榜')
+                }
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
                         page: 1,
@@ -665,7 +669,6 @@
                 }
             },//点击红包记录
             async myDetails() {
-                this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/myDetails')
                     if (res.data.code == 200 && res.data.data) {
