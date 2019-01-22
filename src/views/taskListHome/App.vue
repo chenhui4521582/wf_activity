@@ -100,7 +100,7 @@
         },
         mounted(){
            this.getMasterList('bill-achievement','first').then(()=>{
-                this.getMasterList('crush-achievement')
+                this.getMasterList('crush-achievement','first')
             })
         },
         components: {
@@ -169,7 +169,7 @@
             },
             async getMasterList(val,type,item,otherStatus){
                 
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:val})
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
                 if(data.code == 200){
                     let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
 

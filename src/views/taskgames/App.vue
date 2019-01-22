@@ -262,15 +262,19 @@
     },
     methods: {
         getDegradeTaskStatus() {
-          this.axios.post('//platform-api.beeplay123.com//wap/api/degrade/task/status').then(res => {
-                if(res.data.code == 200) {
-                this.isTfStatus = res.data.data.isOpen
-                if(!this.isTfStatus) {
-                    this.getDayTask()
-                    this.getNewTask()
-                }
-                }
-            })
+          this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
+                .then(res => {
+                  if(res.data.code == 200) {
+                    this.isTfStatus = res.data.data.isOpen
+                    if(!this.isTfStatus) {
+                        this.getDayTask()
+                        this.getNewTask()
+                        if(this.checkCurrentTask() != ''){
+                            this.getCrushTask('','',this.checkCurrentTask())
+                        }
+                    }
+                  }
+                })
         },
         checkCurrentTask(){
             switch(this.currentGameType){
@@ -284,6 +288,8 @@
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement'
                     break
+                default : 
+                    return ''
             }
         },
         jumpMine(){
@@ -546,7 +552,7 @@
         }
         },
         async getCrushTask(finishindex,type,val){
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:val})
+            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
                         finishStatus = finishindex > -1 ? finishindex : -1,
