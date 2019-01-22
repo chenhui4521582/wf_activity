@@ -172,8 +172,8 @@ export default {
             }
         },
         transUint(finishNum,taskOps){
-            let finish = finishNum >= 10000 ? (finishNum/10000).toFixed(1) + '万' : finishNum,
-                ops = taskOps >= 10000 ? taskOps/10000+'万' : taskOps
+            let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2).substr(0,3) + '万' : finishNum,
+                ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
             return  finish+'/'+ops
         },
         // 点击切换显示勋章内容（已获得 未解锁 进行中）
