@@ -186,9 +186,6 @@
             <div class="package">
                 <div class="item" v-for="item in 3" @click="gotoplay(item)">
                     <div class="pic">
-                        <div class="text" v-if="item==1">
-                            捕鱼贺新春<br>话费疯狂送
-                        </div>
                     </div>
                     <div class="btn"></div>
                 </div>
