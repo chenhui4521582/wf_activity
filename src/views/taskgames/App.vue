@@ -84,7 +84,7 @@
         <!-- 糖果大师任务 -->
         <crush-master-task v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
         :crushTaskList="crushTaskList" @receive="receive" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" 
-        :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false"
+        :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" :currentGameType="currentGameType"
         @refreshTask="refreshTask"></crush-master-task>
         <div v-if="currentGamesItems&&currentGamesItems.length">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
@@ -183,22 +183,20 @@
         }
     },
     mounted() {
-      if(parent.loadTaksPage) {
-        parent.loadTaksPage()
-      }
-      this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
-      this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
-      this.currentGameType = this.getUrlParam('gametype')
-      localStorage.setItem('ACCESS_TOKEN', this.token)
-      localStorage.setItem('APP_CHANNEL', this.channel)
-
-      this.getTransInfo()
-      
-      this.getPhoneFragment()
-      this.getHuafeiNum()
-
-      this.getDegradeTaskStatus()
-      if(this.currentGameType == 12) this.getCrushTask()
+        if(parent.loadTaksPage) {
+            parent.loadTaksPage()
+        }
+        this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
+        this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
+        this.currentGameType = this.getUrlParam('gametype')
+        localStorage.setItem('ACCESS_TOKEN', this.token)
+        localStorage.setItem('APP_CHANNEL', this.channel)
+        this.getDegradeTaskStatus()
+        this.getTransInfo()
+        this.getPhoneFragment()
+        this.getHuafeiNum()
+        
+    //   if(this.currentGameType == 12) 
     },
     computed: {
         huafeiShow(){
@@ -263,16 +261,35 @@
     },
     methods: {
         getDegradeTaskStatus() {
-          this.axios.post('//platform-api.beeplay123.com//wap/api/degrade/task/status')
+          this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
                 .then(res => {
                   if(res.data.code == 200) {
                     this.isTfStatus = res.data.data.isOpen
                     if(!this.isTfStatus) {
-                      this.getDayTask()
-                      this.getNewTask()
+                        this.getDayTask()
+                        this.getNewTask()
+                        if(this.checkCurrentTask() != ''){
+                            this.getCrushTask('','',this.checkCurrentTask())
+                        }
                     }
                   }
                 })
+        },
+        checkCurrentTask(){
+            switch(this.currentGameType){
+                // 糖果
+                case '12' : 
+                    GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
+                    return 'crush-achievement'
+                    break
+                // 桌球
+                case '2': 
+                    GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
+                    return 'bill-achievement'
+                    break
+                default : 
+                    return ''
+            }
         },
         jumpMine(){
             parent.location.href = this.jumpToPlat()+'#/personal'
@@ -404,10 +421,11 @@
             }
             
         },
-        refreshTask(index,type){
-            this.getCrushTask(index,type)
+        refreshTask(index,type,val){
+            this.getCrushTask(index,type,this.checkCurrentTask())
         },
         receive(item, type,index,medalimg) {
+            this.showMedalAnimate = false
             if(type == 'crush_task' || type == 'mother_crush_task'){
                 
                 item.awardsFlag = type
@@ -423,7 +441,7 @@
                 })
             }
             
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/finish', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
             taskId: item.taskId,
             taskLogId: item.taskLogId
             }).then((res)=> {
@@ -451,7 +469,7 @@
                         this.masterTask = true
                         this.currentMedalImg = medalimg
                         this.currentMedalIndex = index
-                        this.getCrushTask(this.currentMedalIndex)
+                        this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                         break
                     default:
                         item.taskStatus = 2
@@ -461,7 +479,7 @@
             })
         },
         getNewTask() {
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platNewUserStairTask', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
                 value: 'NewUserStairTask'
             }).then((res)=> {
                 if(res.data.code == 200) {
@@ -474,7 +492,7 @@
             })
         },
         getDayTask() {
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platTaskByBatch', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
             value: 'dayTask',from:'sdk'
             }).then((res)=> {
             if(res.data.code == 200) {
@@ -510,35 +528,30 @@
             })
             
         },
-        async getCrushTask(finishindex,type){
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:'crush-achievement'})
+        async getCrushTask(finishindex,type,val){
+            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = finishindex >= 0 ? crushList[finishindex].parentTask.taskStatus : -1,
+                        finishStatus = finishindex > -1 ? finishindex : -1,
                         curType = type && type == 'checkMode'
-                    if(curType){
-                        currentParentTask = crushList[finishindex]
+                     
+                    if(curType || finishStatus && finishStatus > -1){
+                        currentParentTask = crushList[finishStatus]
                     }else{
                         currentParentTask = crushList.find((item,index) =>{
                             if(index < 3){
                                 // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                                if(finishStatus == 0){
-                                    return item.parentTask.taskStatus == 0
-                                }else if(finishStatus == 2){
-                                    return item.parentTask.taskStatus == 2
-                                }else{
-                                    return item.parentTask.taskStatus == 1 
-                                }
+                                return item.parentTask.taskStatus == 1 
                             }else{
                                 return crushList[index]
                             }
                         })
                     }
-                    
-
                     crushList.map((item,index) =>{
-                        if(item && item.parentTask.taskName == currentParentTask.parentTask.taskName){
+                        
+                        if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
                             currentIndex = index
+                            return
                         }
                     })
                     let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
@@ -567,6 +580,35 @@
                     
                     showSubMasterList.push(type1,type2)
 
+                    // 勋章List
+                    let medalList = []
+                    crushList.map((item,index) => {
+                        let list = {
+                            medalIcon : item.medalIcon,
+                            medalName : item.medalName,
+                            statusIcon : item.statusIcon,
+                            index: index,
+                            selected : false
+                        }
+                        medalList.push(list)
+                    })
+                    console.log(currentIndex+'---currentIndex');
+                    
+                    let checkMedalName
+                    if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
+                        checkMedalName = crushList[currentIndex+1].medalName
+                    }else{
+                        checkMedalName = currentParentTask.medalName
+                    }
+                    
+                    medalList.map((val,index) =>{
+                        if(val.medalName == checkMedalName){
+                            val.selected = true
+                        }else{
+                            val.selected = false
+                        }
+                    })
+
                     let crushTaskList = {
                         showSubMasterList : showSubMasterList, //外显子任务列表
                         hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
@@ -576,6 +618,10 @@
                         allTask : data.data.list,// 总任务列表
                         finishLength : finishLength, // 当前已完成子任务
                         currentLength : currentLength, // 当前总任务
+                        gameNameIcon : data.data.gameNameIcon, // 当前任务名称
+                        reward : data.data.reward, // 当前全部奖励
+                        bgIcon : data.data.bgIcon, // 当前任务背景
+                        medalList : medalList , //勋章list
                     }
                     this.crushTaskList = crushTaskList
                 }
