@@ -17,6 +17,8 @@
       <div class="horn-box"><img src="./images/horn.png" class="pic-horn">{{envelopeStatusCon&&envelopeStatusCon.totalRecipients}}人已赚到红包</div>
     </div>
      <!-- 测试 -->
+     <input type="text" name="" style="width: 600px;height: 40px;background: #fff;color: #000;font-size: 20px; position: fixed;
+     left: 0;top: 100px;" v-model="code">
       <a href="javascript:" style="width: 80px;height: 60px;background: red;position: fixed;
       left: 0;top: 0;z-index: 10;" @click="getInvideCode">绑定</a>
     <!-- 红包攻略 -->
@@ -47,7 +49,8 @@
       return {
         envelopeStatusCon: 'mzzz111',
         isRuleStatus: false,
-        curChannel: localStorage.getItem('APP_CHANNEL')
+        curChannel: localStorage.getItem('APP_CHANNEL'),
+        code: null
       }
     },
 
@@ -102,7 +105,8 @@
       },
       getInvideCode() {
           this.axios.post('//ops-api.beeplay123.com/ops/api/springFestival/redEnvelope/bindInviteCode', {
-              inviteCode: this.envelopeStatusCon.inviteCode
+              // inviteCode: this.envelopeStatusCon.inviteCode
+              inviteCode: this.code
           }).then((res) => {
              if(res.data.code == 200) {
                 alert('绑定成功')
