@@ -16,6 +16,9 @@
       </div>
       <div class="horn-box"><img src="./images/horn.png" class="pic-horn">{{envelopeStatusCon&&envelopeStatusCon.totalRecipients}}人已赚到红包</div>
     </div>
+     <!-- 测试 -->
+      <a href="javascript:" style="width: 80px;height: 60px;background: red;position: fixed;
+      left: 0;top: 0;z-index: 10;" @click="getInvideCode">绑定</a>
     <!-- 红包攻略 -->
     <div class="envelop-strategy-box" v-show="isRuleStatus">
       <div class="pop-mask"></div>
@@ -32,6 +35,8 @@
               
           </div>
       </div>
+
+
     </div>
   </div>
 </template>
@@ -100,7 +105,7 @@
               inviteCode: this.envelopeStatusCon.inviteCode
           }).then((res) => {
              if(res.data.code == 200) {
-
+                alert('绑定成功')
              }
           })
       }
