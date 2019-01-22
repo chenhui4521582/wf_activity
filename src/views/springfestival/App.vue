@@ -779,6 +779,7 @@
             async getjiazbonus(item) {//点击加赠红包领取
                 let res=await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish',{taskId:item.taskId})
                 if(res.data.code==200){
+                    this.burryPoint('1207003041', '春节红包-加赠红包-红包获得弹窗')
                     this.jiazengbonusNumber = item.awardsNum
                     this.isshowBonusSuccess = true;
                     //刷新
@@ -789,6 +790,7 @@
                 }
             },
             gotocomplete() {//点击加赠红包去完成
+                this.burryPoint('1207003044', '春节红包-加赠红包-去完成')
                 this.isshowBonusFailure = true
             },
             async getBatchRedDot(){
