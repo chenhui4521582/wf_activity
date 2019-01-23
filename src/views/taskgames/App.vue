@@ -106,7 +106,7 @@
                 </div>
               </div>
               <p class="btn-box">
-                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
                 <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
                 <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
               </p>
@@ -116,7 +116,7 @@
         
         <div v-if="otherGamesItems">
           <!-- 其他任务 -->
-          <h4 class="h-title h-third-title">其他任务</h4>
+          <h4 class="h-title h-third-title">更多每日任务</h4>
           <ul class="t-items">
             <li v-for="item in otherGamesItems" >
               <div :class="{'actived': item.taskStatus == 2}">
@@ -135,9 +135,10 @@
                 </div>
               </div>
               <p class="btn-box">
-                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
                 <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</a>
-                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已领取</a>
+                <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
               </p>
             </li>
           </ul>
@@ -473,6 +474,9 @@
                         this.currentMedalIndex = index
                         this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                         break
+                    case 'dayTask' : 
+                        this.getDayTask()()
+                        break
                     default:
                         item.taskStatus = 2
                 }
@@ -495,15 +499,17 @@
         },
         getDayTask() {
             this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-            value: 'dayTask',from:'sdk'
+                value: 'dayTask',
+                from:'sdk',
+                gameType:this.currentGameType
             }).then((res)=> {
             if(res.data.code == 200) {
 
                 this.currentGamesItems = res.data.data.filter((item)=> {
-                return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
+                    return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
                 })
                 this.otherGamesItems = res.data.data.filter((item)=> {
-                return (item.gameType != this.getUrlParam('gametype') && item.taskStatus != 2)
+                    return (item.gameType != this.getUrlParam('gametype'))
                 })
 
             }
