@@ -49,9 +49,9 @@
                                      v-else-if="item.ranking==3">
                                 <template v-else>{{item.ranking}}</template>
                             </div>
-                            <div style="padding: 0 0 0 0.1rem;">{{item.nickname}}</div>
+                            <div>{{item.nickname}}</div>
                             <div>{{item.amount}}</div>
-                            <div>{{item.awardName}}</div>
+                            <div>{{item.awardName.replace('加赠','')}}</div>
                         </li>
                     </ul>
                 </scroll>
@@ -268,15 +268,17 @@
                         overflow: hidden;
                         text-overflow:ellipsis;
                         white-space: nowrap;
+                        padding-top: 0.06rem;
                         &:nth-child(1) {
                             width: .75rem;
                         }
                         &:nth-child(2) {
-                            width: 1.2rem;
+                            width: 1.35rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             text-align: left;
+                            text-indent: 0.05rem;
                         }
                         &:nth-child(3) {
                             width: 1rem;
@@ -288,7 +290,7 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
-                            padding-left: 0.05rem;
+                            padding-left: 0.1rem;
                         }
                     }
                     &:nth-child(2n+1) {

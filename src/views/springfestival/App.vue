@@ -970,7 +970,7 @@
             .c-horn-text {
                 width: 100%;
                 position: relative;
-                height: 1.6rem;
+                height: 1.55rem;
                 overflow: hidden;
                 ul {
                     width: 100%;
@@ -981,11 +981,12 @@
                 }
                 li {
                     width: 1.86rem;
-                    float: left;
+                    height: 0.8rem;
                     transition: all 1s ease 0.5s;
                     overflow: hidden;
                     box-sizing: border-box;
-
+                    display: flex;
+                    align-items: center;
                     .horn-div {
                         height: 0.7rem;
                         font-size: .2rem;
@@ -995,7 +996,6 @@
                         background-size: 100% 100%;
                         display: flex;
                         align-items: center;
-                        margin: .05rem 0;
                         p {
                             height: 0.48rem;
                             overflow: hidden;
@@ -1034,6 +1034,15 @@
             height: .86rem;
             background: url("./images/gainbonus.png") no-repeat;
             background-size: 100% 100%;
+            &:before {
+                content: '';
+                width: 3.29rem;
+                height: 1rem;
+                position: absolute;
+                left: 0;
+                top: 0.7rem;
+                z-index: 10;
+            };
         }
         &.showHand:before {
             content: '';
@@ -1313,14 +1322,7 @@
             i {
                 color: rgba(255, 216, 59, 1);
             }
-            &.unfinished:before {
-                content: '';
-                position: absolute;
-                left: 3.27rem;
-                width: .01rem;
-                height: .34rem;
-                background: rgba(255, 246, 205, .5);
-            }
+            
         }
     }
 

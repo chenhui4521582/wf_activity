@@ -126,9 +126,8 @@ window.GLOBALS = {
             generate_date: date,//行为发生日期
             generate_time: time,//行为发生时间
         }
-        console.log(obj);
         
-        axios.post('//hadoop-data.beeplay123.com', obj)
+        await axios.post('//hadoop-data.beeplay123.com', obj, {timeout: 500})
     },
     //跳转外接游戏方法
     jumpOutsideGame (url){
