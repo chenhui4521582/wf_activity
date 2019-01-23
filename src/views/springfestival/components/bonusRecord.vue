@@ -11,7 +11,7 @@
                         <!--amount: 4-->
                         <!--receiveTime: "2019-01-17 14:23:52"-->
                         <li v-for="item in list">
-                            <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width: 3.2rem">{{item.activityName}}</div>
+                            <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width: 3.2rem;height: 0.35rem;line-height: 0.35rem;">{{item.activityName}}</div>
                             <div>{{item.receiveTime&&item.receiveTime.split(' ')[0]||''}}</div>
                         </li>
                     </ul>
@@ -123,7 +123,7 @@
                     display: flex;
                     justify-content: space-between;
                     color:rgba(196,119,35,1);
-                    margin-bottom: .26rem;
+                    margin-bottom: .23rem;
                 }
             }
         }

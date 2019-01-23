@@ -243,7 +243,7 @@
         <!--红包记录-->
         <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
         <!--红包榜-->
-        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false"></bonus-list>
+        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false" v-if="isshowBonusList"></bonus-list>
         <!--开启红包弹窗-->
         <bonus-opened :show="isshowBonusOpened" :data="bonusOpenedData" @close="isshowBonusOpened=false"
                       @gainmore="getAnchor('section2')"></bonus-opened>
@@ -629,11 +629,15 @@
                 return this.axios.post(url, params, {})
             },//请求封装方法
             async bonusListClick(val) {
-                if(val){
-                    this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
-                }else{
-                    this.burryPoint('1207003023', '春节红包-红包榜')
-                }
+                // if(val){
+                //     this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
+                // }else{
+                //     this.burryPoint('1207003023', '春节红包-红包榜')
+                // }
+                this.$toast.show({
+                    message: '123123',
+                    duration: 1500
+                })
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
                         page: 1,
@@ -822,7 +826,12 @@
 <style lang="less" scoped>
     @import '../../common/css/base.css';
     .aoke{
-        overflow-y: scroll;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
     }
     .section0 {
         position: fixed;
