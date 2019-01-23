@@ -20,7 +20,7 @@ axios.interceptors.request.use(function (config) {
     }
     
     if(!config.headers['App-Channel']) {
-        config.headers['App-Channel'] = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL');;
+        config.headers['App-Channel'] = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL');
     }
     
     // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
@@ -135,10 +135,7 @@ axios.interceptors.response.use(
         }else {
             error = JSON.stringify(error);
             if(error.indexOf('timeout') != -1) {
-                Vue.prototype.$toast.show({
-                    message: '请求超时',
-                    duration: 1500
-                });
+                
                 return;
             }
         }
