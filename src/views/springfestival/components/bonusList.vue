@@ -49,7 +49,7 @@
                                      v-else-if="item.ranking==3">
                                 <template v-else>{{item.ranking}}</template>
                             </div>
-                            <div>{{item.nickname}}</div>
+                            <div style="padding: 0 0 0 0.1rem;">{{item.nickname}}</div>
                             <div>{{item.amount}}</div>
                             <div>{{item.awardName}}</div>
                         </li>
@@ -260,15 +260,19 @@
                     align-items: center;
                     color: rgba(196, 119, 35, 1);
                     position: relative;
+
                     div {
                         text-align: center;
                         height: 100%;
                         line-height: .36rem;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
                         &:nth-child(1) {
                             width: .75rem;
                         }
                         &:nth-child(2) {
-                            width: 1.3rem;
+                            width: 1.2rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
@@ -279,11 +283,12 @@
                             text-align: center;
                         }
                         &:nth-child(4) {
-                            width: 2.7rem;
+                            width: 2.6rem;
                             text-align: left;
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            white-space: nowrap
+                            white-space: nowrap;
+                            padding-left: 0.05rem;
                         }
                     }
                     &:nth-child(2n+1) {
@@ -325,17 +330,18 @@
         .line {
             position: absolute;
             top: 3.25rem;
-            width: .01rem;
+            width: 1px;
             height: 4.48rem;
             background: rgba(236, 188, 108, 1);
             &.line1 {
+
                 left: 1.47rem;
             }
             &.line2 {
                 left: 2.67rem;
             }
             &.line3 {
-                left: 3.48rem;
+                left: 3.58rem;
             }
         }
     }

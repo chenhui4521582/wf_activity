@@ -35,7 +35,9 @@
                 <div ref="hornDiv" class="c-horn-text">
                     <ul ref="hornUl">
                         <li v-for="(item,index) in noticeList" ref="hornLi">
-                            <span v-html="item" style="white-space:normal;"></span>
+                            <div class="horn-div">
+                                <p v-html="item"></p>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -162,7 +164,7 @@
                 <template v-if="envelopsItem[envelopsItem.length-1]">
                     <!--最后一项未完成-->
                     <template v-if="envelopsItem[envelopsItem.length-1].taskStatus==1">
-                        <div class="item"><i>领下级红包还需消费</i>{{jiazengyuan}}元</div>
+                        <div class="item"><i>领下级红包还需消费</i>{{jiazengyuan}}元</div><em class="i-line"></em>
                         <div class="item"><i>获得加赠红包个数</i>{{detailData&&detailData.receiveByCumulativeTask||0}}个</div>
                     </template>
                     <!--最后一项已完成-->
@@ -349,7 +351,7 @@
             //4秒后隐藏小手
             setTimeout(() => {
                 this.isshowHand = false
-            }, 4000)
+            }, 8000)
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             this.myDetails()//myDetail接口数据
@@ -885,7 +887,7 @@
         .count_time {
             position: absolute;
             top: .9rem;
-            right: 0;
+            right: 0.065rem;
             width: .74rem;
             height: .22rem;
             line-height: .25rem;
@@ -968,7 +970,8 @@
             .c-horn-text {
                 width: 100%;
                 position: relative;
-                height: 1.7rem;
+                height: 1.6rem;
+                overflow: hidden;
                 ul {
                     width: 100%;
                     position: absolute;
@@ -979,25 +982,32 @@
                 li {
                     width: 1.86rem;
                     float: left;
-                    overflow: auto;
-                    white-space: nowrap;
                     transition: all 1s ease 0.5s;
                     overflow: hidden;
                     box-sizing: border-box;
-                    span {
-                        display: inline-block;
-                        height: 0.76rem;
-                        /*line-height: 0.1rem;*/
-                        width: 1.86rem;
+
+                    .horn-div {
+                        height: 0.7rem;
                         font-size: .2rem;
                         font-weight: 400;
                         color: rgba(255, 255, 255, 1);
                         background: url("./images/horn.png");
                         background-size: 100% 100%;
-                        padding: .2rem 0.1rem;
-                        box-sizing: border-box;
-                        margin: 0.05rem 0;
-                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        margin: .05rem 0;
+                        p {
+                            height: 0.48rem;
+                            overflow: hidden;
+                            padding: 0 0.15rem;
+                            line-height: 0.26rem;
+                            text-overflow: -o-ellipsis-lastline;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                        }
                     }
                 }
             }
@@ -1035,7 +1045,7 @@
             background: url("./images/hand.png");
             background-size: 100% 100%;
             z-index: 1;
-            animation: myPlay1 4s ease-in infinite;;
+            animation: myPlay1 2s ease-in infinite;
         }
         ul {
             position: absolute;
@@ -1283,14 +1293,22 @@
             font-size: .22rem;
             color: rgba(255, 255, 255, 1);
             .item {
+                display: inline-block;
                 text-align: center;
-                flex: 1;
                 &:nth-child(1) {
                     padding-left: .35rem;
                 }
                 &:nth-child(2) {
                     padding-right: .35rem;
                 }
+            }
+            .i-line {
+                display: inline-block;
+                width:1px;
+                height:0.34rem;
+                background:rgba(255,246,205,1);
+                opacity:0.5;
+                margin: 0 0.15rem;
             }
             i {
                 color: rgba(255, 216, 59, 1);
