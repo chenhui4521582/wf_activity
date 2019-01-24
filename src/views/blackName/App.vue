@@ -27,7 +27,7 @@
       return {
         validatorText: '获取验证码',
         num: 0,
-        djsNumber: 10,
+        djsNumber: 60,
         phoneTxt: '',
         description: '',
         yzm: ''
@@ -98,6 +98,13 @@
           })
           return
         }
+        if(!(/(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/.test(this.phoneTxt))) {
+          this.$toast.show({
+              message: '手机格式不正确',
+              duration: 1500
+          })
+          return
+        }
         this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
             let message = res.data.code == 200 ? '验证码已发送注意查收' : res.data.message;
             if(res.data.code == 200) {
@@ -125,9 +132,12 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less" >
   a {
     text-decoration: none;
+  }
+  .alertBox .box{
+    line-height: 0.38rem !important;
   }
   .black-name {
     width: 100%;
@@ -137,8 +147,7 @@
     left: 0;
     top: 0;
     z-index: 1;
-  }
-  .head {
+      .head {
         display: flex;
         font-size: 0.32rem;
         font-weight: bold;
@@ -149,101 +158,106 @@
         justify-content: center;
         position: relative;
     }
-  .h-arrow {
-    width: 0.3rem;
-    height: 0.3rem;
-    margin-top: 0.1rem;
-  }
-  .btn-arrow {
-    width: 0.6rem;
-    height: 0.5rem;
-    position: absolute;
-    left: 0.2rem;
-    top: .28rem;
-  }
-  input,textarea {
-    outline: none;
-    border: none;
-    resize: none;
-    width: 100%;
-    float: left;
-    font-size: 0.26rem;
-    color: #fff;
-    box-sizing: border-box;
-    border-radius: 0.08rem;
-  }
-  .problemDetails {
-    padding: 0 0.3rem;
-    .detailsInput {
-      width: 100%;
-      height: 2.7rem;
-      background: #141F33;
-      padding: .26rem .3rem 0;
-      margin-bottom: 0.4rem;
+    .h-arrow {
+      width: 0.3rem;
+      height: 0.3rem;
+      margin-top: 0.1rem;
     }
-    .phone-box {
-      height: 0.9rem;
-      position: relative;
-      clear: both;
-      .small-close {
-        display: block;
-        width: 0.8rem;
+    .btn-arrow {
+      width: 0.6rem;
+      height: 0.5rem;
+      position: absolute;
+      left: 0.2rem;
+      top: .28rem;
+    }
+    input,textarea {
+      outline: none;
+      border: none;
+      resize: none;
+      width: 100%;
+      float: left;
+      font-size: 0.26rem;
+      color: #fff;
+      box-sizing: border-box;
+      border-radius: 0.08rem;
+    }
+    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+           color: #5A6B89;
+    }
+    .problemDetails {
+      padding: 0 0.3rem;
+      .detailsInput {
+        width: 100%;
+        height: 2.7rem;
+        background: #141F33;
+        padding: .26rem .3rem 0;
+        margin-bottom: 0.4rem;
+      }
+      .phone-box {
         height: 0.9rem;
-        background: url(./images/close.png) no-repeat center center;
-        background-size: 0.27rem 0.27rem;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 3;
+        position: relative;
+        clear: both;
+        .small-close {
+          display: block;
+          width: 0.8rem;
+          height: 0.9rem;
+          background: url(./images/close.png) no-repeat center center;
+          background-size: 0.27rem 0.27rem;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 3;
+        }
+      }
+      .phone-text {
+        height: 0.9rem;
+        background: #141F33;
+        padding-left: .3rem;
+        margin-bottom: 0.21rem;
+        padding-right: 0.8rem;
       }
     }
-    .phone-text {
-      height: 0.9rem;
-      background: #141F33;
-      padding-left: .3rem;
-      margin-bottom: 0.21rem;
-      padding-right: 0.8rem;
+    .btn-box {
+      clear: both;
+      display: flex;
+      .btn-code-text {
+        height: 0.9rem;
+        flex: 1;
+        margin-right: 0.2rem;
+        background: #141F33;
+        text-indent: 0.3rem;
+      }
+      .btn {
+        display: block;
+        width: 2.5rem;
+        height: 0.9rem;
+        line-height: 0.9rem;
+        text-align: center;
+        font-size: 0.26rem;
+        border-radius: 0.08rem;
+        &.btn-code {
+          color:rgba(254,254,255,0.3);
+          background: #22365b;  
+        }
+        &.btn-djs {
+          background: #494949;
+          color:rgba(254,254,255,0.3);
+        }
+      }
     }
-  }
-  .btn-box {
-    clear: both;
-    display: flex;
-    .btn-code-text {
-      height: 0.9rem;
-      flex: 1;
-      margin-right: 0.2rem;
-      background: #141F33;
-      text-indent: 0.3rem;
-    }
-    .btn {
+    .btn-submit{
       display: block;
-      width: 2.5rem;
+      width: 100%;
       height: 0.9rem;
       line-height: 0.9rem;
       text-align: center;
       font-size: 0.26rem;
+      font-weight: bold;
+      background: #EE6F0B;
+      color: #fff;
+      margin-top: 0.52rem;
       border-radius: 0.08rem;
-      &.btn-code {
-        color:rgba(254,254,255,0.3);
-        background: #22365b;  
-      }
-      &.btn-djs {
-        background: #494949;
-        color:rgba(254,254,255,0.3);
-      }
     }
   }
-  .btn-submit{
-    display: block;
-    width: 100%;
-    height: 0.9rem;
-    line-height: 0.9rem;
-    text-align: center;
-    font-size: 0.26rem;
-    font-weight: bold;
-    background: #EE6F0B;
-    color: #fff;
-    margin-top: 0.52rem;
-    border-radius: 0.08rem;
-  }
+
 </style>
