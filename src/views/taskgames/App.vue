@@ -423,7 +423,7 @@
                 })
             }
             
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/finish', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
             taskId: item.taskId,
             taskLogId: item.taskLogId
             }).then((res)=> {
@@ -461,7 +461,7 @@
             })
         },
         getNewTask() {
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platNewUserStairTask', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
                 value: 'NewUserStairTask'
             }).then((res)=> {
                 if(res.data.code == 200) {
@@ -474,7 +474,7 @@
             })
         },
         getDayTask() {
-            this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/platTaskByBatch', {
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
             value: 'dayTask',from:'sdk'
             }).then((res)=> {
             if(res.data.code == 200) {
@@ -511,7 +511,7 @@
             
         },
         async getCrushTask(finishindex,type){
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/achievementTask', {value:'crush-achievement'})
+            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:'crush-achievement'})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
                         finishStatus = finishindex >= 0 ? crushList[finishindex].parentTask.taskStatus : -1,
