@@ -74,24 +74,50 @@
             smsCode: this.yzm,
             typeId: 4,
         }).then((res)=> {
-            
+            if(res.data.code == 200) {
+              this.$toast.show({
+                  message: '提交成功，请耐心等待，我们将在2~3个工作日内联系您，并告知处理结果~~',
+                  duration: 1500
+              })
+              setTimeout(()=> {
+                history.go(-1)
+              }, 2000)
+            }
         })
 
         
       },
       sendVECode() {
-        clearInterval(this.timer);
-        this.validatorText = this.djsNumber + 's后重发';
-        this.timer = setInterval(() => {
-            this.num = this.num + 1;
-            if (this.num == this.djsNumber) {
-                clearInterval(this.timer); 
-                this.validatorText = '获取验证码';
-                this.num = 0;
-            } else {
-                this.validatorText = this.djsNumber - this.num + 's后重发';
+        if(!this.phoneTxt) {
+          this.$toast.show({
+              message: '手机号不能为空',
+              duration: 1500
+          })
+          return
+        }
+        this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
+            let message = res.data.code == 200 ? '验证码已发送注意查收' : res.data.message;
+            if(res.data.code == 200) {
+                clearInterval(this.timer);
+                this.validatorText = this.djsNumber + 's后重发';
+                this.timer = setInterval(() => {
+                    this.num = this.num + 1;
+                    if (this.num == this.djsNumber) {
+                        clearInterval(this.timer); 
+                        this.validatorText = '获取验证码';
+                        this.num = 0;
+                    } else {
+                        this.validatorText = this.djsNumber - this.num + 's后重发';
+                    }
+                }, 1000);
             }
-        }, 1000);
+            this.$toast.show({
+                message: message,
+                duration: 1500
+            });
+        })
+
+        
       }
     }
   }
