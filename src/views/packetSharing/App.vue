@@ -54,6 +54,7 @@
       if(res.data.code == 200) {
         this.envelopeStatusCon = res.data.data
       }
+      // this.getInvideCode()
      
       
     },
