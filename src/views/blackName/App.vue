@@ -79,7 +79,7 @@
         }).then((res)=> {
             if(res.data.code == 200) {
               this.$toast.show({
-                  message: '提交成功，请耐心等待，我们将在2~3个工作日内联系您，并告知处理结果~~',
+                  message: '提交成功，我们将在3个工作日内联系您，请耐心等待~',
                   duration: 1500
               })
               setTimeout(()=> {
