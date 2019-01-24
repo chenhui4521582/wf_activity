@@ -74,11 +74,11 @@
             alert('123')
           })
 
-         let  urlkey= '{"url_key":"https://eopa.baidu.com/page/copy-authorizeIndex-vv4PetZ3?productid=4&gtype=1&idfrom=inside-newyearshare&wfInvitationCode=12345","title":"小游戏","isShowShare":0,"shareInfo":"[]","feedext":"{"source":"act-qmxyxcjhdfx-0"}'
+         let  urlkey= {"url_key":"https://eopa.baidu.com/page/copy-authorizeIndex-vv4PetZ3?productid=4&gtype=1&idfrom=inside-newyearshare&wfInvitationCode=12345","title":"小游戏","isShowShare":0,"shareInfo":"[]","feedext":JSON.stringify({"source":"act-qmxyxcjhdfx-0"})}
 
-         let scheme = encodeURIComponent(`bdminivideo://webview?source=act-qmxyxcjhdfx-0&params=${encodeURIComponent(urlkey)}`)
-         
-         let downPage = `https://quanmin.baidu.com/?pd=qmxyxcjhdfx&channel=1022607r&scheme=${scheme}&tab=act&tag=qmxyxcjhdfxhl`
+         let scheme = `bdminivideo://webview?source=act-qmxyxcjhdfx-0&params=${encodeURIComponent(JSON.stringify(urlkey))}`
+
+         let downPage = encodeURIComponent(`https://quanmin.baidu.com/?pd=qmxyxcjhdfx&channel=1022607r&scheme=${scheme}&tab=act&tag=qmxyxcjhdfxhl`)
 
          let params = `{"title":"我在全民小视频送你一个红包，最高开100元！","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage},"type":"5","tab":"","tag":"","source":"","weixin_friend":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage}},"weixin":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage}},"qq_friend":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage}},"qq_zone":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage}},"weibo":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":${downPage}},"channel":0,"onsuccess":"window.shareFun"}`
 
