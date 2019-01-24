@@ -108,7 +108,7 @@
               <p class="btn-box">
                 <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
                 <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
-                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已完成</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
               </p>
             </li>
           </ul>
@@ -137,7 +137,7 @@
               <p class="btn-box">
                 <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
                 <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</a>
-                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已领取</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
                 <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
               </p>
             </li>
