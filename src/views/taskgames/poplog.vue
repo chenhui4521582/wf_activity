@@ -118,7 +118,7 @@
     }
     .shine-box {
         width: 100%;
-        position: absolute;
+        position: fixed;
         top: 5%;
         left: 0%;
         z-index: 6;
@@ -140,7 +140,7 @@
     	z-index: 5;
     }
     .content-box{
-        position: absolute;
+        position: fixed;
         width: 80%;
         left: 50%;
         margin-left: -40%;
