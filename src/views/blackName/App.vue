@@ -1,10 +1,10 @@
 <template>
   <div class="black-name">
       <div class="head">
-          <a href="javascript:" class="btn-arrow">
+          <a href="javascript:" class="btn-arrow" @click="goBack">
             <img src="./images/newback.png" alt="" class="h-arrow">
           </a>
-          <span>手机绑定</span>
+          <span>申诉通道</span>
       </div>
       <div class="problemDetails">
         <textarea  maxlength="300" placeholder="请将您的情况填写下来，我们将在2~3个工作日内给您回复（字数限制在5~300以内）。注意：同一设备登录多个账号、游戏作弊、使用模拟器、插件、外挂等工具参与游戏等行为会引发账号登录异常。 "  cols="30" rows="10" class="detailsInput" v-model="description"></textarea>
@@ -34,6 +34,9 @@
       }
     },
     methods: {
+      goBack() {
+        history.go(-1)
+      },
       cleanPhoneTxt() {
         this.phoneTxt = ''
       },
