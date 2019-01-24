@@ -3,7 +3,11 @@
     <img src="./images/bg.png" class="bg">
     <div class="packet-box">
       <div class="header">
+<<<<<<< HEAD
         <img src="./images/f-back.png" class="back">
+=======
+        <img src="./images/f-back.png" class="back" @click="goHistory">
+>>>>>>> 2f832c483b4ab218637185b996e22f1b8fbe27c9
         <div class="f-strategy-box">
           <span class="f-strategy"  @click="isRuleStatus = true">赚红包攻略</span>
         </div>
@@ -16,11 +20,14 @@
       </div>
       <div class="horn-box"><img src="./images/horn.png" class="pic-horn">{{envelopeStatusCon&&envelopeStatusCon.totalRecipients}}人已赚到红包</div>
     </div>
+<<<<<<< HEAD
      <!-- 测试 -->
      <input type="text" name="" style="width: 600px;height: 40px;background: #fff;color: #000;font-size: 20px; position: fixed;
      left: 0;top: 100px;" v-model="code">
       <a href="javascript:" style="width: 80px;height: 60px;background: red;position: fixed;
       left: 0;top: 0;z-index: 10;" @click="getInvideCode">绑定</a>
+=======
+>>>>>>> 2f832c483b4ab218637185b996e22f1b8fbe27c9
     <!-- 红包攻略 -->
     <div class="envelop-strategy-box" v-show="isRuleStatus">
       <div class="pop-mask"></div>
@@ -47,7 +54,7 @@
   export default {
     data() {
       return {
-        envelopeStatusCon: 'mzzz111',
+        envelopeStatusCon: '',
         isRuleStatus: false,
         curChannel: localStorage.getItem('APP_CHANNEL'),
         code: null
@@ -64,6 +71,9 @@
       
     },
     methods: {
+      goHistory() {
+        history.go(-1)
+      },
       openPanel() {
         if(this.curChannel == '100039') {
           this.openHkPanel()
@@ -105,8 +115,12 @@
       },
       getInvideCode() {
           this.axios.post('//ops-api.beeplay123.com/ops/api/springFestival/redEnvelope/bindInviteCode', {
+<<<<<<< HEAD
               // inviteCode: this.envelopeStatusCon.inviteCode
               inviteCode: this.code
+=======
+              inviteCode: this.envelopeStatusCon.inviteCode
+>>>>>>> 2f832c483b4ab218637185b996e22f1b8fbe27c9
           }).then((res) => {
              if(res.data.code == 200) {
                 alert('绑定成功')
