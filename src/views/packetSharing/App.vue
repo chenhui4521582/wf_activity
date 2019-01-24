@@ -11,7 +11,7 @@
         <div class="fx-text">每邀请1个好友<br/>再得<span class="fx-number">2</span>个红包</div>
         <a href="javascript:" class="btn-share" @click="openPanel">分享赚红包</a>
         <div class="friend-text">好友帮你赚了{{envelopeStatusCon&&envelopeStatusCon.receiveBySharing}}个红包
-          <a href="javascript:">去开启<img src="./images/arrow-right.png" class="f-back"></a>
+          <a href="javascript:" @click="goSpring">去开启<img src="./images/arrow-right.png" class="f-back"></a>
         </div>
       </div>
       <div class="horn-box"><img src="./images/horn.png" class="pic-horn">{{envelopeStatusCon&&envelopeStatusCon.totalRecipients}}人已赚到红包</div>
@@ -58,6 +58,9 @@
       
     },
     methods: {
+      goSpring() {
+        location.href = 'https://wap.beeplay123.com/activities/springfestival.html?channel='+localStorage.getItem('APP_CHANNEL')+'&token='+localStorage.getItem('ACCESS_TOKEN')
+      },
       goHistory() {
         history.go(-1)
       },
@@ -109,7 +112,6 @@
               inviteCode: this.envelopeStatusCon.inviteCode
           }).then((res) => {
              if(res.data.code == 200) {
-                alert('绑定成功')
              }
           })
       }
