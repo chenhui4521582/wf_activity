@@ -197,7 +197,6 @@
       this.getDegradeTaskStatus()
       this.getPhoneFragment()
       this.getHuafeiNum()
-      this.getCrushTask('','',this.checkCurrentTask())
     //   if(this.currentGameType == 12) 
     },
     computed: {
