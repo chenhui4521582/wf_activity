@@ -19,7 +19,7 @@
             </div>
         </div>
         <!--红包榜-->
-        <div class="bonusrecord" @click.stop="bonusListClick('')">
+        <div class="bonusrecord" ref="bounce" @click.stop="bonusListClick('')">
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
@@ -119,7 +119,7 @@
                     <!--<div class="item_item">今日已领取</div>-->
                     <div class="item_item unfinished" v-anchor="'section4'">去领红包</div>
                 </li>
-                <li class="item" v-if="curChannel==100039">
+                <li class="item" v-if="curChannel==100039 || curChannel==100042">
                     <div class="item_item">
                         <img src="./images/askicon.png" alt="">
                     </div>
@@ -208,7 +208,9 @@
                 <p> 1. 活动时间：1月25日至2月22日；
                 </p>
                 <P>榜单结算时间：2月20日23:59:59。</P>
-                <p> 2. 红包获取途径：
+                <p>2. 红包榜排名规则：
+红包榜按照用户所拥有的红包数进行排名，用户可通过以下途径获得红包。</p>
+                <p> 3. 红包获取途径：
                 </p>
                 <P>每日登录游戏中心免费领1个红包；
                 </P>
@@ -219,18 +221,17 @@
                 </P>
                 <P>活动期间累积消费达到条件，可获得红包，也可参与红包礼包活动，
                     冲击榜单。</P>
-                <p> 3. 奖励发放：
+                <p> 4. 奖励发放：
                 </p>
                 <P> 对应奖励将在2月23日开始，通过消息中心发放。</P>
-                <p> 4. 注意事项：
+                <p> 5. 注意事项：
                 </p>
                 <p>红包数目相同时，榜单排名有先后，实际发放奖励以较高奖励为准；</p>
                 <P> 游戏里发放的红包不计入此活动；榜单刷新可能延时；
                 </P>
                 <P> 榜单结算后，玩家仍可继续获得红包奖励，但所得红包不计入榜单
                     排名。</P>
-
-                <p>活动期间，禁止作弊行为，游戏官方有权对违规行为进行处理，必
+                <p style="margin-top: 0">活动期间，禁止作弊行为，游戏官方有权对违规行为进行处理，必
                     要时追究法律责任。如有任何疑问，可在游戏中心-- "我的" -- "帮助反馈"中联系客服，或致电400-873-5311。</p>
             </div>
         </div>
@@ -343,10 +344,22 @@
                     "awardsNum": 500,
                 }],
                 hbItems: null,
-                batchRedDotData:null
+                batchRedDotData:null,
+                timer1: null,
+                timer2: null
             }
         },
         mounted() {
+            this.$nextTick(()=> {
+                clearInterval(this.timer1)
+                this.timer1 = setInterval(()=> {
+                    this.$refs.bounce.className="bonusrecord bounce"
+                    this.bounceRemove()
+                }, 5000)    
+
+            })
+            
+
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
             setTimeout(() => {
@@ -476,6 +489,12 @@
             }
         },
         methods: {
+            bounceRemove() {
+                clearInterval(this.timer2)
+                this.timer2 = setTimeout(()=> {
+                    this.$refs.bounce.className="bonusrecord"
+                }, 1000)
+            },
             //获取地址栏问号后面的参数值
             getUrlParam: function (ename) {
                 // var url = document.referrer;
@@ -629,15 +648,11 @@
                 return this.axios.post(url, params, {})
             },//请求封装方法
             async bonusListClick(val) {
-                // if(val){
-                //     this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
-                // }else{
-                //     this.burryPoint('1207003023', '春节红包-红包榜')
-                // }
-                this.$toast.show({
-                    message: '123123',
-                    duration: 1500
-                })
+                if(val){
+                    this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
+                }else{
+                    this.burryPoint('1207003023', '春节红包-红包榜')
+                }
                 try {
                     const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
                         page: 1,
@@ -796,7 +811,7 @@
                 top.location.href='https://wap.beeplay123.com/payment/#/mall'
             },
             async getBatchRedDot(){
-                let res= await this.fetch('/wap/api/usertask/batchTaskStatus',{
+                let res= await this.fetch('//platform-api.beeplay123.com/task/api/usertask/batchTaskStatus',{
                     value:'dayTask'
                 })
                 if(res.data.code==200){
@@ -1537,5 +1552,17 @@
         100% {
             transform: translateY(-10%);
         }
+    }
+
+    @keyframes bounce{0%,20%,53%,80%,to{
+-webkit-animation-timing-function:cubic-bezier(.215,.61,.355,1);
+animation-timing-function:cubic-bezier(.215,.61,.355,1);
+-webkit-transform:translateZ(0);transform:translateZ(0)}
+40%,43%{-webkit-transform:translate3d(0,-30px,0);transform:translate3d(0,-30px,0)}
+40%,43%,70%{-webkit-animation-timing-function:cubic-bezier(.755,.05,.855,.06);animation-timing-function:cubic-bezier(.755,.05,.855,.06)}
+70%{-webkit-transform:translate3d(0,-15px,0);transform:translate3d(0,-15px,0)}
+90%{-webkit-transform:translate3d(0,-4px,0);transform:translate3d(0,-4px,0)}}
+    .bounce{
+        animation:bounce 1s forwards;
     }
 </style>
