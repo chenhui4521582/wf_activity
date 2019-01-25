@@ -929,7 +929,7 @@
                     position: absolute;
                     top: .1rem;
                     right: .1rem;
-                    width: .01rem;
+                    width: 1px;
                     height: .4rem;
                     background: rgba(255, 246, 205, .5);
                 }
@@ -959,8 +959,8 @@
         z-index: 10;
         .count_time {
             position: absolute;
-            top: .9rem;
-            right: 0.065rem;
+                top: 1.1rem;
+            right: 0.15rem;
             width: .74rem;
             height: .22rem;
             line-height: .25rem;
@@ -1629,7 +1629,7 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
     .item-move-box {
         position: relative;
         left: 0.05rem;
-        &:after {
+        /*&:after {
             content: '';
             position: absolute;
             left: -0.05rem;
@@ -1637,7 +1637,7 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
             width: .01rem;
             height: .4rem;
             background: rgba(255, 246, 205, 0.5);
-        };
+        };*/
     }
     .lamp-name{
         position: absolute;
