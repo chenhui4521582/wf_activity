@@ -241,11 +241,11 @@
         <!--加赠红包点击去完成-->
         <bonus-failure :show="isshowBonusFailure" @close="isshowBonusFailure=false"></bonus-failure>
         <!--红包记录-->
-        <bonus-record :show="isshowBonusRecoed&&bonusRecordData" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
+        <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
         <!--红包榜-->
-        <bonus-list :show="isshowBonusList&&bonusListData" :data="bonusListData" @close="isshowBonusList=false":userid="userID"></bonus-list>
+        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false":userid="userID"></bonus-list>
         <!--开启红包弹窗-->
-        <bonus-opened :show="isshowBonusOpened&&bonusOpenedData" :data="bonusOpenedData" @close="isshowBonusOpened=false"
+        <bonus-opened :show="isshowBonusOpened" :data="bonusOpenedData" @close="isshowBonusOpened=false"
                       @gainmore="getAnchor('section2')"></bonus-opened>
     </div>
 </template>
