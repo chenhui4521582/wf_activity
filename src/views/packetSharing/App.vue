@@ -1,6 +1,6 @@
 <template>
   <div class="packet-sharing">
-    <img src="./images/bg.png" class="bg">
+    <img src="./images/bg.jpg" class="bg">
     <div class="packet-box">
       <div class="header">
         <img src="./images/f-back.png" class="back" @click="goHistory">
@@ -23,12 +23,12 @@
           <div class="e-header">分享红包攻略<img src="./images/close.png" class="close" @click="isRuleStatus = false"></div>
           <div class="e-content">
               <p>1.活动开始时间：2019.01.25 00:00:00 至 2019.2.20 24:00:00。</p>
-              <p>2. 您邀请的好友必须是《好看视频》新用户，且登陆游戏平台，您才能获得邀请奖励，同时。好友也可获得1个红包。</p>
+              <p>2. 您邀请的好友必须是《{{iTxt}}》新用户，且登陆游戏平台，您才能获得邀请奖励，同时。好友也可获得1个红包。</p>
               <p>3.红包奖励会在邀请成功后的48小时内发放入您的账号，您可在“首页-开红包”查看。</p>
-              <p>4.分享赚红包规则：每邀请1个好友即得1个红包，每个红包最高开出100元京东卡，每日通过分享最高可通过邀请好友方式获得5个红包，活动期间最多通过邀请好友方式获得20个红包。</p>
+              <p>4.分享赚红包规则：每邀请一个好友得2个红包，每个红包最高开出100元京东卡，每日通过分享最多可获得8个红包。</p>
               <p>5.活动所得红包仅限本人使用，不可赠送他人，同一登录账号，同一手机号，同一终端设备号，同一支付账户，同一IP或其他合理显示为同一用户的情形，均视为同一用户。</p>
-              <p>6.对于以任何不正当方式参与活动的用户，包括但不限于侵犯第三人合法权益、作弊、扰乱系统、实施网络攻击、批量注册、用机器注册账户、用机器模拟客户端等，《好看视频》有权取消其参与和获得红包资格。</p>
-              <p>7.活动期间，如出现不可抗力或情势变更的情况（包括但不限于重大灾害事件、黑客攻击、系统故障、活动受政府机关指令需停止举办或调整的），《好看视频》可依相关法律法规</p>
+              <p>6.对于以任何不正当方式参与活动的用户，包括但不限于侵犯第三人合法权益、作弊、扰乱系统、实施网络攻击、批量注册、用机器注册账户、用机器模拟客户端等，《{{iTxt}}》有权取消其参与和获得红包资格。</p>
+              <p>7.活动期间，如出现不可抗力或情势变更的情况（包括但不限于重大灾害事件、黑客攻击、系统故障、活动受政府机关指令需停止举办或调整的），《{{iTxt}}》可依相关法律法规</p>
               
           </div>
       </div>
@@ -45,7 +45,7 @@
         envelopeStatusCon: '',
         isRuleStatus: false,
         curChannel: localStorage.getItem('APP_CHANNEL'),
-        code: null
+        code: null,
       }
     },
 
@@ -54,8 +54,11 @@
       if(res.data.code == 200) {
         this.envelopeStatusCon = res.data.data
       }
-     
-      
+    },
+    computed: {
+      iTxt() {
+        return this.curChannel == '100039' ? '好看视频':'全民小视频'
+      }
     },
     methods: {
       goSpring() {
@@ -242,7 +245,7 @@ html,body {
     color: #fff;
     text-align: center;
     line-height: 0.6rem;
-    margin-top: 98%;
+    margin-top: 83%;
     letter-spacing:2px;
     .fx-number {
       color: yellow;
@@ -303,7 +306,7 @@ html,body {
       margin: 5% auto 0;
     }
     .fx-text {
-      margin-top: 95%;
+      margin-top: 81%;
     }
   }
 
