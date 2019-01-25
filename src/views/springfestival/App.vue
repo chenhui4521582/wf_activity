@@ -23,7 +23,7 @@
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
-        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'"></div>
+        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'" id="backTop"></div>
         <!--返回按钮-->
         <div class="back" @click="back('')"></div>
         <!--第一屏-->
@@ -356,8 +356,7 @@
                 this.timer1 = setInterval(()=> {
                     this.$refs.bounce.className="bonusrecord bounce"
                     this.bounceRemove()
-                }, 5000)    
-
+                }, 5000)
             })
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
@@ -838,6 +837,7 @@
                 let res=await this.fetch('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
                 if(res.data.code==200){
                     this.userID=res.data.data&&res.data.data.userId||0
+                    this.getAnchor('section1')
                 }
             }
         },

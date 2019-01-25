@@ -14,15 +14,18 @@
                 <div class="mine">
                     <div class="item">
                         <div>我的排名</div>
-                        <div>{{data&&data.myRanking||'未上榜'}}</div>
+                        <div v-if="!rank">{{data&&data.myRanking||'未上榜'}}</div>
+                        <div v-else>{{rank&&rank.ranking}}</div>
                     </div>
                     <div class="item">
                         <div>拥有红包</div>
-                        <div>{{data&&data.amount||0}}个</div>
+                        <div v-if="!rank">{{data&&data.amount||0}}个</div>
+                        <div v-else>{{rank&&rank.amount||0}}个</div>
                     </div>
                     <div class="item">
                         <div>当前奖励</div>
-                        <div>{{data&&data.awardName||'暂无奖励'}}</div>
+                        <div v-if="!rank">{{data&&data.awardName||'暂无奖励'}}</div>
+                        <div v-else>{{rank&&rank.awardName}}</div>
                     </div>
                 </div>
                 <ul class="title">
@@ -98,6 +101,9 @@
         computed: {
             list() {
                 return this.data && this.data.rankingItemList || []
+            },
+            rank(){
+                return this.data && this.data.rankingItemList.filter(item=>item.userId==this.userid)[0]||null
             },
             countdownText(){
                 if(this.countdown.time){
