@@ -928,10 +928,13 @@
                     content: '';
                     position: absolute;
                     top: .1rem;
-                    right: .1rem;
+                    right: .16rem;
                     width: 1px;
                     height: .4rem;
                     background: rgba(255, 246, 205, .5);
+                }
+                &:nth-child(2):after {
+                    right: .05rem;
                 }
                 &:nth-child(3) {
                     flex: 2.5;
