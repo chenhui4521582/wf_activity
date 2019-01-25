@@ -129,26 +129,26 @@
                 this.$emit('close')
             }
         },
-        mounted(){
-            if(this.show){
-                !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
-                    this,
-                    this.data.countDown,
-                    this.countdown
-                );
-            }
-        },
-        // watch:{
-        //     show(val){
-        //         if(val){
-        //             !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
-        //                 this,
-        //                 this.data.countDown,
-        //                 this.countdown
-        //             );
-        //         }
+        // mounted(){
+        //     if(this.show&&this.data){
+        //         !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
+        //             this,
+        //             this.data.countDown,
+        //             this.countdown
+        //         );
         //     }
-        // }
+        // },
+        watch:{
+            show(val){
+                if(val){
+                    !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
+                        this,
+                        this.data.countDown,
+                        this.countdown
+                    );
+                }
+            }
+        }
     }
 </script>
 <style lang="less" scoped>
