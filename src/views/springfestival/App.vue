@@ -13,11 +13,17 @@
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
                 <div class="item" @click.stop="bonusListClick('top')">
-                    <div class="r-item1">下级奖励</div>
-                    <div class="r-item2 item-move-box" > 
+                    
+                    <div class="r-item2 item-move-box" style="position: relative;z-index: 1"> 
+                        <!-- <div class="r-item1" style="height: 0.35rem;overflow: hidden;position: relative;z-index: 5;">
+                            <div v-for="item in lamp" :class="{'anim':isMove}" style="height: 0.35rem;"></div> 
+                        </div> -->
                         <div class="item-move" v-if="lamp.length">
                             <ul  :class="{'anim':isMove}">
-                                <li v-for="item in lamp">{{item}}</li>
+                                <li v-for="item in lamp">
+                                    <div class="r-item1">{{item.name}}</div>
+                                    {{item.desc}}
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -721,7 +727,13 @@
                         // totalAmount (integer, optional): 我的红包数量
                         // res.data.data.availableAmount=100 测试代码
                         this.detailData = res.data.data;
-                        this.lamp = [...this.lamp, this.detailData&&this.detailData.nextAwardName, this.detailData&&this.detailData.ranking]
+                        this.lamp = [{
+                            name: '下级奖励',
+                            desc: this.detailData&&this.detailData.nextAwardName,
+                        }, {
+                            name: '红包榜排名',
+                            desc: this.detailData&&this.detailData.ranking
+                        }]
                         
 
 
@@ -1604,13 +1616,33 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
     }
     .anim{
         transition: all .5s;
-        top: -0.4rem !important;
+        top: -0.8rem !important;
     }
     .item-move {
-        height: 0.4rem;
+        height: 0.8rem;
         overflow: hidden;
         position: relative;
-        top: 0.01rem;
+        top: -0.1rem;
+        left:0.1rem;
+        
+    }
+    .item-move-box {
+        position: relative;
+        left: 0.05rem;
+        &:after {
+            content: '';
+            position: absolute;
+            left: -0.05rem;
+            top: 0.10rem;
+            width: .01rem;
+            height: .4rem;
+            background: rgba(255, 246, 205, 0.5);
+        };
+    }
+    .lamp-name{
+        position: absolute;
+        left: 0;
+        top: -0.15rem;
     }
     .item-move ul {
         position: absolute;
@@ -1621,8 +1653,8 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
             line-height: 0.4rem;
         }
         li {
-            height: 0.4rem;
-            line-height: 0.4rem;
+            height: 0.8rem;
+            line-height: 0.38rem;
         }
     }
     
