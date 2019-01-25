@@ -350,6 +350,7 @@
             }
         },
         mounted() {
+            this.getaccountInfo()
             this.$nextTick(()=> {
                 clearInterval(this.timer1)
                 this.timer1 = setInterval(()=> {
