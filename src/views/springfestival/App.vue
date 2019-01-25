@@ -1628,7 +1628,7 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
     }
     .item-move-box {
         position: relative;
-        left: 0.05rem;
+        left: 0.02rem;
         /*&:after {
             content: '';
             position: absolute;
