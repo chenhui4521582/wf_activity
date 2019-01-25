@@ -484,7 +484,12 @@
 
             },
             showTask(){
-                return this.detailData&&this.countdown.time&&this.countdown.time!='00:00:00'
+                if(this.detailData){
+                    return this.countdown.time&&this.countdown.time!='00:00:00'
+                }else{
+                    return true
+                }
+
             }
         },
         methods: {
@@ -865,8 +870,8 @@
         display: flex;
         .left {
             margin-right: .2rem;
-            width: 1.07rem;
-            height: 1.22rem;
+            width: .55rem;
+            height: .58rem;
             background: url("./images/bonusrecord.png");
             background-size: 100% 100%;
         }
@@ -908,8 +913,8 @@
         position: fixed;
         top: 1.32rem;
         right: .17rem;
-        width: .87rem;
-        height: .99rem;
+        width: 1.07rem;
+        height: 1.22rem;
         background: url("./images/bonusrecordicon.png");
         background-size: 100% 100%;
         z-index: 10;
