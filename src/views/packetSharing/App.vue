@@ -8,7 +8,7 @@
           <span class="f-strategy"  @click="isRuleStatus = true">赚红包攻略</span>
         </div>
         <div class=""></div>
-        <div class="fx-text">每邀请1个好友<br/>再得<span class="fx-number">2</span>个红包</div>
+        <div class="fx-text">每邀请1个好友玩游戏<br/>再得<span class="fx-number">2</span>个红包</div>
         <a href="javascript:" class="btn-share" @click="openPanel">分享赚红包</a>
         <div class="friend-text">好友帮你赚了{{envelopeStatusCon&&envelopeStatusCon.receiveBySharing}}个红包
           <a href="javascript:" @click="goSpring">去开启<img src="./images/arrow-right.png" class="f-back"></a>
@@ -240,7 +240,7 @@ html,body {
   text-overflow:ellipsis; 
   }
   .fx-text {
-    font-size: 0.48rem;
+    font-size: 0.44rem;
     font-weight: 800;
     color: #fff;
     text-align: center;
