@@ -865,8 +865,8 @@
         display: flex;
         .left {
             margin-right: .2rem;
-            width: .55rem;
-            height: .58rem;
+            width: 1.07rem;
+            height: 1.22rem;
             background: url("./images/bonusrecord.png");
             background-size: 100% 100%;
         }
