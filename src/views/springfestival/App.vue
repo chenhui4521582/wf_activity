@@ -244,7 +244,7 @@
         <!--红包记录-->
         <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
         <!--红包榜-->
-        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false" v-if="isshowBonusList"></bonus-list>
+        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false" v-if="isshowBonusList" :userid="userID"></bonus-list>
         <!--开启红包弹窗-->
         <bonus-opened :show="isshowBonusOpened" :data="bonusOpenedData" @close="isshowBonusOpened=false"
                       @gainmore="getAnchor('section2')"></bonus-opened>
@@ -346,7 +346,8 @@
                 hbItems: null,
                 batchRedDotData:null,
                 timer1: null,
-                timer2: null
+                timer2: null,
+                userID:0
             }
         },
         mounted() {
@@ -358,8 +359,6 @@
                 }, 5000)    
 
             })
-            
-
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
             setTimeout(() => {
@@ -527,26 +526,26 @@
                         this.burryPoint('1207003003', '春节红包-回到平台')
                         switch (this.backUrl) {
                             case 'wap':
-                                top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
                                 break;
                             case 'jswap':
-                                top.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel;
                                 break;
                             case 'bdwap':
-                                top.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
                                 break;
                         }
                     } else {
                         this.burryPoint('1207003030', '春节红包-玩游戏得红包(每日任务)')
                         switch (this.backUrl) {
                             case 'wap':
-                                top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'jswap':
-                                top.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'bdwap':
-                                top.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                         }
                     }
@@ -828,6 +827,12 @@
                 }else{
                     this.burryPoint('1207003082', '春节红包-更多游戏-去玩游戏糖果')
                     common.jumpToGame({url:'/crush'})
+                }
+            },
+            async getaccountInfo(){
+                let res=await this.fetch('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+                if(res.data.code==200){
+                    this.userID=res.data.data&&res.data.data.userId||0
                 }
             }
         },

@@ -36,7 +36,7 @@
                 <div class="content">
                     <scroll :data="list">
                         <ul>
-                            <li v-for="(item,index) in list" :class="{rank:data&&data.myRanking==item.ranking}">
+                            <li v-for="(item,index) in list" :class="{rank:userid==item.userId}">
                                 <!--amount: 88-->
                                 <!--awardName: "1000万金叶子+加赠5000元京东卡"-->
                                 <!--nickname: "曹翠"-->
@@ -84,6 +84,10 @@
             data: {
                 type: Object,
                 default: null
+            },
+            userid:{
+                type:Number,
+                default:0
             }
         },
         components: {
@@ -125,17 +129,26 @@
                 this.$emit('close')
             }
         },
-        watch:{
-            show(val){
-                if(val){
-                    !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
-                        this,
-                        this.data.countDown,
-                        this.countdown
-                    );
-                }
+        mounted(){
+            if(this.show){
+                !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
+                    this,
+                    this.data.countDown,
+                    this.countdown
+                );
             }
-        }
+        },
+        // watch:{
+        //     show(val){
+        //         if(val){
+        //             !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
+        //                 this,
+        //                 this.data.countDown,
+        //                 this.countdown
+        //             );
+        //         }
+        //     }
+        // }
     }
 </script>
 <style lang="less" scoped>
