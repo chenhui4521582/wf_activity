@@ -424,15 +424,15 @@
                 })[this.hbItems.length - 1]
 
                 // 删除数组最后一位
-                this.hbItems.pop()
+                const data=this.hbItems.slice()
+                data.pop()
                 
-                
-                let nArr = this.hbItems.filter((item) => {
+                let nArr = data.filter((item) => {
                     return item.taskStatus != 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
                 })
-                let tArr = this.hbItems.filter((item) => {
+                let tArr = data.filter((item) => {
                     return item.taskStatus == 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
