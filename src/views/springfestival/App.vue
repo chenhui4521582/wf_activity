@@ -56,7 +56,7 @@
             </div>
         </div>
         <!--任务-->
-        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039}" v-if="showTask">
+        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039||curChannel==100042}" v-if="showTask">
             <div class="gainbonusbtn" @click="gainbonus"></div>
             <ul>
                 <li class="item">
@@ -79,7 +79,7 @@
                     </div>
                     <template v-if="batchRedDotData">
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:true}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:true}"
                              style="display: flex;flex-direction: column;text-align: center" v-if="batchRedDotData.taskStatus==0">
                             <div class="item_item_item" @click="back('taskview')">去完成</div>
                             <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">
@@ -109,7 +109,7 @@
                     <!--1.有没有待领取的红包 2.没有待领取-->
                     <template v-else>
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
                              style="display: flex;flex-direction: column;text-align: center"
                              v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
                             <div class="item_item_item" v-anchor="'section3'">去领红包</div>
