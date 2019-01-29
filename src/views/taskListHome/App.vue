@@ -95,12 +95,16 @@
                     },
                 showReceivePop :false,
                 showTaskList : false,
-                curMedelIcon : ''
+                curMedelIcon : '',
+                masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement']
             }
         },
         mounted(){
-           this.getMasterList('bill-achievement','first').then(()=>{
-                this.getMasterList('crush-achievement','first')
+            this.masterTaskNameList.map(item => {
+                let val = item == 'bill-achievement' ? 'first' : ''
+                setTimeout(() => {
+                    this.getMasterList(item,val)
+                }, 0);
             })
         },
         components: {
@@ -228,6 +232,7 @@
                     
                     if(type == 'refresh'){
                         let {taskId, taskLogId, awardsImage, awardsName, gameType} = item
+                        //刷新接口时替换当前任务显示位置
                         this.allTaskList.map((item,index) =>{
                             if(item.currentTaskName == val){
                                 this.allTaskList.splice(index,1,masterTaskList)
@@ -250,8 +255,15 @@
                             }
                         })
                     }else{  
-                        this.allTaskList.push(masterTaskList)
+                        //已完成任务置底显示
+                        if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
+                            this.allTaskList.push(masterTaskList)
+                        }else{
+                             this.allTaskList.unshift(masterTaskList)
+                        }
                     }
+                    
+                    // 首次请求任务默认第一位任务展开
                     if(type == 'first'){
                         this.$set(this.allTaskList[0],'selected',false)
                         this.showCurDetails(0) 
