@@ -397,6 +397,10 @@
             }
         },
         computed: {
+            isBdChannel(){
+                let channel = ['100039','100042','100045']
+                return channel.includes(this.curChannel)
+            },
             backUrl() {
                 return (this.getUrlParam('from') || '').toLowerCase();
             },
@@ -801,7 +805,7 @@
                     this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-                if (this.curChannel == 100039 || this.curChannel == 100042) {//好看、全民小视频
+                if (this.isBdChannel) {//好看、全民小视频
                     top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
                 } else {
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
