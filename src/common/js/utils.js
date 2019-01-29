@@ -92,7 +92,7 @@ export default {
         }
         if (localStorage.getItem('APP_CHANNEL') == '100006') {
             location.href =
-                '../../../channel/newokooo/billiards/' +
+                '../../../channel/newokooo'+item.url.startsWith('/')?item.url:'/'+item.url+'/' +
                 '?channel=' +
                 localStorage.getItem('APP_CHANNEL') +
                 '&token=' +
