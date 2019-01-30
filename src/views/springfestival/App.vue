@@ -35,7 +35,7 @@
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
-        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'" id="backTop"></div>
+        <div class="backTop" v-if="isShowTopIcon" @click="getAnchor('section1')" id="backTop"></div>
         <!--返回按钮-->
         <div class="back" @click="back('')"></div>
         <!--第一屏-->
@@ -388,12 +388,22 @@
             this.getBatchRedDot()
             this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
-            window.onscroll = () => {
-                // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
-                //     || document.documentElement.clientHeight
-                //     || document.body.clientHeight)
-                //超过一屏就显示回到顶部的图标
-                this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+            if(window==window.top){
+                window.onscroll = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+                }
+            }else{
+                window.ontouchmove = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             }
         },
         computed: {
@@ -548,8 +558,13 @@
                 return Request[ename];
             },
             getAnchor(name) {
-                document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
-                !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                if(window==window.top){
+                    document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                }else{
+                    document.getElementById('app').scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             },
             ruleClick() {
                 this.isFoldRule = !this.isFoldRule
@@ -899,7 +914,7 @@
         position: fixed;
         left: 0;
         top: 0;
-        overflow-y: auto;
+        overflow-y: scroll;
     }
     .section0 {
         position: fixed;
