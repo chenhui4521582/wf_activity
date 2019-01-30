@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :class="{aoke:curChannel==100006}">
+    <div id="app" :class="{aoke:curChannel==100006&&isHasIframe}">
         <div class="section0">
             <div class="left" @click="bonusRecordClick">
             </div>
@@ -522,6 +522,9 @@
                     return true
                 }
 
+            },
+            isHasIframe(){
+                return window!=window.top
             }
         },
         methods: {
