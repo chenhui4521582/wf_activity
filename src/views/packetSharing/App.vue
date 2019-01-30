@@ -5,7 +5,7 @@
       <div class="header">
         <img src="./images/f-back.png" class="back" @click="goHistory">
         <div class="f-strategy-box">
-          <span class="f-strategy"  @click="isRuleStatus = true">赚红包攻略</span>
+          <span class="f-strategy"  @click="openTXT">赚红包攻略</span>
         </div>
         <div class=""></div>
         <div class="fx-text">每邀请1个好友玩游戏<br/>再得<span class="fx-number">2</span>个红包</div>
@@ -54,6 +54,8 @@
       if(res.data.code == 200) {
         this.envelopeStatusCon = res.data.data
       }
+
+      GLOBALS.buriedPoint(1207003061,"春节红包-分享红包页加载成功");
     },
     computed: {
       iTxt() {
@@ -61,13 +63,26 @@
       }
     },
     methods: {
+      openTXT() {
+        GLOBALS.buriedPoint(1207003064,"春节红包-分享红包页-赚红包攻略");
+        this.isRuleStatus = true
+      },
       goSpring() {
-        location.href = 'https://wap.beeplay123.com/activities/springfestival.html?channel='+localStorage.getItem('APP_CHANNEL')+'&token='+localStorage.getItem('ACCESS_TOKEN')
+        GLOBALS.buriedPoint(1207003068,"春节红包-分享红包页-去开启");
+        setTimeout(()=> {
+          location.href = 'https://wap.beeplay123.com/activities/springfestival.html?channel='+localStorage.getItem('APP_CHANNEL')+'&token='+localStorage.getItem('ACCESS_TOKEN')
+        }, 1000)
+        
       },
       goHistory() {
-        history.go(-1)
+        GLOBALS.buriedPoint(1207003063,"春节红包-分享红包页-返回");
+        setTimeout(()=> {
+          history.go(-1)  
+        }, 1000)
+        
       },
       openPanel() {
+        GLOBALS.buriedPoint(1207003062,"春节红包-分享红包页-分享赚红包");
         if(this.curChannel == '100039') {
           this.openHkPanel()
         }else if(this.curChannel == '100042') {
