@@ -108,5 +108,49 @@ export default {
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
-    }
+    },
+    jumpToGameUrl:function (item) {
+        if (item && item.url.indexOf('external=1') != -1) {
+            if (item.url.includes('?external=1')) {
+                    return this.trimStr(item.url) +
+                    '&channel=' +
+                    localStorage.getItem('APP_CHANNEL') +
+                    '&token=' +
+                    localStorage.getItem('ACCESS_TOKEN') +
+                    '&gurl=' +
+                    item.url.split('?')[0] +
+                    '&pf=wap'
+            } else {
+                return this.trimStr(item.url) +
+                    '&channel=' +
+                    localStorage.getItem('APP_CHANNEL') +
+                    '&token=' +
+                    localStorage.getItem('ACCESS_TOKEN') +
+                    '&gurl=' +
+                    base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+                    '&pf=wap'
+            }
+            return
+        }
+        if (item && item.url.indexOf('databiger-h5') != -1) {
+            return this.trimStr(item.url) +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+        }
+        if (localStorage.getItem('APP_CHANNEL') == '100006') {
+           return '//wap.beeplay123.com/channel/newokooo'+item.url+'/' +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+        } else {
+            return item.url +
+                '?channel=' +
+                localStorage.getItem('APP_CHANNEL') +
+                '&token=' +
+                localStorage.getItem('ACCESS_TOKEN')
+        }
+    },
 }
