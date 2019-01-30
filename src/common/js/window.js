@@ -125,6 +125,7 @@ window.GLOBALS = {
             channel_id: _channel,//渠道id
             generate_date: date,//行为发生日期
             generate_time: time,//行为发生时间
+            platform_id: 40000
         }
         
         await axios.post('//hadoop-data.beeplay123.com', obj, {timeout: 1500})
