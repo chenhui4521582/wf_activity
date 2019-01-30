@@ -1,65 +1,70 @@
 <template>
-    <div class="pop-window" v-if="show">
-        <div class="pop-mask" @touchmove.prevent></div>
+    <div  v-if="show">
+        <div class="pop-window">
+            <div class="pop-mask"></div>
+        </div>
         <div class="bonus-list">
-            <div class="counttime" v-if="data">
-                {{countdownText}}
-            </div>
-            <!--amount: 0-->
-            <!--awardName: "暂无奖励"-->
-            <!--countDown: 2868189729-->
-            <!--myRanking: "未上榜"-->
-            <div class="mine">
-                <div class="item">
-                    <div>我的排名</div>
-                    <div>{{data&&data.myRanking||'未上榜'}}</div>
+                <div class="counttime" v-if="data">
+                    {{countdownText}}
                 </div>
-                <div class="item">
-                    <div>拥有红包</div>
-                    <div>{{data&&data.amount||0}}个</div>
+                <!--amount: 0-->
+                <!--awardName: "暂无奖励"-->
+                <!--countDown: 2868189729-->
+                <!--myRanking: "未上榜"-->
+                <div class="mine">
+                    <div class="item">
+                        <div>我的排名</div>
+                        <div v-if="!rank">{{data&&data.myRanking||'未上榜'}}</div>
+                        <div v-else>{{rank&&rank.ranking}}</div>
+                    </div>
+                    <div class="item">
+                        <div>拥有红包</div>
+                        <div v-if="!rank">{{data&&data.amount||0}}个</div>
+                        <div v-else>{{rank&&rank.amount||0}}个</div>
+                    </div>
+                    <div class="item">
+                        <div>当前奖励</div>
+                        <div v-if="!rank">{{data&&data.awardName||'暂无奖励'}}</div>
+                        <div v-else>{{rank&&rank.awardName}}</div>
+                    </div>
                 </div>
-                <div class="item">
-                    <div>当前奖励</div>
-                    <div>{{data&&data.awardName||'暂无奖励'}}</div>
+                <ul class="title">
+                    <li>
+                        <div>排名</div>
+                        <div>红包达人</div>
+                        <div>红包数</div>
+                        <div>奖励</div>
+                    </li>
+                </ul>
+                <div class="content">
+                    <scroll :data="list">
+                        <ul>
+                            <li v-for="(item,index) in list" :class="{rank:userid==item.userId}">
+                                <!--amount: 88-->
+                                <!--awardName: "1000万金叶子+加赠5000元京东卡"-->
+                                <!--nickname: "曹翠"-->
+                                <!--ranking: 1-->
+                                <!--userId: 1-->
+                                <div>
+                                    <img src="../images/pop/first.png" alt="" style="width: .19rem;height: .19rem"
+                                         v-if="item.ranking==1">
+                                    <img src="../images/pop/second.png" alt="" style="width: .19rem;height: .19rem"
+                                         v-else-if="item.ranking==2">
+                                    <img src="../images/pop/third.png" alt="" style="width: .19rem;height: .19rem"
+                                         v-else-if="item.ranking==3">
+                                    <template v-else>{{item.ranking}}</template>
+                                </div>
+                                <div>{{item.nickname}}</div>
+                                <div>{{item.amount}}</div>
+                                <div>{{item.awardName.replace('加赠','')}}</div>
+                            </li>
+                        </ul>
+                    </scroll>
                 </div>
-            </div>
-            <ul class="title">
-                <li>
-                    <div>排名</div>
-                    <div>红包达人</div>
-                    <div>红包数</div>
-                    <div>奖励</div>
-                </li>
-            </ul>
-            <div class="content">
-                <scroll :data="list">
-                    <ul>
-                        <li v-for="(item,index) in list" :class="{rank:data&&data.myRanking==item.ranking}">
-                            <!--amount: 88-->
-                            <!--awardName: "1000万金叶子+加赠5000元京东卡"-->
-                            <!--nickname: "曹翠"-->
-                            <!--ranking: 1-->
-                            <!--userId: 1-->
-                            <div>
-                                <img src="../images/pop/first.png" alt="" style="width: .19rem;height: .19rem"
-                                     v-if="item.ranking==1">
-                                <img src="../images/pop/second.png" alt="" style="width: .19rem;height: .19rem"
-                                     v-else-if="item.ranking==2">
-                                <img src="../images/pop/third.png" alt="" style="width: .19rem;height: .19rem"
-                                     v-else-if="item.ranking==3">
-                                <template v-else>{{item.ranking}}</template>
-                            </div>
-                            <div>{{item.nickname}}</div>
-                            <div>{{item.amount}}</div>
-                            <div>{{item.awardName.replace('加赠','')}}</div>
-                        </li>
-                    </ul>
-                </scroll>
-            </div>
-            <div class="line line1"></div>
-            <div class="line line2"></div>
-            <div class="line line3"></div>
-            <div class="close" @click="besure"></div>
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+                <div class="close" @click="besure"></div>
         </div>
     </div>
 </template>
@@ -82,14 +87,23 @@
             data: {
                 type: Object,
                 default: null
+            },
+            userid:{
+                type:Number,
+                default:0
             }
         },
         components: {
             scroll
         },
+        mounted() {
+        },
         computed: {
             list() {
                 return this.data && this.data.rankingItemList || []
+            },
+            rank(){
+                return this.data && this.data.rankingItemList.filter(item=>item.userId==this.userid)[0]||null
             },
             countdownText(){
                 if(this.countdown.time){
@@ -121,6 +135,15 @@
                 this.$emit('close')
             }
         },
+        // mounted(){
+        //     if(this.show&&this.data){
+        //         !this.countdown.time&&this.data.countDown&&GLOBALS.remainingTime(
+        //             this,
+        //             this.data.countDown,
+        //             this.countdown
+        //         );
+        //     }
+        // },
         watch:{
             show(val){
                 if(val){
@@ -136,12 +159,14 @@
 </script>
 <style lang="less" scoped>
     .pop-window {
-        position: relative;
+        position: fixed;
         z-index: 11;
         width: 100%;
         height: 100%;
         min-height: 100%;
         max-height: 100%;
+        left: 0;
+        top: 0;
         .pop-close {
             width: 0.68rem;
             height: 0.68rem;
@@ -163,11 +188,11 @@
 
     .bonus-list {
         position: fixed;
-        top: 50%;
+        top: 1rem;
         left: 50%;
-        transform: translate(-50%, -50%);
         width: 6.8rem;
         height: 8.3rem;
+        margin-left: -3.4rem;
         background: url("../images/pop/bonuslistbottom.png");
         background-size: 100% 100%;
         z-index: 11;

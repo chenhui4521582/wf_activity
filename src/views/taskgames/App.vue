@@ -474,7 +474,7 @@
                         this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                         break
                     case 'dayTask' : 
-                        this.getDayTask()()
+                        this.getDayTask()
                         break
                     default:
                         item.taskStatus = 2

@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :class="{aoke:curChannel==100006}">
+    <div id="app" :class="{aoke:curChannel==100006&&isHasIframe}">
         <div class="section0">
             <div class="left" @click="bonusRecordClick">
             </div>
@@ -13,17 +13,29 @@
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
                 <div class="item" @click.stop="bonusListClick('top')">
-                    <div class="r-item1">下级奖励</div>
-                    <div class="r-item2">{{detailData&&detailData.nextAwardName||''}}</div>
+                    
+                    <div class="r-item2 item-move-box" style="position: relative;z-index: 1"> 
+                        <!-- <div class="r-item1" style="height: 0.35rem;overflow: hidden;position: relative;z-index: 5;">
+                            <div v-for="item in lamp" :class="{'anim':isMove}" style="height: 0.35rem;"></div> 
+                        </div> -->
+                        <div class="item-move" v-if="lamp.length">
+                            <ul  :class="{'anim':isMove}">
+                                <li v-for="item in lamp">
+                                    <div class="r-item1">{{item.name}}</div>
+                                    {{item.desc}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!--红包榜-->
-        <div class="bonusrecord" @click.stop="bonusListClick('')">
+        <div class="bonusrecord" ref="bounce" @click.stop="bonusListClick('')">
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
-        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'"></div>
+        <div class="backTop" v-if="isShowTopIcon" @click="getAnchor('section1')" id="backTop"></div>
         <!--返回按钮-->
         <div class="back" @click="back('')"></div>
         <!--第一屏-->
@@ -44,7 +56,7 @@
             </div>
         </div>
         <!--任务-->
-        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039}" v-if="showTask">
+        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039||curChannel==100042}" v-if="showTask">
             <div class="gainbonusbtn" @click="gainbonus"></div>
             <ul>
                 <li class="item">
@@ -67,7 +79,7 @@
                     </div>
                     <template v-if="batchRedDotData">
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:true}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:true}"
                              style="display: flex;flex-direction: column;text-align: center" v-if="batchRedDotData.taskStatus==0">
                             <div class="item_item_item" @click="back('taskview')">去完成</div>
                             <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">
@@ -97,7 +109,7 @@
                     <!--1.有没有待领取的红包 2.没有待领取-->
                     <template v-else>
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
                              style="display: flex;flex-direction: column;text-align: center"
                              v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
                             <div class="item_item_item" v-anchor="'section3'">去领红包</div>
@@ -119,7 +131,7 @@
                     <!--<div class="item_item">今日已领取</div>-->
                     <div class="item_item unfinished" v-anchor="'section4'">去领红包</div>
                 </li>
-                <li class="item" v-if="curChannel==100039">
+                <li class="item" v-if="curChannel==100039 || curChannel==100042">
                     <div class="item_item">
                         <img src="./images/askicon.png" alt="">
                     </div>
@@ -208,29 +220,29 @@
                 <p> 1. 活动时间：1月25日至2月22日；
                 </p>
                 <P>榜单结算时间：2月20日23:59:59。</P>
-                <p> 2. 红包获取途径：
+                <p>2. 红包榜排名规则：
+红包榜按照用户所拥有的红包数进行排名，用户可通过以下途径获得红包。</p>
+                <p> 3. 红包获取途径：
                 </p>
                 <P>每日登录游戏中心免费领1个红包；
                 </P>
-                <P v-if="curChannel==100039"> 首次分享成功立得1个红包，之后每成功邀请1个好友玩游戏即可再
-                    得1个红包（每天最多可获得8个红包）；
+                <P v-if="curChannel==100039||curChannel==100042"> 每成功邀请一个好友玩游戏可获得2个红包（每天最多获得8个红包）；
                 </P>
                 <P>完成每日任务可领红包；
                 </P>
                 <P>活动期间累积消费达到条件，可获得红包，也可参与红包礼包活动，
                     冲击榜单。</P>
-                <p> 3. 奖励发放：
+                <p> 4. 奖励发放：
                 </p>
                 <P> 对应奖励将在2月23日开始，通过消息中心发放。</P>
-                <p> 4. 注意事项：
+                <p> 5. 注意事项：
                 </p>
                 <p>红包数目相同时，榜单排名有先后，实际发放奖励以较高奖励为准；</p>
                 <P> 游戏里发放的红包不计入此活动；榜单刷新可能延时；
                 </P>
                 <P> 榜单结算后，玩家仍可继续获得红包奖励，但所得红包不计入榜单
                     排名。</P>
-
-                <p>活动期间，禁止作弊行为，游戏官方有权对违规行为进行处理，必
+                <p style="margin-top: 0">活动期间，禁止作弊行为，游戏官方有权对违规行为进行处理，必
                     要时追究法律责任。如有任何疑问，可在游戏中心-- "我的" -- "帮助反馈"中联系客服，或致电400-873-5311。</p>
             </div>
         </div>
@@ -243,7 +255,7 @@
         <!--红包记录-->
         <bonus-record :show="isshowBonusRecoed" :data="bonusRecordData" @close="isshowBonusRecoed=false"></bonus-record>
         <!--红包榜-->
-        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false"></bonus-list>
+        <bonus-list :show="isshowBonusList" :data="bonusListData" @close="isshowBonusList=false":userid="userID"></bonus-list>
         <!--开启红包弹窗-->
         <bonus-opened :show="isshowBonusOpened" :data="bonusOpenedData" @close="isshowBonusOpened=false"
                       @gainmore="getAnchor('section2')"></bonus-opened>
@@ -343,10 +355,28 @@
                     "awardsNum": 500,
                 }],
                 hbItems: null,
-                batchRedDotData:null
+                batchRedDotData:null,
+                timer1: null,
+                timer2: null,
+                userID:0,
+                isMove : false,
+                lamp: [],
+                ylbScroll: null
             }
         },
         mounted() {
+            // 导航滚动
+            clearInterval(this.ylbScroll)
+            this.ylbScroll = setInterval(this.scroll,2500)
+
+            this.getaccountInfo()
+            this.$nextTick(()=> {
+                clearInterval(this.timer1)
+                this.timer1 = setInterval(()=> {
+                    this.$refs.bounce.className="bonusrecord bounce"
+                    this.bounceRemove()
+                }, 5000)
+            })
             this.burryPoint('1207003000', '春节红包加载页', {poker_value: this.getUrlParam('source')})
             //4秒后隐藏小手
             setTimeout(() => {
@@ -358,15 +388,29 @@
             this.getBatchRedDot()
             this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
-            window.onscroll = () => {
-                // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
-                //     || document.documentElement.clientHeight
-                //     || document.body.clientHeight)
-                //超过一屏就显示回到顶部的图标
-                this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+            if(window==window.top){
+                window.onscroll = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+                }
+            }else{
+                window.ontouchmove = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             }
         },
         computed: {
+            isBdChannel(){
+                let channel = ['100039','100042','100045','100040','100041','100046']
+                return channel.includes(this.curChannel)
+            },
             backUrl() {
                 return (this.getUrlParam('from') || '').toLowerCase();
             },
@@ -394,15 +438,15 @@
                 })[this.hbItems.length - 1]
 
                 // 删除数组最后一位
-                this.hbItems.pop()
+                const data=this.hbItems.slice()
+                data.pop()
                 
-                
-                let nArr = this.hbItems.filter((item) => {
+                let nArr = data.filter((item) => {
                     return item.taskStatus != 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
                 })
-                let tArr = this.hbItems.filter((item) => {
+                let tArr = data.filter((item) => {
                     return item.taskStatus == 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
@@ -472,10 +516,34 @@
 
             },
             showTask(){
-                return this.countdown.time&&this.countdown.time!='00:00:00'
+                if(this.detailData){
+                    return this.countdown.time&&this.countdown.time!='00:00:00'
+                }else{
+                    return true
+                }
+
+            },
+            isHasIframe(){
+                return window!=window.top
             }
         },
         methods: {
+            // 跑马灯滚动
+            scroll(){
+                this.isMove = true
+                setTimeout(() => {
+                    this.lamp.push(this.lamp[0]);
+                    this.lamp.shift();
+                    this.isMove= false; 
+                },1000)
+                
+            },
+            bounceRemove() {
+                clearInterval(this.timer2)
+                this.timer2 = setTimeout(()=> {
+                    this.$refs.bounce.className="bonusrecord"
+                }, 1000)
+            },
             //获取地址栏问号后面的参数值
             getUrlParam: function (ename) {
                 // var url = document.referrer;
@@ -493,8 +561,13 @@
                 return Request[ename];
             },
             getAnchor(name) {
-                document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
-                !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                if(window==window.top){
+                    document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                }else{
+                    document.getElementById('app').scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             },
             ruleClick() {
                 this.isFoldRule = !this.isFoldRule
@@ -508,26 +581,26 @@
                         this.burryPoint('1207003003', '春节红包-回到平台')
                         switch (this.backUrl) {
                             case 'wap':
-                                top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
                                 break;
                             case 'jswap':
-                                top.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel;
                                 break;
                             case 'bdwap':
-                                top.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
                                 break;
                         }
                     } else {
                         this.burryPoint('1207003030', '春节红包-玩游戏得红包(每日任务)')
                         switch (this.backUrl) {
                             case 'wap':
-                                top.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'jswap':
-                                top.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'bdwap':
-                                top.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                         }
                     }
@@ -676,6 +749,16 @@
                         // totalAmount (integer, optional): 我的红包数量
                         // res.data.data.availableAmount=100 测试代码
                         this.detailData = res.data.data;
+                        this.lamp = [{
+                            name: '下级奖励',
+                            desc: this.detailData&&this.detailData.nextAwardName,
+                        }, {
+                            name: '红包榜排名',
+                            desc: this.detailData&&this.detailData.ranking
+                        }]
+                        
+
+
                         !this.countdown.time && this.detailData.countDown && GLOBALS.remainingTime(
                             this,
                             this.detailData.countDown,
@@ -740,7 +823,7 @@
                     this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-                if (this.curChannel == 100039 || this.curChannel == 100042) {//好看、全民小视频
+                if (this.isBdChannel) {//好看、全民小视频
                     top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
                 } else {
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
@@ -792,7 +875,7 @@
                 top.location.href='https://wap.beeplay123.com/payment/#/mall'
             },
             async getBatchRedDot(){
-                let res= await this.fetch('/wap/api/usertask/batchTaskStatus',{
+                let res= await this.fetch('//platform-api.beeplay123.com/task/api/usertask/batchTaskStatus',{
                     value:'dayTask'
                 })
                 if(res.data.code==200){
@@ -810,6 +893,13 @@
                     this.burryPoint('1207003082', '春节红包-更多游戏-去玩游戏糖果')
                     common.jumpToGame({url:'/crush'})
                 }
+            },
+            async getaccountInfo(){
+                let res=await this.fetch('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+                if(res.data.code==200){
+                    this.userID=res.data.data&&res.data.data.userId||0
+                    this.getAnchor('section1')
+                }
             }
         },
         components: {
@@ -822,6 +912,11 @@
 <style lang="less" scoped>
     @import '../../common/css/base.css';
     .aoke{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
         overflow-y: scroll;
     }
     .section0 {
@@ -855,10 +950,13 @@
                     content: '';
                     position: absolute;
                     top: .1rem;
-                    right: .1rem;
-                    width: .01rem;
+                    right: .16rem;
+                    width: 1px;
                     height: .4rem;
                     background: rgba(255, 246, 205, .5);
+                }
+                &:nth-child(2):after {
+                    right: .05rem;
                 }
                 &:nth-child(3) {
                     flex: 2.5;
@@ -879,15 +977,15 @@
         position: fixed;
         top: 1.32rem;
         right: .17rem;
-        width: .87rem;
-        height: .99rem;
+        width: 1.07rem;
+        height: 1.22rem;
         background: url("./images/bonusrecordicon.png");
         background-size: 100% 100%;
         z-index: 10;
         .count_time {
             position: absolute;
-            top: .9rem;
-            right: 0.065rem;
+                top: 1.1rem;
+            right: 0.15rem;
             width: .74rem;
             height: .22rem;
             line-height: .25rem;
@@ -1529,4 +1627,60 @@
             transform: translateY(-10%);
         }
     }
+
+    @keyframes bounce{0%,20%,53%,80%,to{
+-webkit-animation-timing-function:cubic-bezier(.215,.61,.355,1);
+animation-timing-function:cubic-bezier(.215,.61,.355,1);
+-webkit-transform:translateZ(0);transform:translateZ(0)}
+40%,43%{-webkit-transform:translate3d(0,-30px,0);transform:translate3d(0,-30px,0)}
+40%,43%,70%{-webkit-animation-timing-function:cubic-bezier(.755,.05,.855,.06);animation-timing-function:cubic-bezier(.755,.05,.855,.06)}
+70%{-webkit-transform:translate3d(0,-15px,0);transform:translate3d(0,-15px,0)}
+90%{-webkit-transform:translate3d(0,-4px,0);transform:translate3d(0,-4px,0)}}
+    .bounce{
+        animation:bounce 1s forwards;
+    }
+    .anim{
+        transition: all .5s;
+        top: -0.8rem !important;
+    }
+    .item-move {
+        height: 0.8rem;
+        overflow: hidden;
+        position: relative;
+        top: -0.1rem;
+        left:0.1rem;
+        
+    }
+    .item-move-box {
+        position: relative;
+        left: 0.02rem;
+        /*&:after {
+            content: '';
+            position: absolute;
+            left: -0.05rem;
+            top: 0.10rem;
+            width: .01rem;
+            height: .4rem;
+            background: rgba(255, 246, 205, 0.5);
+        };*/
+    }
+    .lamp-name{
+        position: absolute;
+        left: 0;
+        top: -0.15rem;
+    }
+    .item-move ul {
+        position: absolute;
+        left: 0;
+        top: 0;
+        span {
+            height: 0.4rem;
+            line-height: 0.4rem;
+        }
+        li {
+            height: 0.8rem;
+            line-height: 0.38rem;
+        }
+    }
+    
 </style>

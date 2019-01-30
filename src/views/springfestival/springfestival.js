@@ -35,8 +35,12 @@ Vue.directive('anchor',{
             if(binding.value=='section4'){
                 GLOBALS.buriedPoint('1207003050','春节红包-开福袋领红包')
             }
-            document.body.scrollTop =document.getElementById(binding.value).offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76
-            !document.body.scrollTop&&(document.documentElement.scrollTop =document.getElementById(binding.value).offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76)
+            if(window==window.top){
+                document.body.scrollTop =document.getElementById(binding.value).offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76
+                !document.body.scrollTop&&(document.documentElement.scrollTop =document.getElementById(binding.value).offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76)
+            }else{
+                document.getElementById('app').scrollTop =document.getElementById(binding.value).offsetTop-parseFloat(document.querySelector('html').style.fontSize||0)*0.76
+            }
         }}
 })
 /* eslint-disable no-new */

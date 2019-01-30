@@ -141,7 +141,7 @@
                     this.curMedelIcon = curParentTask.medalIcon.replace('medal-1','medal-2')
                 }
                 let {taskId, taskLogId, awardsImage, awardsName, gameType} = item
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/usertask/finish', {
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
                     taskId,
                     taskLogId
                 })
