@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :class="{aoke:curChannel==100006}">
+    <div id="app" :class="{aoke:curChannel==100006&&isHasIframe}">
         <div class="section0">
             <div class="left" @click="bonusRecordClick">
             </div>
@@ -35,7 +35,7 @@
             <div class="count_time" v-if="countdownText">{{countdownText}}</div>
         </div>
         <!--回到顶部-->
-        <div class="backTop" v-if="isShowTopIcon" v-anchor="'section1'" id="backTop"></div>
+        <div class="backTop" v-if="isShowTopIcon" @click="getAnchor('section1')" id="backTop"></div>
         <!--返回按钮-->
         <div class="back" @click="back('')"></div>
         <!--第一屏-->
@@ -56,7 +56,7 @@
             </div>
         </div>
         <!--任务-->
-        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039}" v-if="showTask">
+        <div class="section2" id="section2" :class="{showHand:isshowHand,share:curChannel==100039||curChannel==100042}" v-if="showTask">
             <div class="gainbonusbtn" @click="gainbonus"></div>
             <ul>
                 <li class="item">
@@ -79,7 +79,7 @@
                     </div>
                     <template v-if="batchRedDotData">
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:true}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:true}"
                              style="display: flex;flex-direction: column;text-align: center" v-if="batchRedDotData.taskStatus==0">
                             <div class="item_item_item" @click="back('taskview')">去完成</div>
                             <div class="text" style="font-size: .18rem;color:rgba(240,150,118,1);font-weight:500;">
@@ -109,7 +109,7 @@
                     <!--1.有没有待领取的红包 2.没有待领取-->
                     <template v-else>
                         <div class="item_item unfinished"
-                             :class="{baidu:curChannel==100039,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
+                             :class="{baidu:curChannel==100039||curChannel==100042,have:envelopsItem.filter(i=>i.taskStatus==0).length>0}"
                              style="display: flex;flex-direction: column;text-align: center"
                              v-if="envelopsItem.filter(i=>i.taskStatus==0).length>0">
                             <div class="item_item_item" v-anchor="'section3'">去领红包</div>
@@ -388,15 +388,29 @@
             this.getBatchRedDot()
             this.getEnvelopesList()
             this.getPackage()//福袋礼包数据
-            window.onscroll = () => {
-                // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
-                //     || document.documentElement.clientHeight
-                //     || document.body.clientHeight)
-                //超过一屏就显示回到顶部的图标
-                this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+            if(window==window.top){
+                window.onscroll = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 0
+                }
+            }else{
+                window.ontouchmove = () => {
+                    // this.isShowTopIcon=(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)>(window.innerHeight
+                    //     || document.documentElement.clientHeight
+                    //     || document.body.clientHeight)
+                    //超过一屏就显示回到顶部的图标
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             }
         },
         computed: {
+            isBdChannel(){
+                let channel = ['100039','100042','100045','100040','100041','100046']
+                return channel.includes(this.curChannel)
+            },
             backUrl() {
                 return (this.getUrlParam('from') || '').toLowerCase();
             },
@@ -424,15 +438,15 @@
                 })[this.hbItems.length - 1]
 
                 // 删除数组最后一位
-                this.hbItems.pop()
+                const data=this.hbItems.slice()
+                data.pop()
                 
-                
-                let nArr = this.hbItems.filter((item) => {
+                let nArr = data.filter((item) => {
                     return item.taskStatus != 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
                 })
-                let tArr = this.hbItems.filter((item) => {
+                let tArr = data.filter((item) => {
                     return item.taskStatus == 2
                 }).sort((a, b) => {
                     return a.taskOps - b.taskOps
@@ -508,6 +522,9 @@
                     return true
                 }
 
+            },
+            isHasIframe(){
+                return window!=window.top
             }
         },
         methods: {
@@ -544,8 +561,13 @@
                 return Request[ename];
             },
             getAnchor(name) {
-                document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
-                !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                if(window==window.top){
+                    document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
+                }else{
+                    document.getElementById('app').scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
+                    this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+                }
             },
             ruleClick() {
                 this.isFoldRule = !this.isFoldRule
@@ -801,7 +823,7 @@
                     this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-                if (this.curChannel == 100039 || this.curChannel == 100042) {//好看、全民小视频
+                if (this.isBdChannel) {//好看、全民小视频
                     top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
                 } else {
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
@@ -895,7 +917,7 @@
         position: fixed;
         left: 0;
         top: 0;
-        overflow-y: auto;
+        overflow-y: scroll;
     }
     .section0 {
         position: fixed;
