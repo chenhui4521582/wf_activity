@@ -101,12 +101,6 @@
         },
         mounted(){
             this.getMasterTaskNameList()
-            // this.masterTaskNameList.map(item => {
-            //     let val = item == 'bill-achievement' ? 'first' : ''
-            //     setTimeout(() => {
-            //         this.getMasterList(item,val)
-            //     }, 0);
-            // })
         },
         components: {
             awardsPop :() =>import('./components/dialog'),
