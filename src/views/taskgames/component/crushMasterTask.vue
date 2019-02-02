@@ -132,7 +132,6 @@ export default {
     },
     computed:{
         currentMedalList(){
-            console.log(this.crushTaskList.currentIndex+'------');
             return this.crushTaskList.medalList[this.crushTaskList.currentIndex]
         }
     },

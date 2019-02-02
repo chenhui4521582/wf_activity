@@ -182,7 +182,7 @@
             async getMasterList(val,type,item,otherStatus){
                 
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
-                if(data.code == 200){
+                if(data.code == 200 && data.data){
                     let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
 
                     if(data.data.hasFinishedTask == data.data.totalTask){
