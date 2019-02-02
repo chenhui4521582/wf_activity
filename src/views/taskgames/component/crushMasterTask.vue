@@ -22,7 +22,7 @@
            </div>
        </div>
        <div class="crush-task-list">
-           <ul class="master-task-list" v-if="isShowList">
+           <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
                 <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2"
                 @click="checkTaskStatus(item,'crush_task')">
                     <div class="description" :class="{opacitying:item.taskStatus == 2}">
@@ -50,16 +50,16 @@
                 </li>
             </ul>
 
-            <div class="medals-locked" v-if="isShowFinished">
+            <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
                 <img src="../img/crushMasterTask/chengjiu_bg.png">
                 <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
             </div>
-            <div class="medals-lock" v-if="isShowMasterLocked">
+            <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
                 <img src="../img/crushMasterTask/chengjiu_locked_title.png">
                 <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
                 <!-- <p>获取日期<br>2018-12-13</p> -->
             </div>
-            <div class="medals-lock unlock" v-if="isShowMasterUnlocked ">
+            <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
                 <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
                 <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
                 <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
@@ -98,7 +98,7 @@ export default {
             isShowMasterLocked :false, //是否显示已解锁勋章
             isShowFinished : false, //是否显示领取奖励
             isShowMasterUnlocked:false, //是否显示未解锁勋章
-            currentMedalList : null, //当前点击勋章
+            // currentMedalList : null, //当前点击勋章
             isShowList : true,//是否显示任务列表
             flag :1,
             changeAnimation : false,
@@ -123,54 +123,20 @@ export default {
             ],
         }
     },
-    beforeMount(){
+    mounted(){
         //taskStatus 0 已完成未领取 1 去完成 2 已领取
-        // 判断当前是第几个母任务类型;
-        this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
-        this.checWhickTask(this.crushTaskList.currentParentTask,this.crushTaskList.currentIndex)
+        // setTimeout(() => {
+        //     console.log(this.crushTaskList.currentIndex+'------');
+        //     this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
+        // }, 0);
+    },
+    computed:{
+        currentMedalList(){
+            console.log(this.crushTaskList.currentIndex+'------');
+            return this.crushTaskList.medalList[this.crushTaskList.currentIndex]
+        }
     },
     methods:{
-        // 显示获得勋章
-        showReceivedMedal(){
-            this.isShowList = false
-            this.isShowMasterLocked = true
-            this.isShowMasterUnlocked = false
-            this.isShowFinished = false
-        },
-        // 显示正在进行
-        ShowInTask(){
-            this.isShowList = true
-            this.isShowMasterLocked = false
-            this.isShowMasterUnlocked = false
-            this.isShowFinished = false
-        },
-        // 显示未解锁勋章
-        showUnLockedMedal(){
-            this.isShowList = false
-            this.isShowMasterLocked = false
-            this.isShowMasterUnlocked = true
-            this.isShowFinished = false
-        },
-        // 显示领取奖励
-        showReceiveAward(){
-            this.isShowList = false
-            this.isShowMasterLocked = false
-            this.isShowMasterUnlocked = false
-            this.isShowFinished = true
-        },
-        // 判断当前是第几个母任务类型
-        checWhickTask(list,i){
-            // 判断糖果大师任务已完成类型状态 
-            if(i == 3 && list.parentTask.taskStatus != 1){
-                let medalNum
-                if(list.parentTask.taskStatus == 0){
-                    this.showReceiveAward()
-                }else{
-                    this.showReceivedMedal()
-                }
-                return
-            }
-        },
         transUint(finishNum,taskOps){
             let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2).substr(0,3) + '万' : finishNum,
                 ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
@@ -178,26 +144,9 @@ export default {
         },
         // 点击切换显示勋章内容（已获得 未解锁 进行中）
         checkMedals(value){
-            let index = value.index,
-                currentStatus = index>0 && this.crushTaskList.allTask[index-1].parentTask.taskStatus,medalNum,
-                status = this.crushTaskList.allTask[index].parentTask.taskStatus
+            let index = value.index
             this.checkFinishedList(index,'checkMode')
             this.$emit('hideMedalAnimate')
-            this.currentMedalList = value 
-            // 未解锁勋章逻辑  前一任务未完成  即taskstatus=1
-            if(index >0 && currentStatus == 1){// 
-                this.showUnLockedMedal()
-            }else{
-                if(status == 1){ // 进行中
-                    this.ShowInTask()
-                }else if(status == 0){ //已完成未领取 -- 领取奖励tab
-                    this.showReceiveAward()
-                }else if(status == 2){//已完成 -- 完成勋章
-                    this.showReceivedMedal()
-                }else if(status == 4){
-                    this.showUnLockedMedal()
-                }
-            }
         },
        checkFinishedList(i,type){
             this.$emit('refreshTask',i,type)
@@ -224,15 +173,11 @@ export default {
             if(newIndex){
                 if(this.currentMedalIndex != 3){
                     this.checkFinishedList(this.currentMedalIndex+1)
-                    this.ShowInTask()
-                }else{
-                    this.showReceivedMedal()
                 }
             }
         },
         showMedalAnimate(newIndex, oldIndex){
             if(newIndex){
-                this.showReceiveAward()
             }
         },
     }

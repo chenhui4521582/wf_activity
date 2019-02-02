@@ -555,10 +555,10 @@
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = finishindex > -1 ? finishindex : -1,
+                        finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
                         curType = type && type == 'checkMode'
-                     
-                    if(curType || finishStatus && finishStatus > -1){
+                        
+                    if(curType || finishStatus > -1){
                         currentParentTask = crushList[finishStatus]
                     }else{
                         currentParentTask = crushList.find((item,index) =>{
