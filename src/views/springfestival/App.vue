@@ -398,7 +398,7 @@
         },
         computed: {
             isBdChannel(){
-                let channel = ['100039','100042','100045']
+                let channel = ['100039','100042','100045','100040','100041','100046']
                 return channel.includes(this.curChannel)
             },
             backUrl() {
