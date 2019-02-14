@@ -8,7 +8,7 @@
         </div>
         <div  class="task-wrap">
             <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}">
-                <div class="task-title" @click="showCurDetails(index)">
+                <div class="task-title" @click="showCurDetails(index,item)">
                     <img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">
                     <p class="left-part">
                         <span>当前进度</span>
@@ -33,7 +33,7 @@
                 <div v-if="item.selected">
                     <div v-if="item.hasFinishedTask != item.totalTask" >
                         <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
-                            <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1,item.currentTaskName,item.currentParentTask)">
+                            <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1,item.batchId,item.currentParentTask)">
                                 <div class="description" >
                                     <div class="head-img">
                                         <img :src="item1.icon | filter" alt="">
@@ -59,7 +59,7 @@
                         </ul>
                         <div class="medals-locked" v-else>
                             <img src="./images/chengjiu_bg.png">
-                            <p class="btn" @click="receive(item.currentParentTask.parentTask,item.currentTaskName,
+                            <p class="btn" @click="receive(item.currentParentTask.parentTask,item.batchId,
                             'mother_crush_task',item.currentParentTask)">获取成就奖励</p>
                         </div>
                     </div>
@@ -95,18 +95,30 @@
                     },
                 showReceivePop :false,
                 showTaskList : false,
-                curMedelIcon : ''
+                curMedelIcon : '',
+                masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement']
             }
         },
         mounted(){
-           this.getMasterList('bill-achievement','first').then(()=>{
-                this.getMasterList('crush-achievement','first')
-            })
+            this.getMasterTaskNameList()
         },
         components: {
             awardsPop :() =>import('./components/dialog'),
         },
         methods: {
+            async getMasterTaskNameList(){
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
+                if(data.code ==200){
+                    let list = data.data.batchIds ,
+                        newlist = list.reverse()
+                    newlist.map(item => {
+                        let val = item == 'bill-achievement' ? 'first' : ''
+                        setTimeout(() => {
+                            this.getMasterList(item,val)
+                        }, 0);
+                    })
+                }
+            },
             //获取地址栏问号后面的参数值
             getUrlParam: function (ename) {
                 var url = window.location.href;
@@ -151,7 +163,7 @@
                     this.getMasterList(type,'refresh',item,val)
                 }
             },
-            showCurDetails(i){
+            showCurDetails(i,item){
                 this.allTaskList.map((item,index) => {
                     if(i == index){
                         if(item.selected){
@@ -170,7 +182,7 @@
             async getMasterList(val,type,item,otherStatus){
                 
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
-                if(data.code == 200){
+                if(data.code == 200 && data.data){
                     let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
 
                     if(data.data.hasFinishedTask == data.data.totalTask){
@@ -219,17 +231,18 @@
                         currentLength : currentLength, // 当前总任务
                         allTask : data.data.list,// 总任务列表
                         isShowRed : isShowRed , //是否显示红点
-                        currentTaskName : val,// 当前任务名称
                         reward : data.data.reward,//当前奖励总数
                         bgIcon : data.data.bgIcon,// 背景图
                         gameNameIcon : data.data.gameNameIcon,//游戏
                         titleIcon : data.data.titleIcon,//游戏名称icon
+                        batchId : data.data.batchId, // 当前游戏value
                     }
                     
                     if(type == 'refresh'){
                         let {taskId, taskLogId, awardsImage, awardsName, gameType} = item
+                        //刷新接口时替换当前任务显示位置
                         this.allTaskList.map((item,index) =>{
-                            if(item.currentTaskName == val){
+                            if(item.batchId == val){
                                 this.allTaskList.splice(index,1,masterTaskList)
                                 this.$set(this.allTaskList[index],'selected',true)
                                 if(otherStatus == 'mother_crush_task'){
@@ -250,12 +263,20 @@
                             }
                         })
                     }else{  
-                        this.allTaskList.push(masterTaskList)
+                        //已完成任务置底显示
+                        if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
+                            this.allTaskList.push(masterTaskList)
+                        }else{
+                             this.allTaskList.unshift(masterTaskList)
+                        }
                     }
-                    if(type == 'first'){
-                        this.$set(this.allTaskList[0],'selected',false)
-                        this.showCurDetails(0) 
-                    } 
+                    
+                    // 首次请求任务默认第一位任务展开
+                    setTimeout(() => {
+                         if(type == 'first'){
+                             this.$set(this.allTaskList[0],'selected',true)
+                         }
+                    }, 0);
                 }
             },
         },

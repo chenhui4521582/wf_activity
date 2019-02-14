@@ -289,6 +289,23 @@
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement'
                     break
+                // 捕鱼
+                case '10': 
+                    GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
+                    return 'fish-achievement'
+                    break
+                case 5:
+                    return 'samguk-achievement';
+                    break;
+                case 8:
+                    return 'moto-achievement';
+                    break;
+                case 9:
+                    return 'kingdom-achievement';
+                    break;
+                case 13:
+                    return 'kingdom2-achievement';
+                    break;
                 default : 
                     return ''
             }
@@ -539,10 +556,10 @@
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = finishindex > -1 ? finishindex : -1,
+                        finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
                         curType = type && type == 'checkMode'
-                     
-                    if(curType || finishStatus && finishStatus > -1){
+                        
+                    if(curType || finishStatus > -1){
                         currentParentTask = crushList[finishStatus]
                     }else{
                         currentParentTask = crushList.find((item,index) =>{
@@ -599,7 +616,6 @@
                         }
                         medalList.push(list)
                     })
-                    console.log(currentIndex+'---currentIndex');
                     
                     let checkMedalName
                     if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
