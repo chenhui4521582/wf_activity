@@ -33,6 +33,8 @@
         yzm: ''
       }
     },
+    mounted() {
+    },
     methods: {
       goBack() {
         history.go(-1)
@@ -41,6 +43,7 @@
         this.phoneTxt = ''
       },
       submit() {
+
         if(!this.description) {
           this.$toast.show({
               message: '请填写反馈信息',
@@ -75,7 +78,8 @@
             isLogin: 0,
             phone: this.phoneTxt,
             smsCode: this.yzm,
-            typeId: 4,
+            typeId: 5,
+            userId: this.getUrlParam('uid')
         }).then((res)=> {
             if(res.data.code == 200) {
               this.$toast.show({
@@ -89,6 +93,25 @@
         })
 
         
+      },
+      //获取地址栏问号后面的参数值
+      getUrlParam: function (ename) {
+          var url = window.location.href;
+          var Request = new Object();
+          if (url.indexOf("?") != -1) {
+              var str = url.split('?')[1];
+              var strs = str.split("&");
+              for (var i = 0; i < strs.length; i++) {
+                  Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+              }
+
+          } else {
+              return '';
+          }
+          let params = Request[ename] ? Request[ename].split('#')[0] : ''
+
+          return params;
+
       },
       sendVECode() {
         if(!this.phoneTxt) {
