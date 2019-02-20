@@ -116,10 +116,7 @@ axios.interceptors.response.use(
                             break;
                         }
                      }
-                     Vue.prototype.$toast.show({
-                        message: res.message,
-                        duration: 1500
-                    });
+                     
             }
 
         }

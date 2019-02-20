@@ -3,7 +3,7 @@
     <headers title="话费券商城"></headers>
     <div class="s-nav">
       <ul>
-        <li class="nav-item bill-left">我的话费券：<span>{{spCon&&spCon.accountBalance || 0}}.00</span></li>
+        <li class="nav-item bill-left">我的话费券：<span>{{ spCon&&spCon.accountBalance || '0.00'}}</span></li>
         <li class="nav-item award-right">
           <div class="item-box" @click="goMyAward">查看我的奖品<img src="../images/award-arrow.png" class="award-arrow"></div>
         </li>
@@ -11,23 +11,27 @@
     </div>
     <div style="padding-top: 52%;font-size: 0.3rem;" v-if="sLoading">正在加载</div>
     <div v-else>
-      <div class="s-tab">
-        <ul>
-          <li :class="{'active': idx == index}" v-for="(item,index) in spCon&&spCon.categoryList" @click="getNewList(item,index)">{{item.name}}</li>
-        </ul>
+      <div v-if="spCon&&spCon.categoryList.length">
+        <div class="s-tab">
+          <ul>
+            <li :class="{'active': idx == index}" v-for="(item,index) in spCon&&spCon.categoryList" @click="getNewList(item,index)">{{item.name}}</li>
+          </ul>
+        </div>
+        <div class="sp-items">
+          <scroll :data="curItem">
+              <ul>
+                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)">
+                  <div class="pic-box">
+                    <img :src="item.picture | filter">
+                  </div>
+                  <p class="sp-info">{{item.name}}</p>
+                  <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
+                </li>
+              </ul>
+          </scroll>
+        </div>
       </div>
-      <div class="sp-items">
-        <scroll :data="curItem">
-            <ul>
-              <li v-for="(item,i) in curItem" @click="goDetail(item,$event)">
-                <div class="pic-box">
-                  <img :src="item.picture | filter">
-                </div>{{item.name}}
-                <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
-              </li>
-            </ul>
-        </scroll>
-      </div>
+      <div v-else style="padding-top: 52%;font-size: 0.3rem;">暂无数据</div>
     </div>
     <!-- 赚话费 -->
     <div class="bill-container">
@@ -222,6 +226,12 @@ export default {
       justify-content: space-between;
       flex-wrap: wrap;
     }
+    .sp-info {
+      max-width: 100%;
+      overflow: hidden;/*超出部分隐藏*/
+      white-space: nowrap;/*不换行*/
+      text-overflow:ellipsis;/*超出部分文字以...显示*/
+    }
     li {
       flex: 0 0 47.727%;
       height: 3.15rem;
@@ -230,6 +240,7 @@ export default {
       margin-bottom: 0.28rem;
       text-align: center;
       font-size: 0.3rem;
+      max-width: 47.727%;
       .pic-box {
         width: 1.6rem;
         height: 1.6rem;
