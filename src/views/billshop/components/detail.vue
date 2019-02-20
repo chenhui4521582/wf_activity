@@ -1,41 +1,42 @@
 <template>
 	<div class="detail" v-if="cAward">
-		<headers title="奖品兑换"></headers>
-		<div class="award-container">
-			<div class="pic-box">
-				<img :src="cAward.picture | filter">
+		<div class="detail-container">
+			<headers title="奖品兑换"></headers>
+			<div class="award-container">
+				<div class="pic-box">
+					<img :src="cAward.picture | filter">
+				</div>
+				<h4 class="d-title">{{cAward.name}}</h4>
+				<div class="d-text">{{cAward.purchasePrice}}元话费券<a href="javascript:" class="d-original">原价:{{cAward.marketPrice}}元</a></div>
 			</div>
-			<h4 class="d-title">{{cAward.name}}</h4>
-			<div class="d-text">{{cAward.purchasePrice}}元话费券<a href="javascript:" class="d-original">原价:{{cAward.marketPrice}}元</a></div>
-		</div>
-		<div class="xp-text">
-			<h4>商品详情</h4>
-			<p>{{cAward.description}}</p>
+			<div class="xp-text">
+				<h4>商品详情</h4>
+				<p v-html="cAward.description"></p>
+			</div>
+			<!-- 兑换弹窗 -->
+			<div class="result-container" v-if="isFragmentStatus && exchangeStatus">
+				<img src="../images/aperture.png" class="aperture">
+				<div class="result-pop">
+					<div v-show="exchangeStatus == 1">
+						<img src="../images/pop-suc.png" class="p-status pop-suc">
+						<div class="pic-box"><img :src="cAward.picture | filter"></div>
+						<h4 class="r-title">{{cAward.purchasePrice}}元话费卡</h4>
+						<p class="r-text">可到我的页面中查看</p>
+						<a href="javascript:" class="btn-confirm" @click="close">朕收下了</a>
+					</div>
+					<div v-show="exchangeStatus == 2">
+						<img src="../images/pop-err.png" class="pop-err">
+						<div class="pic-box">
+							<img :src="cAward.picture | filter">
+						</div>
+						<a href="javascript:" class="btn-confirm btn-jump" @click="goMallIndex">去逛逛别的商品</a>
+						<a href="javascript:" class="btn-confirm" @click="goTaskPage">马上赚话费券</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="btn-box">
 			<a href="javascript:" class="btn-submit" @click="goExchange">马上兑换</a>
-		</div>
-
-		<!-- 兑换弹窗 -->
-		<div class="result-container" v-if="isFragmentStatus && exchangeStatus">
-			<img src="../images/aperture.png" class="aperture">
-			<div class="result-pop">
-				<div v-show="exchangeStatus == 1">
-					<img src="../images/pop-suc.png" class="p-status pop-suc">
-					<div class="pic-box"><img :src="cAward.picture | filter"></div>
-					<h4 class="r-title">{{cAward.purchasePrice}}元话费卡</h4>
-					<p class="r-text">可到我的页面中查看</p>
-					<a href="javascript:" class="btn-confirm" @click="close">朕收下了</a>
-				</div>
-				<div v-show="exchangeStatus == 2">
-					<img src="../images/pop-err.png" class="pop-err">
-					<div class="pic-box">
-						<img :src="cAward.picture | filter">
-					</div>
-					<a href="javascript:" class="btn-confirm btn-jump">去逛逛别的商品</a>
-					<a href="javascript:" class="btn-confirm">马上赚话费券</a>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -60,6 +61,21 @@
 			})
 		},
 		methods: {
+			goMallIndex() {
+				history.go(-1)
+			},
+			goTaskPage() {
+				switch(this.getUrlParam('from')) {
+			        case 'bdWap':
+			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+			          break;
+			        case 'jsWap':
+			          parent.location.href = `https://wap.beeplay123.com/jsWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+			          break;
+			        default:
+			          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+			    }
+			},
 			close() {
 				this.isFragmentStatus = false
 			},
@@ -100,7 +116,15 @@
 		text-decoration: none;
 	}
 	.detail { 
-		padding: 0 0.3rem;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 1rem;
+		overflow-y: scroll;
+		.detail-container {
+			padding: 0 0.3rem;	
+		}
 		.d-title {
 			font-size: 0.36rem;
 			font-weight: bold;
@@ -163,11 +187,18 @@
         	}
         }
         .btn-box {
-          width: 100%;
+          /*width: 100%;
           height:0.9rem;
           position: fixed;
           left: 0;
-          bottom: 0.28rem;
+          bottom: 0.28rem;*/
+          width: 100%;
+		    height:1.43rem;
+		    background:rgba(24,39,67,1);
+		    position: fixed;
+		    left: 0;
+		    bottom: 0;
+		    z-index: 10;
         }
         .btn-submit {
           display: block;
@@ -179,7 +210,7 @@
 	      line-height:0.9rem;
 	      background:rgba(238,111,11,1);
 	      border-radius:0.08rem;
-	      margin: 0 auto;
+	      margin: 0.26rem auto 0;
 	      text-align: center;
 	      color: #fff;
         }

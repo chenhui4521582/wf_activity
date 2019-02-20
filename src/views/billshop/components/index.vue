@@ -3,7 +3,7 @@
     <headers title="话费券商城"></headers>
     <div class="s-nav">
       <ul>
-        <li class="nav-item bill-left">我的话费券：<span>{{spCon&&spCon.accountBalance || 0}}</span></li>
+        <li class="nav-item bill-left">我的话费券：<span>{{spCon&&spCon.accountBalance || 0}}.00</span></li>
         <li class="nav-item award-right">
           <div class="item-box" @click="goMyAward">查看我的奖品<img src="../images/award-arrow.png" class="award-arrow"></div>
         </li>
@@ -93,7 +93,7 @@ export default {
       if(href.indexOf('?') != -1) {
         window.location.href = href.split('#')[0]+'&parmas='+encodeURIComponent(JSON.stringify(item))+'#/detail'
       }else {
-        this.$router.push('/detail?parmas='+encodeURIComponent(JSON.stringify(item)))  
+        this.$router.push('/detail?from='+this.getUrlParam('from')+'&parmas='+encodeURIComponent(JSON.stringify(item)))  
       }
       
       // this.$router.push({
@@ -107,10 +107,10 @@ export default {
     getShopList() {
       this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/main')
         .then(res => {
+          this.sLoading = false
           if(res.data.code == 200) {
             this.spCon = res.data.data
             this.curItem = this.spCon && this.spCon.categoryList[0].productList
-            this.sLoading = false
           }
         })
     },
