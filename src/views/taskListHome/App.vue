@@ -109,13 +109,18 @@
             async getMasterTaskNameList(){
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
                 if(data.code ==200){
-                    let list = data.data.batchIds ,
-                        newlist = list.reverse()
-                    newlist.map(item => {
-                        let val = item == 'bill-achievement' ? 'first' : ''
-                        setTimeout(() => {
+                    let list = data.data.batchIds 
+                    let newlist = list.reverse()
+
+                    list.map((item,index) => {
+                        let val = index == 0 ? 'first' : ''
+                        if(index == 0){
                             this.getMasterList(item,val)
-                        }, 0);
+                        }else{
+                            setTimeout(() => {
+                                this.getMasterList(item,val)
+                            }, 10);
+                        }
                     })
                 }
             },
@@ -182,6 +187,7 @@
             async getMasterList(val,type,item,otherStatus){
                 
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
+                
                 if(data.code == 200 && data.data){
                     let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
 
@@ -273,10 +279,11 @@
                     
                     // 首次请求任务默认第一位任务展开
                     setTimeout(() => {
-                         if(type == 'first'){
-                             this.$set(this.allTaskList[0],'selected',true)
-                         }
-                    }, 0);
+                        if(type == 'first'){
+                            // this.showCurDetails(0,this.allTaskList[0])
+                            this.$set(this.allTaskList[0],'selected',true)
+                        }
+                    }, 100);
                 }
             },
         },
