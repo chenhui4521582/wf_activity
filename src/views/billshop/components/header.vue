@@ -34,6 +34,7 @@
           margin-right: 0.17rem;
         }
         .h-box {
+        	height: 0.35rem;
         	display: flex;
         	align-items: center;
         }

@@ -20,9 +20,9 @@
 					<div v-show="exchangeStatus == 1">
 						<img src="../images/pop-suc.png" class="p-status pop-suc">
 						<div class="pic-box"><img :src="cAward.picture | filter"></div>
-						<h4 class="r-title">{{cAward.purchasePrice}}元话费卡</h4>
+						<h4 class="r-title">{{cAward.name}}</h4>
 						<p class="r-text">可到我的页面中查看</p>
-						<a href="javascript:" class="btn-confirm" @click="close">朕收下了</a>
+						<a href="javascript:" class="btn-confirm" @click="close">查看奖品</a>
 					</div>
 					<div v-show="exchangeStatus == 2">
 						<img src="../images/pop-err.png" class="pop-err">
@@ -70,7 +70,7 @@
 			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			          break;
 			        case 'jsWap':
-			          parent.location.href = `https://wap.beeplay123.com/jsWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			          break;
 			        default:
 			          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -78,6 +78,16 @@
 			},
 			close() {
 				this.isFragmentStatus = false
+				switch(this.getUrlParam('from')) {
+			        case 'bdWap':
+			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+			          break;
+			        case 'jsWap':
+			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+			          break;
+			        default:
+			          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+			    }
 			},
 			//获取地址栏问号后面的参数值
 		    getUrlParam: function (ename) {
