@@ -584,7 +584,7 @@
                                 window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
                                 break;
                             case 'jswap':
-                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
                                 break;
                             case 'bdwap':
                                 window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
@@ -597,7 +597,7 @@
                                 window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'jswap':
-                                window.location.href = 'https://wap.beeplay123.com/jsWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'bdwap':
                                 window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;

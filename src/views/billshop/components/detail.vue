@@ -70,7 +70,7 @@
 			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			          break;
 			        case 'jsWap':
-			          parent.location.href = `https://wap.beeplay123.com/jsWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			          break;
 			        default:
 			          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -83,7 +83,7 @@
 			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
 			          break;
 			        case 'jsWap':
-			          parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
 			          break;
 			        default:
 			          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'

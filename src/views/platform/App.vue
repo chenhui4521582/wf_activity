@@ -314,7 +314,7 @@ export default {
         switch (href) {
           case "jsWap":
             location.href =
-              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+              "../bdWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
             location.href =
@@ -329,7 +329,7 @@ export default {
         switch (from) {
           case "jsWap":
             location.href =
-              "../jsWap?channel=" + localStorage.getItem("APP_CHANNEL");
+              "../bdWap?channel=" + localStorage.getItem("APP_CHANNEL");
             break;
           case "wap":
             location.href =
