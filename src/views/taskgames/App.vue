@@ -9,6 +9,8 @@
         <p class="figure" v-if="!huafeiShow">
             <img src="./images/fighur.png" class="touch">
             快去领！</p>
+         <p class="figure1" style="display: inline-block;position: absolute;right:.2rem;top: 0.15rem;" @click="kfclick">
+           <img src="./images/kf.png" style="width: .52rem;height: .52rem"></p>
        </ul>
      </div>
 
@@ -152,8 +154,11 @@
      <div class="t-content"  v-show="isTfStatus">
        <img src="./images/tf-task-bg.png" class="tf-task-bg">
      </div>
-
-
+    <common-pop title="温馨提示" @close="showzspop=false"  btn-name="确定" v-if="showzspop" @besure="gotokf">
+      <div class="common-pop-text" style="position: absolute;top:0;bottom: 0;left:0;right:0;margin: auto;line-height: 2.44rem">
+        离开当前游戏 前往客服专区？
+      </div>
+    </common-pop>
   </div>
 </template>
 <script type="text/javascript">
@@ -181,7 +186,8 @@
             masterTask : false,
             currentGameType : 0,
             huafeiNum : 0,
-            isTfStatus: false
+            isTfStatus: false,
+            showzspop:false
         }
     },
     mounted() {
@@ -260,6 +266,7 @@
         poplog,
         crushMasterTask : ()=>import('./component/crushMasterTask'),
         masterPop :() =>import('./component/dialog'),
+        commonPop:()=>import("./component/commonPop"),
     },
     methods: {
         getDegradeTaskStatus() {
@@ -649,8 +656,23 @@
                     this.crushTaskList = crushTaskList
                 }
             
+        },
+        kfclick(){
+          this.showzspop=true
+        },
+        gotokf(){
+          let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
+            baiduChannel = ['100039','100040','100041','100042']
+          if(jsChannel.includes(this.channel)){
+            parent.location.href = `https://wap.beeplay123.com/jsWap/#/problem?tab=contact_personal&channel=${this.channel}`
+          }else if(baiduChannel.includes(this.channel)){
+            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
+          } else if(this.channel == '700002'){
+            parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
+          }else{
+            parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
+          }
         }
-
     },
     watch:{
         crushTaskList(){}
