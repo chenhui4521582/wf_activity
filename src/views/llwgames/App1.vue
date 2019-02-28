@@ -189,7 +189,7 @@
                         }else{
                             if(params == 'plat'){
                                 if(localStorage.getItem('APP_CHANNEL') == 100001||this.channel.includes('100038')){
-                                    location.href = 'https://wap.beeplay123.com/jsWap?channel='+llw+'&isNewLogin=1&from='+this.platSource
+                                    location.href = 'https://wap.beeplay123.com/bdWap?channel='+llw+'&isNewLogin=1&from='+this.platSource
                                 }else{
                                     location.href = 'https://wap.beeplay123.com/wap/home?channel='+llw+'&isNewLogin=1&from='+this.platSource
 
