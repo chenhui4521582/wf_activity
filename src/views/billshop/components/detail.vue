@@ -14,28 +14,51 @@
 				<p v-html="cAward.description"></p>
 			</div>
 			<!-- 兑换弹窗 -->
-			<div class="result-container" v-if="isFragmentStatus && exchangeStatus">
-				<img src="../images/aperture.png" class="aperture">
-				<div class="result-pop">
-					<div v-show="exchangeStatus == 1">
-						<img src="../images/pop-suc.png" class="p-status pop-suc">
-						<div class="pic-box"><img :src="cAward.picture | filter"></div>
-						<h4 class="r-title">{{cAward.name}}</h4>
-						<p class="r-text">可到我的页面中查看</p>
-						<a href="javascript:" class="btn-confirm" @click="close">查看奖品</a>
-					</div>
-					<div v-show="exchangeStatus == 2">
-						<img src="../images/pop-err.png" class="pop-err">
-						<div class="pic-box">
-							<img :src="cAward.picture | filter">
-						</div>
-						<a href="javascript:" class="btn-confirm btn-jump" @click="goMallIndex">去逛逛别的商品</a>
-						<a href="javascript:" class="btn-confirm" @click="goTaskPage">马上赚话费券</a>
-					</div>
-				</div>
+			<div class="result-container" v-if="isFragmentStatus">
+        <template v-if="exchangeStatus == 1">
+          <img src="../images/aperture.png" class="aperture">
+          <div class="result-pop">
+            <div v-show="exchangeStatus == 1">
+              <img src="../images/pop-suc.png" class="p-status pop-suc">
+              <div class="pic-box"><img :src="cAward.picture | filter"></div>
+              <h4 class="r-title">{{cAward.name}}</h4>
+              <p class="r-text">可到我的页面中查看</p>
+              <a href="javascript:" class="btn-confirm" @click="checkprize(cAward)">查看奖品</a>
+            </div>
+            <!--<div v-show="exchangeStatus ==2">-->
+            <!--<img src="../images/pop-err.png" class="pop-err">-->
+            <!--<div class="pic-box">-->
+            <!--<img :src="cAward.picture | filter">-->
+            <!--</div>-->
+            <!--<a href="javascript:" class="btn-confirm btn-jump" @click="goMallIndex">去逛逛别的商品</a>-->
+            <!--<a href="javascript:" class="btn-confirm" @click="goTaskPage">马上赚话费券</a>-->
+            <!--</div>-->
+            <div class="btn-close" @click="closePop"></div>
+				  </div>
+        </template>
+        <common-pop title="" @close="closePop" :isShowBtn="false" v-else>
+          <div class="common-pop-text" style="position: absolute;top:0;bottom: 0;left:0;right:0;margin: auto;font-size: .28rem;display: flex; flex-direction: column; justify-content: space-between; align-items: center;padding-bottom: .6rem;box-sizing: border-box">
+            <template v-if="exchangeStatus == 4">
+            很遗憾，该商品补货中
+            <img src="../images/buhuo.png" alt="" style="width: 2.3rem;height: 1.6rem">
+            <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="closePop">确定</div>
+            </template>
+            <template v-if="exchangeStatus == 3">
+            今天已经兑换过，请明天再来~
+            <img src="../images/yiduihuan.png" alt="" style="width: 1.67rem;height: 1.72rem">
+            <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="closePop">确定</div>
+            </template>
+            <template v-if="exchangeStatus == 2">
+              很遗憾，您得话费券不足
+              <img src="../images/kong.png" alt="" style="width: 2.89rem;height: 1.86rem">
+              <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="goTaskPage">补充话费券</div>
+              <div style="font-size:.26rem;font-weight:400; text-decoration:underline; color:rgba(135,146,165,1);" @click="goMallIndex">去看看其他商品</div>
+            </template>
+          </div>
+        </common-pop>
 			</div>
 		</div>
-		<div class="btn-box">
+		<div class="btn-box" :class="{unexchange:isFragmentStatus}">
 			<a href="javascript:" class="btn-submit" @click="goExchange">马上兑换</a>
 		</div>
 	</div>
@@ -47,11 +70,12 @@
 			return {
 				cAward: null,
 				isFragmentStatus: false,
-				exchangeStatus: null
+				exchangeStatus: 0
 			}
 		},
 		components: {
-		  Headers
+		  Headers,
+      commonPop:()=>import("./commonPop"),
 		},
 		beforeMount() {
 		},
@@ -110,14 +134,62 @@
 		    		productId: this.cAward.id
 		    	})
 		        .then(res => {
-		          this.isFragmentStatus = true
-		          if(res.data.code == 200) {
+              // 101：其他
+              // 102：账户余额不足
+              // 103：今日已购买
+              // 104：库存不足
+              if(res.data.code == 200) {
 		            this.exchangeStatus = 1
-		          }else {
+                this.isFragmentStatus = true
+		          }else if(res.data.code ==102){
 		          	this.exchangeStatus = 2
-		          }
+                this.isFragmentStatus = true
+		          }else if(res.data.code ==103){
+                this.exchangeStatus = 3
+                this.isFragmentStatus = true
+              }else if(res.data.code ==104){
+                this.exchangeStatus = 4
+                this.isFragmentStatus = true
+              }else{
+                this.exchangeStatus =0
+                this.isFragmentStatus = false
+                this.$toast.show({
+                  message: res.data.message,
+                  duration: 1500
+                });
+              }
 		        })
-		    }
+		    },
+        closePop(){
+          this.isFragmentStatus=false;
+          this.exchangeStatus=0;
+        },
+        checkprize(item){
+          this.isFragmentStatus = false
+          if(item.phyAwardsType&&[1,26,32].includes(item.phyAwardsType)){
+            switch(this.getUrlParam('from')) {
+              case 'bdWap':
+                parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
+                break;
+              case 'jsWap':
+                parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
+                break;
+              default:
+                parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
+            }
+          }else{
+            switch(this.getUrlParam('from')) {
+              case 'bdWap':
+                parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+                break;
+              case 'jsWap':
+                parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+                break;
+              default:
+                parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+            }
+          }
+        }
 		}
 	}
 </script>
@@ -203,26 +275,29 @@
           left: 0;
           bottom: 0.28rem;*/
           width: 100%;
-		    height:1.43rem;
-		    background:rgba(24,39,67,1);
-		    position: fixed;
-		    left: 0;
-		    bottom: 0;
-		    z-index: 10;
+          height:1.43rem;
+          background:rgba(24,39,67,1);
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          z-index: 10;
+          &.unexchange{
+            z-index: 4;
+          }
         }
         .btn-submit {
           display: block;
           font-size: 0.28rem;
-	      font-weight: bold;
-	      display: block;
-	      width:91.67%;
-	      height:0.9rem;
-	      line-height:0.9rem;
-	      background:rgba(238,111,11,1);
-	      border-radius:0.08rem;
-	      margin: 0.26rem auto 0;
-	      text-align: center;
-	      color: #fff;
+          font-weight: bold;
+          display: block;
+          width:91.67%;
+          height:0.9rem;
+          line-height:0.9rem;
+          background:rgba(238,111,11,1);
+          border-radius:0.08rem;
+          margin: 0.26rem auto 0;
+          text-align: center;
+          color: #fff;
         }
         .result-container {
         	width: 100%;
@@ -238,16 +313,16 @@
         		height: 1.48rem;
         		background: #FFD66D;
         		border:0.02rem solid rgba(255,255,255,1);
-				border-radius:0.12rem;
-				margin: 0 auto 0.16rem;
-				position: relative;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				img {
-					max-width: 100%;
-					max-height: 80%;
-				}
+            border-radius:0.12rem;
+            margin: 0 auto 0.16rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+              max-width: 100%;
+              max-height: 80%;
+            }
         	}
         	.pop-suc {
         		width: 2.25rem;
@@ -284,21 +359,30 @@
         	.btn-confirm {
         		display: block;
         		width:2.4rem;
-				height:0.62rem;
-				line-height:0.62rem;
-				background:rgba(255,207,82,1);
-				border-radius:0.12rem;
-				font-size: 0.26rem;
-				font-weight: bold;
-				color: #A34C00;
-				text-align: center;
-				margin: 0 auto;
-				&.btn-jump {
-					background:#FFFFFF;
-					color: #A34C00;
-					margin: 0.4rem auto 0.28rem;
-				}
+            height:0.62rem;
+            line-height:0.62rem;
+            background:rgba(255,207,82,1);
+            border-radius:0.12rem;
+            font-size: 0.26rem;
+            font-weight: bold;
+            color: #A34C00;
+            text-align: center;
+            margin: 0 auto;
+            &.btn-jump {
+              background:#FFFFFF;
+              color: #A34C00;
+              margin: 0.4rem auto 0.28rem;
+            }
         	}
+          .btn-close{
+            position:absolute;
+            top:.1rem;
+            right:.1rem;
+            width: .44rem;
+            height: .44rem;
+            background: url(../images/btn-close.png);
+            background-size: 100% 100%;
+          }
         }
         .aperture {
         	width: 100%;
