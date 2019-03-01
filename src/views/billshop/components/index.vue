@@ -188,7 +188,7 @@ export default {
           padding: 0 .24rem;
         }
         .award-arrow {
-          margin-left: .1rem;
+          /*margin-left: .1rem;*/
           width: 0.3rem;
           height: 0.3rem;
         }
@@ -237,12 +237,12 @@ export default {
       overflow: hidden;/*超出部分隐藏*/
       white-space: nowrap;/*不换行*/
       text-overflow:ellipsis;/*超出部分文字以...显示*/
+      padding-bottom: .1rem;
       &.surplus{
         margin-top: .12rem;
         font-size:.22rem;
         font-weight:400;
         color:rgba(135,146,165,1);
-        padding-top: .1rem;
       }
     }
     li {
