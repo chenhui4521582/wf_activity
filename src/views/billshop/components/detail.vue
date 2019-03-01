@@ -155,7 +155,8 @@
                 this.isFragmentStatus = false
                 this.$toast.show({
                   message: res.data.message,
-                  duration: 1500
+                  duration: 1500,
+                  isShowMask:true
                 });
               }
 		        })

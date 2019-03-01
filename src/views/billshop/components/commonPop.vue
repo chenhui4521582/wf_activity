@@ -85,7 +85,7 @@
     background: rgba(20, 31, 51, 1);
     text-align: center;
     z-index: 11;
-    color: #ffff;
+    color: #fff;
     &.bigbg {
       width: 87%;
     }
