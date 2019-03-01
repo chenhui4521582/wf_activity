@@ -7,7 +7,7 @@
 					<img :src="cAward.picture | filter">
 				</div>
 				<h4 class="d-title">{{cAward.name}}</h4>
-				<div class="d-text">{{cAward.purchasePrice}}元话费券<a href="javascript:" class="d-original">原价:{{cAward.marketPrice}}元</a></div>
+				<div class="d-text">{{cAward.purchasePrice}}元话费券<a href="javascript:" class="d-original" v-if="cAward.marketPrice!=null">原价:{{cAward.marketPrice}}元</a></div>
 			</div>
 			<div class="xp-text">
 				<h4>商品详情</h4>
