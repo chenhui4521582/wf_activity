@@ -5,7 +5,7 @@
       <ul>
         <li class="nav-item bill-left">我的话费券：<span>{{ spCon&&spCon.accountBalance || '0.00'}}</span></li>
         <li class="nav-item award-right">
-          <div class="item-box" @click="goMyAward">查看我的奖品<img src="../images/award-arrow.png" class="award-arrow"></div>
+          <div class="item-box" @click="goMyAward">查看我的奖品<img src="../images/arrow-right.png" class="award-arrow"></div>
         </li>
       </ul>
     </div>
@@ -20,11 +20,13 @@
         <div class="sp-items">
           <scroll :data="curItem">
               <ul>
-                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)">
+                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)" :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.availableQuota==0}">
                   <div class="pic-box">
                     <img :src="item.picture | filter">
                   </div>
                   <p class="sp-info">{{item.name}}</p>
+                  <p class="sp-info surplus" v-if="item.availableQuota==null">剩余库存充足</p>
+                  <p class="sp-info surplus" v-else>剩余库存：{{item.availableQuota}}</p>
                   <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
                 </li>
               </ul>
@@ -163,26 +165,30 @@ export default {
         height: 0.7rem;  
       }
       &.bill-left {
-        background: url(../images/bill-left.png) no-repeat center top;
-        background-size: 100% 100%;
+        /*background: url(../images/bill-left.png) no-repeat center top;*/
+        /*background-size: 100% 100%;*/
         display: flex;
         align-items: center;
-        justify-content: center;
+        /*justify-content: center;*/
+        font-weight:bold;
         span {
           font-size: 0.28rem;
         }
       }
       &.award-right {
-        background: url(../images/award-right.png) no-repeat center top;
+        width: 2.34rem;
+        background: url(../images/bill-right.png) no-repeat center top;
         background-size: 100% 100%;
         .item-box {
           height: 0.7rem;
           display: flex;
           align-items: center;
-          justify-content: space-between;  
-          padding: 0 0.29rem 0 0.3rem;
+          justify-content: space-between;
+          /*padding: 0 0.29rem 0 0.3rem;*/
+          padding: 0 .24rem;
         }
         .award-arrow {
+          margin-left: .1rem;
           width: 0.3rem;
           height: 0.3rem;
         }
@@ -231,6 +237,13 @@ export default {
       overflow: hidden;/*超出部分隐藏*/
       white-space: nowrap;/*不换行*/
       text-overflow:ellipsis;/*超出部分文字以...显示*/
+      &.surplus{
+        margin-top: .12rem;
+        font-size:.22rem;
+        font-weight:400;
+        color:rgba(135,146,165,1);
+        padding-top: .1rem;
+      }
     }
     li {
       flex: 0 0 47.727%;
@@ -241,11 +254,12 @@ export default {
       text-align: center;
       font-size: 0.3rem;
       max-width: 47.727%;
+      position: relative;
       .pic-box {
         width: 1.6rem;
         height: 1.6rem;
         /*background: #798397;*/
-        margin: 0.2rem auto 0.22rem;
+        margin:auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -264,6 +278,34 @@ export default {
         margin: 0.17rem auto 0;
         font-size: 0.22rem;
         font-weight: 400;
+      }
+      &.buyone:before{
+        content: '';
+        position: absolute;
+        left: 0;
+        width:.98rem;
+        height: .96rem;
+        background: url("../images/buyone.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      &.nosurplus:before{
+        content: '';
+        position: absolute;
+        left: 0;
+        width:.98rem;
+        height: .96rem;
+        background: url("../images/buyover.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      &.nosurplus:after{
+        content: '';
+        position: absolute;
+        top:0;
+        right: 0;
+        width:1.05rem;
+        height:1.06rem;
+        background: url("../images/quehuo.png") no-repeat;
+        background-size: 100% 100%;
       }
     }
   }
