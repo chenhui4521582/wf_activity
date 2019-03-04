@@ -20,13 +20,13 @@
         <div class="sp-items">
           <scroll :data="curItem">
               <ul>
-                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)" :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.availableQuota==0}">
+                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)" :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}">
                   <div class="pic-box">
                     <img :src="item.picture | filter">
                   </div>
                   <p class="sp-info">{{item.name}}</p>
-                  <p class="sp-info surplus" v-if="item.availableQuota==null">剩余库存充足</p>
-                  <p class="sp-info surplus" v-else>剩余库存：{{item.availableQuota}}</p>
+                  <p class="sp-info surplus" v-if="item.allUsersTodayAvailableQuota ==null">剩余库存充足</p>
+                  <p class="sp-info surplus" v-else>剩余库存：{{item.allUsersTodayAvailableQuota }}</p>
                   <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
                 </li>
               </ul>
@@ -289,7 +289,7 @@ export default {
         background: url("../images/buyone.png") no-repeat;
         background-size: 100% 100%;
       }
-      &.nosurplus:before{
+      &.buyover:before{
         content: '';
         position: absolute;
         left: 0;

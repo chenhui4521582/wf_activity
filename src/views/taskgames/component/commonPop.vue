@@ -163,7 +163,7 @@
     .receive-pop {
         position: fixed;
         left: 50%;
-        top: 4rem;
+        top: 2rem;
         transform: translateX(-50%);
         width: 80%;
         min-height: 4rem;
