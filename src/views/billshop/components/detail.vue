@@ -153,11 +153,13 @@
               }else{
                 this.exchangeStatus =0
                 this.isFragmentStatus = false
-                this.$toast.show({
-                  message: res.data.message,
-                  duration: 1500,
-                  isShowMask:true
-                });
+                if(res.data.code !=105){
+                  this.$toast.show({
+                    message: res.data.message,
+                    duration: 1500,
+                    isShowMask:true
+                  });
+                }
               }
 		        })
 		    },
