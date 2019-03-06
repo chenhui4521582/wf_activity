@@ -289,28 +289,28 @@
                 // 糖果
                 case '12' : 
                     GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
-                    return 'crush-achievement'
-                    break
+                    return 'crush-achievement';
+                    break;
                 // 桌球
                 case '2': 
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
-                    return 'bill-achievement'
-                    break
+                    return 'bill-achievement';
+                    break;
                 // 捕鱼
                 case '10': 
                     GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
-                    return 'fish-achievement'
-                    break
-                case 5:
+                    return 'fish-achievement';
+                    break;
+                case '5':
                     return 'samguk-achievement';
                     break;
-                case 8:
+                case '8':
                     return 'moto-achievement';
                     break;
-                case 9:
+                case '9':
                     return 'kingdom-achievement';
                     break;
-                case 13:
+                case '13':
                     return 'kingdom2-achievement';
                     break;
                 default : 
