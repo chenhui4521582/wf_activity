@@ -662,7 +662,7 @@
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
             baiduChannel = ['100039','100040','100041','100042']
           if(jsChannel.includes(this.channel)){
-            parent.location.href = `https://wap.beeplay123.com/jsWap/#/problem?tab=contact_personal&channel=${this.channel}`
+            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           } else if(this.channel == '700002'){
