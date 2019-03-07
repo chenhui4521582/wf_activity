@@ -101,7 +101,9 @@
             return {
                 isZan : false,
                 isAnimate : false,
-                coterieList :null 
+                coterieList :null,
+                sdkBdWap: ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
             }
         },
         methods: {
@@ -151,28 +153,15 @@
             guide(val){
                 if(val == 'home'){
                     console.log(localStorage.getItem('APP_CHANNEL'));
-                    
-                    switch(localStorage.getItem('APP_CHANNEL')){
-                        case '100001' :
-                        case '100022':
-                        case '100035':
-                        case '100038':
-                        case '100036':
-                            location.href = 'https://wap.beeplay123.com/jsWap?channel='+localStorage.getItem('APP_CHANNEL')
-                            break;
-                        case '100039':
-                        case '100040':
-                        case '100041':
-                        case '100042':
-                            location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
-                            break;
-                        case '100006':
-                        case '110002':
-                            location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
-                            break;
-                        default:
-                            history.go(-1)
+
+                    if(this.sdkBdWap.includes(localStorage.getItem('APP_CHANNEL'))){
+                        top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
+                    }else {
+                        top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
                     }
+
+
+
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
                     location.href = 'https://wap.beeplay123.com/wf_zhengjiling/'

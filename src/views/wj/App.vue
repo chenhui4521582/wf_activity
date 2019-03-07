@@ -72,8 +72,8 @@ export default {
         hideBackArr: ['100037','100033001'],
         curChannel: null,
         curToken: null,
-        sdkJsWap: ['100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006'],
-        sdkBdWap: ['100039','100040','100041','100042','100045','100046']
+        sdkBdWap: ['100039','100040','100041','100042','100045','100046',
+            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
       }
   },
   mounted() {
@@ -117,9 +117,8 @@ export default {
         return Request[ename];
     },
     goMenu() {
-      if(this.sdkJsWap.includes(this.curChannel)) {
-        top.location.href = 'https://wap.beeplay123.com/jsWap?channel='+this.curChannel
-      }else if(this.sdkBdWap.includes(this.curChannel)){
+      localStorage.removeItem('gurlSDK')
+      if(this.sdkBdWap.includes(this.curChannel)){
         top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel
       }else {
         top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel

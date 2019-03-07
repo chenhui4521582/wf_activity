@@ -289,28 +289,28 @@
                 // 糖果
                 case '12' : 
                     GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
-                    return 'crush-achievement'
-                    break
+                    return 'crush-achievement';
+                    break;
                 // 桌球
                 case '2': 
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
-                    return 'bill-achievement'
-                    break
+                    return 'bill-achievement';
+                    break;
                 // 捕鱼
                 case '10': 
                     GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
-                    return 'fish-achievement'
-                    break
-                case 5:
+                    return 'fish-achievement';
+                    break;
+                case '5':
                     return 'samguk-achievement';
                     break;
-                case 8:
+                case '8':
                     return 'moto-achievement';
                     break;
-                case 9:
+                case '9':
                     return 'kingdom-achievement';
                     break;
-                case 13:
+                case '13':
                     return 'kingdom2-achievement';
                     break;
                 default : 
@@ -321,11 +321,9 @@
             parent.location.href = this.jumpToPlat()+'#/personal'
         },
         jumpToPlat(){
-            let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-                baiduChannel = ['100039','100040','100041','100042']
-            if(jsChannel.includes(this.channel)){
-                return `https://wap.beeplay123.com/jsWap?channel=${this.channel}`
-            }else if(baiduChannel.includes(this.channel)){
+                baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+            if(baiduChannel.includes(this.channel)){
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
                 return `https://wap.beeplay123.com/llwWap?channel=700002`
