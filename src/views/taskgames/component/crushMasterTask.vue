@@ -137,7 +137,7 @@ export default {
     },
     methods:{
         transUint(finishNum,taskOps){
-            let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2).substr(0,3) + '万' : finishNum,
+            let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
                 ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
             return  finish+'/'+ops
         },
