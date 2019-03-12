@@ -36,13 +36,13 @@ export default {
     goTaskPage () {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
-          parent.location.href = `http://localhost:3008/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
           break
         case 'jsWap':
-          parent.location.href = `http://localhost:3008/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
           break
         default:
-          parent.location.href = `http://localhost:3008/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
     },
     getUrlParam (ename) {
@@ -60,23 +60,25 @@ export default {
       let params = Request[ename] ? Request[ename].split('#')[0] : ''
       return params
     },
+    save () {
+      let url = '//platform-api.beeplay123.com/wap/api/plat/newUser/set-guide-position'
+      this.axios.post(url, {version: 3, position: 1001})
+    },
     init () {
-      let url = '//platform-api.beeplay123.com/wap/api/plat/newUser/guidePosition'
-      this.axios.post(url, {version: 3}).then(r => {
-        this.code = r.data.data
-        if (r.data.data != -1) {
-          this.isShow = false
+      let url = '//platform-api.beeplay123.com/wap/api/plat/newUser/get-guide-position'
+      this.axios.post(url, {version: 3}).then(res => {
+        if (res.data.data == '1001') {
+          this.isShow = true
+          this.$nextTick(function () {
+            this.isAnimation = true
+          })
+          // this.save()
         }
       })
     }
   },
   created () {
     this.init()
-  },
-  mounted () {
-    this.$nextTick(function () {
-      this.isAnimation = true
-    })
   }
 }
 </script>
