@@ -48,7 +48,7 @@ export default {
           this.$nextTick(function () {
             this.isAnimation = true
           })
-          // this.save()
+          this.save()
         }
       })
     }
