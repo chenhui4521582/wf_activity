@@ -49,7 +49,7 @@
             <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="closePop">确定</div>
             </template>
             <template v-if="exchangeStatus == 2">
-              很遗憾，您得话费券不足
+              很遗憾，您的话费券不足
               <img src="../images/kong.png" alt="" style="width: 2.89rem;height: 1.86rem">
               <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="goTaskPage">补充话费券</div>
               <div style="font-size:.26rem;font-weight:400; text-decoration:underline; color:rgba(135,146,165,1);" @click="goMallIndex">去看看其他商品</div>
