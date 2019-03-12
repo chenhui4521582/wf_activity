@@ -27,7 +27,8 @@ export default {
   },
   data: () => ({
     isAnimation: false,
-    isShow: false
+    isShow: false,
+    timer: null
   }),
   methods: {
     handleClick () {
@@ -62,7 +63,7 @@ export default {
     },
     autoHide () {
       let _this = this;
-      setTimeout(function () {
+      this.timer = setTimeout(function () {
         _this.handleClick();
       },7000)
     },
@@ -72,6 +73,10 @@ export default {
       this.isAnimation = true
       this.autoHide()
     })
+  },
+  beforeDestroy () {
+    clearTimeout(this.timer)
+    this.timer = null
   }
 }
 </script>
