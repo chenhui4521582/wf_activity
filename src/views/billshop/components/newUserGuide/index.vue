@@ -34,7 +34,7 @@ export default {
       this.axios.post(url, {version: 3}).then(res => {
         if (res.data.data == '1001') {
           this.showPage2 = true
-          //this.save()
+          this.save()
         }
       })
     }
