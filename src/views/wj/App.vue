@@ -15,16 +15,44 @@
             <img src="./images/icon-home.png" alt="" class="icon-home" />游戏大厅
           </div>
         </div>
-        <div class="wf-title">
-          <h4 class="pull-fl"><img src="./images/icon-pac.png" alt="" class="icon-pac"/>免费大礼包</h4>
-          <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
+        <div class="n-tab">
+          <ul>
+            <li :class="curIndex==0 ? 'active':'' " @click="tabNav(0)">
+              <img class="icon" src="./images/new/icon-rw-light.png" v-if="curIndex==0">
+              <img class="icon" src="./images/new/icon-rw.png" v-else>
+            </li>
+            <li :class="curIndex==1 ? 'active':'' " @click="tabNav(1)">
+              <img class="icon" src="./images/new/icon-lb-light.png" v-if="curIndex==1">
+              <img class="icon" src="./images/new/icon-lb.png" v-else>
+            </li>
+          </ul>
         </div>
-        <div class="groups">
+        <div class="groups g-item1" v-if="curIndex == 0">
+          <ul id="sUl">
+             <li v-for="item in dayTaskItems">
+                <h4 class="g-title"><span v-html="item.taskDescShow"></span>
+                  <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="receive(item,'dayTask')" v-if="item.taskStatus == 0">领取</a>
+                  <a href="javascript:" class="btn-normal btn-qwc btnLQ"  @click="goFinish(item)" v-if="item.taskStatus == 1">去完成</a>
+                  <a href="javascript:" class="btn-normal btn-gq btnLQ"  @click="goFinish(item)" v-if="item.taskStatus == 2">已完成</a>
+                </h4>
+                <p class="g-text">
+                  <img :src="item.awardsImage | filter" alt="">
+                  <span>{{item.awardsName}}</span>
+                </p>
+                <div class="g-percent">
+                  <div class="g-percent-bg" :style="{width:item.finishNum/item.taskOps * 100 + '%'}">{{transUint(item.finishNum,item.taskOps)}}</div>
+                </div>
+              </li> 
+          </ul>
+        </div>
+        <div class="groups g-item1" v-if="curIndex == 1">
           <div>
+            <div class="wf-title">
+              <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
+            </div>
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
-            
             <ul id="sUl" v-if="cdkArr && cdkArr.length">
               <li v-for="item in cdkArr">
                 <div v-if="item.IF_GET">
@@ -62,6 +90,8 @@
   </div>
 </template>
 <script>
+import common from "../../common/js/utils";
+import base64url from 'base64-url';
 export default {
   data() {
       return {
@@ -72,25 +102,23 @@ export default {
         hideBackArr: ['100037','100033001'],
         curChannel: null,
         curToken: null,
+        curIndex: 0,
+        dayTaskItems: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
             '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
       }
   },
   mounted() {
-    
-
     this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):this.getUrlParam('channel')
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
-
-    
 
     let cururl = window.location.href
     // this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
     this.curlink = this.getUrlParam('wf_cur_link')
-    // console.log('this.curlink:::', this.curlink)
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
+      this.getDayTask()
     }
     
   },
@@ -100,9 +128,121 @@ export default {
     }
   },
   methods: {
+    receive(item) {
+        this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+          taskId: item.taskId,
+          taskLogId: item.taskLogId
+        },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res)=> {
+          if(res.data.code == 200) {
+            this.$toast.show({
+              message: '领取成功！',
+              duration: 1500
+            });
+            this.getDayTask()
+          }
+        })
+    },
+    goFinish({gameType, url, action, taskId},type) {
+      let actionsArr = [39,35,34,32]
+      setTimeout(() => {
+          // 跳转到首页（关闭）
+          if(action == 36 || url == '/plat/') {
+              parent.location.href = this.jumpToPlat()
+              return
+          }
+          // 跳转商城
+          if (gameType == 0 && actionsArr.includes(action)) {
+              parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+              return
+          }
+          // 跳平台(关闭)
+          if (gameType == 0 && action == 2) {
+              parent.location.href = this.jumpToPlat()
+              return
+          }
+          // 跳转固定入口
+          if(url && url.indexOf('?fixedEntry') != -1) {
+              let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.curChannel + '&token=' + this.curToken;
+              parent.location.href = url1;
+              return;
+          }
+
+          parent.location.href=this.jumpToGameUrl({url:url})
+      }, 500)
+    },
+    trimStr:function(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, '')
+    },
+    jumpToGameUrl:function (item) {
+        if (item && item.url.indexOf('external=1') != -1) {
+            if (item.url.includes('?external=1')) {
+                    return this.trimStr(item.url) +
+                    '&channel=' +
+                    this.curChannel +
+                    '&token=' + this.curToken +
+                    '&gurl=' +
+                    item.url.split('?')[0] +
+                    '&pf=wap'
+            } else {
+                return this.trimStr(item.url) +
+                    '&channel=' +
+                    this.curChannel +
+                    '&token=' + this.curToken +
+                    '&gurl=' +
+                    base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+                    '&pf=wap'
+            }
+            return
+        }
+        if (item && item.url.indexOf('databiger-h5') != -1) {
+            return this.trimStr(item.url) +
+                '?channel=' +
+                this.curChannel +
+                '&token=' + this.curToken
+        }
+        return item.url +
+                '?channel=' +
+                this.curChannel +
+                '&token=' + this.curToken
+    },
+    jumpToPlat(){
+        let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+        if(baiduChannel.includes(this.curChannel)){
+            return `https://wap.beeplay123.com/bdWap?channel=${this.curChannel}`
+        } else if(this.curChannel == '700002'){
+            return `https://wap.beeplay123.com/llwWap?channel=700002`
+        }else{
+           return `https://wap.beeplay123.com/wap/home?channel=${this.curChannel}`
+        }
+    },
+    transUint(finishNum,taskOps){
+        let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
+            ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
+        return  finish+'/'+ops
+    },
+    getDayTask() {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+        value: "dayTask"
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res) => {
+        this.dayTaskItems = res.data.data
+      })
+    },
+    tabNav(idx) {
+      this.curIndex = idx
+    },
     //获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-        // var url = document.referrer;
         var url = window.location.href;
         var Request = new Object();
         if (url.indexOf("?") != -1) {
@@ -173,7 +313,6 @@ export default {
     getCdkeyStatus() {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
         value: this.curlink
-        // value: 'http://www.5idhf.com/sssj'
       },{
             headers: {
                 'App-Channel': this.curChannel,
@@ -192,7 +331,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import '../../common/css/base.css';
-
+@import './wj.less';
 .ball {
   width: 1.0rem;
   height: 1.0rem;
@@ -212,14 +351,6 @@ export default {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
-
-/*#wf-iframe {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}*/
 
 a {
   text-decoration: none;
@@ -250,18 +381,6 @@ img {
   padding: .15rem .5rem .15rem .29rem;
   margin-bottom: .4rem;
 }
-
-/*#wf-mask {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.5);
-  transition: all 0s;
-  display: none;
-}*/
 
 .g-exchange {
   display: flex;
@@ -380,7 +499,9 @@ img {
   color: #fff;
   height: .45rem;
   position: relative;
-  margin: .5rem 0 .32rem 0;
+  margin: 0 0 .22rem 0;
+  display: flex;
+  justify-content: center;
 }
 
 .wf-pop .wf-title h4 {
@@ -400,9 +521,7 @@ img {
   color: #fff;
   display: flex;
   align-items: center;
-  position: absolute;
-  right: .30rem;
-  bottom: .06rem;
+  justify-content: center;
 }
 
 .wf-pop .btn-useage .icon-ys {
@@ -424,13 +543,7 @@ img {
 
 .wf-pop .groups {
   width: 100%;
-  position: absolute;
-  top: 2.36rem;
-  bottom: 0;
   text-align: left;
-  overflow: auto;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   margin-bottom: 0.2rem;
 }
 
@@ -462,6 +575,12 @@ img {
 }
 
 .wf-pop .groups li a.btn-lq {
+  height: .44rem;
+  background: #ff8400;
+  background-size: 100% 100%;
+  border-radius: 0.2rem;
+}
+.wf-pop .groups li a.btn-qwc {
   background: url(./images/btn-lq.png) no-repeat;
   background-size: 100% 100%;
 }
@@ -493,7 +612,8 @@ img {
 }
 
 .wf-pop .groups .g-percent .g-percent-bg {
-  min-width: 30% !important;
+  max-width: 100%;
+  min-width: 30%;
   height: .22rem;
   line-height: .22rem;
   font-size: 12px;
