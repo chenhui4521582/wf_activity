@@ -27,8 +27,7 @@ export default {
   },
   data: () => ({
     isAnimation: false,
-    isShow: false,
-    timer: null
+    isShow: false
   }),
   methods: {
     handleClick () {
@@ -60,23 +59,12 @@ export default {
       }
       let params = Request[ename] ? Request[ename].split('#')[0] : ''
       return params
-    },
-    autoHide () {
-      let _this = this;
-      this.timer = setTimeout(function () {
-        _this.handleClick();
-      },7000)
-    },
+    }
   },
   mounted () {
     this.$nextTick(function () {
       this.isAnimation = true
-      this.autoHide()
     })
-  },
-  beforeDestroy () {
-    clearTimeout(this.timer)
-    this.timer = null
   }
 }
 </script>
