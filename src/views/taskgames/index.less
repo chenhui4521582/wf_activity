@@ -383,3 +383,52 @@ body {
 .new-task-inner {
   padding: 0 0.17rem 0 0.24rem;
 }
+
+.newUser {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  .mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background: rgba(0,0,0,.7);
+  }
+  .content{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+  }
+  .tips {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3.46rem;
+    img {
+      width: 100%;
+      margin-bottom: .29rem
+    }
+    p {
+      width: 3.46rem;
+      height: .5rem;
+      line-height: .5rem;
+      font-size:.2rem;
+      font-family:PingFang-SC-Regular;
+      font-weight:400;
+      color:rgba(184,184,184,1);
+      border-radius: 30px;
+      text-align: center;
+      background: #202429;
+    }
+  }
+}
