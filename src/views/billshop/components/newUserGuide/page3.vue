@@ -1,5 +1,5 @@
 <template>
-  <div class="newUser" v-if="isShow">
+  <div class="newUserPage3">
     <div class="mask"></div>
     <div class="center">
       <div class="tips">
@@ -59,32 +59,18 @@ export default {
       }
       let params = Request[ename] ? Request[ename].split('#')[0] : ''
       return params
-    },
-    save () {
-      let url = '//platform-api.beeplay123.com/wap/api/plat/newUser/set-guide-position'
-      this.axios.post(url, {version: 3, position: 1001})
-    },
-    init () {
-      let url = '//platform-api.beeplay123.com/wap/api/plat/newUser/get-guide-position'
-      this.axios.post(url, {version: 3}).then(res => {
-        if (res.data.data == '1001') {
-          this.isShow = true
-          this.$nextTick(function () {
-            this.isAnimation = true
-          })
-          // this.save()
-        }
-      })
     }
   },
-  created () {
-    this.init()
+  mounted () {
+    this.$nextTick(function () {
+      this.isAnimation = true
+    })
   }
 }
 </script>
 
 <style lang="less" scope>
-.newUser {
+.newUserPage3 {
   position: fixed;
   left: 0;
   top: 0;
