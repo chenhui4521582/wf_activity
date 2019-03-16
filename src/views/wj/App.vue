@@ -228,7 +228,9 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "dayTask"
+        value: "h5GameTask",
+        from: "sdk",
+        gameType: localStorage.getItem('wj_gameType') || ''
       },{
             headers: {
                 'App-Channel': this.curChannel,
