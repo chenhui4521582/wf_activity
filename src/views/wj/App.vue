@@ -119,6 +119,7 @@ export default {
       this.getUserInfo()
       this.getCdkeyStatus()
       this.getDayTask()
+      // this.getPlatTaskByBatch()
     }
     
   },
@@ -226,11 +227,23 @@ export default {
             ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
         return  finish+'/'+ops
     },
-    getDayTask() {
+    getPlatTaskByBatch() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
         value: "h5GameTask",
         from: "sdk",
         gameType: localStorage.getItem('wj_gameType') || ''
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res) => {
+        this.dayTaskItems = res.data.data
+      })
+    },
+    getDayTask() {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+        value: "dayTask"
       },{
             headers: {
                 'App-Channel': this.curChannel,
