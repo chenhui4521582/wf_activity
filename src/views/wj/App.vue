@@ -274,7 +274,7 @@ export default {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
         value: "h5GameTask",
         from: "sdk",
-        gameType: localStorage.getItem('wj_gameType') || '202'
+        gameType: localStorage.getItem('wj_gameType') || ''
       },{
             headers: {
                 'App-Channel': this.curChannel,
