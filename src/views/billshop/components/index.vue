@@ -3,7 +3,7 @@
     <headers title="话费券商城" v-if="!getChannel"></headers>
     <div class="s-nav" :class="{'active':getChannel}">
       <ul>
-        <li class="nav-item bill-left">我的话费券：<span>{{ spCon&&spCon.accountBalance || '0.00'}}</span></li>
+        <li class="nav-item bill-left">我的话费券：<span>{{ accountBalance }}</span></li>
         <li class="nav-item award-right">
           <div class="item-box" @click="goMyAward">查看我的奖品<img src="../images/arrow-right.png" class="award-arrow"></div>
         </li>
@@ -14,13 +14,25 @@
       <div v-if="spCon&&spCon.categoryList.length">
         <div class="s-tab">
           <ul>
-            <li :class="{'active': idx == index}" v-for="(item,index) in spCon&&spCon.categoryList" @click="getNewList(item,index)">{{item.name}}</li>
+            <li 
+              :class="{'active': idx == index}"
+              v-for="(item,index) in spCon&&spCon.categoryList"
+              @click="getNewList(item,index)"
+              :key="index"
+              >
+                {{item.name}}
+              </li>
           </ul>
         </div>
         <div class="sp-items"  :class="{'active':getChannel}">
           <scroll :data="curItem">
               <ul>
-                <li v-for="(item,i) in curItem" @click="goDetail(item,$event)" :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}">
+                <li 
+                  v-for="(item,i) in curItem"
+                  @click="goDetail(item,$event)"
+                  :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}"
+                  :key="i"
+                  >
                   <div class="pic-box">
                     <img :src="item.picture | filter">
                   </div>
@@ -39,12 +51,13 @@
     <div class="bill-container">
       <a href="javascript:" class="btn-bill" @click="goTaskPage">去赚话费券</a>
     </div>
+    <new-user-alert :accountBalance="accountBalance"></new-user-alert>
   </div>
-
 </template>
 <script>
 import Headers from './Header'
 import scroll from '../../../components/scroll/scroll.vue'
+import newUserAlert from './newUserGuide/index.vue'
 export default {
   data() {
     return {
@@ -60,7 +73,8 @@ export default {
   },
   components: {
     Headers,
-    scroll
+    scroll,
+    newUserAlert
   },
   computed: {
     getChannel() {
@@ -122,6 +136,7 @@ export default {
           if(res.data.code == 200) {
             this.spCon = res.data.data
             this.curItem = this.spCon && this.spCon.categoryList[0].productList
+            
           }
         })
     },
@@ -140,6 +155,11 @@ export default {
         }
         let params = Request[ename] ? Request[ename].split('#')[0] : ''
         return params;
+    }
+  },
+  computed: {
+    accountBalance () {
+      return this.spCon && this.spCon.accountBalance || '0.00'
     }
   }
 }
