@@ -283,7 +283,7 @@
                             // this.showCurDetails(0,this.allTaskList[0])
                             this.$set(this.allTaskList[0],'selected',true)
                         }
-                    }, 100);
+                    }, 200);
                 }
             },
         },

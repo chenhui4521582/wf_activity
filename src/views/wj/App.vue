@@ -117,6 +117,7 @@ export default {
         return Request[ename];
     },
     goMenu() {
+      localStorage.removeItem('gurlSDK')
       if(this.sdkBdWap.includes(this.curChannel)){
         top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel
       }else {
