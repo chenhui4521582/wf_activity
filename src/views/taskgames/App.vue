@@ -333,7 +333,7 @@
                     return 'kingdom2-achievement';
                     break;
                 case '18':
-                    return 'square-achievement';
+                    return 'warrior-achievement';
                     break;
                 default : 
                     return ''
