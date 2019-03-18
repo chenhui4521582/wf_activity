@@ -28,21 +28,63 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <ul id="sUl">
-             <li v-for="item in dayTaskItems">
-                <h4 class="g-title"><span v-html="item.taskDescShow"></span>
-                  <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="receive(item,'dayTask')" v-if="item.taskStatus == 0">领取</a>
-                  <a href="javascript:" class="btn-normal btn-qwc btnLQ"  @click="goFinish(item)" v-if="item.taskStatus == 1">去完成</a>
-                  <a href="javascript:" class="btn-normal btn-gq btnLQ"  @click="goFinish(item)" v-if="item.taskStatus == 2">已完成</a>
-                </h4>
-                <p class="g-text">
-                  <img :src="item.awardsImage | filter" alt="">
-                  <span>{{item.awardsName}}</span>
-                </p>
-                <div class="g-percent">
-                  <div class="g-percent-bg" :style="{width:item.finishNum/item.taskOps * 100 + '%'}">{{transUint(item.finishNum,item.taskOps)}}</div>
-                </div>
-              </li> 
+          <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
+          <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
+              <li v-for="item in cjTaskItems" >
+                  <div class="description">
+                      <div class="head-img">
+                          <img :src="item.icon | filter" alt="">
+                      </div>
+                      <div class="content">
+                          <p v-html="item.taskDescShow"></p>
+                          <div class="progress">
+                              <div class="progress-bg">
+                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                              </div>
+                              <div class="num">
+                                  <img :src="item.awardsImage | filter" alt="">
+                                  <span>{{item.awardsName}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                  <div class="btn received" v-if="item.taskStatus == 2" @click="goFinish(item)">
+                      已完成
+                      <span class="in-game">点击可进入</span>
+                  </div>
+              </li>
+          </ul>
+          <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
+          <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
+              <li v-for="item in dayTaskItems" >
+                  <div class="description">
+                      <div class="head-img">
+                          <img :src="item.icon | filter" alt="">
+                      </div>
+                      <div class="content">
+                          <p v-html="item.taskDescShow"></p>
+                          <div class="progress">
+                              <div class="progress-bg">
+                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                              </div>
+                              <div class="num">
+                                  <img :src="item.awardsImage | filter" alt="">
+                                  <span>{{item.awardsName}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                  <div class="btn received" v-if="item.taskStatus == 2" @click="goFinish(item)">
+                      已完成
+                      <span class="in-game">点击可进入</span>
+                  </div>
+              </li>
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
@@ -104,6 +146,7 @@ export default {
         curToken: null,
         curIndex: 0,
         dayTaskItems: null,
+        cjTaskItems: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
             '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
       }
@@ -119,7 +162,7 @@ export default {
       this.getUserInfo()
       this.getCdkeyStatus()
       this.getDayTask()
-      // this.getPlatTaskByBatch()
+      this.getPlatTaskByBatch()
     }
     
   },
@@ -231,14 +274,14 @@ export default {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
         value: "h5GameTask",
         from: "sdk",
-        gameType: localStorage.getItem('wj_gameType') || ''
+        gameType: localStorage.getItem('wj_gameType') || '202'
       },{
             headers: {
                 'App-Channel': this.curChannel,
                 'Authorization': this.curToken
             }
         }).then((res) => {
-        this.dayTaskItems = res.data.data
+        this.cjTaskItems = res.data.data
       })
     },
     getDayTask() {
@@ -567,9 +610,8 @@ img {
   background: #1F2A4D;
   color: #fff;
   margin: 0 auto .2rem;
-  padding: 0 5.6%;
+  padding: 0.15rem 0.24rem;
   box-sizing: border-box;
-  padding-bottom: .2rem;
   &:last-child {
     margin: 0 auto;
   };
@@ -581,28 +623,45 @@ img {
 
 .wf-pop .groups li a.btn-normal {
   display: block;
-  width: 1.35rem;
-  height: .45rem;
-  line-height: .45rem;
+  /*width: 1.35rem;*/
+  padding: 2% 3%;
+  /*height: .45rem;*/
+  /*line-height: .45rem;*/
   text-align: center;
   font-size: .22rem;
   font-weight: normal;
+  border-radius:0.08rem;
 }
 
 .wf-pop .groups li a.btn-lq {
-  height: .44rem;
-  background: #ff8400;
+  background:rgba(238,111,11,1);
   background-size: 100% 100%;
-  border-radius: 0.2rem;
 }
 .wf-pop .groups li a.btn-qwc {
-  background: url(./images/btn-lq.png) no-repeat;
+  background: #1976D2;
   background-size: 100% 100%;
 }
 .wf-pop .groups li a.btn-gq {
-  background: url(./images/btn-gq.png) no-repeat;
+  background:rgba(132,139,167,1);
   background-size: 100% 100%;
 }
+
+
+
+/*&.play{
+    background: #1976D2;
+}
+&.gray{
+    background: #fff;
+    color: #141F33;
+}
+&.received{
+    position: relative;
+    background: #006083;
+    color: #fff;
+}*/
+
+
 
 .wf-pop .groups .g-title {
   display: flex;
@@ -631,7 +690,7 @@ img {
   min-width: 30%;
   height: .22rem;
   line-height: .22rem;
-  font-size: 12px;
+  font-size: 0.2rem;
   background: #3A58B5;
   border-radius: .10rem;
   position: absolute;
@@ -661,5 +720,126 @@ img {
   display: block;
   margin: 0 auto .33rem;
 }
+.progress-bg{
+    background: #0F1726;
+    width: 90px;
+    margin-right: 5px;
+    position: relative;
+    height: 15px;
+    border-radius: 3px;
+    overflow: hidden;
+    .progress-bar{
+        background: #507BCC;
+        position: absolute;
+        height: 100%;
+        left: 0;
+        width: 30%;
+    }
+    span{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        font-size: 11px;
+        left: 0;
+        line-height: 15px;
+        text-align: center;
+    }
+}
+.groups-title{
+  font-size: 0.28rem;
+  font-weight:bold;
+  color:rgba(255,255,255,1);
+  margin-left: 4.5%;
+  margin-bottom: 0.3rem;
+}
+.task-list-margin{
+  margin-bottom: 0.7rem;
+}
+.task-list{
+        >li{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3%;
+            background: #141F33;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3%;
+            .description{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 80%;
+                .head-img{
+                    width: 0.6rem;
+                    height: 0.6rem;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    margin-right: 3%;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .content{
+                    >p{
+                        font-size: 0.24rem;
+                        font-weight: bold;
+                        margin-bottom: 5%;
+                    }
+                    .progress{
+                        display: flex;
+                        align-items: center;
+
+                        .num{
+                            img{
+                                height: 0.2rem;
+                                display: inline;
+                            }
+                            span{
+                                font-size: 0.2rem;
+                                color: #FFD338;
+                            }
+                        }
+                    }
+                }
+            }
+            .btn{
+                color: #fff;
+                font-weight: bold;
+                font-size: 0.2rem;
+                background: #EE6F0B;
+                padding:2% 3%;
+                border-radius: 4px;
+                text-align: center;
+                box-sizing: border-box;
+                width: 20%;
+              word-break:keep-all;
+              white-space:nowrap;
+                &.play{
+                    background: #1976D2;
+                }
+                &.gray{
+                    background: #fff;
+                    color: #141F33;
+                }
+                &.received{
+                    position: relative;
+                    background: #006083;
+                    color: #fff;
+                }
+            }
+            .in-game{
+                position: absolute;
+                bottom: -.25rem;
+                left: .2rem;
+                color: #2F3C49;
+                font-size: .18rem;
+            }
+        }
+
+    }
 
 </style>
