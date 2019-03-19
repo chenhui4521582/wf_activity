@@ -62,7 +62,8 @@
 			return {
 				cAward: null,
 				isFragmentStatus: false,
-				exchangeStatus: 0
+				exchangeStatus: 0,
+        curChannel: localStorage.getItem('APP_CHANNEL')
 			}
 		},
 		components: {
@@ -78,7 +79,7 @@
 		},
     computed: {
       getChannel() {
-        return localStorage.getItem('APP_CHANNEL') == '110004001'
+        return this.curChannel == '100047001' || this.curChannel == '100048001'
       }
     },
 		methods: {
@@ -109,6 +110,9 @@
 			        case 'jsWap':
 			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
 			          break;
+              case 'miniWap':
+                parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+                break;
 			        default:
 			          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
 			    }

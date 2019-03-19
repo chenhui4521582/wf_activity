@@ -65,7 +65,8 @@ export default {
       spCon: null,
       curItem: null,
       idx: 0,
-      sLoading: true
+      sLoading: true,
+      curChannel: localStorage.getItem('APP_CHANNEL')
     }
   },
   mounted() {
@@ -76,11 +77,6 @@ export default {
     scroll,
     newUserAlert
   },
-  computed: {
-    getChannel() {
-      return localStorage.getItem('APP_CHANNEL') == '110004001'
-    }
-  },
   methods: {
     goMyAward() {
       switch(this.getUrlParam('from')) {
@@ -89,6 +85,9 @@ export default {
           break;
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+          break;
+        case 'miniWap':
+          parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
           break;
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
@@ -101,6 +100,9 @@ export default {
           break;
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
+        case 'miniWap':
+          parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
           break;
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -159,7 +161,10 @@ export default {
   },
   computed: {
     accountBalance () {
-      return this.spCon && this.spCon.accountBalance || '0.00'
+      return this.spCon && this.spCon.accountBalance.toString() || '0.00'
+    },
+    getChannel() {
+      return this.curChannel == '100047001' || this.curChannel == '100048001'
     }
   }
 }
