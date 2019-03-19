@@ -46,7 +46,7 @@ axios.interceptors.response.use(
                     break;
                 case 401:
                     let uid=localStorage.getItem('user_Info')&&JSON.parse(localStorage.getItem('user_Info'))&&JSON.parse(localStorage.getItem('user_Info')).userId||''
-                    if(uid&&(localStorage.getItem('APP_CHANNEL') == 100039||localStorage.getItem('APP_CHANNEL') == 100042)){
+                    if(uid&&(localStorage.getItem('APP_CHANNEL') == 100039||localStorage.getItem('APP_CHANNEL') == 100042||localStorage.getItem('APP_CHANNEL') == 100047001||localStorage.getItem('APP_CHANNEL') == 100048001)){
                         axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res=>{
                             localStorage.removeItem('ACCESS_TOKEN');
                             if(res.data.code==200&&res.data.data){//游客模式
