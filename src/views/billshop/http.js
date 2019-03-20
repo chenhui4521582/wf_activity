@@ -55,10 +55,30 @@ axios.interceptors.response.use(
                     });
                     break;
                 case 401:
+                    let uid=localStorage.getItem('user_Info')&&JSON.parse(localStorage.getItem('user_Info'))&&JSON.parse(localStorage.getItem('user_Info')).userId||''
+                    if(uid&&(localStorage.getItem('APP_CHANNEL') == 100039||localStorage.getItem('APP_CHANNEL') == 100042)){
+                        axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res=>{
+                            localStorage.removeItem('ACCESS_TOKEN');
+                            if(res.data.code==200&&res.data.data){//游客模式
+                                window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html'
+                            }else{
+                                Vue.prototype.$toast.show({
+                                    message: '未授权，请登录！',
+                                    duration: 1500
+                                });
+                            }
+                        }).catch(e=>{
+                            localStorage.removeItem('ACCESS_TOKEN');
+                            Vue.prototype.$toast.show({
+                                message: '未授权，请登录！',
+                                duration: 1500
+                            });
+                        })
+                    }else{
                     Vue.prototype.$toast.show({
                         message: '未授权，请登录！',
                         duration: 1500
-                    });
+                    });}
                     break;
                 case 404:
                     Vue.prototype.$toast.show({
