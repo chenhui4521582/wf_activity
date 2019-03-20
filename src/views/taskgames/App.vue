@@ -332,6 +332,9 @@
                 case '13':
                     return 'kingdom2-achievement';
                     break;
+                case '18':
+                    return 'warrior-achievement';
+                    break;
                 default : 
                     return ''
             }
