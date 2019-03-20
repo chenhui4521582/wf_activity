@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="title">
-            <span class="btn-back" @click="backHome">
+            <span class="btn-back" @click="backHome" v-if="!curChannel">
                 <img src="./images/btn_back.png" alt="">
             </span>
             <img src="./images/title.png">
@@ -96,7 +96,8 @@
                 showReceivePop :false,
                 showTaskList : false,
                 curMedelIcon : '',
-                masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement']
+                masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement'],
+                curChannel: localStorage.getItem('APP_CHANNEL')
             }
         },
         mounted(){
@@ -104,6 +105,11 @@
         },
         components: {
             awardsPop :() =>import('./components/dialog'),
+        },
+        computed: {
+            getChannel() {
+              return this.curChannel == '100047001' || this.curChannel == '100048001'
+            }
         },
         methods: {
             async getMasterTaskNameList(){
