@@ -20,10 +20,12 @@
             <li :class="curIndex==0 ? 'active':'' " @click="tabNav(0)">
               <img class="icon" src="./images/new/icon-rw-light.png" v-if="curIndex==0">
               <img class="icon" src="./images/new/icon-rw.png" v-else>
+              <img src="./images/h5game-fuli.png" class="h5game-fuli" v-if="isDayTaskRed">
             </li>
             <li :class="curIndex==1 ? 'active':'' " @click="tabNav(1)">
               <img class="icon" src="./images/new/icon-lb-light.png" v-if="curIndex==1">
               <img class="icon" src="./images/new/icon-lb.png" v-else>
+              <img src="./images/h5game-fuli.png" class="h5game-fuli" v-if="isCjTaskRed">
             </li>
           </ul>
         </div>
@@ -51,9 +53,8 @@
                   </div>
                   <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
                   <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" @click="goFinish(item)">
+                  <div class="btn received" v-if="item.taskStatus == 2" >
                       已完成
-                      <span class="in-game">点击可进入</span>
                   </div>
               </li>
           </ul>
@@ -80,9 +81,8 @@
                   </div>
                   <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
                   <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" @click="goFinish(item)">
+                  <div class="btn received" v-if="item.taskStatus == 2" >
                       已完成
-                      <span class="in-game">点击可进入</span>
                   </div>
               </li>
           </ul>
@@ -156,7 +156,6 @@ export default {
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
 
     let cururl = window.location.href
-    // this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
     this.curlink = this.getUrlParam('wf_cur_link')
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
@@ -169,6 +168,16 @@ export default {
   computed: {
     isHideMenu() {
       return this.hideBackArr.includes(this.curChannel)
+    },
+    isDayTaskRed() {
+      return this.dayTaskItems && this.dayTaskItems.filter((item)=> {
+        return item.taskStatus == 0
+      }).length
+    },
+    isCjTaskRed() {
+      return this.cjTaskItems && this.cjTaskItems.filter((item)=> {
+        return item.taskStatus == 0
+      }).length
     }
   },
   methods: {
@@ -187,6 +196,8 @@ export default {
               message: '领取成功！',
               duration: 1500
             });
+            item.taskStatus = 2;
+            this.getPlatTaskByBatch()
             this.getDayTask()
           }
         })
@@ -661,7 +672,12 @@ img {
     color: #fff;
 }*/
 
-
+.h5game-fuli{
+  width: 0.5rem;
+  position: absolute;
+  right: 18%;
+  top: 0.05rem;
+}
 
 .wf-pop .groups .g-title {
   display: flex;
@@ -827,7 +843,7 @@ img {
                 }
                 &.received{
                     position: relative;
-                    background: #006083;
+                    background: #848BA7;
                     color: #fff;
                 }
             }
