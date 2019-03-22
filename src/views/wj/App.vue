@@ -287,7 +287,7 @@ export default {
     },
     getPlatTaskByBatch() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "h5GameTask",
+        value: "218-achievementTask",
         from: "sdk",
         gameType: localStorage.getItem('wj_gameType') || ''
       },{
@@ -301,7 +301,9 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "dayTask"
+        value: "218-dayTask",
+        from: "sdk",
+        gameType: localStorage.getItem('wj_gameType') || ''
       },{
             headers: {
                 'App-Channel': this.curChannel,
