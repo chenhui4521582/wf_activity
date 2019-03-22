@@ -170,13 +170,17 @@ export default {
       return this.hideBackArr.includes(this.curChannel)
     },
     isDayTaskRed() {
-      return this.dayTaskItems && this.dayTaskItems.filter((item)=> {
+      let newArr = []
+      if(this.dayTaskItems && this.cjTaskItems) {
+        newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
+      }
+      return newArr && newArr.filter((item)=> {
         return item.taskStatus == 0
       }).length
     },
     isCjTaskRed() {
-      return this.cjTaskItems && this.cjTaskItems.filter((item)=> {
-        return item.taskStatus == 0
+      return this.cdkArr && this.cdkArr.filter((item)=> {
+        return item.gameCdkeyRsp.remainNum*100 > 0
       }).length
     }
   },
