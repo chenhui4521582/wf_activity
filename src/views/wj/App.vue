@@ -30,62 +30,68 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
-          <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
-              <li v-for="item in cjTaskItems" >
-                  <div class="description">
-                      <div class="head-img">
-                          <img :src="item.icon | filter" alt="">
-                      </div>
-                      <div class="content">
-                          <p v-html="item.taskDescShow"></p>
-                          <div class="progress">
-                              <div class="progress-bg">
-                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                              </div>
-                              <div class="num">
-                                  <img :src="item.awardsImage | filter" alt="">
-                                  <span>{{item.awardsName}}</span>
+          <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
+              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
+              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
+                  <li v-for="item in cjTaskItems" >
+                      <div class="description">
+                          <div class="head-img">
+                              <img :src="item.icon | filter" alt="">
+                          </div>
+                          <div class="content">
+                              <p v-html="item.taskDescShow"></p>
+                              <div class="progress">
+                                  <div class="progress-bg">
+                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                                  </div>
+                                  <div class="num">
+                                      <img :src="item.awardsImage | filter" alt="">
+                                      <span>{{item.awardsName}}</span>
+                                  </div>
                               </div>
                           </div>
                       </div>
-                  </div>
-                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
-                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" >
-                      已完成
-                  </div>
-              </li>
-          </ul>
-          <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
-          <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
-              <li v-for="item in dayTaskItems" >
-                  <div class="description">
-                      <div class="head-img">
-                          <img :src="item.icon | filter" alt="">
+                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                      <div class="btn received" v-if="item.taskStatus == 2" >
+                          已完成
                       </div>
-                      <div class="content">
-                          <p v-html="item.taskDescShow"></p>
-                          <div class="progress">
-                              <div class="progress-bg">
-                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                              </div>
-                              <div class="num">
-                                  <img :src="item.awardsImage | filter" alt="">
-                                  <span>{{item.awardsName}}</span>
+                  </li>
+              </ul>
+              <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
+              <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
+                  <li v-for="item in dayTaskItems" >
+                      <div class="description">
+                          <div class="head-img">
+                              <img :src="item.icon | filter" alt="">
+                          </div>
+                          <div class="content">
+                              <p v-html="item.taskDescShow"></p>
+                              <div class="progress">
+                                  <div class="progress-bg">
+                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                                  </div>
+                                  <div class="num">
+                                      <img :src="item.awardsImage | filter" alt="">
+                                      <span>{{item.awardsName}}</span>
+                                  </div>
                               </div>
                           </div>
                       </div>
-                  </div>
-                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
-                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" >
-                      已完成
-                  </div>
-              </li>
-          </ul>
+                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                      <div class="btn received" v-if="item.taskStatus == 2" >
+                          已完成
+                      </div>
+                  </li>
+              </ul>
+          </div>
+          <div class="nodata-box" v-else>
+              <img src="./images/nodata.png" class="nodata">
+              <p>暂无数据~</p>
+            </div>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
           <div>
@@ -287,7 +293,7 @@ export default {
     },
     getPlatTaskByBatch() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "218-achievementTask",
+        value: localStorage.getItem('wj_gameType')+"-achievementTask",
         from: "sdk",
         gameType: localStorage.getItem('wj_gameType') || ''
       },{
@@ -301,7 +307,7 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "218-dayTask",
+        value: localStorage.getItem('wj_gameType')+"-dayTask",
         from: "sdk",
         gameType: localStorage.getItem('wj_gameType') || ''
       },{
