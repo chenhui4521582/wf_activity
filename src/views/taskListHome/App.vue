@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="title">
-            <span class="btn-back" @click="backHome" v-if="!curChannel">
+            <span class="btn-back" @click="backHome" v-if="!getChannel">
                 <img src="./images/btn_back.png" alt="">
             </span>
             <img src="./images/title.png">
