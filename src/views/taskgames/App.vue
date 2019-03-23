@@ -492,7 +492,7 @@
               taskId: item.taskId,
               taskLogId: item.taskLogId
           }).then((res)=> {
-            if(res.data.code == 101) {
+            if(res.data.code == 200) {
               if(type == 'newtask') {
                   this.isNewTask = true
               }
