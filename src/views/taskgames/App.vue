@@ -492,7 +492,7 @@
               taskId: item.taskId,
               taskLogId: item.taskLogId
           }).then((res)=> {
-            if(res.data.code == 200) {
+            if(res.data.code == 101) {
               if(type == 'newtask') {
                   this.isNewTask = true
               }
@@ -532,7 +532,7 @@
               value: 'NewUserStairTask'
           }).then((res)=> {
             if(res.data.code == 200) {
-              this.newTaskItems = res.data.data 
+              this.newTaskItems = res.data.data
             }
             if(parent.LoadTaskFinish) {
               parent.LoadTaskFinish()
@@ -579,109 +579,106 @@
             
         },
         async getCrushTask(finishindex,type,val,newuserfinish){
+           
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
-                    let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
-                        curType = type && type == 'checkMode'
-                        
-                    if(curType || finishStatus > -1){
-                        currentParentTask = crushList[finishStatus]
-                    }else{
-                        currentParentTask = crushList.find((item,index) =>{
-                            if(index < 3){
-                                // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                                return item.parentTask.taskStatus == 1 
-                            }else{
-                                return crushList[index]
-                            }
-                        })
-                    }
-                    crushList.map((item,index) =>{
-                        
-                        if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
-                            currentIndex = index
-                            return
-                        }
-                    })
-                    let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-                        finishLength = 0
-                    currentParentTask.subListA.map(item => {
-                        item.taskStatus == 2 ? finishLength += 1 : ''
-                    })
-                    currentParentTask.subListB.map(item => {
-                        item.taskStatus == 2 ? finishLength += 1 : ''
-                    })
-                    
-                    // 外显两条任务类型区分
-                    let type1 = currentParentTask.subListA.find(item => {
-                        return item.taskStatus != 2
-                    })
-
-                    let type2 = currentParentTask.subListB.find(item => {
-                        return item.taskStatus != 2
-                    })
-                    if(!type1){
-                        type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
-                    }
-                    if(!type2){
-                        type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
-                    }
-                    
-                    showSubMasterList.push(type1,type2)
-
-                    // 勋章List
-                    let medalList = []
-                    crushList.map((item,index) => {
-                        let list = {
-                            medalIcon : item.medalIcon,
-                            medalName : item.medalName,
-                            statusIcon : item.statusIcon,
-                            index: index,
-                            selected : false
-                        }
-                        medalList.push(list)
-                    })
-                    
-                    let checkMedalName
-                    if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
-                        checkMedalName = crushList[currentIndex+1].medalName
-                    }else{
-                        checkMedalName = currentParentTask.medalName
-                    }
-                    
-                    medalList.map((val,index) =>{
-                        if(val.medalName == checkMedalName){
-                            val.selected = true
-                        }else{
-                            val.selected = false
-                        }
-                    })
-
-                    let crushTaskList = {
-                        showSubMasterList : showSubMasterList, //外显子任务列表
-                        hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
-                        totalTask : data.data.totalTask, // 总任务数量
-                        currentIndex : currentIndex, // 当前任务索引
-                        currentParentTask : currentParentTask, // 当前任务
-                        allTask : data.data.list,// 总任务列表
-                        finishLength : finishLength, // 当前已完成子任务
-                        currentLength : currentLength, // 当前总任务
-                        gameNameIcon : data.data.gameNameIcon, // 当前任务名称
-                        reward : data.data.reward, // 当前全部奖励
-                        bgIcon : data.data.bgIcon, // 当前任务背景
-                        medalList : medalList , //勋章list
-                    }
-                    this.crushTaskList = crushTaskList
-
-                    if(newuserfinish){
-                      if(!res.data.data.list.length){
-                        this.goTask()
+              let showSubMasterList = [],
+              crushList = data.data.list,currentParentTask,currentIndex,
+              finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
+              curType = type && type == 'checkMode'
+              if(curType || finishStatus > -1){
+                  currentParentTask = crushList[finishStatus]
+              }else{
+                  currentParentTask = crushList.find((item,index) =>{
+                      if(index < 3){
+                          // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                          return item.parentTask.taskStatus == 1 
+                      }else{
+                          return crushList[index]
                       }
-                    }
+                  })
+              }
+              crushList.map((item,index) =>{
+                  
+                  if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
+                      currentIndex = index
+                      return
+                  }
+              })
+              let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
+                  finishLength = 0
+              currentParentTask.subListA.map(item => {
+                  item.taskStatus == 2 ? finishLength += 1 : ''
+              })
+              currentParentTask.subListB.map(item => {
+                  item.taskStatus == 2 ? finishLength += 1 : ''
+              })
+              // 外显两条任务类型区分
+              let type1 = currentParentTask.subListA.find(item => {
+                  return item.taskStatus != 2
+              })
+
+              let type2 = currentParentTask.subListB.find(item => {
+                  return item.taskStatus != 2
+              })
+              if(!type1){
+                  type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
+              }
+              if(!type2){
+                  type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
+              }
                     
-                }
-            
+              showSubMasterList.push(type1,type2)
+
+              // 勋章List
+              let medalList = []
+              crushList.map((item,index) => {
+                  let list = {
+                      medalIcon : item.medalIcon,
+                      medalName : item.medalName,
+                      statusIcon : item.statusIcon,
+                      index: index,
+                      selected : false
+                  }
+                  medalList.push(list)
+              })
+              
+              let checkMedalName
+              if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
+                  checkMedalName = crushList[currentIndex+1].medalName
+              }else{
+                  checkMedalName = currentParentTask.medalName
+              }
+              
+              medalList.map((val,index) =>{
+                  if(val.medalName == checkMedalName){
+                      val.selected = true
+                  }else{
+                      val.selected = false
+                  }
+              })
+
+              let crushTaskList = {
+                  showSubMasterList : showSubMasterList, //外显子任务列表
+                  hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
+                  totalTask : data.data.totalTask, // 总任务数量
+                  currentIndex : currentIndex, // 当前任务索引
+                  currentParentTask : currentParentTask, // 当前任务
+                  allTask : data.data.list,// 总任务列表
+                  finishLength : finishLength, // 当前已完成子任务
+                  currentLength : currentLength, // 当前总任务
+                  gameNameIcon : data.data.gameNameIcon, // 当前任务名称
+                  reward : data.data.reward, // 当前全部奖励
+                  bgIcon : data.data.bgIcon, // 当前任务背景
+                  medalList : medalList , //勋章list
+              }
+              this.crushTaskList = crushTaskList
+            }
+            if(newuserfinish){
+              if(data.data && (!data.data.list || !data.data.list.length)){
+                this.goTask()
+              }
+            }
         },
         kfclick(){
           this.showzspop=true
@@ -703,11 +700,11 @@
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
                     '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
             if(baiduChannel.includes(this.channel)){
-                return `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
+                parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
             } else if(this.channel == '700002'){
-                return `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
+                parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
             }else{
-               return `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
+               parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
             }
         },
         closeNewUser () {
