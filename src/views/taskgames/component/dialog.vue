@@ -13,7 +13,6 @@
                 <img v-else  class="hb-icon" src="../img/dialog/leaf.png" alt="">
                 <p class="num">{{receiveData.awardsName}}</p>
             </div>
-                
             <div class="close" @click="close">朕收下了</div>
         </div>
     </main>
