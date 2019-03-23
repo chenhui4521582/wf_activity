@@ -22,7 +22,7 @@
             <div class="new-task-inner">
                 <h4 class="h-title h-new-title icon-tips">
                   <p class="h-subtitle">
-                    <img src="./images/xr-icon.png" class="xr-icon">
+                    <img src="./img/title1.png" class="xr-icon">
                     <img src="./images/small-xs-tips.png" class="small-xs-tips">
                   </p>
                   <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
@@ -88,7 +88,6 @@
                 <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
             </ul>
           </div>
-
       </div>
       <template v-else>
         <!-- 糖果大师任务 -->
@@ -468,8 +467,8 @@
             }
             if(val == 'reset'){
               this.newUserTaskFinish = false
+              this.getCrushTask('','',this.checkCurrentTask(),'newUserfinish')
             }
-            
         },
         refreshTask(index,type,val){
             this.getCrushTask(index,type,this.checkCurrentTask())
@@ -493,7 +492,7 @@
               taskId: item.taskId,
               taskLogId: item.taskLogId
           }).then((res)=> {
-            if(res.data.code == 200) {
+            if(res.data.code == 101) {
               if(type == 'newtask') {
                   this.isNewTask = true
               }
@@ -533,7 +532,7 @@
               value: 'NewUserStairTask'
           }).then((res)=> {
             if(res.data.code == 200) {
-              this.newTaskItems = res.data.data
+              this.newTaskItems = res.data.data 
             }
             if(parent.LoadTaskFinish) {
               parent.LoadTaskFinish()
@@ -579,7 +578,7 @@
             })
             
         },
-        async getCrushTask(finishindex,type,val){
+        async getCrushTask(finishindex,type,val,newuserfinish){
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
                     let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
@@ -674,6 +673,13 @@
                         medalList : medalList , //勋章list
                     }
                     this.crushTaskList = crushTaskList
+
+                    if(newuserfinish){
+                      if(!res.data.data.list.length){
+                        this.goTask()
+                      }
+                    }
+                    
                 }
             
         },
@@ -692,6 +698,17 @@
           }else{
             parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
           }
+        },
+        goTask () {
+            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+            if(baiduChannel.includes(this.channel)){
+                return `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
+            } else if(this.channel == '700002'){
+                return `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
+            }else{
+               return `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
+            }
         },
         closeNewUser () {
           if(parent.closeTaksPage) {

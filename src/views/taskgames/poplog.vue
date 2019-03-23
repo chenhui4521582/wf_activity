@@ -20,7 +20,7 @@
                 <div class="close" @click="close">朕收下了</div>
             </div>
         </div>
-        <div class="content-box" v-else >
+        <div class="content-box new" v-else >
             <img class="bg" src="./img/dialog/bg.png" alt="">
             <div v-if="!newUserTaskFinish">
               <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
@@ -46,13 +46,13 @@
               </div>
             </div>
             <div v-else>
-              <div class="new-user-taks-toask">
-                <div class="content">
-                  <img src="./img/toast_title.png" alt="" class="title">
-                  <img src="./img/signIn-icon.png" alt="" class="price">
-                  <div class="num">5元话费</div>
-                  <div class="btn" @click="close">去赚更多奖励</div>
-                </div>
+              <div class="content">
+                <img src="./img/toast_title.png" alt="" class="title">
+                <img src="./img/signIn-icon.png" alt="" class="price">
+                <div class="num">5元话费</div>
+                <div class="explain">大师任务已开启</div>
+                <div class="btn" @click="close">去看看</div>
+                <div class="closed" @click="closed"><img src="./img/closed.png" alt=""></div>
               </div>
             </div>
         </div>
@@ -82,6 +82,9 @@
       newUserTaskFinish: Boolean
     },
 		methods: {
+      closed () {
+        this.$emit('close')
+      },
 			close(){
         if(this.masterTask){
             let index = this.awardItem && this.awardItem.index,
@@ -93,16 +96,16 @@
             }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
                 this.$emit('close','showMedalAnimate')
             }
-            if(this.newUserTaskFinish){
-              this.$emit('close','reset')
-            }
+ 
         }
-  
+        if(this.newUserTaskFinish){
+          this.$emit('close','reset')
+        }
 				this.$emit('close')
-			}
+      }
     },
     mounted() {
-      console.warn(this.newUserTaskFinish)
+      
 		}
 	}
 </script>
@@ -265,71 +268,81 @@
             }
         }
     }
-    .new-user-taks-toask {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-  .mask {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    background: rgba(0,0,0,.7);
-  }
-  .rotate {
-    position: absolute;
-    left: 50%;
-    top: 0%;
-    z-index: 2;
-    width: 130%;
-    margin-left: -65%;
-    animation: rotate 2s linear infinite;
-  }
-  .content {
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    z-index: 3;
-    width: 4.8rem;
-    height: 5.3rem;
-    background: url(./img/toast_bg.png) no-repeat 0 0;
-    background-size: 100% 100%;
-    transform: translate(-50%, -50%);
-    overflow: hidden;
-    .title {
-      margin: .59rem auto .56rem;
-      width: 3.64rem;
-      height: .36rem;
-      display: block;
+    .new {
+      .bg{
+        height: 5.3rem;
+      }
+          .mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background: rgba(0,0,0,.7);
+      }
+      .rotate {
+        position: absolute;
+        left: 50%;
+        top: 0%;
+        z-index: 2;
+        width: 130%;
+        margin-left: -65%;
+        animation: rotate 2s linear infinite;
+      }
+      .content {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        z-index: 3;
+        width: 4.8rem;
+        height: 5.3rem;
+        background-size: 100% 100%;
+        transform: translate(-50%, 0);
+        .title {
+          margin: 0 auto;
+          width: 3.64rem;
+          height: .36rem;
+          display: block;
+        }
+        .price {
+          margin: .7rem auto .07rem;
+          width: 1.49rem;
+          height: 1.49rem;
+          display: block;
+        }
+        .num {
+          text-align: center;
+          font-size: .18rem;
+          color: #fff;
+        }
+        .explain {
+          margin-top: .6rem;
+          text-align: center;
+          font-size: .26rem;
+          color: #FDF469;
+        }
+        .btn {
+          margin: .15rem auto 0;
+          width: 2.4rem;
+          height: .62rem;
+          background: #FFCF52;
+          color: #A34C00;
+          text-align: center;
+          line-height: .62rem;
+          border-radius: 5px;
+        }
+        .closed{
+          width: .44rem;
+          height: .44rem;
+          margin: .5rem auto 0;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
     }
-    .price {
-      margin: 0 auto .2rem;
-      width: 1.49rem;
-      height: 1.49rem;
-      display: block;
-    }
-    .num {
-      text-align: center;
-      font-size: .26rem;
-      color: #fff;
-    }
-    .btn {
-      margin: .66rem auto 0;
-      width: 2.4rem;
-      height: .62rem;
-      background: #FFCF52;
-      color: #A34C00;
-      text-align: center;
-      line-height: .62rem;
-      border-radius: 5px;
-    }
-  }
-}
 
 @keyframes rotate {
   0% {
