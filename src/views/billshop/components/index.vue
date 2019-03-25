@@ -1,7 +1,7 @@
 <template>
   <div class="bill-shop">
-    <headers title="话费券商城"></headers>
-    <div class="s-nav">
+    <headers title="话费券商城" v-if="!getChannel"></headers>
+    <div class="s-nav" :class="{'active':getChannel}">
       <ul>
         <li class="nav-item bill-left">我的话费券：<span>{{ accountBalance }}</span></li>
         <li class="nav-item award-right">
@@ -24,7 +24,7 @@
               </li>
           </ul>
         </div>
-        <div class="sp-items">
+        <div class="sp-items"  :class="{'active':getChannel}">
           <scroll :data="curItem">
               <ul>
                 <li 
@@ -65,7 +65,8 @@ export default {
       spCon: null,
       curItem: null,
       idx: 0,
-      sLoading: true
+      sLoading: true,
+      curChannel: localStorage.getItem('APP_CHANNEL')
     }
   },
   mounted() {
@@ -85,6 +86,9 @@ export default {
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
           break;
+        case 'miniWap':
+          parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+          break;
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
       }
@@ -96,6 +100,9 @@ export default {
           break;
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
+        case 'miniWap':
+          parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
           break;
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -154,7 +161,10 @@ export default {
   },
   computed: {
     accountBalance () {
-      return this.spCon && this.spCon.accountBalance || '0.00'
+      return this.spCon && this.spCon.accountBalance.toString() || '0.00'
+    },
+    getChannel() {
+      return this.curChannel == '100047001' || this.curChannel == '100048001'
     }
   }
 }
@@ -175,6 +185,9 @@ export default {
   }
   .s-nav {
     margin: 0.31rem auto 0.4rem;
+    &.active {
+      margin: 0.25rem auto 0.2rem;
+    }
     ul {
       display: flex;
       justify-content: space-between;
@@ -239,13 +252,15 @@ export default {
     }
   }
   .sp-items {
-    /*margin-top: 0.3rem;*/
     width: 100%;
     position: absolute;
     left: 0;
     bottom: 1.4rem;
     top: 2.9rem;
     overflow-y: scroll;
+    &.active {
+      top: 2.1rem;
+    }
     ul {
       padding: 0 0.3rem;
       display: flex;

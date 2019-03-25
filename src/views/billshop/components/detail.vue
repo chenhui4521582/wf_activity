@@ -1,7 +1,7 @@
 <template>
 	<div class="detail" v-if="cAward">
 		<div class="detail-container">
-			<headers title="奖品兑换"></headers>
+			<headers title="奖品兑换" v-if="!getChannel"></headers>
 			<div class="award-container">
 				<div class="pic-box">
 					<img :src="cAward.picture | filter">
@@ -25,14 +25,6 @@
               <p class="r-text">可到我的页面中查看</p>
               <a href="javascript:" class="btn-confirm" @click="checkprize(cAward)">查看奖品</a>
             </div>
-            <!--<div v-show="exchangeStatus ==2">-->
-            <!--<img src="../images/pop-err.png" class="pop-err">-->
-            <!--<div class="pic-box">-->
-            <!--<img :src="cAward.picture | filter">-->
-            <!--</div>-->
-            <!--<a href="javascript:" class="btn-confirm btn-jump" @click="goMallIndex">去逛逛别的商品</a>-->
-            <!--<a href="javascript:" class="btn-confirm" @click="goTaskPage">马上赚话费券</a>-->
-            <!--</div>-->
             <div class="btn-close" @click="closePop"></div>
 				  </div>
         </template>
@@ -70,7 +62,8 @@
 			return {
 				cAward: null,
 				isFragmentStatus: false,
-				exchangeStatus: 0
+				exchangeStatus: 0,
+        curChannel: localStorage.getItem('APP_CHANNEL')
 			}
 		},
 		components: {
@@ -84,6 +77,11 @@
 				this.cAward = JSON.parse(decodeURIComponent(this.getUrlParam('parmas')))
 			})
 		},
+    computed: {
+      getChannel() {
+        return this.curChannel == '100047001' || this.curChannel == '100048001'
+      }
+    },
 		methods: {
 			goMallIndex() {
 				history.go(-1)
@@ -96,6 +94,9 @@
 			        case 'jsWap':
 			          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			          break;
+              case 'miniWap':
+                parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                break;
 			        default:
 			          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
 			    }
@@ -109,6 +110,9 @@
 			        case 'jsWap':
 			          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
 			          break;
+              case 'miniWap':
+                parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+                break;
 			        default:
 			          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
 			    }
@@ -177,6 +181,9 @@
               case 'jsWap':
                 parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
                 break;
+              case 'miniWap':
+                parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
+                break;
               default:
                 parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
             }
@@ -187,6 +194,9 @@
                 break;
               case 'jsWap':
                 parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+                break;
+              case 'miniWap':
+                parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
                 break;
               default:
                 parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
