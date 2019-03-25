@@ -166,7 +166,7 @@ export default {
   mounted() {
     this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):this.getUrlParam('channel')
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
-    this.cGameType = this.getUrlParam('gameType')
+    this.cGameType = this.getUrlParam('gameType') || ''
     let cururl = window.location.href
     this.curlink = this.getUrlParam('wf_cur_link')
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
@@ -302,7 +302,7 @@ export default {
     },
     getPlatTaskByBatch() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: localStorage.getItem('wj_gameType')+"-achievementTask",
+        value: this.cGameType+"-achievementTask",
         from: "sdk",
         gameType: this.cGameType || ''
       },{
@@ -316,7 +316,7 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: localStorage.getItem('wj_gameType')+"-dayTask",
+        value: this.cGameType+"-dayTask",
         from: "sdk",
         gameType: this.cGameType || ''
       },{
