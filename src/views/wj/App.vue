@@ -15,6 +15,7 @@
             <img src="./images/icon-home.png" alt="" class="icon-home" />游戏大厅
           </div>
         </div>
+        <img src="./images/fighur.png" class="fighur" v-show="isFighur">
         <div class="n-tab">
           <ul>
             <li :class="curIndex==0 ? 'active':'' " @click="tabNav(0)">
@@ -58,7 +59,9 @@
                           已完成
                       </div>
                   </li>
+                  <p class="cj-text-ys">温馨提示：成就任务的进度可能会受网络影响，会有几分钟的延迟。</p>
               </ul>
+
               <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
               <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
                   <li v-for="item in dayTaskItems" >
@@ -153,6 +156,8 @@ export default {
         curIndex: 0,
         dayTaskItems: null,
         cjTaskItems: null,
+        isFighur: false,
+        timer1: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
             '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
       }
@@ -214,31 +219,34 @@ export default {
     },
     goFinish({gameType, url, action, taskId},type) {
       let actionsArr = [39,35,34,32]
-      setTimeout(() => {
-          // 跳转到首页（关闭）
-          if(action == 36 || url == '/plat/') {
-              parent.location.href = this.jumpToPlat()
-              return
-          }
-          // 跳转商城
-          if (gameType == 0 && actionsArr.includes(action)) {
-              parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
-              return
-          }
-          // 跳平台(关闭)
-          if (gameType == 0 && action == 2) {
-              parent.location.href = this.jumpToPlat()
-              return
-          }
-          // 跳转固定入口
-          if(url && url.indexOf('?fixedEntry') != -1) {
-              let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.curChannel + '&token=' + this.curToken;
-              parent.location.href = url1;
-              return;
-          }
+      // 跳转到首页（关闭）
+      if(action == 36 || url == '/plat/') {
+          parent.location.href = this.jumpToPlat()
+          return
+      }
+      // 跳转商城
+      if (gameType == 0 && actionsArr.includes(action)) {
+          parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+          return
+      }
+      // 跳平台(关闭)
+      if (gameType == 0 && action == 2) {
+          parent.location.href = this.jumpToPlat()
+          return
+      }
+      // 跳转固定入口
+      if(url && url.indexOf('?fixedEntry') != -1) {
+          let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.curChannel + '&token=' + this.curToken;
+          parent.location.href = url1;
+          return;
+      }
 
-          parent.location.href=this.jumpToGameUrl({url:url})
-      }, 500)
+      clearTimeout(this.timer1)
+      this.isFighur = true
+      this.timer1 = setTimeout(() => {
+        this.isFighur = false
+      }, 3000)
+      // parent.location.href=this.jumpToGameUrl({url:url})
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
@@ -413,6 +421,23 @@ export default {
 <style lang="less" scoped>
 @import '../../common/css/base.css';
 @import './wj.less';
+.fighur {
+  width: 0.87rem;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  margin-top: -0.32rem;
+  z-index: 100;
+  animation: touch .6s ease-in-out alternate infinite;
+}
+@keyframes touch {
+    0%{
+        transform : translateX(.2rem) 
+    }
+    100%{
+        transform : translateX(0) 
+    }
+}
 .ball {
   width: 1.0rem;
   height: 1.0rem;
@@ -868,6 +893,13 @@ img {
             }
         }
 
+    }
+    .cj-text-ys {
+      font-size: .18rem;
+      color: #394778;
+      text-align: center;
+      line-height: .35rem;
+      padding: .1rem 3.5% 0;
     }
 
 </style>
