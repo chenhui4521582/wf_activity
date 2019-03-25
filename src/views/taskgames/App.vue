@@ -335,10 +335,7 @@
                 case '13':
                     return 'kingdom2-achievement';
                     break;
-                case '18':
-                    return 'warrior-achievement';
-                    break;
-                default : 
+                default :
                     return ''
             }
         },
@@ -352,15 +349,13 @@
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
                 return `https://wap.beeplay123.com/llwWap?channel=700002`
-            } else if(this.channel=='100047001' || this.channel=='100048001') {
-                return `https://wap.beeplay123.com/miniWap?channel=${this.channel}`
             }else{
                return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
             }
         },
         async getHuafeiNum(){
             let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
-            this.huafeiNum = data.data 
+            this.huafeiNum = data.data
         },
         checkTaskStatus(item,type,index){
             if(item.taskStatus == 0){
@@ -396,7 +391,7 @@
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
         goFinish({gameType, url, action, taskId},type) {
-            
+
             let actionsArr = [39,35,34,32]
             GLOBALS.thirdSetsPoint({
                 "event_name": "游戏内任务-去完成",
@@ -406,7 +401,7 @@
                 "target_project_id" : gameType//跳转到的游戏ID
             })
 
-            
+
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
@@ -445,7 +440,7 @@
                 parent.location.href=common.jumpToGameUrl({url:url})
             }, 500)
 
-            
+
         },
         closePopLog(val) {
             this.showMedalAnimate = false
@@ -472,7 +467,9 @@
             }
             if(val == 'reset'){
               this.newUserTaskFinish = false
-              this.getCrushTask('','',this.checkCurrentTask(),'newUserfinish')
+			  if(!this.crushTaskList){
+				this.goTask()
+			  }
             }
         },
         refreshTask(index,type,val){
@@ -497,7 +494,7 @@
               taskId: item.taskId,
               taskLogId: item.taskLogId
           }).then((res)=> {
-            if(res.data.code == 101) {
+            if(res.data.code == 200) {
               if(type == 'newtask') {
                   this.isNewTask = true
               }
@@ -517,7 +514,7 @@
                       this.currentMedalIndex = index
                       this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                       break
-                  case 'dayTask' : 
+                  case 'dayTask' :
                       this.getDayTask()
                       break
                   default:
@@ -561,7 +558,7 @@
 
             }
             })
-            
+
         },
         getTransInfo() {
             this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res)=> {
@@ -581,10 +578,10 @@
                 })
             }
             })
-            
+
         },
         async getCrushTask(finishindex,type,val,newuserfinish){
-           
+
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
               let showSubMasterList = [],
@@ -597,14 +594,14 @@
                   currentParentTask = crushList.find((item,index) =>{
                       if(index < 3){
                           // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                          return item.parentTask.taskStatus == 1 
+                          return item.parentTask.taskStatus == 1
                       }else{
                           return crushList[index]
                       }
                   })
               }
               crushList.map((item,index) =>{
-                  
+
                   if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
                       currentIndex = index
                       return
@@ -632,7 +629,7 @@
               if(!type2){
                   type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
               }
-                    
+
               showSubMasterList.push(type1,type2)
 
               // 勋章List
@@ -647,14 +644,14 @@
                   }
                   medalList.push(list)
               })
-              
+
               let checkMedalName
               if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
                   checkMedalName = crushList[currentIndex+1].medalName
               }else{
                   checkMedalName = currentParentTask.medalName
               }
-              
+
               medalList.map((val,index) =>{
                   if(val.medalName == checkMedalName){
                       val.selected = true
@@ -677,12 +674,7 @@
                   bgIcon : data.data.bgIcon, // 当前任务背景
                   medalList : medalList , //勋章list
               }
-              this.crushTaskList = crushTaskList
-            }
-            if(newuserfinish){
-              if(data.data && (!data.data.list || !data.data.list.length)){
-                this.goTask()
-              }
+              this.crushTaskList = crushTaskList;
             }
         },
         kfclick(){
@@ -695,8 +687,6 @@
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          }else if(this.channel=='100047001' || this.channel=='100048001') {
-            parent.location.href = `https://wap.beeplay123.com/miniWap/#/problem?tab=contact_personal&channel=${this.channel}`
           } else if(this.channel == '700002'){
             parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
           }else{
