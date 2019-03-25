@@ -1,0 +1,50 @@
+.wf-container {
+	.n-tab {
+		
+	    margin: 0 auto;
+	    display: flex;
+	    align-items: center;
+		ul {
+			width: 91%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0.4rem auto;
+		}
+		li {
+			/*width: 2.7rem;*/
+			flex: 1;
+			height: 0.6rem;
+			background: url(./images/new/wj-btn-gray.png) no-repeat center top;
+			background-size: 100% 100%;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 0.065rem;
+			&.active {
+				background: url(./images/new/wj-btn-normal.png) no-repeat center top;
+				background-size: 100% 100%;
+			}
+			.icon {
+				width: 0.77rem;
+				height: 0.26rem;
+			}
+		}
+	}
+	.g-item1{
+		width: 100%;
+		position: absolute;
+		top: 2.5rem;
+    	bottom: .2rem;
+		overflow: scroll;
+		.g-text {
+			display: flex;
+    		align-items: center;
+			img {
+				width: 0.4rem;
+				margin-right: 0.1rem;
+			}
+		}
+	}
+}

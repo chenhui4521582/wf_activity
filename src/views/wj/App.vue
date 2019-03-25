@@ -15,16 +15,95 @@
             <img src="./images/icon-home.png" alt="" class="icon-home" />游戏大厅
           </div>
         </div>
-        <div class="wf-title">
-          <h4 class="pull-fl"><img src="./images/icon-pac.png" alt="" class="icon-pac"/>免费大礼包</h4>
-          <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
+        <img src="./images/fighur.png" class="fighur" v-show="isFighur">
+        <div class="n-tab">
+          <ul>
+            <li :class="curIndex==0 ? 'active':'' " @click="tabNav(0)">
+              <img class="icon" src="./images/new/icon-rw-light.png" v-if="curIndex==0">
+              <img class="icon" src="./images/new/icon-rw.png" v-else>
+              <img src="./images/h5game-fuli.png" class="h5game-fuli" v-if="isDayTaskRed">
+            </li>
+            <li :class="curIndex==1 ? 'active':'' " @click="tabNav(1)">
+              <img class="icon" src="./images/new/icon-lb-light.png" v-if="curIndex==1">
+              <img class="icon" src="./images/new/icon-lb.png" v-else>
+              <img src="./images/h5game-fuli.png" class="h5game-fuli" v-if="isCjTaskRed">
+            </li>
+          </ul>
         </div>
-        <div class="groups">
+        <div class="groups g-item1" v-if="curIndex == 0">
+          <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
+              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
+              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
+                  <li v-for="item in cjTaskItems" >
+                      <div class="description">
+                          <div class="head-img">
+                              <img :src="item.icon | filter" alt="">
+                          </div>
+                          <div class="content">
+                              <p v-html="item.taskDescShow"></p>
+                              <div class="progress">
+                                  <div class="progress-bg">
+                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                                  </div>
+                                  <div class="num">
+                                      <img :src="item.awardsImage | filter" alt="">
+                                      <span>{{item.awardsName}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                      <div class="btn received" v-if="item.taskStatus == 2" >
+                          已完成
+                      </div>
+                  </li>
+                  <p class="cj-text-ys">温馨提示：成就任务的进度可能会受网络影响，会有几分钟的延迟。</p>
+              </ul>
+
+              <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
+              <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
+                  <li v-for="item in dayTaskItems" >
+                      <div class="description">
+                          <div class="head-img">
+                              <img :src="item.icon | filter" alt="">
+                          </div>
+                          <div class="content">
+                              <p v-html="item.taskDescShow"></p>
+                              <div class="progress">
+                                  <div class="progress-bg">
+                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                                  </div>
+                                  <div class="num">
+                                      <img :src="item.awardsImage | filter" alt="">
+                                      <span>{{item.awardsName}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                      <div class="btn received" v-if="item.taskStatus == 2" >
+                          已完成
+                      </div>
+                  </li>
+              </ul>
+          </div>
+          <div class="nodata-box" v-else>
+              <img src="./images/nodata.png" class="nodata">
+              <p>暂无数据~</p>
+            </div>
+        </div>
+        <div class="groups g-item1" v-if="curIndex == 1">
           <div>
+            <div class="wf-title">
+              <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
+            </div>
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
             </div>
-            
             <ul id="sUl" v-if="cdkArr && cdkArr.length">
               <li v-for="item in cdkArr">
                 <div v-if="item.IF_GET">
@@ -62,6 +141,8 @@
   </div>
 </template>
 <script>
+import common from "../../common/js/utils";
+import base64url from 'base64-url';
 export default {
   data() {
       return {
@@ -72,37 +153,185 @@ export default {
         hideBackArr: ['100037','100033001'],
         curChannel: null,
         curToken: null,
+        curIndex: 0,
+        dayTaskItems: null,
+        cjTaskItems: null,
+        isFighur: false,
+        timer1: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
             '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
       }
   },
   mounted() {
-    
-
     this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):this.getUrlParam('channel')
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
 
-    
-
     let cururl = window.location.href
-    // this.curlink = cururl.indexOf('?') != -1 ? cururl.split('?wf_cur_link=')[1] : cururl
     this.curlink = this.getUrlParam('wf_cur_link')
-    // console.log('this.curlink:::', this.curlink)
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
+      this.getDayTask()
+      this.getPlatTaskByBatch()
     }
     
   },
   computed: {
     isHideMenu() {
       return this.hideBackArr.includes(this.curChannel)
+    },
+    isDayTaskRed() {
+      let newArr = []
+      if(this.dayTaskItems && this.cjTaskItems) {
+        newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
+      }
+      return newArr && newArr.filter((item)=> {
+        return item.taskStatus == 0
+      }).length
+    },
+    isCjTaskRed() {
+      return this.cdkArr && this.cdkArr.filter((item)=> {
+        return item.gameCdkeyRsp.remainNum*100 > 0
+      }).length
     }
   },
   methods: {
+    receive(item) {
+        this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+          taskId: item.taskId,
+          taskLogId: item.taskLogId
+        },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res)=> {
+          if(res.data.code == 200) {
+            this.$toast.show({
+              message: '领取成功！',
+              duration: 1500
+            });
+            item.taskStatus = 2;
+            this.getPlatTaskByBatch()
+            this.getDayTask()
+          }
+        })
+    },
+    goFinish({gameType, url, action, taskId},type) {
+      let actionsArr = [39,35,34,32]
+      // 跳转到首页（关闭）
+      if(action == 36 || url == '/plat/') {
+          parent.location.href = this.jumpToPlat()
+          return
+      }
+      // 跳转商城
+      if (gameType == 0 && actionsArr.includes(action)) {
+          parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+          return
+      }
+      // 跳平台(关闭)
+      if (gameType == 0 && action == 2) {
+          parent.location.href = this.jumpToPlat()
+          return
+      }
+      // 跳转固定入口
+      if(url && url.indexOf('?fixedEntry') != -1) {
+          let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.curChannel + '&token=' + this.curToken;
+          parent.location.href = url1;
+          return;
+      }
+
+      clearTimeout(this.timer1)
+      this.isFighur = true
+      this.timer1 = setTimeout(() => {
+        this.isFighur = false
+      }, 3000)
+      // parent.location.href=this.jumpToGameUrl({url:url})
+    },
+    trimStr:function(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, '')
+    },
+    jumpToGameUrl:function (item) {
+        if (item && item.url.indexOf('external=1') != -1) {
+            if (item.url.includes('?external=1')) {
+                    return this.trimStr(item.url) +
+                    '&channel=' +
+                    this.curChannel +
+                    '&token=' + this.curToken +
+                    '&gurl=' +
+                    item.url.split('?')[0] +
+                    '&pf=wap'
+            } else {
+                return this.trimStr(item.url) +
+                    '&channel=' +
+                    this.curChannel +
+                    '&token=' + this.curToken +
+                    '&gurl=' +
+                    base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+                    '&pf=wap'
+            }
+            return
+        }
+        if (item && item.url.indexOf('databiger-h5') != -1) {
+            return this.trimStr(item.url) +
+                '?channel=' +
+                this.curChannel +
+                '&token=' + this.curToken
+        }
+        return item.url +
+                '?channel=' +
+                this.curChannel +
+                '&token=' + this.curToken
+    },
+    jumpToPlat(){
+        let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+        if(baiduChannel.includes(this.curChannel)){
+            return `https://wap.beeplay123.com/bdWap?channel=${this.curChannel}`
+        } else if(this.curChannel == '700002'){
+            return `https://wap.beeplay123.com/llwWap?channel=700002`
+        }else{
+           return `https://wap.beeplay123.com/wap/home?channel=${this.curChannel}`
+        }
+    },
+    transUint(finishNum,taskOps){
+        let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
+            ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
+        return  finish+'/'+ops
+    },
+    getPlatTaskByBatch() {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+        value: localStorage.getItem('wj_gameType')+"-achievementTask",
+        from: "sdk",
+        gameType: localStorage.getItem('wj_gameType') || ''
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res) => {
+        this.cjTaskItems = res.data.data
+      })
+    },
+    getDayTask() {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+        value: localStorage.getItem('wj_gameType')+"-dayTask",
+        from: "sdk",
+        gameType: localStorage.getItem('wj_gameType') || ''
+      },{
+            headers: {
+                'App-Channel': this.curChannel,
+                'Authorization': this.curToken
+            }
+        }).then((res) => {
+        this.dayTaskItems = res.data.data
+      })
+    },
+    tabNav(idx) {
+      this.curIndex = idx
+    },
     //获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-        // var url = document.referrer;
         var url = window.location.href;
         var Request = new Object();
         if (url.indexOf("?") != -1) {
@@ -173,7 +402,6 @@ export default {
     getCdkeyStatus() {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
         value: this.curlink
-        // value: 'http://www.5idhf.com/sssj'
       },{
             headers: {
                 'App-Channel': this.curChannel,
@@ -192,7 +420,24 @@ export default {
 </script>
 <style lang="less" scoped>
 @import '../../common/css/base.css';
-
+@import './wj.less';
+.fighur {
+  width: 0.87rem;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  margin-top: -0.32rem;
+  z-index: 100;
+  animation: touch .6s ease-in-out alternate infinite;
+}
+@keyframes touch {
+    0%{
+        transform : translateX(.2rem) 
+    }
+    100%{
+        transform : translateX(0) 
+    }
+}
 .ball {
   width: 1.0rem;
   height: 1.0rem;
@@ -212,14 +457,6 @@ export default {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
-
-/*#wf-iframe {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}*/
 
 a {
   text-decoration: none;
@@ -250,18 +487,6 @@ img {
   padding: .15rem .5rem .15rem .29rem;
   margin-bottom: .4rem;
 }
-
-/*#wf-mask {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.5);
-  transition: all 0s;
-  display: none;
-}*/
 
 .g-exchange {
   display: flex;
@@ -380,7 +605,9 @@ img {
   color: #fff;
   height: .45rem;
   position: relative;
-  margin: .5rem 0 .32rem 0;
+  margin: 0 0 .22rem 0;
+  display: flex;
+  justify-content: center;
 }
 
 .wf-pop .wf-title h4 {
@@ -400,9 +627,7 @@ img {
   color: #fff;
   display: flex;
   align-items: center;
-  position: absolute;
-  right: .30rem;
-  bottom: .06rem;
+  justify-content: center;
 }
 
 .wf-pop .btn-useage .icon-ys {
@@ -424,13 +649,7 @@ img {
 
 .wf-pop .groups {
   width: 100%;
-  position: absolute;
-  top: 2.36rem;
-  bottom: 0;
   text-align: left;
-  overflow: auto;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   margin-bottom: 0.2rem;
 }
 
@@ -439,9 +658,8 @@ img {
   background: #1F2A4D;
   color: #fff;
   margin: 0 auto .2rem;
-  padding: 0 5.6%;
+  padding: 0.15rem 0.24rem;
   box-sizing: border-box;
-  padding-bottom: .2rem;
   &:last-child {
     margin: 0 auto;
   };
@@ -453,21 +671,49 @@ img {
 
 .wf-pop .groups li a.btn-normal {
   display: block;
-  width: 1.35rem;
-  height: .45rem;
-  line-height: .45rem;
+  /*width: 1.35rem;*/
+  padding: 2% 3%;
+  /*height: .45rem;*/
+  /*line-height: .45rem;*/
   text-align: center;
   font-size: .22rem;
   font-weight: normal;
+  border-radius:0.08rem;
 }
 
 .wf-pop .groups li a.btn-lq {
-  background: url(./images/btn-lq.png) no-repeat;
+  background:rgba(238,111,11,1);
+  background-size: 100% 100%;
+}
+.wf-pop .groups li a.btn-qwc {
+  background: #1976D2;
   background-size: 100% 100%;
 }
 .wf-pop .groups li a.btn-gq {
-  background: url(./images/btn-gq.png) no-repeat;
+  background:rgba(132,139,167,1);
   background-size: 100% 100%;
+}
+
+
+
+/*&.play{
+    background: #1976D2;
+}
+&.gray{
+    background: #fff;
+    color: #141F33;
+}
+&.received{
+    position: relative;
+    background: #006083;
+    color: #fff;
+}*/
+
+.h5game-fuli{
+  width: 0.5rem;
+  position: absolute;
+  right: 18%;
+  top: 0.05rem;
 }
 
 .wf-pop .groups .g-title {
@@ -493,10 +739,11 @@ img {
 }
 
 .wf-pop .groups .g-percent .g-percent-bg {
-  min-width: 30% !important;
+  max-width: 100%;
+  min-width: 30%;
   height: .22rem;
   line-height: .22rem;
-  font-size: 12px;
+  font-size: 0.2rem;
   background: #3A58B5;
   border-radius: .10rem;
   position: absolute;
@@ -526,5 +773,133 @@ img {
   display: block;
   margin: 0 auto .33rem;
 }
+.progress-bg{
+    background: #0F1726;
+    width: 90px;
+    margin-right: 5px;
+    position: relative;
+    height: 15px;
+    border-radius: 3px;
+    overflow: hidden;
+    .progress-bar{
+        background: #507BCC;
+        position: absolute;
+        height: 100%;
+        left: 0;
+        width: 30%;
+    }
+    span{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        font-size: 11px;
+        left: 0;
+        line-height: 15px;
+        text-align: center;
+    }
+}
+.groups-title{
+  font-size: 0.28rem;
+  font-weight:bold;
+  color:rgba(255,255,255,1);
+  margin-left: 4.5%;
+  margin-bottom: 0.3rem;
+}
+.task-list-margin{
+  margin-bottom: 0.7rem;
+}
+.task-list{
+        >li{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3%;
+            background: #141F33;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3%;
+            .description{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 80%;
+                .head-img{
+                    width: 0.6rem;
+                    height: 0.6rem;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    margin-right: 3%;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .content{
+                    >p{
+                        font-size: 0.24rem;
+                        font-weight: bold;
+                        margin-bottom: 5%;
+                    }
+                    .progress{
+                        display: flex;
+                        align-items: center;
+
+                        .num{
+                            img{
+                                height: 0.2rem;
+                                display: inline;
+                            }
+                            span{
+                                font-size: 0.2rem;
+                                color: #FFD338;
+                            }
+                        }
+                    }
+                }
+            }
+            .btn{
+                color: #fff;
+                font-weight: bold;
+                font-size: 0.2rem;
+                background: #EE6F0B;
+                padding:2% 3%;
+                border-radius: 4px;
+                text-align: center;
+                box-sizing: border-box;
+                width: 20%;
+              word-break:keep-all;
+              white-space:nowrap;
+                &.play{
+                    background: #1976D2;
+                }
+                &.gray{
+                    background: #fff;
+                    color: #141F33;
+                }
+                &.received{
+                    position: relative;
+                    background: #848BA7;
+                    color: #fff;
+                }
+            }
+            .in-game{
+                position: absolute;
+                bottom: -.25rem;
+                left: .2rem;
+                color: #2F3C49;
+                font-size: .18rem;
+            }
+        }
+
+    }
+    .cj-text-ys {
+      font-size: .18rem;
+      color: #394778;
+      text-align: center;
+      line-height: .35rem;
+      padding: .1rem 3.5% 0;
+    }
 
 </style>
