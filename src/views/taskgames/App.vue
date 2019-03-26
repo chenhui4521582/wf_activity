@@ -214,20 +214,22 @@
         }
     },
     mounted() {
-      if(parent.loadTaksPage) {
-        parent.loadTaksPage()
-      }
-      this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
-      this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
-      this.currentGameType = this.getUrlParam('gametype')
-      localStorage.setItem('ACCESS_TOKEN', this.token)
-      localStorage.setItem('APP_CHANNEL', this.channel)
-
-      this.getTransInfo()
-      this.getDegradeTaskStatus()
-      this.getPhoneFragment()
-      this.getHuafeiNum()
-    //   if(this.currentGameType == 12) 
+        if(parent.loadTaksPage) {
+          parent.loadTaksPage()
+        }
+        this.token = this.getUrlParam('token') ? this.getUrlParam('token') :localStorage.getItem('ACCESS_TOKEN')
+        this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
+        this.currentGameType = this.getUrlParam('gametype')
+        localStorage.setItem('ACCESS_TOKEN', this.token)
+        localStorage.setItem('APP_CHANNEL', this.channel)
+        this.getDegradeTaskStatus()
+        this.getTransInfo()
+        this.getPhoneFragment()
+        this.getHuafeiNum()
+        if(this.channel=='100047001' || this.channel=='100048001'){
+          window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}`
+        }
+    //   if(this.currentGameType == 12)
     },
     computed: {
         huafeiShow(){
