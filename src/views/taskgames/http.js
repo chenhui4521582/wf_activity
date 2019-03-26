@@ -50,7 +50,7 @@ axios.interceptors.response.use(
                         axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res=>{
                             localStorage.removeItem('ACCESS_TOKEN');
                             if(res.data.code==200&&res.data.data){//游客模式
-                                window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html'
+                                window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
                             }else{
                                 Vue.prototype.$toast.show({
                                     message: '未授权，请登录！',
