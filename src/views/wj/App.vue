@@ -371,7 +371,14 @@ export default {
       this.timer1 = setTimeout(() => {
         this.isFighur = false
       }, 3000)
-      // parent.location.href=this.jumpToGameUrl({url:url})
+
+	  //其他外接游戏external=1
+	  if (url && url.indexOf('external=1') != -1) {
+		let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+		return parent.location.href = gameUrl
+	  }
+	  parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
@@ -581,7 +588,12 @@ export default {
 	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
 		taskId: item.taskId,
 		taskLogId: item.taskLogId
-	  }).then((res)=> {
+      },{
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res)=> {
 		if(res.data.code == 101) {
 		  this.awardItem = item
 		  switch(type) {
