@@ -90,21 +90,12 @@ export default {
             window.location.href = url
             return
         }
-        if (localStorage.getItem('APP_CHANNEL') == '100006') {
-            location.href =
-                '//wap.beeplay123.com/channel/newokooo'+item.url+'/' +
-                '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
-                '&token=' +
-                localStorage.getItem('ACCESS_TOKEN')
-        } else {
-            location.href =
+        location.href =
                 item.url +
                 '?channel=' +
                 localStorage.getItem('APP_CHANNEL') +
                 '&token=' +
                 localStorage.getItem('ACCESS_TOKEN')
-        }
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
@@ -139,18 +130,10 @@ export default {
                 '&token=' +
                 localStorage.getItem('ACCESS_TOKEN')
         }
-        if (localStorage.getItem('APP_CHANNEL') == '100006') {
-           return '//wap.beeplay123.com/channel/newokooo'+item.url+'/' +
+        return item.url +
                 '?channel=' +
                 localStorage.getItem('APP_CHANNEL') +
                 '&token=' +
                 localStorage.getItem('ACCESS_TOKEN')
-        } else {
-            return item.url +
-                '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
-                '&token=' +
-                localStorage.getItem('ACCESS_TOKEN')
-        }
     },
 }
