@@ -566,7 +566,7 @@ export default {
 	},
 	checkTaskStatus (item, type, index) {
 	  if (item.taskStatus == 0) {
-		this.receive(item, type, index)
+		this.receive1(item, type, index)
 	  } else if (type == 'day_task' || item.taskStatus == 1) {
 		this.goFinish(item, type)
 	  }
