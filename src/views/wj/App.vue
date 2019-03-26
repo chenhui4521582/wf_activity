@@ -580,7 +580,12 @@ export default {
 	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
 		taskId: item.taskId,
 		taskLogId: item.taskLogId
-	  }).then((res)=> {
+      },{
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res)=> {
 		if(res.data.code == 101) {
 		  this.awardItem = item
 		  switch(type) {
