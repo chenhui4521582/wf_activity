@@ -425,19 +425,13 @@
                     parent.location.href = url1;
                     return;
                 }
+                //其他外接游戏external=1
+                if (url && url.indexOf('external=1') != -1) {
+                  let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+                  return parent.location.href = gameUrl
+                }
+                parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
 
-                // // 球酷
-                // if (url && url.indexOf('databiger-h5') != -1) {
-                //     let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
-                //     return parent.location.href = gameUrl
-                // }
-                // //其他外接游戏external=1
-                // if (url && url.indexOf('external=1') != -1) {
-                //     let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-                //     return parent.location.href = gameUrl
-                // }
-                // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
-                parent.location.href=common.jumpToGameUrl({url:url})
             }, 500)
 
 
