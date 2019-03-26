@@ -97,15 +97,7 @@
                 </li>
                 <li>领取</li>
               </ul>
-              <poplog
-                  v-if="isPopLog"
-                  :awardItem="awardItem"
-                  :motherTask="motherTask"
-                  :masterTask="masterTask"
-                  :newUserTaskFinish="newUserTaskFinish"
-                  @close="closePopLog"
-              >
-              </poplog>
+
             </div>
           </div>
           <div v-else>
@@ -174,6 +166,15 @@
               <p>暂无数据~</p>
             </div>
           </div>
+          <poplog
+            v-if="isPopLog"
+            :awardItem="awardItem"
+            :motherTask="motherTask"
+            :masterTask="masterTask"
+            :newUserTaskFinish="newUserTaskFinish"
+            @close="closePopLog"
+          >
+          </poplog>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
           <div>
@@ -599,6 +600,7 @@ export default {
 		  switch(type) {
 			case 'mother_task':
 			  this.newUserTaskFinish = true
+			  this.getNewTask()
 			  break;
 			default:
 			  item.taskStatus = 2
@@ -625,7 +627,6 @@ export default {
 	},
 	closePopLog(val) {
 	  this.isPopLog = false
-	  this.getNewTask()
       if(val){
         this.goTask()
       }
