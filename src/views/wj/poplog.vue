@@ -103,7 +103,7 @@
     .shine-box {
         width: 100%;
         position: fixed;
-        top: 5%;
+        top: 24%;
         left: 0%;
         z-index: 6;
         overflow: hidden;
@@ -128,7 +128,7 @@
         width: 80%;
         left: 50%;
         margin-left: -40%;
-        top: 10%;
+        top: 27%;
         z-index: 7;
         -webkit-transform: scale(0.8);
         transform: scale(0.8);

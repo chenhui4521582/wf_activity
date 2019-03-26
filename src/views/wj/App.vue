@@ -85,7 +85,7 @@
                 <li class="btn play" v-if="newUserTaskobj.taskStatus == 1">去完成</li>
                 <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
               </ul>
-              <ul class="finish" v-else @click="receive(motherTask,'mother_task')">
+              <ul class="finish" v-else @click="receive1(motherTask,'mother_task')">
                 <li>
                   <div class="head-img">
                     <img src="./img/signIn-icon.png" alt="">
@@ -373,10 +373,10 @@ export default {
 
 	  //其他外接游戏external=1
 	  if (url && url.indexOf('external=1') != -1) {
-		let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+		let gameUrl = this.trimStr(url) + '&channel=' + this.curChannel + '&token=' + this.curToken + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
 		return parent.location.href = gameUrl
 	  }
-	  parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+	  parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.curChannel + '&token=' + this.curToken;
 
     },
     trimStr:function(str) {
@@ -570,7 +570,7 @@ export default {
 		this.goFinish(item, type)
 	  }
 	},
-	receive(item, type,index,medalimg) {
+	receive1(item, type,index,medalimg) {
 	  if(type == 'crush_task' || type == 'mother_crush_task'){
 		item.awardsFlag = type
 		item.index = index
@@ -593,7 +593,7 @@ export default {
           'Authorization': this.curToken
         }
       }).then((res)=> {
-		if(res.data.code == 101) {
+		if(res.data.code == 200) {
 		  this.awardItem = item
 		  switch(type) {
 			case 'mother_task':
@@ -611,53 +611,15 @@ export default {
 		}
 	  })
 	},
-	goFinish({gameType, url, action, taskId},type) {
-	  let actionsArr = [39,35,34,32]
-	  GLOBALS.thirdSetsPoint({
-		"event_name": "游戏内任务-去完成",
-		"task_id": taskId,
-		"event_id": 1210040803,
-		"project_id": this.currentGameType,//当前游戏ID
-		"target_project_id" : gameType//跳转到的游戏ID
-	  })
-
-	  setTimeout(() => {
-
-		// 跳转到首页（关闭）
-		if(action == 36 || url == '/plat/') {
-		  parent.location.href = this.jumpToPlat()
-		  return
-		}
-		// 跳转商城
-		if (gameType == 0 && actionsArr.includes(action)) {
-		  parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
-		  return
-		}
-		// 跳平台(关闭)
-		if (gameType == 0 && action == 2) {
-		  parent.location.href = this.jumpToPlat()
-		  return
-		}
-		// 跳转固定入口
-		if(url && url.indexOf('?fixedEntry') != -1) {
-		  let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
-		  parent.location.href = url1;
-		  return;
-		}
-
-		parent.location.href=common.jumpToGameUrl({url:url})
-	  }, 500)
-
-	},
 	goTask () {
 	  let baiduChannel = ['100039','100040','100041','100042','100045','100046',
 		'100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
-	  if(baiduChannel.includes(this.channel)){
-		parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
-	  } else if(this.channel == '700002'){
+	  if(baiduChannel.includes(this.curChannel)){
+		parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.curChannel}`
+	  } else if(this.curChannel == '700002'){
 		parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
 	  }else{
-		parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
+		parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.curChannel}`
 	  }
 	},
 	closePopLog(val) {
