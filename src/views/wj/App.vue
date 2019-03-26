@@ -85,7 +85,7 @@
                 <li class="btn play" v-if="newUserTaskobj.taskStatus == 1">去完成</li>
                 <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
               </ul>
-              <ul class="finish" @click="receive(motherTask,'mother_task')">
+              <ul class="finish" v-else @click="receive(motherTask,'mother_task')">
                 <li>
                   <div class="head-img">
                     <img src="./img/signIn-icon.png" alt="">
@@ -174,7 +174,6 @@
               <p>暂无数据~</p>
             </div>
           </div>
-
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
           <div>
@@ -539,8 +538,15 @@ export default {
       })
     },
 	getNewTask() {
-	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
+	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
+      {
 		value: 'NewUserStairTask'
+	  },
+      {
+		headers: {
+		  'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+		}
 	  }).then((res)=> {
 		if(res.data.code == 200) {
 		  this.newTaskItems = res.data.data
