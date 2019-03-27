@@ -78,7 +78,10 @@ export default {
     newUserAlert
   },
   methods: {
-    goMyAward() {
+    async goMyAward() {
+      await GLOBALS.marchSetsPoint('A_H5PT0035000633', {
+        residual_phone: this.accountBalance
+      })// H5平台-话费券商城-查看我的奖品
       switch(this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
@@ -93,7 +96,10 @@ export default {
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
       }
     },
-    goTaskPage() {
+    async goTaskPage() {
+      await GLOBALS.marchSetsPoint('A_H5PT0035000638', {
+        residual_phone: this.accountBalance
+      })// H5平台-话费券商城-去赚话费
       switch(this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -109,20 +115,44 @@ export default {
       }
     },
     getNewList(item,index) {
+      switch (index) {
+        case 0:
+          GLOBALS.marchSetsPoint('A_H5PT0035000634', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-好物推荐
+          break;
+        case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0035000636', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-手机数码
+          break;
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0035000635', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-虚拟卡券
+          break;
+      
+        default:
+          break;
+      }
       this.idx = index
       this.curItem = item && item.productList
     },
-    goDetail(item,e) {
+    async goDetail(item,e) {
       if(!e._constructed) {
           return;
       }
+      await GLOBALS.marchSetsPoint('A_H5PT0035000637', {
+        residual_phone: this.accountBalance,
+        product_id: item.id,
+        awards_name: item.name
+      })// H5平台-话费券商城-商品点击
       let href = window.location.href
-      if(href.indexOf('?') != -1) {
-        window.location.href = href.split('#')[0]+'&parmas='+encodeURIComponent(JSON.stringify(item))+'#/detail'
-      }else {
-        this.$router.push('/detail?from='+this.getUrlParam('from')+'&parmas='+encodeURIComponent(JSON.stringify(item)))  
+      if (href.indexOf('?') != -1) {
+        window.location.href = href.split('#')[0] + '&accountBalance=' + this.accountBalance + '&parmas=' + encodeURIComponent(JSON.stringify(item)) + '#/detail'
+      } else {
+        this.$router.push('/detail?from=' + this.getUrlParam('from') + '&accountBalance=' + this.accountBalance + '&parmas=' + encodeURIComponent(JSON.stringify(item)))
       }
-      
       // this.$router.push({
       //   path: '/detail',
       //   query: {

@@ -133,7 +133,10 @@
 		        let params = Request[ename] ? Request[ename].split('#')[0] : ''
 		        return params;
 		    },
-		    goExchange() {
+		    async goExchange() {
+          await GLOBALS.marchSetsPoint('A_H5PT0035000638', {
+            residual_phone: this.getUrlParam('accountBalance')
+          })// H5平台-话费券商城-去赚话费
 		    	this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/placeOrder', {
 		    		productId: this.cAward.id
 		    	})
