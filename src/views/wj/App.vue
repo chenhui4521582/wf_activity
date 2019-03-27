@@ -31,28 +31,98 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
+          <div class="new-user-task" v-if="newTaskItems.isNew">
+            <div class="box">
+              <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
+                <div class="tips">
+                  <img src="./img/tips.png" alt="">
+                </div>
+                <div class="text">
+                  <img class="img1" src="./img/title1.png" alt="">
+                  <img class="img2" src="./img/time-limit-bg.png" alt="">
+                </div>
+                <div class="time">
+                  <img class="img3" src="./img/clock.png" alt="">
+                  <span>{{newTaskItems.countDown | formatTime}}</span>
+                </div>
+                <div class="middle" >
+                  <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得5元话费</i></div>
+                  <div class="finish-title" v-else>恭喜！完成了新人任务！</div>
+                  <div class="probar-wrap">
+                    <div class="probar-ball">
+                      <div class="bar" :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></div>
+                    </div>
+                  </div>
+                  <div class="probar-text">
+                    <span>{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</span>
+                    <span class="receive">已有{{newTaskItems.receiverCounter}}人领取</span>
+                  </div>
+                </div>
+              </div>
+              <ul class="bottom"
+                  v-if="motherTask.hasFinishedNum != motherTask.allTaskNum"
+                  @click="checkTaskStatus(newUserTaskobj,'new_user_task')
+              ">
+                <li class="description">
+                  <div class="head-img">
+                    <img :src="newUserTaskobj.icon | filter" alt="">
+                  </div>
+                  <div class="content">
+                    <p>{{newUserTaskobj.taskName}}</p>
+                    <div class="progress">
+                      <div class="progress-bg">
+                        <div class="progress-bar" :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></div>
+                        <span>{{transUint(newUserTaskobj.finishNum,newUserTaskobj.taskOps)}}</span>
+                      </div>
+                      <div class="num">
+                        <img :src="newUserTaskobj.awardsImage | filter" alt="">
+                        <span>{{newUserTaskobj.awardsName}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="btn" v-if="newUserTaskobj.taskStatus == 0">领取</li>
+                <li class="btn play" v-if="newUserTaskobj.taskStatus == 1">去完成</li>
+                <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
+              </ul>
+              <ul class="finish" v-else @click="receive1(motherTask,'mother_task')">
+                <li>
+                  <div class="head-img">
+                    <img src="./img/signIn-icon.png" alt="">
+                  </div>
+                  <div class="content">
+                    <p>快领取话费奖励吧</p>
+                    <p>{{motherTask.awardsName}}</p>
+                  </div>
+                </li>
+                <li>领取</li>
+              </ul>
+
+            </div>
+          </div>
+          <div v-else>
+            <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
               <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">成就任务</h4>
               <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
-                  <li v-for="item in cjTaskItems" >
-                    <div class="description">
-                        <div class="head-img">
-                            <img :src="item.icon | filter" alt="">
-                        </div>
-                        <div class="content">
-                            <p v-html="item.taskDescShow"></p>
-                            <div class="progress">
-                                <div class="progress-bg">
-                                    <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                    <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                                </div>
-                                <div class="num">
-                                    <img :src="item.awardsImage | filter" alt="">
-                                    <span>{{item.awardsName}}</span>
-                                </div>
-                            </div>
-                        </div>
+                <li v-for="item in cjTaskItems" >
+                  <div class="description">
+                    <div class="head-img">
+                      <img :src="item.icon | filter" alt="">
                     </div>
+                    <div class="content">
+                      <p v-html="item.taskDescShow"></p>
+                      <div class="progress">
+                        <div class="progress-bg">
+                          <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                          <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                        </div>
+                        <div class="num">
+                          <img :src="item.awardsImage | filter" alt="">
+                          <span>{{item.awardsName}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
                   <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
                   <div class="btn received" v-if="item.taskStatus == 2" >
