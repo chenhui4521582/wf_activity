@@ -30,7 +30,8 @@
         djsNumber: 60,
         phoneTxt: '',
         description: '',
-        yzm: ''
+        yzm: '',
+        isClick: false
       }
     },
     mounted() {
@@ -47,6 +48,13 @@
         if(!this.description) {
           this.$toast.show({
               message: '请填写反馈信息',
+              duration: 1500
+          })
+          return
+        }
+        if(this.description.length < 5) {
+          this.$toast.show({
+              message: '不能少于5个字符信息',
               duration: 1500
           })
           return
@@ -72,25 +80,33 @@
           })
           return
         }
-
-        this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/newFeedback', {
-            description: this.description,
-            isLogin: 0,
-            phone: this.phoneTxt,
-            smsCode: this.yzm,
-            typeId: 5,
-            userId: this.getUrlParam('uid')
-        }).then((res)=> {
-            if(res.data.code == 200) {
-              this.$toast.show({
-                  message: '提交成功，我们将在3个工作日内联系您，请耐心等待~',
-                  duration: 1500
-              })
-              setTimeout(()=> {
-                history.go(-1)
-              }, 2000)
-            }
-        })
+        if(!this.isClick) {
+          this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/newFeedback', {
+              description: this.description,
+              isLogin: 0,
+              phone: this.phoneTxt,
+              smsCode: this.yzm,
+              typeId: 5,
+              userId: this.getUrlParam('uid')
+          }).then((res)=> {
+              if(res.data.code == 200) {
+                this.isClick = true
+                this.$toast.show({
+                    message: '提交成功，我们将在3个工作日内联系您，请耐心等待~',
+                    duration: 1500
+                })
+                setTimeout(()=> {
+                  history.go(-1)
+                }, 2000)
+              }
+          })
+        }else {
+          this.$toast.show({
+              message: '您已提交不能重复提交',
+              duration: 1500
+          })
+        }
+        
 
         
       },

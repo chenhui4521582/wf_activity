@@ -269,6 +269,11 @@ export default {
 	poplog
   },
   computed: {
+    isCjTaskAllComplete() {
+      return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
+              return item.taskStatus == 2
+            }).length == this.cjTaskItems.length)
+    },
     isHideMenu() {
       return this.hideBackArr.includes(this.curChannel)
     },
