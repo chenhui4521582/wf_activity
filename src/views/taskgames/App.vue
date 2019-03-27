@@ -226,8 +226,10 @@
         this.getTransInfo()
         this.getPhoneFragment()
         this.getHuafeiNum()
-        
-    //   if(this.currentGameType == 12) 
+        if(this.channel=='100047001' || this.channel=='100048001'){
+          window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}`
+        }
+    //   if(this.currentGameType == 12)
     },
     computed: {
         huafeiShow(){
