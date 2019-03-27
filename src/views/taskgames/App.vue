@@ -349,6 +349,8 @@
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
                 return `https://wap.beeplay123.com/llwWap?channel=700002`
+            } else if(this.channel=='100047001' || this.channel=='100048001') {
+                return `https://wap.beeplay123.com/miniWap?channel=${this.channel}`
             }else{
                return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
             }
@@ -426,18 +428,13 @@
                     return;
                 }
 
-                // // 球酷
-                // if (url && url.indexOf('databiger-h5') != -1) {
-                //     let gameUrl = this.trimStr(url) + '?channel=' + this.channel + '&token=' + this.token
-                //     return parent.location.href = gameUrl
-                // }
-                // //其他外接游戏external=1
-                // if (url && url.indexOf('external=1') != -1) {
-                //     let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-                //     return parent.location.href = gameUrl
-                // }
-                // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
-                parent.location.href=common.jumpToGameUrl({url:url})
+                
+                //其他外接游戏external=1
+                if (url && url.indexOf('external=1') != -1) {
+                    let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+                    return parent.location.href = gameUrl
+                }
+                parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
             }, 500)
 
             
@@ -687,6 +684,8 @@
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
+          }else if(this.channel=='100047001' || this.channel=='100048001') {
+            parent.location.href = `https://wap.beeplay123.com/miniWap/#/problem?tab=contact_personal&channel=${this.channel}`
           } else if(this.channel == '700002'){
             parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
           }else{

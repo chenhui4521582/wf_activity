@@ -37,10 +37,13 @@ export default {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break
+          break;
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break
+          break;
+        case 'miniWap':
+          parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
