@@ -4,23 +4,7 @@
         <div class="shine-box">
             <img class="shine"  src="./img/dialog/shine.png" alt="">
         </div>
-        <div class="content-box" v-if="masterTask">
-            <img class="bg" src="./img/dialog/bg.png">
-            <div class="content">
-                <img class="title" src="./img/dialog/congratulations-text.png" alt="">
-                    <!-- 糖果勋章 -->
-                <div v-if="awardItem.showMedalImg" class="crush-wrap">
-                    <img class="medeal-icon" :src="awardItem.medalimg">
-                </div>
-                <div class="icon" v-else>
-                    <img class="hb-icon" src="./img/crushMasterTask/task_huafei.png" alt="">
-                </div>
-                
-                <p class="num">{{awardItem.awardsName}}</p>
-                <div class="close" @click="close">朕收下了</div>
-            </div>
-        </div>
-        <div class="content-box new" v-else >
+        <div class="content-box new">
             <img class="bg" src="./img/dialog/bg.png" alt="">
             <div v-if="!newUserTaskFinish">
               <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
@@ -30,7 +14,7 @@
                 </div>
                 <p class="num">{{awardItem.awardsName}}</p>
                 
-                <div class="text progress" v-if="isNewTask && motherTask">
+                <div class="text progress" v-if="motherTask">
                     <p>任务进度</p>
                     <div class="progress-bg">
                     	<div class="progress-bar" :style="{width:motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%'}"></div><span>{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</span></div>
@@ -51,8 +35,8 @@
                 <img src="./img/signIn-icon.png" alt="" class="price">
                 <div class="num">5元话费</div>
                 <div class="explain">大师任务已开启</div>
-                <div class="btn" @click="close">去看看</div>
-                <div class="closed" @click="closed"><img src="./img/closed.png" alt=""></div>
+                <div class="btn" @click="closed">去看看</div>
+                <div class="closed" @click="close"><img src="./img/closed.png" alt=""></div>
               </div>
             </div>
         </div>
@@ -73,45 +57,25 @@
       crushTaskList: {
 				default: null
       },
-			isNewTask: {
-				default: false
-      },
-      masterTask : {
-				default: false
-      },
       newUserTaskFinish: Boolean
     },
-		methods: {
-      closed () {
-        this.$emit('close')
+    methods: {
+	  closed () {
+		this.$emit('close','goFinish')
       },
-			close(){
-        if(this.masterTask){
-            let index = this.awardItem && this.awardItem.index,
-                curTaskList = this.crushTaskList.allTask[index]
-            if(this.awardItem && this.awardItem.showMedalImg){
-                this.$emit('close','change')
-            }else if(this.awardItem && this.awardItem.awardsFlag == 'mother_crush_task'){
-                this.$emit('close','showReceiveMedal')
-            }else if(curTaskList && curTaskList.parentTask.taskStatus == 0){
-                this.$emit('close','showMedalAnimate')
-            }
- 
-        }
-        if(this.newUserTaskFinish){
-          this.$emit('close','reset')
-        }
-				this.$emit('close')
+      close(){
+		this.$emit('close')
       }
     },
     mounted() {
-      
-		}
-	}
+      console.log(this.newUserTaskFinish)
+    }
+}
 </script>
 
 <style lang='less' scoped>
     .crush-wrap{
+        color: #fff;
         margin: .4rem auto;
         width: 2.23rem;
         height: 2.3rem;
@@ -139,7 +103,7 @@
     .shine-box {
         width: 100%;
         position: fixed;
-        top: 5%;
+        top: 24%;
         left: 0%;
         z-index: 6;
         overflow: hidden;
@@ -164,7 +128,7 @@
         width: 80%;
         left: 50%;
         margin-left: -40%;
-        top: 10%;
+        top: 27%;
         z-index: 7;
         -webkit-transform: scale(0.8);
         transform: scale(0.8);
@@ -225,6 +189,7 @@
                     p{
                         font-size: .26rem;
                         margin-right: 4px;
+                        color: #fff;
                     }
                     .progress-bg{
                         background: #DD3317;
@@ -306,7 +271,7 @@
           display: block;
         }
         .price {
-          margin: .7rem auto .07rem;
+          margin: .5rem auto .07rem;
           width: 1.49rem;
           height: 1.49rem;
           display: block;
