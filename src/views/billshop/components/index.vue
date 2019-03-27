@@ -1,6 +1,6 @@
 <template>
   <div class="bill-shop">
-    <headers title="话费券商城" v-if="!getChannel"></headers>
+    <headers title="话费券商城" :account-balance="accountBalance" v-if="!getChannel"></headers>
     <div class="s-nav" :class="{'active':getChannel}">
       <ul>
         <li class="nav-item bill-left">我的话费券：<span>{{ accountBalance }}</span></li>
@@ -138,7 +138,9 @@ export default {
           if(res.data.code == 200) {
             this.spCon = res.data.data
             this.curItem = this.spCon && this.spCon.categoryList[0].productList
-            
+            GLOBALS.marchSetsPoint('P_H5PT0035', {
+              residual_phone: this.accountBalance
+            })// H5平台-话费券商城-页面
           }
         })
     },
