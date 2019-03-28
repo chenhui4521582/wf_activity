@@ -1,6 +1,6 @@
 <template>
   <transition name="scroll">
-    <div class="ranking-list" v-if="isRanking">
+    <div class="ranking-list" v-show="isRanking">
       <div class="mask"></div>
       <div class="container" >
         <div class="header">
@@ -14,310 +14,25 @@
         </div>
         <div class="scroll" ref="ranking">
           <ul class="list">
-            <li>
+            <li v-for="(item, index) in rankingList">
               <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
+                <div class="icon-img " :class="'icon-img' + index">
+                  <span>{{index + 1}}</span>
                 </div>
               </div>
               <div class="nick-name middle">
-                wrapper
+                {{item.nickname}}
               </div>
               <div class="blessings middle">
-                wrapper
+                {{item.amount}}
               </div>
               <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
-              </div>
-            </li>
-            <li>
-              <div class="icon middle">
-                <div class="icon-img ">
-                  <span>1</span>
-                </div>
-              </div>
-              <div class="nick-name middle">
-                wrapper
-              </div>
-              <div class="blessings middle">
-                wrapper
-              </div>
-              <div class="price">
-                <p>500KG鱼干</p>
-                <p>500万金叶子</p>
+                <p
+                  v-for="(innerItem, innerIndex) in item.awardInfoList"
+                  :key="innerIndex"
+                >
+                  {{innerItem.name}}
+                </p>
               </div>
             </li>
           </ul>
@@ -401,12 +116,14 @@
             width: 1.28rem;
           }
           &.nick-name {
+            text-indent: .5rem;
             width: 2.06rem;
           }
           &.blessings {
             width: 1.56rem;
           }
           &.price {
+            text-indent: .5rem;
             flex: 1;
           }
         }
@@ -452,13 +169,13 @@
               align-items: center;
             }
           }
-          .icon:nth-child(1) .icon-img{
+          .icon .icon-img0{
             background: #EEBA10;
           }
-          .icon:nth-child(2) .icon-img{
+          .icon .icon-img1{
             background: #9263ED;
           }
-          .icon:nth-child(3) .icon-img{
+          .icon .icon-img2{
             background: #506BE4;
           }
           .nick-name {

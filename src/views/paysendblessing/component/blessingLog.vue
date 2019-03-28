@@ -6,7 +6,7 @@
         福气记录
         <div class="closed" @click="hideLog"></div>
       </div>
-      <div class="content">
+      <div class="content" v-if="hasList">
         <div class="header">
           <div class="time">时间</div>
           <div class="line"></div>
@@ -14,51 +14,22 @@
         </div>
         <div class="scroll" ref="scroll">
           <ul>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
-            </li>
-            <li>
-              <div class="time">2019.3.29</div>
-              <div class="num">80</div>
+            <li v-for="(item, index) in logList" :key="index">
+              <div class="time">{{item.createTime | timeFormat}}</div>
+              <div class="num">{{item.fortuneAmount }}</div>
             </li>
           </ul>
+        </div>
+      </div>
+      <div class="content" v-else>
+        <div class="header">
+          <div class="time">时间</div>
+          <div class="line"></div>
+          <div class="num">福气值</div>
+        </div>
+        <div class="nodata">
+          <img src="../images/nodata.png" alt="">
+          <p>无记录</p>
         </div>
       </div>
     </div>
@@ -73,7 +44,8 @@
 	  isLog: {
 	    type: Boolean,
         default: true
-      }
+      },
+	  logList: Array
     },
     updated () {
 	  let element = this.$refs.scroll
@@ -82,6 +54,11 @@
     methods: {
 	  hideLog () {
 	    this.$emit('hideLog', 'log')
+      }
+    },
+    computed: {
+	  hasList () {
+	    return this.logList.length
       }
     }
   }
@@ -136,13 +113,13 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          height: .9rem;
           color:#fff;
-          height: .98rem;
           border-bottom: 1px solid #506BE4;
           background:none;
           .time,.num {
             flex: 1;
-            font-size: .4rem;
+            font-size: .3rem;
             color: #fff;
             text-align: center;
           }
@@ -158,16 +135,29 @@
           width: 100%;
           li {
             display: flex;
-            height: .9rem;
             justify-content: center;
             align-items: center;
             border-bottom: 1px solid #506BE4;
             .time,.num{
+              padding: .3rem 0;
               flex: 1;
               text-align: center;
-              font-size: .4rem;
+              font-size: .24rem;
               color: #fff;
             }
+          }
+        }
+        .nodata {
+          img {
+            display: block;
+            margin: 1rem auto .43rem;
+            width: 1.27rem;
+            height: 1.27rem;
+          }
+          p {
+            text-align: center;
+            color: #506BE4;
+            font-size: .5rem;
           }
         }
       }

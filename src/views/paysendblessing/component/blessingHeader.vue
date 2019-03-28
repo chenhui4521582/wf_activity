@@ -15,7 +15,7 @@
           <img src="../images/ranking-icon.png" alt="">我的排名
         </p>
         <p class="value">
-          {{ranking}}
+          {{userInfo.ranking}}
         </p>
         <div class="line"></div>
       </li>
@@ -23,8 +23,8 @@
         <p class="key">
           <img src="../images/price-icon.png" alt="">当前奖励
         </p>
-        <p class="value">
-          {{currentPrize}}
+        <p class="value" :title="userInfo.currentPrize">
+          {{userInfo.currentPrize}}
         </p>
       </li>
     </ul>
@@ -36,15 +36,8 @@
 	name: 'blessing-header',
     props: {
 	  userInfo: Object
-	},
-    computed: {
-	  currentPrize () {
-	    return this.userInfo.currentPrize
-      },
-	  ranking () {
-        return this.userInfo.ranking == 0 ? '暂未上榜' : this.userInfo.ranking
-      }
-    }
+	}
+
   }
 </script>
 
@@ -82,10 +75,14 @@
       }
     }
     .value {
+      padding: 0 .1rem;
       margin-top: .1rem;
       text-align: center;
       color: #FFD847;
       font-size: .24rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow:ellipsis;
     }
     &.blessings-num {
 

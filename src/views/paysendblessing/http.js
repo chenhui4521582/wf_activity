@@ -15,7 +15,6 @@ let channel = utils.getUrlParam('channel'),
     url_token = utils.getUrlParam('token'),
     everyDayLottery = utils.getUrlParam('everyDayLottery')
 
-localStorage.setItem('APP_CHANNEL',channel)
 
 
 if(localStorage.getItem('APP_CHANNEL') == '100001') {

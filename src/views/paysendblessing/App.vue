@@ -4,7 +4,11 @@
       :userInfo="userInfo"
     />
     <div class="body">
-      <blessing-ranking />
+      <div class="time">活动时间：{{beforeTime | timeFormat('y-m-d')}} - {{endTime | timeFormat('y-m-d')}}</div>
+      <blessing-ranking
+        :rankingList="rankingList"
+        @handleClick="showComponent"
+      />
       <blessing-check-ranking
         :isRanking="isRanking"
         :rankingList="rankingList"
@@ -36,10 +40,12 @@ export default {
 	isLog: false,
     rankingList: [],
     userInfo: {},
-    logList: [],
+	logList: [],
     bachId: null,
     ACCOUNT_TOKEN: null,
-	APP_CHANNEL: null
+	APP_CHANNEL: null,
+    beforeTime: '',
+    endTime: ''
   }),
   components: {
 	blessingHeader: () => import('./component/blessingHeader'),
@@ -51,37 +57,55 @@ export default {
   },
   methods: {
     init () {
-      let url = '//ops-api.beeplay123.com/ops/api/goodFortune/details';
-      this.axios.post(url,{
-		batchId: this.batchId
-      },{
-        header: {
-		  'App-Channel': this.APP_CHANNEL,
-		  'Authorization': this.ACCOUNT_TOKEN
-        }
-      }).then(res => {
-        let data = res.data.data;
-        this.rankingList = data && data.rankingList || [];
-        this.userInfo = {
-		  amount: data && data.amount || 0,
-		  currentPrize: data && data.currentPrize || '',
-		  ranking: data && data.ranking || 0
-		}
-      })
+      this.getRankingList()
     },
     getRankingList () {
-      // rankinglist  初始化
-	  this.isRanking = true
+	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/details';
+	  this.axios.post(url, {
+		batchId: this.batchId
+	  }, {
+		header: {
+		  'App-Channel': this.APP_CHANNEL,
+		  'Authorization': this.ACCOUNT_TOKEN
+		}
+	  }).then(res => {
+	    let { code = '' } = res.data;
+	    if (code == 200) {
+		  let { data = {} } = res.data;
+		  this.rankingList = data && data.rankingList || [];
+		  this.userInfo = {
+			amount: data && data.amount || 0,
+			currentPrize: data && data.currentPrize || '暂无奖励',
+			ranking: data && data.ranking || '暂未上榜'
+		  }
+		  this.beforeTime = data && data.beginTime,
+		  this.endTime = data && data.endTime
+        }
+	  })
+
     },
     getLog () {
-	  // log  初始化
-	  this.isLog = true
+	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/history';
+	  this.axios.post(url, {
+		header: {
+		  'App-Channel': this.APP_CHANNEL,
+		  'Authorization': this.ACCOUNT_TOKEN
+		}
+	  }).then(res => {
+		let { code = '' } = res.data;
+		if ( code == 200 ) {
+		  let { data = [] } = res.data;
+		  this.logList = (data && data.length) && data || [];
+		  this.isLog = true
+		}
+	  })
+
     },
 	showComponent (data) {
-      console.log(data)
       switch (data) {
         case 'ranking' :
           this.getRankingList()
+		  this.isRanking = true
           break;
         case 'log' :
           this.getLog()
@@ -89,6 +113,12 @@ export default {
         case 'rule' :
           this.isRule = true
           break
+		case 'back' :
+		  window.history.back(-1);
+		  break;
+		case 'pay' :
+		  window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+		  break;
 	  }
     },
 	hideComponent (data) {
@@ -106,7 +136,6 @@ export default {
 	},
   },
   mounted () {
-    // console.log(common.getUrlParam('batchId'))
     this.batchId = common.getUrlParam('batchId');
 	this.APP_CHANNEL = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):common.getUrlParam('channel')
 	this.ACCOUNT_TOKEN = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):common.getUrlParam('token')
@@ -117,13 +146,23 @@ export default {
 
 <style scoped type="less">
 @import '../../common/css/base.css';
-.pay-send-blessing{
+</style>
+
+<style lang="less" scoped>
+.pay-send-blessing {
   font-family: "Helvetica";
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background: url("./images/bg.png") no-repeat center 0 /100% auto #20017D;
+  background: url("./images/bg.png") no-repeat center top / 100% auto #20017D;
+  .body {
+    overflow: hidden;
+    .time {
+      margin: 1.6rem auto 2.48rem;
+      width: 4.21rem;
+      height: .5rem;
+      text-align: center;
+      line-height: .5rem;
+      color: #fff;
+      background: url("./images/bg1.png") no-repeat center center / 100% 100%;
+    }
+  }
 }
 </style>
