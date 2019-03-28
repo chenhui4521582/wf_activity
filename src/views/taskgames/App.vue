@@ -104,7 +104,7 @@
           @refreshTask="refreshTask"
         >
         </crush-master-task>
-        <div v-if="currentGamesItems&&currentGamesItems.length">
+        <div v-if="currentGamesItems&&currentGamesItems.length && !newTaskItems.isNew">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
             <li v-for="(item, index) in currentGamesItems" :key="index">
@@ -297,8 +297,8 @@
                   if(res.data.code == 200) {
                     this.isTfStatus = res.data.data.isOpen
                     if(!this.isTfStatus) {
+					    this.getNewTask()
                         this.getDayTask()
-                        this.getNewTask()
                         if(this.checkCurrentTask() != ''){
                             this.getCrushTask('','',this.checkCurrentTask())
                         }
@@ -334,6 +334,9 @@
                     break;
                 case '13':
                     return 'kingdom2-achievement';
+                    break;
+                case '18':
+				    return 'warrior-achievement';
                     break;
                 default :
                     return ''
