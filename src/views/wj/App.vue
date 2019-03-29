@@ -373,12 +373,6 @@ export default {
           return;
       }
 
-      clearTimeout(this.timer1)
-      this.isFighur = true
-      this.timer1 = setTimeout(() => {
-        this.isFighur = false
-      }, 3000)
-
       if(type == 'new_user_task') {
         //其他外接游戏external=1
         if (url && url.indexOf('external=1') != -1) {
@@ -386,6 +380,12 @@ export default {
           return parent.location.href = gameUrl
         }
         parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.curChannel + '&token=' + this.curToken;
+      }else {
+        clearTimeout(this.timer1)
+        this.isFighur = true
+        this.timer1 = setTimeout(() => {
+          this.isFighur = false
+        }, 3000)
       }
   	  
 
