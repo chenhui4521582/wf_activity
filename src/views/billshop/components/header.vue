@@ -8,6 +8,9 @@
 		props: {
 			title: {
 				default: null
+			},
+			accountBalance: {
+				default: '0.00'
 			}
 		},
 		mounted() {
@@ -15,6 +18,9 @@
 		},
 		methods: {
 			goHistory() {
+				GLOBALS.marchSetsPoint('A_H5PT0035000632', {
+				  residual_phone: this.accountBalance
+				})// H5平台-话费券商城-返回
 				history.go(-1)
 			}
 		}

@@ -101,9 +101,15 @@
             </div>
           </div>
           <div v-else>
+<<<<<<< HEAD
             <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
               <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">成就任务</h4>
               <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
+=======
+            <div  v-if="cjTaskItems&&cjTaskItems.length&& !newTaskItems.isNew || dayTaskItems&&dayTaskItems.length">
+              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
+              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
+>>>>>>> 41f8024428cff3f21487fe53245ca00e1ff755d1
                 <li v-for="item in cjTaskItems" >
                   <div class="description">
                     <div class="head-img">
