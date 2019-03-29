@@ -174,12 +174,6 @@ export default {
         // 领取奖励
         receive(item,type){
             this.isMotherType = true
-            // GLOBALS.marchSetsPoint('A_H5PT0061000539', { 
-            //   project_id: item.gameType,
-            //   target_project_id: item.gameType,
-            //   task_id: item.taskId,
-            //   task_name: item.taskName
-            // }) // H5平台-游戏内SDK-成就任务-勋章点击
             this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
         }
     },
