@@ -13,33 +13,40 @@
           <img src="./images/kf.png" style="width: .52rem;height: .52rem"></p>
       </ul>
     </div>
-
     <div class="t-content" v-if="!isTfStatus">
-      <div v-if="newTaskItems && newTaskItems.isNew">
+      <div v-if="newTaskItems && newTaskItems.isNew" class="new-user-task">
+          <div class="tips">
+            <img src="./img/tips.png" alt="">
+          </div>
           <div class="new-task-header">
             <div class="new-task-inner">
                 <h4 class="h-title h-new-title icon-tips">
                   <p class="h-subtitle">
-                    <img src="./images/xr-icon.png" class="xr-icon">
+                    <img src="./img/title1.png" class="xr-icon">
                     <img src="./images/small-xs-tips.png" class="small-xs-tips">
                   </p>
                   <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
                 </h4>
-                <div class="newTask"  v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)">全部完成<span>再得30元话费</span>
-                    <ul >
-                      <li class="percent-lq">
-                        <div class="percent-box">
-                              <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
-                              <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
-                          </div>
-                          <span v-show="newTaskItems.receiverCounter">已有{{newTaskItems.receiverCounter}}人领取</span>
-                      </li>
-                    </ul>
+                <div class="newTask">
+                  <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
+                    <span class="text">全部完成</span>
+                    <span>再得5元话费</span>
+                  </div>
+                  <div class="title" v-else>恭喜！新人任务已全部完成！</div>
+                  <ul >
+                    <li class="percent-lq">
+                      <div class="percent-box">
+                        <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="explain">
+                    <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
+                    <div v-show="newTaskItems.receiverCounter" class="receive">已有{{newTaskItems.receiverCounter}}人领取</div>
+                  </div>
                 </div>
-                  <div class="newTask" v-else>恭喜！新人任务已全部完成！</div>
               </div>
           </div>
-          
           <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
             <ul class="t-items">
               <li >
@@ -52,8 +59,8 @@
                     <p class="title" v-html="newUserTaskobj.taskName"></p>
                     <div class="percent-container">
                       <div class="percent-box">
-                          <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
-                          <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
+                        <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
+                        <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
                       </div>
                       <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</i></span>
                     </div>
@@ -70,87 +77,102 @@
           <div v-else>
               <ul class="finish">
                 <li>
-                      <div class="head-img">
-                        <img src="./images/signIn-icon.png" alt="">
-                    </div>
-                      <div class="f-content">
-                        <p>快领取话费奖励吧</p>
-                        <p>{{motherTask.awardsName}}</p>
-                    </div>
+                  <div class="head-img">
+                    <img src="./img/signIn-icon.png" alt="">
+                  </div>
+                    <div class="f-content">
+                      <p>快领取话费奖励吧</p>
+                      <p>{{motherTask.awardsName}}</p>
+                  </div>
                 </li>
-                <li @click="receive(motherTask,'motherTask')">领取</li>
+                <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
             </ul>
           </div>
       </div>
-
-      <!-- 糖果大师任务 -->
-      <crush-master-task v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
-      :crushTaskList="crushTaskList" @receive="receive" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" 
-      :currentMedalIndex="currentMedalIndex" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" :currentGameType="currentGameType"
-      @refreshTask="refreshTask"></crush-master-task>
-      <div v-if="currentGamesItems&&currentGamesItems.length">
-        <h4 class="h-title h-first-title">当前游戏每日任务</h4>
-        <ul class="t-items">
-          <li v-for="item in currentGamesItems">
-            <div :class="{'actived': item.taskStatus == 2}">
-              <div class="pic">
-                <img :src="item.icon | filter" alt="">
-              </div>
-              <div class="item-text">
-                <p class="title" v-html="item.taskDescShow"></p>
-                <div class="percent-container">
-                  <div class="percent-box">
-                      <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                      <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+      <template v-else>
+        <!-- 糖果大师任务 -->
+        <crush-master-task 
+          v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
+          :crushTaskList="crushTaskList"
+          :showReceiveMedal="showReceiveMedal" 
+          :showMedalAnimate="showMedalAnimate" 
+          :currentMedalIndex="currentMedalIndex" 
+          :currentGameType="currentGameType"
+          @checkTaskStatus="checkTaskStatus" 
+          @hideMedalAnimate="showMedalAnimate = false" 
+          @receive="receive"
+          @refreshTask="refreshTask"
+        >
+        </crush-master-task>
+        <div v-if="currentGamesItems&&currentGamesItems.length && !newTaskItems.isNew">
+          <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+          <ul class="t-items">
+            <li v-for="(item, index) in currentGamesItems" :key="index">
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                   </div>
-                  <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                 </div>
               </div>
-            </div>
-            <p class="btn-box">
-              <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
-              <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
-              <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-            </p>
-          </li>
-        </ul>
-      </div>
-      
-      <div v-if="otherGamesItems">
-        <!-- 其他任务 -->
-        <h4 class="h-title h-third-title">更多每日任务</h4>
-        <ul class="t-items">
-          <li v-for="item in otherGamesItems" >
-            <div :class="{'actived': item.taskStatus == 2}">
-              <div class="pic">
-                <img :src="item.icon | filter" alt="">
-              </div>
-              <div class="item-text">
-                <p class="title" v-html="item.taskDescShow"></p>
-                <div class="percent-container">
-                  <div class="percent-box"  :class="{'bigNum': item.taskOps > 10000}">
-                      <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                      <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div v-if="otherGamesItems">
+          <!-- 其他任务 -->
+          <h4 class="h-title h-third-title">更多每日任务</h4>
+          <ul class="t-items">
+            <li v-for="(item, index) in otherGamesItems" :key="index">
+              <div :class="{'actived': item.taskStatus == 2}">
+                <div class="pic">
+                  <img :src="item.icon | filter" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title" v-html="item.taskDescShow"></p>
+                  <div class="percent-container">
+                    <div class="percent-box"  :class="{'bigNum': item.taskOps > 10000}">
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                    </div>
+                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                   </div>
-                  <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                 </div>
               </div>
-            </div>
-            <p class="btn-box">
-              <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
-              <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
-              <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
-              <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
-            </p>
-          </li>
-        </ul>
-      </div>
-
-      <poplog v-if="isPopLog" @close="closePopLog" :crushTaskList="crushTaskList" 
-      :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask"></poplog>
-      
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
+                <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
+                <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </template>
+      <poplog 
+          v-if="isPopLog" 
+          :crushTaskList="crushTaskList" 
+          :awardItem="awardItem" 
+          :motherTask="motherTask" 
+          :isNewTask="isNewTask" 
+          :masterTask="masterTask"
+          :newUserTaskFinish="newUserTaskFinish"
+          @close="closePopLog"
+          >
+      </poplog>
     </div>
-
     <div class="t-content"  v-show="isTfStatus">
       <img src="./images/tf-task-bg.png" class="tf-task-bg">
     </div>
@@ -159,15 +181,6 @@
         离开当前游戏 前往客服专区？
       </div>
     </common-pop>
-    <div class="newUser" v-if="showNewUser">
-      <div class="mask"></div>
-      <div class="content" @click.stop.prevent="closeNewUser">
-        <div class="tips">
-          <img src="./images/people.png" alt="">
-          <p>点击任意区域继续您的新手引导</p>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -196,7 +209,8 @@
             currentGameType : 0,
             huafeiNum : 0,
             isTfStatus: false,
-            showzspop:false
+            showzspop:false,
+            newUserTaskFinish: false
         }
     },
     mounted() {
@@ -212,13 +226,15 @@
         this.getTransInfo()
         this.getPhoneFragment()
         this.getHuafeiNum()
-    //   if(this.currentGameType == 12) 
+        if(this.channel=='100047001' || this.channel=='100048001'){
+          window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}`
+        }
+    //   if(this.currentGameType == 12)
     },
     computed: {
         huafeiShow(){
             return this.telFragment&&(this.telFragment[0].price.split('元')[0] < this.huafeiNum)
         },
-
         // 子任务
         newUserTaskobj () {
             let list = this.newTaskItems && this.newTaskItems.taskList || []
@@ -253,17 +269,7 @@
                 return motherTask 
             }
             return ''
-        },
-        showNewUser () {
-          let isShow = this.getUrlParam('isNewUser')
-          if(isShow!='undefined'){
-            if (isShow == 'true') {
-              return true
-            }
-            return false
-          }
         }
-
     },
     filters:{
         formatTime (time) {
@@ -293,8 +299,8 @@
                   if(res.data.code == 200) {
                     this.isTfStatus = res.data.data.isOpen
                     if(!this.isTfStatus) {
+					    this.getNewTask()
                         this.getDayTask()
-                        this.getNewTask()
                         if(this.checkCurrentTask() != ''){
                             this.getCrushTask('','',this.checkCurrentTask())
                         }
@@ -332,9 +338,9 @@
                     return 'kingdom2-achievement';
                     break;
                 case '18':
-                    return 'warrior-achievement';
+				    return 'warrior-achievement';
                     break;
-                default : 
+                default :
                     return ''
             }
         },
@@ -344,20 +350,18 @@
         },
         jumpToPlat(){
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049']
             if(baiduChannel.includes(this.channel)){
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
                 return `https://wap.beeplay123.com/llwWap?channel=700002`
-            } else if(this.channel=='100047001' || this.channel=='100048001') {
-                return `https://wap.beeplay123.com/miniWap?channel=${this.channel}`
             }else{
                return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
             }
         },
         async getHuafeiNum(){
             let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
-            this.huafeiNum = data.data 
+            this.huafeiNum = data.data
         },
         checkTaskStatus(item,type,index){
             if(item.taskStatus == 0){
@@ -453,17 +457,16 @@
                     parent.location.href = url1;
                     return;
                 }
-
-                
                 //其他外接游戏external=1
                 if (url && url.indexOf('external=1') != -1) {
-                    let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-                    return parent.location.href = gameUrl
+                  let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+                  return parent.location.href = gameUrl
                 }
                 parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+
             }, 500)
 
-            
+
         },
         closePopLog(val) {
             this.showMedalAnimate = false
@@ -488,7 +491,12 @@
                     this.isPopLog = true
                 }, 0);
             }
-            
+            if(val == 'reset'){
+              this.newUserTaskFinish = false
+			  if(!this.crushTaskList){
+				this.goTask()
+			  }
+            }
         },
         refreshTask(index,type,val){
             this.getCrushTask(index,type,this.checkCurrentTask())
@@ -525,40 +533,39 @@
             taskLogId: item.taskLogId
             }).then((res)=> {
             if(res.data.code == 200) {
-                if(type == 'newtask') {
-                    this.isNewTask = true
-                }
-                
-                // 弹窗弹出
-                this.awardItem = item
-                this.isPopLog = true
-
-                this.getTransInfo()
-                this.getPhoneFragment()
-                switch(type) {
-                    case 'motherTask':
-                        this.$toast.show({
-                            message: '领取成功',
-                            duration: 1500
-                        })
-                        this.getNewTask()
-                        break;
-                    case 'mother_crush_task':
-                    case 'crush_task':
-                        this.masterTask = true
-                        this.currentMedalImg = medalimg
-                        this.currentMedalIndex = index
-                        this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
-                        break
-                    case 'dayTask' : 
-                        this.getDayTask()
-                        break
-                    default:
-                        item.taskStatus = 2
-                }
-
+              if(type == 'newtask') {
+                  this.isNewTask = true
+              }
+              // 弹窗弹出
+              this.awardItem = item
+              this.getTransInfo()
+              this.getPhoneFragment()
+              switch(type) {
+                  case 'motherTask':
+                    this.newUserTaskFinish = true
+                    this.getNewTask()
+                    break;
+                  case 'mother_crush_task':
+                  case 'crush_task':
+                      this.masterTask = true
+                      this.currentMedalImg = medalimg
+                      this.currentMedalIndex = index
+                      this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
+                      break
+                  case 'dayTask' :
+                      this.getDayTask()
+                      break
+                  default:
+                      item.taskStatus = 2
+              }
+              this.isPopLog = true
+            }else{
+              this.$toast.show({
+                message: res.data.message,
+                duration: 1500
+              })
             }
-            })
+          })
         },
         getNewTask() {
             this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
@@ -596,7 +603,7 @@
 
             }
             })
-            
+
         },
         getTransInfo() {
             this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res)=> {
@@ -617,105 +624,104 @@
                 GLOBALS.marchSetsPoint('P_H5PT0061', { project_id: this.currentGameType, residual_phone: this.telFragment[0].price.split('元')[0]}) // H5平台-游戏内SDK-页面
             }
             })
-            
+
         },
-        async getCrushTask(finishindex,type,val){
+        async getCrushTask(finishindex,type,val,newuserfinish){
+
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
             if(data.code == 200){
-                    let showSubMasterList = [],crushList = data.data.list,currentParentTask,currentIndex,
-                        finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
-                        curType = type && type == 'checkMode'
-                        
-                    if(curType || finishStatus > -1){
-                        currentParentTask = crushList[finishStatus]
-                    }else{
-                        currentParentTask = crushList.find((item,index) =>{
-                            if(index < 3){
-                                // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                                return item.parentTask.taskStatus == 1 
-                            }else{
-                                return crushList[index]
-                            }
-                        })
-                    }
-                    crushList.map((item,index) =>{
-                        
-                        if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
-                            currentIndex = index
-                            return
-                        }
-                    })
-                    let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-                        finishLength = 0
-                    currentParentTask.subListA.map(item => {
-                        item.taskStatus == 2 ? finishLength += 1 : ''
-                    })
-                    currentParentTask.subListB.map(item => {
-                        item.taskStatus == 2 ? finishLength += 1 : ''
-                    })
-                    
-                    // 外显两条任务类型区分
-                    let type1 = currentParentTask.subListA.find(item => {
-                        return item.taskStatus != 2
-                    })
+              let showSubMasterList = [],
+              crushList = data.data.list,currentParentTask,currentIndex,
+              finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
+              curType = type && type == 'checkMode'
+              if(curType || finishStatus > -1){
+                  currentParentTask = crushList[finishStatus]
+              }else{
+                  currentParentTask = crushList.find((item,index) =>{
+                      if(index < 3){
+                          // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                          return item.parentTask.taskStatus == 1
+                      }else{
+                          return crushList[index]
+                      }
+                  })
+              }
+              crushList.map((item,index) =>{
 
-                    let type2 = currentParentTask.subListB.find(item => {
-                        return item.taskStatus != 2
-                    })
-                    if(!type1){
-                        type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
-                    }
-                    if(!type2){
-                        type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
-                    }
-                    
-                    showSubMasterList.push(type1,type2)
+                  if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
+                      currentIndex = index
+                      return
+                  }
+              })
+              let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
+                  finishLength = 0
+              currentParentTask.subListA.map(item => {
+                  item.taskStatus == 2 ? finishLength += 1 : ''
+              })
+              currentParentTask.subListB.map(item => {
+                  item.taskStatus == 2 ? finishLength += 1 : ''
+              })
+              // 外显两条任务类型区分
+              let type1 = currentParentTask.subListA.find(item => {
+                  return item.taskStatus != 2
+              })
 
-                    // 勋章List
-                    let medalList = []
-                    crushList.map((item,index) => {
-                        let list = {
-                            medalIcon : item.medalIcon,
-                            medalName : item.medalName,
-                            statusIcon : item.statusIcon,
-                            index: index,
-                            selected : false
-                        }
-                        medalList.push(list)
-                    })
-                    
-                    let checkMedalName
-                    if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
-                        checkMedalName = crushList[currentIndex+1].medalName
-                    }else{
-                        checkMedalName = currentParentTask.medalName
-                    }
-                    
-                    medalList.map((val,index) =>{
-                        if(val.medalName == checkMedalName){
-                            val.selected = true
-                        }else{
-                            val.selected = false
-                        }
-                    })
+              let type2 = currentParentTask.subListB.find(item => {
+                  return item.taskStatus != 2
+              })
+              if(!type1){
+                  type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
+              }
+              if(!type2){
+                  type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
+              }
 
-                    let crushTaskList = {
-                        showSubMasterList : showSubMasterList, //外显子任务列表
-                        hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
-                        totalTask : data.data.totalTask, // 总任务数量
-                        currentIndex : currentIndex, // 当前任务索引
-                        currentParentTask : currentParentTask, // 当前任务
-                        allTask : data.data.list,// 总任务列表
-                        finishLength : finishLength, // 当前已完成子任务
-                        currentLength : currentLength, // 当前总任务
-                        gameNameIcon : data.data.gameNameIcon, // 当前任务名称
-                        reward : data.data.reward, // 当前全部奖励
-                        bgIcon : data.data.bgIcon, // 当前任务背景
-                        medalList : medalList , //勋章list
-                    }
-                    this.crushTaskList = crushTaskList
-                }
-            
+              showSubMasterList.push(type1,type2)
+
+              // 勋章List
+              let medalList = []
+              crushList.map((item,index) => {
+                  let list = {
+                      medalIcon : item.medalIcon,
+                      medalName : item.medalName,
+                      statusIcon : item.statusIcon,
+                      index: index,
+                      selected : false
+                  }
+                  medalList.push(list)
+              })
+
+              let checkMedalName
+              if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
+                  checkMedalName = crushList[currentIndex+1].medalName
+              }else{
+                  checkMedalName = currentParentTask.medalName
+              }
+
+              medalList.map((val,index) =>{
+                  if(val.medalName == checkMedalName){
+                      val.selected = true
+                  }else{
+                      val.selected = false
+                  }
+              })
+
+              let crushTaskList = {
+                  showSubMasterList : showSubMasterList, //外显子任务列表
+                  hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
+                  totalTask : data.data.totalTask, // 总任务数量
+                  currentIndex : currentIndex, // 当前任务索引
+                  currentParentTask : currentParentTask, // 当前任务
+                  allTask : data.data.list,// 总任务列表
+                  finishLength : finishLength, // 当前已完成子任务
+                  currentLength : currentLength, // 当前总任务
+                  gameNameIcon : data.data.gameNameIcon, // 当前任务名称
+                  reward : data.data.reward, // 当前全部奖励
+                  bgIcon : data.data.bgIcon, // 当前任务背景
+                  medalList : medalList , //勋章list
+              }
+              this.crushTaskList = crushTaskList;
+            }
         },
         kfclick(){
           GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服按钮
@@ -724,21 +730,29 @@
         async gotokf(){
           await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042']
+            baiduChannel = ['100039','100040','100041','100042','100049']
           if(jsChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          }else if(this.channel=='100047001' || this.channel=='100048001') {
-            parent.location.href = `https://wap.beeplay123.com/miniWap/#/problem?tab=contact_personal&channel=${this.channel}`
           } else if(this.channel == '700002'){
             parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
           }else{
             parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
           }
         },
+        goTask () {
+            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+            if(baiduChannel.includes(this.channel)){
+                parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
+            } else if(this.channel == '700002'){
+                parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
+            }else{
+               parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
+            }
+        },
         closeNewUser () {
-          
           if(parent.closeTaksPage) {
               parent.closeTaksPage()
           }else{
