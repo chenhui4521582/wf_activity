@@ -115,7 +115,7 @@
           align-items: center;
           height: .9rem;
           color:#fff;
-          border-bottom: 1px solid #506BE4;
+          border-bottom: 1px solid #2e47ba;
           background:none;
           .time,.num {
             flex: 1;
@@ -137,7 +137,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid #506BE4;
+            border-bottom: 1px solid #2e47ba;
             .time,.num{
               padding: .3rem 0;
               flex: 1;

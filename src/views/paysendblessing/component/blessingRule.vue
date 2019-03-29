@@ -8,8 +8,8 @@
       </div>
       <div class="rule-text">
         <p>1.充值任意金额可获得随机数量的福气值</p>
-        <p>2. 福气值排行榜累积7天结算一次，榜单实时刷新，奖励将于2019年3月21日24点</p>
-        <p>2. 活动时间: 2018.03.28 - 2019.03.31 </p>
+        <p>2. 福气值排行榜累积7天结算一次，榜单实时刷新，奖励将于{{endTime | timeFormat}}自动发放至背包。</p>
+        <p>2. 活动时间: {{beforeTime | timeFormat('y-m-d')}} - {{endTime | timeFormat('y-m-d')}} </p>
       </div>
     </div>
   </div>
@@ -22,6 +22,12 @@
 	  isRule: {
 	    type: Boolean,
         default: false
+      },
+	  endTime: {
+	    default: ''
+      },
+	  beforeTime: {
+	    default: ''
       }
     },
     methods: {
@@ -50,7 +56,7 @@
     top: 50%;
     left: 50%;
     width: 5.97rem;
-    height: 7rem;
+    height: 5.5rem;
     background:rgba(39,45,159,1);
     border-radius:12px;
     transform: translate(-50%, -50%);

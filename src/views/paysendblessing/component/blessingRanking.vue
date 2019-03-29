@@ -5,7 +5,7 @@
         <li class="one" v-if="rankingList[0]">
           <div class="user">
             <div class="avatar">
-              <img :src="rankingList[0].profilePhoto" alt="" v-if="!!rankingList[0].profilePhoto">
+              <img :src="rankingList[0].profilePhoto | filter " alt="" v-if="!!rankingList[0].profilePhoto">
               <img src="../images/avatar.png" alt="" v-else>
             </div>
             <div class="user-info">
@@ -20,7 +20,7 @@
         <li class="two" v-if="rankingList[1]">
           <div class="user">
             <div class="avatar">
-              <img :src="rankingList[1].profilePhoto" alt="" v-if="!!rankingList[0].profilePhoto">
+              <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[0].profilePhoto">
               <img src="../images/avatar.png" alt="" v-else>
               <div class="index"><span>第二名</span></div>
             </div>
@@ -30,16 +30,16 @@
             </div>
           </div>
         </li>
-        <li class="three" v-if="rankingList[1]">
+        <li class="three" v-if="rankingList[2]">
           <div class="user">
             <div class="avatar">
-              <img :src="rankingList[1].profilePhoto" alt="" v-if="!!rankingList[1].profilePhoto">
+              <img :src="rankingList[2].profilePhoto | filter" alt="" v-if="!!rankingList[2].profilePhoto">
               <img src="../images/avatar.png" alt="" v-else>
               <div class="index"><span>第三名</span></div>
             </div>
             <div class="user-info">
-              <div class="nick-name">{{rankingList[1].amount}}</div>
-              <div class="blessing-num"><i>福气值:</i><span>{{rankingList[1].amount}}</span></div>
+              <div class="nick-name">{{rankingList[2].amount}}</div>
+              <div class="blessing-num"><i>福气值:</i><span>{{rankingList[2].amount}}</span></div>
             </div>
           </div>
         </li>

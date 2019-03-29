@@ -1,5 +1,5 @@
 <template>
-  <div class="pay-send-blessing">
+  <div class="pay-send-blessing" :class="{'no-scroll': noMove}">
     <blessing-header
       :userInfo="userInfo"
     />
@@ -16,6 +16,8 @@
       />
       <blessing-rule
         :isRule="isRule"
+        :beforeTime="beforeTime"
+        :endTime="endTime"
         @hideRule="hideComponent"
       />
       <blessing-log
@@ -45,7 +47,8 @@ export default {
     ACCOUNT_TOKEN: null,
 	APP_CHANNEL: null,
     beforeTime: '',
-    endTime: ''
+    endTime: '',
+	noMove: false
   }),
   components: {
 	blessingHeader: () => import('./component/blessingHeader'),
@@ -58,6 +61,7 @@ export default {
   methods: {
     init () {
       this.getRankingList()
+      this.getBlessingNum()
     },
     getRankingList () {
 	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/details';
@@ -99,9 +103,29 @@ export default {
 		  this.isLog = true
 		}
 	  })
-
     },
+	getBlessingNum () {
+	  let isPaySendBlessingSuccess = localStorage.getItem('paySendBlessingSuccess');
+	  if(isPaySendBlessingSuccess == 'error')  return false
+	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/latestBonus';
+	  this.axios.post(url, {
+		header: {
+		  'App-Channel': this.APP_CHANNEL,
+		  'Authorization': this.ACCOUNT_TOKEN
+		}
+	  }).then(res => {
+		let { code = '' } = res.data;
+		if ( code == 200 ) {
+		  this.$toast.show({
+			message: `恭喜您获得${res.data.data.amount}福气值`,
+			duration: 3000
+		  })
+		  localStorage.setItem('paySendBlessingSuccess','error')
+		}
+	  })
+	},
 	showComponent (data) {
+      this.noMove = true
       switch (data) {
         case 'ranking' :
           this.getRankingList()
@@ -122,6 +146,7 @@ export default {
 	  }
     },
 	hideComponent (data) {
+	  this.noMove = false
 	  switch (data) {
 		case 'ranking' :
 		  this.isRanking = false
@@ -133,7 +158,7 @@ export default {
 		  this.isRule = false
 		  break;
 	  }
-	},
+	}
   },
   mounted () {
     this.batchId = common.getUrlParam('batchId');
@@ -152,6 +177,14 @@ export default {
 .pay-send-blessing {
   font-family: "Helvetica";
   background: url("./images/bg.png") no-repeat center top / 100% auto #20017D;
+  &.no-scroll {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
   .body {
     overflow: hidden;
     .time {

@@ -130,10 +130,10 @@
       }
       .closed {
         position: absolute;
-        width: .6rem;
-        height: .6rem;
+        width: .48rem;
+        height: .48rem;
         right: .25rem;
-        top: .08rem;
+        top: .14rem;
         background: url("../images/closed.png") no-repeat center center / 100% 100%;
       }
     }

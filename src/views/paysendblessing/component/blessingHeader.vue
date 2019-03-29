@@ -79,23 +79,12 @@
       margin-top: .1rem;
       text-align: center;
       color: #FFD847;
-      font-size: .24rem;
+      font-size: .22rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow:ellipsis;
     }
-    &.blessings-num {
 
-    }
-    &.my-ranking {
-
-    }
-    &.my-price {
-      .value{
-        font-size: .18rem;
-      }
-
-    }
   }
 }
 </style>
