@@ -379,8 +379,8 @@
                 task_name: taskName
               }) // H5平台-游戏内SDK-页面
             }else{
-              GLOBALS.marchSetsPoint('A_H5PT0061000542', { 
-                project_id: gameType,
+              GLOBALS.marchSetsPoint('A_H5PT0061000542', {
+                project_id: this.currentGameType,
                 target_project_id: gameType,
                 task_id: taskId,
                 task_name: taskName
@@ -427,7 +427,7 @@
                 }) // H5平台-游戏内SDK-新人任务-去完成
             } else if (type === 'dayTask') {
                 GLOBALS.marchSetsPoint('A_H5PT0061000543', { 
-                  project_id: gameType,
+                  project_id: this.currentGameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
