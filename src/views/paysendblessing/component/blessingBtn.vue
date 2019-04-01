@@ -18,6 +18,14 @@
 	name: 'blessing-btn',
     methods: {
       handleClick (text) {
+        if(text == 'pay') {
+		  //H5平台-充值送福气-点击充值拿福气 埋点
+		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000680')
+        }
+        if(text == 'rule') {
+		  //H5平台-充值送福气-帮助 埋点
+		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000681')
+        }
 		this.$emit('handleClick', text)
       }
     }
