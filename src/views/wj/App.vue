@@ -31,70 +31,150 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
-              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
-              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
-                  <li v-for="item in cjTaskItems" >
-                      <div class="description">
-                          <div class="head-img">
-                              <img :src="item.icon | filter" alt="">
-                          </div>
-                          <div class="content">
-                              <p v-html="item.taskDescShow"></p>
-                              <div class="progress">
-                                  <div class="progress-bg">
-                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                                  </div>
-                                  <div class="num">
-                                      <img :src="item.awardsImage | filter" alt="">
-                                      <span>{{item.awardsName}}</span>
-                                  </div>
-                              </div>
-                          </div>
+          <div class="new-user-task" v-if="newTaskItems.isNew">
+            <div class="box">
+              <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
+                <div class="tips">
+                  <img src="./img/tips.png" alt="">
+                </div>
+                <div class="text">
+                  <img class="img1" src="./img/title1.png" alt="">
+                  <img class="img2" src="./img/time-limit-bg.png" alt="">
+                </div>
+                <div class="time">
+                  <img class="img3" src="./img/clock.png" alt="">
+                  <span>{{newTaskItems.countDown | formatTime}}</span>
+                </div>
+                <div class="middle" >
+                  <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得5元话费</i></div>
+                  <div class="finish-title" v-else>恭喜！完成了新人任务！</div>
+                  <div class="probar-wrap">
+                    <div class="probar-ball">
+                      <div class="bar" :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></div>
+                    </div>
+                  </div>
+                  <div class="probar-text">
+                    <span>{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</span>
+                    <span class="receive">已有{{newTaskItems.receiverCounter}}人领取</span>
+                  </div>
+                </div>
+              </div>
+              <ul class="bottom"
+                  v-if="motherTask.hasFinishedNum != motherTask.allTaskNum"
+                  @click="checkTaskStatus(newUserTaskobj,'new_user_task')
+              ">
+                <li class="description">
+                  <div class="head-img">
+                    <img :src="newUserTaskobj.icon | filter" alt="">
+                  </div>
+                  <div class="content">
+                    <p>{{newUserTaskobj.taskName}}</p>
+                    <div class="progress">
+                      <div class="progress-bg">
+                        <div class="progress-bar" :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></div>
+                        <span>{{transUint(newUserTaskobj.finishNum,newUserTaskobj.taskOps)}}</span>
                       </div>
-                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
-                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                      <div class="btn received" v-if="item.taskStatus == 2" >
-                          已完成
+                      <div class="num">
+                        <img :src="newUserTaskobj.awardsImage | filter" alt="">
+                        <span>{{newUserTaskobj.awardsName}}</span>
                       </div>
-                  </li>
-                  <p class="cj-text-ys">温馨提示：成就任务的进度可能会受网络影响，会有几分钟的延迟。</p>
+                    </div>
+                  </div>
+                </li>
+                <li class="btn" v-if="newUserTaskobj.taskStatus == 0">领取</li>
+                <li class="btn play" v-if="newUserTaskobj.taskStatus == 1">去完成</li>
+                <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
+              </ul>
+              <ul class="finish" v-else @click="receive1(motherTask,'mother_task')">
+                <li>
+                  <div class="head-img">
+                    <img src="./img/signIn-icon.png" alt="">
+                  </div>
+                  <div class="content">
+                    <p>快领取话费奖励吧</p>
+                    <p>{{motherTask.awardsName}}</p>
+                  </div>
+                </li>
+                <li>领取</li>
+              </ul>
+
+            </div>
+          </div>
+          <div v-else>
+            <div  v-if="cjTaskItems&&cjTaskItems.length&& !newTaskItems.isNew || dayTaskItems&&dayTaskItems.length">
+              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">成就任务</h4>
+              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
+                <li v-for="item in cjTaskItems" >
+                  <div class="description">
+                    <div class="head-img">
+                      <img :src="item.icon | filter" alt="">
+                    </div>
+                    <div class="content">
+                      <p v-html="item.taskDescShow"></p>
+                      <div class="progress">
+                        <div class="progress-bg">
+                          <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                          <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                        </div>
+                        <div class="num">
+                          <img :src="item.awardsImage | filter" alt="">
+                          <span>{{item.awardsName}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                  <div class="btn received" v-if="item.taskStatus == 2" >
+                    已完成
+                  </div>
+                </li>
+                <p class="cj-text-ys">温馨提示：成就任务的进度可能会受网络影响，会有几分钟的延迟。</p>
               </ul>
 
               <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
               <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
-                  <li v-for="item in dayTaskItems" >
-                      <div class="description">
-                          <div class="head-img">
-                              <img :src="item.icon | filter" alt="">
-                          </div>
-                          <div class="content">
-                              <p v-html="item.taskDescShow"></p>
-                              <div class="progress">
-                                  <div class="progress-bg">
-                                      <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                      <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                                  </div>
-                                  <div class="num">
-                                      <img :src="item.awardsImage | filter" alt="">
-                                      <span>{{item.awardsName}}</span>
-                                  </div>
-                              </div>
-                          </div>
+                <li v-for="item in dayTaskItems" >
+                  <div class="description">
+                    <div class="head-img">
+                      <img :src="item.icon | filter" alt="">
+                    </div>
+                    <div class="content">
+                      <p v-html="item.taskDescShow"></p>
+                      <div class="progress">
+                        <div class="progress-bg">
+                          <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                          <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                        </div>
+                        <div class="num">
+                          <img :src="item.awardsImage | filter" alt="">
+                          <span>{{item.awardsName}}</span>
+                        </div>
                       </div>
-                      <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
-                      <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                      <div class="btn received" v-if="item.taskStatus == 2" >
-                          已完成
-                      </div>
-                  </li>
+                    </div>
+                  </div>
+                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
+                  <div class="btn received" v-if="item.taskStatus == 2" >
+                    已完成
+                  </div>
+                </li>
               </ul>
-          </div>
-          <div class="nodata-box" v-else>
+            </div>
+            <div class="nodata-box" v-else>
               <img src="./images/nodata.png" class="nodata">
               <p>暂无数据~</p>
             </div>
+          </div>
+          <poplog
+            v-if="isPopLog"
+            :awardItem="awardItem"
+            :motherTask="motherTask"
+            :masterTask="masterTask"
+            :newUserTaskFinish="newUserTaskFinish"
+            @close="closePopLog"
+          >
+          </poplog>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
           <div>
@@ -141,6 +221,8 @@
   </div>
 </template>
 <script>
+import '../../common/js/window'
+import poplog from './poplog'
 import common from "../../common/js/utils";
 import base64url from 'base64-url';
 export default {
@@ -160,7 +242,13 @@ export default {
         timer1: null,
         cGameType: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
-            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006'],
+		newTaskItems: false,
+		awardItem: null,
+		isNewTask: null,
+		newUserTaskFinish: false,
+		isPopLog: false,
+		masterTask : false
       }
   },
   mounted() {
@@ -174,10 +262,18 @@ export default {
       this.getCdkeyStatus()
       this.getDayTask()
       this.getPlatTaskByBatch()
+      this.getNewTask()
     }
-    
+  },
+  components: {
+	poplog
   },
   computed: {
+    isCjTaskAllComplete() {
+      return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
+              return item.taskStatus == 2
+            }).length == this.cjTaskItems.length)
+    },
     isHideMenu() {
       return this.hideBackArr.includes(this.curChannel)
     },
@@ -194,7 +290,40 @@ export default {
       return this.cdkArr && this.cdkArr.filter((item)=> {
         return item.gameCdkeyRsp.remainNum*100 > 0
       }).length
-    }
+    },
+	motherTask () {
+	  let list = this.newTaskItems && this.newTaskItems.taskList || []
+	  let motherTask = list.filter(item=>{
+		return item.subTask
+	  })[0]
+	  list = list.filter(item => {
+		return !item.subTask
+	  })
+	  let finishedTaskNum = list.filter(item=>{
+		return item.taskStatus == 2
+	  }).length
+	  if(motherTask) {
+		motherTask.allTaskNum = list.length
+		motherTask.hasFinishedNum = finishedTaskNum
+		return motherTask
+	  }
+	  return ''
+	},
+	newUserTaskobj () {
+	  let list = this.newTaskItems && this.newTaskItems.taskList || []
+	  let taskObj = null
+	  list = list.filter(item => { // 刷选出子任务
+		return !item.subTask
+	  })
+	  // 找到当前需要展示的任务，第一个taskStatus不为2的任务
+	  for(let i=0; i<list.length; i++){
+		if(list[i].taskStatus != 2){  // taskStatus: 0-带领取 1-未完成 2-已领取
+		  taskObj = list[i]
+		  break
+		}
+	  }
+	  return taskObj
+	}
   },
   methods: {
     receive(item) {
@@ -219,6 +348,8 @@ export default {
         })
     },
     goFinish({gameType, url, action, taskId},type) {
+
+
       let actionsArr = [39,35,34,32]
       // 跳转到首页（关闭）
       if(action == 36 || url == '/plat/') {
@@ -242,12 +373,22 @@ export default {
           return;
       }
 
-      clearTimeout(this.timer1)
-      this.isFighur = true
-      this.timer1 = setTimeout(() => {
-        this.isFighur = false
-      }, 3000)
-      // parent.location.href=this.jumpToGameUrl({url:url})
+      if(type == 'new_user_task') {
+        //其他外接游戏external=1
+        if (url && url.indexOf('external=1') != -1) {
+          let gameUrl = this.trimStr(url) + '&channel=' + this.curChannel + '&token=' + this.curToken + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+          return parent.location.href = gameUrl
+        }
+        parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.curChannel + '&token=' + this.curToken;
+      }else {
+        clearTimeout(this.timer1)
+        this.isFighur = true
+        this.timer1 = setTimeout(() => {
+          this.isFighur = false
+        }, 3000)
+      }
+  	  
+
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
@@ -413,9 +554,101 @@ export default {
           this.cdkArr = res.data.data
         }
       })
-    }
+    },
+	getNewTask() {
+	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
+      {
+		value: 'NewUserStairTask'
+	  },
+      {
+		headers: {
+		  'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+		}
+	  }).then((res)=> {
+		if(res.data.code == 200) {
+		  this.newTaskItems = res.data.data
+		}
+		if(parent.LoadTaskFinish) {
+		  parent.LoadTaskFinish()
+		}
+	  })
+	},
+	checkTaskStatus (item, type, index) {
+	  if (item.taskStatus == 0) {
+		this.receive1(item, type, index)
+	  } else if (type == 'day_task' || item.taskStatus == 1) {
+		this.goFinish(item, type)
+	  }
+	},
+	receive1(item, type,index,medalimg) {
+	  if(type == 'crush_task' || type == 'mother_crush_task'){
+		item.awardsFlag = type
+		item.index = index
+		item.medalimg = medalimg
+		GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType,null,{taskId:item.taskId}) //事件ID 事件名称 游戏ID 游戏位置
+	  }else{
+		GLOBALS.thirdSetsPoint({
+		  "event_name": "游戏内任务-去完成",
+		  "task_id": item.taskId,
+		  "event_id": 1210040803,
+		  "project_id": item.gameType
+		})
+	  }
+	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+		taskId: item.taskId,
+		taskLogId: item.taskLogId
+      },{
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res)=> {
+		if(res.data.code == 200) {
+		  this.awardItem = item
+		  switch(type) {
+			case 'mother_task':
+			  this.newUserTaskFinish = true
+			  this.getNewTask()
+			  break;
+			default:
+			  item.taskStatus = 2
+		  }
+		  this.isPopLog = true
+		}else{
+		  this.$toast.show({
+			message: res.data.message,
+			duration: 1500
+		  })
+		}
+	  })
+	},
+	goTask () {
+	  let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+		'100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+	  if(baiduChannel.includes(this.curChannel)){
+		parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.curChannel}`
+	  } else if(this.curChannel == '700002'){
+		parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
+	  }else{
+		parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.curChannel}`
+	  }
+	},
+	closePopLog(val) {
+	  this.isPopLog = false
+      if(val){
+        this.goTask()
+      }
+	}
+  },
+  filters:{
+	formatTime (time) {
+	  let days = time / 1000 / 3600 / 24
+	  let day = Math.floor(days)
+	  let hours = Math.ceil((days-day) * 24)
+	  return `仅剩${day}天${hours}小时`
+	}
   }
-
 }
 
 </script>
@@ -774,6 +1007,7 @@ img {
   display: block;
   margin: 0 auto .33rem;
 }
+
 .progress-bg{
     background: #0F1726;
     width: 90px;
@@ -895,12 +1129,368 @@ img {
         }
 
     }
-    .cj-text-ys {
+.cj-text-ys {
       font-size: .18rem;
       color: #394778;
       text-align: center;
       line-height: .35rem;
       padding: .1rem 3.5% 0;
     }
+
+
+
+
+.new-user-task{
+  padding: 4.5%;
+  margin-top: 4%;
+  .box{
+    border-radius: 5px;
+    position: relative;
+  }
+  .progress-bar{color: #507BCC !important}
+  .bg-lines{
+    position: relative;
+    background:url(./img/bg.png) no-repeat;
+    background-size: 100% 100%;
+    height: 3.18rem;
+    padding: 0 .21rem 0 .24rem;
+    box-sizing: border-box;
+    &.bg-height{
+      height: 3.18rem;
+    }
+    .tips {
+      animation: tips 4s infinite;
+      position: absolute;
+      right: 1.61rem;
+      top: -.1rem;
+      width: 1.31rem;
+      height: .4rem;
+      img {
+        width: 100%;
+        height: 100%;
+        vertical-align: top;
+      }
+    }
+    .text{
+      position: absolute;
+      top: 1.19rem;
+      left: .24rem;
+      display: flex;
+      justify-content: left;
+      align-items: flex-end;
+      .img1{
+        margin-right: .14rem;
+        width: 1.9rem;
+        height: .32rem;
+        display: block;
+      }
+      .img2{
+        width: .96rem;
+        height: .26rem;
+        display: block;
+      }
+    }
+    .time{
+      position: absolute;
+      top: 1.2rem;
+      right: .21rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1%;
+      border-radius: 0 0 0 5px;
+      .img3{
+        display: inline;
+        width: .22rem;
+        height: .22rem;
+        margin-right: .06rem;
+      }
+      span{
+        font-size: .18rem ;
+        color: #b48dd7;
+      }
+    }
+  }
+  .right-li{
+    background: #7B38F4 !important;
+    padding: .1rem .2rem !important;
+    span{color: rgba(255,255,255,.5) !important}
+  }
+  .middle{
+    padding-top: 1.88rem;
+    font-size: .26rem;
+    .finish-title{
+      color: #fff;
+      font-size: .26rem;
+      margin-bottom: .18rem;
+      i{
+        margin-left: .1rem;
+        color: #FFD338;
+      }
+    }
+    .finish-get{
+      display: flex;
+      align-items: center;
+      justify-content:center;
+      .num{
+        font-size: 40px;
+        font-weight: bolder;
+      }
+      .text{
+        line-height: normal;
+        text-align: center;
+        .p1{
+          font-size: 8px;
+          color: #5E7CAD;
+          background: #fff;
+          padding: 0;
+          width: 100%;
+          border-radius: 2px 2px 2px 0;
+          // display: inline;
+          text-align: center;
+          // margin-bottom: 2px;
+        }
+        .p2{
+          text-align: center;
+          font-weight: bolder;
+          font-size: 16px;
+        }
+      }
+    }
+    .probar-wrap{
+      position: relative;
+      width: 100%;
+      margin-bottom: .13rem;
+    }
+    .probar-ball {
+      width: 100%;
+      height:.3rem;
+      line-height: .3rem;
+      text-align: center;
+      background: #000;
+      position: relative;
+      border-radius: 4px;
+      font-weight:normal;
+      overflow:hidden;
+      .bar{
+        display: block;
+        height:100%;
+        background: #507BCC;
+        position: absolute;
+        left:0;
+        top:0;
+        border-radius: 4px 0 0 4px;
+      }
+
+      p {
+        position: absolute;
+        bottom: 0;
+        z-index:2;
+        height: 100%;
+        width: 100%;
+        line-height: .33rem;
+        font-size: .18rem;
+      }
+    }
+    .probar-text {
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      span {
+        font-size: .22rem;
+      }
+      .receive {
+        font-size: .2rem;
+      }
+    }
+  }
+  .bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    background: #202a4d;
+    border-radius:0 0 4px 4px;
+    position: relative;
+    overflow: hidden;
+    .description{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 80%;
+      margin: 0;
+      padding: 0;
+      background: none;
+      .head-img{
+        width: 44px;
+        height: 44px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-right: 3%;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .content{
+        >p{
+          font-size: .26rem;
+          margin-bottom: 5%;
+        }
+        .progress{
+          display: flex;
+          align-items: center;
+          .progress-bg{
+            background: #0F1726;
+            width: 1.98rem;
+            margin-right: 5px;
+            position: relative;
+            height: .3rem;
+            border-radius: 3px;
+            overflow: hidden;
+            .progress-bar{
+              background: #507BCC;
+              position: absolute;
+              height: 100%;
+              left: 0;
+              width: 30%;
+            }
+            span{
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              color: #fff;
+              font-size: 11px;
+              left: 0;
+              line-height: 15px;
+              text-align: center;
+            }
+          }
+          .num{
+            img{
+              height: 12px;
+              display: inline;
+            }
+            span{
+              font-size: 12px;
+              color: #FFD338;
+            }
+          }
+        }
+      }
+    }
+    .btn{
+      width: 1.2rem;
+      height: .46rem;
+      color: #fff;
+      font-size: 12px;
+      background: #EE6F0B;
+      border-radius: 4px;
+      text-align: center;
+      line-height: .46rem;
+      margin: 0;
+      padding: 0;
+      &.play{
+        background: #1976D2;
+      }
+    }
+    .label{
+      color: #fff;
+      background: #E64A19;
+      width: 12%;
+      font-size: 10px;
+      position: absolute;
+      text-align: center;
+      padding: 2px 0;
+      top: 0;
+      left: 0;
+      border-radius: 0 0 4px 0;
+    }
+  }
+  .finish{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    background: #202a4d;
+    position: relative;
+    overflow: hidden;
+    li{
+      word-break:keep-all;
+      padding: 0;
+      margin: 0;
+      white-space:nowrap;
+      &:first-child{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 80%;
+        .head-img{
+          width: 44px;
+          height: 44px;
+          border-radius: 6px;
+          overflow: hidden;
+          margin-right: 3%;
+          img{
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .content{
+          position: relative;
+          p{
+            font-size: .26rem;
+            font-weight: bold;
+            &:last-child{
+              font-size: .22rem;
+              margin-top: .16rem;
+            }
+          }
+        }
+      }
+      &:last-child{
+        color: #fff;
+        font-weight: bold;
+        width: 1.2rem;
+        height: .46rem;
+        text-align: center;
+        line-height:.46rem;
+        font-size: 12px;
+        background: #EE6F0B;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+@keyframes tips {
+  0% {
+    transform-origin: right bottom;
+    transform: scale(0);
+  }
+  15% {
+    transform-origin: right bottom;
+    transform: scale(1);
+  }
+  30% {
+    transform-origin: center bottom;
+    transform: scale(1) rotate(-5deg);
+  }
+  45% {
+    transform-origin: center bottom;
+    transform: scale(1) rotate(0);
+  }
+  85% {
+    transform-origin: center bottom;
+    transform: scale(1) rotate(0);
+  }
+  100% {
+    transform-origin: right bottom;
+    transform: scale(0) rotate(0);
+  }
+
+}
+
 
 </style>
