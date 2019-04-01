@@ -1,58 +1,112 @@
 <template>
-  <div class="ranking" v-show="showList">
-    <div class="rankint-list">
-      <ul>
-        <li class="one" v-if="rankingList[0]">
-          <div class="user">
-            <div class="avatar">
-              <img :src="rankingList[0].profilePhoto | filter " alt="" v-if="!!rankingList[0].profilePhoto">
-              <img src="../images/avatar.png" alt="" v-else>
+  <div>
+    <div class="ranking" v-if="showList">
+      <div class="rankint-list">
+        <ul>
+          <li class="one" v-if="rankingList[0]">
+            <div class="user">
+              <div class="avatar">
+                <img :src="rankingList[0].profilePhoto | filter " alt="" v-if="!!rankingList[0].profilePhoto">
+                <img src="../images/avatar.png" alt="" v-else>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">{{rankingList[0].nickname}}</div>
+                <div class="blessing-num"><i>福气值：</i><span>{{rankingList[0].amount}}</span></div>
+              </div>
             </div>
-            <div class="user-info">
-              <div class="nick-name">{{rankingList[0].nickname}}</div>
-              <div class="blessing-num"><i>福气值:</i><span>{{rankingList[0].amount}}</span></div>
+            <div class="blessing-log btn" @click="handleClick('log')">
+              <img src="../images/blessing-log-btn.png" alt="">
             </div>
+          </li>
+          <li class="two" v-if="rankingList[1]">
+            <div class="user">
+              <div class="avatar">
+                <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[0].profilePhoto">
+                <img src="../images/avatar.png" alt="" v-else>
+                <div class="index"><span>第二名</span></div>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">{{rankingList[1].nickname}}</div>
+                <div class="blessing-num"><i>福气值：</i><span>{{rankingList[1].amount}}</span></div>
+              </div>
+            </div>
+          </li>
+          <li class="three" v-if="rankingList[2]">
+            <div class="user">
+              <div class="avatar">
+                <img :src="rankingList[2].profilePhoto | filter" alt="" v-if="!!rankingList[2].profilePhoto">
+                <img src="../images/avatar.png" alt="" v-else>
+                <div class="index"><span>第三名</span></div>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">{{rankingList[2].amount}}</div>
+                <div class="blessing-num"><i>福气值：</i><span>{{rankingList[2].amount}}</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="check-btn btn" @click="handleClick('ranking')">
+        <div class="container">
+          <div class="border">
+            <img src="../images/check-ranking-btn.png" alt="">
           </div>
-          <div class="blessing-log btn" @click="handleClick('log')">
-            <img src="../images/blessing-log-btn.png" alt="">
-          </div>
-        </li>
-        <li class="two" v-if="rankingList[1]">
-          <div class="user">
-            <div class="avatar">
-              <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[0].profilePhoto">
-              <img src="../images/avatar.png" alt="" v-else>
-              <div class="index"><span>第二名</span></div>
-            </div>
-            <div class="user-info">
-              <div class="nick-name">{{rankingList[1].nickname}}</div>
-              <div class="blessing-num"><i>福气值:</i><span>{{rankingList[1].amount}}</span></div>
-            </div>
-          </div>
-        </li>
-        <li class="three" v-if="rankingList[2]">
-          <div class="user">
-            <div class="avatar">
-              <img :src="rankingList[2].profilePhoto | filter" alt="" v-if="!!rankingList[2].profilePhoto">
-              <img src="../images/avatar.png" alt="" v-else>
-              <div class="index"><span>第三名</span></div>
-            </div>
-            <div class="user-info">
-              <div class="nick-name">{{rankingList[2].amount}}</div>
-              <div class="blessing-num"><i>福气值:</i><span>{{rankingList[2].amount}}</span></div>
-            </div>
-          </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
-    <div class="check-btn btn" @click="handleClick('ranking')">
-      <div class="container">
-        <div class="border">
-          <img src="../images/check-ranking-btn.png" alt="">
+    <div class="ranking" v-else>
+      <div class="rankint-list">
+        <ul>
+          <li class="one">
+            <div class="user">
+              <div class="avatar">
+                <img src="../images/avatar.png" alt="">
+              </div>
+              <div class="user-info">
+                <div class="nick-name">***</div>
+                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
+              </div>
+            </div>
+            <div class="blessing-log btn" @click="handleClick('log')">
+              <img src="../images/blessing-log-btn.png" alt="">
+            </div>
+          </li>
+          <li class="two">
+            <div class="user">
+              <div class="avatar">
+                <img src="../images/avatar.png" alt="">
+                <div class="index"><span>第二名</span></div>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">***</div>
+                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
+              </div>
+            </div>
+          </li>
+          <li class="three">
+            <div class="user">
+              <div class="avatar">
+                <img src="../images/avatar.png" alt="">
+                <div class="index"><span>第三名</span></div>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">***</div>
+                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="check-btn btn" @click="handleClick('ranking')">
+        <div class="container">
+          <div class="border">
+            <img src="../images/check-ranking-btn.png" alt="">
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -63,6 +117,10 @@
 	name: 'blessing-ranking',
 	methods: {
 	  handleClick (text) {
+	    if(text == 'ranking') {
+		  //H5平台-充值送福气-查看排名 埋点
+		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000679')
+        }
 		this.$emit('handleClick', text)
 	  }
 	},
@@ -132,6 +190,7 @@
     width: 100%;
     height: 1.63rem;
     background: url("../images/two.png") no-repeat center top / 100% 100%;
+
     .user {
       padding: .26rem 2.86rem 0 .35rem;
       height: .97rem;
@@ -178,8 +237,11 @@
       }
     }
   }
-  .check-btn {
+  .three {
     margin: .2rem 0;
+  }
+  .check-btn {
+    margin-bottom: .2rem;
     width: 100%;
     box-sizing: border-box;
     .container {
