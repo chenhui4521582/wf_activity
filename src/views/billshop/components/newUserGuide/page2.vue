@@ -33,6 +33,7 @@ export default {
   }),
   methods: {
     handleClick () {
+      GLOBALS.marchSetsPoint('A_H5PT0035000664')// H5平台-话费券商城-新手引导step4-商品点击
       this.$emit('closePage2')
     },
     autoHide () {
@@ -46,6 +47,7 @@ export default {
   mounted () {
     this.$nextTick(function () {
       this.isAnimation = true
+      GLOBALS.marchSetsPoint('A_H5PT0035000663')// H5平台-话费券商城-新手引导step3-动画引导
       this.autoHide()
     })
   },

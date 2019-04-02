@@ -68,7 +68,7 @@
                 </div>
                 <p class="btn-box">
                     <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj)">去完成</a>
+                    <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
                 </p>
               </li>
@@ -153,7 +153,7 @@
               </div>
               <p class="btn-box">
                 <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
-                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
                 <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
                 <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
               </p>
@@ -344,7 +344,8 @@
                     return ''
             }
         },
-        jumpMine(){
+        async jumpMine(){
+            await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType}) // H5平台-游戏内SDK-话费余额按钮
             parent.location.href = this.jumpToPlat()+'#/personal'
         },
         jumpToPlat(){
@@ -369,9 +370,21 @@
                 this.goFinishs(item,type)
             }
         },
-        goFinishs({gameType, url, action, taskId},type) {
+        goFinishs({gameType, url, action, taskId, taskName},type) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
-                GLOBALS.buriedPoint(1210040825, 'H5平台-游戏内成就任务页-去完成', gameType,null,{taskId:taskId}) //事件ID 事件名称 游戏ID 游戏位置
+              GLOBALS.marchSetsPoint('A_H5PT0061000537', { 
+                project_id: gameType,
+                target_project_id: gameType,
+                task_id: taskId,
+                task_name: taskName
+              }) // H5平台-游戏内SDK-页面
+            }else{
+              GLOBALS.marchSetsPoint('A_H5PT0061000542', {
+                project_id: this.currentGameType,
+                target_project_id: gameType,
+                task_id: taskId,
+                task_name: taskName
+              }) // H5平台-游戏内SDK-每日任务-去完成
             }
             if(parent.closeTaksPage) {
                 parent.closeTaksPage()
@@ -395,8 +408,8 @@
         trimStr(str) {
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
-        goFinish({gameType, url, action, taskId},type) {
-
+        goFinish({gameType, url, action, taskId, taskName}, type) {
+            
             let actionsArr = [39,35,34,32]
             GLOBALS.thirdSetsPoint({
                 "event_name": "游戏内任务-去完成",
@@ -405,8 +418,22 @@
                 "project_id": this.currentGameType,//当前游戏ID
                 "target_project_id" : gameType//跳转到的游戏ID
             })
-
-
+            if(type === 'newtask'){
+                GLOBALS.marchSetsPoint('A_H5PT0061000540', { 
+                  project_id: gameType,
+                  target_project_id: gameType,
+                  task_id: taskId,
+                  task_name: taskName
+                }) // H5平台-游戏内SDK-新人任务-去完成
+            } else if (type === 'dayTask') {
+                GLOBALS.marchSetsPoint('A_H5PT0061000543', { 
+                  project_id: this.currentGameType,
+                  target_project_id: gameType,
+                  task_id: taskId,
+                  task_name: taskName
+                }) // H5平台-游戏内SDK-更多每日任务-去完成
+            }
+            
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
@@ -475,24 +502,36 @@
             this.getCrushTask(index,type,this.checkCurrentTask())
         },
         receive(item, type,index,medalimg) {
-          this.showMedalAnimate = false
-          if(type == 'crush_task' || type == 'mother_crush_task'){
-              item.awardsFlag = type
-              item.index = index
-              item.medalimg = medalimg
-              GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType,null,{taskId:item.taskId}) //事件ID 事件名称 游戏ID 游戏位置
-          }else{
-              GLOBALS.thirdSetsPoint({
-              "event_name": "游戏内任务-去完成",
-              "task_id": item.taskId,
-              "event_id": 1210040803,
-              "project_id": item.gameType
-              })
-          }
-          this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
-              taskId: item.taskId,
-              taskLogId: item.taskLogId
-          }).then((res)=> {
+            this.showMedalAnimate = false
+            if(type == 'crush_task' || type == 'mother_crush_task'){
+                item.awardsFlag = type
+                item.index = index
+                item.medalimg = medalimg
+                GLOBALS.marchSetsPoint('A_H5PT0061000538', { 
+                  project_id: item.gameType,
+                  target_project_id: item.gameType,
+                  task_id: item.taskId,
+                  task_name: item.taskName
+                }) // H5平台-游戏内SDK-成就任务-去领取
+            }else if(type === 'newtask'){
+              GLOBALS.marchSetsPoint('A_H5PT0061000541', { 
+                project_id: item.gameType,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              }) // H5平台-游戏内SDK-新人任务-去领取
+            }else{
+                GLOBALS.thirdSetsPoint({
+                "event_name": "游戏内任务-去完成",
+                "task_id": item.taskId,
+                "event_id": 1210040803,
+                "project_id": item.gameType
+                })
+            }
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+            taskId: item.taskId,
+            taskLogId: item.taskLogId
+            }).then((res)=> {
             if(res.data.code == 200) {
               if(type == 'newtask') {
                   this.isNewTask = true
@@ -529,16 +568,23 @@
           })
         },
         getNewTask() {
-          this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
-              value: 'NewUserStairTask'
-          }).then((res)=> {
-            if(res.data.code == 200) {
-              this.newTaskItems = res.data.data
-            }
-            if(parent.LoadTaskFinish) {
-              parent.LoadTaskFinish()
-            }
-          })
+            this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
+                value: 'NewUserStairTask'
+            }).then((res)=> {
+                if(res.data.data.isNew){
+                  GLOBALS.marchSetsPoint('S_00000000000010', { 
+                    project_id: this.currentGameType,
+                    target_project_id: this.currentGameType
+                  }) // H5平台-游戏内SDK-新人任务加载
+                }
+                if(res.data.code == 200) {
+                this.newTaskItems = res.data.data
+                }
+
+                if(parent.LoadTaskFinish) {
+                parent.LoadTaskFinish()
+                }
+            })
         },
         getDayTask() {
             this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
@@ -575,6 +621,7 @@
                 this.telFragment = res.data.data.filter((item)=> {
                 return item.fragmentId == 7
                 })
+                GLOBALS.marchSetsPoint('P_H5PT0061', { project_id: this.currentGameType, residual_phone: this.telFragment[0].price.split('元')[0]}) // H5平台-游戏内SDK-页面
             }
             })
 
@@ -677,9 +724,11 @@
             }
         },
         kfclick(){
+          GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服按钮
           this.showzspop=true
         },
-        gotokf(){
+        async gotokf(){
+          await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
             baiduChannel = ['100039','100040','100041','100042','100049']
           if(jsChannel.includes(this.channel)){
