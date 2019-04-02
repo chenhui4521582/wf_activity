@@ -108,7 +108,7 @@ export default {
     },
 	getBlessingNum () {
 	  let isPaySendBlessingSuccess = localStorage.getItem('paySendBlessingSuccess');
-	  if(isPaySendBlessingSuccess == 'error')  return false
+	  if(!isPaySendBlessingSuccess || isPaySendBlessingSuccess == 'error')  return false
 	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/latestBonus';
 	  this.axios.post(url, {
 		header: {
