@@ -50,7 +50,12 @@
     justify-content: space-between;
   }
   li {
-    flex: 1;
+    &.my-price{
+      flex: 1;
+      min-width: 33.333%;
+    }
+
+    padding: 0 .22rem;
     height: .9rem;
     position: relative;
     overflow: hidden;
@@ -67,6 +72,7 @@
       font-size: .28rem;
       line-height: .33rem;
       text-align: center;
+      white-space: nowrap;
       img {
         margin-right: .04rem;
         width: .33rem;
@@ -75,14 +81,11 @@
       }
     }
     .value {
-      padding: 0 .1rem;
       margin-top: .1rem;
       text-align: center;
       color: #FFD847;
       font-size: .22rem;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow:ellipsis;
     }
 
   }

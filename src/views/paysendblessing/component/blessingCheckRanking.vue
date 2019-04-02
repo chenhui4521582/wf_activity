@@ -198,8 +198,6 @@
             p {
               max-width: 2.3rem;
               white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
               &:first-child {
                 margin-bottom: .08rem;
               }

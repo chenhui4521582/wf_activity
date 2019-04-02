@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ranking" v-if="showList">
+    <div class="ranking">
       <div class="rankint-list">
         <ul>
           <li class="one" v-if="rankingList[0]">
@@ -12,6 +12,20 @@
               <div class="user-info">
                 <div class="nick-name">{{rankingList[0].nickname}}</div>
                 <div class="blessing-num"><i>福气值：</i><span>{{rankingList[0].amount}}</span></div>
+              </div>
+            </div>
+            <div class="blessing-log btn" @click="handleClick('log')">
+              <img src="../images/blessing-log-btn.png" alt="">
+            </div>
+          </li>
+          <li class="one" v-else>
+            <div class="user">
+              <div class="avatar">
+                <img src="../images/avatar.png" alt="">
+              </div>
+              <div class="user-info">
+                <div class="nick-name">***</div>
+                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
               </div>
             </div>
             <div class="blessing-log btn" @click="handleClick('log')">
@@ -31,6 +45,18 @@
               </div>
             </div>
           </li>
+          <li class="two" v-else>
+            <div class="user">
+              <div class="avatar">
+                <img src="../images/avatar.png" alt="">
+                <div class="index"><span>第二名</span></div>
+              </div>
+              <div class="user-info">
+                <div class="nick-name">***</div>
+                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
+              </div>
+            </div>
+          </li>
           <li class="three" v-if="rankingList[2]">
             <div class="user">
               <div class="avatar">
@@ -44,46 +70,7 @@
               </div>
             </div>
           </li>
-        </ul>
-      </div>
-      <div class="check-btn btn" @click="handleClick('ranking')">
-        <div class="container">
-          <div class="border">
-            <img src="../images/check-ranking-btn.png" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ranking" v-else>
-      <div class="rankint-list">
-        <ul>
-          <li class="one">
-            <div class="user">
-              <div class="avatar">
-                <img src="../images/avatar.png" alt="">
-              </div>
-              <div class="user-info">
-                <div class="nick-name">***</div>
-                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
-              </div>
-            </div>
-            <div class="blessing-log btn" @click="handleClick('log')">
-              <img src="../images/blessing-log-btn.png" alt="">
-            </div>
-          </li>
-          <li class="two">
-            <div class="user">
-              <div class="avatar">
-                <img src="../images/avatar.png" alt="">
-                <div class="index"><span>第二名</span></div>
-              </div>
-              <div class="user-info">
-                <div class="nick-name">***</div>
-                <div class="blessing-num"><i>福气值：</i><span>***</span></div>
-              </div>
-            </div>
-          </li>
-          <li class="three">
+          <li class="three" v-else>
             <div class="user">
               <div class="avatar">
                 <img src="../images/avatar.png" alt="">
@@ -123,12 +110,7 @@
         }
 		this.$emit('handleClick', text)
 	  }
-	},
-    computed: {
-      showList () {
-        return this.rankingList.length
-      }
-    }
+	}
   }
 </script>
 
