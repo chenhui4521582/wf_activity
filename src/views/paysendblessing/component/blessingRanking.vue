@@ -221,6 +221,7 @@
   }
   .three {
     margin: .2rem 0;
+    background: url("../images/three.png") no-repeat center top / 100% 100%;
   }
   .check-btn {
     margin-bottom: .2rem;
