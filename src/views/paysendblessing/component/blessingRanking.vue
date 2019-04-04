@@ -65,7 +65,7 @@
                 <div class="index"><span>第三名</span></div>
               </div>
               <div class="user-info">
-                <div class="nick-name">{{rankingList[2].amount}}</div>
+                <div class="nick-name">{{rankingList[2].nickname}}</div>
                 <div class="blessing-num"><i>福气值：</i><span>{{rankingList[2].amount}}</span></div>
               </div>
             </div>
