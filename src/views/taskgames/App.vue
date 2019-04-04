@@ -172,6 +172,13 @@
           @close="closePopLog"
           >
       </poplog>
+      <!-- 踏青寻宝   活动特有  活动下线 删除-->
+      <box-dialog
+          v-if="showBoxDialog"
+          :awardItem="awardItem"
+          @closeBoxDialog = "closeBoxDialog"
+      />
+      <!-- 踏青寻宝   活动特有  活动下线 删除-->
     </div>
     <div class="t-content"  v-show="isTfStatus">
       <img src="./images/tf-task-bg.png" class="tf-task-bg">
@@ -210,7 +217,8 @@
             huafeiNum : 0,
             isTfStatus: false,
             showzspop:false,
-            newUserTaskFinish: false
+            newUserTaskFinish: false,
+		    showBoxDialog:false // 踏青寻宝   活动特有  活动下线 删除
         }
     },
     mounted() {
@@ -291,6 +299,7 @@
         crushMasterTask : ()=>import('./component/crushMasterTask'),
         masterPop :() =>import('./component/dialog'),
         commonPop:()=>import("./component/commonPop"),
+        boxDialog:()=>import("./component/boxDialog"),
     },
     methods: {
         getDegradeTaskStatus() {
@@ -364,6 +373,7 @@
             this.huafeiNum = data.data
         },
         checkTaskStatus(item,type,index){
+
             if(item.taskStatus == 0){
                 this.receive(item,type,index)
             }else if(item.taskStatus == 1){
@@ -529,8 +539,8 @@
                 })
             }
             this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
-            taskId: item.taskId,
-            taskLogId: item.taskLogId
+              taskId: item.taskId,
+              taskLogId: item.taskLogId
             }).then((res)=> {
             if(res.data.code == 200) {
               if(type == 'newtask') {
@@ -553,11 +563,18 @@
                       this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                       break
                   case 'dayTask' :
+					  // 踏青寻宝   活动特有  活动下线 删除
+                      this.showBoxDialog = true
+					  // 踏青寻宝   活动特有  活动下线 删除
                       this.getDayTask()
                       break
                   default:
                       item.taskStatus = 2
               }
+
+              // 踏青寻宝   活动特有  活动下线 删除
+              if(type == 'dayTask') return false
+			  // 踏青寻宝   活动特有  活动下线 删除
               this.isPopLog = true
             }else{
               this.$toast.show({
@@ -758,6 +775,9 @@
           }else{
             console.log('没有找到closeTaksPage');
           }
+        },
+        closeBoxDialog () {
+          this.showBoxDialog = false
         }
     },
     watch:{
