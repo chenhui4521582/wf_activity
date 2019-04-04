@@ -35,7 +35,7 @@
           <li class="two" v-if="rankingList[1]">
             <div class="user">
               <div class="avatar">
-                <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[0].profilePhoto">
+                <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[1].profilePhoto">
                 <img src="../images/avatar.png" alt="" v-else>
                 <div class="index"><span>第二名</span></div>
               </div>
