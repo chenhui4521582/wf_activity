@@ -260,8 +260,10 @@ export default {
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
-      this.getDayTask()
-      this.getPlatTaskByBatch()
+      if(this.cGameType && this.cGameType != null && this.cGameType != 'null') {
+        this.getDayTask()
+        this.getPlatTaskByBatch()
+      }
       this.getNewTask()
     }
   },
