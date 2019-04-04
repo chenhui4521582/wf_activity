@@ -91,6 +91,9 @@ export default {
         currentMedalIndex: {
             default : 0
         },
+        currentGameType: {
+            default: null
+        }
     },
     data(){
         return{
@@ -129,6 +132,7 @@ export default {
         //     console.log(this.crushTaskList.currentIndex+'------');
         //     this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
         // }, 0);
+        GLOBALS.marchSetsPoint('S_00000000000009', { project_id: this.currentGameType, target_project_id: this.currentGameType}) // H5平台-游戏内SDK-页面
     },
     computed:{
         currentMedalList(){
@@ -143,7 +147,14 @@ export default {
         },
         // 点击切换显示勋章内容（已获得 未解锁 进行中）
         checkMedals(value){
-            let index = value.index
+          let index = value.index
+          let parentTask = this.crushTaskList.allTask[index].parentTask
+          GLOBALS.marchSetsPoint('A_H5PT0061000539', { 
+              project_id: parentTask.taskType,
+              target_project_id: parentTask.taskType,
+              task_id: parentTask.taskId,
+              task_name: parentTask.taskName
+            }) // H5平台-游戏内SDK-成就任务-勋章点击
             this.checkFinishedList(index,'checkMode')
             this.$emit('hideMedalAnimate')
         },

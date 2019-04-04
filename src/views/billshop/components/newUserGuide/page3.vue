@@ -30,7 +30,8 @@ export default {
     isShow: false
   }),
   methods: {
-    handleClick () {
+    async handleClick () {
+      await GLOBALS.marchSetsPoint('A_H5PT0035000666')// H5平台-话费券商城-新手引导step6-去赚话费券点击
       this.goTaskPage()
     },
     goTaskPage () {
@@ -66,6 +67,7 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
+      GLOBALS.marchSetsPoint('A_H5PT0035000665')// H5平台-话费券商城-新手引导step5-动画引导
       this.isAnimation = true
     })
   }

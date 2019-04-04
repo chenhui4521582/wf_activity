@@ -116,6 +116,22 @@ export default {
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
     },
+
+    goTaskPage() {
+      switch (this.getUrlParam('from')) {
+        case 'bdWap':
+          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
+        case 'jsWap':
+          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
+        case 'miniWap':
+          parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+          break;
+        default:
+          parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+      }
+    },
     close() {
       this.isFragmentStatus = false
       switch (this.getUrlParam('from')) {
@@ -148,7 +164,11 @@ export default {
       let params = Request[ename] ? Request[ename].split('#')[0] : ''
       return params;
     },
-    goExchange() {
+
+    async goExchange() {
+      await GLOBALS.marchSetsPoint('A_H5PT0035000639', {
+        residual_phone: this.getUrlParam('accountBalance')
+      })// H5平台-话费券商城-去赚话费
       this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/placeOrder', {
         productId: this.cAward.id
       })
@@ -217,8 +237,45 @@ export default {
             parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
         }
       }
+    })
+  },
+  closePop() {
+    this.isFragmentStatus = false;
+    this.exchangeStatus = 0;
+  },
+  checkprize(item) {
+    this.isFragmentStatus = false
+    if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
+      switch (this.getUrlParam('from')) {
+        case 'bdWap':
+          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
+          break;
+        case 'jsWap':
+          parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
+          break;
+        case 'miniWap':
+          parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
+          break;
+        default:
+          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
+      }
+    } else {
+      switch (this.getUrlParam('from')) {
+        case 'bdWap':
+          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+          break;
+        case 'jsWap':
+          parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+          break;
+        case 'miniWap':
+          parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+          break;
+        default:
+          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+      }
     }
   }
+}
 }
 </script>
 <style lang="less" scoped>
@@ -291,12 +348,12 @@ a {
             white-space: nowrap;
           }
         }
-        &::after{
-          content: '';
+        &::after {
+          content: "";
           position: absolute;
           width: 0.02rem;
           height: 0.76rem;
-          background: url('../images/split-line.png') no-repeat;
+          background: url("../images/split-line.png") no-repeat;
           background-position: center;
           background-size: contain;
           top: 0;
@@ -307,9 +364,9 @@ a {
         font-size: 0.32rem;
         color: #ee6f0b;
         text-align: right;
-        font-weight:bold;
+        font-weight: bold;
         padding-left: 0.36rem;
-        span{
+        span {
           font-weight: 500;
           font-size: 0.2rem;
         }
@@ -319,7 +376,7 @@ a {
           height: 0.32rem;
           line-height: 0.32rem;
           font-size: 0.2rem;
-          color: #8B8B8C;
+          color: #8b8b8c;
           text-align: center;
           margin-left: 0.09rem;
           text-decoration: line-through;
@@ -335,13 +392,13 @@ a {
     padding: 0.29rem 0.3rem 0.8rem;
     margin-bottom: 0.9rem;
     border-radius: 0.12rem;
-    font-size:.2rem;
+    font-size: 0.2rem;
     line-height: 0.3rem;
-    font-weight:400;
+    font-weight: 400;
     h4 {
-      font-size:.24rem;
+      font-size: 0.24rem;
       margin-bottom: 0.2rem;
-      font-weight:bold;
+      font-weight: bold;
     }
     p {
       font-size: 0.24rem;

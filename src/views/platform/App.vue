@@ -142,6 +142,7 @@ import BScroll from "better-scroll";
 import { mapGetters } from "vuex";
 import { jumpToGame } from "./js/utils.js";
 import axios from "./js/fetch";
+import '../../common/js/window.js';
 export default {
   data() {
     return {
@@ -290,6 +291,7 @@ export default {
         });
     },
     backToWap() {
+      GLOBALS.marchSetsPoint('A_H5PT0026000620') // H5平台-网游活动中心-游戏大厅点击
       if(localStorage.getItem("APP_CHANNEL") == '700002') {
         location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
         return
@@ -341,13 +343,12 @@ export default {
             break;
         }
       }
-
-
-
     },
     Switch(e, index) {
       // this.width = this.$refs.tabWidth[index].offsetWidth + "px";
       let event_id_Arr = [1202010002, 1202010003, 1202030004];
+      let ei_Arr = ['A_H5PT0026000617', 'A_H5PT0026000618', 'A_H5PT0026000619'] // H5平台-网游活动中心-[热门活动,最新开服,攻略资讯]
+      GLOBALS.marchSetsPoint(ei_Arr[index])
       let params = {
         event_id: event_id_Arr[index],
         event_name: this.tabNames[index]
@@ -499,7 +500,6 @@ export default {
           }
         }
       });
-      // debugger
       if (index) {
         this.scrollTabs.goToPage(index, 0, 0);
       }
@@ -653,7 +653,6 @@ export default {
       this[`${page}Tab`].scrollTo(0, 0, 300);
     },
     position(position, vm, page) {
-      // debugger
       if (position.y < 0) {
         vm.backToTop[page] = true;
       } else if (position.y >= 0) {
@@ -775,6 +774,7 @@ export default {
     this.$store.dispatch("getBannerList");
   },
   mounted() {
+    GLOBALS.marchSetsPoint('P_H5PT0026') // H5平台-网游活动中心-页面
     this.saveNewUserGuidePosition();
     this.$nextTick(() => {
       !this.scrollTabs && this.initTabScroll();
