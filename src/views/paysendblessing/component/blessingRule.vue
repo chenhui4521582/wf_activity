@@ -8,8 +8,9 @@
       </div>
       <div class="rule-text">
         <p>1.充值任意金额可获得随机数量的福气值</p>
-        <p>2. 福气值排行榜累积7天结算一次，榜单实时刷新，奖励将于{{endTime | timeFormat}}自动发放至背包。</p>
-        <p>2. 活动时间: {{beforeTime | timeFormat('y-m-d')}} - {{endTime | timeFormat('y-m-d')}} </p>
+        <p>2.福气值排行榜累积7天结算一次，榜单实时刷新，奖励将于{{endTime | timeFormat}}自动发放至背包。</p>
+        <p>3.活动时间: {{beforeTime | timeFormat('y-m-d')}} - {{endTime | timeFormat('y-m-d')}} </p>
+        <p>4.该活动拍卖充值不计入排名</p>
       </div>
     </div>
   </div>
@@ -81,7 +82,7 @@
       }
     }
     .rule-text {
-      padding: .38rem;
+      padding: .25rem .38rem;
       p {
         padding-bottom: .3rem;
         color: #FFFFFF;
