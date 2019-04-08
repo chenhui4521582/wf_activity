@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="d-price">
-            <div>
+            <div style="height: 0.34rem;line-height: 0.34rem;">
               <span>仅需 </span>{{cAward.purchasePrice}}话费券
             </div>
             <div class="d-original" v-if="cAward.marketPrice">原价:{{cAward.marketPrice}}元</div>
@@ -72,7 +72,7 @@
 <script type="text/javascript">
 import Headers from './Header'
 export default {
-  data() {
+  data () {
     return {
       cAward: null,
       isFragmentStatus: false,
@@ -82,93 +82,93 @@ export default {
   },
   components: {
     Headers,
-    commonPop: () => import("./commonPop"),
+    commonPop: () => import('./commonPop')
   },
-  beforeMount() {
+  beforeMount () {
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.cAward = JSON.parse(decodeURIComponent(this.getUrlParam('parmas')))
       console.log(this.cAward)
     })
   },
   computed: {
-    getChannel() {
+    getChannel () {
       return this.curChannel == '100047001' || this.curChannel == '100048001'
     }
   },
   methods: {
-    goMallIndex() {
+    goMallIndex () {
       history.go(-1)
     },
-    goTaskPage() {
+    goTaskPage () {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'miniWap':
           parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
     },
 
-    goTaskPage() {
+    goTaskPage () {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'miniWap':
           parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
     },
-    close() {
+    close () {
       this.isFragmentStatus = false
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'miniWap':
           parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
-          break;
+          break
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
       }
     },
-    //获取地址栏问号后面的参数值
+    // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-      var url = window.location.href;
-      var Request = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.split('?')[1];
-        var strs = str.split("&");
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
         for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
         }
       } else {
-        return '';
+        return ''
       }
       let params = Request[ename] ? Request[ename].split('#')[0] : ''
-      return params;
+      return params
     },
 
-    async goExchange() {
+    async goExchange () {
       await GLOBALS.marchSetsPoint('A_H5PT0035000639', {
         residual_phone: this.getUrlParam('accountBalance')
-      })// H5平台-话费券商城-去赚话费
+      })// H5平台-话费券商城-马上兑换
       this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/placeOrder', {
         productId: this.cAward.id
       })
@@ -197,28 +197,28 @@ export default {
                 message: res.data.message,
                 duration: 1500,
                 isShowMask: true
-              });
+              })
             }
           }
         })
     },
-    closePop() {
-      this.isFragmentStatus = false;
-      this.exchangeStatus = 0;
+    closePop () {
+      this.isFragmentStatus = false
+      this.exchangeStatus = 0
     },
-    checkprize(item) {
+    checkprize (item) {
       this.isFragmentStatus = false
       if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
         switch (this.getUrlParam('from')) {
           case 'bdWap':
             parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
-            break;
+            break
           case 'jsWap':
             parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
-            break;
+            break
           case 'miniWap':
             parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
-            break;
+            break
           default:
             parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
         }
@@ -226,36 +226,36 @@ export default {
         switch (this.getUrlParam('from')) {
           case 'bdWap':
             parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-            break;
+            break
           case 'jsWap':
             parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
-            break;
+            break
           case 'miniWap':
             parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
-            break;
+            break
           default:
             parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
         }
       }
-    })
+    }
   },
-  closePop() {
-    this.isFragmentStatus = false;
-    this.exchangeStatus = 0;
+  closePop () {
+    this.isFragmentStatus = false
+    this.exchangeStatus = 0
   },
-  checkprize(item) {
+  checkprize (item) {
     this.isFragmentStatus = false
     if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
-          break;
+          break
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
-          break;
+          break
         case 'miniWap':
           parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
-          break;
+          break
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
       }
@@ -263,22 +263,38 @@ export default {
       switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'miniWap':
           parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
-          break;
+          break
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
       }
     }
   }
 }
-}
 </script>
 <style lang="less" scoped>
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+a,
+em,
+i,
+ul,
+li {
+  line-height: 1;
+}
 a {
   text-decoration: none;
 }
@@ -373,8 +389,8 @@ a {
         .d-original {
           margin-top: 0.2rem;
           display: inline-block;
-          height: 0.32rem;
-          line-height: 0.32rem;
+          height: 0.2rem;
+          line-height: 0.2rem;
           font-size: 0.2rem;
           color: #8b8b8c;
           text-align: center;
@@ -392,6 +408,7 @@ a {
     padding: 0.29rem 0.3rem 0.8rem;
     margin-bottom: 0.9rem;
     border-radius: 0.12rem;
+    overflow: hidden;
     font-size: 0.2rem;
     line-height: 0.3rem;
     font-weight: 400;
