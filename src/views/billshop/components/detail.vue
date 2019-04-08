@@ -278,23 +278,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-body,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-div,
-a,
-em,
-i,
-ul,
-li {
-  line-height: 1;
-}
 a {
   text-decoration: none;
 }
@@ -388,12 +371,11 @@ a {
         }
         .d-original {
           margin-top: 0.2rem;
-          display: inline-block;
           height: 0.2rem;
           line-height: 0.2rem;
           font-size: 0.2rem;
           color: #8b8b8c;
-          text-align: center;
+          text-align: right;
           margin-left: 0.09rem;
           text-decoration: line-through;
           font-weight: 500;
