@@ -100,7 +100,7 @@
         },
         methods: {
             back(){
-                location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
+                location.replace('https://wap.beeplay123.com/llwWap?channel='+this.channel)
             },
             getUrlParam: function (ename) {
                 var url = window.location.href;

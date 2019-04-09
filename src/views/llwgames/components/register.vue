@@ -122,7 +122,7 @@
                                         duration: 1500
                                     });
 									setTimeout(() => {
-                                        location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
+                                        location.replace('https://wap.beeplay123.com/llwWap?channel='+this.channel)
 									}, 2000);
 		            			}else {
 		            				that.$toast.show({

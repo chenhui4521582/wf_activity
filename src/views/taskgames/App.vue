@@ -354,7 +354,7 @@
             if(baiduChannel.includes(this.channel)){
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
-                return `https://wap.beeplay123.com/llwWap?channel=700002`
+                return `https://wap.beeplay123.com/llwWap?channel=${this.channel}`
             }else{
                return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
             }
@@ -736,7 +736,7 @@
           }else if(baiduChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           } else if(this.channel == '700002'){
-            parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
+            parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=&channel=${this.channel}`
           }else{
             parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
           }
