@@ -44,7 +44,8 @@
                         <a class="forget-code" @click="forgetpwd">忘记密码</a>
                         <a class="free-regist" @click="freeregist">注册</a>
                     </div>
-                    <div class="statement2" v-if="!isWechatChannel"><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
+                    <div class="statement2" v-if=" !isWechatChannel && channel == '700003' "><div class="statement1">苏ICP备17060724号-1</div>@2017苏州玩蜂软件科技有限公司</div>
+                    <div class="statement2" v-if="!isWechatChannel && channel == '700002'"><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
                 </div>
             </div>
         </div>

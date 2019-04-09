@@ -26,7 +26,8 @@
         	<!--<span @click="showProtocal">《用户注册协议》</span>-->
    		<!--</div>-->
    		<a href="javascript:" class="btn-register" @click="submit">注册</a>
-        <div class="statement2"><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
+   		<div class="statement2" v-if=" channel == '700003' "><div class="statement1">苏ICP备17060724号-1</div>@2017苏州玩蜂软件科技有限公司</div>
+        <div class="statement2" v-else><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
 	</div>
 </template>
 <script type="text/javascript">
@@ -43,10 +44,12 @@
 				popContent: '',
 				vCode: '',
 				vNewCode: '',
-				checked: false
+				checked: false,
+				channel: localStorage.getItem('APP_CHANNEL')
 			}
 		},
 		mounted() {
+
             document.title = '注册'
 
 //			Vue.http.headers.common['Authorization'] = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') :'';

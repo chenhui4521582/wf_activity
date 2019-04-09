@@ -11,7 +11,7 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 5000;
 
 
-let channel = utils.getUrlParam('channel'),
+let channel = utils.getUrlParam('channel') && utils.getUrlParam('channel').split('#')[0],
     url_token = utils.getUrlParam('token'),
     everyDayLottery = utils.getUrlParam('everyDayLottery')
 
