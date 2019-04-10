@@ -46,7 +46,8 @@
             <div class="lb_box">
                 <div >
                     <div @click="goLoginPage">
-                            <img class="needsclick"  src="./images/lb1.jpg">
+                            <img class="needsclick"  src="./images/lb2.png" v-if="channel == '700003' ">
+                            <img class="needsclick"  src="./images/lb1.jpg" v-else>
                     </div>
                 </div>
             </div>
