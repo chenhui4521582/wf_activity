@@ -564,9 +564,6 @@
                       this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                       break
                   case 'dayTask' :
-					  // 踏青寻宝   活动特有  活动下线 删除
-                      this.showBoxDialog = true
-					  // 踏青寻宝   活动特有  活动下线 删除
                       this.getDayTask()
                       break
                   default:
@@ -574,9 +571,12 @@
               }
 
               // 踏青寻宝   活动特有  活动下线 删除
-              if(type == 'dayTask') return false
+              if(type == 'dayTask' && item.awardsType == '32') {
+				this.showBoxDialog = true
+              }else{
+				this.isPopLog = true
+              }
 			  // 踏青寻宝   活动特有  活动下线 删除
-              this.isPopLog = true
             }else{
               this.$toast.show({
                 message: res.data.message,
