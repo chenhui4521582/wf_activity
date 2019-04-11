@@ -4,7 +4,7 @@
       <ul>
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment&&telFragment[0].price}}
-          <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i> 
+          <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i>
       </li>
       <p class="figure" v-if="!huafeiShow">
           <img src="./images/fighur.png" class="touch">
@@ -90,20 +90,33 @@
           </div>
       </div>
       <template v-else>
-        <!-- 糖果大师任务 -->
-        <crush-master-task 
-          v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
+        <!-- 大师任务 -->
+        <div @click="islock = !islock">切换</div>
+        <crush-master-task
+          v-if="showCrushMasterTask"
           :crushTaskList="crushTaskList"
-          :showReceiveMedal="showReceiveMedal" 
-          :showMedalAnimate="showMedalAnimate" 
-          :currentMedalIndex="currentMedalIndex" 
+          :showReceiveMedal="showReceiveMedal"
+          :showMedalAnimate="showMedalAnimate"
+          :currentMedalIndex="currentMedalIndex"
           :currentGameType="currentGameType"
-          @checkTaskStatus="checkTaskStatus" 
-          @hideMedalAnimate="showMedalAnimate = false" 
+          @checkTaskStatus="checkTaskStatus"
+          @hideMedalAnimate="showMedalAnimate = false"
           @receive="receive"
           @refreshTask="refreshTask"
-        >
-        </crush-master-task>
+        />
+        <!-- 王者任务 -->
+        <king-task
+          v-if="showKingTask"
+          :crushTaskList="crushTaskList"
+          :showReceiveMedal="showReceiveMedal"
+          :showMedalAnimate="showMedalAnimate"
+          :currentMedalIndex="currentMedalIndex"
+          :currentGameType="currentGameType"
+          @checkTaskStatus="checkTaskStatus"
+          @hideMedalAnimate="showMedalAnimate = false"
+          @receive="receive"
+          @refreshTask="refreshTask"
+        />
         <div v-if="currentGamesItems&&currentGamesItems.length && !newTaskItems.isNew">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
@@ -161,12 +174,12 @@
           </ul>
         </div>
       </template>
-      <poplog 
-          v-if="isPopLog" 
-          :crushTaskList="crushTaskList" 
-          :awardItem="awardItem" 
-          :motherTask="motherTask" 
-          :isNewTask="isNewTask" 
+      <poplog
+          v-if="isPopLog"
+          :crushTaskList="crushTaskList"
+          :awardItem="awardItem"
+          :motherTask="motherTask"
+          :isNewTask="isNewTask"
           :masterTask="masterTask"
           :newUserTaskFinish="newUserTaskFinish"
           @close="closePopLog"
@@ -210,7 +223,8 @@
             huafeiNum : 0,
             isTfStatus: false,
             showzspop:false,
-            newUserTaskFinish: false
+            newUserTaskFinish: false,
+		    islock: true
         }
     },
     mounted() {
@@ -266,9 +280,20 @@
             if(motherTask) {
                 motherTask.allTaskNum = list.length
                 motherTask.hasFinishedNum = finishedTaskNum
-                return motherTask 
+                return motherTask
             }
             return ''
+        },
+        // 显示大师任务
+        showCrushMasterTask () {
+          console.log(this.crushTaskList && !this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew)
+		  // return this.crushTaskList && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+		  return this.crushTaskList && !this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+        },
+        // 显示王者任务
+        showKingTask () {
+          // return this.crushTaskList && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+		  return this.crushTaskList && this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
         }
     },
     filters:{
@@ -291,6 +316,7 @@
         crushMasterTask : ()=>import('./component/crushMasterTask'),
         masterPop :() =>import('./component/dialog'),
         commonPop:()=>import("./component/commonPop"),
+        kingTask:()=>import("./component/kingTask"),
     },
     methods: {
         getDegradeTaskStatus() {
@@ -311,17 +337,17 @@
         checkCurrentTask(){
             switch(this.currentGameType){
                 // 糖果
-                case '12' : 
+                case '12' :
                     GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
                     return 'crush-achievement';
                     break;
                 // 桌球
-                case '2': 
+                case '2':
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement';
                     break;
                 // 捕鱼
-                case '10': 
+                case '10':
                     GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
                     return 'fish-achievement';
                     break;
@@ -372,7 +398,7 @@
         },
         goFinishs({gameType, url, action, taskId, taskName},type) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
-              GLOBALS.marchSetsPoint('A_H5PT0061000537', { 
+              GLOBALS.marchSetsPoint('A_H5PT0061000537', {
                 project_id: gameType,
                 target_project_id: gameType,
                 task_id: taskId,
@@ -409,7 +435,7 @@
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
         goFinish({gameType, url, action, taskId, taskName}, type) {
-            
+
             let actionsArr = [39,35,34,32]
             GLOBALS.thirdSetsPoint({
                 "event_name": "游戏内任务-去完成",
@@ -419,21 +445,21 @@
                 "target_project_id" : gameType//跳转到的游戏ID
             })
             if(type === 'newtask'){
-                GLOBALS.marchSetsPoint('A_H5PT0061000540', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000540', {
                   project_id: gameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
                 }) // H5平台-游戏内SDK-新人任务-去完成
             } else if (type === 'dayTask') {
-                GLOBALS.marchSetsPoint('A_H5PT0061000543', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000543', {
                   project_id: this.currentGameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
                 }) // H5平台-游戏内SDK-更多每日任务-去完成
             }
-            
+
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
@@ -507,14 +533,14 @@
                 item.awardsFlag = type
                 item.index = index
                 item.medalimg = medalimg
-                GLOBALS.marchSetsPoint('A_H5PT0061000538', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000538', {
                   project_id: item.gameType,
                   target_project_id: item.gameType,
                   task_id: item.taskId,
                   task_name: item.taskName
                 }) // H5平台-游戏内SDK-成就任务-去领取
             }else if(type === 'newtask'){
-              GLOBALS.marchSetsPoint('A_H5PT0061000541', { 
+              GLOBALS.marchSetsPoint('A_H5PT0061000541', {
                 project_id: item.gameType,
                 target_project_id: item.gameType,
                 task_id: item.taskId,
@@ -572,7 +598,7 @@
                 value: 'NewUserStairTask'
             }).then((res)=> {
                 if(res.data.data.isNew){
-                  GLOBALS.marchSetsPoint('S_00000000000010', { 
+                  GLOBALS.marchSetsPoint('S_00000000000010', {
                     project_id: this.currentGameType,
                     target_project_id: this.currentGameType
                   }) // H5平台-游戏内SDK-新人任务加载
@@ -759,9 +785,6 @@
             console.log('没有找到closeTaksPage');
           }
         }
-    },
-    watch:{
-        crushTaskList(){}
     }
   }
 </script>
@@ -783,7 +806,7 @@
         left: 0;
         width: .47rem;
         height: .38rem;
-        
+
     }
     animation: touch .8s ease-in-out alternate infinite;
 }
@@ -795,10 +818,10 @@
 }
 @keyframes touch {
     0%{
-        transform : translateX(-.2rem) 
+        transform : translateX(-.2rem)
     }
     100%{
-        transform : translateX(0) 
+        transform : translateX(0)
 
     }
 }
