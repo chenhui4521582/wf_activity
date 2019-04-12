@@ -350,7 +350,7 @@
         },
         jumpToPlat(){
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050']
             if(baiduChannel.includes(this.channel)){
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
@@ -730,7 +730,7 @@
         async gotokf(){
           await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042','100049']
+            baiduChannel = ['100039','100040','100041','100042','100049','100050']
           if(jsChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
