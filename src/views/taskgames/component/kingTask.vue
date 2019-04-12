@@ -430,7 +430,7 @@ div{box-sizing: border-box}
             img{
                 width: 3.29rem;
                 height: 1.19rem;
-                margin: .3rem auto .12rem;
+                margin: .3rem auto .14rem;
             }
             p{
                 margin: 0 auto;

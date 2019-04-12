@@ -91,7 +91,7 @@
       </div>
       <template v-else>
         <!-- 大师任务 -->
-        <div @click="islock = !islock">切换</div>
+        <div @click="crushTaskList.lock = !crushTaskList.lock">切换</div>
         <crush-master-task
           v-if="showCrushMasterTask"
           :crushTaskList="crushTaskList"
@@ -198,7 +198,6 @@
 </template>
 <script type="text/javascript">
   import poplog from './poplog'
-  import common from "../../common/js/utils";
   export default {
     data() {
         return {
@@ -286,14 +285,12 @@
         },
         // 显示大师任务
         showCrushMasterTask () {
-          console.log(this.crushTaskList && !this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew)
-		  // return this.crushTaskList && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
-		  return this.crushTaskList && !this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+          console.log(this.crushTaskList)
+		  return this.crushTaskList && this.crushTaskList.achievementType == 1 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
         },
         // 显示王者任务
         showKingTask () {
-          // return this.crushTaskList && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
-		  return this.crushTaskList && this.islock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+		  return this.crushTaskList && this.crushTaskList.achievementType == 2 && this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
         }
     },
     filters:{
@@ -319,75 +316,187 @@
         kingTask:()=>import("./component/kingTask"),
     },
     methods: {
-        getDegradeTaskStatus() {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
-                .then(res => {
-                  if(res.data.code == 200) {
-                    this.isTfStatus = res.data.data.isOpen
-                    if(!this.isTfStatus) {
-					    this.getNewTask()
-                        this.getDayTask()
-                        if(this.checkCurrentTask() != ''){
-                            this.getCrushTask('','',this.checkCurrentTask())
-                        }
-                    }
-                  }
-                })
-        },
-        checkCurrentTask(){
-            switch(this.currentGameType){
-                // 糖果
-                case '12' :
-                    GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
-                    return 'crush-achievement';
-                    break;
-                // 桌球
-                case '2':
-                    GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
-                    return 'bill-achievement';
-                    break;
-                // 捕鱼
-                case '10':
-                    GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
-                    return 'fish-achievement';
-                    break;
-                case '5':
-                    return 'samguk-achievement';
-                    break;
-                case '8':
-                    return 'moto-achievement';
-                    break;
-                case '9':
-                    return 'kingdom-achievement';
-                    break;
-                case '13':
-                    return 'kingdom2-achievement';
-                    break;
-                case '18':
-				    return 'warrior-achievement';
-                    break;
-                default :
-                    return ''
-            }
-        },
         async jumpMine(){
             await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType}) // H5平台-游戏内SDK-话费余额按钮
             parent.location.href = this.jumpToPlat()+'#/personal'
         },
-        jumpToPlat(){
-            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049']
-            if(baiduChannel.includes(this.channel)){
-                return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
-            } else if(this.channel == '700002'){
-                return `https://wap.beeplay123.com/llwWap?channel=700002`
-            }else{
-               return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
-            }
-        },
         async getHuafeiNum(){
             let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
             this.huafeiNum = data.data
+        },
+        async gotokf(){
+		await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
+		let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
+			baiduChannel = ['100039','100040','100041','100042','100049']
+		if(jsChannel.includes(this.channel)){
+		  parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
+		}else if(baiduChannel.includes(this.channel)){
+		  parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
+		} else if(this.channel == '700002'){
+		  parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
+		}else{
+		  parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
+		}
+	  },
+	    async getCrushTask(finishindex,type,val,newuserfinish){
+          let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
+          if(data.code == 200){
+            let showSubMasterList = [],
+                crushList = data.data.list,currentParentTask,currentIndex,
+                finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
+                curType = type && type == 'checkMode'
+            if(curType || finishStatus > -1){
+              currentParentTask = crushList[finishStatus]
+            }else{
+              currentParentTask = crushList.find((item,index) =>{
+                if(index < 3){
+                  // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
+                  return item.parentTask.taskStatus == 1
+                }else{
+                  return crushList[index]
+                }
+              })
+            }
+            crushList.map((item,index) =>{
+
+              if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
+                currentIndex = index
+                return
+              }
+            })
+            let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
+                finishLength = 0
+            currentParentTask.subListA.map(item => {
+              item.taskStatus == 2 ? finishLength += 1 : ''
+            })
+            currentParentTask.subListB.map(item => {
+              item.taskStatus == 2 ? finishLength += 1 : ''
+            })
+            // 外显两条任务类型区分
+            let type1 = currentParentTask.subListA.find(item => {
+              return item.taskStatus != 2
+            })
+
+            let type2 = currentParentTask.subListB.find(item => {
+              return item.taskStatus != 2
+            })
+            if(!type1){
+              type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
+            }
+            if(!type2){
+              type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
+            }
+
+            showSubMasterList.push(type1,type2)
+
+            // 勋章List
+            let medalList = []
+            crushList.map((item,index) => {
+              let list = {
+                medalIcon : item.medalIcon,
+                medalName : item.medalName,
+                statusIcon : item.statusIcon,
+                index: index,
+                selected : false
+              }
+              medalList.push(list)
+            })
+
+            let checkMedalName
+            if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
+              checkMedalName = crushList[currentIndex+1].medalName
+            }else{
+              checkMedalName = currentParentTask.medalName
+            }
+
+            medalList.map((val,index) =>{
+              if(val.medalName == checkMedalName){
+                val.selected = true
+              }else{
+                val.selected = false
+              }
+            })
+
+            let crushTaskList = {
+              showSubMasterList : showSubMasterList, //外显子任务列表
+              hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
+              totalTask : data.data.totalTask, // 总任务数量
+              currentIndex : currentIndex, // 当前任务索引
+              currentParentTask : currentParentTask, // 当前任务
+              allTask : data.data.list,// 总任务列表
+              finishLength : finishLength, // 当前已完成子任务
+              currentLength : currentLength, // 当前总任务
+              gameNameIcon : data.data.gameNameIcon, // 当前任务名称
+              reward : data.data.reward, // 当前全部奖励
+              bgIcon : data.data.bgIcon, // 当前任务背景
+              medalList : medalList , //勋章list
+			  lock: data.data.lock,
+			  achievementType: data.data.achievementType
+            }
+            this.crushTaskList = crushTaskList;
+          }
+        },
+	    jumpToPlat(){
+		let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+		  '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049']
+		if(baiduChannel.includes(this.channel)){
+		  return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
+		} else if(this.channel == '700002'){
+		  return `https://wap.beeplay123.com/llwWap?channel=700002`
+		}else{
+		  return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+		}
+	  },
+        getDegradeTaskStatus() {
+          this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
+          .then(res => {
+            if(res.data.code == 200) {
+              this.isTfStatus = res.data.data.isOpen
+              if(!this.isTfStatus) {
+                this.getNewTask()
+                this.getDayTask()
+                if(this.checkCurrentTask() != ''){
+                  this.getCrushTask('','',this.checkCurrentTask())
+                }
+              }
+            }
+          })
+        },
+        checkCurrentTask(){
+          switch(this.currentGameType){
+              // 糖果
+            case '12' :
+              GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
+              return 'crush-achievement';
+              break;
+              // 桌球
+            case '2':
+              GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
+              return 'bill-achievement';
+              break;
+              // 捕鱼
+            case '10':
+              GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
+              return 'fish-achievement';
+              break;
+            case '5':
+              return 'samguk-achievement';
+              break;
+            case '8':
+              return 'moto-achievement';
+              break;
+            case '9':
+              return 'kingdom-achievement';
+              break;
+            case '13':
+              return 'kingdom2-achievement';
+              break;
+            case '18':
+              return 'warrior-achievement';
+              break;
+            default :
+              return ''
+          }
         },
         checkTaskStatus(item,type,index){
             if(item.taskStatus == 0){
@@ -416,7 +525,6 @@
                 parent.closeTaksPage()
             }
         },
-        //获取地址栏问号后面的参数值
         getUrlParam: function (ename) {
             var url = window.location.href;
             var Request = new Object();
@@ -530,9 +638,6 @@
         receive(item, type,index,medalimg) {
             this.showMedalAnimate = false
             if(type == 'crush_task' || type == 'mother_crush_task'){
-                item.awardsFlag = type
-                item.index = index
-                item.medalimg = medalimg
                 GLOBALS.marchSetsPoint('A_H5PT0061000538', {
                   project_id: item.gameType,
                   target_project_id: item.gameType,
@@ -573,6 +678,9 @@
                     break;
                   case 'mother_crush_task':
                   case 'crush_task':
+                      item.awardsFlag = type
+                      item.index = index
+                      item.medalimg = medalimg
                       this.masterTask = true
                       this.currentMedalImg = medalimg
                       this.currentMedalIndex = index
@@ -652,120 +760,9 @@
             })
 
         },
-        async getCrushTask(finishindex,type,val,newuserfinish){
-
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
-            if(data.code == 200){
-              let showSubMasterList = [],
-              crushList = data.data.list,currentParentTask,currentIndex,
-              finishStatus = parseInt(finishindex) > -1 ? finishindex : -1,
-              curType = type && type == 'checkMode'
-              if(curType || finishStatus > -1){
-                  currentParentTask = crushList[finishStatus]
-              }else{
-                  currentParentTask = crushList.find((item,index) =>{
-                      if(index < 3){
-                          // 此处逻辑是领取当前最后一个子任务后，停留在当前子任务
-                          return item.parentTask.taskStatus == 1
-                      }else{
-                          return crushList[index]
-                      }
-                  })
-              }
-              crushList.map((item,index) =>{
-
-                  if(item.parentTask.taskId == currentParentTask.parentTask.taskId){
-                      currentIndex = index
-                      return
-                  }
-              })
-              let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-                  finishLength = 0
-              currentParentTask.subListA.map(item => {
-                  item.taskStatus == 2 ? finishLength += 1 : ''
-              })
-              currentParentTask.subListB.map(item => {
-                  item.taskStatus == 2 ? finishLength += 1 : ''
-              })
-              // 外显两条任务类型区分
-              let type1 = currentParentTask.subListA.find(item => {
-                  return item.taskStatus != 2
-              })
-
-              let type2 = currentParentTask.subListB.find(item => {
-                  return item.taskStatus != 2
-              })
-              if(!type1){
-                  type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
-              }
-              if(!type2){
-                  type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
-              }
-
-              showSubMasterList.push(type1,type2)
-
-              // 勋章List
-              let medalList = []
-              crushList.map((item,index) => {
-                  let list = {
-                      medalIcon : item.medalIcon,
-                      medalName : item.medalName,
-                      statusIcon : item.statusIcon,
-                      index: index,
-                      selected : false
-                  }
-                  medalList.push(list)
-              })
-
-              let checkMedalName
-              if(!curType && currentIndex !=3 && currentParentTask.parentTask.taskStatus == 2){
-                  checkMedalName = crushList[currentIndex+1].medalName
-              }else{
-                  checkMedalName = currentParentTask.medalName
-              }
-
-              medalList.map((val,index) =>{
-                  if(val.medalName == checkMedalName){
-                      val.selected = true
-                  }else{
-                      val.selected = false
-                  }
-              })
-
-              let crushTaskList = {
-                  showSubMasterList : showSubMasterList, //外显子任务列表
-                  hasFinishedTask : data.data.hasFinishedTask, // 已完成任务数量
-                  totalTask : data.data.totalTask, // 总任务数量
-                  currentIndex : currentIndex, // 当前任务索引
-                  currentParentTask : currentParentTask, // 当前任务
-                  allTask : data.data.list,// 总任务列表
-                  finishLength : finishLength, // 当前已完成子任务
-                  currentLength : currentLength, // 当前总任务
-                  gameNameIcon : data.data.gameNameIcon, // 当前任务名称
-                  reward : data.data.reward, // 当前全部奖励
-                  bgIcon : data.data.bgIcon, // 当前任务背景
-                  medalList : medalList , //勋章list
-              }
-              this.crushTaskList = crushTaskList;
-            }
-        },
         kfclick(){
           GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服按钮
           this.showzspop=true
-        },
-        async gotokf(){
-          await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
-          let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042','100049']
-          if(jsChannel.includes(this.channel)){
-            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          }else if(baiduChannel.includes(this.channel)){
-            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          } else if(this.channel == '700002'){
-            parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
-          }else{
-            parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
-          }
         },
         goTask () {
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',

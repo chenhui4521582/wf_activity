@@ -22,48 +22,47 @@
            </div>
        </div>
        <div class="crush-task-list">
-           <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
-                <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2"
-                @click="checkTaskStatus(item,'crush_task')">
-                    <div class="description" :class="{opacitying:item.taskStatus == 2}">
-                        <div class="head-img">
-                            <img :src="item.icon | filter" alt="">
-                        </div>
-                        <div class="content">
-                            <p v-html="item.taskDescShow"></p>
-                            <div class="progress">
-                                <div class="progress-bg">
-                                    <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                    <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                                </div>
-                                <div class="num">
-                                    <img :src="item.awardsImage | filter" alt="">
-                                    <span>{{item.awardsName}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn" v-if="item.taskStatus == 0">领取</div>
+          <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
+              <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2"
+              @click="checkTaskStatus(item,'crush_task')">
+                  <div class="description" :class="{opacitying:item.taskStatus == 2}">
+                      <div class="head-img">
+                          <img :src="item.icon | filter" alt="">
+                      </div>
+                      <div class="content">
+                          <p v-html="item.taskDescShow"></p>
+                          <div class="progress">
+                              <div class="progress-bg">
+                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                              </div>
+                              <div class="num">
+                                  <img :src="item.awardsImage | filter" alt="">
+                                  <span>{{item.awardsName}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="btn" v-if="item.taskStatus == 0">领取</div>
 
-                    <div class="btn play" v-if="item.taskStatus == 1">去完成</div>
-                    <div class="btn gray opacitying" v-if="item.taskStatus == 2">已领取</div>
-                </li>
-            </ul>
-
-            <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
-                <img src="../img/crushMasterTask/chengjiu_bg.png">
-                <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
-            </div>
-            <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
-                <img src="../img/crushMasterTask/chengjiu_locked_title.png">
-                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
-                <!-- <p>获取日期<br>2018-12-13</p> -->
-            </div>
-            <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
-                <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
-                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
-                <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
-            </div>
+                  <div class="btn play" v-if="item.taskStatus == 1">去完成</div>
+                  <div class="btn gray opacitying" v-if="item.taskStatus == 2">已领取</div>
+              </li>
+          </ul>
+          <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
+              <img src="../img/crushMasterTask/chengjiu_bg.png">
+              <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
+          </div>
+          <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
+              <img src="../img/crushMasterTask/chengjiu_locked_title.png">
+              <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+              <!-- <p>获取日期<br>2018-12-13</p> -->
+          </div>
+          <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
+              <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
+              <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+              <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
+          </div>
        </div>
        <div class="medal-wrap">
            <ul>
@@ -430,7 +429,7 @@ div{box-sizing: border-box}
             img{
                 width: 3.29rem;
                 height: 1.19rem;
-                margin: .3rem auto .12rem;
+                margin: .3rem auto .14rem;
             }
             p{
                 margin: 0 auto;
