@@ -30,10 +30,12 @@ export default {
   methods:{
     close () {
       this.$emit('closeBoxDialog')
-    },
+	  GLOBALS.marchSetsPoint('A_H5PT0075000699')
+	},
     go () {
       let channel = GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
       let token = GLOBALS.getUrlParam('token') || localStorage.getItem('ACCESS_TOKEN')
+	  GLOBALS.marchSetsPoint('A_H5PT0075000698')
       window.location.href = `https://wap.beeplay123.com/SpringOuting?channel=${channel}&token=${token}`
     }
   }
