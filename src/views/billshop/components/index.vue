@@ -51,17 +51,17 @@
     <div class="bill-container">
       <a href="javascript:" class="btn-bill" @click="goTaskPage">去赚话费券</a>
     </div>
-    <new-user-alert :accountBalance="accountBalance"></new-user-alert>
+    <!-- <new-user-alert :accountBalance="accountBalance"></new-user-alert> -->
   </div>
 </template>
 <script>
 import Headers from './Header'
 import scroll from '../../../components/scroll/scroll.vue'
-import newUserAlert from './newUserGuide/index.vue'
+// import newUserAlert from './newUserGuide/index.vue'
 export default {
-  data() {
+  data () {
     return {
-      sTitle: ['好物推荐','虚拟卡券','游戏道具','手机数码'],
+      sTitle: ['好物推荐', '虚拟卡券', '游戏道具', '手机数码'],
       spCon: null,
       curItem: null,
       idx: 0,
@@ -69,78 +69,78 @@ export default {
       curChannel: localStorage.getItem('APP_CHANNEL')
     }
   },
-  mounted() {
+  mounted () {
     this.getShopList()
   },
   components: {
     Headers,
-    scroll,
-    newUserAlert
+    scroll
+    // newUserAlert
   },
   methods: {
-    async goMyAward() {
+    async goMyAward () {
       await GLOBALS.marchSetsPoint('A_H5PT0035000633', {
         residual_phone: this.accountBalance
       })// H5平台-话费券商城-查看我的奖品
-      switch(this.getUrlParam('from')) {
+      switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'jsWap':
           parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-          break;
+          break
         case 'miniWap':
           parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
-          break;
+          break
         default:
           parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
       }
     },
-    async goTaskPage() {
+    async goTaskPage () {
       await GLOBALS.marchSetsPoint('A_H5PT0035000638', {
         residual_phone: this.accountBalance
       })// H5平台-话费券商城-去赚话费
-      switch(this.getUrlParam('from')) {
+      switch (this.getUrlParam('from')) {
         case 'bdWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'jsWap':
           parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         case 'miniWap':
           parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break;
+          break
         default:
           parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
       }
     },
-    getNewList(item,index) {
+    getNewList (item, index) {
       switch (index) {
         case 0:
           GLOBALS.marchSetsPoint('A_H5PT0035000634', {
             residual_phone: this.accountBalance
           })// H5平台-话费券商城-好物推荐
-          break;
+          break
         case 1:
           GLOBALS.marchSetsPoint('A_H5PT0035000636', {
             residual_phone: this.accountBalance
           })// H5平台-话费券商城-手机数码
-          break;
+          break
         case 2:
           GLOBALS.marchSetsPoint('A_H5PT0035000635', {
             residual_phone: this.accountBalance
           })// H5平台-话费券商城-虚拟卡券
-          break;
-      
+          break
+
         default:
-          break;
+          break
       }
       this.idx = index
       this.curItem = item && item.productList
     },
-    async goDetail(item,e) {
-      if(!e._constructed) {
-          return;
+    async goDetail (item, e) {
+      if (!e._constructed) {
+        return
       }
       await GLOBALS.marchSetsPoint('A_H5PT0035000637', {
         residual_phone: this.accountBalance,
@@ -159,13 +159,12 @@ export default {
       //     parmas: encodeURIComponent(JSON.stringify(item))
       //   }
       // })
-
     },
-    getShopList() {
+    getShopList () {
       this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/main')
         .then(res => {
           this.sLoading = false
-          if(res.data.code == 200) {
+          if (res.data.code == 200) {
             this.spCon = res.data.data
             this.curItem = this.spCon && this.spCon.categoryList[0].productList
             GLOBALS.marchSetsPoint('P_H5PT0035', {
@@ -174,28 +173,28 @@ export default {
           }
         })
     },
-    //获取地址栏问号后面的参数值
+    // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-        var url = window.location.href;
-        var Request = new Object();
-        if (url.indexOf("?") != -1) {
-            var str = url.split('?')[1];
-            var strs = str.split("&");
-            for (var i = 0; i < strs.length; i++) {
-                Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
-            }
-        } else {
-            return '';
-        }
-        let params = Request[ename] ? Request[ename].split('#')[0] : ''
-        return params;
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+            Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
+          }
+      } else {
+        return ''
+      }
+      let params = Request[ename] ? Request[ename].split('#')[0] : ''
+      return params
     }
   },
   computed: {
     accountBalance () {
       return this.spCon && this.spCon.accountBalance.toString() || '0.00'
     },
-    getChannel() {
+    getChannel () {
       return this.curChannel == '100047001' || this.curChannel == '100048001'
     }
   }
