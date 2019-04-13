@@ -314,7 +314,7 @@ export default {
     }
     li {
       flex: 0 0 47.727%;
-      height: 3.15rem;
+      height: 3.41rem;
       background:rgba(20,31,51,1);
       border-radius:0.08rem;
       margin-bottom: 0.28rem;
