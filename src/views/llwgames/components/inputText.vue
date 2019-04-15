@@ -98,14 +98,11 @@
 	 	height: 1.2/2rem;
 	 	line-height: 1.2/2rem;
 	 	box-sizing: border-box;
-	 	border: 0.04/2rem solid #5597ff;
 	 	font-size: 0.48/2rem;
 	 	color: #5597ff;
 	 	border-radius: 0.16/2rem;
 	 	box-sizing: border-box;
 	 	margin-right: 0.6/2rem;
-	 	background: #17376d;
-	 	/*margin: 0 0.28/2rem 0 0.1/2rem;*/
 	 	&.disabled {
 	 		border-color: #736f95;
    			 color: #736f95;

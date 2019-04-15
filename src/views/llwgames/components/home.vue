@@ -46,12 +46,13 @@
             <div class="lb_box">
                 <div >
                     <div @click="goLoginPage">
-                            <img class="needsclick"  src="./images/lb1.jpg">
+                            <img class="needsclick"  src="./images/lb2.png" v-if="channel == '700003' ">
+                            <img class="needsclick"  src="./images/lb1.jpg" v-else>
                     </div>
                 </div>
             </div>
-            <div  class="activity-wrap">
-                <p class="slide">免费领取金叶</p> 
+            <div  class="activity-wrap" >
+                <p class="slide" v-if=" channel != '700003' ">免费领取金叶</p> 
             </div>
             <div class="game-wrap">
             	<div class="qb-column">
@@ -113,7 +114,8 @@
 		data() {
 			return {
 				titleArr: ['小游戏','网游大作','新开服'],
-				curIndex: 1
+				curIndex: 1,
+                channel: localStorage.getItem('APP_CHANNEL')
 			}
 		},
 		methods: {

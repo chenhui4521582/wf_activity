@@ -261,8 +261,10 @@ export default {
     if(this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
-      this.getDayTask()
-      this.getPlatTaskByBatch()
+      if(this.cGameType && this.cGameType != null && this.cGameType != 'null') {
+        this.getDayTask()
+        this.getPlatTaskByBatch()
+      }
       this.getNewTask()
     }
   },
@@ -456,7 +458,7 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: this.cGameType+"-dayTask",
+        value: "dayTask",
         from: "sdk",
         gameType: this.cGameType || ''
       },{
