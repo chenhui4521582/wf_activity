@@ -459,7 +459,7 @@ export default {
     },
     getDayTask() {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: this.cGameType+"-dayTask",
+        value: "dayTask",
         from: "sdk",
         gameType: this.cGameType || ''
       },{
