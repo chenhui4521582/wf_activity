@@ -1,6 +1,6 @@
 <template>
   <div class="king-task">
-    <div class="task-title" @click="showCurDetails(index)">
+    <div class="task-title" @click="showCurDetails()">
       <!--<img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">-->
       <img src="../images/king-task-bg.png" class="bg-task" :class="{'radius': !item.selected}">
       <p class="left-part">
@@ -76,8 +76,12 @@
 	},
 	name: 'crushTask',
 	methods: {
-	  showCurDetails(i){
-		this.$emit('showCurDetails', i)
+	  showCurDetails(){
+		if(this.item.selected){
+		  this.$set(this.item, 'selected', false)
+		}else{
+		  this.$set(this.item, 'selected', true)
+		}
 	  },
 	  checkTaskStatus(item,type,curParentTask){
 		if(item.taskStatus == 0){
@@ -85,6 +89,9 @@
 		}else if(item.taskStatus == 1){
 		  this.$emit('finish', item,type)
 		}
+	  },
+	  receive (item, type , val , curParentTask) {
+		this.$emit('receive', item, type , val, curParentTask)
 	  },
 	  transUint(finishNum,taskOps){
 		let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,

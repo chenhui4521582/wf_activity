@@ -91,7 +91,6 @@
       </div>
       <template v-else>
         <!-- 大师任务 -->
-        <div @click="crushTaskList.lock = !crushTaskList.lock">切换</div>
         <crush-master-task
           v-if="showCrushMasterTask"
           :crushTaskList="crushTaskList"
@@ -222,8 +221,7 @@
             huafeiNum : 0,
             isTfStatus: false,
             showzspop:false,
-            newUserTaskFinish: false,
-		    islock: true
+            newUserTaskFinish: false
         }
     },
     mounted() {
@@ -285,12 +283,11 @@
         },
         // 显示大师任务
         showCrushMasterTask () {
-          console.log(this.crushTaskList)
-		  return this.crushTaskList && this.crushTaskList.achievementType == 1 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+		  return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
         },
         // 显示王者任务
         showKingTask () {
-		  return this.crushTaskList && this.crushTaskList.achievementType == 2 && this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
+		  return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && !this.newTaskItems.isNew
         }
     },
     filters:{
@@ -338,7 +335,7 @@
 		  parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
 		}
 	  },
-	    async getCrushTask(finishindex,type,val,newuserfinish){
+	    async getCrushTask(finishindex, type, val, newuserfinish){
           let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
           if(data.code == 200){
             let showSubMasterList = [],
@@ -467,7 +464,7 @@
               // 糖果
             case '12' :
               GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
-              return 'crush-achievement';
+              return 'crush-king-achievement';
               break;
               // 桌球
             case '2':
@@ -635,7 +632,12 @@
         refreshTask(index,type,val){
             this.getCrushTask(index,type,this.checkCurrentTask())
         },
-        receive(item, type,index,medalimg) {
+        receive(item, type, index, medalimg, allFinish) {
+            // console.log(index allFinish)
+            // if(allFinish && index == 3) {
+            //   this.currentMedalIndex = 0
+            // }
+            // return false
             this.showMedalAnimate = false
             if(type == 'crush_task' || type == 'mother_crush_task'){
                 GLOBALS.marchSetsPoint('A_H5PT0061000538', {
@@ -684,7 +686,10 @@
                       this.masterTask = true
                       this.currentMedalImg = medalimg
                       this.currentMedalIndex = index
-                      this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
+                      if(allFinish && index == 3) {
+                        this.currentMedalIndex = -1
+                      }
+					  this.getCrushTask(this.currentMedalIndex,'',this.checkCurrentTask())
                       break
                   case 'dayTask' :
                       this.getDayTask()

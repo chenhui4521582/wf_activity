@@ -65,11 +65,11 @@
           </div>
        </div>
        <div class="medal-wrap">
-           <ul>
-                <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
-                   <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
-                </li>
-           </ul>
+         <ul>
+            <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
+               <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
+            </li>
+         </ul>
        </div>
     </div>
 </template>
@@ -173,7 +173,11 @@ export default {
         // 领取奖励
         receive(item,type){
             this.isMotherType = true
-            this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
+            if(item.taskName.indexOf('糖果') > -1) {
+			  this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`, 'allFinish')
+              return false
+            }
+		    this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
         }
     },
     watch:{

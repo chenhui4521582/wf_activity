@@ -8,9 +8,8 @@
         </div>
         <div  class="task-wrap">
             <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}">
-                <div @click="islock = !islock" style="color: #fff"> 切换</div>
                 <crushTask
-                    v-if="showCrushMasterTask"
+                    v-if="showCrushMasterTask(item)"
                     :item="item"
                     :index="index"
                     @showCurDetails="showCurDetails"
@@ -18,15 +17,39 @@
                     @finish="finish"
                 />
                 <kingTask
-                    v-if="showKingTask"
+                    v-if="showKingTask(item)"
                     :item="item"
                     :index="index"
                     @showCurDetails="showCurDetails"
                     @receive="receive"
                     @finish="finish"
                 />
+                <king-no-lock
+                    :item="item"
+                    v-if="showKingTaskNoLock(item)"
+                />
             </div>
-            <king-no-lock />
+            <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}">
+                <crushTask
+                    v-if="showCrushMasterTask(item)"
+                    :item="item"
+                    :index="index"
+                    :type="'finishList'"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+                <kingTask
+                    v-if="showKingTask(item)"
+                    :item="item"
+                    :index="index"
+                    :type="'finishList'"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+            </div>
+
         </div>
         <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
     </div>
@@ -40,6 +63,7 @@
                 crushTaskList : null,
                 billTaskLIst :null,
                 allTaskList : [],
+                finishList:[],
                 showDetatils : false,
                 receiveData : {
                     awardsImage : '111',
@@ -49,8 +73,7 @@
                 showTaskList : false,
                 curMedelIcon : '',
                 masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement'],
-                curChannel: localStorage.getItem('APP_CHANNEL'),
-                islock: true
+                curChannel: localStorage.getItem('APP_CHANNEL')
             }
         },
         mounted(){
@@ -65,17 +88,6 @@
         computed: {
             getChannel() {
               return this.curChannel == '100047001' || this.curChannel == '100048001'
-            },
-            // 显示大师任务
-            showCrushMasterTask () {
-                // return this.taskview.crushTaskList && this.taskview.crushTaskList.allTask && this.taskview.crushTaskList.allTask.length
-                return this.allTaskList && this.allTaskList.length && !this.islock
-            },
-            // 显示王者任务
-            showKingTask () {
-                // return this.taskview.crushTaskList && this.taskview.crushTaskList.lock && this.taskview.crushTaskList.allTask && this.taskview.crushTaskList.allTask.length
-                console.log(this.allTaskList && this.allTaskList.length && this.islock)
-                return this.allTaskList && this.allTaskList.length && this.islock
             }
         },
         methods: {
@@ -134,12 +146,11 @@
                 })
                 if(data.code == 200){
                     this.showReceivePop = true
-                    
                     this.getMasterList(type,'refresh',item,val)
                 }
             },
             async getMasterList(val,type,item,otherStatus){
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskInHall', {value:val})
                 if(data.code == 200 && data.data){
                     let showSubMasterList = [],
                     masterList = data.data.list,
@@ -152,29 +163,33 @@
                             return item.parentTask.taskStatus != 2
                         }) 
                     }
-                    //模拟糖果王者数据
-                    data.data.lock = true
-                    data.data.kingBg =
-                    console.log()
 
                     // 外显两条任务类型区分
                     let type1 = currentParentTask.subListA.find(item => {
                         return item.taskStatus != 2
+
                     })
 
                     let type2 = currentParentTask.subListB.find(item => {
+                        // console.log(item)
                         return item.taskStatus != 2
                     })
+
+
                     if(!type1){
                         type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
                     }
+
                     if(!type2){
                         type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
                     }
+
                     showSubMasterList.push(type1,type2)
+
                     // 判断当前母任务完成情况
                     let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-                        finishLength = 0,unReceived = 0
+                        finishLength = 0,
+                        unReceived = 0;
                     currentParentTask.subListA.map(item => {
                         item.taskStatus == 2 ? finishLength += 1 : ''
                         item.taskStatus == 0 ? unReceived += 1 : ''
@@ -183,6 +198,7 @@
                         item.taskStatus == 2 ? finishLength += 1 : ''
                         item.taskStatus == 0 ? unReceived += 1 : ''
                     })
+
                     //判断当前任务是否有已领取状态
                     let isShowRed = currentParentTask.parentTask.taskStatus == 0 || unReceived != 0
                     masterTaskList = {
@@ -199,6 +215,8 @@
                         gameNameIcon : data.data.gameNameIcon,//游戏
                         titleIcon : data.data.titleIcon,//游戏名称icon
                         batchId : data.data.batchId, // 当前游戏value
+                        lock : data.data.lock, // 当前游戏value
+                        achievementType : data.data.achievementType, // 当前游戏value
                     }
                     
                     if(type == 'refresh'){
@@ -223,37 +241,56 @@
                                         showMedalImg : null
                                     }
                                 }
+                                if (masterTaskList.totalTask == masterTaskList.hasFinishedTask) {
+                                    this.$set(this.allTaskList[index],'selected',false)
+                                    this.allTaskList.splice(index,1)
+                                    this.finishList.push(masterTaskList)
+                                }
                             }
+
                         })
                     }else{  
                         //已完成任务置底显示
                         if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
-                            this.allTaskList.push(masterTaskList)
+                            this.finishList.push(masterTaskList)
                         }else{
-                             this.allTaskList.unshift(masterTaskList)
+                            //未完成的,未解锁的置底
+                            if(masterTaskList.achievementType == 2 && masterTaskList.lock){
+                                this.allTaskList.push(masterTaskList)
+                            }else{
+                                this.allTaskList.unshift(masterTaskList)
+                            }
                         }
                     }
                     
                     // 首次请求任务默认第一位任务展开
                     setTimeout(() => {
                         if(type == 'first'){
-                            // this.showCurDetails(0,this.allTaskList[0])
                             this.$set(this.allTaskList[0],'selected',true)
                         }
                     }, 200);
 
                 }
             },
-            showCurDetails(i){
+            showCurDetails(i, type){
                 if(this.allTaskList[i].selected){
-                    this.$set(this.allTaskList[i],'selected',false)
+                    this.$set(this[type][i],'selected',false)
                 }else{
-                    this.$set(this.allTaskList[i],'selected',true)
+                    this.$set(this[type][i],'selected',true)
                 }
             },
-        },
-        watch:{
-            allTaskList(newIndex, oldIndex){},
+            // 显示大师任务
+            showCrushMasterTask (item) {
+                return item.achievementType == 1 && item.allTask && item.allTask.length
+            },
+            // 显示王者任务
+            showKingTask (item) {
+                return item.achievementType == 2 && item.allTask && item.allTask.length && !item.lock
+            },
+            // 显示王者未解锁状态
+            showKingTaskNoLock (item) {
+                return item.achievementType == 2 && item.lock
+            }
         }
     }
 </script>

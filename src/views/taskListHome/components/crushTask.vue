@@ -1,6 +1,6 @@
 <template>
   <div class="crush-task">
-    <div class="task-title" @click="showCurDetails(index)">
+    <div class="task-title" @click="showCurDetails()">
       <img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">
       <p class="left-part">
         <span>当前进度</span>
@@ -28,7 +28,7 @@
           <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
             <div class="description" >
               <div class="head-img">
-                <img :src="item1.icon | filter" alt="">
+                <img :src="item1.icon | filter " alt="">
               </div>
               <div class="content">
                 <p v-html="item1.taskDescShow"></p>
@@ -74,18 +74,22 @@
     },
 	name: 'crushTask',
     methods: {
-	  showCurDetails(i){
-	    this.$emit('showCurDetails', i)
+	  showCurDetails(item){
+		if(this.item.selected){
+		  this.$set(this.item, 'selected', false)
+		}else{
+		  this.$set(this.item, 'selected', true)
+		}
 	  },
 	  checkTaskStatus(item,type,curParentTask){
 		if(item.taskStatus == 0){
-		  this.$emit('receive', item,type,'',curParentTask)
+          this.receive(item,type,'',curParentTask)
 		}else if(item.taskStatus == 1){
 		  this.$emit('finish', item,type)
 		}
 	  },
-	  receive () {
-	    this.$emit('recive', item, type , val, curParentTask)
+	  receive (item, type , val , curParentTask) {
+	    this.$emit('receive', item, type , val, curParentTask)
       },
 	  transUint(finishNum,taskOps){
 		let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
