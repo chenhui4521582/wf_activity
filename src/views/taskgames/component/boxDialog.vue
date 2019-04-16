@@ -9,6 +9,8 @@
                   <img src="../img/dialog/box/box.png" alt="">
               </div>
               <p class="num">{{awardItem.awardsName}}</p>
+              <p class="explain">此宝箱可参与“踏青寻宝瓜分1个亿”活动</p>
+              <p class="explain1">宝箱越多，奖励更多哦</p>
               <div class="btn">
                 <div class="close" @click="close">
                   <img src="../img/dialog/box/enter.png" alt="">
@@ -58,7 +60,7 @@ export default {
   height: 100%;
   left: 50%;
   margin-left: -50%;
-  top:.8rem;
+  top: 0;
   .bg{
       width: 100%;
       display: block;
@@ -125,10 +127,19 @@ export default {
     }
     .num{
         text-align: center;
-        margin: .39rem 0 .53rem;
+        margin: .2rem 0 .27rem;
         font-size: .36rem;
         color: #FF6C35;
     }
+    .explain,.explain1 {
+      text-align: center;
+      color: #856A0B;
+      font-size: .2rem;
+    }
+    .explain1{
+      margin: .1rem 0 .12rem;
+    }
+
     .text{
         font-size: 14px;
         text-align: center;
