@@ -8,91 +8,67 @@
         </div>
         <div  class="task-wrap">
             <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}">
-                <div class="task-title" @click="showCurDetails(index,item)">
-                    <img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">
-                    <p class="left-part">
-                        <span>当前进度</span>
-                        <img :src="item.currentParentTask.statusIcon | filter" alt="">
-                    </p>
-                    <div class="right-part">
-                        <span class="task-name">
-                            <img :src="item.titleIcon | filter" alt="">
-                            <em>共得{{item.reward}}奖励</em>
-                        </span><br>
-                        <p class="task-process">
-                            <span class="process-bar">
-                                <em class="in" :style="{'width': item.finishLength/item.currentLength * 100 +'%'}"></em>
-                            </span>
-                            <em>{{transUint(item.finishLength,item.currentLength)}}</em>
-                        </p>
-                        <span class="task-details" :class="{'reddot':item.isShowRed}">
-                            查看详情<em class="btn-arrow" :class="{'rotate': item.selected}"></em>
-                        </span>
-                    </div>
-                </div>
-                <div v-if="item.selected">
-                    <div v-if="item.hasFinishedTask != item.totalTask" >
-                        <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
-                            <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1,item.batchId,item.currentParentTask)">
-                                <div class="description" >
-                                    <div class="head-img">
-                                        <img :src="item1.icon | filter" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <p v-html="item1.taskDescShow"></p>
-                                        <div class="progress">
-                                            <div class="progress-bg">
-                                                <div class="progress-bar" :style="{width:item1.finishNum/item1.taskOps * 100 + '%'}"></div>
-                                                <span>{{transUint(item1.finishNum,item1.taskOps)}}</span>
-                                            </div>
-                                            <div class="num">
-                                                <img :src="item1.awardsImage | filter" alt="">
-                                                <span>{{item1.awardsName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="btn" v-if="item1.taskStatus == 0">领取</div>
-                                <div class="btn play" v-if="item1.taskStatus == 1">去完成</div>
-                                <div class="btn gray opacitying" v-if="item1.taskStatus == 2">已领取</div>
-                            </li>
-                        </ul>
-                        <div class="medals-locked" v-else>
-                            <img src="./images/chengjiu_bg.png">
-                            <p class="btn" @click="receive(item.currentParentTask.parentTask,item.batchId,
-                            'mother_crush_task',item.currentParentTask)">获取成就奖励</p>
-                        </div>
-                    </div>
-                    <div class="task-finished" v-else>
-                        <ul>
-                            <li v-for="item2 in item.allTask">
-                                <img :src="item2.medalIcon | filter" alt=""><br>
-                                <span>{{item2.medalName}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <crushTask
+                    v-if="showCrushMasterTask(item)"
+                    :item="item"
+                    :index="index"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+                <kingTask
+                    v-if="showKingTask(item)"
+                    :item="item"
+                    :index="index"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+                <king-no-lock
+                    :item="item"
+                    v-if="showKingTaskNoLock(item)"
+                />
             </div>
+            <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}">
+                <crushTask
+                    v-if="showCrushMasterTask(item)"
+                    :item="item"
+                    :index="index"
+                    :type="'finishList'"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+                <kingTask
+                    v-if="showKingTask(item)"
+                    :item="item"
+                    :index="index"
+                    :type="'finishList'"
+                    @showCurDetails="showCurDetails"
+                    @receive="receive"
+                    @finish="finish"
+                />
+            </div>
+
         </div>
         <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
     </div>
 </template>
 
 <script>
-    import utils from '../../common/js/utils.js'
-    import base64url from 'base64-url'
     export default {
         name: 'app',
         data(){
             return {
-               crushTaskList : null,
-               billTaskLIst :null,
-               allTaskList : [],
-               showDetatils : false,
-               receiveData : {
-                        awardsImage : '111',
-                        awardsName : '222'
-                    },
+                crushTaskList : null,
+                billTaskLIst :null,
+                allTaskList : [],
+                finishList:[],
+                showDetatils : false,
+                receiveData : {
+                    awardsImage : '111',
+                    awardsName : '222'
+                },
                 showReceivePop :false,
                 showTaskList : false,
                 curMedelIcon : '',
@@ -105,6 +81,9 @@
         },
         components: {
             awardsPop :() =>import('./components/dialog'),
+            crushTask :() =>import('./components/crushTask'),
+            kingTask :() =>import('./components/kingTask'),
+            kingNoLock :() =>import('./components/kingNoLock')
         },
         computed: {
             getChannel() {
@@ -115,16 +94,13 @@
             async getMasterTaskNameList(){
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
                 if(data.code ==200){
-                    let list = data.data.batchIds 
-                    let newlist = list.reverse()
-
+                    let list = data.data.batchIds
                     list.map((item,index) => {
-                        let val = index == 0 ? 'first' : ''
                         if(index == 0){
-                            this.getMasterList(item,val)
+                            this.getMasterList(item, 'first')
                         }else{
                             setTimeout(() => {
-                                this.getMasterList(item,val)
+                                this.getMasterList(item, '')
                             }, 10);
                         }
                     })
@@ -170,33 +146,16 @@
                 })
                 if(data.code == 200){
                     this.showReceivePop = true
-                    
                     this.getMasterList(type,'refresh',item,val)
                 }
             },
-            showCurDetails(i,item){
-                this.allTaskList.map((item,index) => {
-                    if(i == index){
-                        if(item.selected){
-                            this.$set(item,'selected',false)
-                        }else{
-                            this.$set(item,'selected',true)
-                        }
-                    }
-                })
-            },
-            transUint(finishNum,taskOps){
-                let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
-                    ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
-                return  finish+'/'+ops
-            },
             async getMasterList(val,type,item,otherStatus){
-                
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
-                
+                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskInHall', {value:val})
                 if(data.code == 200 && data.data){
-                    let showSubMasterList = [],masterList = data.data.list,currentParentTask,currentIndex,masterTaskList
-
+                    let showSubMasterList = [],
+                    masterList = data.data.list,
+                    currentParentTask,
+                    masterTaskList;
                     if(data.data.hasFinishedTask == data.data.totalTask){
                         currentParentTask = masterList[3]
                     }else{
@@ -208,22 +167,29 @@
                     // 外显两条任务类型区分
                     let type1 = currentParentTask.subListA.find(item => {
                         return item.taskStatus != 2
+
                     })
 
                     let type2 = currentParentTask.subListB.find(item => {
+                        // console.log(item)
                         return item.taskStatus != 2
                     })
+
+
                     if(!type1){
                         type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
                     }
+
                     if(!type2){
                         type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
                     }
-                    
+
                     showSubMasterList.push(type1,type2)
+
                     // 判断当前母任务完成情况
                     let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-                        finishLength = 0,unReceived = 0
+                        finishLength = 0,
+                        unReceived = 0;
                     currentParentTask.subListA.map(item => {
                         item.taskStatus == 2 ? finishLength += 1 : ''
                         item.taskStatus == 0 ? unReceived += 1 : ''
@@ -232,6 +198,7 @@
                         item.taskStatus == 2 ? finishLength += 1 : ''
                         item.taskStatus == 0 ? unReceived += 1 : ''
                     })
+
                     //判断当前任务是否有已领取状态
                     let isShowRed = currentParentTask.parentTask.taskStatus == 0 || unReceived != 0
                     masterTaskList = {
@@ -248,6 +215,10 @@
                         gameNameIcon : data.data.gameNameIcon,//游戏
                         titleIcon : data.data.titleIcon,//游戏名称icon
                         batchId : data.data.batchId, // 当前游戏value
+                        lock : data.data.lock,
+                        achievementType : data.data.achievementType,
+                        lockIcon : data.data.lockIcon,
+                        lockBgIcon : data.data.lockBgIcon
                     }
                     
                     if(type == 'refresh'){
@@ -272,34 +243,61 @@
                                         showMedalImg : null
                                     }
                                 }
+                                if (masterTaskList.totalTask == masterTaskList.hasFinishedTask) {
+                                    this.$set(this.allTaskList[index],'selected',false)
+                                    this.allTaskList.splice(index,1)
+                                    this.finishList.push(masterTaskList)
+                                }
                             }
+
                         })
                     }else{  
                         //已完成任务置底显示
                         if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
-                            this.allTaskList.push(masterTaskList)
+                            this.finishList.push(masterTaskList)
                         }else{
-                             this.allTaskList.unshift(masterTaskList)
+                            //未完成的,未解锁的置底
+                            if(masterTaskList.achievementType == 2 && masterTaskList.lock){
+                                this.allTaskList.push(masterTaskList)
+                            }else{
+                                this.allTaskList.unshift(masterTaskList)
+                            }
                         }
                     }
                     
                     // 首次请求任务默认第一位任务展开
                     setTimeout(() => {
                         if(type == 'first'){
-                            // this.showCurDetails(0,this.allTaskList[0])
                             this.$set(this.allTaskList[0],'selected',true)
                         }
                     }, 200);
+
                 }
             },
-        },
-        watch:{
-            allTaskList(newIndex, oldIndex){},
+            showCurDetails(i, type){
+                if(this.allTaskList[i].selected){
+                    this.$set(this[type][i],'selected',false)
+                }else{
+                    this.$set(this[type][i],'selected',true)
+                }
+            },
+            // 显示大师任务
+            showCrushMasterTask (item) {
+                return item.achievementType == 1 && item.allTask && item.allTask.length
+            },
+            // 显示王者任务
+            showKingTask (item) {
+                return item.achievementType == 2 && item.allTask && item.allTask.length && !item.lock
+            },
+            // 显示王者未解锁状态
+            showKingTaskNoLock (item) {
+                return item.achievementType == 2 && item.lock
+            }
         }
     }
 </script>
 
 <style lang="less" scoped>
     @import '../../common/css/base.css';
-    @import './taskListHome.less';
+    @import "./taskListHome.less";
 </style>

@@ -1,16 +1,16 @@
 <template>
-    <div class="crush-master-wrap">
+    <div class="king-wrap">
        <div class="head">
-            <img :src="crushTaskList.bgIcon | filter" alt="">
-           <p class="title">
-               <span>
-                   <i>成就任务</i>
-                   <img class="name-title" :src="crushTaskList.gameNameIcon | filter" alt="">
-               </span>
-               <span class="reware-bg">
-                   共得<i>{{crushTaskList.reward}}</i>奖励
-               </span>
-           </p>
+          <!--<img :src="crushTaskList.bgIcon | filter" class="title-bg" alt="">-->
+          <img src="../img/crushMasterTask/king-header-bg.png" class="title-bg" alt="" >
+           <div class="title">
+             <!--<img class="name-title" :src="taskview.crushTaskList.gameNameIcon | filter" alt="">-->
+             <img class="name-title" src="../img/crushMasterTask/king-name.png" alt="" >
+             <div class="text">
+               <p><img src="../img/crushMasterTask/name-icon.png" alt=""><i>成就任务</i></p>
+               <p>共得<i>{{crushTaskList.reward}}</i>奖励</p>
+             </div>
+           </div>
            <div class="process">
                <div class="probar-ball">
                     <div class="bar" :style="{width:crushTaskList.finishLength/crushTaskList.currentLength * 100 + '%'}"></div>
@@ -22,54 +22,56 @@
            </div>
        </div>
        <div class="crush-task-list">
-          <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
-              <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2"
-              @click="checkTaskStatus(item,'crush_task')">
-                  <div class="description" :class="{opacitying:item.taskStatus == 2}">
-                      <div class="head-img">
-                          <img :src="item.icon | filter" alt="">
-                      </div>
-                      <div class="content">
-                          <p v-html="item.taskDescShow"></p>
-                          <div class="progress">
-                              <div class="progress-bg">
-                                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                                  <span>{{transUint(item.finishNum,item.taskOps)}}</span>
-                              </div>
-                              <div class="num">
-                                  <img :src="item.awardsImage | filter" alt="">
-                                  <span>{{item.awardsName}}</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="btn" v-if="item.taskStatus == 0">领取</div>
+           <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
+                <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2"
+                @click="checkTaskStatus(item,'crush_task')">
+                    <div class="description" :class="{opacitying:item.taskStatus == 2}">
+                        <div class="head-img">
+                            <img :src="item.icon | filter" alt="">
+                        </div>
+                        <div class="content">
+                            <p v-html="item.taskDescShow"></p>
+                            <div class="progress">
+                                <div class="progress-bg">
+                                    <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                                    <span>{{transUint(item.finishNum,item.taskOps)}}</span>
+                                </div>
+                                <div class="num">
+                                    <img :src="item.awardsImage | filter" alt="">
+                                    <span>{{item.awardsName}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn" v-if="item.taskStatus == 0">领取</div>
 
-                  <div class="btn play" v-if="item.taskStatus == 1">去完成</div>
-                  <div class="btn gray opacitying" v-if="item.taskStatus == 2">已领取</div>
-              </li>
-          </ul>
-          <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
-              <img src="../img/crushMasterTask/chengjiu_bg.png">
-              <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
-          </div>
-          <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
-              <img src="../img/crushMasterTask/chengjiu_locked_title.png">
-              <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
-              <!-- <p>获取日期<br>2018-12-13</p> -->
-          </div>
-          <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
-              <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
-              <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
-              <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
-          </div>
+                    <div class="btn play" v-if="item.taskStatus == 1">去完成</div>
+                    <div class="btn gray opacitying" v-if="item.taskStatus == 2">已领取</div>
+                </li>
+            </ul>
+
+            <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
+                <img src="../img/crushMasterTask/chengjiu_bg.png">
+                <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
+            </div>
+            <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
+                <img src="../img/crushMasterTask/chengjiu_locked_title.png">
+                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+                <!-- <p>获取日期<br>2018-12-13</p> -->
+            </div>
+            <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
+                <!--<img src="../img/crushMasterTask/chengjiu_unlocked_title.png">-->
+                <img src="../img/crushMasterTask/nostart.png">
+                <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+                <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
+            </div>
        </div>
        <div class="medal-wrap">
-         <ul>
-            <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
-               <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
-            </li>
-         </ul>
+           <ul>
+                <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
+                   <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
+                </li>
+           </ul>
        </div>
     </div>
 </template>
@@ -173,11 +175,7 @@ export default {
         // 领取奖励
         receive(item,type){
             this.isMotherType = true
-            if(item.taskName.indexOf('糖果') > -1) {
-			  this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`, 'allFinish')
-              return false
-            }
-		    this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
+            this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
         }
     },
     watch:{
@@ -200,23 +198,21 @@ export default {
 div{box-sizing: border-box}
 .master-task-list{
     background: #203252;
-    padding: 4% 3%;
+    padding: .2rem 3%;
     >li{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-radius: 4px;
         position: relative;
         overflow: hidden;
-        padding: 0 ;
         background: transparent ;
         border-radius: 0;
         border-bottom: 1px solid #294575;
-        padding-bottom: 4%;
+        padding-bottom: .2rem;
         margin: 0;
         &:last-child{
             border: none;
-            padding-top: 4% ;
+            padding-top: .2rem ;
             padding-bottom: 0;
         }
         .description{
@@ -282,7 +278,7 @@ div{box-sizing: border-box}
         }
     }
 }
-.crush-master-wrap{
+.king-wrap{
     margin-bottom: .2rem;
     width: 100%;
     height: auto;
@@ -314,15 +310,15 @@ div{box-sizing: border-box}
     }
     .head{
         position: relative;
-        padding: .32rem .2rem;
+        padding: .33rem .19rem .09rem .21rem;
         width: 100%;
         height: 1.45rem;
-        img{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1.45rem;
+        .title-bg{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 1.45rem;
         }
         // background: url(../img/crushMasterTask/master_head.png) no-repeat;
         // background-size: 100% 100%;
@@ -331,52 +327,49 @@ div{box-sizing: border-box}
             z-index: 2;
             width: 100%;
             height: .45rem;
-            margin-bottom: .17rem;
-            span:first-child{
-                position: relative;
-                display: inline-block;
-                width: 2.36rem;
-                height: .45rem;
-                i{
-                    position: absolute;
-                    right: .2rem;
-                    top: -.02rem;
-                    color: #FFEBCB;
-                    font-size: .16rem;
-                }
-                .name-title{
-                    float: left;
-                    width: 1.4rem;
-                    height: .45rem;
-                }
-                .xunzhang-title{
-                    position: absolute;
-                    right: 0;
-                    bottom: .01rem;
-                    width: .85rem;
-                    height: .25rem;
-                }
-
+            margin-bottom: .19rem;
+            overflow: hidden;
+            .name-title{
+              float: left;
+              margin-right: .1rem;
+              width: 1.79rem;
+              height: .45rem;
             }
-            
-            span:last-child{
-                position: absolute;
-                left: 1.5rem;
-                bottom: 0;
-                text-align: center;
-                margin-top: -.05rem;
-                color: #32344B;
-                font-size: .16rem;
-                width: 1.45rem;
-                height: .24rem;
-                line-height: .2rem;
-                background: url(../../taskListHome/images/bg_awards.png);
-                background-size: 100% 100%;
+            .text {
+              height: .45rem;
+              float: left;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              p:first-child{
                 i{
-                    font-size: .22rem;
-                    font-weight: bold;
-                    line-height: .22rem;
+                  color: #232432;
+                  font-size: .18rem;
+                  vertical-align: top;
                 }
+                img {
+                  margin-right: .06rem;
+                  width: .26rem;
+                  height: .16rem;
+                }
+                width: 3rem;
+                height: .18rem;
+                line-height: .18rem;
+              }
+              p:last-child{
+                i{
+                  font-size: .2rem;
+                  font-weight: bold;
+                }
+                text-align: center;
+                color: #EFCA85;
+                font-size: .17rem;
+                width: 1.77rem;
+                height: .24rem;
+                background: url(../img/crushMasterTask/price-bg.png);
+                background-size: 100% 100%;
+
+              }
             }
         }
         .process{
@@ -415,25 +408,29 @@ div{box-sizing: border-box}
                 margin-right: .06rem;
                 float: left;
                 font-size: .22rem;
+                color: #232432;
             }
             span:last-child{
                 float: right;
                 font-size: .2rem;
-                color: #666879;
-                i{color: #E3E5F8}
+                color: #232432;
+                i{
+                  margin-left: .1rem;
+                  color: #EC2F1B;
+                }
             }
         }
     }
     .crush-task-list{
-        background: #232432;
+        background: #363952;
         .medals-locked{
-            padding-bottom: .2rem;
             width: 100%;
+            height: 2.05rem;
             text-align: center;
             img{
                 width: 3.29rem;
                 height: 1.19rem;
-                margin: .3rem auto .14rem;
+                margin: .2rem auto .14rem;
             }
             p{
                 margin: 0 auto;
@@ -448,8 +445,9 @@ div{box-sizing: border-box}
         .medals-lock{
             position: relative;
             width: 100%;
-            
+            height: 2.05rem;
             text-align: center;
+            background: #363952;
             img{
                 &:first-child{
                     position: absolute;
@@ -459,9 +457,8 @@ div{box-sizing: border-box}
                     height: .34rem;
                 }
                 &.medeal{
-                    margin: .3rem auto;
-                    width: 1.16rem;
-                    height: 1.6rem;
+                    margin: .3rem auto 0;
+                    width: 1.6rem;
                 }
             }
             p{
@@ -474,27 +471,30 @@ div{box-sizing: border-box}
                 text-align: right;
             }
             &.unlock{
-                p{color: #4A4E73}
+                p{
+                  color: #7b7faa
+                }
                 >img.medeal{
-                    width: 1.17rem;
-                    height: 1.6rem;
+                    width: 1.4rem;
+                    height: auto;
                 }
             }
         }
     }
     .master-task-list{
-        background: #232432;
-        height: 1.8rem;
+        background: #363952;
+        height: 1.65rem;
         >li:not(:last-child){
-            border-bottom: 1px solid #383A58;
+            border-bottom: 1px solid #3D4059FF;
         }
     }
     .medal-wrap{
         padding: 0 3%;
         width: 100%;
         height: 1.15rem;
-        background: url(../img/crushMasterTask/master_bottom.png) no-repeat;
-        background-size: 100% 100%;
+        background: #3B3E59;
+        border-bottom-left-radius: 9px;
+        border-bottom-right-radius: 9px;
         ul{
             li{
                 position: relative;
@@ -509,12 +509,11 @@ div{box-sizing: border-box}
                     &:after{
                         content: '';
                         position: absolute;
-                        right: -.3rem;
-                        top: .6rem;
+                        right: -.23rem;
+                        top: .51rem;
                         width: .18rem;
                         height: .18rem;
-                        background: url(../img/crushMasterTask/icon_arrow.png) no-repeat;
-                        background-size: 100% 100%;
+                        background: url("../img/crushMasterTask/next.png") no-repeat center center / 100% 100%;
                     }
                 }
                 &.hightlight{
@@ -522,8 +521,7 @@ div{box-sizing: border-box}
                     background-size: 100% 100%;
                 }
                 img{
-                    width: .83rem;
-                    height: .85rem;
+                    width: .99rem;
                 }
                 
             }
