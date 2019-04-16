@@ -198,7 +198,7 @@ export default {
 div{box-sizing: border-box}
 .master-task-list{
     background: #203252;
-    padding: 4% 3%;
+    padding: .2rem 3%;
     >li{
         display: flex;
         justify-content: space-between;
@@ -208,11 +208,11 @@ div{box-sizing: border-box}
         background: transparent ;
         border-radius: 0;
         border-bottom: 1px solid #294575;
-        padding-bottom: 4%;
+        padding-bottom: .2rem;
         margin: 0;
         &:last-child{
             border: none;
-            padding-top: 4% ;
+            padding-top: .2rem ;
             padding-bottom: 0;
         }
         .description{
@@ -424,13 +424,13 @@ div{box-sizing: border-box}
     .crush-task-list{
         background: #363952;
         .medals-locked{
-            padding-bottom: .2rem;
             width: 100%;
+            height: 2.05rem;
             text-align: center;
             img{
                 width: 3.29rem;
                 height: 1.19rem;
-                margin: .3rem auto .14rem;
+                margin: .2rem auto .14rem;
             }
             p{
                 margin: 0 auto;
@@ -445,6 +445,7 @@ div{box-sizing: border-box}
         .medals-lock{
             position: relative;
             width: 100%;
+            height: 2.05rem;
             text-align: center;
             background: #363952;
             img{
@@ -456,9 +457,8 @@ div{box-sizing: border-box}
                     height: .34rem;
                 }
                 &.medeal{
-                    margin: .3rem auto;
-                    width: 1.16rem;
-                    height: 1.6rem;
+                    margin: .3rem auto 0;
+                    width: 1.6rem;
                 }
             }
             p{
@@ -475,15 +475,15 @@ div{box-sizing: border-box}
                   color: #7b7faa
                 }
                 >img.medeal{
-                    width: 1.17rem;
-                    height: 1.6rem;
+                    width: 1.4rem;
+                    height: auto;
                 }
             }
         }
     }
     .master-task-list{
         background: #363952;
-        height: 1.8rem;
+        height: 1.65rem;
         >li:not(:last-child){
             border-bottom: 1px solid #3D4059FF;
         }
@@ -509,11 +509,11 @@ div{box-sizing: border-box}
                     &:after{
                         content: '';
                         position: absolute;
-                        right: -.3rem;
-                        top: .6rem;
+                        right: -.23rem;
+                        top: .51rem;
                         width: .18rem;
                         height: .18rem;
-                        background: #434766;
+                        background: url("../img/crushMasterTask/next.png") no-repeat center center / 100% 100%;
                     }
                 }
                 &.hightlight{
@@ -521,8 +521,7 @@ div{box-sizing: border-box}
                     background-size: 100% 100%;
                 }
                 img{
-                    width: .83rem;
-                    height: .85rem;
+                    width: .99rem;
                 }
                 
             }

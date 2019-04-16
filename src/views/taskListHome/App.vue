@@ -215,8 +215,10 @@
                         gameNameIcon : data.data.gameNameIcon,//游戏
                         titleIcon : data.data.titleIcon,//游戏名称icon
                         batchId : data.data.batchId, // 当前游戏value
-                        lock : data.data.lock, // 当前游戏value
-                        achievementType : data.data.achievementType, // 当前游戏value
+                        lock : data.data.lock,
+                        achievementType : data.data.achievementType,
+                        lockIcon : data.data.lockIcon,
+                        lockBgIcon : data.data.lockBgIcon
                     }
                     
                     if(type == 'refresh'){

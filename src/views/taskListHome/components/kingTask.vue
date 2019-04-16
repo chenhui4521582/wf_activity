@@ -6,6 +6,7 @@
       <p class="left-part">
         <span>当前进度</span>
         <img :src="item.currentParentTask.statusIcon | filter" alt="">
+        <!--<img src="../images/king-icon111.png" alt="">-->
       </p>
       <div class="right-part">
         <span class="task-name">

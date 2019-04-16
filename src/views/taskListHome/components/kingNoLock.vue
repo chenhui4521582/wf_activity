@@ -1,10 +1,10 @@
 <template>
   <div class="task-title king-nolock">
     <!--<img src="../images/king-bg.png" alt="" class="no-lock-bg bg-task">-->
-    <img :src="item.bgIcon | filter" class="no-lock-bg bg-task">
+    <img :src="item.lockBgIcon | filter" class="no-lock-bg bg-task">
     <div class="no-lock-body">
       <p class="left-part">
-        <img :src="item.currentParentTask.statusIcon | filter" alt="">
+        <img :src="item.lockIcon | filter" alt="">
         <!--<img src="../images/king-icon.png" alt="" class="king-icon">-->
       </p>
       <div class="right-part">
