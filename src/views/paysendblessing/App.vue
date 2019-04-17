@@ -4,6 +4,7 @@
       :userInfo="userInfo"
     />
     <div class="body">
+        <img src="./images/new/fq-text.png" alt="" class="fq-text">
       <div class="time">活动时间：{{beforeTime | timeFormat('y-m-d')}} - {{endTime | timeFormat('y-m-d')}}</div>
       <blessing-ranking
         :rankingList="rankingList"
@@ -177,8 +178,10 @@ export default {
 
 <style lang="less" scoped>
 .pay-send-blessing {
+  min-height: 100vh;
   font-family: "Helvetica";
-  background: url("./images/bg.png") no-repeat center top / 100% auto #20017D;
+  background: url("./images/new/bg.png") no-repeat center top / 100% auto #20017D;
+    /*padding-bottom:0.85rem;*/
   &.no-scroll {
     position: absolute;
     left: 0;
@@ -187,16 +190,27 @@ export default {
     bottom: 0;
     overflow: hidden;
   }
+    .fq-text{
+        width:4.7rem;
+        height:2.05rem;
+        position: absolute;
+        left:50%;
+        top:1.3rem;
+        margin-left:-2.35rem;
+    }
   .body {
     overflow: hidden;
     .time {
-      margin: 1.6rem auto 2.48rem;
+      margin: 0.5rem auto 2.48rem;
       width: 4.21rem;
       height: .5rem;
       text-align: center;
       line-height: .5rem;
       color: #fff;
-      background: url("./images/bg1.png") no-repeat center center / 100% 100%;
+        border-radius:.25rem;
+        background:linear-gradient(0,rgba(53, 150, 240, 0.68),rgba(138, 28, 184, 0.68));
+        position: relative;
+        top:2.1rem;
     }
   }
 }
