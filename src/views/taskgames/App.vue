@@ -515,6 +515,25 @@
               return ''
           }
         },
+        async jumpMine(){
+            await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType}) // H5平台-游戏内SDK-话费余额按钮
+            parent.location.href = this.jumpToPlat()+'#/personal'
+        },
+        jumpToPlat(){
+            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056']
+            if(baiduChannel.includes(this.channel)){
+                return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
+            } else if(this.channel == '700002'){
+                return `https://wap.beeplay123.com/llwWap?channel=${this.channel}`
+            }else{
+               return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+            }
+        },
+        async getHuafeiNum(){
+            let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+            this.huafeiNum = data.data
+        },
         checkTaskStatus(item,type,index){
 
             if(item.taskStatus == 0){
@@ -822,7 +841,7 @@
         async gotokf(){
           await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042','100049','100050']
+            baiduChannel = ['100039','100040','100041','100042','100049','100050','100054','100056']
           if(jsChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
@@ -835,7 +854,7 @@
         },
         goTask () {
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054','100056']
             if(baiduChannel.includes(this.channel)){
                 parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
             } else if(this.channel == '700002'){
