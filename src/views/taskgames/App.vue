@@ -4,7 +4,7 @@
       <ul>
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment&&telFragment[0].price}}
-          <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i> 
+          <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i>
       </li>
       <p class="figure" v-if="!huafeiShow">
           <img src="./images/fighur.png" class="touch">
@@ -91,15 +91,15 @@
       </div>
       <template v-else>
         <!-- 糖果大师任务 -->
-        <crush-master-task 
+        <crush-master-task
           v-if="crushTaskList && (crushTaskList.hasFinishedTask < crushTaskList.totalTask || currentMedalIndex == 3) && !newTaskItems.isNew"
           :crushTaskList="crushTaskList"
-          :showReceiveMedal="showReceiveMedal" 
-          :showMedalAnimate="showMedalAnimate" 
-          :currentMedalIndex="currentMedalIndex" 
+          :showReceiveMedal="showReceiveMedal"
+          :showMedalAnimate="showMedalAnimate"
+          :currentMedalIndex="currentMedalIndex"
           :currentGameType="currentGameType"
-          @checkTaskStatus="checkTaskStatus" 
-          @hideMedalAnimate="showMedalAnimate = false" 
+          @checkTaskStatus="checkTaskStatus"
+          @hideMedalAnimate="showMedalAnimate = false"
           @receive="receive"
           @refreshTask="refreshTask"
         >
@@ -161,12 +161,12 @@
           </ul>
         </div>
       </template>
-      <poplog 
-          v-if="isPopLog" 
-          :crushTaskList="crushTaskList" 
-          :awardItem="awardItem" 
-          :motherTask="motherTask" 
-          :isNewTask="isNewTask" 
+      <poplog
+          v-if="isPopLog"
+          :crushTaskList="crushTaskList"
+          :awardItem="awardItem"
+          :motherTask="motherTask"
+          :isNewTask="isNewTask"
           :masterTask="masterTask"
           :newUserTaskFinish="newUserTaskFinish"
           @close="closePopLog"
@@ -274,7 +274,7 @@
             if(motherTask) {
                 motherTask.allTaskNum = list.length
                 motherTask.hasFinishedNum = finishedTaskNum
-                return motherTask 
+                return motherTask
             }
             return ''
         }
@@ -320,17 +320,17 @@
         checkCurrentTask(){
             switch(this.currentGameType){
                 // 糖果
-                case '12' : 
+                case '12' :
                     GLOBALS.buriedPoint(1210040820,"H5平台-游戏内任务页-糖果成就任务加载成功");
                     return 'crush-achievement';
                     break;
                 // 桌球
-                case '2': 
+                case '2':
                     GLOBALS.buriedPoint(1210040830,"H5平台-游戏内任务页-桌球成就任务加载成功");
                     return 'bill-achievement';
                     break;
                 // 捕鱼
-                case '10': 
+                case '10':
                     GLOBALS.buriedPoint(1210040840,"H5平台-游戏内任务页-捕鱼成就任务加载成功");
                     return 'fish-achievement';
                     break;
@@ -359,7 +359,7 @@
         },
         jumpToPlat(){
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056']
             if(baiduChannel.includes(this.channel)){
                 return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
             } else if(this.channel == '700002'){
@@ -382,7 +382,7 @@
         },
         goFinishs({gameType, url, action, taskId, taskName},type) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
-              GLOBALS.marchSetsPoint('A_H5PT0061000537', { 
+              GLOBALS.marchSetsPoint('A_H5PT0061000537', {
                 project_id: gameType,
                 target_project_id: gameType,
                 task_id: taskId,
@@ -419,7 +419,7 @@
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
         goFinish({gameType, url, action, taskId, taskName}, type) {
-            
+
             let actionsArr = [39,35,34,32]
             GLOBALS.thirdSetsPoint({
                 "event_name": "游戏内任务-去完成",
@@ -429,21 +429,21 @@
                 "target_project_id" : gameType//跳转到的游戏ID
             })
             if(type === 'newtask'){
-                GLOBALS.marchSetsPoint('A_H5PT0061000540', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000540', {
                   project_id: gameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
                 }) // H5平台-游戏内SDK-新人任务-去完成
             } else if (type === 'dayTask') {
-                GLOBALS.marchSetsPoint('A_H5PT0061000543', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000543', {
                   project_id: this.currentGameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
                 }) // H5平台-游戏内SDK-更多每日任务-去完成
             }
-            
+
             setTimeout(() => {
 
                 // 跳转到首页（关闭）
@@ -517,14 +517,14 @@
                 item.awardsFlag = type
                 item.index = index
                 item.medalimg = medalimg
-                GLOBALS.marchSetsPoint('A_H5PT0061000538', { 
+                GLOBALS.marchSetsPoint('A_H5PT0061000538', {
                   project_id: item.gameType,
                   target_project_id: item.gameType,
                   task_id: item.taskId,
                   task_name: item.taskName
                 }) // H5平台-游戏内SDK-成就任务-去领取
             }else if(type === 'newtask'){
-              GLOBALS.marchSetsPoint('A_H5PT0061000541', { 
+              GLOBALS.marchSetsPoint('A_H5PT0061000541', {
                 project_id: item.gameType,
                 target_project_id: item.gameType,
                 task_id: item.taskId,
@@ -589,7 +589,7 @@
                 value: 'NewUserStairTask'
             }).then((res)=> {
                 if(res.data.data.isNew){
-                  GLOBALS.marchSetsPoint('S_00000000000010', { 
+                  GLOBALS.marchSetsPoint('S_00000000000010', {
                     project_id: this.currentGameType,
                     target_project_id: this.currentGameType
                   }) // H5平台-游戏内SDK-新人任务加载
@@ -747,7 +747,7 @@
         async gotokf(){
           await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
           let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042','100049','100050','100054']
+            baiduChannel = ['100039','100040','100041','100042','100049','100050','100054','100056']
           if(jsChannel.includes(this.channel)){
             parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
           }else if(baiduChannel.includes(this.channel)){
@@ -760,7 +760,7 @@
         },
         goTask () {
             let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054','100056']
             if(baiduChannel.includes(this.channel)){
                 parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
             } else if(this.channel == '700002'){
@@ -803,7 +803,7 @@
         left: 0;
         width: .47rem;
         height: .38rem;
-        
+
     }
     animation: touch .8s ease-in-out alternate infinite;
 }
@@ -815,10 +815,10 @@
 }
 @keyframes touch {
     0%{
-        transform : translateX(-.2rem) 
+        transform : translateX(-.2rem)
     }
     100%{
-        transform : translateX(0) 
+        transform : translateX(0)
 
     }
 }

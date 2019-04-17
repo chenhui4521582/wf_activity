@@ -13,10 +13,10 @@
                     <div class="r-item2">{{detailData&&detailData.availableAmount}}个</div>
                 </div>
                 <div class="item" @click.stop="bonusListClick('top')">
-                    
-                    <div class="r-item2 item-move-box" style="position: relative;z-index: 1"> 
+
+                    <div class="r-item2 item-move-box" style="position: relative;z-index: 1">
                         <!-- <div class="r-item1" style="height: 0.35rem;overflow: hidden;position: relative;z-index: 5;">
-                            <div v-for="item in lamp" :class="{'anim':isMove}" style="height: 0.35rem;"></div> 
+                            <div v-for="item in lamp" :class="{'anim':isMove}" style="height: 0.35rem;"></div>
                         </div> -->
                         <div class="item-move" v-if="lamp.length">
                             <ul  :class="{'anim':isMove}">
@@ -408,7 +408,7 @@
         },
         computed: {
             isBdChannel(){
-                let channel = ['100039','100042','100045','100040','100041','100046','100049','100050','100054']
+                let channel = ['100039','100042','100045','100040','100041','100046','100049','100050','100054','100056']
                 return channel.includes(this.curChannel)
             },
             backUrl() {
@@ -431,7 +431,7 @@
                 if (!this.hbItems) {
                     return []
                 }
-                
+
                 // 获取最大值
                 let maxItem = this.hbItems&&this.hbItems.length&&this.hbItems.sort((a, b) => {
                     return a.taskOps - b.taskOps
@@ -440,7 +440,7 @@
                 // 删除数组最后一位
                 const data=this.hbItems.slice()
                 data.pop()
-                
+
                 let nArr = data.filter((item) => {
                     return item.taskStatus != 2
                 }).sort((a, b) => {
@@ -534,9 +534,9 @@
                 setTimeout(() => {
                     this.lamp.push(this.lamp[0]);
                     this.lamp.shift();
-                    this.isMove= false; 
+                    this.isMove= false;
                 },1000)
-                
+
             },
             bounceRemove() {
                 clearInterval(this.timer2)
@@ -756,7 +756,7 @@
                             name: '红包榜排名',
                             desc: this.detailData&&this.detailData.ranking
                         }]
-                        
+
 
 
                         !this.countdown.time && this.detailData.countDown && GLOBALS.remainingTime(
@@ -1420,7 +1420,7 @@
             i {
                 color: rgba(255, 216, 59, 1);
             }
-            
+
         }
     }
 
@@ -1649,7 +1649,7 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
         position: relative;
         top: -0.1rem;
         left:0.1rem;
-        
+
     }
     .item-move-box {
         position: relative;
@@ -1682,5 +1682,5 @@ animation-timing-function:cubic-bezier(.215,.61,.355,1);
             line-height: 0.38rem;
         }
     }
-    
+
 </style>
