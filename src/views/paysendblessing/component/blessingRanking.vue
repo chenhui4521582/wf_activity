@@ -117,8 +117,10 @@
 
 <style scoped lang="less">
 .ranking {
-  padding: 0 .15rem;
   box-sizing: border-box;
+  .rankint-list {
+      padding: 0 .15rem;
+  }
   .first-nickname {
     .index {
         position: relative;
@@ -235,9 +237,9 @@
   }
   .check-btn {
     width: 100%;
-    position: fixed;
-      left:0;
-      bottom:0;
+    /*position: fixed;*/
+      /*left:0;*/
+      /*bottom:0;*/
     box-sizing: border-box;
     .container {
       width: 100%;

@@ -181,7 +181,7 @@ export default {
   min-height: 100vh;
   font-family: "Helvetica";
   background: url("./images/new/bg.png") no-repeat center top / 100% auto #20017D;
-    padding-bottom:0.85rem;
+    /*padding-bottom:0.85rem;*/
   &.no-scroll {
     position: absolute;
     left: 0;
