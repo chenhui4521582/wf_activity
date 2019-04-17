@@ -204,7 +204,6 @@ div{box-sizing: border-box}
         justify-content: space-between;
         align-items: center;
         position: relative;
-        overflow: hidden;
         background: transparent ;
         border-radius: 0;
         border-bottom: 1px solid #294575;
@@ -328,7 +327,6 @@ div{box-sizing: border-box}
             width: 100%;
             height: .45rem;
             margin-bottom: .19rem;
-            overflow: hidden;
             .name-title{
               float: left;
               margin-right: .1rem;
