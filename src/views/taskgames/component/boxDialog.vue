@@ -9,8 +9,7 @@
                   <img src="../img/dialog/box/box.png" alt="">
               </div>
               <p class="num">{{awardItem.awardsName}}</p>
-              <p class="explain">此宝箱可参与“踏青寻宝瓜分1个亿”活动</p>
-              <p class="explain1">宝箱越多，奖励更多哦</p>
+              <p class="explain">此宝箱可参与“踏青寻宝瓜分1个亿”活动<br>宝箱越多，奖励更多哦</p>
               <div class="btn">
                 <div class="close" @click="close">
                   <img src="../img/dialog/box/enter.png" alt="">
@@ -56,10 +55,9 @@ export default {
 .content-box{
   position: fixed;
   z-index: 5;
-  width: 100%;
-  height: 100%;
+  width: 4.8rem;
   left: 50%;
-  margin-left: -50%;
+  margin-left: -2.4rem;
   top: 0;
   .bg{
       width: 100%;
@@ -92,11 +90,11 @@ export default {
             margin: 0 auto;
         }
       &.boxIcon {
-        margin: 3.12rem auto 0;
+        margin: 2.5rem auto 0;
         background: none;
         border: none;
-        width: 1.82rem;
-        height: 1.39rem;
+        width: 1.456rem;
+        height: 1.11rem;
         img {
           width: 100%;
           height: 100%;
@@ -127,14 +125,18 @@ export default {
     }
     .num{
         text-align: center;
-        margin: .2rem 0 .27rem;
-        font-size: .36rem;
+        margin: .16rem 0 .216rem;
+        font-size: .288rem;
         color: #FF6C35;
     }
     .explain,.explain1 {
       text-align: center;
       color: #856A0B;
-      font-size: .2rem;
+      width: 3.5rem;
+      margin: .08rem auto .096rem;
+      line-height: .25rem;
+      font-size: .16rem;
+      white-space: nowrap;
     }
     .explain1{
       margin: .1rem 0 .12rem;
@@ -183,8 +185,8 @@ export default {
         display: flex;
         justify-content: center;
       .close,.go{
-        width: 1.94rem;
-        height: .8rem;
+        width: 1.55rem;
+        height: .64rem;
         margin: 0 .1rem;
         img {
           width: 100%;
@@ -195,4 +197,5 @@ export default {
     }
   }
 }
+
 </style>
