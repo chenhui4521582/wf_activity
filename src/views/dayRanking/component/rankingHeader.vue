@@ -9,7 +9,7 @@
 
 <script>
   export default {
-	name: 'header',
+	name: 'rankingHeader',
     methods: {
 	  backHome () {
 	    window.history.go(-1)

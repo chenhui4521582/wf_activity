@@ -14,6 +14,40 @@
         </div>
         <div class="list-container">
           <div class="list" v-if="currentIndex == 0">
+            <div class="nav">
+              <div class="ranking">名次</div>
+              <div class="nick-name">昵称</div>
+              <div class="integral">幸运分</div>
+              <div class="price-name">奖励</div>
+            </div>
+            <div class="content" ref="list-content">
+              <ul>
+                <li>
+                  <div class="ranking">
+                    <img src="../images/one-icon.png" alt="">
+                  </div>
+                  <div class="nick-name">nichggjgjgf</div>
+                  <div class="integral">1000000</div>
+                  <div class="price-name">960元话费券</div>
+                </li>
+                <li>
+                  <div class="ranking">
+                    <img src="../images/two-icon.png" alt="">
+                  </div>
+                  <div class="nick-name">nichggjgjgf</div>
+                  <div class="integral">1000000</div>
+                  <div class="price-name">960元话费券</div>
+                </li>
+                <li>
+                  <div class="ranking">
+                    <img src="../images/three-icon.png" alt="">
+                  </div>
+                  <div class="nick-name">nichggjgjgf</div>
+                  <div class="integral">1000000</div>
+                  <div class="price-name">960元话费券</div>
+                </li>
+              </ul>
+            </div>
 
           </div>
           <div class="price" v-if="currentIndex == 1">
@@ -26,6 +60,7 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
   export default {
 	name: 'rankingList',
     data: () => ({
@@ -80,20 +115,72 @@
               border-radius: 0 6px 6px 0;
             }
             &.current {
+              background: #E0B58A ;
               color: #3B251D;
             }
           }
         }
       }
       .list-container {
-
-        ul {
-          li {
+        .list {
+          padding: 0 .16rem 0 .19rem;
+          box-sizing: border-box;
+          .nav {
+            display: flex;
+            justify-content: flex-start;
             height: .57rem;
             line-height: .57rem;
-            padding: 0 .16rem 0 .19rem;
-            box-sizing: border-box;
+            text-align: center;
+            font-size: .2rem;
+            color: #3B251D;
+            border-bottom: 1px solid #C69E76;
+            .ranking {
+              text-align: left;
+              width: 10%;
+            }
+            .nick-name {
+              width: 35%;
+            }
+            .integral {
+              width: 25%;
+            }
+            .price-name {
+              width: 30%;
+            }
           }
+          ul {
+            li {
+              display: flex;
+              justify-content: flex-start;
+              height: .57rem;
+              line-height: .57rem;
+              text-align: center;
+              font-size: .2rem;
+              color: #3B251D;
+              border-bottom: 1px solid #C69E76;
+              .ranking {
+                width: 10%;
+                img {
+                  margin: .095rem 0 0 0.07rem;
+                  display: block;
+                  width: .27rem;
+                  height: .38rem;
+                }
+              }
+              .nick-name {
+                width: 35%;
+              }
+              .integral {
+                width: 25%;
+              }
+              .price-name {
+                width: 30%;
+              }
+            }
+          }
+        }
+        .price {
+
         }
       }
     }
