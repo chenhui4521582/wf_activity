@@ -14,8 +14,8 @@
                 <div class="blessing-num"><i>福气值：</i><span>{{rankingList[0].amount}}</span></div>
               </div>
             </div>
-            <div class="blessing-log btn" @click="handleClick('log')">
-              <img src="../images/blessing-log-btn.png" alt="">
+            <div class="blessing-log " >
+              <img src="../images/new/adver-pai.png" alt="">
             </div>
           </li>
           <li class="one first-nickname" v-else>
@@ -30,8 +30,6 @@
               </div>
             </div>
             <div class="blessing-log " >
-                <!--@click="handleClick('log')"-->
-              <!--<img src="../images/blessing-log-btn.png" alt="">-->
                 <img src="../images/new/adver-pai.png" alt="">
             </div>
           </li>
@@ -107,7 +105,7 @@
 	  handleClick (text) {
 	    if(text == 'ranking') {
 		  //H5平台-充值送福气-查看排名 埋点
-		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000679')
+		  GLOBALS.marchSetsPoint('A_H5PT0074000679')
         }
 		this.$emit('handleClick', text)
 	  }
