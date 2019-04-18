@@ -3,6 +3,8 @@
     <ranking-header />
     <ranking-time />
     <ranking-list />
+    <game-list />
+    <ranking-rule />
   </div>
 </template>
 
@@ -15,7 +17,9 @@ export default {
   components: {
 	rankingHeader: () => import('./component/rankingHeader'),
 	rankingTime: () => import('./component/rankingTime'),
-	rankingList: () => import('./component/rankingList')
+	rankingList: () => import('./component/rankingList'),
+	gameList: () => import('./component/gameList'),
+	rankingRule: () => import('./component/rankingRule')
   },
   methods: {
 
