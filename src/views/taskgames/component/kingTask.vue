@@ -362,7 +362,7 @@ div{box-sizing: border-box}
                 text-align: center;
                 color: #EFCA85;
                 font-size: .17rem;
-                width: 1.77rem;
+                width: 1.9rem;
                 height: .24rem;
                 background: url(../img/crushMasterTask/price-bg.png);
                 background-size: 100% 100%;
