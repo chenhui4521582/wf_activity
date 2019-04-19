@@ -105,6 +105,10 @@
                 background: #da4027;
                 border-radius: .08rem;
                 border: .01rem solid #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: .1rem;
             }
             .common-wrap{
                 margin: .4rem auto;
@@ -115,10 +119,8 @@
                 border: .02rem solid #fff;
             }
             .medeal-icon{
-                width: 1.49rem;
-                height: 1.98rem;
-                margin: .15rem auto 0;
-                display: block;
+                max-height: 100%;
+                max-width: 100%;
             }
             .num{
                 color: #fff;

@@ -119,12 +119,14 @@
         background: #da4027;
         border-radius: .08rem;
         border: .01rem solid #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: .2rem;
     }
     .medeal-icon{
-        width: 1.49rem;
-        height: 1.98rem;
-        margin: .15rem auto 0;
-        display: block;
+      max-width: 100%;
+      max-height: 100%;
     }
     * {
         box-sizing: border-box;

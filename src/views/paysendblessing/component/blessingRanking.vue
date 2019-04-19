@@ -2,34 +2,35 @@
   <div>
     <div class="ranking">
       <div class="rankint-list">
-        <ul>
-          <li class="one" v-if="rankingList[0]">
+          <li class="one first-nickname" v-if="rankingList[0]">
             <div class="user">
               <div class="avatar">
                 <img :src="rankingList[0].profilePhoto | filter " alt="" v-if="!!rankingList[0].profilePhoto">
                 <img src="../images/avatar.png" alt="" v-else>
+                <div class="index"><span><img src="../images/new/first-rank.png" alt=""></span></div>
               </div>
-              <div class="user-info">
+              <div class="user-info first-nickname">
                 <div class="nick-name">{{rankingList[0].nickname}}</div>
                 <div class="blessing-num"><i>福气值：</i><span>{{rankingList[0].amount}}</span></div>
               </div>
             </div>
-            <div class="blessing-log btn" @click="handleClick('log')">
-              <img src="../images/blessing-log-btn.png" alt="">
+            <div class="blessing-log " >
+              <img src="../images/new/adver-pai.png" alt="">
             </div>
           </li>
-          <li class="one" v-else>
+          <li class="one first-nickname" v-else>
             <div class="user">
               <div class="avatar">
                 <img src="../images/avatar.png" alt="">
+                  <div class="index"><span><img src="../images/new/first-rank.png" alt=""></span></div>
               </div>
               <div class="user-info">
                 <div class="nick-name">***</div>
                 <div class="blessing-num"><i>福气值：</i><span>***</span></div>
               </div>
             </div>
-            <div class="blessing-log btn" @click="handleClick('log')">
-              <img src="../images/blessing-log-btn.png" alt="">
+            <div class="blessing-log " >
+                <img src="../images/new/adver-pai.png" alt="">
             </div>
           </li>
           <li class="two" v-if="rankingList[1]">
@@ -37,7 +38,7 @@
               <div class="avatar">
                 <img :src="rankingList[1].profilePhoto | filter" alt="" v-if="!!rankingList[1].profilePhoto">
                 <img src="../images/avatar.png" alt="" v-else>
-                <div class="index"><span>第二名</span></div>
+                <div class="index"><span><img src="../images/new/two-rank.png" alt=""></span></div>
               </div>
               <div class="user-info">
                 <div class="nick-name">{{rankingList[1].nickname}}</div>
@@ -49,7 +50,7 @@
             <div class="user">
               <div class="avatar">
                 <img src="../images/avatar.png" alt="">
-                <div class="index"><span>第二名</span></div>
+                <div class="index"><span><img src="../images/new/two-rank.png" alt=""></span></div>
               </div>
               <div class="user-info">
                 <div class="nick-name">***</div>
@@ -62,7 +63,7 @@
               <div class="avatar">
                 <img :src="rankingList[2].profilePhoto | filter" alt="" v-if="!!rankingList[2].profilePhoto">
                 <img src="../images/avatar.png" alt="" v-else>
-                <div class="index"><span>第三名</span></div>
+                <div class="index"><span><img src="../images/new/three-rank.png" alt=""></span></div>
               </div>
               <div class="user-info">
                 <div class="nick-name">{{rankingList[2].nickname}}</div>
@@ -74,7 +75,7 @@
             <div class="user">
               <div class="avatar">
                 <img src="../images/avatar.png" alt="">
-                <div class="index"><span>第三名</span></div>
+                <div class="index"><span><img src="../images/new/three-rank.png" alt=""></span></div>
               </div>
               <div class="user-info">
                 <div class="nick-name">***</div>
@@ -86,9 +87,7 @@
       </div>
       <div class="check-btn btn" @click="handleClick('ranking')">
         <div class="container">
-          <div class="border">
-            <img src="../images/check-ranking-btn.png" alt="">
-          </div>
+          <div class="border">查看更多排名>></div>
         </div>
       </div>
     </div>
@@ -106,7 +105,7 @@
 	  handleClick (text) {
 	    if(text == 'ranking') {
 		  //H5平台-充值送福气-查看排名 埋点
-		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000679')
+		  GLOBALS.marchSetsPoint('A_H5PT0074000679')
         }
 		this.$emit('handleClick', text)
 	  }
@@ -116,23 +115,32 @@
 
 <style scoped lang="less">
 .ranking {
-  padding: 0 .15rem;
   box-sizing: border-box;
+  .rankint-list {
+      padding: 0 .15rem;
+  }
+  .first-nickname {
+    .index {
+        position: relative;
+        top:-.13rem;
+    }
+  }
   .one {
     position: relative;
     width: 100%;
-    height: 3.54rem;
-    background: url("../images/one.png") no-repeat center top / 100% 100%;
+    height: 4.37rem;
+    background: url("../images/new/one.png") no-repeat center top / 100% 100%;
     .user {
-       padding: .63rem 0 0 2.58rem;
+        width:4.5rem;
+       padding-top:2.91rem;
        height: .97rem;
        display: flex;
-       justify-content: flex-start;
        align-items: center;
+        margin:0 auto;
        .avatar {
          margin-right: .22rem;
-         width: .94rem;
-         height: .94rem;
+         width: 1.03rem;
+         height: 1.03rem;
          img {
            width: 100%;
            height: 100%;
@@ -141,25 +149,26 @@
 
        }
        .user-info {
-         color: #fff;
+         color: #652B19;
+           margin-left:0.25rem;
          .nick-name {
-           margin-bottom: .1rem;
-           font-size: .47rem
+           margin-bottom: .02rem;
+           font-size: .42rem
          }
          .blessing-num {
            font-size: .3rem;
            span {
-             color: #FFE26B;
+             color: #652B19;
            }
          }
        }
      }
     .blessing-log {
       position: absolute;
-      right: .3rem;
-      top: -.33rem;
-      width: 1.43rem;
-      height: .81rem;
+      right: .05rem;
+      top: -0.22rem;
+      width: 1.4rem;
+      height: 1.4rem;
       img {
         width: 100%;
         height: 100%;
@@ -170,8 +179,8 @@
   .two,.three {
     margin-top: .2rem;
     width: 100%;
-    height: 1.63rem;
-    background: url("../images/two.png") no-repeat center top / 100% 100%;
+    height: 1.59rem;
+    background: url("../images/new/two.png") no-repeat center top / 100% 100%;
 
     .user {
       padding: .26rem 2.86rem 0 .35rem;
@@ -208,7 +217,8 @@
         color: #fff;
         .nick-name {
           margin-bottom: .1rem;
-          font-size: .4rem
+            font-size: 0.4rem;
+            padding-top: 0.1rem;
         }
         .blessing-num {
           font-size: .28rem;
@@ -221,28 +231,29 @@
   }
   .three {
     margin: .2rem 0;
-    background: url("../images/three.png") no-repeat center top / 100% 100%;
+    background: url("../images/new/three.png") no-repeat center top / 100% 100%;
   }
   .check-btn {
-    margin-bottom: .2rem;
     width: 100%;
+    /*position: fixed;*/
+      /*left:0;*/
+      /*bottom:0;*/
     box-sizing: border-box;
     .container {
       width: 100%;
       height: .81rem;
-      padding: 3px;
       box-sizing: border-box;
-      background:linear-gradient(-32deg, rgba(45, 61, 217, 0.97), rgba(82, 166, 236, 0.97));
-      border-radius:10px;
     }
     .border {
-      border-radius:10px;
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background:linear-gradient(-54deg,rgba(61,80,203,1),rgba(94,120,235,1));
+      /*background:linear-gradient(-54deg,rgba(61,80,203,1),rgba(94,120,235,1));*/
+      background:#272D9F;
+        font-size:0.27rem;
+        color: #fff;
     }
     img {
       width: 1.74rem;
