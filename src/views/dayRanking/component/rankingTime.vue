@@ -2,34 +2,17 @@
   <div class="ranking-time">
     <img class="bg" src="../images/time-bg.png" alt="" />
     <div class="time-body">
-      <ul>
-        <li class="over">
-          <div class="title">时间结束</div>
+      <ul v-if="showTimeLine">
+        <li v-for="item in timeLine" :key="item.id" :class="statusClass(item)">
+          <div class="title" v-if="item.status==1">
+            倒计时{{countDown(item)}}
+          </div>
+          <div class="title" v-else>{{statusTitle(item)}}</div>
           <div class="time">
-            08:00-09:00
+            {{item.beginTime}} - {{item.endTime}}
           </div>
           <div class="status">
-            已过期
-          </div>
-        </li>
-        <li class="now">
-          <div class="title">
-            倒计时{{'00:00'}}
-          </div>
-          <div class="time">
-            08:00-09:00
-          </div>
-          <div class="status">
-            正在进行
-          </div>
-        </li>
-        <li class="future last">
-          <div class="title">敬请期待</div>
-          <div class="time">
-            08:00-09:00
-          </div>
-          <div class="status">
-            即将开始
+            {{statusText(item)}}
           </div>
         </li>
       </ul>
@@ -39,7 +22,40 @@
 
 <script>
   export default {
-	name: 'rankingTime'
+	name: 'rankingTime',
+    data: () => ({
+      timeLine: []
+    }),
+    computed: {
+	  showTimeLine () {
+	    return this.timeLine.length
+      },
+
+    },
+    methods: {
+	  statusClass (item) {
+		return item.status == 0 ? 'over' : item.status == 1 ? 'now' : item.status == 2 ? 'future' : 'over'
+	  },
+	  statusText (item) {
+		return item.status == 0 ? '已过期' : item.status == 1 ? '正在进行' : item.status == 2 ? '即将开始' : '已过期'
+	  },
+	  statusTitle (item) {
+		return item.status == 0 ? '时间结束' : item.status == 2 ? '敬请期待' : '时间结束'
+	  },
+      getTimeLine () {
+        let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
+        this.axios.post(url).then(res => {
+          this.timeLine = res.data.data || []
+        })
+      },
+      countDown (item) {
+        console.log(item)
+
+      }
+    },
+    created () {
+      this.getTimeLine()
+    }
   }
 </script>
 

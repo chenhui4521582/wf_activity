@@ -11,9 +11,9 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 5000;
 
 
-let channel = utils.getUrlParam('channel'),
-    url_token = utils.getUrlParam('token'),
-    everyDayLottery = utils.getUrlParam('everyDayLottery')
+let channel = utils.getUrlParam('channel') ? utils.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL'),
+    token = utils.getUrlParam('token') ? utils.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN'),
+    version = localStorage.getItem('APP_VERSION')
 
 
 
@@ -30,9 +30,9 @@ if(localStorage.getItem('APP_CHANNEL') == '100001') {
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-    config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
-    config.headers['App-Version'] = localStorage.getItem('APP_VERSION');
+    config.headers.Authorization = token;
+    config.headers['App-Channel'] = channel;
+    config.headers['App-Version'] = version;
     return config;
   }, function (error) {
     // 对请求错误做些什么

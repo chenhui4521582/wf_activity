@@ -13,6 +13,8 @@ import common from '@/common/js/utils'
 export default {
   name: 'day-ranking',
   data: () => ({
+	APP_CHANNEL: localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):common.getUrlParam('channel'),
+	ACCOUNT_TOKEN: localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):common.getUrlParam('token'),
   }),
   components: {
 	rankingHeader: () => import('./component/rankingHeader'),
@@ -25,9 +27,6 @@ export default {
 
   },
   mounted () {
-    this.batchId = common.getUrlParam('batchId');
-	this.APP_CHANNEL = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):common.getUrlParam('channel')
-	this.ACCOUNT_TOKEN = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):common.getUrlParam('token')
   }
 }
 </script>
