@@ -14,13 +14,13 @@
         </div>
         <div class="list-container">
           <div class="list" v-show="currentIndex == 0">
-            <div class="nav">
+            <div class="nav" v-show="showRankingList">
               <div class="ranking">名次</div>
               <div class="nick-name">昵称</div>
               <div class="integral">幸运分</div>
               <div class="price-name">奖励</div>
             </div>
-            <div class="content" ref="listContent" v-show="showRankingList">
+            <div class="content ranking-wrapper" ref="listContent" v-show="showRankingList">
               <ul>
                 <li v-for="item in rankingList" :key="item.index">
                   <div class="ranking">
@@ -34,62 +34,42 @@
                   <div class="price-name">{{item.awardsName}}</div>
                 </li>
               </ul>
-              <div class="loading" v-show="rankingLoading">
-                请稍候
-              </div>
+            </div>
+            <div class="nodata" v-show="!showRankingList">
+              <img src="../images/nodeta.png" alt="">
+              <p>敬请期待</p>
             </div>
           </div>
-          <div class="price" v-show="currentIndex == 1" ref="priceContent">
-            <div class="price-wrapper">
-              <div class="price-title">
-                <div class="one">
-                  <p class="num">640</p>
-                  <p class="type">话费卷</p>
+          <div class="price" v-show="currentIndex == 1" >
+            <div class="price-wrapper" ref="priceContent" v-show="showAwards">
+              <div class="kuang">
+                <div class="price-title">
+                  <div class="one">
+                    <p class="num">{{awardsList[0] && awardsList[0].awardsAmount || ''}}</p>
+                    <p class="type">{{awardsList[0] && awardsList[0].awardsType || ''}}</p>
+                  </div>
+                  <div class="two">
+                    <p class="num">{{awardsList[1] && awardsList[1].awardsAmount || ''}}</p>
+                    <p class="type">{{awardsList[1] && awardsList[1].awardsType || ''}}</p>
+                  </div>
+                  <div class="three">
+                    <p class="num">{{awardsList[2] && awardsList[2].awardsAmount || ''}}</p>
+                    <p class="type">{{awardsList[2] && awardsList[2].awardsType || ''}}</p>
+                  </div>
                 </div>
-                <div class="two">
-                  <p class="num">1000</p>
-                  <p class="type">话费卷</p>
-                </div>
-                <div class="three">
-                  <p class="num">480</p>
-                  <p class="type">话费卷</p>
-                </div>
-              </div>
-              <ul>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-                <li>
-                  <span>第4名</span>
-                  <span>960元话费券</span>
-                </li>
-              </ul>
-              <div class="loading" v-show="rankingLoading">
-                请稍候
+                <ul>
+                  <li v-for="(item, index) in awardsList" :key="index" v-if="index>2">
+                    <span>第{{index + 1}}名</span>
+                    <span>{{item.awardsName}}</span>
+                  </li>
+                </ul>
               </div>
             </div>
-            <div class="mask"></div>
+            <div class="nodata" v-if="!showAwards">
+              <img src="../images/nodeta.png" alt="">
+              <p>敬请期待</p>
+            </div>
+            <div class="mask" v-if="showAwards"></div>
           </div>
         </div>
       </div>
@@ -114,89 +94,161 @@
   import BScroll from 'better-scroll'
   export default {
 	name: 'rankingList',
+    props: ['timeId'],
     data: () => ({
 	  currentIndex: 0,
 	  myRanking: {},
 	  rankingList: [],
-      awardsLoading: false,
-      rankingLoading: false,
+      awardsList:[],
+      awardsLock: false,
+      rankingLock: false,
       rankingParams: {
 	    page:1,
-        pageSize:20
+        pageSize:10
       },
       awardsParams: {
 		page:1,
-		pageSize:20
-      }
+		pageSize:10
+      },
+      awardTimer: null,
+      rankingTimer: null
     }),
     computed: {
 	  showRankingList () {
 		return this.rankingList.length
 	  },
+	  showAwards () {
+		return this.awardsList.length
+	  },
       showMyRanking () {
-	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index
+	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0
       }
     },
     methods: {
 	  getRankingList () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingList'
-		this.axios.post(url, {page: 1, pageSize: 20}).then(res => {
+		this.axios.post(url, this.rankingParams).then(res => {
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
-		  this.rankingList = rankingList
-          this.initRankingListScroll()
+		  this.rankingList = this.rankingList.concat(rankingList)
+		  if(rankingList.length == 10) {
+			this.awardsLock = false
+		  }
+		  if(rankingList.length) {
+			this.initRankingListScroll()
+          }
 		})
 	  },
+      getOldRankingList () {
+		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
+		this.axios.post(url, this.rankingParams).then(res => {
+		  let {myRanking = {}, rankingList = []} = res.data.data
+		  this.myRanking = myRanking
+		  this.rankingList = this.rankingList.concat(rankingList)
+		  if(rankingList.length == 10) {
+			this.awardsLock = false
+		  }
+		  if(rankingList.length) {
+			this.initRankingListScroll('oldRanking')
+		  }
+		})
+      },
 	  getAwardsList () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getAwardsList'
-		this.axios.post(url, {page: 1, pageSize: 10}).then(res => {
-		  this.initAwardsScroll()
+		this.axios.post(url, this.awardsParams).then(res => {
+          this.awardsList = this.awardsList.concat(res.data.data)
+          if(res.data.data.length == 10) {
+			this.awardsLock = false
+          }
+		  if(res.data.data.length) {
+			this.initAwardsScroll()
+		  }
         })
 	  },
-      initRankingListScroll () {
+      initRankingListScroll (type) {
 		this.$nextTick(function () {
-		  this.rankingScroll = new BScroll(this.$refs.listContent)
-		  this.AwardsScroll.on('Scroll', res => {
-			console.log(res)
-		  })
+		  if(!this.rankingScroll) {
+			this.rankingScroll = new BScroll(this.$refs.listContent, {probeType: 3})
+			this.rankingScroll.on('scroll', page => {
+			  if(this.rankingTimer){
+				clearTimeout(this.rankingTimer)
+			  }
+			  this.rankingTimer = setTimeout(() => {
+				let height = document.querySelector('.ranking-wrapper ul').clientHeight
+				let boxHeight = document.querySelector('.ranking-wrapper').clientHeight
+				let endPosition = height-boxHeight;
+				if(Math.abs(Math.round(page.y)) >= endPosition) {
+				  if(this.rankingLock) return false
+				  this.rankingLock = true
+				  this.rankingParams.page += 1;
+				  if(type == 'oldRanking'){
+				    this.getOldRankingList()
+                  }else{
+					this.getRankingList()
+                  }
+				}
+			  },30)
+			})
+		  }else{
+			this.rankingScroll.finishPullUp()
+			this.rankingScroll.refresh()
+          }
 		})
       },
       initAwardsScroll () {
 		this.$nextTick(function () {
-		  this.AwardsScroll = new BScroll(this.$refs.priceContent, {
-			probeType: 3,
-			// scrollY: true,
-			// click: true,
-			// useTransition:false  // 防止iphone微信滑动卡顿
-          })
-          this.AwardsScroll.on('scroll', res => {
-			let height = this.$refs.priceContent.clientHeight
-            console.log(Math.abs.Math.round(res.y))
-            if(Math.abs(Math.round(res.y)) >= height) {
-			  if(this.showLoading) return false
-              this.showLoading = true
-              this.awardsParams.page += 1;
-              console.log(this.awardsParams)
-            }
-          })
+		  if(!this.AwardsScroll){
+			this.AwardsScroll = new BScroll(this.$refs.priceContent, {
+			  probeType: 3
+			})
+			this.AwardsScroll.on('scroll', page => {
+              if(this.awardTimer){
+                clearTimeout(this.awardTimer)
+              }
+			  this.awardTimer = setTimeout(() => {
+                let height = document.querySelector('.price-wrapper').clientHeight
+                let boxHeight = document.querySelector('.price-wrapper .kuang').clientHeight
+                let endPosition = height-boxHeight;
+				if(Math.abs(Math.round(page.y)) >= endPosition) {
+				  if(this.awardsLock) return false
+				  this.awardsLock = true
+				  this.awardsParams.page += 1;
+				  this.getAwardsList()
+				}
+			  },30)
+			})
+          }else{
+			this.AwardsScroll.finishPullUp()
+			this.AwardsScroll.refresh()
+          }
 		})
       },
 	  switchTab (index) {
-		if(index == 0) {
-		  this.getRankingList()
-		}
-		else{
-		  this.getAwardsList()
-		}
 		this.currentIndex = index
+		this.initAwardsScroll()
+		this.initRankingListScroll()
 	  },
     },
     created () {
       this.getRankingList()
       this.getAwardsList()
     },
-    mounted () {
-
+    watch: {
+	  timeId () {
+		this.rankingList = []
+        this.rankingLock = false
+		this.rankingScroll = null
+	    if (this.timeId == 'now') {
+		  this.rankingParams = { page:1, pageSize:10 }
+		  this.getRankingList()
+        }
+	    else if (this.timeId == 'future') {
+		  this.myRanking = []
+        } else {
+		  this.rankingParams = { page:1, pageSize:10, timelineId: this.timeId }
+		  this.getOldRankingList()
+        }
+      }
     }
   }
 </script>
@@ -204,6 +256,7 @@
 <style scoped lang="less">
 .ranking-list {
   position: relative;
+  min-height: 5.37rem;
   .bg {
     width: 100%;
     vertical-align: top;
@@ -318,13 +371,30 @@
               }
             }
           }
-
+          .nodata{
+            height: 2.8rem;
+            overflow: hidden;
+            img {
+              display: block;
+              margin: .69rem auto .34rem;
+              width: .99rem;
+              height: .99rem;
+            }
+            p {
+              text-align: center;
+              color: #A37056;
+              font-size: .3rem;
+            }
+          }
         }
         .price {
           position: relative;
           background: #E0B58A;
-          height: 3.45rem;
-          padding: 0 .15rem;
+          height: 3.5rem;
+          padding: 0 .16rem 0 .19rem;
+          .price-wrapper {
+            height: 3.5rem;
+          }
           .price-title {
             padding: .33rem 0 .4rem;
             display: flex;
@@ -348,6 +418,8 @@
                 font-size: .2rem;
                 color: #E0B58A;
                 width: 1.4rem;
+                height: .32rem;
+                line-height: .32rem;
                 text-align: center;
               }
             }
@@ -368,6 +440,8 @@
                 font-size: .24rem;
                 color: #E0B58A;
                 width: 1.6rem;
+                height: .32rem;
+                line-height: .32rem;
                 text-align: center;
               }
             }
@@ -381,13 +455,17 @@
                 font-size: .36rem;
                 color: #AA7559;
                 height: .6rem;
+                width: 1.3rem;
                 line-height: .6rem;
-                text-indent: .32rem;
+                text-align: center;
               }
               .type {
                 font-size: .2rem;
                 color: #E0B58A;
-                text-indent: .32rem;
+                width: 1.4rem;
+                text-align: center;
+                height: .32rem;
+                line-height: .32rem;
               }
             }
           }
@@ -409,6 +487,21 @@
             width: 100%;
             height: .29rem;
             background-image: linear-gradient(rgba(255,255,255,0) 0%,#fff 150%);
+          }
+          .nodata{
+            height: 2.8rem;
+            overflow: hidden;
+            img {
+              display: block;
+              margin: .69rem auto .34rem;
+              width: .99rem;
+              height: .99rem;
+            }
+            p {
+              text-align: center;
+              color: #A37056;
+              font-size: .3rem;
+            }
           }
         }
       }

@@ -1,57 +1,100 @@
 <template>
     <div class="game-list">
       <img src="../images/ranking-bg1.png" alt="" class="bg">
-      <div class="btn" @click="showGameList = true">
+      <div class="btn" @click="show">
         <img src="../images/get-price-btn.png" alt="">
       </div>
       <transition name="scroll">
         <div class="list" v-if="showGameList">
           <div class="mask"></div>
-          <div class="content">
-            <div class="title">
-              玩游戏赚幸运分
-              <div class="close" @click="showGameList = false"></div>
-            </div>
-            <ul>
-              <li>
-                <a href="">
+            <div class="content">
+              <div class="title">
+                玩游戏赚幸运分
+                <div class="close" @click="hide"></div>
+              </div>
+              <ul>
+                <li @click="playGame('billiards')">
                   <img src="../images/games.png" alt="">
-                </a>
-
-              </li>
-              <li>
-                <a href="">
+                  <p>立即去玩</p>
+                </li>
+                <li @click="playGame('crush')">
                   <img src="../images/games2.png" alt="">
-                </a>
-              </li>
-              <li>
-                <a href="">
+                  <p>立即去玩</p>
+                </li>
+                <li @click="playGame('fish')">
                   <img src="../images/games3.png" alt="">
-                </a>
-              </li>
-              <li>
-                <a href="">
+                  <p>立即去玩</p>
+                </li>
+                <li @click="playGame('square')">
                   <img src="../images/games4.png" alt="">
-                </a>
-              </li>
-            </ul>
-            <div class="more-btn">
+                  <p>立即去玩</p>
+                </li>
+              </ul>
+              <div class="more-btn" @click="playGame('more')">
               更多游戏>
             </div>
-          </div>
+            </div>
         </div>
       </transition>
     </div>
 </template>
 
 <script>
+  import common from '@/common/js/utils'
   export default {
 	name: 'game-list',
     data: () => ({
-	  showGameList: false
+	  showGameList: false,
+	  APP_CHANNEL: localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):common.getUrlParam('channel'),
+	  ACCOUNT_TOKEN: localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):common.getUrlParam('token'),
+	  pageFrom: common.getUrlParam('from')
     }),
     methods: {
-
+	  show () {
+		this.showGameList = true
+        this.$emit('noScroll')
+      },
+      hide () {
+	    this.showGameList = false
+		this.$emit('scroll')
+      },
+      playGame (type) {
+        let games = {
+		  crush: `https://wap.beeplay123.com/crush/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
+		  billiards: `https://wap.beeplay123.com/billiards/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
+		  fish: `https://wap.beeplay123.com/fish/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
+		  square: `https://wap.beeplay123.com/square/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
+          bdWap: `https://wap.beeplay123.com/bdWap/#/cGame?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
+          wap: `https://wap.beeplay123.com/wap/home/#/cGame?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`
+        },
+		href = '';
+        if(type == 'more') {
+          console.log(this.pageFrom)
+          switch (this.pageFrom) {
+            case 'bdwap':
+			  href = games.bdWap
+              break;
+            default :
+              href = games.wap
+		  }
+        }else {
+          switch (type) {
+            case 'crush':
+              href = games.crush
+              break;
+            case 'billiards':
+              href = games.billiards
+              break;
+            case 'fish':
+              href = games.fish
+              break;
+            case 'square':
+              href = games.square
+              break;
+		  }
+        }
+		window.location.href = href
+      }
     }
   }
 </script>
@@ -59,6 +102,7 @@
 <style scoped lang="less">
 .game-list {
   position: relative;
+  min-height: .92rem;
   .bg {
     width: 100%;
     vertical-align: top;
@@ -80,8 +124,8 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    right: 0;
-    top: 0;
+    width: 100%;
+    height: 100%;
     z-index: 5;
     .mask {
       position: absolute;
@@ -123,12 +167,24 @@
         display: flex;
         justify-content: space-between;
         li {
+          position: relative;
           width: 1.61rem;
           height: 2.19rem;
           img {
             display: block;
             width: 100%;
             height: 100%;
+          }
+          p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: .5rem;
+            line-height: .5rem;
+            text-align: center;
+            color: #fff;
+            font-size: .24rem;
           }
         }
       }
@@ -145,15 +201,25 @@
         text-align: center;
       }
     }
+    &.scroll-enter{
+      bottom: -100%;
+    }
+    &.scroll-enter-to{
+      bottom: 0;
+    }
+    &.scroll-leave {
+      bottom: 0;
+    }
+    &.scroll-leave-to {
+      bottom: -100%;
+    }
+    &.scroll-enter-active,.scroll-leave-active{
+      transition: all .3s;
+    }
   }
 }
 
 
 
-.scroll-enter,.scroll-leave-to {
-  bottom: -100%;
-}
-.scroll-enter-active,.scroll-leave-active{
-  transition: all .3s;
-}
+
 </style>

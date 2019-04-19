@@ -21,6 +21,7 @@
 <style scoped lang="less">
   .header {
     position: relative;
+    min-height: 3.82rem;
     .bg {
       width: 100%;
       vertical-align: top;

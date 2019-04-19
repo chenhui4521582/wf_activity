@@ -3,9 +3,13 @@
     <img class="bg" src="../images/time-bg.png" alt="" />
     <div class="time-body">
       <ul v-if="showTimeLine">
-        <li v-for="item in timeLine" :key="item.id" :class="statusClass(item)">
+        <li
+          v-for="(item, index) in timeLine"
+          :key="item.id"
+          :class="{'over': item.status == 0, 'now': item.status == 1, 'future': item.status == 2 , 'current': currentIndex == index}"
+          @click="handleClick(item, index)">
           <div class="title" v-if="item.status==1">
-            倒计时{{countDown(item)}}
+            倒计时{{countTime}}
           </div>
           <div class="title" v-else>{{statusTitle(item)}}</div>
           <div class="time">
@@ -24,18 +28,17 @@
   export default {
 	name: 'rankingTime',
     data: () => ({
-      timeLine: []
+      timeLine: [],
+      timer: null,
+      countTime: '',
+	  currentIndex: 1
     }),
     computed: {
 	  showTimeLine () {
 	    return this.timeLine.length
-      },
-
+      }
     },
     methods: {
-	  statusClass (item) {
-		return item.status == 0 ? 'over' : item.status == 1 ? 'now' : item.status == 2 ? 'future' : 'over'
-	  },
 	  statusText (item) {
 		return item.status == 0 ? '已过期' : item.status == 1 ? '正在进行' : item.status == 2 ? '即将开始' : '已过期'
 	  },
@@ -46,22 +49,55 @@
         let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
         this.axios.post(url).then(res => {
           this.timeLine = res.data.data || []
+          this.timeLine.map((item, index) => {
+            if(item.status == 1 && item.countdown) {
+              this.countDown(item)
+            }
+          })
         })
       },
       countDown (item) {
-        console.log(item)
+        if(!item.countdown) return false
+		let date = item.countdown / 1000
+
+        this.timer = setInterval(() => {
+          if(date <= 0) {
+            date = 0
+            clearInterval(this.timer)
+          }
+		  date = date-1
+		  let minute = Math.floor(parseInt(date / 60) % 60)
+		  let second = Math.floor(date % 60)
+		  let countMinute = minute > 10 ? minute : '0'+minute
+		  let countSecond = second > 10 ? second : '0'+second
+		  this.countTime = `${countMinute}:${countSecond}`
+		}, 1000)
+      },
+	  handleClick (item, index) {
+	    this.currentIndex = index
+	    if(item.status == 1) {
+		  this.$emit('switchTime', 'now')
+        }else if (item.status == 2) {
+		  this.$emit('switchTime', 'future')
+        }else {
+		  this.$emit('switchTime',item.id)
+        }
 
       }
     },
     created () {
       this.getTimeLine()
-    }
+    },
+    destroyed() {
+	  clearInterval(this.timer)
+	}
   }
 </script>
 
 <style scoped lang="less">
 .ranking-time {
   position: relative;
+  min-height: 1.41rem;
   .bg {
     width: 100%;
     vertical-align: top;
@@ -92,7 +128,7 @@
           }
         }
         &.now {
-          height: 1.14rem;
+          height: 1rem;
           background: url("../images/now-time.png") no-repeat center top / 100% 100%;
           color: #73402D;
           .title {
@@ -110,7 +146,10 @@
           .title {
             color: #3C261E;
           }
-
+        }
+        &.current {
+          height: 1.14rem;
+          background: url("../images/current-time.png") no-repeat center top / 100% 100%;
         }
         &.last {
           margin-right: 0;
@@ -122,7 +161,7 @@
           font-size: .2rem;
         }
         .time {
-          margin: .08rem auto;
+          margin: .07rem auto;
           font-weight: bold;
         }
         .status {
