@@ -4,9 +4,9 @@
       <div class="btn" @click="show">
         <img src="../images/get-price-btn.png" alt="">
       </div>
+      <div class="mask" v-if="showGameList"></div>
       <transition name="scroll">
         <div class="list" v-if="showGameList">
-          <div class="mask"></div>
             <div class="content">
               <div class="title">
                 玩游戏赚幸运分
@@ -69,7 +69,6 @@
         },
 		href = '';
         if(type == 'more') {
-          console.log(this.pageFrom)
           switch (this.pageFrom) {
             case 'bdwap':
 			  href = games.bdWap
@@ -77,6 +76,7 @@
             default :
               href = games.wap
 		  }
+		  GLOBALS.marchSetsPoint('A_H5PT0075000726')
         }else {
           switch (type) {
             case 'crush':
@@ -92,8 +92,11 @@
               href = games.square
               break;
 		  }
+		  GLOBALS.marchSetsPoint('A_H5PT0075000725')
         }
-		window.location.href = href
+        setTimeout(function () {
+		  window.location.href = href
+		},100)
       }
     }
   }
@@ -120,21 +123,22 @@
       vertical-align: top;
     }
   }
-  .list {
+  .mask {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 5;
-    .mask {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      top: 0;
-      background: rgba(0,0,0,.5);
-    }
+    background: rgba(0,0,0,.5);
+  }
+  .list {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
     .content {
       position: absolute;
       left: 0;

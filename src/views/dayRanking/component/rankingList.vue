@@ -86,6 +86,16 @@
           <div class="price-name">{{myRanking.awardsName}}</div>
         </div>
       </div>
+      <div class="my-ranking no" v-show="showMyRankingNo">
+        <div class="content">
+          <div class="ranking">
+            <span>未上榜</span>
+          </div>
+          <div class="nick-name">我的排名</div>
+          <div class="integral">{{myRanking.score}}</div>
+          <div class="price-name" @click="getIntegral">获取幸运分></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -94,7 +104,12 @@
   import BScroll from 'better-scroll'
   export default {
 	name: 'rankingList',
-    props: ['timeId'],
+    props: {
+	  timeId: {
+	    type: String,
+		default: 'now'
+      }
+    },
     data: () => ({
 	  currentIndex: 0,
 	  myRanking: {},
@@ -122,7 +137,11 @@
 	  },
       showMyRanking () {
 	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0
+      },
+      showMyRankingNo () {
+	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0
       }
+
     },
     methods: {
 	  getRankingList () {
@@ -227,7 +246,17 @@
 		this.currentIndex = index
 		this.initAwardsScroll()
 		this.initRankingListScroll()
+        if(index == 0 && this.timeId == 'now') {
+		  GLOBALS.marchSetsPoint('A_H5PT0075000722')
+        }
+        if(index == 1 && this.timeId == 'now'){
+		  GLOBALS.marchSetsPoint('A_H5PT0075000723')
+        }
 	  },
+	  getIntegral () {
+		GLOBALS.marchSetsPoint('A_H5PT0075000724')
+	    this.$emit('openGames')
+      }
     },
     created () {
       this.getRankingList()
@@ -238,11 +267,13 @@
 		this.rankingList = []
         this.rankingLock = false
 		this.rankingScroll = null
+		this.currentIndex = 0
 	    if (this.timeId == 'now') {
 		  this.rankingParams = { page:1, pageSize:10 }
 		  this.getRankingList()
         }
 	    else if (this.timeId == 'future') {
+	      this.currentIndex = 1
 		  this.myRanking = []
         } else {
 		  this.rankingParams = { page:1, pageSize:10, timelineId: this.timeId }
@@ -507,7 +538,7 @@
       }
     }
     .my-ranking {
-      padding: 0 .33rem 0 .39rem;;
+      padding: 0 .33rem 0 .39rem;
       position: absolute;
       left: 50%;
       bottom: .09rem;
@@ -540,6 +571,35 @@
         }
         .price-name {
           width: 30%;
+        }
+      }
+      &.no {
+        padding: 0 .33rem 0 .3rem;;
+        .content {
+          color: #FFFCF0;
+          .ranking {
+            width: 17.3%;
+            text-align: left;
+          }
+          .nick-name {
+            text-align: left;
+            width: 35%;
+          }
+          .integral {
+            text-align: left;
+            width: 25%;
+          }
+          .price-name {
+            margin-top: .07rem;
+            width: 1.4rem;
+            height: .44rem;
+            line-height: .44rem;
+            font-size: .2rem;
+            color: #B0671F;
+            text-align: center;
+            border-radius: 11px;
+            background: #F8E4B5;
+          }
         }
       }
     }

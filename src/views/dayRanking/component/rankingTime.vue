@@ -59,7 +59,6 @@
       countDown (item) {
         if(!item.countdown) return false
 		let date = item.countdown / 1000
-
         this.timer = setInterval(() => {
           if(date <= 0) {
             date = 0
@@ -76,13 +75,15 @@
 	  handleClick (item, index) {
 	    this.currentIndex = index
 	    if(item.status == 1) {
+		  GLOBALS.marchSetsPoint('A_H5PT0075000719')
 		  this.$emit('switchTime', 'now')
         }else if (item.status == 2) {
+		  GLOBALS.marchSetsPoint('A_H5PT0075000721')
 		  this.$emit('switchTime', 'future')
         }else {
-		  this.$emit('switchTime',item.id)
+		  GLOBALS.marchSetsPoint('A_H5PT0075000720')
+		  this.$emit('switchTime', '' + item.id)
         }
-
       }
     },
     created () {

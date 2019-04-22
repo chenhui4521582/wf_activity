@@ -63,7 +63,7 @@ export default {
       this.getRankingList()
       this.getBlessingNum()
       //H5平台-充值送福气-页面  埋点
-	  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000678')
+	  GLOBALS.marchSetsPoint('A_H5PT0074000678')
     },
     getRankingList () {
 	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/details';

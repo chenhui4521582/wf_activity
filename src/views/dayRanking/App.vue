@@ -6,10 +6,12 @@
     />
     <ranking-list
       :timeId = timeId
+      @openGames="openGames"
     />
     <game-list
       @noScroll="noScroll"
       @scroll="scroll"
+      ref="games"
     />
     <ranking-rule />
   </div>
@@ -39,7 +41,27 @@ export default {
     },
     scroll () {
 	  this.noMove = false
+    },
+	openGames () {
+      this.$refs.games.show()
+    },
+    init () {
+      let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getUserIncreaseScore'
+      this.axios.post(url).then(res => {
+        let {code, data = 0} = res.data
+        if(code == 200 && data > 0) {
+		  this.$toast.show({
+			message: `恭喜您获得${data}幸运分！`,
+			duration: 3000
+		  })
+        }
+      })
     }
+  },
+  mounted () {
+    //埋点 进入页面
+	GLOBALS.marchSetsPoint('A_H5PT0075000718')
+    this.init()
   }
 }
 </script>
