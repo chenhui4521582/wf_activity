@@ -107,7 +107,7 @@
 	  handleClick (text) {
 	    if(text == 'ranking') {
 		  //H5平台-充值送福气-查看排名 埋点
-		  GLOBALS.marchSetsPoint('A_H5PT0074000678','A_H5PT0074000679')
+		  GLOBALS.marchSetsPoint('A_H5PT0074000678')
         }
 		this.$emit('handleClick', text)
 	  }
