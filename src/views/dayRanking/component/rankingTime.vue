@@ -58,17 +58,18 @@
       },
       countDown (item) {
         if(!item.countdown) return false
-		let date = item.countdown / 1000
+		// let date = item.countdown / 1000
+		let date = 600 / 1000
         this.timer = setInterval(() => {
+		  date = date-1
           if(date <= 0) {
             date = 0
             clearInterval(this.timer)
           }
-		  date = date-1
 		  let minute = Math.floor(parseInt(date / 60) % 60)
 		  let second = Math.floor(date % 60)
-		  let countMinute = minute > 10 ? minute : '0'+minute
-		  let countSecond = second > 10 ? second : '0'+second
+		  let countMinute = minute >= 10 ? minute : '0'+minute
+		  let countSecond = second >= 10 ? second : '0'+second
 		  this.countTime = `${countMinute}:${countSecond}`
 		}, 1000)
       },
