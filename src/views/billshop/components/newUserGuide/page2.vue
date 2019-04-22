@@ -9,7 +9,7 @@
           <img src="./images/page2/huafei.jpg" alt="">
           <p class="name">50元话费卡</p>
           <p class="residues">剩余库存：999</p>
-          <p class="btn">50话费券可兑</p>
+          <p class="btn">50元话费券购买</p>
         </div>
       </div>
       <div class="tip2" :class="{'animation': isAnimation}"/>

@@ -39,7 +39,7 @@
                   <p class="sp-info">{{item.name}}</p>
                   <p class="sp-info surplus" v-if="item.allUsersTodayAvailableQuota ==null">剩余库存充足</p>
                   <p class="sp-info surplus" v-else>剩余库存：{{item.allUsersTodayAvailableQuota }}</p>
-                  <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
+                  <a href="javascript:" class="btn">{{item.purchasePrice}}元话费券获取</a>
                 </li>
               </ul>
           </scroll>
@@ -51,13 +51,13 @@
     <div class="bill-container">
       <a href="javascript:" class="btn-bill" @click="goTaskPage">去赚话费券</a>
     </div>
-    <!-- <new-user-alert :accountBalance="accountBalance"></new-user-alert> -->
+    <new-user-alert :accountBalance="accountBalance"></new-user-alert>
   </div>
 </template>
 <script>
 import Headers from './Header'
 import scroll from '../../../components/scroll/scroll.vue'
-// import newUserAlert from './newUserGuide/index.vue'
+import newUserAlert from './newUserGuide/index.vue'
 export default {
   data () {
     return {
@@ -74,8 +74,8 @@ export default {
   },
   components: {
     Headers,
-    scroll
-    // newUserAlert
+    scroll,
+    newUserAlert
   },
   methods: {
     async goMyAward () {

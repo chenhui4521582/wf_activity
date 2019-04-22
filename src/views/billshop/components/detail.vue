@@ -1,7 +1,7 @@
 <template>
   <div class="detail" v-if="cAward">
     <div class="detail-container">
-      <headers title="奖品兑换" v-if="!getChannel"></headers>
+      <headers title="商品详情" v-if="!getChannel"></headers>
       <div class="award-container">
         <div class="pic-box">
           <img :src="cAward.picture | filter">
@@ -12,7 +12,7 @@
             <div class="d-other">
               <p class="sp-info surplus" v-if="!cAward.allUsersTodayAvailableQuota">剩余库存充足</p>
               <p class="sp-info surplus" v-else>剩余库存：{{cAward.allUsersTodayAvailableQuota }}</p>
-              <p class="sp-info surplus">{{cAward.allConvertedQuota}}人已兑换</p>
+              <p class="sp-info surplus">{{cAward.allConvertedQuota}}人已获取</p>
             </div>
           </div>
           <div class="d-price">
@@ -50,7 +50,7 @@
               <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="closePop">确定</div>
             </template>
             <template v-if="exchangeStatus == 3">
-              今天已经兑换过，请明天再来~
+              每日限购一次，请明天再来~
               <img src="../images/yiduihuan.png" alt="" style="width: 1.67rem;height: 1.72rem">
               <div class="btn" style="width: 1.8rem; height: .6rem !important; line-height: .6rem; background: #EE6F0B; border-radius: .08rem; font-size: .28rem; font-weight: bold;" @click="closePop">确定</div>
             </template>
@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="btn-box" :class="{unexchange:isFragmentStatus}">
-      <a href="javascript:" class="btn-submit" @click="goExchange">马上兑换</a>
+      <a href="javascript:" class="btn-submit" @click="goExchange">立即获取</a>
     </div>
   </div>
 </template>
@@ -168,7 +168,7 @@ export default {
     async goExchange () {
       await GLOBALS.marchSetsPoint('A_H5PT0035000639', {
         residual_phone: this.getUrlParam('accountBalance')
-      })// H5平台-话费券商城-马上兑换
+      })// H5平台-话费券商城-立即获得
       this.axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/placeOrder', {
         productId: this.cAward.id
       })
