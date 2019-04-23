@@ -58,8 +58,7 @@
       },
       countDown (item) {
         if(!item.countdown) return false
-		// let date = item.countdown / 1000
-		let date = 600 / 1000
+		let date = item.countdown / 1000
         this.timer = setInterval(() => {
 		  date = date-1
           if(date <= 0) {
