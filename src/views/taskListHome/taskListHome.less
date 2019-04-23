@@ -55,6 +55,9 @@
             width: 2.1rem;
             height: 100%;
             left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             span{
                 position: absolute;
                 left: 0;
@@ -69,7 +72,6 @@
                 background-size: 100% 100%;
             }
             img{
-                margin: .22rem 0 0 .54rem;
                 width: 1.06rem;
                 height: 1.04rem;
             }
@@ -117,7 +119,7 @@
                     display: inline-block;
                     height: .18rem;
                     background: #FEE1B0;
-                    border-radius: .08rem 0 0 .08rem;
+                    border-radius: .08rem;
                 }
             }
             .task-details{
@@ -186,7 +188,94 @@
             
         }
     }
+    .king-nolock{
+        .left-part{
+            img{
+                width: 1.30rem;
+                height: 1.03rem;
+            }
+        }
+        .right-part{
+            overflow: hidden;
+            top: 0;
+            .task-name {
+                margin: .39rem 0 .19rem;
+                height: .36rem;
+                overflow: hidden;
+                em {
+                    background: url("./images/price-bg.png") no-repeat 0 0;
+                    background-size: 100% 100%;
+                    color: #fff;
+                }
+            }
+            .rule {
+                font-size: .22rem;
+                color: #232432;
+            }
+        }
+
+    }
+    .king-task {
+        .task-title {
+            .left-part {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                span {
+                    color: #55330C;
+                    background: url("./images/king-title.png") no-repeat 0 0;
+                    background-size: 100% 100%;
+                }
+                img {
+                    width: 1.5rem;
+                    height: auto;
+                }
+            }
+            .right-part {
+                .task-name{
+                    img {
+                        width: 1.13rem;
+                        height: .36rem;
+                        vertical-align: top;
+                    }
+                    em {
+                        width: 2rem;
+                        background: url("./images/king-price-bg.png") no-repeat;
+                        background-size: 100% 100%;
+                        color: #F4D38E;
+                    }
+
+                }
+                .task-process{
+                    color: #232432;
+                }
+                .task-details {
+                    color: #232432;
+                    .btn-arrow {
+                        background: url("./images/king-task-next.png") no-repeat;
+                        background-size: 100% 100%;
+                    }
+                }
+            }
+        }
+        .task-finished {
+            li {
+                &:not(:last-child){
+                    margin-right: .1rem;
+                    &:after{
+                        top: .6rem;
+                        right: -.1rem;
+                    }
+                }
+                img{
+                    margin: .1rem 0;
+                    width: 1.4rem;
+                }
+            }
+        }
+    }
 }
+
 .task-list{
     padding: 3%;
     background: #232432;
