@@ -40,17 +40,6 @@ axios.interceptors.request.use(function (config) {
     // return '';
   });
 
-// 添加响应拦截器
-// axios.interceptors.response.use(function (response) {
-//     // 对响应数据做点什么
-//     console.log('相应成功');
-//     return response;
-//   }, function (error) {
-//     // 对响应错误做点什么
-//     console.log('响应失败');
-//     return Promise.reject(error);
-//   });
-
 axios.interceptors.response.use(
     response => {
         var res = JSON.parse(response.request.response);
@@ -129,7 +118,6 @@ axios.interceptors.response.use(
                         duration: 1500
                     });
             }
-
         }
         return response;
     },
