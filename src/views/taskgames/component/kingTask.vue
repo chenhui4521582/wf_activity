@@ -204,7 +204,6 @@ div{box-sizing: border-box}
         justify-content: space-between;
         align-items: center;
         position: relative;
-        overflow: hidden;
         background: transparent ;
         border-radius: 0;
         border-bottom: 1px solid #294575;
@@ -328,7 +327,6 @@ div{box-sizing: border-box}
             width: 100%;
             height: .45rem;
             margin-bottom: .19rem;
-            overflow: hidden;
             .name-title{
               float: left;
               margin-right: .1rem;
@@ -364,7 +362,7 @@ div{box-sizing: border-box}
                 text-align: center;
                 color: #EFCA85;
                 font-size: .17rem;
-                width: 1.77rem;
+                width: 1.9rem;
                 height: .24rem;
                 background: url(../img/crushMasterTask/price-bg.png);
                 background-size: 100% 100%;

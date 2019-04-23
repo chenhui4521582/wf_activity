@@ -205,9 +205,7 @@ div{box-sizing: border-box}
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-radius: 4px;
         position: relative;
-        overflow: hidden;
         padding: 0 ;
         background: transparent ;
         border-radius: 0;
