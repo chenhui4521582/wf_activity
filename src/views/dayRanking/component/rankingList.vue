@@ -59,7 +59,8 @@
                 </div>
                 <ul>
                   <li v-for="(item, index) in awardsList" :key="index" v-if="index>2">
-                    <span>第{{index + 1}}名</span>
+                    <span v-if="item.rankMin == item.rankMax ">第{{item.rankMax}}名</span>
+                    <span v-else>第{{item.rankMin}} - {{item.rankMax}}名</span>
                     <span>{{item.awardsName}}</span>
                   </li>
                 </ul>
@@ -307,6 +308,8 @@
       font-size: .18rem;
       color: #321B12;
       line-height: .3rem;
+      height: .56rem;
+      overflow: hidden;
     }
     .container {
       padding: 0 .72rem 0 .75rem;
