@@ -12,7 +12,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "webpack-defaults": "webpack-defaults"
+    "webpack-defaults": "webpack-defaults",
+    "copy": "node build/copyBuild.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
