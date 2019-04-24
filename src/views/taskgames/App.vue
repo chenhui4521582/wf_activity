@@ -532,7 +532,6 @@
                 task_name: taskName
               }) // H5平台-游戏内SDK-页面
             }else{
-              debugger
               GLOBALS.marchSetsPoint('A_H5PT0061000542', {
                 position_id: index + 1,
                 project_id: this.currentGameType,
