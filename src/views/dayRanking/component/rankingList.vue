@@ -162,8 +162,7 @@
       getOldRankingList (newVal) {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
         let idList = JSON.parse(localStorage.getItem('timeList'))
-        console.log(idList[newVal])
-        let params = Object.assign(this.rankingParams, {timelineId: idList[newVal]})
+        let params = Object.assign({}, this.rankingParams, {timelineId: idList[newVal]})
 		this.axios.post(url, params).then(res => {
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
