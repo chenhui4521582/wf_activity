@@ -31,7 +31,8 @@
       timeLine: [],
       timer: null,
       countTime: '',
-	  currentIndex: 1
+	  currentIndex: 1,
+      idList: {}
     }),
     computed: {
 	  showTimeLine () {
@@ -50,9 +51,17 @@
         this.axios.post(url).then(res => {
           this.timeLine = res.data.data || []
           this.timeLine.map((item, index) => {
+			if(item.status == 0) {
+			  this.idList['over'] = item.id
+			}
             if(item.status == 1 && item.countdown) {
               this.countDown(item)
+			  this.idList['now'] = item.id
             }
+			if(item.status == 2) {
+			  this.idList['future'] = item.id
+			}
+			window.localStorage.setItem('timeList', JSON.stringify(this.idList))
           })
         })
       },
@@ -82,7 +91,7 @@
 		  this.$emit('switchTime', 'future')
         }else {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000720')
-		  this.$emit('switchTime', '' + item.id)
+		  this.$emit('switchTime', 'over')
         }
       }
     },
