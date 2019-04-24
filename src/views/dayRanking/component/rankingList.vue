@@ -119,12 +119,12 @@
       awardsLock: false,
       rankingLock: false,
       rankingParams: {
-	    page:1,
-        pageSize:20
+	    page: 1,
+        pageSize: 20
       },
       awardsParams: {
-		page:1,
-		pageSize:20
+		page: 1,
+		pageSize: 20
       },
       awardTimer: null,
       rankingTimer: null
@@ -151,8 +151,13 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
+<<<<<<< HEAD
 		  if(rankingList.length == 10) {
 			this.rankingLock = false
+=======
+		  if(rankingList.length == 20) {
+			this.awardsLock = false
+>>>>>>> 39cb9221c6ea5dcbd1b174bc927d91c21eff92f3
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll()
@@ -166,8 +171,13 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
+<<<<<<< HEAD
 		  if(rankingList.length == 10) {
 			this.rankingLock = false
+=======
+		  if(rankingList.length == 20) {
+			this.awardsLock = false
+>>>>>>> 39cb9221c6ea5dcbd1b174bc927d91c21eff92f3
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll('oldRanking')
@@ -178,7 +188,7 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getAwardsList'
 		this.axios.post(url, this.awardsParams).then(res => {
           this.awardsList = this.awardsList.concat(res.data.data)
-          if(res.data.data.length == 10) {
+          if(res.data.data.length == 20) {
 			this.awardsLock = false
           }
 		  if(res.data.data.length) {
@@ -203,12 +213,12 @@
 				  this.rankingLock = true
 				  this.rankingParams.page += 1;
 				  if(type == 'oldRanking'){
-				    this.getOldRankingList()
+				    this.getOldRankingList(this.timeId)
                   }else{
 					this.getRankingList()
                   }
 				}
-			  },30)
+			  },50)
 			})
 		  }else{
 			this.rankingScroll.finishPullUp()
@@ -271,7 +281,7 @@
 		  this.rankingLock = false
 		  this.rankingScroll = null
 		  this.currentIndex = 0
-		  this.rankingParams = { page:1, pageSize:10}
+		  this.rankingParams = { page: 1, pageSize: 20}
 		  if (this.timeId == 'now') {
 			this.getRankingList()
 		  }
