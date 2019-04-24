@@ -131,16 +131,16 @@
     }),
     computed: {
 	  showRankingList () {
-		return this.rankingList.length
+		return this.rankingList.length || false
 	  },
 	  showAwards () {
-		return this.awardsList.length
+		return this.awardsList.length || false
 	  },
       showMyRanking () {
-	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0
+	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0 || false
       },
       showMyRankingNo () {
-	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0
+	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0 || false
       }
 
     },
@@ -161,7 +161,8 @@
 	  },
       getOldRankingList () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
-		this.axios.post(url, this.rankingParams).then(res => {
+        let params = Object.assign(this.rankingParams, {timelineId: this.timeId})
+		this.axios.post(url, params).then(res => {
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
@@ -269,6 +270,7 @@
         this.rankingLock = false
 		this.rankingScroll = null
 		this.currentIndex = 0
+		this.rankingParams = { page:1, pageSize:10}
 	    if (this.timeId == 'now') {
 		  this.rankingParams = { page:1, pageSize:10 }
 		  this.getRankingList()
@@ -277,7 +279,6 @@
 	      this.currentIndex = 1
 		  this.myRanking = []
         } else {
-		  this.rankingParams = { page:1, pageSize:10, timelineId: this.timeId }
 		  this.getOldRankingList()
         }
       }
