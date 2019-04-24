@@ -203,7 +203,7 @@
 				  this.rankingLock = true
 				  this.rankingParams.page += 1;
 				  if(type == 'oldRanking'){
-				    this.getOldRankingList()
+				    this.getOldRankingList(this.timeId)
                   }else{
 					this.getRankingList()
                   }
