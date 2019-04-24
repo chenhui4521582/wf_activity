@@ -151,7 +151,7 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
-		  if(rankingList.length == 10) {
+		  if(rankingList.length == 20) {
 			this.awardsLock = false
 		  }
 		  if(rankingList.length) {
@@ -166,7 +166,7 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
-		  if(rankingList.length == 10) {
+		  if(rankingList.length == 20) {
 			this.awardsLock = false
 		  }
 		  if(rankingList.length) {
@@ -178,7 +178,7 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getAwardsList'
 		this.axios.post(url, this.awardsParams).then(res => {
           this.awardsList = this.awardsList.concat(res.data.data)
-          if(res.data.data.length == 10) {
+          if(res.data.data.length == 20) {
 			this.awardsLock = false
           }
 		  if(res.data.data.length) {
@@ -208,7 +208,7 @@
 					this.getRankingList()
                   }
 				}
-			  },30)
+			  },50)
 			})
 		  }else{
 			this.rankingScroll.finishPullUp()
