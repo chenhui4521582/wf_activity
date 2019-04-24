@@ -119,12 +119,12 @@
       awardsLock: false,
       rankingLock: false,
       rankingParams: {
-	    page:1,
-        pageSize:20
+	    page: 1,
+        pageSize: 20
       },
       awardsParams: {
-		page:1,
-		pageSize:20
+		page: 1,
+		pageSize: 20
       },
       awardTimer: null,
       rankingTimer: null
@@ -271,7 +271,7 @@
 		  this.rankingLock = false
 		  this.rankingScroll = null
 		  this.currentIndex = 0
-		  this.rankingParams = { page:1, pageSize:10}
+		  this.rankingParams = { page: 1, pageSize: 20}
 		  if (this.timeId == 'now') {
 			this.getRankingList()
 		  }
