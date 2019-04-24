@@ -2,7 +2,7 @@ var path = require('path')
 var { spawn } = require('child_process')
 var fs = require('fs')
 var chalk = require('chalk')
-var myConfig = require ('../.localConfi.js')
+var myConfig = require ('../.localConfig.js')
 var params = process.argv.splice(2)[0]
 class copyBuild {
   constructor () {
