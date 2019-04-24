@@ -137,7 +137,7 @@
               </div>
               <p class="btn-box">
                 <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
-                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs">去完成</a>
+                <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
                 <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
               </p>
             </li>
@@ -520,10 +520,10 @@
             if(item.taskStatus == 0){
                 this.receive(item,type,index)
             }else if(item.taskStatus == 1){
-                this.goFinishs(item,type)
+                this.goFinishs(item,index,type)
             }
         },
-        goFinishs({gameType, url, action, taskId, taskName},type) {
+        goFinishs({gameType, url, action, taskId, taskName}, index, type) {
             if(type == 'crush_task' || type == 'mother_crush_task'){
               GLOBALS.marchSetsPoint('A_H5PT0061000537', {
                 project_id: gameType,
@@ -532,7 +532,9 @@
                 task_name: taskName
               }) // H5平台-游戏内SDK-页面
             }else{
+              debugger
               GLOBALS.marchSetsPoint('A_H5PT0061000542', {
+                position_id: index + 1,
                 project_id: this.currentGameType,
                 target_project_id: gameType,
                 task_id: taskId,
