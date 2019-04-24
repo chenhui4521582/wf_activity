@@ -152,7 +152,7 @@
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
 		  if(rankingList.length == 20) {
-			this.awardsLock = false
+			this.rankingLock = false
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll()
@@ -168,7 +168,7 @@
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
 		  if(rankingList.length == 20) {
-			this.awardsLock = false
+			this.rankingLock = false
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll('oldRanking')
