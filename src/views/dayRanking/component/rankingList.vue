@@ -151,13 +151,8 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
-<<<<<<< HEAD
-		  if(rankingList.length == 10) {
-			this.rankingLock = false
-=======
 		  if(rankingList.length == 20) {
 			this.awardsLock = false
->>>>>>> 39cb9221c6ea5dcbd1b174bc927d91c21eff92f3
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll()
@@ -173,13 +168,8 @@
 		  let {myRanking = {}, rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
-<<<<<<< HEAD
-		  if(rankingList.length == 10) {
-			this.rankingLock = false
-=======
 		  if(rankingList.length == 20) {
 			this.awardsLock = false
->>>>>>> 39cb9221c6ea5dcbd1b174bc927d91c21eff92f3
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll('oldRanking')
