@@ -331,12 +331,12 @@
 		this.rankingParams = { page: 1, pageSize: 20}
 		if(item.status == 1) {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000719')
+		  this.myRanking = ''
 		  this.status = 'now'
 		  this.getRankingList()
 		}else if (item.status == 2) {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000721')
 		  this.currentIndex = 1
-		  this.myRanking = []
 		}else {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000720')
 		  this.getOldRankingList(item.id)
