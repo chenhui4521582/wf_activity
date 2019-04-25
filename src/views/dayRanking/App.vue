@@ -1,11 +1,7 @@
 <template>
   <div class="day-ranking" :class="{'no-scroll': noMove}">
     <ranking-header />
-    <ranking-time
-      @switchTime="switchTime"
-    />
     <ranking-list
-      :timeId = timeId
       @openGames="openGames"
     />
     <game-list
@@ -27,15 +23,11 @@ export default {
   }),
   components: {
 	rankingHeader: () => import('./component/rankingHeader'),
-	rankingTime: () => import('./component/rankingTime'),
 	rankingList: () => import('./component/rankingList'),
 	gameList: () => import('./component/gameList'),
 	rankingRule: () => import('./component/rankingRule')
   },
   methods: {
-	switchTime (id) {
-      this.timeId = id
-    },
     noScroll () {
 	  this.noMove = true
     },
