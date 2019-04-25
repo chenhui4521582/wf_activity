@@ -152,7 +152,7 @@
 	  countTime: '',
 	  timeCurrentIndex: 1,
 	  idList: {},
-      status: ''
+      status: 'now'
     }),
     computed: {
 	  showRankingList () {
