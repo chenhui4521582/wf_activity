@@ -1,11 +1,9 @@
 <template>
     <div class="king-wrap">
        <div class="head">
-          <!--<img :src="crushTaskList.bgIcon | filter" class="title-bg" alt="">-->
-          <img src="../img/crushMasterTask/king-header-bg.png" class="title-bg" alt="" >
+          <img :src="crushTaskList.bgIcon | filter" class="title-bg" alt="">
            <div class="title">
-             <!--<img class="name-title" :src="taskview.crushTaskList.gameNameIcon | filter" alt="">-->
-             <img class="name-title" src="../img/crushMasterTask/king-name.png" alt="" >
+             <img class="name-title" :src="crushTaskList.gameNameIcon | filter" alt="">
              <div class="text">
                <p><img src="../img/crushMasterTask/name-icon.png" alt=""><i>成就任务</i></p>
                <p>共得<i>{{crushTaskList.reward}}</i>奖励</p>

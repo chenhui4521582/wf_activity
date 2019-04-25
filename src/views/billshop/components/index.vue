@@ -51,13 +51,13 @@
     <div class="bill-container">
       <a href="javascript:" class="btn-bill" @click="goTaskPage">去赚话费券</a>
     </div>
-    <!-- <new-user-alert :accountBalance="accountBalance"></new-user-alert> -->
+    <new-user-alert :accountBalance="accountBalance"></new-user-alert>
   </div>
 </template>
 <script>
 import Headers from './Header'
 import scroll from '../../../components/scroll/scroll.vue'
-// import newUserAlert from './newUserGuide/index.vue'
+import newUserAlert from './newUserGuide/index.vue'
 export default {
   data () {
     return {
@@ -74,8 +74,8 @@ export default {
   },
   components: {
     Headers,
-    scroll
-    // newUserAlert
+    scroll,
+    newUserAlert
   },
   methods: {
     async goMyAward () {

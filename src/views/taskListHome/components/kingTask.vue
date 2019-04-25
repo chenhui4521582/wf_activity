@@ -1,17 +1,14 @@
 <template>
   <div class="king-task">
     <div class="task-title" @click="showCurDetails()">
-      <!--<img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">-->
-      <img src="../images/king-task-bg.png" class="bg-task" :class="{'radius': !item.selected}">
+      <img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">
       <p class="left-part">
         <span>当前进度</span>
         <img :src="item.currentParentTask.statusIcon | filter" alt="">
-        <!--<img src="../images/king-icon111.png" alt="">-->
       </p>
       <div class="right-part">
         <span class="task-name">
-          <!--<img :src="item.titleIcon | filter" alt="">-->
-          <img src="../images/king-task-name.png" alt="">
+          <img :src="item.titleIcon | filter" alt="">
           <em>共得{{item.reward}}奖励</em>
         </span><br>
         <p class="task-process">
