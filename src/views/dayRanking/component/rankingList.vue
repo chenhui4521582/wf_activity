@@ -734,25 +734,23 @@
         }
       }
       &.no {
-        padding: 0 .33rem 0 .3rem;;
+        padding: 0 .33rem 0 .23rem;;
         .content {
           color: #FFFCF0;
           .ranking {
-            width: 17.3%;
+            width: 14%;
             text-align: left;
           }
           .nick-name {
-            text-align: left;
-            width: 35%;
-            overflow: hidden;
+            text-align: center;
+            width: 32.5%;
           }
           .integral {
-            text-align: left;
+            text-align: center;
             width: 25%;
-            overflow: hidden;
           }
           .price-name {
-            margin-top: .07rem;
+            margin: .07rem 0 0 .1rem;
             width: 1.4rem;
             height: .44rem;
             line-height: .44rem;
