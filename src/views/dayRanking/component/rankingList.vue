@@ -45,12 +45,12 @@
               <div class="kuang">
                 <div class="price-title">
                   <div class="one">
-                    <p class="num">{{awardsList[0] && awardsList[0].awardsAmount || ''}}</p>
-                    <p class="type">{{awardsList[0] && awardsList[0].awardsType || ''}}</p>
-                  </div>
-                  <div class="two">
                     <p class="num">{{awardsList[1] && awardsList[1].awardsAmount || ''}}</p>
                     <p class="type">{{awardsList[1] && awardsList[1].awardsType || ''}}</p>
+                  </div>
+                  <div class="two">
+                    <p class="num">{{awardsList[0] && awardsList[0].awardsAmount || ''}}</p>
+                    <p class="type">{{awardsList[0] && awardsList[0].awardsType || ''}}</p>
                   </div>
                   <div class="three">
                     <p class="num">{{awardsList[2] && awardsList[2].awardsAmount || ''}}</p>
