@@ -162,10 +162,10 @@
 		return this.awardsList.length || false
 	  },
       showMyRanking () {
-	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0 || false
+	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0 && this.timeLine[this.timeCurrentIndex].status != 2 || false
       },
       showMyRankingNo () {
-	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0 || false
+	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0 && this.timeLine[this.timeCurrentIndex].status != 2 || false
       },
 	  showTimeLine () {
 		return this.timeLine.length
