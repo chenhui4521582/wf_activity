@@ -116,8 +116,8 @@
             <div class="ranking">
               <span>未上榜</span>
             </div>
-            <div class="nick-name">我的排名</div>
-            <div class="integral">{{myRanking.score}}</div>
+            <div class="nick-name">{{myRanking.nickName}}</div>
+            <div class="integral">{{score}}</div>
             <div class="price-name" @click="getIntegral">获取幸运分></div>
           </div>
         </div>
@@ -169,13 +169,16 @@
       },
 	  showTimeLine () {
 		return this.timeLine.length
+	  },
+	  score () {
+	    return this.myRanking.score == 0 ? '--' : this.myRanking.score
 	  }
     },
     methods: {
 	  getRankingList () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingList'
 		this.axios.post(url, this.rankingParams).then(res => {
-		  let {myRanking = {}, rankingList = []} = res.data.data
+		  let {myRanking = '', rankingList = []} = res.data.data
           if(!this.myRanking) {
 			this.myRanking = myRanking
           }
@@ -192,7 +195,7 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
         let params = Object.assign({}, this.rankingParams, {timelineId: newVal})
 		this.axios.post(url, params).then(res => {
-		  let {myRanking = {}, rankingList = []} = res.data.data
+		  let {myRanking = '', rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
 		  if(rankingList.length == 20) {
@@ -508,12 +511,15 @@
             }
             .nick-name {
               width: 35%;
+              overflow: hidden;
             }
             .integral {
               width: 25%;
+              overflow: hidden;
             }
             .price-name {
               width: 30%;
+              overflow: hidden;
             }
           }
           .content {
@@ -540,12 +546,15 @@
                 }
                 .nick-name {
                   width: 35%;
+                  overflow: hidden;
                 }
                 .integral {
                   width: 25%;
+                  overflow: hidden;
                 }
                 .price-name {
                   width: 30%;
+                  overflow: hidden;
                 }
               }
             }
@@ -713,32 +722,35 @@
         }
         .nick-name {
           width: 35%;
+          overflow: hidden;
         }
         .integral {
           width: 25%;
+          overflow: hidden;
         }
         .price-name {
           width: 30%;
+          overflow: hidden;
         }
       }
       &.no {
-        padding: 0 .33rem 0 .3rem;;
+        padding: 0 .33rem 0 .23rem;;
         .content {
           color: #FFFCF0;
           .ranking {
-            width: 17.3%;
+            width: 14%;
             text-align: left;
           }
           .nick-name {
-            text-align: left;
-            width: 35%;
+            text-align: center;
+            width: 32.5%;
           }
           .integral {
-            text-align: left;
+            text-align: center;
             width: 25%;
           }
           .price-name {
-            margin-top: .07rem;
+            margin: .07rem 0 0 .1rem;
             width: 1.4rem;
             height: .44rem;
             line-height: .44rem;
