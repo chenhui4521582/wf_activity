@@ -464,7 +464,7 @@ a {
     .pop-suc {
       width: 2.25rem;
       height: 0.66rem;
-      margin: 0.4rem auto 0.42rem;
+      margin: 0.4rem auto 0.3rem;
     }
     .pop-err {
       width: 2.64rem;
@@ -491,7 +491,7 @@ a {
     .r-text {
       font-size: 0.24rem;
       color: rgba(255, 255, 255, 0.5);
-      padding: 0.27rem 0 0.36rem 0;
+      padding: 0.2rem 0;
     }
     .btn-confirm {
       display: block;
