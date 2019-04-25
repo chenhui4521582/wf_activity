@@ -132,7 +132,7 @@
 	name: 'rankingList',
     data: () => ({
 	  currentIndex: 0,
-	  myRanking: {},
+	  myRanking: '',
 	  rankingList: [],
       awardsList:[],
       awardsLock: true,
@@ -176,7 +176,9 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingList'
 		this.axios.post(url, this.rankingParams).then(res => {
 		  let {myRanking = {}, rankingList = []} = res.data.data
-		  this.myRanking = myRanking
+          if(!this.myRanking) {
+			this.myRanking = myRanking
+          }
 		  this.rankingList = this.rankingList.concat(rankingList)
 		  if(rankingList.length == 20) {
 			this.rankingLock = false
@@ -188,7 +190,6 @@
 	  },
       getOldRankingList (newVal) {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
-        let idList = JSON.parse(localStorage.getItem('timeList'))
         let params = Object.assign({}, this.rankingParams, {timelineId: newVal})
 		this.axios.post(url, params).then(res => {
 		  let {myRanking = {}, rankingList = []} = res.data.data
@@ -230,7 +231,7 @@
 				  if(this.rankingLock) return false
 				  this.rankingLock = true
 				  this.rankingParams.page += 1;
-				  if(type == 'oldRanking'){
+				  if(type == 'oldRanking' && id){
 				    this.getOldRankingList(id)
                   }else{
 					this.getRankingList()
