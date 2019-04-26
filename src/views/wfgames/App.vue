@@ -172,6 +172,7 @@
                     value: val,
                 })
                 if(data.code == 200){
+                    data.data.gameListVersion&&localStorage.setItem('version_flag',data.data.gameListVersion)
                     if(localStorage.getItem('APP_CHANNEL') == 100033){
                         GLOBALS.jumpOutsideGame(data.data.redirect)
                     }else{
