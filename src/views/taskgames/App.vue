@@ -583,13 +583,6 @@
         goFinish({gameType, url, action, taskId, taskName}, type) {
 
             let actionsArr = [39,35,34,32]
-            GLOBALS.thirdSetsPoint({
-                "event_name": "游戏内任务-去完成",
-                "task_id": taskId,
-                "event_id": 1210040803,
-                "project_id": this.currentGameType,//当前游戏ID
-                "target_project_id" : gameType//跳转到的游戏ID
-            })
             if(type === 'newtask'){
                 GLOBALS.marchSetsPoint('A_H5PT0061000540', {
                   project_id: gameType,
@@ -696,12 +689,7 @@
                 task_name: item.taskName
               }) // H5平台-游戏内SDK-新人任务-去领取
             }else{
-                GLOBALS.thirdSetsPoint({
-                "event_name": "游戏内任务-去完成",
-                "task_id": item.taskId,
-                "event_id": 1210040803,
-                "project_id": item.gameType
-                })
+              //游戏内任务-去完成
             }
             this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
               taskId: item.taskId,

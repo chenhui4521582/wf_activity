@@ -104,56 +104,16 @@ window.GLOBALS = {
         axios.post('//data-api.beeplay123.com/data/api/behaviorRecord/point', {
             behaviorEventId: id
         })
-	},
-	async buriedPoint(event_id,event_name,game_id,game_pos){
-        //操作日期
-        let date = moment().format('YYYY-MM-DD');
-        //操作时间
-        let time = moment().format('HH:mm:ss');
-        //渠道id
-        let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL') 
-        //请求
-        let userInfo = JSON.parse(localStorage.getItem('user_Info'))
-        let obj =  {
-            event_id: event_id,//时间id
-            event_name: event_name,//事件名称
-            user_id: userInfo && userInfo.userId,//用户id
-            project_id: 0,//项目id
-            project_name: '平台',//项目名称
-            target_project_id: game_id,//游戏id
-            game_position: game_pos,//游戏位置
-            channel_id: _channel,//渠道id
-            generate_date: date,//行为发生日期
-            generate_time: time,//行为发生时间
-            platform_id: 40000
-        }
-        
-        await axios.post('//hadoop-data.beeplay123.com', obj, {timeout: 1500})
-    },
+  },
+  buriedPoint(){
+    return
+  },
     //跳转外接游戏方法
     jumpOutsideGame (url){
         util.jumpToGame({url:url})
     },
-    async thirdSetsPoint(parmas){
-      //操作日期
-      let date = moment().format('YYYY-MM-DD');
-      //操作时间
-      let time = moment().format('HH:mm:ss');
-      //渠道id
-      let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL') 
-      //请求
-      let userInfo = JSON.parse(localStorage.getItem('user_Info'))
-      let defaultState = {
-        user_id: userInfo && userInfo.userId,//用户id
-        project_id: 0,//项目id
-        project_name: '平台',//项目名称
-        channel_id: _channel,//渠道id
-        generate_date: date,//行为发生日期
-        generate_time: time,//行为发生时间
-      }
-      
-      //请求
-      return axios.post('//hadoop-data.beeplay123.com', Object.assign(defaultState,parmas))
+    thirdSetsPoint () {
+      return
     },
     
     /**

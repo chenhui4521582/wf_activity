@@ -589,12 +589,7 @@ export default {
 		item.medalimg = medalimg
 		GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType,null,{taskId:item.taskId}) //事件ID 事件名称 游戏ID 游戏位置
 	  }else{
-		GLOBALS.thirdSetsPoint({
-		  "event_name": "游戏内任务-去完成",
-		  "task_id": item.taskId,
-		  "event_id": 1210040803,
-		  "project_id": item.gameType
-		})
+		  //游戏内任务-去完成
 	  }
 	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
 		taskId: item.taskId,
