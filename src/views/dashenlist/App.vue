@@ -35,7 +35,7 @@
                 也可能60期都不出，随机出现，但概率是应该是固定的。<br><br>
                 ( PS：我发现两边出现相同位置的英雄，会有非常高的几率打平，
                 例如：关羽对战夏侯淳，黄月英对战甄姬，所以当出现2个相同阵位的英雄对战时，打平的可能性就很大了，大家可以进去观察观察）<br><br>
-                可能有的同学会问，每次需要消耗这么多金叶子吗？而且要连续玩这么多期，能确保进奖励榜吗？？？ 我是通过简单的数学计算来分析的：<br> 
+                可能有的同学会问，每次需要消耗这么多金叶子吗？而且要连续玩这么多期，能确保进奖励榜吗？？？ 我是通过简单的数学计算来分析的：<br>
                 假设30期出一次，如果每期消耗40万金叶子，总计需要1200万金叶子， 如果中了，可以回 1000万金叶子，外加5000元排行榜奖励。如下表：
             </p>
             <ul>
@@ -67,14 +67,14 @@
             </p>
             <p class="detail top-title">为什么要使用追投功能？？？？</p>
             <p class="detail">
-                追投20期，如果不中可以返还总金额的15% ，这绝对是送的福利，而且使用追投比较稳定，不会错过每一期。 
+                追投20期，如果不中可以返还总金额的15% ，这绝对是送的福利，而且使用追投比较稳定，不会错过每一期。
             </p>
             <p class="left">
                 <img src="./images/list3-1.png" >
                 <img src="./images/list3-2.png">
             </p>
             <p class="detail last">
-                最后， 这是一个胆量，智慧， 运气相结合的玩法，赢的时候不要骄傲， 输的时候要保持好心态。 
+                最后， 这是一个胆量，智慧， 运气相结合的玩法，赢的时候不要骄傲， 输的时候要保持好心态。
                 当然，游戏终究还是要适度为主，消遣娱乐为主，提醒同学切勿沉迷。
             </p>
             <p class="link" @click="goGame">
@@ -86,7 +86,7 @@
                 <span class="thumb" :class="{'yizan':isZan}"></span><br>
                 <span>{{this.coterieList && this.coterieList.praise}}</span>
             </p>
-        </div> 
+        </div>
         <div class="bottom" @click="guide('tougao')">有奖投稿</div>
 
     </div>
@@ -103,7 +103,7 @@
                 isAnimate : false,
                 coterieList :null,
                 sdkBdWap: ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050']
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056','100055','100057','100058']
             }
         },
         methods: {
@@ -131,10 +131,10 @@
                     }
                 }
 
-                
+
             },
             async getCoterieList(){
-                
+
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/wap/coterie/list', {
                     page : 1,
                     pageSize : 5
@@ -170,7 +170,7 @@
         },
         mounted(){
             this.getCoterieList()
-            
+
             GLOBALS.buriedPoint(1207001601,'H5平台-大神攻略加载页')
         }
     }
@@ -178,7 +178,7 @@
 
 <style lang="less" scoped>
     @import '../../common/css/base.css';
-    
+
     #app{
         position: relative;
         width: 100%;
@@ -191,7 +191,7 @@
         position: relative;
         width: 100%;
         height: 2.48rem;
-        
+
         img{
             width: 100%;
             height: 100%;
@@ -293,7 +293,7 @@
                     box-sizing: border-box;
                     vertical-align: middle;
                 }
-                
+
                 &:last-child{span{height: .91rem;line-height: .91rem;padding: 0;}}
             }
         }
@@ -357,7 +357,7 @@
                 animation: transanimate 3s  ease
             }
         }
-        
+
     }
     @keyframes transanimate {
         50%{opacity: 1;}
@@ -375,5 +375,5 @@
         line-height: .85rem;
         text-align: center;
     }
-    
+
 </style>
