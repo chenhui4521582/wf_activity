@@ -101,9 +101,7 @@ window.GLOBALS = {
 	    else return obj;
 	},
 	buryingPoint(id) {
-        axios.post('//data-api.beeplay123.com/data/api/behaviorRecord/point', {
-            behaviorEventId: id
-        })
+    return
   },
   buriedPoint(){
     return
