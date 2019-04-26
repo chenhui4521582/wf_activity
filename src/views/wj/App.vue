@@ -242,7 +242,7 @@ export default {
         timer1: null,
         cGameType: null,
         sdkBdWap: ['100039','100040','100041','100042','100045','100046',
-            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050'],
+            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056','100055','100057','100058'],
 		newTaskItems: false,
 		awardItem: null,
 		isNewTask: null,
@@ -389,7 +389,7 @@ export default {
           this.isFighur = false
         }, 3000)
       }
-  	  
+
 
     },
     trimStr:function(str) {
@@ -429,7 +429,7 @@ export default {
     },
     jumpToPlat(){
         let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+                '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054','100056','100055','100057','100058']
         if(baiduChannel.includes(this.curChannel)){
             return `https://wap.beeplay123.com/bdWap?channel=${this.curChannel}`
         } else if(this.curChannel == '700002'){
@@ -622,7 +622,7 @@ export default {
 	},
 	goTask () {
 	  let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-		'100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006']
+		'100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006', '100054','100056','100055','100057','100058']
 	  if(baiduChannel.includes(this.curChannel)){
 		parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.curChannel}`
 	  } else if(this.curChannel == '700002'){
@@ -663,10 +663,10 @@ export default {
 }
 @keyframes touch {
     0%{
-        transform : translateX(.2rem) 
+        transform : translateX(.2rem)
     }
     100%{
-        transform : translateX(0) 
+        transform : translateX(0)
     }
 }
 .ball {
@@ -707,9 +707,9 @@ img {
   line-height: .35rem;
   &.useage-tips {
     height: 0;
-    overflow: hidden;  
+    overflow: hidden;
   }
-  
+
 }
 
 .useage-methods span {
@@ -730,7 +730,7 @@ img {
   word-break:keep-all;
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis; 
+  text-overflow:ellipsis;
 }
 .g-exchange a {
   color: #FF9933;
