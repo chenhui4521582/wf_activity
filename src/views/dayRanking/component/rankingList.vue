@@ -150,7 +150,7 @@
 	  timeLine: [],
 	  timer: null,
 	  countTime: '',
-	  timeCurrentIndex: 1,
+	  timeCurrentIndex: 0,
 	  idList: {},
       status: 'now'
     }),
@@ -301,9 +301,10 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
 		this.axios.post(url).then(res => {
 		  this.timeLine = res.data.data || []
-		  this.timeLine.map((item) => {
+		  this.timeLine.map((item, index) => {
 			if(item.status == 1 && item.countdown) {
 			  this.countDown(item)
+              this.timeCurrentIndex = index
 			}
 		  })
 		})
