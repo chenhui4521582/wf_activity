@@ -1,6 +1,6 @@
 <template>
   <div class="bill-shop">
-    <headers title="话费券商城" :account-balance="accountBalance" v-show="!getChannel" :style="{paddingTop:!getChannel?'0.6rem':'0.28rem'}"></headers>
+    <headers title="话费券商城" :account-balance="accountBalance" :style="{zIndex:!getChannel?'-1':'auto'}"></headers>
     <div class="s-nav" :class="{'active':getChannel}">
       <ul>
         <li class="nav-item bill-left">我的话费券：<span>{{ accountBalance }}</span></li>
