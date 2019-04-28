@@ -63,6 +63,29 @@
                 <img src="../images/nodeta.png" alt="">
                 <p>敬请期待</p>
               </div>
+              <div class="my-ranking" v-show="showMyRanking">
+                <div class="content">
+                  <div class="ranking">
+                    <img src="../images/one-icon.png" alt="" v-if="myRanking.index == 1">
+                    <img src="../images/two-icon.png" alt="" v-else-if="myRanking.index == 2">
+                    <img src="../images/three-icon.png" alt="" v-else-if="myRanking.index == 3">
+                    <span v-else>{{myRanking.index}}</span>
+                  </div>
+                  <div class="nick-name">{{myRanking.nickName}}</div>
+                  <div class="integral">{{myRanking.score}}</div>
+                  <div class="price-name">{{myRanking.awardsName}}</div>
+                </div>
+              </div>
+              <div class="my-ranking no" v-show="showMyRankingNo">
+                <div class="content">
+                  <div class="ranking">
+                    <span>未上榜</span>
+                  </div>
+                  <div class="nick-name">{{myRanking.nickName}}</div>
+                  <div class="integral">{{score}}</div>
+                  <div class="price-name" @click="getIntegral">获取幸运分></div>
+                </div>
+              </div>
             </div>
             <div class="price" v-show="currentIndex == 1" >
               <div class="price-wrapper" ref="priceContent" v-show="showAwards">
@@ -98,29 +121,6 @@
             </div>
           </div>
         </div>
-        <div class="my-ranking" v-show="showMyRanking">
-          <div class="content">
-            <div class="ranking">
-              <img src="../images/one-icon.png" alt="" v-if="myRanking.index == 1">
-              <img src="../images/two-icon.png" alt="" v-else-if="myRanking.index == 2">
-              <img src="../images/three-icon.png" alt="" v-else-if="myRanking.index == 3">
-              <span v-else>{{myRanking.index}}</span>
-            </div>
-            <div class="nick-name">{{myRanking.nickName}}</div>
-            <div class="integral">{{myRanking.score}}</div>
-            <div class="price-name">{{myRanking.awardsName}}</div>
-          </div>
-        </div>
-        <div class="my-ranking no" v-show="showMyRankingNo">
-          <div class="content">
-            <div class="ranking">
-              <span>未上榜</span>
-            </div>
-            <div class="nick-name">{{myRanking.nickName}}</div>
-            <div class="integral">{{score}}</div>
-            <div class="price-name" @click="getIntegral">获取幸运分></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -132,11 +132,11 @@
 	name: 'rankingList',
     data: () => ({
 	  currentIndex: 0,
-	  myRanking: '',
+	  myRanking: {},
 	  rankingList: [],
-      awardsList:[],
-      awardsLock: true,
-      rankingLock: true,
+      awardsList: [],
+      awardsLock: false,
+      rankingLock: false,
       rankingParams: {
 	    page: 1,
         pageSize: 20
@@ -147,12 +147,12 @@
       },
       awardTimer: null,
       rankingTimer: null,
+
 	  timeLine: [],
 	  timer: null,
 	  countTime: '',
 	  timeCurrentIndex: 0,
-	  idList: {},
-      status: 'now'
+	  timeCurrentStatus: ''
     }),
     computed: {
 	  showRankingList () {
@@ -161,17 +161,17 @@
 	  showAwards () {
 		return this.awardsList.length || false
 	  },
-      showMyRanking () {
-	    return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index && this.currentIndex == 0 && this.timeLine[this.timeCurrentIndex].status != 2 || false
-      },
-      showMyRankingNo () {
-	    return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0 && this.timeLine[this.timeCurrentIndex].status != 2 || false
-      },
 	  showTimeLine () {
-		return this.timeLine.length
+		return this.timeLine.length || false
+	  },
+      showMyRanking () {
+		return this.myRanking.awardsName && this.myRanking.nickName  && this.myRanking.index != 0 && this.currentIndex == 0 && this.timeCurrentStatus != 2 || false
+	  },
+	  showMyRankingNo () {
+		return !this.myRanking.awardsName && this.myRanking.nickName && this.myRanking.index == 0 && this.currentIndex == 0 && this.timeCurrentStatus != 2 || false
 	  },
 	  score () {
-	    return this.myRanking.score == 0 ? '--' : this.myRanking.score
+		return this.myRanking.score == 0 ? '--' : this.myRanking.score
 	  }
     },
     methods: {
@@ -179,18 +179,26 @@
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingList'
 		this.axios.post(url, this.rankingParams).then(res => {
 		  let {myRanking = '', rankingList = []} = res.data.data
-          if(!this.myRanking) {
+          if(!this.isEmptyObject(this.myRanking)) {
 			this.myRanking = myRanking
           }
 		  this.rankingList = this.rankingList.concat(rankingList)
-		  if(rankingList.length == 20) {
+		  if(rankingList.length != 20) {
+			this.rankingLock = true
+		  }else {
 			this.rankingLock = false
 		  }
 		  if(rankingList.length) {
 			this.initRankingListScroll()
           }
-		})
+		}).catch( error => {
+		  this.rankingLock = false
+        })
 	  },
+      isEmptyObject (obj) {
+	    let keys = Object.keys(obj)
+        return keys.length ? true : false
+      },
       getOldRankingList (newVal) {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
         let params = Object.assign({}, this.rankingParams, {timelineId: newVal})
@@ -198,19 +206,24 @@
 		  let {myRanking = '', rankingList = []} = res.data.data
 		  this.myRanking = myRanking
 		  this.rankingList = this.rankingList.concat(rankingList)
-		  if(rankingList.length == 20) {
+		  if(rankingList.length != 20) {
+			this.rankingLock = true
+		  }else {
 			this.rankingLock = false
-		  }
+          }
 		  if(rankingList.length) {
 			this.initRankingListScroll('oldRanking', newVal)
 		  }
+		}).catch( error => {
+		  this.rankingLock = false
 		})
       },
 	  getAwardsList () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getAwardsList'
 		this.axios.post(url, this.awardsParams).then(res => {
+		  this.awardsLock = true
           this.awardsList = this.awardsList.concat(res.data.data)
-          if(res.data.data.length == 20) {
+          if(res.data.data.length != 20) {
 			this.awardsLock = false
           }
 		  if(res.data.data.length) {
@@ -263,8 +276,8 @@
                 let boxHeight = document.querySelector('.price-wrapper .kuang').clientHeight
                 let endPosition = height-boxHeight;
 				if(Math.abs(Math.round(page.y)) >= endPosition) {
-				  if(this.awardsLock) return false
-				  this.awardsLock = true
+				  if(!this.awardsLock) return false
+				  this.awardsLock = false
 				  this.awardsParams.page += 1;
 				  this.getAwardsList()
 				}
@@ -276,42 +289,84 @@
           }
 		})
       },
+	  getIntegral () {
+		this.$emit('openGames')
+	  },
 	  switchTab (index) {
 		this.currentIndex = index
 		this.initAwardsScroll()
 		this.initRankingListScroll()
-        if(index == 0 && this.status == 'now') {
+        if(index == 0 && this.timeCurrentStatus == '1') {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000722')
         }
-        if(index == 1 && this.status == 'now'){
+        if(index == 1 && this.timeCurrentStatus == '1'){
 		  GLOBALS.marchSetsPoint('A_H5PT0075000723')
         }
 	  },
-	  getIntegral () {
-		GLOBALS.marchSetsPoint('A_H5PT0075000724')
-	    this.$emit('openGames')
-      },
 	  statusText (item) {
-		return item.status == 0 ? '已过期' : item.status == 1 ? '正在进行' : item.status == 2 ? '即将开始' : '已过期'
+	    let status = item.status,
+            text = '';
+	    switch (status) {
+          case '0':
+            text = '已过期';
+            break;
+          case '1':
+            text = '正在进行';
+            break;
+          case '2':
+            text = '即将开始';
+            break;
+          default:
+            text = ''
+		}
+		return text
 	  },
 	  statusTitle (item) {
-		return item.status == 0 ? '时间结束' : item.status == 2 ? '敬请期待' : '时间结束'
+		let status = item.status,
+			text = '';
+		switch (status) {
+		  case '0':
+			text = '时间结束';
+			break;
+		  case '1':
+			text = '正在进行';
+			break;
+		  case '2':
+			text = '即将开始';
+			break;
+		  default:
+			text = ''
+		}
+		return text
 	  },
 	  getTimeLine () {
 		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
 		this.axios.post(url).then(res => {
-		  this.timeLine = res.data.data || []
+		  let countdown = ''
+		  this.timeLine = res.data.data || [];
+		  if(!this.timeLine.length) {
+		    return false
+          }
 		  this.timeLine.map((item, index) => {
 			if(item.status == 1 && item.countdown) {
-			  this.countDown(item)
-              this.timeCurrentIndex = index
+			  this.timeCurrentIndex = index;
+              this.timeCurrentStatus = item.status;
+			  countdown = item.countdown
 			}
 		  })
+          if(this.timeCurrentStatus == 1) {
+			this.getRankingList()
+			this.countDown(countdown)
+          }else {
+            let id = this.timeLine[0].id
+			this.getOldRankingList(id)
+          }
+		  this.getAwardsList()
 		})
 	  },
 	  countDown (item) {
-		if(!item.countdown) return false
-		let date = item.countdown / 1000
+		if(!item) return false
+		let date = item / 1000
 		this.timer = setInterval(() => {
 		  date = date-1
 		  if(date <= 0) {
@@ -326,22 +381,24 @@
 		}, 1000)
 	  },
 	  handleClick (item, index) {
-		this.status = ''
+	    if(this.timeCurrentIndex == index) {
+	      return false
+        }
 		this.timeCurrentIndex = index
+		this.timeCurrentStatus = item.status
 		this.rankingList = []
-		this.rankingLock = true
 		this.rankingScroll = null
-		this.currentIndex = 0
+        this.myRanking = {}
 		this.rankingParams = { page: 1, pageSize: 20}
 		if(item.status == 1) {
+		  this.currentIndex = 0
 		  GLOBALS.marchSetsPoint('A_H5PT0075000719')
-		  this.myRanking = ''
-		  this.status = 'now'
 		  this.getRankingList()
 		}else if (item.status == 2) {
 		  GLOBALS.marchSetsPoint('A_H5PT0075000721')
 		  this.currentIndex = 1
 		}else {
+		  this.currentIndex = 0
 		  GLOBALS.marchSetsPoint('A_H5PT0075000720')
 		  this.getOldRankingList(item.id)
 		}
@@ -349,8 +406,6 @@
     },
     created () {
 	  this.getTimeLine()
-      this.getRankingList()
-      this.getAwardsList()
     },
     destroyed() {
 	  clearInterval(this.timer)
