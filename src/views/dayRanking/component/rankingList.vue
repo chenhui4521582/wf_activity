@@ -46,7 +46,7 @@
               </div>
               <div class="content ranking-wrapper" ref="listContent" v-show="showRankingList">
                 <ul>
-                  <li v-for="item in rankingList" :key="item.index">
+                  <li v-for="(item, index) in rankingList" :key="index">
                     <div class="ranking">
                       <img src="../images/one-icon.png" alt="" v-if="item.index == 1">
                       <img src="../images/two-icon.png" alt="" v-else-if="item.index == 2">
