@@ -358,7 +358,10 @@
 			this.getRankingList()
 			this.countDown(countdown)
           }else {
-            let id = this.timeLine[0].id
+            if (this.timeLine[0].status == 2) {
+              this.currentIndex = 1
+            }
+			let id = this.timeLine[0].id
 			this.getOldRankingList(id)
           }
 		  this.getAwardsList()
