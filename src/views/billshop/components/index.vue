@@ -39,7 +39,7 @@
                   <p class="sp-info">{{item.name}}</p>
                   <p class="sp-info surplus" v-if="item.allUsersTodayAvailableQuota ==null">剩余库存充足</p>
                   <p class="sp-info surplus" v-else>剩余库存：{{item.allUsersTodayAvailableQuota }}</p>
-                  <a href="javascript:" class="btn">{{item.purchasePrice}}话费券可兑</a>
+                  <a href="javascript:" class="btn">{{item.purchasePrice}}元话费券获取</a>
                 </li>
               </ul>
           </scroll>
