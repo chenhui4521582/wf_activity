@@ -51,7 +51,7 @@
     }),
     methods: {
 	  show () {
-		GLOBALS.marchSetsPoint('A_H5PT0075000726')
+		GLOBALS.marchSetsPoint('A_H5PT0075000724')
 		this.showGameList = true
         this.$emit('noScroll')
       },
