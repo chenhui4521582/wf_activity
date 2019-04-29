@@ -163,7 +163,7 @@
                 if(this.channel==100037){
                     window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
                 }
-                if(this.channel.includes('100038')){
+                if(this.channel.includes('100038')||this.channel=='100060'){
                     this.getJumpURL(this.platSource)
                 }
             },
@@ -172,6 +172,7 @@
                     value: val,
                 })
                 if(data.code == 200){
+                    data.data.gameListVersion&&localStorage.setItem('version_flag',data.data.gameListVersion)
                     if(localStorage.getItem('APP_CHANNEL') == 100033){
                         GLOBALS.jumpOutsideGame(data.data.redirect)
                     }else{
