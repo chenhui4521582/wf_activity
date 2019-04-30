@@ -1,26 +1,30 @@
 <template>
     <div id="app" v-if="islogin">
-        <div class="uername input">
-            <input type="tel" name="uername" placeholder="请输入手机号" v-model="mobile" maxlength="11">
+        <div class="login-container">
+            <div class="uername input">
+                <input type="tel" name="uername" placeholder="请输入手机号" v-model="mobile" maxlength="11">
+            </div>
+            <div class="password input">
+                <input type="password" name="password" placeholder="请输入验证码" v-model="code" maxlength="6">
+                <div class="code" v-if="validatorText=='获取验证码'" @click="sendcode">{{validatorText}}</div>
+                <div class="code" v-else>{{validatorText}}</div>
+            </div>
+            <div class="login" v-if="mobile&&code" @click="submit">
+                登录
+            </div>
+            <div class="login login-gray" v-else>
+                登录
+            </div>
         </div>
-        <div class="password input">
-            <input type="password" name="password" placeholder="请输入验证码" v-model="code" maxlength="6">
-            <div class="code" v-if="validatorText=='获取验证码'" @click="sendcode">{{validatorText}}</div>
-            <div class="code" v-else>{{validatorText}}</div>
+        <div class="login-box">
+            <div class="qqlogin">
+                <div class="linel"></div>
+                <span>第三方登录</span>
+                <div class="liner"></div>
+            </div>
+            <button class="qq" @click="onQQLogin1">
+            </button>
         </div>
-        <div class="login" v-if="mobile&&code" @click="submit">
-            登录
-        </div>
-        <div class="login login-gray" v-else>
-            登录
-        </div>
-        <div class="qqlogin">
-            <div class="linel"></div>
-            <span>第三方登录</span>
-            <div class="liner"></div>
-        </div>
-        <button class="qq" @click="onQQLogin1">
-        </button>
     </div>
 </template>
 
@@ -163,7 +167,7 @@
                 if(this.channel==100037){
                     window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
                 }
-                if(this.channel.includes('100038')||this.channel=='100060'){
+                if(this.channel.includes('100038')||this.channel=='100060'||this.channel=='100051005'){
                     this.getJumpURL(this.platSource)
                 }
             },
@@ -242,10 +246,10 @@
 
     #app {
         width: 100%;
-        height: 100%;
-        position: absolute;
+        height: 100vh;
+        /*position: absolute;
         left: 0;
-        top: 0;
+        top: 0;*/
         &:before {
             content: '';
             position: absolute;
@@ -319,18 +323,20 @@
         text-align: center;
         font-size: .32rem;
         color: rgba(255, 255, 255, 1);
+        margin-bottom: 1.5rem;
         &.login-gray {
             opacity: .5;
         }
     }
 
     .qqlogin {
-        position: absolute;
+        /*position: absolute;
         bottom: 1.84rem;
         left: .6rem;
-        right: .6rem;
+        right: .6rem;*/
         display: flex;
         align-items: center;
+        margin-bottom: 0.6rem;
         .linel {
             flex: 1;
             height: .02rem;
@@ -350,12 +356,22 @@
     }
 
     .qq {
-        position: absolute;
+        /*position: absolute;
         bottom: .49rem;
-        left: 3.15rem;
+        left: 3.15rem;*/
         width: .9rem;
         height: .9rem;
         background: url('./images/qq.png') no-repeat;
         background-size: 100% 100%;
+    }
+    .login-box{
+        height: 4.0rem;
+        text-align: center;
+        padding: 0 0.6rem;
+    }
+    .login-container {
+        width: 100%;
+        height: 9rem;
+
     }
 </style>
