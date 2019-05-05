@@ -118,10 +118,10 @@ export default {
   .confirm {
     padding-bottom: .5rem;
     position: fixed;
-    z-index: 10;
     width: 80%;
     left: 10%;
-    top: 20%;
+    top: 3.5rem;
+    z-index: 10;
     background: #0F1726;
     .title {
       position: relative;
