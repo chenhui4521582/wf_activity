@@ -276,7 +276,7 @@ div{box-sizing: border-box}
     }
 }
 .king-wrap{
-    margin-bottom: .2rem;
+    padding-top: .3rem;
     width: 100%;
     height: auto;
     .progress-bg{

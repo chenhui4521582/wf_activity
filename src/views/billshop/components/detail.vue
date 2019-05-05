@@ -10,7 +10,7 @@
           <div class="d-contain">
             <div class="d-title">{{cAward.name}}</div>
             <div class="d-other">
-              <p class="sp-info surplus" v-if="!cAward.allUsersTodayAvailableQuota">剩余库存充足</p>
+              <p class="sp-info surplus" v-if="!cAward.allUsersTodayAvailableQuota && cAward.allUsersTodayAvailableQuota != 0">剩余库存充足</p>
               <p class="sp-info surplus" v-else>剩余库存：{{cAward.allUsersTodayAvailableQuota }}</p>
               <p class="sp-info surplus">{{cAward.allConvertedQuota}}人已获取</p>
             </div>

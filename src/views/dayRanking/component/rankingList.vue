@@ -360,7 +360,8 @@
           }else {
             if (this.timeLine[0].status == 2) {
               this.currentIndex = 1
-            }
+			  this.timeCurrentStatus = 2
+			}
 			let id = this.timeLine[0].id
 			this.getOldRankingList(id)
           }
