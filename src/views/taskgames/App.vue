@@ -5,14 +5,24 @@
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
         <li class="hf-fragment" v-if="telFragment" @click= "jumpMine">{{telFragment&&telFragment[0].price}}
           <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i>
-      </li>
-      <p class="figure" v-if="!huafeiShow">
+        </li>
+        <p class="figure" v-if="!huafeiShow">
           <img src="./images/fighur.png" class="touch">
-          快去领！</p>
+          快去领！
+        </p>
         <p class="figure1" style="display: inline-block;position: absolute;right:.2rem;top: 0.15rem;" @click="kfclick">
-          <img src="./images/kf.png" style="width: .52rem;height: .52rem"></p>
+          <img src="./images/kf.png" style="width: .52rem;height: .52rem">
+        </p>
       </ul>
     </div>
+    <!-- sdk 推广 -->
+    <sdk-recommend
+      :showCrushMasterTask = "showCrushMasterTask"
+      :showKingTask = "showKingTask"
+      :currentGameType = "currentGameType"
+      :newUser = "newTaskItems"
+    />
+    <!-- sdk 推广 -->
     <div class="t-content" v-if="!isTfStatus">
       <div v-if="newTaskItems && newTaskItems.isNew" class="new-user-task">
           <div class="tips">
@@ -116,7 +126,7 @@
           @receive="receive"
           @refreshTask="refreshTask"
         />
-        <div v-if="currentGamesItems&&currentGamesItems.length && !newTaskItems.isNew">
+        <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems && !newTaskItems.isNew">
           <h4 class="h-title h-first-title">当前游戏每日任务</h4>
           <ul class="t-items">
             <li v-for="(item, index) in currentGamesItems" :key="index">
@@ -319,7 +329,8 @@
         masterPop :() =>import('./component/dialog'),
         commonPop:()=>import("./component/commonPop"),
         boxDialog:()=>import("./component/boxDialog"),
-        kingTask:()=>import("./component/kingTask")
+        kingTask:()=>import("./component/kingTask"),
+        sdkRecommend: () => import('./component/recommend')
     },
     methods: {
         async jumpMine(){
