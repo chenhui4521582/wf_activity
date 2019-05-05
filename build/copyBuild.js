@@ -8,12 +8,13 @@ class copyBuild {
   constructor () {
 	this.time = this.countTime()
 	this.src = path.resolve(__dirname, '../dist')
-	this.dst = params ? `${myConfig.testPath}/${params}` : `${myConfig.testPath}/update_${myConfig.fileName}_${myConfig.name}_${this.time}`
-	this.builPath = `${this.dst}/${myConfig.fileName}`
+	this.dst = params ? `${myConfig.testPath}/${params}` : `${myConfig.testPath}/${myConfig.fileName}_${this.time}`
+	this.builPath = `${this.dst}/${myConfig.lineFiles}`
   }
   init () {
+    console.log(this.dst)
 	this.deleteFolder(this.dst)
-	let pathList = params ? `${params}/${myConfig.fileName}` : `update_${myConfig.fileName}_${myConfig.name}_${this.time}/${myConfig.fileName}`
+	let pathList = params ? `${params}/${myConfig.fileName}` : `${myConfig.fileName}_${this.time}/${myConfig.lineFiles}`
 	let path = `${myConfig.testPath}`
 	pathList.split('/').forEach(item => {
 		path += `/${item}`
