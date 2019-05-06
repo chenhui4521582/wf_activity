@@ -71,7 +71,7 @@ export default {
     },
     async jump () {
 	  await GLOBALS.marchSetsPoint('A_H5PT0061000782')
-      window.location.href = '//wap.beeplay123.com/moneyTree?time=' + new Date().getTime()
+      parent.window.location.href = '//wap.beeplay123.com/moneyTree?time=' + new Date().getTime()
     }
   },
   computed: {
