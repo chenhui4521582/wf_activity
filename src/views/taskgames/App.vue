@@ -592,8 +592,12 @@
             }
 
             setTimeout(() => {
-
-                // 跳转到首页（关闭）
+                // 跳转平台 并且弹出转盘
+                if(url.indexOf('openturntable') > -1) {
+                  parent.location.href = url
+                  return false
+                }
+			    // 跳转到首页（关闭）
                 if(action == 36 || url == '/plat/') {
                     parent.location.href = this.jumpToPlat()
                     return
