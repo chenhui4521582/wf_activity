@@ -819,7 +819,7 @@
                     this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-                if (window.linkUrl.getBackUrlFlag('100002')=='bdWap') {//好看、全民小视频
+                if (window.linkUrl.getBackUrlFlag(this.curChannel)=='bdWap') {//好看、全民小视频
                     top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
                 } else {
                     top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
