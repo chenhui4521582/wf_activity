@@ -133,7 +133,7 @@
             },
             async finish(item,type){
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/cacheGameType',{value : type})
-                location.href = `//wap.beeplay123.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+                location.href = `//wap.beeplay123.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
             },
             async receive(item, type , val , curParentTask){
                 if(curParentTask.medalIcon.includes('medal-1')){
@@ -161,7 +161,7 @@
                     }else{
                         currentParentTask = masterList.find((item,index) =>{
                             return item.parentTask.taskStatus != 2
-                        }) 
+                        })
                     }
 
                     // 外显两条任务类型区分
@@ -220,7 +220,7 @@
                         lockIcon : data.data.lockIcon,
                         lockBgIcon : data.data.lockBgIcon
                     }
-                    
+
                     if(type == 'refresh'){
                         let {taskId, taskLogId, awardsImage, awardsName, gameType} = item
                         //刷新接口时替换当前任务显示位置
@@ -251,7 +251,7 @@
                             }
 
                         })
-                    }else{  
+                    }else{
                         //已完成任务置底显示
                         if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
                             this.finishList.push(masterTaskList)
@@ -264,7 +264,7 @@
                             }
                         }
                     }
-                    
+
                     // 首次请求任务默认第一位任务展开
                     setTimeout(() => {
                         if(type == 'first'){

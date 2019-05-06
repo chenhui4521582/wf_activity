@@ -61,12 +61,12 @@
       },
       playGame (type) {
         let games = {
-		  crush: `https://wap.beeplay123.com/crush/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
-		  billiards: `https://wap.beeplay123.com/billiards/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
-		  fish: `https://wap.beeplay123.com/fish/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
-		  square: `https://wap.beeplay123.com/square/?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
-          bdWap: `https://wap.beeplay123.com/bdWap/#/cGame?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`,
-          wap: `https://wap.beeplay123.com/wap/home/#/cGame?channel=${this.APP_CHANNEL}&token=${this.ACCOUNT_TOKEN}`
+		  crush: `https://wap.beeplay123.com/crush/?channel=${this.APP_CHANNEL}`,
+		  billiards: `https://wap.beeplay123.com/billiards/?channel=${this.APP_CHANNEL}`,
+		  fish: `https://wap.beeplay123.com/fish/?channel=${this.APP_CHANNEL}`,
+		  square: `https://wap.beeplay123.com/square/?channel=${this.APP_CHANNEL}`,
+          bdWap: `https://wap.beeplay123.com/bdWap/#/cGame?channel=${this.APP_CHANNEL}`,
+          wap: `https://wap.beeplay123.com/wap/home/#/cGame?channel=${this.APP_CHANNEL}`
         },
 		href = '';
         if(type == 'more') {

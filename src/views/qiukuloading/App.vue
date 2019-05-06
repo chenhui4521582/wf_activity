@@ -100,25 +100,25 @@
             },
             getUrl(urlObj, token,isExistBowlsMatch) {//球酷要求的跳转地址
                 if (urlObj.type == 'home') {
-                    return `https://databiger-h5.beeplay123.com/game/#/quizzes/hot?token=${token}&channel=${urlObj.channel}`;
+                    return `https://databiger-h5.beeplay123.com/game/#/quizzes/hot?channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'match') {
-                    return !isExistBowlsMatch?`https://databiger-h5.beeplay123.com/game/#/quizzes/hot?token=${token}&channel=${urlObj.channel}`:`https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&token=${token}&channel=${urlObj.channel}`;
+                    return !isExistBowlsMatch?`https://databiger-h5.beeplay123.com/game/#/quizzes/hot?channel=${urlObj.channel}`:`https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'record') {
-                    return `https://databiger-h5.beeplay123.com/game/#/betrecord?token=${token}&channel=${urlObj.channel}`;
+                    return `https://databiger-h5.beeplay123.com/game/#/betrecord?channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'recharge') {
-                    return `https://wap.beeplay123.com/payment/#/shopping?token=${token}&channel=${urlObj.channel}`
+                    return `https://wap.beeplay123.com/payment/#/shopping?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'center') {
-                    return `https://databiger-h5.beeplay123.com/center/?token=${token}&channel=${urlObj.channel}`
+                    return `https://databiger-h5.beeplay123.com/center/?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'ring') {
-                    return `https://wap.beeplay123.com/ring?token=${token}&channel=${urlObj.channel}`
+                    return `https://wap.beeplay123.com/ring?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'cat') {
-                    return `https://wap.beeplay123.com/cat?token=${token}&channel=${urlObj.channel}`
+                    return `https://wap.beeplay123.com/cat?channel=${urlObj.channel}`
                 }
 
             }

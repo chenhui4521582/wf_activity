@@ -99,30 +99,57 @@
                     }
                 })
             },
-            getAccessToken(requestToken){
-                this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+            // getAccessToken(requestToken){
+            //     this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+            //         token: requestToken,
+            //         type: 1
+            //     }).then((res) => {
+            //         if (res.data.code == 200) {
+            //             this.token = res.data.data.accessToken
+            //             localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
+            //             this.$toast.show({
+            //                 message: '登录成功',
+            //                 duration: 1500
+            //             });
+            //             setTimeout(() => {
+            //                 this.islogin = false;
+            //                 this.back();
+            //             }, 1000);
+            //
+            //         } else {
+            //             this.$toast.show({
+            //                 message: res.data.message,
+            //                 duration: 2000
+            //             });
+            //         }
+            //     })
+            // },
+            async getAccessToken(requestToken){
+                let {data:data}=await this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
                     token: requestToken,
                     type: 1
-                }).then((res) => {
-                    if (res.data.code == 200) {
-                        this.token = res.data.data.accessToken
-                        localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
+                })
+                if (data.code == 200) {
+                    this.token = data.data.accessToken
+                    localStorage.setItem('ACCESS_TOKEN', data.data.accessToken);
+                    let {data:dataopenToken} = await this.axios.post('//uic-api.beeplay123.com/uic/api/user/sdk/openToken')
+                    if (dataopenToken.code == 200) {
+                        localStorage.setItem('OPEN_ACCESS_TOKEN', dataopenToken.data.token);
                         this.$toast.show({
                             message: '登录成功',
                             duration: 1500
                         });
                         setTimeout(() => {
                             this.islogin = false;
-                            this.back();
+                            this.back(dataopenToken.data.token);
                         }, 1000);
-
-                    } else {
-                        this.$toast.show({
-                            message: res.data.message,
-                            duration: 2000
-                        });
                     }
-                })
+                } else {
+                    this.$toast.show({
+                        message: data.message,
+                        duration: 2000
+                    });
+                }
             },
             sendcode(){
                 var self = this;
@@ -163,9 +190,9 @@
                     receiveRange: 1
                 });
             },
-            back(){
+            back(token){
                 if(this.channel==100037){
-                    window.location.href = `${this.gurl}&channel=${this.channel}&token=${this.token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
+                    window.location.href = `${this.gurl}&channel=${this.channel}&token=${token}&gurl=${utils.getUrlParamObj('extgameurl')}&pf=freeshop`
                 }
                 if(this.channel.includes('100038')||this.channel=='100060'||this.channel=='100051005'){
                     this.getJumpURL(this.platSource)
@@ -192,7 +219,7 @@
                         }
 
                         if(keyWords){
-                            location.href = data.data.redirect+'?channel='+llw+'&token='+localStorage.getItem('ACCESS_TOKEN')
+                            location.href = data.data.redirect+'?channel='+llw
                         } else if(outsideGame){
                             GLOBALS.jumpOutsideGame(data.data.redirect)
                         }else{
