@@ -66,7 +66,7 @@ export default {
     getEndTime () {
       let url = 'https://ops-api.beeplay123.com/ops/api/plant-food/user-info'
       this.axios.post(url).then(res => {
-        this.endTime = res.data && res.data.data && res.data.data.settleTime || 0
+        this.endTime = (res.data && res.data.data && res.data.data.settleTime) || 0
       })
     },
     async jump () {
