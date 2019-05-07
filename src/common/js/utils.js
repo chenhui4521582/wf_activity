@@ -54,28 +54,30 @@ export default {
         }
     },
     jumpToGame:function (item) {
+        let token=localStorage.getItem('OPEN_ACCESS_TOKEN')
+        let channel=localStorage.getItem('APP_CHANNEL')
         if (item && item.url.indexOf('external=1') != -1) {
             if (item.url.includes('?external=1')) {
                 let url =
                     this.trimStr(item.url) +
                     '&channel=' +
-                    localStorage.getItem('APP_CHANNEL') +
+                    channel +
                     '&token=' +
-                    localStorage.getItem('ACCESS_TOKEN') +
+                    token +
                     '&gurl=' +
                     item.url.split('?')[0] +
-                    '&pf=wap'
+                    '&pf='+window.linkUrl.getBackUrlFlag(channel)
                 window.location.href = url
             } else {
                 let url =
                    this.trimStr(item.url) +
                     '&channel=' +
-                    localStorage.getItem('APP_CHANNEL') +
+                    channel +
                     '&token=' +
-                    localStorage.getItem('ACCESS_TOKEN') +
+                    token +
                     '&gurl=' +
                     base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
-                    '&pf=wap'
+                    '&pf='+window.linkUrl.getBackUrlFlag(channel)
                 window.location.href = url
             }
             return
@@ -84,7 +86,7 @@ export default {
             let url =
                 this.trimStr(item.url) +
                 '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
+                channel +
                 '&token=' +
                 localStorage.getItem('ACCESS_TOKEN')
             window.location.href = url
@@ -93,47 +95,48 @@ export default {
         location.href =
                 item.url +
                 '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
-                '&token=' +
-                localStorage.getItem('ACCESS_TOKEN')
+            channel
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
     },
     jumpToGameUrl:function (item) {
+        let token=localStorage.getItem('OPEN_ACCESS_TOKEN')
+        let channel=localStorage.getItem('APP_CHANNEL')
         if (item && item.url.indexOf('external=1') != -1) {
             if (item.url.includes('?external=1')) {
                     return this.trimStr(item.url) +
                     '&channel=' +
-                    localStorage.getItem('APP_CHANNEL') +
+                        channel +
                     '&token=' +
-                    localStorage.getItem('ACCESS_TOKEN') +
+                        token +
                     '&gurl=' +
                     item.url.split('?')[0] +
-                    '&pf=wap'
+                    '&pf='+window.linkUrl.getBackUrlFlag(channel)
             } else {
                 return this.trimStr(item.url) +
                     '&channel=' +
-                    localStorage.getItem('APP_CHANNEL') +
+                    channel +
                     '&token=' +
-                    localStorage.getItem('ACCESS_TOKEN') +
+                    token +
                     '&gurl=' +
                     base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
-                    '&pf=wap'
+                    '&pf='+window.linkUrl.getBackUrlFlag(channel)
             }
             return
         }
         if (item && item.url.indexOf('databiger-h5') != -1) {
             return this.trimStr(item.url) +
                 '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
+                channel +
                 '&token=' +
                 localStorage.getItem('ACCESS_TOKEN')
         }
+        if(item && item.url.indexOf('?fixedEntry') != -1){
+            return this.trimStr(url.replace('?fixedEntry','')) + '?channel=' +channel + '&opentoken=' +token;
+        }
         return item.url +
                 '?channel=' +
-                localStorage.getItem('APP_CHANNEL') +
-                '&token=' +
-                localStorage.getItem('ACCESS_TOKEN')
+            channel
     },
 }

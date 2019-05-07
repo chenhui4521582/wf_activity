@@ -18,43 +18,32 @@ const jumpToGame = (item) => {
   function trimStr (str) {
     return str.replace(/(^\s*)|(\s*$)/g, '')
   }
+  let token=localStorage.getItem('OPEN_ACCESS_TOKEN')
+  let channel=localStorage.getItem('APP_CHANNEL')
   if (item && item.url.indexOf('external=1') != -1) {
-    /* let url =
-      trimStr(item.url) +
-      '&channel=' +
-      localStorage.getItem('APP_CHANNEL') +
-      '&token=' +
-      localStorage.getItem('ACCESS_TOKEN') +
-      '&gurl=' +
-      item.url.split('?')[0] +
-      '&pf=' +
-      getUrlParam('from')
-
-    window.location.href = url
-    return */
     if (item.url.includes('?external=1')) {
       let url =
         trimStr(item.url) +
         '&channel=' +
-        localStorage.getItem('APP_CHANNEL') +
+          channel +
         '&token=' +
-        localStorage.getItem('ACCESS_TOKEN') +
+          token +
         '&gurl=' +
         item.url.split('?')[0] +
         '&pf=' +
-        getUrlParam('from')
+          window.linkUrl.getBackUrlFlag(channel)
       window.location.href = url
     } else {
       let url =
         trimStr(item.url) +
         '&channel=' +
-        localStorage.getItem('APP_CHANNEL') +
+          channel +
         '&token=' +
-        localStorage.getItem('ACCESS_TOKEN') +
+          token +
         '&gurl=' +
         base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
         '&pf=' +
-        getUrlParam('from')
+          window.linkUrl.getBackUrlFlag(channel)
       window.location.href = url
     }
     return
@@ -63,7 +52,7 @@ const jumpToGame = (item) => {
     let url =
       trimStr(item.url) +
       '?channel=' +
-      localStorage.getItem('APP_CHANNEL') +
+        channel +
       '&token=' +
       localStorage.getItem('ACCESS_TOKEN')
     window.location.href = url
@@ -73,16 +62,12 @@ const jumpToGame = (item) => {
     location.href =
       '../../../channel/newokooo/billiards/' +
       '?channel=' +
-      localStorage.getItem('APP_CHANNEL') +
-      '&token=' +
-      localStorage.getItem('ACCESS_TOKEN')
+        channel
   } else {
     location.href =
       item.url +
       '?channel=' +
-      localStorage.getItem('APP_CHANNEL') +
-      '&token=' +
-      localStorage.getItem('ACCESS_TOKEN')
+        channel
   }
 }
 

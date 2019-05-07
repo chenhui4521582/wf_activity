@@ -101,9 +101,7 @@
             return {
                 isZan : false,
                 isAnimate : false,
-                coterieList :null,
-                sdkBdWap: ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056','100055','100057','100058']
+                coterieList :null
             }
         },
         methods: {
@@ -148,20 +146,11 @@
             goGame(){
                 GLOBALS.buriedPoint(1207001602,'H5平台-大神攻略-三国游戏跳转')
 
-                location.href = this.coterieList.addr + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')
+                location.href = this.coterieList.addr + '?channel=' + localStorage.getItem('APP_CHANNEL')
             },
             guide(val){
                 if(val == 'home'){
-                    console.log(localStorage.getItem('APP_CHANNEL'));
-
-                    if(this.sdkBdWap.includes(localStorage.getItem('APP_CHANNEL'))){
-                        top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+localStorage.getItem('APP_CHANNEL')
-                    }else {
-                        top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+localStorage.getItem('APP_CHANNEL')
-                    }
-
-
-
+                    top.location.href =window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
                     location.href = 'https://wap.beeplay123.com/wf_zhengjiling/'

@@ -247,7 +247,7 @@
         this.channel =  this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
         this.currentGameType = this.getUrlParam('gametype')
         if (this.channel=='100047001' || this.channel=='100048001') {
-          window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}`
+          window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
           return
         }
         if(parent.loadTaksPage) {
@@ -338,15 +338,7 @@
             parent.location.href = this.jumpToPlat()+'#/personal'
         },
         jumpToPlat(){
-            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050']
-            if(baiduChannel.includes(this.channel)){
-                return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
-            } else if(this.channel == '700002'){
-                return `https://wap.beeplay123.com/llwWap?channel=${this.channel}`
-            }else{
-               return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
-            }
+            return window.linkUrl.getBackUrl(this.channel)
         },
         async getHuafeiNum(){
             let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
@@ -354,17 +346,7 @@
         },
         async gotokf(){
 		await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
-		let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-			baiduChannel = ['100039','100040','100041','100042','100049']
-		if(jsChannel.includes(this.channel)){
-		  parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-		}else if(baiduChannel.includes(this.channel)){
-		  parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-		} else if(this.channel == '700002'){
-		  parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=700002`
-		}else{
-		  parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
-		}
+        parent.location.href = window.linkUrl.getBackUrl(this.channel,'','',true,'&tab=contact_personal')
 	  },
 	    async getCrushTask(finishindex, type, val, newuserfinish){
           let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', {value:val})
@@ -465,15 +447,7 @@
           }
         },
 	    jumpToPlat(){
-		let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-		  '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049']
-		if(baiduChannel.includes(this.channel)){
-		  return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
-		} else if(this.channel == '700002'){
-		  return `https://wap.beeplay123.com/llwWap?channel=700002`
-		}else{
-		  return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
-		}
+            return window.linkUrl.getBackUrl(this.channel)
 	  },
         getDegradeTaskStatus() {
           this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
@@ -633,17 +607,19 @@
                     return
                 }
                 // 跳转固定入口
-                if(url && url.indexOf('?fixedEntry') != -1) {
-                    let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&token=' + this.token;
-                    parent.location.href = url1;
-                    return;
-                }
-                //其他外接游戏external=1
-                if (url && url.indexOf('external=1') != -1) {
-                  let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-                  return parent.location.href = gameUrl
-                }
-                parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+                // if(url && url.indexOf('?fixedEntry') != -1) {
+                //     let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.channel + '&opentoken=' + this.token;
+                //     parent.location.href = url1;
+                //     return;
+                // }
+                // // //其他外接游戏external=1
+                // // if (url && url.indexOf('external=1') != -1) {
+                // //   let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
+                // //   return parent.location.href = GLOBALS.jumpOutsideGame(url)
+                // // }
+                // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+                // parent.location.href = GLOBALS.getJumpToGameUrl(url)
+                parent.location.href = GLOBALS.getJumpToGameUrl(url)
 
             }, 500)
 
@@ -844,28 +820,10 @@
         },
         async gotokf(){
           await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服前往-确定
-          let jsChannel = ['100001','100023','100027','100026','100028','100029','100022','100035','100036','100038','100006','100016'],
-            baiduChannel = ['100039','100040','100041','100042','100049','100050','100054','100056','100055','100057','100058']
-          if(jsChannel.includes(this.channel)){
-            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          }else if(baiduChannel.includes(this.channel)){
-            parent.location.href = `https://wap.beeplay123.com/bdWap/#/problem?tab=contact_personal&channel=${this.channel}`
-          } else if(this.channel == '700002'){
-            parent.location.href = `https://wap.beeplay123.com/llwWap?tab=contact_personal&channel=&channel=${this.channel}`
-          }else{
-            parent.location.href = `https://wap.beeplay123.com/wap/home/#/problem?tab=contact_personal&channel=${this.channel}`
-          }
+          parent.location.href =window.linkUrl.getBackUrl(this.channel,'','',true,'&tab=contact_personal')
         },
         goTask () {
-            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054','100056','100055','100057','100058']
-            if(baiduChannel.includes(this.channel)){
-                parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.channel}`
-            } else if(this.channel == '700002'){
-                parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
-            }else{
-               parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.channel}`
-            }
+            parent.location.href =window.linkUrl.getBackUrl(this.channel,'','',true,'/#/taskview')
         },
         closeNewUser () {
           if(parent.closeTaksPage) {

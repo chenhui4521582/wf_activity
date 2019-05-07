@@ -29,7 +29,7 @@
               <p>5.活动所得红包仅限本人使用，不可赠送他人，同一登录账号，同一手机号，同一终端设备号，同一支付账户，同一IP或其他合理显示为同一用户的情形，均视为同一用户。</p>
               <p>6.对于以任何不正当方式参与活动的用户，包括但不限于侵犯第三人合法权益、作弊、扰乱系统、实施网络攻击、批量注册、用机器注册账户、用机器模拟客户端等，《{{iTxt}}》有权取消其参与和获得红包资格。</p>
               <p>7.活动期间，如出现不可抗力或情势变更的情况（包括但不限于重大灾害事件、黑客攻击、系统故障、活动受政府机关指令需停止举办或调整的），《{{iTxt}}》可依相关法律法规</p>
-              
+
           </div>
       </div>
 
@@ -70,16 +70,16 @@
       goSpring() {
         GLOBALS.buriedPoint(1207003068,"春节红包-分享红包页-去开启");
         setTimeout(()=> {
-          location.href = 'https://wap.beeplay123.com/activities/springfestival.html?channel='+localStorage.getItem('APP_CHANNEL')+'&token='+localStorage.getItem('ACCESS_TOKEN')
+          location.href = 'https://wap.beeplay123.com/activities/springfestival.html?channel='+localStorage.getItem('APP_CHANNEL')
         }, 1000)
-        
+
       },
       goHistory() {
         GLOBALS.buriedPoint(1207003063,"春节红包-分享红包页-返回");
         setTimeout(()=> {
-          history.go(-1)  
+          history.go(-1)
         }, 1000)
-        
+
       },
       openPanel() {
         GLOBALS.buriedPoint(1207003062,"春节红包-分享红包页-分享赚红包");
@@ -108,15 +108,15 @@
 
          // let params = {"title":"我在全民小视频送你一个红包，最高开100元！","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r","type":"5","tab":"","tag":"","source":"","weixin_friend":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r"},"weixin":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r"},"qq_friend":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r"},"qq_zone":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r"},"weibo":{"title":"我在全民小视频送你一个红包，最高开100元！","content":"赚钱小游戏-天天送红包","icon":"https://file.beeplay123.com/cdn/wap/images/icon-envelope.png","link":"https://haokan.baidu.com/h5/download?qr=0&reinvoke=1&fullscreen=1&scheme=baiduhaokan%3A%2F%2Fhome%2Findex%2F%3Fchannel%3Drecommend%26vid%3D15339386431770775815%26auto_play_index%3D0%26ext%3D%257Blabel%253D%25E8%2590%258C%25E5%25A8%2583%2520%25E5%25A5%25B3%25E5%2584%25BF%2520%25E4%25BA%25BA%25E6%2589%258D%257D%26tab%3Dinvoke%26tag%3Dinvoke%26source%3Dpush-0-1022423m&pkg=1022607r"},"channel":0,"onsuccess":"window.shareFun"}
 
-         
+
          window.location.href =  `bdminivideo://utils/share?params=${encodeURIComponent(JSON.stringify(params))}&callback=window.shareFun`
-        
+
       },
       openHkPanel() {
-          
+
           let  urlkey = 'https://haokan.baidu.com/h5/download?reinvoke=1&fullscreen=1&scheme=baiduhaokan://webview/?url_key=' + encodeURIComponent(encodeURIComponent('https://eopa.baidu.com/page/authorizeIndex-AcHzJLpa?productid=1&gtype=1&idfrom=inside-newyearshare&wfInvitationCode='+this.envelopeStatusCon.inviteCode))
 
-          
+
           let href = `baiduhaokan://action/share/?title=${encodeURIComponent('我在好看视频送你一个红包，最高开100元！')}&content=${encodeURIComponent('赚钱小游戏-天天送红包')}&image_url=${encodeURIComponent('https://file.beeplay123.com/cdn/wap/images/icon-envelope.png')}&url_key=${encodeURIComponent(urlkey)}&pkg=1022345e&type=0&activity_type=1&refresh_type=1|0&tab=123&tag=123&source=123`
 
           window.location.href = href;
@@ -252,7 +252,7 @@ html,body {
     word-break:keep-all;
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis; 
+  text-overflow:ellipsis;
   }
   .fx-text {
     font-size: 0.44rem;
