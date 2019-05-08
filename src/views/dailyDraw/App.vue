@@ -40,7 +40,7 @@
                                         <a href="javascript:" class="btn btn-gray" v-else>已完成</a>
                                     </div>
                                 </li>
-                                
+
                                 <li>
                                     <div class="pic"><img src="./images/leaf_5000.png"></div>
                                     <div class="text">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- 活动详情 -->
             <div class="hd_xq_container" v-if="isHdXq">
                 <div class="pop-mask"></div>
@@ -144,7 +144,7 @@ export default {
         components: {
             lottery,
         },
-        
+
         methods: {
             goShopping() {
                 localStorage.setItem('showLoadPage',false)
@@ -154,15 +154,15 @@ export default {
             },
             goGame(type) {
                 if(type.indexOf('external=1') != -1){
-                    let url = this.trimStr(type) + '&channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')+'&gurl='+ type.split('?')[0]+'&pf=wap';
-                    parent.location.href = url;
+                    // let url = this.trimStr(type) + '&channel=' + localStorage.getItem('APP_CHANNEL') + '&gurl='+ type.split('?')[0]+'&pf=wap';
+                    parent.location.href = GLOBALS.getJumpToGameUrl(type);
                     return;
                 }
                 // 这里区分澳客（游戏地址不一样）
                 if (localStorage.getItem('APP_CHANNEL') == 100006) {
-                    parent.location.href = '../../../channel/newokooo' + type + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN')
+                    parent.location.href = '../../../channel/newokooo' + type + '?channel=' + localStorage.getItem('APP_CHANNEL')
                 } else {
-                    parent.location.href = type + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN');
+                    parent.location.href = type + '?channel=' + localStorage.getItem('APP_CHANNEL')
                 }
             },
             closeDailtDraw() {
@@ -175,7 +175,7 @@ export default {
             },
             closeHdXq() {
                 this.isHdXq = false;
-            },  
+            },
             getRichwheel (val) {
                 this.axios.post(API.richwheel, {
                     'value': val
@@ -190,7 +190,7 @@ export default {
                     setTimeout(()=> {
                         this.showLoading = false;
                     }, 500)
-                    
+
                 })
             },
             closePopLottery() {
@@ -233,9 +233,9 @@ export default {
                 setTimeout(() => {
                     this.lamp.push(this.lamp[0]);
                     this.lamp.shift();
-                    this.isMove= false; 
+                    this.isMove= false;
                 },1000)
-                
+
             },
             getBettingStat() {
                 this.axios.post(API.bettingStat).then((response) => {

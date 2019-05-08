@@ -49,7 +49,7 @@
                 location.href = `//uic-api.beeplay123.com/uic/api/wap/qq/toLogin2?channel=${this.channel}&source=1&a=${new Date().getTime()}&redirectwfurl=${encodeURIComponent(location.href)}`
             },
             submit() {
-               
+
                 let vAccount = utils.checkValidate('phone', this.mobile);
                 let veCode = utils.checkValidate('code', this.code);
                 if (this.mobile == '') {
@@ -183,7 +183,7 @@
                         }
 
                         if(keyWords){
-                            location.href = data.data.redirect+'?channel='+llw+'&token='+localStorage.getItem('ACCESS_TOKEN')
+                            location.href = data.data.redirect+'?channel='+llw
                         } else if(outsideGame){
                             GLOBALS.jumpOutsideGame(data.data.redirect)
                         }else{

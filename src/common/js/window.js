@@ -113,7 +113,7 @@ window.GLOBALS = {
     thirdSetsPoint () {
       return
     },
-    
+
     /**
      * @description:2019年3月11日 新增埋点；2019年3月27日 新增埋点
      * @param {eventID,eventcontent}
@@ -210,13 +210,16 @@ window.GLOBALS = {
             millisecond = millisecond - 1000;
         }
     },
+    getJumpToGameUrl(url){
+        return util.jumpToGameUrl({url: url})
+    }
 }
 
 
 // 与游戏对接方法
 window.WapCall = {
     openGame(url) {
-        location.href = url + '?channel=' + localStorage.getItem('APP_CHANNEL') + '&token=' + localStorage.getItem('ACCESS_TOKEN');
+        location.href = url + '?channel=' + localStorage.getItem('APP_CHANNEL');
     },
-    
+
 }

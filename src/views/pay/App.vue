@@ -242,8 +242,6 @@ export default {
         isFighur: false,
         timer1: null,
         cGameType: null,
-        sdkBdWap: ['100039','100040','100041','100042','100045','100046',
-            '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006', '100054','100056','100055','100057','100058'],
 		newTaskItems: false,
 		awardItem: null,
 		isNewTask: null,
@@ -362,8 +360,7 @@ export default {
       }
       // 跳转固定入口
       if(url && url.indexOf('?fixedEntry') != -1) {
-          let url1 = this.trimStr(url.replace('?fixedEntry','')) + '?channel=' + this.curChannel + '&token=' + this.curToken;
-          parent.location.href = url1;
+          parent.location.href = GLOBALS.getJumpToGameUrl(url)
           return;
       }
 
@@ -372,60 +369,13 @@ export default {
       this.timer1 = setTimeout(() => {
         this.isFighur = false
       }, 3000)
-
-	  //其他外接游戏external=1
-	  if (url && url.indexOf('external=1') != -1) {
-		let gameUrl = this.trimStr(url) + '&channel=' + this.curChannel + '&token=' + this.curToken + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
-		return parent.location.href = gameUrl
-	  }
-	  parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.curChannel + '&token=' + this.curToken;
-
+      parent.location.href = GLOBALS.getJumpToGameUrl(url)
     },
     trimStr:function(str) {
         return str.replace(/(^\s*)|(\s*$)/g, '')
     },
-    jumpToGameUrl:function (item) {
-        if (item && item.url.indexOf('external=1') != -1) {
-            if (item.url.includes('?external=1')) {
-                    return this.trimStr(item.url) +
-                    '&channel=' +
-                    this.curChannel +
-                    '&token=' + this.curToken +
-                    '&gurl=' +
-                    item.url.split('?')[0] +
-                    '&pf=wap'
-            } else {
-                return this.trimStr(item.url) +
-                    '&channel=' +
-                    this.curChannel +
-                    '&token=' + this.curToken +
-                    '&gurl=' +
-                    base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
-                    '&pf=wap'
-            }
-            return
-        }
-        if (item && item.url.indexOf('databiger-h5') != -1) {
-            return this.trimStr(item.url) +
-                '?channel=' +
-                this.curChannel +
-                '&token=' + this.curToken
-        }
-        return item.url +
-                '?channel=' +
-                this.curChannel +
-                '&token=' + this.curToken
-    },
     jumpToPlat(){
-        let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-                '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100054','100056','100055','100057','100058']
-        if(baiduChannel.includes(this.curChannel)){
-            return `https://wap.beeplay123.com/bdWap?channel=${this.curChannel}`
-        } else if(this.curChannel == '700002'){
-            return `https://wap.beeplay123.com/llwWap?channel=700002`
-        }else{
-           return `https://wap.beeplay123.com/wap/home?channel=${this.curChannel}`
-        }
+        return window.linkUrl.getBackUrl(this.curChannel)
     },
     transUint(finishNum,taskOps){
         let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
@@ -480,11 +430,7 @@ export default {
     },
     goMenu() {
       localStorage.removeItem('gurlSDK')
-      if(this.sdkBdWap.includes(this.curChannel)){
-        top.location.href = 'https://wap.beeplay123.com/bdWap?channel='+this.curChannel
-      }else {
-        top.location.href = 'https://wap.beeplay123.com/wap/home?channel='+this.curChannel
-      }
+      top.location.href = window.linkUrl.getBackUrl(this.curChannel)
     },
     onCopy() {
       this.$toast.show({
@@ -580,8 +526,7 @@ export default {
 		GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType,null,{taskId:item.taskId}) //事件ID 事件名称 游戏ID 游戏位置
 	  }else{
 		  //游戏内任务-去完成
-		})
-	  }
+		}
 	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
 		taskId: item.taskId,
 		taskLogId: item.taskLogId
@@ -611,15 +556,7 @@ export default {
 	  })
 	},
 	goTask () {
-	  let baiduChannel = ['100039','100040','100041','100042','100045','100046',
-		'100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006', '100054','100056','100055','100057','100058']
-	  if(baiduChannel.includes(this.curChannel)){
-		parent.location.href = `https://wap.beeplay123.com/bdWap/#/taskview?channel=${this.curChannel}`
-	  } else if(this.curChannel == '700002'){
-		parent.location.href = `https://wap.beeplay123.com/llwWap/#/taskview?channel=700002`
-	  }else{
-		parent.location.href = `https://wap.beeplay123.com/wap/home/#/taskview?channel=${this.curChannel}`
-	  }
+      parent.location.href =window.linkUrl.getBackUrl(this.curChannel,'','',true,'/#/taskview')
 	},
 	closePopLog(val) {
 	  this.isPopLog = false
