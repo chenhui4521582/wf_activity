@@ -116,18 +116,12 @@ axios.interceptors.response.use(
                     break;
                 default:
                     var result = response.config && response.config.data;
-                    console.log('result', response.config)
                     if (result && (result == '{"isShowTotast":false}') || result == '{isShowTotast:"false"}' || result == '{"isShowTotast":"false"}' || result == '{isShowTotast:false}') {
                         result = JSON.parse(result);
                         if (result && !JSON.parse(result.isShowTotast)) {
                             break;
                         }
                     }
-
-                    Vue.prototype.$toast.show({
-                        message: res.message,
-                        duration: 1500
-                    });
             }
 
         }

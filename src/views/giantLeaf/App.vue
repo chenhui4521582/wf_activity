@@ -2,8 +2,8 @@
     <div class="giant-leaf-container">
         <div class="g-head1">
             <div class="fh-box">
-                <a href="javascript:" class="btn">首页</a>
-                <a href="javascript:" class="btn">规则</a>
+                <a href="javascript:" class="btn" @click.stop="handleBack">首页</a>
+                <a href="javascript:" class="btn" @click.stop="showRule = true">规则</a>
             </div>
             <div class="title">dsfdsfdfs</div>
         </div>
@@ -20,20 +20,37 @@
             <img src="./images/btn-big-dot.png" class="btn-big-dot">
             <img src="./images/icon-arrow.png" class="icon-arrow">
             <!-- 抽奖按钮 -->
-            <div class="btn-start" v-if="getRecordNum == 0">点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</div>
-            <div class="btn-end" v-else @click.stop="circle">
-                <div class="btn-end-text">
+            <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle">
+                <div class="btn-start-text">
                     <p>点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
-                    <span>抽奖次数：{{jyzUserInfo&&getRecordNum}}次</span>
                 </div>
             </div>
+            <div class="btn-end" @click.stop="circle" v-else>
+                <div class="btn-end-text">
+                    <p>点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
+                    <span>抽奖次数：{{getRecordNum}}次</span>
+                </div>
+            </div>
+            <div class="count-down-clock">
+                <img src="./images/icon-clock.png" />距离活动结束：{{countTime}}
+            </div>
         </div>
-        <div class="count-down-clock">
-            <img src="./images/icon-clock.png">距离活动结束：{{activityInfo&&activityInfo.countdown}}
-        </div>
+        <rule
+            :showRule="showRule"
+            @hideRule="hideRule"
+        />
+        <turntable-dialog
+            :priceData="priceData"
+            :showDialog="showDialog"
+            :dialogStatus="dialogStatus"
+            @hideDialog="hideDialog"
+            @going="going"
+        />
     </div>
 </template>
 <script type="text/javascript">
+    import rule from './components/rule'
+    import turntableDialog from './components/turntableDialog'
     export default {
         data() {
             return {
@@ -44,12 +61,17 @@
                 getFinalIndex : null,
                 awardsList : null,
                 jyzUserInfo: null,
-                activityInfo: null
+                activityInfo: null,
+                showRule: false,
+                countTime: '',
+                dialogStatus: 'error',
+                showDialog: false,
+                priceData: {}
             }
         },
-        mounted() {
-            this.getAwardsList()
-            this.getUserInfo()
+        components: {
+            rule,
+            turntableDialog
         },
         computed: {
             getRecordNum() {
@@ -65,63 +87,46 @@
                 }
                 return rotateArr;
             },
-
         },
         methods: {
             getFinalAwards(){
-                // let params = {}
-                // params.data={description: "188金叶子", awardsType: "188金叶子", awardsName:"88金叶子"}
-                // this.finalAwards = params.data;
-                // let that = this
-                // for(let i=0,len=that.awardsList.length;i<len;i++){
-                //     if(params.data.awardsName == that.awardsList[i].awardsName){
-                //         that.getFinalIndex = i
-                //         that.finalImg = that.awardsList[i].awardsImage
-                //     }
-                // }
-                // that.operation(that.$refs.wheel,that.getFinalIndex,function() {
-                //     that.isStatr = false;
-                //     that.showPop = true;
-                //     setTimeout(function(){
-                //         that.showPop = false
-                //     },3500)
-                // });
-
                 this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/betting', {
                     value: this.jyzUserInfo.betStage
                 }).then(data => {
-                    let params = data.data
+                    let params = this.priceData = data.data
                     if(params.code == 200){
-                        // params.data={description: "188金叶子", awardsType: "188金叶子", awardsName:"88金叶子"}
                         this.finalAwards = params.data;
+                        this.jyzUserInfo.betNum = params.data .betNum
+                        this.jyzUserInfo.betRecordNum = params.data.betRecordNum
+                        this.jyzUserInfo.betStage = params.data.betStage
                         let that = this
                         for(let i=0,len=that.awardsList.length;i<len;i++){
-                            if(params.data.awardsName == that.awardsList[i].awardsName){
+                            if(params.data.returnRatio == that.awardsList[i].returnRatio){
                                 that.getFinalIndex = i
-                                that.finalImg = that.awardsList[i].awardsImage
                             }
                         }
                         that.operation(that.$refs.wheel,that.getFinalIndex,function() {
-
-                            console.log('123')
                             that.isStatr = false;
-                            that.showPop = true;
-                            setTimeout(function(){
-                                that.showPop = false
-                            },3500)
+                            that.showDialog = true;
+                            that.dialogStatus = 'success'
                         });
-                    }else{
-                        this.$toast.show({
-                          message: params.message,
-                          duration: 3000
-                        });
+                    }else {
+                        if(params.code == 201 || params.code == 202) {
+                            this.dialogStatus = 'error'
+                            this.showDialog = true;
+                        }else {
+                            this.$toast.show({
+                                message:params.message,
+                                duration: 3000
+                            });
+                        }
+
                     }
                 })
 
             },
             circle(){
                 let that = this
-                console.log(that.awardsList)
                 if(that.awardsList && that.awardsList.length == 0){
                     that.$toast.show({
                       message: '转盘活动未开启',
@@ -140,9 +145,9 @@
                     if (ran >= 10) {
                         ran = 0;
                     }
-                    var soBuom = parseInt(Math.floor(Math.random() * 60) - 30);
-                    /*    旋转度数 = 上次度数+  + 当前数字 * 60 +随机角度  = 最终旋转度数     */
-                    wheel.style.transform = "rotate(-" + ((this.lenCloc * sun + ran * 60) + soBuom) + "deg)";
+                    var soBuom = parseInt(Math.floor(Math.random() * 36) - 18);
+                    /*    旋转度数 = 上次度数+  + 当前数字 * 36 +随机角度  = 最终旋转度数     */
+                    wheel.style.transform = "rotate(-" + ((this.lenCloc * sun + ran * 36) + soBuom) + "deg)";
                     setTimeout(function () {
                         if (fn) {
                             fn();
@@ -154,6 +159,10 @@
                 this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getUserInfo').then(res => {
                     if(res.data.code == 200) {
                         this.jyzUserInfo = res.data.data
+                        if(this.jyzUserInfo && this.jyzUserInfo.betIncreaseNum != 0) {
+                            this.dialogStatus = 'loader'
+                            this.showDialog = true
+                        }
                     }
                 })
             },
@@ -161,9 +170,9 @@
                 this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getActivityInfo').then(data => {
                     let params = data.data
                     if(params.code == 200){
-                        // this.showPage = false
-                        this.awardsList = params.data.betRuleList
+                        this.awardsList = params.data.ratioList
                         this.activityInfo = params.data
+                        this.countDown(this.activityInfo.countdown)
                     }else{
                         this.$toast.show({
                           message:params.message,
@@ -172,7 +181,42 @@
                     }
                 })
             },
-        }
+            countDown (item) {
+                if(!item) return false
+                let date = item / 1000
+                this.timer = setInterval(() => {
+                    date = date-1
+                    if(date <= 0) {
+                        date = 0
+                        clearInterval(this.timer)
+                    }
+                    let day =  Math.floor(parseInt(date  / 60 / 60 / 24))
+                    let hourse =  Math.floor(parseInt(date  / 60 / 60) % 24)
+                    let minute =  Math.floor(parseInt(date / 60) % 60)
+                    let countDay = day >= 10 ? day : '0'+day
+                    let countHourse = hourse >= 10 ? hourse : '0'+hourse
+                    let countMinute = minute >= 10 ? minute : '0'+minute
+                    this.countTime = `${countDay}天${countHourse}时${countMinute}分`
+                }, 1000)
+            },
+            handleBack () {
+                window.history.go(-1)
+            },
+            hideRule () {
+                this.showRule = false
+            },
+            hideDialog () {
+                this.showDialog = false
+            },
+            going () {
+                this.showDialog=false
+                this.circle()
+            }
+        },
+        mounted() {
+            this.getAwardsList()
+            this.getUserInfo()
+        },
     }
 </script>
 <style lang="less" scoped>
@@ -253,7 +297,7 @@
             color:rgba(81,16,34,1);
             margin: 0.48rem auto 0;
         }
-        .btn-end {
+        .btn-end ,.btn-start {
             width: 4.47rem;
             height: 1.48rem;
             font-size: 0.36rem;
@@ -263,6 +307,17 @@
             margin: 5.4rem auto 0;
             .btn-end-text {
                 line-height: 1;
+                padding-top: 0.28rem;
+                color: #511022;
+                p {
+                    font-size: .36rem;
+                }
+                span {
+                    font-size: 0.2rem;
+                }
+            }
+            .btn-start-text{
+                line-height: .7rem;
                 padding-top: 0.28rem;
                 color: #511022;
                 p {
