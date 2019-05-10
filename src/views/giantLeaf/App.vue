@@ -5,7 +5,7 @@
                 <a href="javascript:" class="btn">首页</a>
                 <a href="javascript:" class="btn">规则</a>
             </div>
-            <div class="">dsfdsfdfs</div>
+            <div class="title">dsfdsfdfs</div>
         </div>
         <div class="g-head2"></div>
         <div class="zp-box">
@@ -17,10 +17,8 @@
                     </li>
                 </ul>
             </div>
-            <!-- <img src="./images/jp-zp.png" class="jp-zp"> -->
             <img src="./images/btn-big-dot.png" class="btn-big-dot">
             <img src="./images/icon-arrow.png" class="icon-arrow">
-
             <!-- 抽奖按钮 -->
             <div class="btn-start" v-if="getRecordNum == 0">点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</div>
             <div class="btn-end" v-else @click.stop="circle">
@@ -29,11 +27,9 @@
                     <span>抽奖次数：{{jyzUserInfo&&getRecordNum}}次</span>
                 </div>
             </div>
-
-            <div class="count-down-clock">
-                <img src="./images/icon-clock.png">距离活动结束：{{activityInfo&&activityInfo.countdown}}
-            </div>
-
+        </div>
+        <div class="count-down-clock">
+            <img src="./images/icon-clock.png">距离活动结束：{{activityInfo&&activityInfo.countdown}}
         </div>
     </div>
 </template>
@@ -194,23 +190,22 @@
         }
     }
     .fh-box {
-        position: relative;
-        top: 0.49rem;
-        left: 0;
+        margin-top: .49rem;
         .btn {
             display: block;
             width: 0.95rem;
             height: 0.58rem;
             line-height: 0.58rem;
-            background:rgba(14,199,197,1);
-            opacity:0.61;
+            background:rgba(14,199,197,.61);
             border-radius:0 0.25rem 0.25rem 0;
             font-size: 0.24rem;
             color: #FFFDF3;
             font-weight: 500;
             text-decoration: none;
             text-indent: 0.18rem;
-            margin-bottom: 2px;
+            &:first-child {
+                margin-bottom: 2px;
+            }
         }
     }
     .giant-leaf-container {
@@ -222,12 +217,22 @@
         height: 5.66rem;
         background: url(./images/head1.png) no-repeat center top;
         background-size: 100% 100%;
+        overflow: hidden;
+        .title {
+            margin-top: .32rem;
+            height: .58rem;
+            line-height: .58rem;
+            color: #012E32;
+            font-size: .24rem;
+            text-align: center;
+        }
     }
     .g-head2 {
         width: 100%;
         height: 7.16rem;
         background: url(./images/head2.png) no-repeat center top;
         background-size: 100% 100%;
+        overflow: hidden;
     }
     .zp-box {
         width: 5.14rem;
@@ -259,11 +264,15 @@
             .btn-end-text {
                 line-height: 1;
                 padding-top: 0.28rem;
-            }
-            span {
-                font-size: 0.2rem;
                 color: #511022;
+                p {
+                    font-size: .36rem;
+                }
+                span {
+                    font-size: 0.2rem;
+                }
             }
+
         }
         .jp-zp {
             width: 5.14rem;
