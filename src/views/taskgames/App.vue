@@ -567,7 +567,7 @@
 
             setTimeout(() => {
                 // 跳转平台 并且弹出转盘
-                if(url.indexOf('openturntable') > -1) {
+                if(url && url.indexOf('openturntable') > -1) {
                   parent.location.href = url
                   return false
                 }
