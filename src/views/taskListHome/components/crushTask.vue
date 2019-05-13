@@ -84,7 +84,7 @@ export default {
       if (this.item.selected) {
         this.$set(this.item, 'selected', false)
       } else {
-        await GLOBALS.marchSetsPoint('P_H5PT0122', {
+        await GLOBALS.marchSetsPoint('A_H5PT0122001167', {
           entrance: this.platSource,
           target_project_id: this.gameType,
           task_id: this.item.currentParentTask.parentTask.taskId,
