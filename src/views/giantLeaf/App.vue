@@ -85,6 +85,7 @@
                 ylbScroll: null,
                 timer1: null,
                 timer2: null,
+                isClicked : false,
             }
         },
         components: {
@@ -118,6 +119,9 @@
 
             },
             getFinalAwards(){
+                if(this.isClicked) return
+                    this.isClicked = true
+
                 this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/betting', {
                     value: this.jyzUserInfo.betStage
                 }).then(data => {
@@ -135,8 +139,11 @@
                         }
                         that.operation(that.$refs.wheel,that.getFinalIndex,function() {
                             that.isStatr = false;
+                            that.isClicked = false;
                             that.showDialog = true;
                             that.dialogStatus = 'success'
+                            that.getAwardsList()
+                            that.getUserInfo()
                         });
                     }else {
                         if(params.code == 201 || params.code == 202) {
@@ -257,37 +264,6 @@
             this.ylbScroll = setInterval(this.scroll,2500)
 
 
-            // if (this.$refs.hornUl && this.$refs.hornUl.children) {
-            //             var oLiHeight =
-            //                 this.$refs.hornUl.children.length &&
-            //                 this.$refs.hornUl.children[0].offsetHeight;
-            //             var oUlWidth = this.$refs.hornUl.offsetWidth;
-            //             var oDiv = this.$refs.hornDiv;
-            //             var oLiWidth =
-            //                 this.$refs.hornUl.children.length &&
-            //                 this.$refs.hornUl.children[0].offsetWidth;
-            //             var speed = oLiHeight;
-            //             var that = this;
-            //             var oUl = that.$refs.hornUl;
-            //             var remarked = [];
-            //             oUl.innerHTML = oUl.innerHTML + oUl.innerHTML;
-            //             // oUl.style.height = oUl.children.length * oLiHeight + "px";
-            //             clearInterval(this.timer);
-            //             remark();
-            //             this.timer = setInterval(sliders, 3500);
-            //         }
-
-            //         function sliders() {
-            //             clearTimeout(timer1);
-            //             if (-oUl.offsetTop >= oLiHeight * (iMax - 1)) {
-            //                 oUl.style.webkitTransition = "all 0s";
-            //                 // oUl.style.top = oLiHeight+'px';
-            //                 oUl.style.top = speed + "px";
-            //             }
-            //             oUl.style.top = oUl.offsetTop - speed + "px";
-            //             oUl.style.webkitTransition = "all .5s";
-                        
-            //         }
         },
     }
 </script>
@@ -340,7 +316,7 @@
             height: .58rem;
             line-height: .58rem;
             color: #012E32;
-            font-size: .2rem;
+            font-size: .24rem;
             text-align: center;
         }
         .item-move {
