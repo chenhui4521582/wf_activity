@@ -105,12 +105,12 @@ export default {
     },
     async finish (item, type) {
       let { data } = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/cacheGameType', { value: type })
-      await GLOBALS.marchSetsPoint('A_H5PT0122001169', {
+      await GLOBALS.marchSetsPoint('A_H5PT0122001168', {
         entrance: this.platSource,
         target_project_id: item.gameType,
         task_id: item.taskId,
         task_name: item.taskName
-      })
+      })// H5平台-任务-成就大厅-去完成
       location.href = `//wap.beeplay123.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
     },
     async receive (item, type, val, curParentTask) {
@@ -122,12 +122,12 @@ export default {
         taskId,
         taskLogId
       })
-      await GLOBALS.marchSetsPoint('A_H5PT0122001168', {
+      await GLOBALS.marchSetsPoint('A_H5PT0122001169', {
         entrance: this.platSource,
         target_project_id: item.gameType,
         task_id: item.taskId,
         task_name: item.taskName
-      })
+      }) // H5平台-任务-成就大厅-去领取
       if (data.code == 200) {
         this.showReceivePop = true
         this.getMasterList(type, 'refresh', item, val)
