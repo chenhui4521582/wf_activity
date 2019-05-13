@@ -8,9 +8,7 @@
             <div class="title">
                 <div class="item-move" v-if="lamp.length" >
                     <ul  :class="{'anim':isMove}">
-                        <li v-for="item in lamp">
-                            <div class="r-item1">恭喜{{item.nickName}}金叶奖励翻{{item.returnRatio}}倍</div>
-                        </li>
+                        <li v-for="item in lamp">恭喜{{item.nickName}}金叶奖励翻{{item.returnRatio}}倍</li>
                     </ul>
                 </div>
             </div>
@@ -342,18 +340,20 @@
             height: .58rem;
             line-height: .58rem;
             color: #012E32;
-            font-size: .24rem;
+            font-size: .2rem;
             text-align: center;
         }
         .item-move {
             height: .58rem;
             position: relative;
             overflow: hidden;
+            transition: all .3s;
             ul {
                 width: 100%;
-                position: absolute;
-                left: 0;
-                top: 0;
+            }
+            li {
+                height: .58rem;
+                line-height: .62rem;
             }
         }
     }
@@ -467,6 +467,7 @@
         }
     }
     .anim{
-        transition: all .5s;
+        transition: all 1s;
+        margin-top: -.58rem;
     }
 </style>
