@@ -5,7 +5,15 @@
                 <a href="javascript:" class="btn" @click.stop="handleBack">首页</a>
                 <a href="javascript:" class="btn" @click.stop="showRule = true">规则</a>
             </div>
-            <div class="title">dsfdsfdfs</div>
+            <div class="title">
+                <div class="item-move" v-if="lamp.length" >
+                    <ul  :class="{'anim':isMove}">
+                        <li v-for="item in lamp">
+                            <div class="r-item1">恭喜{{item.nickName}}金叶奖励翻{{item.returnRatio}}倍</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="g-head2"></div>
         <div class="zp-box">
@@ -22,7 +30,8 @@
             <!-- 抽奖按钮 -->
             <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle">
                 <div class="btn-start-text">
-                    <p>点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
+                    <p v-if="jyzUserInfo&&jyzUserInfo.betStage == 0">您已经完成此活动</p>
+                    <p v-else >点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
                 </div>
             </div>
             <div class="btn-end" @click.stop="circle" v-else>
@@ -66,7 +75,18 @@
                 countTime: '',
                 dialogStatus: 'error',
                 showDialog: false,
-                priceData: {}
+                priceData: {},
+                isMove : false,
+                lamp: [
+                    // {name:'11111'},
+                    // {name:'11112'},
+                    // {name:'11113'},
+                    // {name:'11114'},
+                    // {name:'11115'}
+                ],
+                ylbScroll: null,
+                timer1: null,
+                timer2: null,
             }
         },
         components: {
@@ -89,6 +109,16 @@
             },
         },
         methods: {
+            // 跑马灯滚动
+            scroll(){
+                this.isMove = true
+                setTimeout(() => {
+                    this.lamp.push(this.lamp[0]);
+                    this.lamp.shift();
+                    this.isMove= false;
+                },1000)
+
+            },
             getFinalAwards(){
                 this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/betting', {
                     value: this.jyzUserInfo.betStage
@@ -211,11 +241,55 @@
             going () {
                 this.showDialog=false
                 this.circle()
+            },
+            getNotice() {
+                this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getNoticeList').then(res => {
+                    if(res.data.code == 200) {
+                        this.lamp = res.data.data
+                    }
+                })
             }
         },
         mounted() {
             this.getAwardsList()
             this.getUserInfo()
+            this.getNotice()
+             // 导航滚动
+            clearInterval(this.ylbScroll)
+            this.ylbScroll = setInterval(this.scroll,2500)
+
+
+            // if (this.$refs.hornUl && this.$refs.hornUl.children) {
+            //             var oLiHeight =
+            //                 this.$refs.hornUl.children.length &&
+            //                 this.$refs.hornUl.children[0].offsetHeight;
+            //             var oUlWidth = this.$refs.hornUl.offsetWidth;
+            //             var oDiv = this.$refs.hornDiv;
+            //             var oLiWidth =
+            //                 this.$refs.hornUl.children.length &&
+            //                 this.$refs.hornUl.children[0].offsetWidth;
+            //             var speed = oLiHeight;
+            //             var that = this;
+            //             var oUl = that.$refs.hornUl;
+            //             var remarked = [];
+            //             oUl.innerHTML = oUl.innerHTML + oUl.innerHTML;
+            //             // oUl.style.height = oUl.children.length * oLiHeight + "px";
+            //             clearInterval(this.timer);
+            //             remark();
+            //             this.timer = setInterval(sliders, 3500);
+            //         }
+
+            //         function sliders() {
+            //             clearTimeout(timer1);
+            //             if (-oUl.offsetTop >= oLiHeight * (iMax - 1)) {
+            //                 oUl.style.webkitTransition = "all 0s";
+            //                 // oUl.style.top = oLiHeight+'px';
+            //                 oUl.style.top = speed + "px";
+            //             }
+            //             oUl.style.top = oUl.offsetTop - speed + "px";
+            //             oUl.style.webkitTransition = "all .5s";
+                        
+            //         }
         },
     }
 </script>
@@ -227,6 +301,7 @@
         font-size: 0.24rem;
         color: #F88762;
         font-weight: bold;
+        margin-top: 0.2rem;
         img {
             width: 0.31rem;
             height: 0.31rem;
@@ -270,6 +345,17 @@
             font-size: .24rem;
             text-align: center;
         }
+        .item-move {
+            height: .58rem;
+            position: relative;
+            overflow: hidden;
+            ul {
+                width: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
     }
     .g-head2 {
         width: 100%;
@@ -304,7 +390,7 @@
             background: url(./images/btn-active.png) no-repeat;
             background-size: 100% 100%;
             text-align: center;
-            margin: 5.4rem auto 0;
+            margin: 5.9rem auto 0;
             .btn-end-text {
                 line-height: 1;
                 padding-top: 0.28rem;
@@ -379,5 +465,8 @@
             margin-left: -0.39rem;
             margin-top: -0.43rem;
         }
+    }
+    .anim{
+        transition: all .5s;
     }
 </style>
