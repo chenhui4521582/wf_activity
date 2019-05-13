@@ -19,7 +19,7 @@
         </div>
         <div class="content">
           <div class="price">
-            <img :src="imgList[priceData.data&&priceData.data.returnRatio]" alt="">
+            <img :src="priceData.data.awardsImg | filter">
           </div>
           <p class="explain">金叶翻{{priceData.data&&priceData.data.returnRatio}}倍,共得{{priceData.data&&priceData.data.awardsAmount}}金叶</p>
           <div class="btn" @click="going">

@@ -5,9 +5,10 @@
       <div class="box">
         <div class="title">活动规则</div>
         <div class="content">
-          <div class="rule-text">
-            1.参与本活动即可免费获得2次抽奖机会； 充值达到相应额度可获得额外的抽奖机会；<br>
-            2.每次抽奖需投资相应数量的金叶；每次
+          <div class="rule-text">1.参与本活动即可免费获得2次抽奖机会；
+   充值达到相应额度可获得额外的抽奖机会；<br>
+2.每次抽奖需投资相应数量的金叶；每次投资的金叶越多，奖励也越丰厚：
+                        
           </div>
           <div class="rule-table">
             <div class="rule-title">每次投资金叶子数</div>

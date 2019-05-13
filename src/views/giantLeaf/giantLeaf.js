@@ -13,6 +13,14 @@ Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 Vue.prototype.axios = axios;
+
+Vue.filter('filter', function (url) {
+    if (url && !url.includes('http')) {
+        return '//file.beeplay123.com' + url
+    } else {
+        return url
+    }
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
