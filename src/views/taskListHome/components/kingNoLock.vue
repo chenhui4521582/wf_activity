@@ -22,9 +22,10 @@
 
 <script>
   export default {
-	name: 'kingNoLock',
+  name: 'kingNoLock',
     props: {
-      item: Object
+      item: Object,
+      platSource: String
     }
   }
 </script>
