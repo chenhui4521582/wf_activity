@@ -342,7 +342,7 @@
             height: .58rem;
             line-height: .58rem;
             color: #012E32;
-            font-size: .24rem;
+            font-size: .2rem;
             text-align: center;
         }
         .item-move {
