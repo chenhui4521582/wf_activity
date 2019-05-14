@@ -236,7 +236,7 @@
                     let countHourse = hourse >= 10 ? hourse : '0'+hourse
                     let countMinute = minute >= 10 ? minute : '0'+minute
                     let countSecond = second >= 10 ? second : '0'+second
-                    this.countTime = `${countDay * 24 + countHourse}时${countMinute}分${countSecond}`
+                    this.countTime = `${day * 24 + hourse}时${countMinute}分${countSecond}`
                 }, 1000)
             },
             handleBack () {
