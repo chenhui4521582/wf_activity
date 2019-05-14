@@ -146,6 +146,7 @@
                             that.getUserInfo()
                         });
                     }else {
+                        this.isClicked = false;
                         if(params.code == 201 || params.code == 202) {
                             this.dialogStatus = 'error'
                             this.showDialog = true;
@@ -220,7 +221,9 @@
                 if(!item) return false
                 let date = item / 1000
                 this.timer = setInterval(() => {
+
                     date = date-1
+                    console.log('data:', date)
                     if(date <= 0) {
                         date = 0
                         clearInterval(this.timer)
@@ -228,10 +231,12 @@
                     let day =  Math.floor(parseInt(date  / 60 / 60 / 24))
                     let hourse =  Math.floor(parseInt(date  / 60 / 60) % 24)
                     let minute =  Math.floor(parseInt(date / 60) % 60)
+                    let second =  Math.floor(parseInt(date) % 60)
                     let countDay = day >= 10 ? day : '0'+day
                     let countHourse = hourse >= 10 ? hourse : '0'+hourse
                     let countMinute = minute >= 10 ? minute : '0'+minute
-                    this.countTime = `${countDay}天${countHourse}时${countMinute}分`
+                    let countSecond = second >= 10 ? second : '0'+second
+                    this.countTime = `${countDay * 24 + countHourse}时${countMinute}分${countSecond}`
                 }, 1000)
             },
             handleBack () {
