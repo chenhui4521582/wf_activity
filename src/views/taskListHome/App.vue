@@ -95,6 +95,12 @@
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
                 if(data.code ==200){
                     let list = data.data.batchIds
+                    if(!GLOBAL.clearFerrule()) {  //删除赏金
+                        let sjindex = list.indexOf('warrior-achievement')
+                        let spliceList = list.splice(sjindex,1)    
+                    }
+                    
+                    
                     list.map((item,index) => {
                         if(index == 0){
                             this.getMasterList(item, 'first')
