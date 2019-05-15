@@ -94,7 +94,8 @@ export default {
 	  this.$emit('hideDialog')
 	},
     goShopping () {
-	  window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+      localStorage.setItem('originDeffer', window.location.href)
+	   window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
     },
 	going () {
 	  this.$emit('going')
