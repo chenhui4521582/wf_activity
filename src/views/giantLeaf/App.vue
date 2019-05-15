@@ -8,7 +8,7 @@
             <div class="title">
                 <div class="item-move" v-if="lamp.length" >
                     <ul  :class="{'anim':isMove}">
-                        <li v-for="item in lamp">恭喜{{item.nickName}}金叶奖励翻{{item.returnRatio}}倍</li>
+                        <li v-for="item in lamp">恭喜<span class="lamp-text">{{item.nickName}}</span>金叶奖励翻{{item.returnRatio}}倍</li>
                     </ul>
                 </div>
             </div>
@@ -86,6 +86,7 @@
                 timer1: null,
                 timer2: null,
                 isClicked : false,
+                curChannel: localStorage.getItem('APP_CHANNEL')
             }
         },
         components: {
@@ -240,7 +241,8 @@
                 }, 1000)
             },
             handleBack () {
-                window.history.go(-1)
+                location.href = window.linkUrl.getBackUrl(this.curChannel)
+                // window.history.go(-1)
             },
             hideRule () {
                 this.showRule = false
@@ -335,6 +337,8 @@
             li {
                 height: .58rem;
                 line-height: .62rem;
+                display: flex;
+                justify-content: center;
             }
         }
     }
@@ -345,6 +349,13 @@
         background-size: 100% 100%;
         overflow: hidden;
     }
+    .lamp-text {
+            display: inline-block;
+            width: 1rem;
+            overflow: hidden;/*超出部分隐藏*/
+            white-space: nowrap;/*不换行*/
+            text-overflow:ellipsis;/*超出部分文字以...显示*/
+        }
     .zp-box {
         width: 5.14rem;
         height: 5.14rem;
@@ -401,6 +412,7 @@
             height: 5.14rem;
 
         }
+        
         .turn-bg {
             width: 5.14rem;
             height: 5.14rem;
