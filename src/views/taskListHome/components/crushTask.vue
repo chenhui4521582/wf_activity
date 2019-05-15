@@ -23,10 +23,10 @@
       </div>
     </div>
     <div v-if="item.selected">
-      <div v-if="item.hasFinishedTask != item.totalTask" >
+      <div v-if="item.hasFinishedTask != item.totalTask">
         <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
           <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
-            <div class="description" >
+            <div class="description">
               <div class="head-img">
                 <img :src="item1.icon | filter " alt="">
               </div>
@@ -67,40 +67,52 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      item: Object,
-      index: Number
+export default {
+  props: {
+    item: Object,
+    index: Number,
+    platSource: String
+  },
+  name: 'crushTask',
+  computed: {
+    gameType () {
+      return this.item.showSubMasterList[0].gameType
+    }
+  },
+  methods: {
+    async showCurDetails () {
+      if (this.item.selected) {
+        this.$set(this.item, 'selected', false)
+      } else {
+        await GLOBALS.marchSetsPoint('A_H5PT0122001167', {
+          entrance: this.platSource,
+          target_project_id: this.gameType,
+          task_id: this.item.currentParentTask.parentTask.taskId,
+          task_name: this.item.currentParentTask.parentTask.taskName
+        })
+        this.$set(this.item, 'selected', true)
+      }
     },
-	name: 'crushTask',
-    methods: {
-	  showCurDetails(item){
-		if(this.item.selected){
-		  this.$set(this.item, 'selected', false)
-		}else{
-		  this.$set(this.item, 'selected', true)
-		}
-	  },
-	  checkTaskStatus(item,type,curParentTask){
-		if(item.taskStatus == 0){
-          this.receive(item,type,'',curParentTask)
-		}else if(item.taskStatus == 1){
-		  this.$emit('finish', item,type)
-		}
-	  },
-	  receive (item, type , val , curParentTask) {
-	    this.$emit('receive', item, type , val, curParentTask)
-      },
-	  transUint(finishNum,taskOps){
-		let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
-			ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
-		return  finish+'/'+ops
-	  },
+    checkTaskStatus (item, type, curParentTask) {
+      if (item.taskStatus == 0) {
+        this.receive(item, type, '', curParentTask)
+      } else if (item.taskStatus == 1) {
+        this.$emit('finish', item, type)
+      }
+    },
+    receive (item, type, val, curParentTask) {
+      this.$emit('receive', item, type, val, curParentTask)
+    },
+    transUint (finishNum, taskOps) {
+      let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
+        ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
+      return finish + '/' + ops
     }
   }
+}
 </script>
 
 <style lang="less" scoped>
-  @import '../../../common/css/base.css';
-  @import "../taskListHome.less";
+@import "../../../common/css/base.css";
+@import "../taskListHome.less";
 </style>
