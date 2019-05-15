@@ -39,7 +39,7 @@
             </div>
             <p class="explain" v-html="priceData.message"></p>
             <div class="btn" @click="goShopping(true)">
-              <img src="../images/dialog-error-btn.png" alt="">
+              <img src="../images/dialog-error-btn1.png" alt="">
             </div>
           </div>
           <div class="no-time" v-if="priceData.code == 202">
@@ -48,7 +48,7 @@
             </div>
             <p class="explain" v-html="priceData.message"></p>
             <div class="btn" @click="goShopping(false)">
-              <img src="../images/dialog-error-btn1.png" alt="">
+              <img src="../images/dialog-error-btn.png" alt="">
             </div>
           </div>
         </div>
