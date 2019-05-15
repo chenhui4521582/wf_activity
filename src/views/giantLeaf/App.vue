@@ -391,16 +391,18 @@
             width: 4.47rem;
             height: 1.48rem;
             font-size: 0.36rem;
-            background: url(./images/btn-active.png) no-repeat;
+            background: url(./images/btn-init.png) no-repeat;
             background-size: 100% 100%;
             text-align: center;
             margin: 5.9rem auto 0;
             .btn-end-text {
                 line-height: 1;
-                padding-top: 0.28rem;
+                padding-top: 0.35rem;
                 color: #511022;
                 p {
                     font-size: .36rem;
+                    position: relative;
+                    top: 0.06rem;
                 }
                 span {
                     font-size: 0.2rem;

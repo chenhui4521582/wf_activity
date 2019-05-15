@@ -38,7 +38,7 @@
               <img src="../images/dialog-error-icon1.png" alt="">
             </div>
             <p class="explain" v-html="priceData.message"></p>
-            <div class="btn" @click="goShopping">
+            <div class="btn" @click="goShopping(true)">
               <img src="../images/dialog-error-btn.png" alt="">
             </div>
           </div>
@@ -47,7 +47,7 @@
               <img src="../images/dialog-error-icon2.png" alt="">
             </div>
             <p class="explain" v-html="priceData.message"></p>
-            <div class="btn" @click="goShopping">
+            <div class="btn" @click="goShopping(false)">
               <img src="../images/dialog-error-btn1.png" alt="">
             </div>
           </div>
@@ -93,8 +93,13 @@ export default {
 	hideDialog () {
 	  this.$emit('hideDialog')
 	},
-    goShopping () {
-      GLOBALS.marchSetsPoint('A_H5PT0074001133')
+    goShopping (status) {
+      if(status) {
+        GLOBALS.marchSetsPoint('A_H5PT0074001132')
+      }else {
+        GLOBALS.marchSetsPoint('A_H5PT0074001133')
+      }
+      
       localStorage.setItem('originDeffer', window.location.href)
 	   window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
     },
