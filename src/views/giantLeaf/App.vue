@@ -3,7 +3,7 @@
         <div class="g-head1">
             <div class="fh-box">
                 <a href="javascript:" class="btn" @click.stop="handleBack">首页</a>
-                <a href="javascript:" class="btn" @click.stop="showRule = true">规则</a>
+                <a href="javascript:" class="btn" @click.stop="handRule">规则</a>
             </div>
             <div class="title">
                 <div class="item-move" v-if="lamp.length" >
@@ -26,13 +26,13 @@
             <img src="./images/btn-big-dot.png" class="btn-big-dot">
             <img src="./images/icon-arrow.png" class="icon-arrow">
             <!-- 抽奖按钮 -->
-            <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle">
+            <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle(false)">
                 <div class="btn-start-text">
                     <p v-if="jyzUserInfo&&jyzUserInfo.betStage == 0">您已经完成此活动</p>
                     <p v-else >点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
                 </div>
             </div>
-            <div class="btn-end" @click.stop="circle" v-else>
+            <div class="btn-end" @click.stop="circle(true)" v-else>
                 <div class="btn-end-text">
                     <p>点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
                     <span>抽奖次数：{{getRecordNum}}次</span>
@@ -162,7 +162,12 @@
                 })
 
             },
-            circle(){
+            circle(status){
+                if(status) {
+                    GLOBALS.marchSetsPoint('A_H5PT0074001128')
+                }else {
+                    GLOBALS.marchSetsPoint('A_H5PT0074001130')
+                }
                 let that = this
                 if(that.awardsList && that.awardsList.length == 0){
                     that.$toast.show({
@@ -199,6 +204,7 @@
                         if(this.jyzUserInfo && this.jyzUserInfo.betIncreaseNum != 0) {
                             this.dialogStatus = 'loader'
                             this.showDialog = true
+                            GLOBALS.marchSetsPoint('A_H5PT0074001134')
                         }
                     }
                 })
@@ -237,12 +243,17 @@
                     let countHourse = hourse >= 10 ? hourse : '0'+hourse
                     let countMinute = minute >= 10 ? minute : '0'+minute
                     let countSecond = second >= 10 ? second : '0'+second
-                    this.countTime = `${day * 24 + hourse}时${countMinute}分${countSecond}`
+                    this.countTime = `${countDay}天${countHourse}时${countMinute}分${countSecond}`
                 }, 1000)
             },
             handleBack () {
+                GLOBALS.marchSetsPoint('A_H5PT0074001126')
                 location.href = window.linkUrl.getBackUrl(this.curChannel)
                 // window.history.go(-1)
+            },
+            handRule() {
+                GLOBALS.marchSetsPoint('A_H5PT0074001127')
+                this.showRule = true
             },
             hideRule () {
                 this.showRule = false
@@ -263,6 +274,7 @@
             }
         },
         mounted() {
+            GLOBALS.marchSetsPoint('A_H5PT0074001125')
             this.getAwardsList()
             this.getUserInfo()
             this.getNotice()
