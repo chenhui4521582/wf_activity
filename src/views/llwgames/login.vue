@@ -194,49 +194,53 @@
                     }
                 })
             },
-            getAccessToken(requestToken,isBinding){
-                this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+            async getAccessToken(requestToken,isBinding){
+                let res = await this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
                     token: requestToken,
                     type: 1
-                }).then((res) => {
-                    if (res.data.code == 200) {
-                        let token = res.data.data.accessToken
-                        localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
-
-                        if(!this.isWechatChannel){
-                            this.$toast.show({
-                                message: '登录成功',
-                                duration: 1500
-                            });
-                            setTimeout(() => {
-                                this.back();
-                            }, 1000);
-                        }else{
-                            this.axios.post('//platform-api.beeplay123.com/wap/api/oauth/wx/config', {
-                                value: encodeURIComponent(window.location.href.split('#')[0])
-                            }).then((res) => {
-                                if(res.data.code != 200) {
-                                    return;
-                                }
-                                let params = res.data.data;
-                                localStorage.setItem('title',params.title)
-                                if(!isBinding){
-                                    location.href = params.auth+'default?accessToken='+token+'&act=bind'
-                                }else{
-                                    setTimeout(() => {
-                                        this.back();
-                                    }, 200);
-                                }
-                            })
-                        }
-
-                    } else {
-                        this.$toast.show({
-                            message: res.data.message,
-                            duration: 2000
-                        });
-                    }
                 })
+                if (res.data.code == 200) {
+                    let token = res.data.data.accessToken
+                    localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken);
+
+                    let {data:dataopenToken} = await this.axios.post('//uic-api.beeplay123.com/uic/api/user/sdk/openToken')
+                    if (dataopenToken.code == 200) {
+                        localStorage.setItem('OPEN_ACCESS_TOKEN', dataopenToken.data.token);
+                    }
+
+                    if(!this.isWechatChannel){
+                        this.$toast.show({
+                            message: '登录成功',
+                            duration: 1500
+                        });
+                        setTimeout(() => {
+                            this.back();
+                        }, 1000);
+                    }else{
+                        this.axios.post('//platform-api.beeplay123.com/wap/api/oauth/wx/config', {
+                            value: encodeURIComponent(window.location.href.split('#')[0])
+                        }).then((res) => {
+                            if(res.data.code != 200) {
+                                return;
+                            }
+                            let params = res.data.data;
+                            localStorage.setItem('title',params.title)
+                            if(!isBinding){
+                                location.href = params.auth+'default?accessToken='+token+'&act=bind'
+                            }else{
+                                setTimeout(() => {
+                                    this.back();
+                                }, 200);
+                            }
+                        })
+                    }
+
+                } else {
+                    this.$toast.show({
+                        message: res.data.message,
+                        duration: 2000
+                    });
+                }
             },
             sendcode(){
                 var self = this;
