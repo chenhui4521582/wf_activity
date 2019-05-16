@@ -272,7 +272,6 @@ export default {
                             }
                         }
                     })
-                    
                 }else{
                     //已完成任务置底显示
                     if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
@@ -288,7 +287,6 @@ export default {
                 }
                 // 添加排序
                 this.taskSort();
-
             }
         },
         showCurDetails (i, type) {
