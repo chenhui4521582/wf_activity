@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
     const taskTab = ()=>import("./components/taskTab.vue")
     const kingMask = ()=>import("./components/kingMask.vue")
     export default {
@@ -182,9 +183,9 @@
                 let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskInHall', {value:val})
                 if(data.code == 200 && data.data){
                     let showSubMasterList = [],
-                    masterList = data.data.list,
-                    currentParentTask,
-                    masterTaskList;
+                        masterList = data.data.list,
+                        currentParentTask,
+                        masterTaskList;
                     if(data.data.hasFinishedTask == data.data.totalTask){
                         currentParentTask = masterList[3]
                     }else{
@@ -281,7 +282,6 @@
                             //未完成的,未解锁的置底
                             if(masterTaskList.achievementType == 2 && masterTaskList.lock){
                                 this.allTaskList.push(masterTaskList)
-                                
                             }else{
                                 this.allTaskList.unshift(masterTaskList)
                             }
@@ -289,12 +289,6 @@
                     }
                     // 添加排序
                     this.taskSort();
-                    // 首次请求任务默认第一位任务展开
-                    setTimeout(() => {
-                        if(type == 'first'){
-                          this.$set(this.allTaskList[0],'selected',true)
-                        }
-                    }, 200);
                 }
             },
             showCurDetails(i, type){
@@ -316,14 +310,14 @@
                     return -1;
                   }
               })
-              // 第一个大师任务展开
-              for (let index = 0; index < this.allTaskList.length; index++) {
-                  const item = this.allTaskList[index];
-                  if(item['achievementType']!==2){
-                      this.$set(this.allTaskList[index],'selected',true)
-                      break;
+              this.allTaskList.sort((to,form)=>{
+                  if(to['achievementType']<form['achievementType']){
+                    return -1;
                   }
-              }
+              })
+              setTimeout(()=>{
+                  this.$set(this.allTaskList[0],'selected',true)
+              },50)
             },
             // 显示大师任务
             showCrushMasterTask (item) {

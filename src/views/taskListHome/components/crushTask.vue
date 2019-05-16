@@ -17,7 +17,7 @@
           </span>
           <em>{{transUint(item.finishLength, item.currentLength)}}</em>
         </p>
-        <span class="task-details" :class="{'reddot': item.isShowRed}">
+        <span class="task-details " :class="{'reddot': item.isShowRed}">
           查看详情<em class="btn-arrow" :class="{'rotate': item.selected}"></em>
         </span>
       </div>
