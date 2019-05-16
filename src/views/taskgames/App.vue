@@ -500,6 +500,25 @@
               return ''
           }
         },
+        async jumpMine(){
+            await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType}) // H5平台-游戏内SDK-话费余额按钮
+            parent.location.href = this.jumpToPlat()+'#/personal'
+        },
+        jumpToPlat(){
+            let baiduChannel = ['100039','100040','100041','100042','100045','100046',
+                    '100001','100022','100023','100026','100028','100027','100029','100035','100036','100038', '100006','100049','100050','100054','100056']
+            if(baiduChannel.includes(this.channel)){
+                return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
+            } else if(this.channel == '700002'){
+                return `https://wap.beeplay123.com/llwWap?channel=${this.channel}`
+            }else{
+               return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+            }
+        },
+        async getHuafeiNum(){
+            let {data:data} = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+            this.huafeiNum = data.data
+        },
         checkTaskStatus(item,type,index){
 
             if(item.taskStatus == 0){
@@ -573,7 +592,7 @@
                 }
 			    // 跳转到首页（关闭）
                 if(action == 36 || url == '/plat/') {
-                    parent.location.href = this.jumpToPlat()
+                    this.backIndexPage()
                     return
                 }
                 // 跳转商城
@@ -583,7 +602,8 @@
                 }
                 // 跳平台(关闭)
                 if (gameType == 0 && action == 2) {
-                    parent.location.href = this.jumpToPlat()
+                // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+                    this.backIndexPage()
                     return
                 }
                 // 跳转固定入口
@@ -772,6 +792,27 @@
             }
             })
 
+      },
+      backIndexPage(){//回到平台首页
+        let from=this.getUrlParam('from')
+        if(parent.CONFIG&&parent.CONFIG.onBackHome){//cocos返回大厅的方法
+          parent.CONFIG.onBackHome()
+        }else if(from&&['wap','jsWap','bdWap'].includes(from)){
+          parent.location.href =from!='wap'?`https://wap.beeplay123.com/${from}/?channel=${this.channel}`:`https://wap.beeplay123.com/${from}/home?channel=${this.channel}`
+        }else{//暂行方式
+          const wapChannels=['100002','100004','100005'];
+          const jsWapChannels=['100001','100006','100022','100023','100026','100028','100027','100029','100035','100036','100038'];
+          const bdWapChannels=['100039','100040','100041','100042'];
+          if(this.channel=='100032'){
+            parent.location.href =`https://wap.beeplay123.com/qingWap/?channel=${this.channel}`
+          }else if(jsWapChannels.includes(this.channel)){
+            parent.location.href =`https://wap.beeplay123.com/jsWap/?channel=${this.channel}`
+          }else if(bdWapChannels.includes(this.channel)){
+            parent.location.href =`https://wap.beeplay123.com/bdWap/?channel=${this.channel}`
+          }else{
+            parent.location.href =`https://wap.beeplay123.com/wap/home?channel=${this.channel}`
+          }
+        }
         },
         kfclick(){
           GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType}) // H5平台-游戏内SDK-客服按钮
