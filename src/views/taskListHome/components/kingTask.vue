@@ -25,7 +25,9 @@
     <div v-if="item.selected">
       <div v-if="item.hasFinishedTask != item.totalTask" >
         <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
-          <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
+          <li v-for="(item1,index1) in item.showSubMasterList" 
+          :key="index1"
+          @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
             <div class="description" >
               <div class="head-img">
                 <img :src="item1.icon | filter" alt="">
@@ -56,7 +58,7 @@
       </div>
       <div class="task-finished" v-else>
         <ul>
-          <li v-for="item2 in item.allTask">
+          <li v-for="(item2,index2) in item.allTask" :key="index2">
             <img :src="item2.medalIcon | filter" alt=""><br>
             <span>{{item2.medalName}}</span>
           </li>

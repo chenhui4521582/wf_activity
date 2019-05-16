@@ -6,56 +6,69 @@
             </span>
             <img src="./images/title.png">
         </div>
+        <!-- tab -->
+        <task-tab v-model="tabSelected" :is-show-red-point="isShowRedPoint" />
         <div  class="task-wrap">
-            <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}">
-                <crushTask
-                    v-if="showCrushMasterTask(item)"
-                    :item="item"
-                    :index="index"
-                    @showCurDetails="showCurDetails"
-                    @receive="receive"
-                    @finish="finish"
-                />
-                <kingTask
-                    v-if="showKingTask(item)"
-                    :item="item"
-                    :index="index"
-                    @showCurDetails="showCurDetails"
-                    @receive="receive"
-                    @finish="finish"
-                />
-                <king-no-lock
-                    :item="item"
-                    v-if="showKingTaskNoLock(item)"
-                />
+            <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
+                <template v-if="tabSelected===0">
+                    <crushTask
+                        v-if="showCrushMasterTask(item)"
+                        :item="item"
+                        :index="index"
+                        @showCurDetails="showCurDetails"
+                        @receive="receive"
+                        @finish="finish"
+                    />
+                </template>
+                <template v-if="tabSelected===1">
+                    <kingTask
+                        v-if="showKingTask(item)"
+                        :item="item"
+                        :index="index"
+                        @showCurDetails="showCurDetails"
+                        @receive="receive"
+                        @finish="finish"
+                    />
+                    <div @click="changeKingLock(item)">
+                        <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
+                    </div>
+                </template>
+                
             </div>
-            <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}">
-                <crushTask
-                    v-if="showCrushMasterTask(item)"
-                    :item="item"
-                    :index="index"
-                    :type="'finishList'"
-                    @showCurDetails="showCurDetails"
-                    @receive="receive"
-                    @finish="finish"
-                />
-                <kingTask
-                    v-if="showKingTask(item)"
-                    :item="item"
-                    :index="index"
-                    :type="'finishList'"
-                    @showCurDetails="showCurDetails"
-                    @receive="receive"
-                    @finish="finish"
-                />
+            <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
+                <template v-if="tabSelected===0">
+                    <crushTask
+                        v-if="showCrushMasterTask(item)"
+                        :item="item"
+                        :index="index"
+                        :type="'finishList'"
+                        @showCurDetails="showCurDetails"
+                        @receive="receive"
+                        @finish="finish"
+                    />
+                </template>
+                <template v-if="tabSelected===1">
+                    <kingTask
+                        v-if="showKingTask(item)"
+                        :item="item"
+                        :index="index"
+                        :type="'finishList'"
+                        @showCurDetails="showCurDetails"
+                        @receive="receive"
+                        @finish="finish"
+                    />
+                </template>
+                
             </div>
-
         </div>
         <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
+        <king-mask v-model="maskShow" @lockKingTask="lockKingTask" />
     </div>
 </template>
 
 <script>
+    const taskTab = ()=>import("./components/taskTab.vue")
+    const kingMask = ()=>import("./components/kingMask.vue")
     export default {
         name: 'app',
         data(){
@@ -73,7 +86,10 @@
                 showTaskList : false,
                 curMedelIcon : '',
                 masterTaskNameList : ['fish-achievement','crush-achievement','bill-achievement'],
-                curChannel: localStorage.getItem('APP_CHANNEL')
+                curChannel: localStorage.getItem('APP_CHANNEL'),
+                tabSelected:localStorage.getItem('TAB_TASK_INDEX')?1:0,
+                maskShow:false
+                
             }
         },
         mounted(){
@@ -83,11 +99,24 @@
             awardsPop :() =>import('./components/dialog'),
             crushTask :() =>import('./components/crushTask'),
             kingTask :() =>import('./components/kingTask'),
-            kingNoLock :() =>import('./components/kingNoLock')
+            kingNoLock :() =>import('./components/kingNoLock'),
+            taskTab,
+            kingMask
         },
         computed: {
             getChannel() {
               return this.curChannel == '100047001' || this.curChannel == '100048001'
+            },
+            isShowRedPoint(){
+                let isShow = false
+                for (let index = 0; index < this.allTaskList.length; index++) {
+                    const element = this.allTaskList[index];
+                    if(element.isShowRed){
+                       isShow = true;
+                       break ;
+                    }
+                }
+                return isShow;
             }
         },
         methods: {
@@ -163,29 +192,20 @@
                             return item.parentTask.taskStatus != 2
                         })
                     }
-
                     // 外显两条任务类型区分
                     let type1 = currentParentTask.subListA.find(item => {
                         return item.taskStatus != 2
-
                     })
-
                     let type2 = currentParentTask.subListB.find(item => {
-                        // console.log(item)
                         return item.taskStatus != 2
                     })
-
-
                     if(!type1){
                         type1 = currentParentTask.subListA[currentParentTask.subListA.length-1]
                     }
-
                     if(!type2){
                         type2 = currentParentTask.subListB[currentParentTask.subListB.length-1]
                     }
-
                     showSubMasterList.push(type1,type2)
-
                     // 判断当前母任务完成情况
                     let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
                         finishLength = 0,
@@ -218,7 +238,8 @@
                         lock : data.data.lock,
                         achievementType : data.data.achievementType,
                         lockIcon : data.data.lockIcon,
-                        lockBgIcon : data.data.lockBgIcon
+                        lockBgIcon : data.data.lockBgIcon,
+                        sort:data.data.sort // 排序
                     }
 
                     if(type == 'refresh'){
@@ -249,8 +270,9 @@
                                     this.finishList.push(masterTaskList)
                                 }
                             }
-
                         })
+                        // 添加排序
+                        this.taskSort();
                     }else{
                         //已完成任务置底显示
                         if(masterTaskList.totalTask == masterTaskList.hasFinishedTask){
@@ -259,19 +281,20 @@
                             //未完成的,未解锁的置底
                             if(masterTaskList.achievementType == 2 && masterTaskList.lock){
                                 this.allTaskList.push(masterTaskList)
+                                
                             }else{
                                 this.allTaskList.unshift(masterTaskList)
                             }
                         }
                     }
-
+                    // 添加排序
+                    this.taskSort();
                     // 首次请求任务默认第一位任务展开
                     setTimeout(() => {
                         if(type == 'first'){
-                            this.$set(this.allTaskList[0],'selected',true)
+                          this.$set(this.allTaskList[0],'selected',true)
                         }
                     }, 200);
-
                 }
             },
             showCurDetails(i, type){
@@ -280,6 +303,27 @@
                 }else{
                     this.$set(this[type][i],'selected',true)
                 }
+            },
+            // 添加排序
+            taskSort(){
+              this.finishList.sort((to,form)=>{
+                  if(to['sort']<form['sort']){
+                    return -1;
+                  }
+              })
+              this.allTaskList.sort((to,form)=>{
+                  if(to['sort']<form['sort']){
+                    return -1;
+                  }
+              })
+              // 第一个大师任务展开
+              for (let index = 0; index < this.allTaskList.length; index++) {
+                  const item = this.allTaskList[index];
+                  if(item['achievementType']!==2){
+                      this.$set(this.allTaskList[index],'selected',true)
+                      break;
+                  }
+              }
             },
             // 显示大师任务
             showCrushMasterTask (item) {
@@ -292,6 +336,25 @@
             // 显示王者未解锁状态
             showKingTaskNoLock (item) {
                 return item.achievementType == 2 && item.lock
+            },
+            // 没有解锁的王者任务解锁
+            changeKingLock(item){
+                this.maskShow = true;
+            },
+            // 去解锁弹珠大师任务
+            lockKingTask(type){
+                let crushItem = this.allTaskList.find((item)=>{
+                    return item['batchId']===type
+                })
+                let currentChindTask = crushItem&&crushItem.showSubMasterList.length>0?crushItem.showSubMasterList:''
+                if(currentChindTask){
+                    currentChindTask.sort((to,form)=>{
+                        if(to['sort']<form['sort']){
+                            return -1;
+                        }
+                    })
+                    this.finish(currentChindTask[0],type)
+                }
             }
         }
     }

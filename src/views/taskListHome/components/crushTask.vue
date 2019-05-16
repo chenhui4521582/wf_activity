@@ -25,7 +25,9 @@
     <div v-if="item.selected">
       <div v-if="item.hasFinishedTask != item.totalTask" >
         <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
-          <li v-for="item1 in item.showSubMasterList" @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
+          <li v-for="(item1,index) in item.showSubMasterList" 
+          :key="index"
+          @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
             <div class="description" >
               <div class="head-img">
                 <img :src="item1.icon | filter " alt="">
@@ -56,7 +58,7 @@
       </div>
       <div class="task-finished" v-else>
         <ul>
-          <li v-for="item2 in item.allTask">
+          <li v-for="(item2,index2) in item.allTask" :key="index2">
             <img :src="item2.medalIcon | filter" alt=""><br>
             <span>{{item2.medalName}}</span>
           </li>
@@ -72,30 +74,30 @@
       item: Object,
       index: Number
     },
-	name: 'crushTask',
+	  name: 'crushTask',
     methods: {
-	  showCurDetails(item){
-		if(this.item.selected){
-		  this.$set(this.item, 'selected', false)
-		}else{
-		  this.$set(this.item, 'selected', true)
-		}
-	  },
-	  checkTaskStatus(item,type,curParentTask){
-		if(item.taskStatus == 0){
-          this.receive(item,type,'',curParentTask)
-		}else if(item.taskStatus == 1){
-		  this.$emit('finish', item,type)
-		}
-	  },
-	  receive (item, type , val , curParentTask) {
-	    this.$emit('receive', item, type , val, curParentTask)
+      showCurDetails(){
+        if(this.item.selected){
+          this.$set(this.item, 'selected', false)
+        }else{
+          this.$set(this.item, 'selected', true)
+        }
       },
-	  transUint(finishNum,taskOps){
-		let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
-			ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
-		return  finish+'/'+ops
-	  },
+      checkTaskStatus(item,type,curParentTask){
+        if(item.taskStatus == 0){
+          this.receive(item,type,'',curParentTask)
+        }else if(item.taskStatus == 1){
+          this.$emit('finish', item,type)
+        }
+      },
+      receive (item, type , val , curParentTask) {
+        this.$emit('receive', item, type , val, curParentTask)
+      },
+      transUint(finishNum,taskOps){
+        let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
+          ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
+        return  finish+'/'+ops
+      },
     }
   }
 </script>
