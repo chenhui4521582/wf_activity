@@ -77,7 +77,9 @@ export default {
   name: 'crushTask',
   computed: {
     gameType () {
-      return this.item.showSubMasterList[0].gameType
+      if(this.item.showSubMasterList[0]){
+        return this.item.showSubMasterList[0].gameType
+      }
     }
   },
   methods: {
