@@ -457,7 +457,6 @@
               if(!this.isTfStatus) {
                 this.getNewTask()
                 this.getDayTask()
-                console.log("============",this.checkCurrentTask())
                 if(this.checkCurrentTask() != ''){
                   this.getCrushTask('','',this.checkCurrentTask())
                 }
