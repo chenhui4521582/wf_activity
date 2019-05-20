@@ -303,23 +303,16 @@ export default {
         },
         taskSort(){
             this.finishList.sort((to,form)=>{
-                if(to['sort']<form['sort']){
-                return -1;
-                }
+                return to['sort']-form['sort']--
             })
             this.allTaskList.sort((to,form)=>{
-                if(to['sort']<form['sort']){
-                return -1;
-                }
+               return to['sort']-form['sort']
             })
             this.allTaskList.sort((to,form)=>{
-                if(to['achievementType']<form['achievementType']){
-                return -1;
-                }
+                return to['achievementType']-form['achievementType']
             })
-            setTimeout(()=>{
-                this.$set(this.allTaskList[0],'selected',true)
-            },50)
+            this.$set(this.allTaskList[0],'selected',true)
+            console.log( this.allTaskList)
         },
         // 显示大师任务
         showCrushMasterTask (item) {
