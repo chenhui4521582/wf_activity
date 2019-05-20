@@ -311,7 +311,9 @@ export default {
             this.allTaskList.sort((to,form)=>{
                 return to['achievementType']-form['achievementType']
             })
-            this.$set(this.allTaskList[0],'selected',true)
+            setTimeout(()=>{
+                this.$set(this.allTaskList[0],'selected',true)
+            },100)
             console.log( this.allTaskList)
         },
         // 显示大师任务
