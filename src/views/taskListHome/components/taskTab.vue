@@ -6,7 +6,7 @@
                 @click="tabChange(index)"
                 :class="{'item-active':tabSelected===index}"
                 class="item">
-                <img class="red-point" v-if="isShowRedPoint" src="../images/tab/red-point.png" alt="">
+                <img class="red-point" v-if="isShowRedPoint[index]" src="../images/tab/red-point.png" alt="">
                 <img :src="tabSelected===index?item.selectImg:item.img" alt="">
                 <span>{{item.name}}</span>
             </div>
@@ -31,8 +31,8 @@ export default {
             default:0
         },
         isShowRedPoint:{
-            type:Boolean,
-            default:false,
+            type:Array,
+            default:()=>{return []},
         }
     },
     computed:{

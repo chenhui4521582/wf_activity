@@ -109,15 +109,20 @@ export default {
             return this.curChannel == '100047001' || this.curChannel == '100048001'
         },
         isShowRedPoint(){
-            let isShow = false
+            let crushShow = 0;
+            let kingShow = 0;
             for (let index = 0; index < this.allTaskList.length; index++) {
-                const element = this.allTaskList[index];
-                if(element.isShowRed){
-                    isShow = true;
-                    break ;
+                const {isShowRed,achievementType} = this.allTaskList[index];
+                // 大师完成未领取
+                if(isShowRed&&achievementType===1){
+                    crushShow++
+                }
+                // 王者完成未领取
+                if(isShowRed&&achievementType===2){
+                    kingShow++
                 }
             }
-            return isShow;
+            return [crushShow>0?true:false,kingShow>0?true:false];
         }
     },
     methods: {
