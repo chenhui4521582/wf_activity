@@ -5,6 +5,7 @@
 </template>
 <script type="text/javascript">
 	export default {
+		name:'head',
 		props: {
 			title: {
 				default: null
