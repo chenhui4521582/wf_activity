@@ -303,7 +303,7 @@ export default {
         },
         taskSort(){
             this.finishList.sort((to,form)=>{
-                return to['sort']-form['sort']--
+                return to['sort']-form['sort']
             })
             this.allTaskList.sort((to,form)=>{
                return to['sort']-form['sort']
