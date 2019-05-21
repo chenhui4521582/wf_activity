@@ -159,9 +159,9 @@ export default {
             }
             return Request[ename];
         },
-        backHome(){
+        async backHome(){
             // H5平台-任务-成就大厅-返回
-            GLOBALS.marchSetsPoint('A_H5PT0122001166', {
+            await GLOBALS.marchSetsPoint('A_H5PT0122001166', {
                 entrance: this.platSource
             })
             location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/#/taskview`
@@ -175,7 +175,7 @@ export default {
         },
         async finish(item,type){
             // H5平台-任务-成就大厅-去完成
-            GLOBALS.marchSetsPoint('A_H5PT0122001168', {
+            await GLOBALS.marchSetsPoint('A_H5PT0122001168', {
                 entrance: this.platSource,
                 target_project_id: item.gameType,
                 task_id: item.taskId,
@@ -195,7 +195,7 @@ export default {
             })
             if(data.code == 200){
                 // H5平台-任务-成就大厅-去领取
-                GLOBALS.marchSetsPoint('A_H5PT0122001169', {
+                await GLOBALS.marchSetsPoint('A_H5PT0122001169', {
                     entrance: this.platSource,
                     target_project_id: item.gameType,
                     task_id:item.taskId,
