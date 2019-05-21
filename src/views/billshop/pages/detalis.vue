@@ -20,6 +20,7 @@
                         <span v-for="(item,index) in currentList" 
                             :key="index"
                             :class="{'item-active':selectedIndex===index}"
+                            @click="changeSpec(index)"
                             class="item-content-child">
                             {{item.purchasePrice}}元</span>
                     </div>
@@ -30,31 +31,39 @@
                 </div>
                 <div class="spec-item-line"></div>
                 <div class="spec-item">
-                    <div class="item-title">规格</div>
+                    <div class="item-title">数量</div>
                     <div class="item-content">
-                        <span class="item-number-title">（剩余库存充足）</span>
+                        <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota && currentItem.allUsersTodayAvailableQuota != 0">（剩余库存充足）</span>
                         <div class="item-number-add">
-
+                            <field v-model="specNumber"></field>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 详情 -->
-            <div class="spec-warp">
+            <div class="spec-warp description-warp">
                 <div class="title">商品详情</div>
                 <div class="details" v-html="currentItem.description"></div>
             </div>
+        </div>
+        <div class="save-button" @click="goExchange">
+           {{currentItem.purchasePrice}}话费券换取
         </div>
     </div>
 </template>
 <script>
 import baseHeader from "../components/baseHeader/baseHeader"
+import field from '../components/field/field'
+import {placeOrder} from "../utils/api"
+import dialog from "../components/dialog"
 export default {
     name:"details",
-    components:{baseHeader},
+    components:{baseHeader,field},
     data() {
         return {
-            selectedIndex:0
+            selectedIndex:0,
+            specNumber:1,
+            requestType:false
         }
     },
     computed:{
@@ -69,6 +78,26 @@ export default {
         currentList(){
             const list = localStorage.getItem('BILL_DETAILS')
             return list?JSON.parse(list):[]
+        }
+    },
+    methods:{
+        // 切换规格
+        changeSpec(index){
+            this.selectedIndex  = index;
+            this.specNumber = 1;
+        },
+        // 兑换话费
+        async goExchange(){
+            // 防止用户疯狂点击
+            if(this.requestType){return}
+            this.requestType = true;
+            const {id} = this.currentItem
+            const {data,code} = await placeOrder(id)
+            // 账户余额不足
+            if(code===102){
+
+            }
+            this.requestType = false;
         }
     }
 }
@@ -174,6 +203,29 @@ export default {
         border: 0.02rem dashed rgba(255,255,255,0.5);
         margin-bottom: 0.2rem;
     }
+}
+.description-warp{
+    color: #ffffff;
+    .title{
+        font-size: 0.24rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+    }
+    .details{
+        font-size: 0.22rem;
+    }
+}
+.save-button{
+    height: 0.9rem;
+    width: 100%;
+    background-color: #EE6F0B;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    line-height: 0.9rem;
+    text-align: center;
+    font-size: 0.28rem;
+    color: #ffffff;
 }
 </style>
 
