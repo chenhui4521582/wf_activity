@@ -161,9 +161,7 @@ export default {
         },
         async backHome(){
             // H5平台-任务-成就大厅-返回
-            await GLOBALS.marchSetsPoint('A_H5PT0122001166', {
-                entrance: this.platSource
-            })
+            await GLOBALS.marchSetsPoint('A_H5PT0122001166', {entrance: this.platSource})
             location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/#/taskview`
         },
         checkTaskStatus(item,type,curParentTask){
