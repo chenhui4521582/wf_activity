@@ -14,9 +14,9 @@
             </div>
             <!-- 规格 -->
             <div class="spec-warp">
-                <div class="spec-item" >
+                <div class="spec-item" v-if="currentList.length>1" >
                     <div class="item-title">规格</div>
-                    <div class="item-content">
+                    <div class="item-content-spec">
                         <span v-for="(item,index) in currentList" 
                             :key="index"
                             :class="{'item-active':selectedIndex===index}"
@@ -25,7 +25,7 @@
                             {{item.purchasePrice}}元</span>
                     </div>
                 </div>
-                <div class="spec-item" >
+                <div class="spec-item" style="margin-bottom:0.2rem">
                     <div class="item-title">已选</div>
                     <div class="item-content item-content-title">{{currentList[selectedIndex].name}}</div>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="item-content">
                         <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota && currentItem.allUsersTodayAvailableQuota != 0">（剩余库存充足）</span>
                         <div class="item-number-add">
-                            <field v-model="specNumber"></field>
+                            <field v-model="specNumber" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
                         </div>
                     </div>
                 </div>
@@ -47,10 +47,10 @@
             </div>
         </div>
         <div class="save-button" @click="goExchange">
-           {{currentItem.purchasePrice}}话费券换取
+           {{currentItem.purchasePrice*specNumber}}话费券换取
         </div>
         <!-- 提升弹框 -->
-        <dialog-mask />
+        <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
     </div>
 </template>
 <script>
@@ -58,6 +58,7 @@ import baseHeader from "../components/baseHeader/baseHeader"
 import field from '../components/field/field'
 import {placeOrder} from "../utils/api"
 import  dialogMask from "../components/dialog/dialog"
+import {getUrlParam} from "../utils/common"
 export default {
     name:"detailsPage",
     components:{baseHeader,field,dialogMask},
@@ -67,6 +68,8 @@ export default {
             specNumber:1,
             requestType:false,
             dialogShow:false,
+            statusCode:''
+            
         }
     },
     computed:{
@@ -91,16 +94,68 @@ export default {
         },
         // 兑换话费
         async goExchange(){
-            // 防止用户疯狂点击
+            const {id,purchasePrice} = this.currentItem
+            const {accountBalance} = this.$route.query
+            // 话费不足
+            if(this.specNumber*purchasePrice>accountBalance){
+                this.dialogShow = true;
+                this.statusCode = 102;
+                return ;
+            }
+            // 防止用户疯狂点击请求接口
             if(this.requestType){return}
             this.requestType = true;
-            const {id} = this.currentItem
-            const {data,code} = await placeOrder(id)
-            // 账户余额不足
-            if(code===102){
-
+            const {data,code,message} = await placeOrder(id,this.specNumber)
+            if(code===102||code===104||code===200){
+                this.dialogShow = true;
+            }else{
+                this.$toast.show({
+                    message: message,
+                    duration: 1500,
+                    isShowMask: true
+                })
             }
+            // 兑换成功后减去话费劵 --防止关闭继续点击
+            if(code===200){
+                const {query} = this.$route;
+                query.accountBalance = this.specNumber*purchasePrice;
+                this.$router.push({query})
+            }
+            this.statusCode = code
             this.requestType = false;
+        },
+        // 去领奖
+        checkprize () {
+            const item = this.currentItem;
+            if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
+                switch (getUrlParam('from')) {
+                case 'bdWap':
+                    parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
+                    break
+                case 'jsWap':
+                    parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
+                    break
+                case 'miniWap':
+                    parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
+                    break
+                default:
+                    parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
+                }
+            } else {
+                switch (getUrlParam('from')) {
+                case 'bdWap':
+                    parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+                    break
+                case 'jsWap':
+                    parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+                    break
+                case 'miniWap':
+                    parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+                    break
+                default:
+                    parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+                }
+            }
         }
     }
 }
@@ -151,7 +206,6 @@ export default {
 
 }
 .spec-warp{
-    min-height: 2.3rem;
     width: 100%;
     padding: 0.3rem 0.3rem 0.1rem 0.3rem;
     border-radius: 0.12rem;
@@ -160,32 +214,41 @@ export default {
     margin-top: 0.2rem;
     .spec-item{
         display: flex;
-        height: 0.42rem;
         line-height: 0.42rem;
         margin-bottom: 0.2rem;
+        &:first-child{
+            margin-bottom:0;
+        }
         .item-title{
             width: 0.7rem;
             flex:0 0.7rem;
             color: #8B8B8C;
             font-size: 0.24rem;
         }
-        .item-content{
+        .item-content-spec{
+            font-size: 0;
             flex:1;
-            display: flex;
             .item-content-child{
-                width: 1.3rem;
+                display: inline-block;
+                padding: 0.11rem 0.32rem;
                 height: 0.42rem;
-                flex: 0 1.3rem;
-                margin-right: 0.42rem;
+                margin-right: 0.24rem;
                 border:0.01rem solid #595E68;
                 border-radius: 0.21rem;
                 font-size: 0.2rem;
                 color: #ffffff;
                 text-align: center;
+                box-sizing: border-box;
+                line-height: 0.21rem;
+                margin-bottom: 0.2rem;
             }
             .item-active{
                 background-color: #223452;
             }
+        }
+        .item-content{
+            flex:1;
+            display: flex;
             .item-number-title{
                 color: #8B8B8C;
                 font-size: 0.24rem;

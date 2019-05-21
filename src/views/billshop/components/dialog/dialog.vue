@@ -7,19 +7,29 @@
                 <div class="close-icon" @click="dialogShow=false"><img src="./image/close-small.png" alt=""></div>
             </div>
             <div class="content">
-                <img src="./image/out-of-stock.png" alt="">
-                <div class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
+                <img v-if="statusCode===104" src="./image/out-of-stock.png" alt="">
+                <img v-if="statusCode===102" src="./image/short.png" alt="">
+                <img v-if="statusCode===200" src="./image/succecc.png" alt="">
+                <img v-if="statusCode===103" src="./image/succecc.png"  style="width: 1.67rem;height: 1.72rem" alt="">
+                
+                <div v-if="statusCode===102" class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
+                <div v-if="statusCode===104" class="content-text">当前商品库存不足<br/>去看看其他商品吧</div>
+                <div v-if="statusCode===103" class="content-text"> 每日限购一次，<br/>请明天再来~</div>
+                <div v-if="statusCode===200" class="content-text">换取成功<br/>快去领取吧</div>
             </div>
             <div class="dialog-button">
                 <div class="return base-button" @click="dialogShow=false">返回</div>
-                <div class="save base-button">去赚话费</div>
+                <div class="save base-button" v-if="statusCode===102" @click="earnMoney">去赚话费</div>
+                <div class="save base-button" v-if="statusCode===200" @click="checkprize">去领取</div>
+                <div class="save base-button" v-if="statusCode===104" @click="lookMall">看看其他</div>
             </div>
         </div>
     </div>
 </template>
-<<script>
+<script>
+import {getUrlParam} from "../../utils/common"
 export default {
-    name:'dialog',
+    name:'dialogPage',
     data() {
         return {
             dialogShow:this.value
@@ -29,6 +39,10 @@ export default {
        value:{
            type:Boolean,
            default:true
+       },
+       statusCode:{
+           type:[Number,String],
+           default:''
        }
     },
     watch: {
@@ -37,6 +51,34 @@ export default {
         },
         dialogShow(val){
             this.$emit('input',val)
+        }
+    },
+    methods: {
+        // 去赚话费
+        earnMoney(){
+            this.dialogShow = false;
+            switch (getUrlParam('from')) {
+            case 'bdWap':
+                parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            break
+            case 'jsWap':
+                parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            break
+            case 'miniWap':
+                parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            break
+            default:
+                parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            }
+        },
+        // 去看看其他
+        lookMall(){
+            history.go(-1)
+        },
+        // 去领奖
+        checkprize(){
+            this.dialogShow = false;
+            this.$emit('on-checkprize')
         }
     },
 }

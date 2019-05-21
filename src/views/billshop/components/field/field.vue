@@ -2,7 +2,7 @@
     <div class="cut-and-add">
         <div class="button-cut base-button" @click="cutClick">-</div>
         <div class="input-warp">
-            <input type="tel" @input="handleInput" v-model="inputValue">
+            <input type="number" @input="handleInput" v-model.number="inputValue">
         </div>
         <div class="button-add base-button" @click="addClick">+</div>
     </div>
@@ -16,8 +16,12 @@ export default {
     },
     props:{
         value:{
-            type:Number,
+            type:[Number,String],
             default:1
+        },
+        storeMax:{
+            type:Number,
+            default:0
         }
     },
     watch:{
@@ -37,11 +41,9 @@ export default {
             this.inputValue++
         },
         handleInput(event){
-            if(event.target.value==0){
-                this.inputValue = 1
-            }else{
-                this.inputValue=event.target.value.replace(/[^\d]/g,1);
-            }
+            if(parseInt(event.target.value)>this.storeMax){
+                this.inputValue = this.storeMax
+            } 
             
         }
     }

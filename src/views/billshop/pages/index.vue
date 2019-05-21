@@ -29,8 +29,6 @@
 									<img :src="item.productList[0].picture | filter">
 								</div>
 								<p class="sp-info">{{item.productList[0].name}}</p>
-								<!-- <p class="sp-info surplus" v-if="item.productList[0].allUsersTodayAvailableQuota ==null">剩余库存充足</p>
-								<p class="sp-info surplus" v-else>剩余库存：{{item.productList[0].allUsersTodayAvailableQuota }}</p> -->
 								<a href="javascript:" class="btn">{{item.productList[0].purchasePrice}}元话费券获取</a>
 							</template>
 						</li>
@@ -78,8 +76,6 @@ export default {
 		},
 		// 查看我的奖品
 		async goMyAward () {
-			// H5平台-话费券商城-查看我的奖品
-			await GLOBALS.marchSetsPoint('A_H5PT0035000633', {  residual_phone: this.accountBalance})
 			switch (getUrlParam('from')) {
 				case 'bdWap':
 				parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
@@ -96,26 +92,6 @@ export default {
 		},
 		// 标题切换
 		getNewList (item, index) {
-			switch (index) {
-				case 0:
-				GLOBALS.marchSetsPoint('A_H5PT0035000634', {
-					residual_phone: this.accountBalance
-				})// H5平台-话费券商城-好物推荐
-				break
-				case 1:
-				GLOBALS.marchSetsPoint('A_H5PT0035000636', {
-					residual_phone: this.accountBalance
-				})// H5平台-话费券商城-手机数码
-				break
-				case 2:
-				GLOBALS.marchSetsPoint('A_H5PT0035000635', {
-					residual_phone: this.accountBalance
-				})// H5平台-话费券商城-虚拟卡券
-				break
-
-				default:
-				break
-			}
 			this.selectedIndex = index
 		},
 		// 打开详情
@@ -124,11 +100,6 @@ export default {
         return
 			}
 			const item = data.productList[0]
-      await GLOBALS.marchSetsPoint('A_H5PT0035000637', {
-        residual_phone: this.accountBalance,
-        product_id: item.id,
-        awards_name: item.name
-			})// H5平台-话费券商城-商品点击
 			localStorage.BILL_DETAILS = JSON.stringify(data.productList)
 			this.$router.push({
 				name: 'detail',
