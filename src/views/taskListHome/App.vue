@@ -123,7 +123,10 @@ export default {
                 }
             }
             return [crushShow>0?true:false,kingShow>0?true:false];
-        }
+        },
+        platSource () {
+            return GLOBALS.getUrlParam('from')
+        },
     },
     methods: {
         async getMasterTaskNameList(){
@@ -157,6 +160,10 @@ export default {
             return Request[ename];
         },
         backHome(){
+            // H5平台-任务-成就大厅-返回
+            GLOBALS.marchSetsPoint('A_H5PT0122001166', {
+                entrance: this.platSource
+            })
             location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/#/taskview`
         },
         checkTaskStatus(item,type,curParentTask){
@@ -167,6 +174,13 @@ export default {
             }
         },
         async finish(item,type){
+            // H5平台-任务-成就大厅-去完成
+            GLOBALS.marchSetsPoint('A_H5PT0122001168', {
+                entrance: this.platSource,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+            })
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/cacheGameType',{value : type})
             location.href = `//wap.beeplay123.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
         },
@@ -180,6 +194,13 @@ export default {
                 taskLogId
             })
             if(data.code == 200){
+                // H5平台-任务-成就大厅-去领取
+                GLOBALS.marchSetsPoint('A_H5PT0122001169', {
+                    entrance: this.platSource,
+                    target_project_id: item.gameType,
+                    task_id:item.taskId,
+                    task_name: item.taskName
+                })
                 this.showReceivePop = true
                 this.getMasterList(type,'refresh',item,val)
             }
@@ -314,7 +335,6 @@ export default {
             setTimeout(()=>{
                 this.$set(this.allTaskList[0],'selected',true)
             },100)
-            console.log( this.allTaskList)
         },
         // 显示大师任务
         showCrushMasterTask (item) {
