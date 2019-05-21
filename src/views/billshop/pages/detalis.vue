@@ -49,21 +49,24 @@
         <div class="save-button" @click="goExchange">
            {{currentItem.purchasePrice}}话费券换取
         </div>
+        <!-- 提升弹框 -->
+        <dialog-mask />
     </div>
 </template>
 <script>
 import baseHeader from "../components/baseHeader/baseHeader"
 import field from '../components/field/field'
 import {placeOrder} from "../utils/api"
-import dialog from "../components/dialog"
+import  dialogMask from "../components/dialog/dialog"
 export default {
-    name:"details",
-    components:{baseHeader,field},
+    name:"detailsPage",
+    components:{baseHeader,field,dialogMask},
     data() {
         return {
             selectedIndex:0,
             specNumber:1,
-            requestType:false
+            requestType:false,
+            dialogShow:false,
         }
     },
     computed:{
