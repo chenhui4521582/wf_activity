@@ -2,7 +2,18 @@
     <div class="dialog-warp" v-if="dialogShow">
         <div class="mask-warp"></div>
         <div class="content-warp">
-            <div class="title-warp"></div>
+            <div class="title-warp">
+                <span>温馨提示</span>
+                <div class="close-icon" @click="dialogShow=false"><img src="./image/close-small.png" alt=""></div>
+            </div>
+            <div class="content">
+                <img src="./image/out-of-stock.png" alt="">
+                <div class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
+            </div>
+            <div class="dialog-button">
+                <div class="return base-button" @click="dialogShow=false">返回</div>
+                <div class="save base-button">去赚话费</div>
+            </div>
         </div>
     </div>
 </template>
@@ -41,7 +52,7 @@ export default {
     z-index: 9;
 }
 .content-warp{
-    min-height: 5.7rem;
+    min-height: 6rem;
     width: 6rem;
     position: absolute;
     top:50%;
@@ -55,7 +66,54 @@ export default {
 }
 .title-warp{
     position: relative;
-    
+    height: 0.8rem;
+    width: 100%;
+    line-height: 0.8rem;
+    text-align: center;
+    font-size: 0.26rem;
+    color: #ffffff;
+    .close-icon{
+        position: absolute;
+        top:0;
+        right: 0;
+        height: 0.8rem;
+        width: 0.8rem;
+        img{
+            width: 0.2rem;
+            height: 0.2rem;
+        }
+    }
+}
+.content{
+    text-align: center;
+    padding: 0.4rem 1.2rem;
+    box-sizing: border-box;
+    img{
+        width: 3.1rem;
+    }
+}
+.content-text{
+    font-size: 0.26rem;
+    color: #ffffff;
+}
+.dialog-button{
+    color: #ffffff;
+    font-size: 0.28rem;
+    font-weight: 500;
+    text-align: center;
+    .base-button{
+        display: inline-block;
+        padding: 0.16rem 0.35rem;
+        border-radius: 0.08rem;
+    }
+    .return{
+        background-color: #2B3A55;
+        margin-right: 0.2rem;
+    }
+    .save{
+        background-color: #EE6F0B;
+        margin-left: 0.2rem;
+    }
 }
 </style>
 
