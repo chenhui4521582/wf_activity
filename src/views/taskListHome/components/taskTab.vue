@@ -42,15 +42,15 @@ export default {
     },
     methods:{
         // tab 切换
-        tabChange(index){
+        async tabChange(index){
             if(index===0){
                 localStorage.TAB_TASK_INDEX = ''
-                GLOBALS.marchSetsPoint('A_H5PT0122001170', {
+                await GLOBALS.marchSetsPoint('A_H5PT0122001170', {
                     entrance: this.platSource
                 })// H5平台-成就大厅-大师任务TAB
             }else if(index===1){
                 localStorage.TAB_TASK_INDEX = 1
-                 GLOBALS.marchSetsPoint('A_H5PT0122001171', {
+                await GLOBALS.marchSetsPoint('A_H5PT0122001171', {
                     entrance: this.platSource
                 })//H5平台-成就大厅-王者任务TAB
             }
