@@ -3,12 +3,12 @@
         <div class="g-head1">
             <div class="fh-box">
                 <a href="javascript:" class="btn" @click.stop="handleBack">首页</a>
-                <a href="javascript:" class="btn" @click.stop="showRule = true">规则</a>
+                <a href="javascript:" class="btn" @click.stop="handRule">规则</a>
             </div>
             <div class="title">
                 <div class="item-move" v-if="lamp.length" >
                     <ul  :class="{'anim':isMove}">
-                        <li v-for="item in lamp">恭喜{{item.nickName}}金叶奖励翻{{item.returnRatio}}倍</li>
+                        <li v-for="item in lamp">恭喜<span class="lamp-text">{{item.nickName}}</span>金叶奖励翻{{item.returnRatio}}倍</li>
                     </ul>
                 </div>
             </div>
@@ -26,13 +26,13 @@
             <img src="./images/btn-big-dot.png" class="btn-big-dot">
             <img src="./images/icon-arrow.png" class="icon-arrow">
             <!-- 抽奖按钮 -->
-            <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle">
+            <div class="btn-start" v-if="getRecordNum == 0" @click.stop="circle(false)">
                 <div class="btn-start-text">
                     <p v-if="jyzUserInfo&&jyzUserInfo.betStage == 0">您已经完成此活动</p>
                     <p v-else >点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
                 </div>
             </div>
-            <div class="btn-end" @click.stop="circle" v-else>
+            <div class="btn-end" @click.stop="circle(true)" v-else>
                 <div class="btn-end-text">
                     <p>点我投资{{jyzUserInfo&&jyzUserInfo.betStage}}金叶</p>
                     <span>抽奖次数：{{getRecordNum}}次</span>
@@ -86,6 +86,7 @@
                 timer1: null,
                 timer2: null,
                 isClicked : false,
+                curChannel: localStorage.getItem('APP_CHANNEL')
             }
         },
         components: {
@@ -161,7 +162,12 @@
                 })
 
             },
-            circle(){
+            circle(status){
+                if(status) {
+                    GLOBALS.marchSetsPoint('A_H5PT0074001128')
+                }else {
+                    GLOBALS.marchSetsPoint('A_H5PT0074001130')
+                }
                 let that = this
                 if(that.awardsList && that.awardsList.length == 0){
                     that.$toast.show({
@@ -198,6 +204,7 @@
                         if(this.jyzUserInfo && this.jyzUserInfo.betIncreaseNum != 0) {
                             this.dialogStatus = 'loader'
                             this.showDialog = true
+                            GLOBALS.marchSetsPoint('A_H5PT0074001134')
                         }
                     }
                 })
@@ -236,11 +243,17 @@
                     let countHourse = hourse >= 10 ? hourse : '0'+hourse
                     let countMinute = minute >= 10 ? minute : '0'+minute
                     let countSecond = second >= 10 ? second : '0'+second
-                    this.countTime = `${day * 24 + hourse}时${countMinute}分${countSecond}`
+                    this.countTime = `${countDay}天${countHourse}时${countMinute}分${countSecond}`
                 }, 1000)
             },
             handleBack () {
-                window.history.go(-1)
+                GLOBALS.marchSetsPoint('A_H5PT0074001126')
+                location.href = window.linkUrl.getBackUrl(this.curChannel)
+                // window.history.go(-1)
+            },
+            handRule() {
+                GLOBALS.marchSetsPoint('A_H5PT0074001127')
+                this.showRule = true
             },
             hideRule () {
                 this.showRule = false
@@ -261,6 +274,7 @@
             }
         },
         mounted() {
+            GLOBALS.marchSetsPoint('A_H5PT0074001125')
             this.getAwardsList()
             this.getUserInfo()
             this.getNotice()
@@ -335,6 +349,8 @@
             li {
                 height: .58rem;
                 line-height: .62rem;
+                display: flex;
+                justify-content: center;
             }
         }
     }
@@ -345,6 +361,13 @@
         background-size: 100% 100%;
         overflow: hidden;
     }
+    .lamp-text {
+            display: inline-block;
+            width: 1rem;
+            overflow: hidden;/*超出部分隐藏*/
+            white-space: nowrap;/*不换行*/
+            text-overflow:ellipsis;/*超出部分文字以...显示*/
+        }
     .zp-box {
         width: 5.14rem;
         height: 5.14rem;
@@ -368,16 +391,18 @@
             width: 4.47rem;
             height: 1.48rem;
             font-size: 0.36rem;
-            background: url(./images/btn-active.png) no-repeat;
+            background: url(./images/btn-init.png) no-repeat;
             background-size: 100% 100%;
             text-align: center;
             margin: 5.9rem auto 0;
             .btn-end-text {
                 line-height: 1;
-                padding-top: 0.28rem;
+                padding-top: 0.35rem;
                 color: #511022;
                 p {
                     font-size: .36rem;
+                    position: relative;
+                    top: 0.06rem;
                 }
                 span {
                     font-size: 0.2rem;
@@ -401,6 +426,7 @@
             height: 5.14rem;
 
         }
+        
         .turn-bg {
             width: 5.14rem;
             height: 5.14rem;
