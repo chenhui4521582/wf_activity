@@ -33,7 +33,8 @@
                 <div class="spec-item">
                     <div class="item-title">数量</div>
                     <div class="item-content">
-                        <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota && currentItem.allUsersTodayAvailableQuota != 0">（剩余库存充足）</span>
+                        <span class="item-number-title" v-if="allUsersTodayAvailableQuota">（剩余库存充足）</span>
+                        <span class="item-number-title" v-if="!allUsersTodayAvailableQuota">（剩余库存为0）</span>
                         <div class="item-number-add">
                             <field v-model="specNumber" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
                         </div>
@@ -44,12 +45,12 @@
             <div class="spec-warp description-warp">
                 <div class="title">商品详情</div>
                 <div class="details" v-html="currentItem.description"></div>
-                <div class="details" v-html="currentItem.description"></div>
             </div>
         </div>
         <div class="button-warp" @click="goExchange">
-            <div class="save-button">
-                 {{currentItem.purchasePrice*specNumber}}话费券换取
+            <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
+                <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取</span>
+                <span v-if="!allUsersTodayAvailableQuota">剩余库存为0</span>
             </div>
           
         </div>
@@ -88,6 +89,9 @@ export default {
         currentList(){
             const list = localStorage.getItem('BILL_DETAILS')
             return list?JSON.parse(list):[]
+        },
+        allUsersTodayAvailableQuota(){
+            return this.currentItem.allUsersTodayAvailableQuota&&this.currentItem.allUsersTodayAvailableQuota!=0?true:false
         }
     },
     methods:{
@@ -106,6 +110,8 @@ export default {
                 this.statusCode = 102;
                 return ;
             }
+            // 库存不足
+            if(!this.allUsersTodayAvailableQuota){return}
             // 防止用户疯狂点击请求接口
             if(this.requestType){return}
             this.requestType = true;
@@ -234,6 +240,7 @@ export default {
             font-size: 0;
             flex:1;
             .item-content-child{
+                margin-top: 0.02rem;
                 display: inline-block;
                 padding: 0.11rem 0.32rem;
                 height: 0.42rem;
@@ -289,19 +296,23 @@ export default {
 .button-warp{
     height: 0.9rem;
     width: 100%;
+    .save-button{
+        height: 0.9rem;
+        width: 100%;
+        background-color: #EE6F0B;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        line-height: 0.9rem;
+        text-align: center;
+        font-size: 0.28rem;
+        color: #ffffff;
+    }
+    .save-button-on{
+        background-color: #808080;
+    }
 }
-.save-button{
-    height: 0.9rem;
-    width: 100%;
-    background-color: #EE6F0B;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    line-height: 0.9rem;
-    text-align: center;
-    font-size: 0.28rem;
-    color: #ffffff;
-}
+
 </style>
 
 

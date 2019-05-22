@@ -94,7 +94,7 @@ export default {
     z-index: 9;
 }
 .content-warp{
-    min-height: 6rem;
+    min-height: 5.6rem;
     width: 6rem;
     position: absolute;
     top:50%;
@@ -143,10 +143,13 @@ export default {
     font-size: 0.28rem;
     font-weight: 500;
     text-align: center;
+    margin-top: 0.1rem;
     .base-button{
         display: inline-block;
-        padding: 0.16rem 0.35rem;
         border-radius: 0.08rem;
+        width: 1.8rem;
+        height: 0.6rem;
+        line-height: 0.6rem;
     }
     .return{
         background-color: #2B3A55;
