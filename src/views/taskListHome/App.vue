@@ -127,12 +127,22 @@ export default {
         platSource () {
             return GLOBALS.getUrlParam('from')
         },
+        clearFerrule() {
+            return this.curChannel != '100039' &&
+                this.curChannel != '100042' &&
+                this.curChannel.indexOf('100047') == -1 &&
+                this.curChannel.indexOf('100048') == -1
+        }
     },
     methods: {
         async getMasterTaskNameList(){
             let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
             if(data.code ==200){
                 let list = data.data.batchIds
+                if(!this.clearFerrule) {  //删除赏金
+                    let sjindex = list.indexOf('warrior-achievement')
+                    let spliceList = list.splice(sjindex,1)    
+                }
                 list.map((item,index) => {
                     if(index == 0){
                         this.getMasterList(item, 'first')
