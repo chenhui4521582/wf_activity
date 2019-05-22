@@ -11,7 +11,7 @@
 		</div>
     </div>
 	<!-- 分类tab切换 -->
-	<div class="tab-warp">
+	<div class="tab-warp" v-if="tabList&&tabList.length>0">
 		<div class="item-tab" v-for="(tab,index) in tabList" 
 			:key="index"
 			:class="{'active': selectedIndex == index}"
@@ -71,7 +71,6 @@ export default {
 			if(code===200){
 				this.rewardList = data.categoryList;
 				this.accountBalance =data.accountBalance
-				console.log(this.rewardList)
 			}
 		},
 		// 查看我的奖品
