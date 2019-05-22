@@ -1,9 +1,9 @@
 import $axios from "../http"
 /**
- * @description 获取话费券商城列表
+ * @description 获取话费券商城列表 新的接口
  */
 export const billList = async ()=>{
-    const {data} = await $axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/main')
+    const {data} = await $axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/mainNew')
     return data
 }
 /**
