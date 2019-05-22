@@ -178,6 +178,7 @@ export default {
 .banner-title{
     height: 2.7rem;
     border-top-right-radius: 0.18rem;
+    border-top-left-radius: 0.18rem;
     overflow: hidden;
     img{
         width: 100%;
