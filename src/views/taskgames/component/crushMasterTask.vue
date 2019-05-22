@@ -494,9 +494,12 @@ div{box-sizing: border-box}
         background: url(../img/crushMasterTask/master_bottom.png) no-repeat;
         background-size: 100% 100%;
         ul{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
             li{
+                flex:1;
                 position: relative;
-                float: left;
                 width: .99rem;
                 height: 1.15rem;
                 text-align: center;
@@ -522,6 +525,7 @@ div{box-sizing: border-box}
                 img{
                     width: .83rem;
                     height: .85rem;
+                    margin: 0 auto;
                 }
                 
             }
