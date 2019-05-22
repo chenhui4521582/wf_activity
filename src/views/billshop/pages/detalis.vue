@@ -44,10 +44,14 @@
             <div class="spec-warp description-warp">
                 <div class="title">商品详情</div>
                 <div class="details" v-html="currentItem.description"></div>
+                <div class="details" v-html="currentItem.description"></div>
             </div>
         </div>
-        <div class="save-button" @click="goExchange">
-           {{currentItem.purchasePrice*specNumber}}话费券换取
+        <div class="button-warp" @click="goExchange">
+            <div class="save-button">
+                 {{currentItem.purchasePrice*specNumber}}话费券换取
+            </div>
+          
         </div>
         <!-- 提升弹框 -->
         <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
@@ -168,7 +172,7 @@ export default {
     right: 0;
     left: 0;
     bottom: 0;
-    padding-bottom: 0.9rem;
+    
     overflow-y: scroll;
     background-color: #0f1726;
     .details-content{
@@ -282,11 +286,15 @@ export default {
         font-size: 0.22rem;
     }
 }
+.button-warp{
+    height: 0.9rem;
+    width: 100%;
+}
 .save-button{
     height: 0.9rem;
     width: 100%;
     background-color: #EE6F0B;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     line-height: 0.9rem;
