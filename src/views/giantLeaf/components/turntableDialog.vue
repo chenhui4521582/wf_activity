@@ -7,7 +7,7 @@
           <img src="../images/dialog-loader.png" alt="">
         </div>
         <div class="content">
-          <div class="btn" @click="going">
+          <div class="btn" @click="going(true)">
             <img src="../images/dialog-loader-btn.png" alt="">
           </div>
         </div>
@@ -22,7 +22,7 @@
             <img :src="priceData.data.awardsImg | filter">
           </div>
           <p class="explain">金叶翻{{priceData.data&&priceData.data.returnRatio}}倍,共得{{priceData.data&&priceData.data.awardsAmount}}金叶</p>
-          <div class="btn" @click="going">
+          <div class="btn" @click="going(false)">
             <img src="../images/dialog-success-btn.png" alt="">
           </div>
         </div>
@@ -38,8 +38,8 @@
               <img src="../images/dialog-error-icon1.png" alt="">
             </div>
             <p class="explain" v-html="priceData.message"></p>
-            <div class="btn" @click="goShopping">
-              <img src="../images/dialog-error-btn.png" alt="">
+            <div class="btn" @click="goShopping(true)">
+              <img src="../images/dialog-error-btn1.png" alt="">
             </div>
           </div>
           <div class="no-time" v-if="priceData.code == 202">
@@ -47,8 +47,8 @@
               <img src="../images/dialog-error-icon2.png" alt="">
             </div>
             <p class="explain" v-html="priceData.message"></p>
-            <div class="btn" @click="goShopping">
-              <img src="../images/dialog-error-btn1.png" alt="">
+            <div class="btn" @click="goShopping(false)">
+              <img src="../images/dialog-error-btn.png" alt="">
             </div>
           </div>
         </div>
@@ -93,11 +93,23 @@ export default {
 	hideDialog () {
 	  this.$emit('hideDialog')
 	},
-    goShopping () {
+    goShopping (status) {
+      if(status) {
+        GLOBALS.marchSetsPoint('A_H5PT0074001132')
+      }else {
+        GLOBALS.marchSetsPoint('A_H5PT0074001133')
+      }
+      
       localStorage.setItem('originDeffer', window.location.href)
 	   window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
     },
-	going () {
+	going (status) {
+    if(status) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001135')
+    }else {
+      GLOBALS.marchSetsPoint('A_H5PT0074001131')
+    }
+    
 	  this.$emit('going')
     }
   }
