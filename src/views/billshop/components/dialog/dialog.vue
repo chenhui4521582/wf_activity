@@ -96,7 +96,7 @@ export default {
 .content-warp{
     min-height: 5.6rem;
     width: 6rem;
-    position: absolute;
+    position: fixed;
     top:50%;
     left: 50%;
     margin-left: -3rem;
