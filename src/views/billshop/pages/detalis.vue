@@ -332,6 +332,7 @@ export default {
 }
 .description-warp{
     color: #ffffff;
+    padding: 0.3rem;
     .title{
         font-size: 0.24rem;
         font-weight: 700;
