@@ -229,14 +229,16 @@ export default {
       position: relative;
       .pic-box {
         width: 1.6rem;
-        height: 1.6rem;
-        margin:auto;
-        display: flex;
-        align-items: center;
-				justify-content: center;
+				height: 1.6rem;
+				margin: 0 auto;
+				position: relative;
         img {
-          width: 1.45rem;
-        	height: 0.88rem;
+         	position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					max-width: 120%;
+					max-height: 120%;
         }
       }
       .btn {
