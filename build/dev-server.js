@@ -26,13 +26,15 @@ var proxyTable = config.dev.proxyTable;
 var app = express();
 
 //如果有指定编译目录，那就修改入口
-var target = process.argv.length>2 ? process.argv[process.argv.length-1] || '' :'';
+var targetNames = process.argv.length>2 ? process.argv[process.argv.length-1] || '' :'';
 
-if(target){
-  console.log('=============serve '+target+'=================');
-  var entry  = webpackConfig.entry[target];
-  webpackConfig.entry = {};
-  webpackConfig.entry[target] = entry;
+if(targetNames){
+  console.log('=============serve '+targetNames+'=================');
+  let entrys = {};
+  for(let target of targetNames.split(',')){
+    entrys[target] = webpackConfig.entry[target];
+  }
+  webpackConfig.entry = entrys;
 }
 
 var compiler = webpack(webpackConfig);
