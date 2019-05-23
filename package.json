@@ -16,7 +16,6 @@
     "copy": "node build/copyBuild.js"
   },
   "dependencies": {
-    "argparse": "^1.0.10",
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.11.1",
     "element-ui": "^1.4.2",

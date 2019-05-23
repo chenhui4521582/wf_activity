@@ -1,16 +1,4 @@
 require("./check-versions")();
-var ArgumentParser = require("argparse").ArgumentParser;
-
-var parser = new ArgumentParser({
-    addHelp: true,
-    description: "使用命令 npm run dev -- -t targetName, targetName为活动文件夹名字"
-});
-
-parser.addArgument(["-t", "--target"], {
-    help: "使用命令 npm run dev -- -t targetName, targetName为活动文件夹名字"
-});
-
-const args = parser.parseArgs();
 
 var config = require("../config");
 if (!process.env.NODE_ENV) {
@@ -38,10 +26,13 @@ var proxyTable = config.dev.proxyTable;
 var app = express();
 
 //如果有指定编译目录，那就修改入口
-if(args.target){
-  var entry  = webpackConfig.entry[args.target];
+var target = process.argv.length>2 ? process.argv[process.argv.length-1] || '' :'';
+
+if(target){
+  console.log('=============serve '+target+'=================');
+  var entry  = webpackConfig.entry[target];
   webpackConfig.entry = {};
-  webpackConfig.entry[args.target] = entry;
+  webpackConfig.entry[target] = entry;
 }
 
 var compiler = webpack(webpackConfig);
