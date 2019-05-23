@@ -56,7 +56,6 @@
                 <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取</span>
                 <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
             </div>
-          
         </div>
         <!-- 提升弹框 -->
         <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
@@ -96,7 +95,22 @@ export default {
             return list?JSON.parse(list):[]
         },
         allUsersTodayAvailableQuota(){
-            return this.currentItem.allUsersTodayAvailableQuota&&this.currentItem.allUsersTodayAvailableQuota!=0?true:false
+            // 当前用户今日限量
+            if(this.currentItem.currentUserTodayAvailableQuota===0){
+                return false;
+            }
+            // 所有用户今日限量
+            if(this.currentItem.allUsersTodayAvailableQuota===0){
+                return false;
+            }
+            // 当前用户今日不限量
+            if(this.currentItem.currentUserTodayAvailableQuota===null&&this.currentItem.currentUserTodayAvailableQuota!==0){
+                return true;
+            }
+            // 所有用户今日不限量
+            if(this.currentItem.allUsersTodayAvailableQuota===null&&this.currentItem.allUsersTodayAvailableQuota!==0){
+                return true;
+            }
         }
     },
     mounted(){
