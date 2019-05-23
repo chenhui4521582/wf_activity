@@ -3,11 +3,11 @@ var ArgumentParser = require("argparse").ArgumentParser;
 
 var parser = new ArgumentParser({
     addHelp: true,
-    description: "add target"
+    description: "使用命令 npm run dev -- -t targetName, targetName为活动文件夹名字"
 });
 
 parser.addArgument(["-t", "--target"], {
-    help: "target activity"
+    help: "使用命令 npm run dev -- -t targetName, targetName为活动文件夹名字"
 });
 
 const args = parser.parseArgs();
