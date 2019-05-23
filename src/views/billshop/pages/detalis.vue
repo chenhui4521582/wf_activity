@@ -17,12 +17,16 @@
                 <div class="spec-item" v-if="currentList.length>1" >
                     <div class="item-title">规格</div>
                     <div class="item-content-spec">
-                        <span v-for="(item,index) in currentList" 
-                            :key="index"
-                            :class="{'item-active':selectedIndex===index}"
-                            @click="changeSpec(index)"
-                            class="item-content-child">
-                            {{item.purchasePrice}}元</span>
+                        <template  v-for="(item,index) in currentList">
+                            <span
+                                v-if="item.specs"
+                                :key="index"
+                                :class="{'item-active':selectedIndex===index}"
+                                @click="changeSpec(index)"
+                                class="item-content-child">
+                                {{item.specs}}</span>
+                        </template>
+                        
                     </div>
                 </div>
                 <div class="spec-item" style="margin-bottom:0.2rem">
@@ -44,13 +48,13 @@
             <!-- 详情 -->
             <div class="spec-warp description-warp">
                 <div class="title">商品详情</div>
-                <div class="details" v-html="currentItem.description"></div>
+                <div class="details" id="product_description" v-html="currentItem.description"></div>
             </div>
         </div>
         <div class="button-warp" @click="goExchange">
             <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
                 <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取</span>
-                <span v-if="!allUsersTodayAvailableQuota">剩余库存为0</span>
+                <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
             </div>
           
         </div>
@@ -64,6 +68,7 @@ import field from '../components/field/field'
 import {placeOrder} from "../utils/api"
 import  dialogMask from "../components/dialog/dialog"
 import {getUrlParam} from "../utils/common"
+import { setTimeout, clearTimeout } from 'timers';
 export default {
     name:"detailsPage",
     components:{baseHeader,field,dialogMask},
@@ -73,8 +78,8 @@ export default {
             specNumber:1,
             requestType:false,
             dialogShow:false,
-            statusCode:''
-            
+            statusCode:'',
+            TIME:null, 
         }
     },
     computed:{
@@ -92,6 +97,23 @@ export default {
         },
         allUsersTodayAvailableQuota(){
             return this.currentItem.allUsersTodayAvailableQuota&&this.currentItem.allUsersTodayAvailableQuota!=0?true:false
+        }
+    },
+    mounted(){
+        this.setDetailsImgWidth();
+    },
+    watch:{
+        selectedIndex(to,form){
+            if(to!==form){
+                this.TIME = setTimeout(()=>{
+                   this.setDetailsImgWidth();
+                },0)
+            }
+        }
+    },
+    destroyed(){
+        if(this.TIME){
+            clearTimeout(this.TIME)
         }
     },
     methods:{
@@ -140,16 +162,16 @@ export default {
             if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
                 switch (getUrlParam('from')) {
                 case 'bdWap':
-                    parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal'
+                    parent.location.href = 'https://wap.beeplay123.com/bdWap/#/schedule'
                     break
                 case 'jsWap':
-                    parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal'
+                    parent.location.href = 'https://wap.beeplay123.com/jsWap/#/schedule'
                     break
                 case 'miniWap':
-                    parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal'
+                    parent.location.href = 'https://wap.beeplay123.com/miniWap/#/schedule'
                     break
                 default:
-                    parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal'
+                    parent.location.href = 'https://wap.beeplay123.com/wap/home/#/schedule'
                 }
             } else {
                 switch (getUrlParam('from')) {
@@ -165,6 +187,14 @@ export default {
                 default:
                     parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
                 }
+            }
+        },
+        setDetailsImgWidth(){
+            const product_description = document.getElementById('product_description')
+            const imgList = product_description.getElementsByTagName('img')
+            for(let i=0;i<imgList.length;i++){
+                imgList[i].style.width = "100%"
+                imgList[i].style.height = "auto"
             }
         }
     }
@@ -245,7 +275,7 @@ export default {
                 padding: 0.11rem 0.32rem;
                 height: 0.42rem;
                 margin-right: 0.24rem;
-                border:0.01rem solid #595E68;
+                border:0.02rem solid #595E68;
                 border-radius: 0.21rem;
                 font-size: 0.2rem;
                 color: #ffffff;
@@ -291,6 +321,8 @@ export default {
     }
     .details{
         font-size: 0.22rem;
+        width: 100%;
+        overflow: hidden;
     }
 }
 .button-warp{
