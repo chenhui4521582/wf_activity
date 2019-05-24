@@ -327,7 +327,8 @@ export default {
         }
     }
     .spec-item-line{
-        border: 0.02rem dashed rgba(255,255,255,0.5);
+        height: 0.02rem;
+        background-color: #263a5f;
         margin-bottom: 0.2rem;
     }
 }
