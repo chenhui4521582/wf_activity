@@ -23,7 +23,7 @@
       :newUser = "newTaskItems"
     /> -->
     <!-- sdk 推广 -->
-    <sdk-tab-box>
+    <sdk-tab-box :currentGameType='currentGameType'>
       <div class="t-content" v-if="!isTfStatus">
         <div v-if="newTaskItems && newTaskItems.isNew" class="new-user-task">
             <div class="tips">
