@@ -88,7 +88,7 @@ export default {
     },
     computed:{
         bannerImg(){
-            return this.currentList.length>0?this.currentList[0].picture:''
+            return this.currentList.length>0?this.currentList[0].detailPicture:''
         },
         currentItem(){
             return this.currentList.length>0?this.currentList[this.selectedIndex]:{}
