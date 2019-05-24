@@ -103,11 +103,11 @@ export default {
                 return false;
             }
             // 当前用户今日不限量
-            if(this.currentItem.currentUserTodayAvailableQuota===null){
+            if(this.currentItem.currentUserTodayAvailableQuota===null||this.currentItem.currentUserTodayAvailableQuota!==0){
                 return true;
             }
             // 所有用户今日不限量
-            if(this.currentItem.allUsersTodayAvailableQuota===null){
+            if(this.currentItem.allUsersTodayAvailableQuota===null||this.currentItem.allUsersTodayAvailableQuota!==0){
                 return true;
             }
         }
