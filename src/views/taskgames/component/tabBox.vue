@@ -113,54 +113,148 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
       this.confirm = false
       let linkUrl = this.selectedActivity.linkUrl
-      if (linkUrl.startsWith('/') || linkUrl.includes('external=1')) {
-        this.jumpToGame({ url: linkUrl })
+      this.switchUrl (linkUrl)
+    },
+    async switchUrl (url) {
+      let self = this
+      if (url.startsWith('/') || url.includes('external=1')) {
+        GLOBALS.jumpOutsideGame(url)
+        return
+      }
+      switch (url) {
+        case 'show_task':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/taskview')
+          break// 打开任务
+        case 'feedback':
+          break// 打开充值回馈
+        case 'open_payTurntable':
+          break
+        case 'recharge':
+            if (localStorage.getItem('ACCESS_TOKEN')) {
+                parent.location.href = GLOBALS.shopUrl
+            }
+          break// 打开充值
+        case 'profit_list':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/profitlist/0?from=index')
+          break// 打开排行榜
+        case 'luck_draw':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          break// 打开套圈
+        case 'exchange':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          break// 打开限时兑换
+        case 'spring_benefit':
+          break // 打开新春特惠
+        case 'daygift_info':
+          break
+        case 'open_sign':
+          break
+
+        case 'league_matches':
+          break// 五大联赛接口
+        case 'treasureCeremony':
+          break
+        case 'platform':
+          parent.location.href = 'https://wap.beeplay123.com/activities/platform.html?from=bdWap'
+          break
+        case 'halloween':
+          // 万圣节活动
+          // self.AFiveLink('halloween')
+          break
+        case 'thanksgiving':
+          // 感恩节活动
+          // self.AFiveLink('thanksgiving')
+          break
+        case 'open_member':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/member')
+          break// 新页面
+        case 'js_integration': // 积分抽奖活动
+          // this.$router.push({
+          //   // name:'integrationActivity'
+          //   name: 'newIntegrationActivity'
+          // })
+          break
+        case 'open_gift_eaf':
+          // self.ifShowgiftLeaf = true
+          break
+        case 'open_week_card_guide':
+          // this.noBuyWeekCard = true
+          // this.showWeekCard = true
+          break
+        case 'ipxs':
+          // this.startXs()
+          break
+        case 'double11':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/double11')
+          // self.$router.push('/double11')
+          break // 跳到双十一礼包
+        // 打开大神榜单
+        case 'dashenList':
+          parent.location.href = 'https://wap.beeplay123.com/activities/dashenlist.html'
+          break
+        // 打开抽奖
+        case 'openluckdraw':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          break
+        // 打开我的
+        case 'openmine':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/personal')
+          break
+        // 打开抽奖转盘
+        case 'openLottery':
+          // this.showLottery()
+          break
+        // 打开新人签到
+        case 'openNewSign':
+          // await this.getNewuserawardReceive()
+          // setTimeout(() => {
+          //   this.SET_RAW_SIGN_FLAG(true)
+          // }, 500)
+          break
+        // 打开一元破冰
+        case 'openOneLottery':
+          // this.openBeginnerLottery()
+          break
+        // 打开春节红包
+        case 'festivalPackage':
+          parent.location.href = `https://wap.beeplay123.com/activities/springfestival.html?from=bdWap&source=hb-lunbo`
+          break
+        // 打开我的奖品
+        case 'schedule':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/schedule')
+          // this.$router.replace('/schedule')
+          break
+        // 打开帮助反馈
+        case 'problem':
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/problem')
+          break
+        // 打开在线反馈
+        case 'feedback_personal':
+          // history.pushState({}, '', location.href.split(/\?|\&/)[0])
+          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/problem?tab=feedback_personal')
+          break
+        // 成就任务中心
+        case 'taskListHome':
+          parent.location.href = '//wap.beeplay123.com/activities/taskListHome.html?from=bdWap'
+          break
+        // 打开话费券中心
+        case 'huafeiquan':
+          parent.location.href = '//wap.beeplay123.com/activities/billshop.html?from=bdWap'
+          break
+        case 'moneyTreeShowRank':
+          parent.location.href = 'https://wap.beeplay123.com/moneyTree?time=' + (new Date().getTime())
+          break
+        case 'moneyTreePage':
+          parent.location.href = 'https://wap.beeplay123.com/moneyTree?time=' + (new Date().getTime())
+          break
+        case 'openGiantLeaf':
+          parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' +localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
+          break
+        default:
+          url.includes('//') && (top.location.href = url)
+          break
       }
     },
-    jumpToGame (item) {
-      let token = localStorage.getItem('OPEN_ACCESS_TOKEN')
-      let channel = localStorage.getItem('APP_CHANNEL')
-      if (item && item.url.indexOf('external=1') != -1) {
-        if (item.url.includes('?external=1')) {
-          let url =
-            this.trimStr(item.url) +
-            '&channel=' +
-            channel +
-            '&token=' +
-            token +
-            '&gurl=' +
-            item.url.split('?')[0] +
-            '&pf=' + window.linkUrl.getBackUrlFlag(channel)
-          parent.location.href = url
-        } else {
-          let url =
-            this.trimStr(item.url) +
-            '&channel=' +
-            channel +
-            '&token=' +
-            token +
-            '&gurl=' +
-            base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
-            '&pf=' + window.linkUrl.getBackUrlFlag(channel)
-          parent.location.href = url
-        }
-        return
-      }
-      if (item && item.url.indexOf('databiger-h5') != -1) {
-        let url =
-          this.trimStr(item.url) +
-          '?channel=' +
-          channel +
-          '&token=' +
-          localStorage.getItem('ACCESS_TOKEN')
-        parent.location.href = url
-        return
-      }
-      parent.location.href =
-        item.url +
-        '?channel=' +
-        channel
-    }
   },
   computed: {
   },
