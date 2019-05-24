@@ -78,21 +78,20 @@ export default {
             requestType:false,
             dialogShow:false,
             statusCode:'',
-            TIME:null, 
+            TIME:null,
+            accountBalance:parseFloat(this.$route.query['accountBalance']),
+            currentList:[]
         }
+    },
+    created(){
+        this.currentList = localStorage.getItem('BILL_DETAILS')?JSON.parse(localStorage.getItem('BILL_DETAILS')):[]
     },
     computed:{
         bannerImg(){
-            const list = localStorage.getItem('BILL_DETAILS')
-            return list?JSON.parse(list)[0].picture:''
+            return this.currentList.length>0?this.currentList[0].picture:''
         },
         currentItem(){
-            const list = localStorage.getItem('BILL_DETAILS')
-            return list?JSON.parse(list)[this.selectedIndex]:{}
-        },
-        currentList(){
-            const list = localStorage.getItem('BILL_DETAILS')
-            return list?JSON.parse(list):[]
+            return this.currentList.length>0?this.currentList[this.selectedIndex]:{}
         },
         allUsersTodayAvailableQuota(){
             // 当前用户今日限量
@@ -104,11 +103,11 @@ export default {
                 return false;
             }
             // 当前用户今日不限量
-            if(this.currentItem.currentUserTodayAvailableQuota===null&&this.currentItem.currentUserTodayAvailableQuota!==0){
+            if(this.currentItem.currentUserTodayAvailableQuota===null){
                 return true;
             }
             // 所有用户今日不限量
-            if(this.currentItem.allUsersTodayAvailableQuota===null&&this.currentItem.allUsersTodayAvailableQuota!==0){
+            if(this.currentItem.allUsersTodayAvailableQuota===null){
                 return true;
             }
         }
@@ -139,19 +138,16 @@ export default {
         // 兑换话费
         async goExchange(){
             const {id,purchasePrice} = this.currentItem
-            const {accountBalance} = this.$route.query
-            // 话费不足
-            if(this.specNumber*purchasePrice>accountBalance){
-                this.dialogShow = true;
-                this.statusCode = 102;
-                return ;
-            }
             // 库存不足
             if(!this.allUsersTodayAvailableQuota){return}
             // 防止用户疯狂点击请求接口
             if(this.requestType){return}
             this.requestType = true;
             const {data,code,message} = await placeOrder(id,this.specNumber)
+            if(code===200){
+                // 成功后执行 减去库存
+                this.updateCurrentList(id,this.specNumber)
+            }
             if(code===102||code===104||code===200){
                 this.dialogShow = true;
             }else{
@@ -160,12 +156,6 @@ export default {
                     duration: 1500,
                     isShowMask: true
                 })
-            }
-            // 兑换成功后减去话费劵 --防止关闭继续点击
-            if(code===200){
-                const {query} = this.$route;
-                query.accountBalance = this.specNumber*purchasePrice;
-                this.$router.push({query})
             }
             this.statusCode = code
             this.requestType = false;
@@ -210,6 +200,21 @@ export default {
                 imgList[i].style.width = "100%"
                 imgList[i].style.height = "auto"
             }
+        },
+        // 领取后更新数据
+        updateCurrentList(id,specNumber){
+            this.currentList.forEach(item=>{
+                if(item['id']===id){
+                    // 如果不为null的时候每次领取都减去总库存和个人领奖次数
+                    if(item['allUsersTodayAvailableQuota']!==null){
+                        this.$set(item,'allUsersTodayAvailableQuota',(parseInt(item['allUsersTodayAvailableQuota'])-specNumber))
+                    }
+                    if(item['currentUserTodayAvailableQuota']!==null){
+                        this.$set(item,'currentUserTodayAvailableQuota',(parseInt(item['currentUserTodayAvailableQuota'])-specNumber))
+                    }
+                    this.$set(item,'allConvertedQuota',(parseInt(item['allConvertedQuota'])+specNumber))
+                }
+            })
         }
     }
 }
@@ -328,6 +333,7 @@ export default {
 }
 .description-warp{
     color: #ffffff;
+    padding: 0.3rem;
     .title{
         font-size: 0.24rem;
         font-weight: 700;

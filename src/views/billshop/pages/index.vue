@@ -237,8 +237,8 @@ export default {
 					top: 50%;
 					left: 50%;
 					transform: translate(-50%, -50%);
-					max-width: 120%;
-					max-height: 120%;
+					max-width: 100%;
+					max-height: 100%;
         }
       }
       .btn {
