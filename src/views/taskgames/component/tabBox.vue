@@ -112,7 +112,7 @@ export default {
     jump () {
       GLOBALS.marchSetsPoint('A_H5PT0061001232', {project_id: this.currentGameType}) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
       this.confirm = false
-      location.href = self.selectedActivity.linkUrl
+      GLOBALS.jumpOutsideGame(this.selectedActivity.linkUrl)
     }
   },
   computed: {
