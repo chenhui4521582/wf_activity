@@ -31,7 +31,7 @@
                 </div>
                 <div class="spec-item" style="margin-bottom:0.2rem">
                     <div class="item-title">已选</div>
-                    <div class="item-content item-content-title">{{currentList[selectedIndex].name}}</div>
+                    <div class="item-content item-content-title">{{currentItem.specs}}</div>
                 </div>
                 <div class="spec-item-line"></div>
                 <div class="spec-item">
