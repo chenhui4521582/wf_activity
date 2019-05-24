@@ -101,18 +101,21 @@ export default {
       this.confirm = true
     },
     hideConfirm (val) {
-      if(val){
-        GLOBALS.marchSetsPoint('A_H5PT0061001233', {project_id: this.currentGameType}) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗取消
-      }else{
-        GLOBALS.marchSetsPoint('A_H5PT0061001234', {project_id: this.currentGameType}) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗关闭
+      if (val) {
+        GLOBALS.marchSetsPoint('A_H5PT0061001233', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗取消
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0061001234', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗关闭
       }
       this.selectedActivity = {}
       this.confirm = false
     },
     jump () {
-      GLOBALS.marchSetsPoint('A_H5PT0061001232', {project_id: this.currentGameType}) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
+      GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
       this.confirm = false
-      location.href = self.selectedActivity.linkUrl
+      let linkUrl = this.selectedActivity.linkUrl
+      if (linkUrl.startsWith('/') || linkUrl.includes('external=1')) {
+        GLOBALS.jumpOutsideGame(linkUrl)
+      }
     }
   },
   computed: {
