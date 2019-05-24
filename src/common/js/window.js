@@ -106,8 +106,8 @@ window.GLOBALS = {
     return
   },
   // 跳转外接游戏方法
-  jumpOutsideGame (url) {
-    util.jumpToGame({ url: url })
+  jumpOutsideGame (url, isParent = false) {
+    util.jumpToGame({ url: url, isParent: isParent })
   },
   thirdSetsPoint () {
     return

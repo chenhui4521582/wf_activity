@@ -70,14 +70,7 @@ export default {
       this.isActived = item.name
       GLOBALS.marchSetsPoint(item.eventId, { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB点击
       if (item.name === 'activities') {
-        let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/read'
-        let self = this
-        this.axios.post(url).then(response => {
-          let res = response.data
-          if (res.code === 200) {
-            this.getDetail()
-          }
-        })
+        this.getDetail()
       }
     },
     getDetail () {
@@ -110,38 +103,45 @@ export default {
       this.confirm = false
     },
     jump () {
-      GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
-      this.confirm = false
-      let linkUrl = this.selectedActivity.linkUrl
-      this.switchUrl (linkUrl)
+      let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/read'
+      let self = this
+      this.axios.post(url).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: self.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
+          self.confirm = false
+          let linkUrl = self.selectedActivity.linkUrl
+          self.switchUrl(linkUrl)
+        }
+      })
     },
     async switchUrl (url) {
       let self = this
       if (url.startsWith('/') || url.includes('external=1')) {
-        GLOBALS.jumpOutsideGame(url)
+        GLOBALS.jumpOutsideGame(url, true)
         return
       }
       switch (url) {
         case 'show_task':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/taskview')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/taskview')
           break// 打开任务
         case 'feedback':
           break// 打开充值回馈
         case 'open_payTurntable':
           break
         case 'recharge':
-            if (localStorage.getItem('ACCESS_TOKEN')) {
-                parent.location.href = GLOBALS.shopUrl
-            }
+          if (localStorage.getItem('ACCESS_TOKEN')) {
+            parent.location.href = GLOBALS.shopUrl
+          }
           break// 打开充值
         case 'profit_list':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/profitlist/0?from=index')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/profitlist/0?from=index')
           break// 打开排行榜
         case 'luck_draw':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/luckdraw')
           break// 打开套圈
         case 'exchange':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/luckdraw')
           break// 打开限时兑换
         case 'spring_benefit':
           break // 打开新春特惠
@@ -166,7 +166,7 @@ export default {
           // self.AFiveLink('thanksgiving')
           break
         case 'open_member':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/member')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/member')
           break// 新页面
         case 'js_integration': // 积分抽奖活动
           // this.$router.push({
@@ -185,7 +185,7 @@ export default {
           // this.startXs()
           break
         case 'double11':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/double11')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/double11')
           // self.$router.push('/double11')
           break // 跳到双十一礼包
         // 打开大神榜单
@@ -194,11 +194,11 @@ export default {
           break
         // 打开抽奖
         case 'openluckdraw':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/luckdraw')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/luckdraw')
           break
         // 打开我的
         case 'openmine':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/personal')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/personal')
           break
         // 打开抽奖转盘
         case 'openLottery':
@@ -221,17 +221,17 @@ export default {
           break
         // 打开我的奖品
         case 'schedule':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/schedule')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/schedule')
           // this.$router.replace('/schedule')
           break
         // 打开帮助反馈
         case 'problem':
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,true,'#/problem')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, true, '#/problem')
           break
         // 打开在线反馈
         case 'feedback_personal':
           // history.pushState({}, '', location.href.split(/\?|\&/)[0])
-          parent.location.href=window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/problem?tab=feedback_personal')
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/problem?tab=feedback_personal')
           break
         // 成就任务中心
         case 'taskListHome':
@@ -248,7 +248,7 @@ export default {
           parent.location.href = 'https://wap.beeplay123.com/moneyTree?time=' + (new Date().getTime())
           break
         case 'openGiantLeaf':
-          parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' +localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
+          parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
         default:
           url.includes('//') && (parent.location.href = url)
