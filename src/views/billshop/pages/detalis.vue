@@ -145,6 +145,7 @@ export default {
             this.requestType = true;
             const {data,code,message} = await placeOrder(id,this.specNumber)
             if(code===200){
+                // 成功后执行 减去库存
                 this.updateCurrentList(id,this.specNumber)
             }
             if(code===102||code===104||code===200){
