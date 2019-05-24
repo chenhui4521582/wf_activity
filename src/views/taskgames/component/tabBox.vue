@@ -251,7 +251,7 @@ export default {
           parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' +localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
         default:
-          url.includes('//') && (top.location.href = url)
+          url.includes('//') && (parent.location.href = url)
           break
       }
     },
