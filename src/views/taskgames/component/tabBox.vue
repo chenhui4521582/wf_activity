@@ -84,14 +84,21 @@ export default {
       })
     },
     openPop (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0061001231', {
-        project_id: this.currentGameType,
-        position_id: index + 1,
-        task_id: item.id,
-        task_name: item.name,
-      }) // H5平台-游戏内SDK-活动TAB-广告点击
-      this.selectedActivity = item
-      this.confirm = true
+      let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/read'
+      let self = this
+      this.axios.post(url).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          GLOBALS.marchSetsPoint('A_H5PT0061001231', {
+            project_id: self.currentGameType,
+            position_id: index + 1,
+            task_id: item.id,
+            task_name: item.name
+          }) // H5平台-游戏内SDK-活动TAB-广告点击
+          self.selectedActivity = item
+          self.confirm = true
+        }
+      })
     },
     hideConfirm (val) {
       if (val) {
@@ -103,17 +110,10 @@ export default {
       this.confirm = false
     },
     jump () {
-      let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/read'
-      let self = this
-      this.axios.post(url).then(response => {
-        let res = response.data
-        if (res.code === 200) {
-          GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: self.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
-          self.confirm = false
-          let linkUrl = self.selectedActivity.linkUrl
-          self.switchUrl(linkUrl)
-        }
-      })
+      GLOBALS.marchSetsPoint('A_H5PT0061001232', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗确定
+      this.confirm = false
+      let linkUrl = this.selectedActivity.linkUrl
+      this.switchUrl(linkUrl)
     },
     async switchUrl (url) {
       let self = this
