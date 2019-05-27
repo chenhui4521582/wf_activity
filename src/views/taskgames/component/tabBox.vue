@@ -316,17 +316,20 @@ export default {
   .activities {
     .activity-item {
       position: relative;
-      margin-bottom: 0.24rem;
+      margin: 0 auto 0.24rem;
+      height: 1.48rem;
+      width: 4.5rem;
       .img-container {
+        width: inherit;
+        height: inherit;
         background-color: #1b2538;
-        height: 1.48rem;
         overflow: hidden;
         border-radius: 0.1rem;
       }
       .red {
         position: absolute;
-        right: -0.1rem;
-        top: 0;
+        right: -0.08rem;
+        top: -0.08rem;
         width: 0.18rem;
         height: 0.18rem;
         background-color: #f92a0f;
