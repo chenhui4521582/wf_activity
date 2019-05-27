@@ -398,12 +398,13 @@ export default {
       background: #141f33;
       .closed {
         position: absolute;
-        top: 0.3rem;
-        right: 0.24rem;
+        top: 0;
+        right: 0;
         width: 0.2rem;
         height: 0.2rem;
-        background: url("../images/closed.png") no-repeat center center / 100%
-          100%;
+        padding: 0.28rem;
+        background: url("../images/closed.png") no-repeat center center / 0.2rem
+          0.2rem;
       }
     }
     .content {
