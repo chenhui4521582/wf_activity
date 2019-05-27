@@ -317,8 +317,8 @@ export default {
     .activity-item {
       position: relative;
       margin: 0 auto 0.24rem;
-      height: 1.48rem;
-      width: 4.5rem;
+      // height: 1.48rem;
+      // width: 4.5rem;
       .img-container {
         width: inherit;
         height: inherit;
