@@ -54,7 +54,6 @@ export default {
         }
     },
     jumpToGame:function (item) {
-      debugger
         let token = localStorage.getItem('OPEN_ACCESS_TOKEN')
         let channel = localStorage.getItem('APP_CHANNEL')
         if (item && item.url.indexOf('external=1') != -1) {
