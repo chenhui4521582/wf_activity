@@ -22,8 +22,10 @@
 	<div class="sp-items" v-if="rewardList.length>0&&rewardList[selectedIndex].items">
 			<scroll :data="rewardList[selectedIndex].items">
 					<ul v-if="rewardList[selectedIndex].items">
-						<li  v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)" :key="index"
-						:class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}" >
+						<!-- :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}" -->
+						<li  v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)"
+							:class="{'buyone':buyone(item.productList),'nosurplus':nosurplus(item.productList),'buyover':buyover(item.productList)}" 
+							:key="index">
 							<template v-if="item.productList.length>0">
 								<div class="pic-box">
 									<img :src="item.productList[0].picture | filter">
@@ -42,6 +44,7 @@ import baseHeader from "../components/baseHeader/baseHeader"
 import scroll from '../../../components/scroll/scroll.vue'
 import {billList} from "../utils/api"
 import {getUrlParam} from "../utils/common"
+import { fail } from 'assert';
 export default {
 	name:'index',
 	components:{baseHeader,scroll},
@@ -62,7 +65,7 @@ export default {
 					return item.name
 				})
 			}
-		}
+		},
 	},
 	methods:{
 		// 页面初始化获取列表
@@ -107,7 +110,36 @@ export default {
 					accountBalance:this.accountBalance
 				}
       })
-    },
+		},
+		// 每日限购一次
+		buyone( list){
+			if(list.length>1){
+				return false
+			}
+			if(list.length===1&&list[0].limitPerPersonDay===1){
+				return true;
+			}
+		},
+		// 缺货
+		nosurplus(list){
+			let number = 0;
+			list.forEach(item=>{
+				if(item['allUsersTodayAvailableQuota']!==0){
+					number++
+				}
+			})
+			return number===0?true:false;
+		},
+		// 今日已经购完
+		buyover(list){
+			let number = 0;
+			list.forEach(item=>{
+				if(item['currentUserTodayAvailableQuota']===0){
+					number++
+				}
+			})
+			return number===list.length?true:false;
+		}
 	}
 }
 </script>
