@@ -106,6 +106,7 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0061001234', { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB-广告点击-离开弹窗关闭
       }
+      this.getDetail()
       this.selectedActivity = {}
       this.confirm = false
     },
