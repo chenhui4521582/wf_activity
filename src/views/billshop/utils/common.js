@@ -27,5 +27,6 @@ export const marchSetsPoint = async (event,params)=>{
     entrance: getUrlParam('from'),
     awards_name:params.awards_name?params.awards_name:'',
     task_id:params.task_id?params.task_id:'',
+    residual_phone:params.residual_phone?params.residual_phone:'',
   })
 }

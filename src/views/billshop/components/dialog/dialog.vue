@@ -43,7 +43,7 @@ export default {
        statusCode:{
            type:[Number,String],
            default:''
-       }
+       },
     },
     watch: {
         value(val){
@@ -55,8 +55,12 @@ export default {
     },
     methods: {
         // 去赚话费
-        earnMoney(){
+        async earnMoney(){
             this.dialogShow = false;
+            await marchSetsPoint('A_H5PT0035000638',{
+                residual_phone:this.$route.query['accountBalance']
+            })
+            await marchSetsPoint('A_H5PT0035001268')
             switch (getUrlParam('from')) {
             case 'bdWap':
                 parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
@@ -73,13 +77,17 @@ export default {
         },
         // 去看看其他
         async lookMall(){
-            await marchSetsPoint('A_H5PT0035001268')
+            await marchSetsPoint('A_H5PT0035001268',{
+                residual_phone:this.$route.query['accountBalance']
+            })
             history.go(-1)
         },
         // 去领奖
         async checkprize(){
             this.dialogShow = false;
-            await marchSetsPoint('A_H5PT0035001267')
+            await marchSetsPoint('A_H5PT0035001267',{
+                 residual_phone:this.$route.query['accountBalance']
+            })
             this.$emit('on-checkprize')
         },
     },

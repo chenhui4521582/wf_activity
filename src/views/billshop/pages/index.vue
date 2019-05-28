@@ -1,6 +1,6 @@
 <template>
   <div class="bill-shop">
-	<base-header title="话费券商城"></base-header>
+	<base-header title="话费券商城" :accountBalance="accountBalance"></base-header>
 	<!-- 我的话费券 -->
 	<div class="phone-nav">
 		<div class="nav-item bill-left">
@@ -74,6 +74,9 @@ export default {
 			if(code===200){
 				this.rewardList = data.categoryList;
 				this.accountBalance =data.accountBalance
+				await marchSetsPoint('P_H5PT0035',{
+					residual_phone:this.accountBalance,
+				})
 			}
 		},
 		// 查看我的奖品
@@ -94,9 +97,25 @@ export default {
 		},
 		// 标题切换
 		getNewList (item, index) {
-			marchSetsPoint('A_H5PT0035001264',{
-				awards_name:this.tabList[index]
-			})
+			switch (index) {
+        case 0:
+          marchSetsPoint('A_H5PT0035000634', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-好物推荐
+          break
+        case 1:
+          marchSetsPoint('A_H5PT0035000636', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-手机数码
+          break
+        case 2:
+          marchSetsPoint('A_H5PT0035000635', {
+            residual_phone: this.accountBalance
+          })// H5平台-话费券商城-虚拟卡券
+          break
+        default:
+          break
+      }
 			this.selectedIndex = index
 		},
 		// 打开详情
@@ -104,8 +123,11 @@ export default {
       if (!e._constructed) {
         return
 			}
-			const item = data.productList[0]
 			localStorage.BILL_DETAILS = JSON.stringify(data.productList)
+			await marchSetsPoint('A_H5PT0035001264',{
+				awards_name:data.phyAwardsTypeName,
+				residual_phone:this.accountBalance,
+			})
 			this.$router.push({
 				name: 'detail',
 				query:{
