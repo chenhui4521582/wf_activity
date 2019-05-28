@@ -219,7 +219,7 @@ export default {
                         this.$set(item,'currentUserTodayAvailableQuota',(parseInt(item['currentUserTodayAvailableQuota'])-specNumber))
                     }
                     this.$set(item,'allConvertedQuota',(parseInt(item['allConvertedQuota'])+specNumber))
-                    this.accountBalance = this.accountBalance-(specNumber*purchasePrice)
+                    this.accountBalance = this.accountBalance-(specNumber*item['purchasePrice'])
                 }
             })
         },

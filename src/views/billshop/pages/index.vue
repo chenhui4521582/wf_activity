@@ -50,7 +50,7 @@ export default {
 	components:{baseHeader,scroll},
 	data() {
 		return {
-			accountBalance:'',
+			accountBalance:0,
 			rewardList:[],
 			selectedIndex:0,
 		}
