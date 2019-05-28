@@ -44,7 +44,6 @@ export default {
 	  default: 0
     },
 	newUser: {
-	  type: Object,
       default: () => ({
 		isNew: false
 	  })
