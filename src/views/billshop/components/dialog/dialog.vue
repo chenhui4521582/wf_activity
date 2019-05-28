@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-import {getUrlParam} from "../../utils/common"
+import {getUrlParam,marchSetsPoint} from "../../utils/common"
 export default {
     name:'dialogPage',
     data() {
@@ -72,14 +72,16 @@ export default {
             }
         },
         // 去看看其他
-        lookMall(){
+        async lookMall(){
+            await marchSetsPoint('A_H5PT0035001268')
             history.go(-1)
         },
         // 去领奖
-        checkprize(){
+        async checkprize(){
             this.dialogShow = false;
+            await marchSetsPoint('A_H5PT0035001267')
             this.$emit('on-checkprize')
-        }
+        },
     },
 }
 </script>

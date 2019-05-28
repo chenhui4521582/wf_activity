@@ -43,7 +43,7 @@
 import baseHeader from "../components/baseHeader/baseHeader"
 import scroll from '../../../components/scroll/scroll.vue'
 import {billList} from "../utils/api"
-import {getUrlParam} from "../utils/common"
+import {getUrlParam,marchSetsPoint} from "../utils/common"
 import { fail } from 'assert';
 export default {
 	name:'index',
@@ -94,6 +94,9 @@ export default {
 		},
 		// 标题切换
 		getNewList (item, index) {
+			marchSetsPoint('A_H5PT0035001264',{
+				awards_name:this.tabList[index]
+			})
 			this.selectedIndex = index
 		},
 		// 打开详情
@@ -139,7 +142,7 @@ export default {
 				}
 			})
 			return number===list.length?true:false;
-		}
+		},
 	}
 }
 </script>

@@ -17,3 +17,15 @@ export const getUrlParam = (ename)=> {
     let params = Request[ename] ? Request[ename].split('#')[0] : ''
     return params
 }
+/**
+ * @description 埋点
+ * @param {*} ename 
+ */
+// 埋点方法
+export const marchSetsPoint = async (event,params)=>{
+  await GLOBALS.marchSetsPoint(event, {
+    entrance: getUrlParam('from'),
+    awards_name:params.awards_name?params.awards_name:'',
+    task_id:params.task_id?params.task_id:'',
+  })
+}

@@ -66,8 +66,7 @@ import baseHeader from "../components/baseHeader/baseHeader"
 import field from '../components/field/field'
 import {placeOrder} from "../utils/api"
 import  dialogMask from "../components/dialog/dialog"
-import {getUrlParam} from "../utils/common"
-import { setTimeout, clearTimeout } from 'timers';
+import {getUrlParam,marchSetsPoint} from "../utils/common"
 export default {
     name:"detailsPage",
     components:{baseHeader,field,dialogMask},
@@ -134,15 +133,21 @@ export default {
         changeSpec(index){
             this.selectedIndex  = index;
             this.specNumber = 1;
+            marchSetsPoint('A_H5PT0035001265',{
+                task_id:this.currentList[index].id
+            })
         },
         // 兑换话费
         async goExchange(){
-            const {id,purchasePrice} = this.currentItem
+            const {id,purchasePrice,name} = this.currentItem
             // 库存不足
             if(!this.allUsersTodayAvailableQuota){return}
             // 防止用户疯狂点击请求接口
             if(this.requestType){return}
             this.requestType = true;
+            marchSetsPoint('A_H5PT0035001266',{
+                awards_name:name
+            })
             const {data,code,message} = await placeOrder(id,this.specNumber)
             if(code===200){
                 // 成功后执行 减去库存
@@ -215,7 +220,7 @@ export default {
                     this.$set(item,'allConvertedQuota',(parseInt(item['allConvertedQuota'])+specNumber))
                 }
             })
-        }
+        },
     }
 }
 </script>
