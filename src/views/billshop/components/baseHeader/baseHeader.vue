@@ -11,13 +11,17 @@ export default {
         title:{
             type:String,
             default:''
+        },
+        accountBalance:{
+            type:Number,
+            default:0
         }
     },
     methods: {
         goHistory() {
-            // GLOBALS.marchSetsPoint('A_H5PT0035000632', {
-            //     residual_phone: this.accountBalance
-            // })
+            GLOBALS.marchSetsPoint('A_H5PT0035000632', {
+                residual_phone: this.accountBalance
+            })
             history.go(-1)
         }
 	}
