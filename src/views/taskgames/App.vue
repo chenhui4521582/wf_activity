@@ -210,6 +210,14 @@
         离开当前游戏 前往客服专区？
       </div>
     </common-pop>
+
+    <!-- 人人中青渠道每日任务未完成情况点击弹出 -->
+    <div class="rr-zq-mask" v-if="isRRZQPop">
+      <div class="rr-zq-container">
+        <img :src="quitConfig && quitConfig.taskImage | filter" class="wanliu">
+        <a href="javascript:" class="rr-zq-close" @click.stop="closeRRZQPop"></a>
+      </div>
+    </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -239,7 +247,9 @@
             isTfStatus: false,
             showzspop:false,
             newUserTaskFinish: false,
-		    showBoxDialog:false // 踏青寻宝   活动特有  活动下线 删除
+            isRRZQPop: false,
+            quitConfig: null,
+		        showBoxDialog:false // 踏青寻宝   活动特有  活动下线 删除
         }
     },
     mounted() {
@@ -333,6 +343,9 @@
         sdkRecommend: () => import('./component/recommend')
     },
     methods: {
+        closeRRZQPop() {
+          this.isRRZQPop = false
+        },
         async jumpMine(){
             await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType}) // H5平台-游戏内SDK-话费余额按钮
             parent.location.href = this.jumpToPlat()+'#/personal'
@@ -569,7 +582,6 @@
             return str.replace(/(^\s*)|(\s*$)/g, "")
         },
         goFinish({gameType, url, action, taskId, taskName}, type) {
-
             let actionsArr = [39,35,34,32]
             if(type === 'newtask'){
                 GLOBALS.marchSetsPoint('A_H5PT0061000540', {
@@ -579,12 +591,27 @@
                   task_name: taskName
                 }) // H5平台-游戏内SDK-新人任务-去完成
             } else if (type === 'dayTask') {
+
                 GLOBALS.marchSetsPoint('A_H5PT0061000543', {
                   project_id: this.currentGameType,
                   target_project_id: gameType,
                   task_id: taskId,
                   task_name: taskName
                 }) // H5平台-游戏内SDK-更多每日任务-去完成
+                // 此处人人和中青调用的接口
+                if(localStorage.getItem('APP_CHANNEL') == '100049') {
+                  GLOBALS.marchSetsPoint('A_H5PT0022001262')
+                  this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+                    taskId: taskId
+                  }).then((res)=> {
+                    if(res.data.code == 200) {
+                      this.quitConfig = res.data.data
+                      this.isRRZQPop = true
+                      return
+                    }
+                   })
+                  
+                }
             }
 
             setTimeout(() => {
@@ -844,6 +871,32 @@
 <style lang="less" scoped>
 @import '../../common/css/base.css';
 @import './index';
+.rr-zq-mask {
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  overflow: auto;
+  .rr-zq-container {
+    width: 3.88rem;
+    position: relative;
+    top: 15%;
+    margin: 0 auto;
+  }
+  .wanliu {
+    width: 100%;
+  }
+  .rr-zq-close {
+    width: 0.7rem;
+    height: 0.7rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
 .huafeifont,.figure{color: #FFD338}
 .figure{
     display: inline-block;
