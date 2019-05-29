@@ -22,7 +22,7 @@ export const getUrlParam = (ename)=> {
  * @param {*} ename 
  */
 // 埋点方法
-export const marchSetsPoint = async (event,params)=>{
+export const marchSetsPoint = async (event,params={})=>{
   await GLOBALS.marchSetsPoint(event, {
     entrance: getUrlParam('from'),
     awards_name:params.awards_name?params.awards_name:'',
