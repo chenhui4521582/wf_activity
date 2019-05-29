@@ -46,7 +46,7 @@
                   <span>{{newTaskItems.countDown | formatTime}}</span>
                 </div>
                 <div class="middle" >
-                  <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得5元话费</i></div>
+                  <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得3元话费</i></div>
                   <div class="finish-title" v-else>恭喜！完成了新人任务！</div>
                   <div class="probar-wrap">
                     <div class="probar-ball">
