@@ -60,7 +60,6 @@ export default {
             await marchSetsPoint('A_H5PT0035000638',{
                 residual_phone:this.$route.query['accountBalance']
             })
-            await marchSetsPoint('A_H5PT0035001268')
             switch (getUrlParam('from')) {
             case 'bdWap':
                 parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
