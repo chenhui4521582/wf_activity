@@ -114,7 +114,10 @@
                       <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                       <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                     </div>
-                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                    <div class="item-award">
+                      <p><img :src="item.awardsImage | filter" alt=""></p>
+                      <span>{{item.awardsName}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -142,7 +145,10 @@
                       <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                       <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                     </div>
-                    <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                    <div class="item-award">
+                      <p><img :src="item.awardsImage | filter" alt=""></p>
+                      <span>{{item.awardsName}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -287,9 +293,9 @@ export default {
     poplog,
     crushMasterTask: () => import('./component/crushMasterTask'),
     masterPop: () => import('./component/dialog'),
-    commonPop: () => import("./component/commonPop"),
-    boxDialog: () => import("./component/boxDialog"),
-    kingTask: () => import("./component/kingTask"),
+    commonPop: () => import('./component/commonPop'),
+    boxDialog: () => import('./component/boxDialog'),
+    kingTask: () => import('./component/kingTask'),
     sdkRecommend: () => import('./component/recommend')
   },
   methods: {
@@ -301,7 +307,7 @@ export default {
       return window.linkUrl.getBackUrl(this.channel)
     },
     async getHuafeiNum () {
-      let { data: data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
       this.huafeiNum = data.data
     },
     async gotokf () {
@@ -309,7 +315,7 @@ export default {
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
-      let { data: data } = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', { value: val })
+      let { data } = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', { value: val })
       if (data.code == 200) {
         let showSubMasterList = [],
           crushList = data.data.list, currentParentTask, currentIndex,
@@ -328,7 +334,6 @@ export default {
           })
         }
         crushList.map((item, index) => {
-
           if (item.parentTask.taskId == currentParentTask.parentTask.taskId) {
             currentIndex = index
             return
@@ -388,22 +393,22 @@ export default {
         })
 
         let crushTaskList = {
-          showSubMasterList: showSubMasterList, //外显子任务列表
+          showSubMasterList: showSubMasterList, // 外显子任务列表
           hasFinishedTask: data.data.hasFinishedTask, // 已完成任务数量
           totalTask: data.data.totalTask, // 总任务数量
           currentIndex: currentIndex, // 当前任务索引
           currentParentTask: currentParentTask, // 当前任务
-          allTask: data.data.list,// 总任务列表
+          allTask: data.data.list, // 总任务列表
           finishLength: finishLength, // 当前已完成子任务
           currentLength: currentLength, // 当前总任务
           gameNameIcon: data.data.gameNameIcon, // 当前任务名称
           reward: data.data.reward, // 当前全部奖励
           bgIcon: data.data.bgIcon, // 当前任务背景
-          medalList: medalList, //勋章list
+          medalList: medalList, // 勋章list
           lock: data.data.lock,
           achievementType: data.data.achievementType
         }
-        this.crushTaskList = crushTaskList;
+        this.crushTaskList = crushTaskList
       }
     },
     jumpToPlat () {
@@ -428,37 +433,37 @@ export default {
       switch (this.currentGameType) {
         // 糖果
         case '12':
-          GLOBALS.buriedPoint(1210040820, "H5平台-游戏内任务页-糖果成就任务加载成功");
-          return 'crush-king-achievement';
-          break;
+          GLOBALS.buriedPoint(1210040820, 'H5平台-游戏内任务页-糖果成就任务加载成功')
+          return 'crush-king-achievement'
+          break
         // 弹珠大师
         case '21':
-          return 'marbles-achievement';
-          break;
+          return 'marbles-achievement'
+          break
         case '2':
-          GLOBALS.buriedPoint(1210040830, "H5平台-游戏内任务页-桌球成就任务加载成功");
-          return 'bill-achievement';
-          break;
+          GLOBALS.buriedPoint(1210040830, 'H5平台-游戏内任务页-桌球成就任务加载成功')
+          return 'bill-achievement'
+          break
         // 捕鱼
         case '10':
-          GLOBALS.buriedPoint(1210040840, "H5平台-游戏内任务页-捕鱼成就任务加载成功");
-          return 'fish-achievement';
-          break;
+          GLOBALS.buriedPoint(1210040840, 'H5平台-游戏内任务页-捕鱼成就任务加载成功')
+          return 'fish-achievement'
+          break
         case '5':
-          return 'samguk-achievement';
-          break;
+          return 'samguk-achievement'
+          break
         case '8':
-          return 'moto-achievement';
-          break;
+          return 'moto-achievement'
+          break
         case '9':
-          return 'kingdom-achievement';
-          break;
+          return 'kingdom-achievement'
+          break
         case '13':
-          return 'kingdom2-achievement';
-          break;
+          return 'kingdom2-achievement'
+          break
         case '18':
-          return 'warrior-achievement';
-          break;
+          return 'warrior-achievement'
+          break
         default:
           return ''
       }
@@ -479,11 +484,10 @@ export default {
       }
     },
     async getHuafeiNum () {
-      let { data: data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
       this.huafeiNum = data.data
     },
     checkTaskStatus (item, type, index) {
-
       if (item.taskStatus == 0) {
         this.receive(item, type, index)
       } else if (item.taskStatus == 1) {
@@ -512,24 +516,23 @@ export default {
       }
     },
     getUrlParam: function (ename) {
-      var url = window.location.href;
-      var Request = new Object();
-      if (url && url.indexOf("?") != -1) {
-        var str = url.split('?')[1];
-        var strs = str.split("&");
+      var url = window.location.href
+      var Request = new Object()
+      if (url && url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
         for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
         }
       } else {
-        return '';
+        return ''
       }
-      return Request[ename];
+      return Request[ename]
     },
     trimStr (str) {
-      return str.replace(/(^\s*)|(\s*$)/g, "")
+      return str.replace(/(^\s*)|(\s*$)/g, '')
     },
     goFinish ({ gameType, url, action, taskId, taskName }, type) {
-
       let actionsArr = [39, 35, 34, 32]
       if (type === 'newtask') {
         GLOBALS.marchSetsPoint('A_H5PT0061000540', {
@@ -583,10 +586,7 @@ export default {
         // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
         parent.location.href = GLOBALS.getJumpToGameUrl(url)
-
       }, 500)
-
-
     },
     closePopLog (val) {
       this.showMedalAnimate = false
@@ -596,11 +596,11 @@ export default {
         // 显示获得勋章页
         setTimeout(() => {
           this.showReceiveMedal = true
-        }, 0);
+        }, 0)
       } else if (val == 'showMedalAnimate') {
         setTimeout(() => {
           this.showMedalAnimate = true
-        }, 0);
+        }, 0)
       } else if (val == 'showReceiveMedal') {
         setTimeout(() => {
           let medalList = {
@@ -609,7 +609,7 @@ export default {
           }
           this.awardItem = medalList
           this.isPopLog = true
-        }, 0);
+        }, 0)
       }
       if (val == 'reset') {
         this.newUserTaskFinish = false
@@ -643,7 +643,7 @@ export default {
           task_name: item.taskName
         }) // H5平台-游戏内SDK-新人任务-去领取
       } else {
-        //游戏内任务-去完成
+        // 游戏内任务-去完成
       }
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
         taskId: item.taskId,
@@ -661,7 +661,7 @@ export default {
             case 'motherTask':
               this.newUserTaskFinish = true
               this.getNewTask()
-              break;
+              break
             case 'mother_crush_task':
             case 'crush_task':
               item.awardsFlag = type
@@ -723,17 +723,14 @@ export default {
         gameType: this.currentGameType
       }).then((res) => {
         if (res.data.code == 200) {
-
           this.currentGamesItems = res.data.data.filter((item) => {
             return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
           })
           this.otherGamesItems = res.data.data.filter((item) => {
             return (item.gameType != this.getUrlParam('gametype'))
           })
-
         }
       })
-
     },
     getTransInfo () {
       this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res) => {
@@ -745,7 +742,7 @@ export default {
     getPhoneFragment () {
       this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/richAndconvertList', {
         page: 1,
-        pageSize: 10,
+        pageSize: 10
       }).then((res) => {
         if (res.data.code == 200) {
           this.telFragment = res.data.data.filter((item) => {
@@ -754,18 +751,17 @@ export default {
           GLOBALS.marchSetsPoint('P_H5PT0061', { project_id: this.currentGameType, residual_phone: this.telFragment[0].price.split('元')[0] }) // H5平台-游戏内SDK-页面
         }
       })
-
     },
-    backIndexPage () {//回到平台首页
+    backIndexPage () { // 回到平台首页
       let from = this.getUrlParam('from')
-      if (parent.CONFIG && parent.CONFIG.onBackHome) {//cocos返回大厅的方法
+      if (parent.CONFIG && parent.CONFIG.onBackHome) { // cocos返回大厅的方法
         parent.CONFIG.onBackHome()
       } else if (from && ['wap', 'jsWap', 'bdWap'].includes(from)) {
         parent.location.href = from != 'wap' ? `https://wap.beeplay123.com/${from}/?channel=${this.channel}` : `https://wap.beeplay123.com/${from}/home?channel=${this.channel}`
-      } else {//暂行方式
-        const wapChannels = ['100002', '100004', '100005'];
-        const jsWapChannels = ['100001', '100006', '100022', '100023', '100026', '100028', '100027', '100029', '100035', '100036', '100038'];
-        const bdWapChannels = ['100039', '100040', '100041', '100042'];
+      } else { // 暂行方式
+        const wapChannels = ['100002', '100004', '100005']
+        const jsWapChannels = ['100001', '100006', '100022', '100023', '100026', '100028', '100027', '100029', '100035', '100036', '100038']
+        const bdWapChannels = ['100039', '100040', '100041', '100042']
         if (this.channel == '100032') {
           parent.location.href = `https://wap.beeplay123.com/qingWap/?channel=${this.channel}`
         } else if (jsWapChannels.includes(this.channel)) {
@@ -792,7 +788,7 @@ export default {
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
       } else {
-        console.log('没有找到closeTaksPage');
+        console.log('没有找到closeTaksPage')
       }
     },
     closeBoxDialog () {

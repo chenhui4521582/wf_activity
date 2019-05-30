@@ -126,6 +126,7 @@ body {
   }
 
   .pic {
+    min-width: 0.6rem;
     width: 0.6rem;
     height: 0.6rem;
     border-radius: 12px;
@@ -133,6 +134,7 @@ body {
     margin: 0 0.13rem 0 0.16rem;
 
     img {
+      min-width: 0.6rem;
       width: 0.6rem;
       height: 0.6rem;
     }
@@ -148,30 +150,30 @@ body {
   }
 
   .percent-box {
-    margin-right: 0.16rem;
-
+    margin-right: 0.1rem;
     em {
       max-width: 100% !important;
     }
   }
 
   .item-award {
-    font-size: 0.2rem;
-    color: #FFD338;
-    padding-right: 0.1rem;
+    display: flex;
+    align-items: center;
 
-    i {
-      display: flex;
-      align-items: center;
-      width: 1.76rem;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    p {
+      height: 0.24rem;
+      width: 0.4rem;
+      text-align: center;
+
+      img {
+        height: 100%;
+      }
     }
 
-    img {
-      height: 0.24rem;
-      margin-right: 0.05rem;
+    span {
+      font-size: 0.2rem;
+      color: #f1e3d7;
+      white-space: nowrap;
     }
   }
 }
