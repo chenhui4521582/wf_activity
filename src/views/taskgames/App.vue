@@ -165,6 +165,7 @@
         </template>
         <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
         </poplog>
+        <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
         <!-- 踏青寻宝   活动特有  活动下线 删除-->
         <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
         <!-- 踏青寻宝   活动特有  活动下线 删除-->
@@ -216,7 +217,9 @@ export default {
       newUserTaskFinish: false,
       isRRZQPop: false,
       quitConfig: null,
-      showBoxDialog: false // 踏青寻宝   活动特有  活动下线 删除
+      showBoxDialog: false, // 踏青寻宝   活动特有  活动下线 删除
+      isDailyReceivePop: false,
+      receiveAwards: {}
     }
   },
   mounted () {
@@ -308,6 +311,7 @@ export default {
     boxDialog: () => import('./component/boxDialog'),
     kingTask: () => import('./component/kingTask'),
     sdkRecommend: () => import('./component/recommend'),
+    dailyTaskReceivePop: () => import('./component/dailyTaskReceivePop'),
     sdkTabBox: () => import('./component/tabBox')
   },
   methods: {
@@ -664,16 +668,12 @@ export default {
           task_name: item.taskName
         }) // H5平台-游戏内SDK-新人任务-去领取
       } else {
-        // 游戏内任务-去完成
       }
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
         if (res.data.code == 200) {
-          if (type == 'newtask') {
-            this.isNewTask = true
-          }
           // 弹窗弹出
           this.awardItem = item
           this.getTransInfo()
@@ -702,13 +702,21 @@ export default {
             default:
               item.taskStatus = 2
           }
-          // 踏青寻宝   活动特有  活动下线 删除
-          if (type == 'dayTask' && item.awardsType == '32') {
-            this.showBoxDialog = true
+          if (res.data.data && res.data.data.awardsName) {
+            this.receiveAwards = res.data.data
+            this.isDailyReceivePop = true
           } else {
-            this.isPopLog = true
+            if (type == 'newtask') {
+              this.isNewTask = true
+            }
+            // 踏青寻宝   活动特有  活动下线 删除
+            if (type == 'dayTask' && item.awardsType == '32') {
+              this.showBoxDialog = true
+            } else {
+              this.isPopLog = true
+            }
+            // 踏青寻宝   活动特有  活动下线 删除
           }
-          // 踏青寻宝   活动特有  活动下线 删除
         } else {
           this.$toast.show({
             message: res.data.message,
@@ -812,6 +820,9 @@ export default {
     },
     closeBoxDialog () {
       this.showBoxDialog = false
+    },
+    closeDailyReceivePop () {
+      this.isDailyReceivePop = false
     }
   }
 }
