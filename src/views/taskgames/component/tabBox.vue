@@ -5,7 +5,7 @@
       <div class="red" v-if="unreadQuantity">{{unreadQuantity}}</div>
     </ul>
     <template v-if="isActived === 'tasks'">
-      <h4 class="crush-master-task">成就任务</h4>
+      <!-- <h4 class="crush-master-task" v-if="currentGameType">成就任务</h4> -->
       <slot>
       </slot>
     </template>
