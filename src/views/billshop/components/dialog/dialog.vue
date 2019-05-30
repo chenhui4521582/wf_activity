@@ -61,18 +61,18 @@ export default {
                 residual_phone:this.$route.query['accountBalance']
             })
             switch (getUrlParam('from')) {
-            case 'bdWap':
-                parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-            break
-            case 'jsWap':
-                parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-            break
-            case 'miniWap':
-                parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-            break
-            default:
-                parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-            }
+                case 'bdWap':
+                    parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                break
+                case 'jsWap':
+                    parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                break
+                case 'miniWap':
+                    parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                break
+                default:
+                    parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                }
         },
         // 去看看其他
         async lookMall(){
