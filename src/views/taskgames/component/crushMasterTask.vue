@@ -281,7 +281,7 @@ div{box-sizing: border-box}
     }
 }
 .crush-master-wrap{
-    padding-top: .3rem;
+    // padding-top: .3rem;
     width: 100%;
     height: auto;
     .progress-bg{

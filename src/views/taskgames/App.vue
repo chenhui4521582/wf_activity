@@ -104,7 +104,7 @@
             <h4 class="h-title h-first-title">当前游戏每日任务</h4>
             <ul class="t-items">
               <li v-for="(item, index) in currentGamesItems" :key="index">
-                <div :class="{'actived': item.taskStatus == 2}">
+                <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                   <div class="pic">
                     <img :src="item.icon | filter" alt="">
                   </div>
@@ -135,7 +135,7 @@
             <h4 class="h-title h-third-title">更多每日任务</h4>
             <ul class="t-items">
               <li v-for="(item, index) in otherGamesItems" :key="index">
-                <div :class="{'actived': item.taskStatus == 2}">
+                <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                   <div class="pic">
                     <img :src="item.icon | filter" alt="">
                   </div>
