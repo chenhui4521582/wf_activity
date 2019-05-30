@@ -77,15 +77,22 @@ class ShareInit extends shareMiddleware {
         if(this.specilChannel()) {
             const url = this.jumtUrl['100000']
             this.jump(url)
+            return false
         }
+
+        let isInObject = ''
         for (let i in this.jumtUrl) {
             if(i == this.channel) {
-                const url = this.jumtUrl[i]
-                this.jump(url)
+                isInObject = i
                 break
-            }else {
-                console.log('没有找到当前渠道号')
             }
+        }
+        if(isInObject) {
+            let url = this.jumtUrl[isInObject]
+            this.jump(url)
+        }else {
+            let url = this.jumtUrl['other']
+            this.jump(url)
         }
     }
 }
