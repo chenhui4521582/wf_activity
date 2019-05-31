@@ -115,7 +115,7 @@
                         <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                         <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                       </div>
-                      <div class="item-award">
+                      <div class="new-item-award">
                         <p><img :src="item.awardsImage | filter" alt=""></p>
                         <span>{{item.awardsName}}</span>
                       </div>
@@ -146,7 +146,7 @@
                         <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                         <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                       </div>
-                      <div class="item-award">
+                      <div class="new-item-award">
                         <p><img :src="item.awardsImage | filter" alt=""></p>
                         <span>{{item.awardsName}}</span>
                       </div>
