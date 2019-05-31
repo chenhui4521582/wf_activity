@@ -36,7 +36,7 @@
               <div class="newTask">
                 <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
                   <span class="text">全部完成</span>
-                  <span>再得5元话费</span>
+                  <span>再得3元话费</span>
                 </div>
                 <div class="title" v-else>恭喜！新人任务已全部完成！</div>
                 <ul>
@@ -55,7 +55,7 @@
           </div>
           <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
             <ul class="t-items">
-              <li>
+              <li class="not-daily">
                 <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
                   <div class="pic">
                     <img :src="newUserTaskobj.icon | filter" alt="">
