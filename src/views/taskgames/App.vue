@@ -21,34 +21,28 @@
     <sdk-tab-box :currentGameType='currentGameType'>
       <div class="t-content" v-if="!isTfStatus">
         <div v-if="newTaskItems && newTaskItems.isNew" class="new-user-task">
-            <div class="tips">
-              <img src="./img/tips.png" alt="">
-            </div>
-            <div class="new-task-header">
-              <div class="new-task-inner">
-                  <h4 class="h-title h-new-title icon-tips">
-                    <p class="h-subtitle">
-                      <img src="./img/title1.png" class="xr-icon">
-                      <img src="./images/small-xs-tips.png" class="small-xs-tips">
-                    </p>
-                    <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
-                  </h4>
-                  <div class="newTask">
-                    <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
-                      <span class="text">全部完成</span>
-                      <span>再得3元话费</span>
-                    </div>
-                    <div class="title" v-else>恭喜！新人任务已全部完成！</div>
-                    <ul >
-                      <li class="percent-lq">
-                        <div class="percent-box">
-                          <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
-                        </div>
-                      </li>
-                    </ul>
-                    <div class="explain">
-                      <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
-                      <div v-show="newTaskItems.receiverCounter" class="receive">已有{{newTaskItems.receiverCounter}}人领取</div>
+          <div class="tips">
+            <img src="./img/tips.png" alt="">
+          </div>
+          <div class="new-task-header">
+            <div class="new-task-inner">
+              <h4 class="h-title h-new-title icon-tips">
+                <p class="h-subtitle">
+                  <img src="./img/title1.png" class="xr-icon">
+                  <img src="./images/small-xs-tips.png" class="small-xs-tips">
+                </p>
+                <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
+              </h4>
+              <div class="newTask">
+                <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
+                  <span class="text">全部完成</span>
+                  <span>再得3元话费</span>
+                </div>
+                <div class="title" v-else>恭喜！新人任务已全部完成！</div>
+                <ul>
+                  <li class="percent-lq">
+                    <div class="percent-box">
+                      <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
                     </div>
                   </li>
                 </ul>
@@ -61,7 +55,7 @@
           </div>
           <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
             <ul class="t-items">
-              <li>
+              <li class="not-daily">
                 <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
                   <div class="pic">
                     <img :src="newUserTaskobj.icon | filter" alt="">
