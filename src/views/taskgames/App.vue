@@ -99,9 +99,11 @@
               <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
             </ul>
           </div>
+          <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
         </div>
         <template v-else>
+          <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
           <!-- 大师任务 -->
           <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
