@@ -133,13 +133,10 @@ window.GLOBALS = {
     // 渠道id
     let _channel = localStorage.getItem('APP_CHANNEL') || 100001
     let defaultState = {
-      // deviceid: 'ffffffff-cada-bd5c-cc23-62bb2ddc02a4',
       plateform: 'h5',
       subplateform: userAgent.indexOf('Mac OS') > -1 ? 'ios' : 'android',
       version: localStorage.getItem('version_flag') && localStorage.getItem('version_flag') == 2 ? '2.0.0' : '1.0.0',
       channel: _channel,
-      // client: 'SM-N9008V',
-      // os: '5.0',
       logs: [
         {
           uid: userInfo.userId,
@@ -155,14 +152,6 @@ window.GLOBALS = {
             residual_jingdong: null,
             residual_phone: null
           }, eventcontent)
-          // pmenu: '',
-          // menu: '',
-          // ip: '192.168.0.100',
-          // net: 'wifi',
-          // lon: '43.09',
-          // lat: '91.49',
-          // areacode: '320500',
-          // address: '苏州工业园区星湖街328号'
         }
       ]
     }
