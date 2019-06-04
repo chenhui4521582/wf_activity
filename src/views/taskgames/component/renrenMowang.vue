@@ -92,11 +92,11 @@ export default {
       this.axios.post('//platform-api.beeplay123.com//wap/api/game-category/recently').then((res) => {
         if (res.data.code == 200) {
           let nextGame = res.data.data && res.data.data.list && res.data.data.list[0] || {
-            name: "梦想桌球",
+            name: '梦想桌球',
             type: 2,
-            url: "/billiards/"
+            url: '/billiards/'
           }
-          parent.location.href = GLOBALS.getJumpToGameUrl(nextGame.url);
+          parent.location.href = GLOBALS.getJumpToGameUrl(nextGame.url)
         }
       })
     },
