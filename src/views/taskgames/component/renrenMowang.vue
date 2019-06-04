@@ -119,6 +119,7 @@ export default {
         entrance: this.platSource
       })
       this.$set(this.awardItem, 'isShow', false)
+      this.getItem()
     }
   },
   mounted () {
