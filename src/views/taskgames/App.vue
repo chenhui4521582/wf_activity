@@ -500,10 +500,6 @@ export default {
         return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
       }
     },
-    async getHuafeiNum () {
-      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
-      this.huafeiNum = data.data
-    },
     checkTaskStatus (item, type, index) {
       if (item.taskStatus == 0) {
         this.receive(item, type, index)
@@ -807,10 +803,6 @@ export default {
     kfclick () {
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
-    },
-    async gotokf () {
-      await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     goTask () {
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '/#/taskview')
