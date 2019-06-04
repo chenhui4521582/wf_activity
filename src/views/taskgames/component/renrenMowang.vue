@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="mowangList.length>0 && mowangList[0].taskStatus != 2">
     <ul class="t-items">
       <li v-for="(item, index) in mowangList">
         <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;flex:1">
@@ -77,7 +77,7 @@ export default {
         value: 'renrenMedal'
       }).then((res) => {
         if (res.data.code == 200) {
-          this.mowangList = res.data.data
+          this.mowangList = res.data.data || []
         }
       })
     },
