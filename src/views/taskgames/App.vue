@@ -21,7 +21,7 @@
     <sdk-tab-box :currentGameType='currentGameType'>
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <div v-if="newTaskItems && newTaskItems.isNew" class="new-user-task">
+          <div v-if="showNewUserTask" class="new-user-task">
             <div class="tips">
               <img src="./img/tips.png" alt="">
             </div>
@@ -96,7 +96,7 @@
               </ul>
             </div>
           </div>
-          <template v-else>
+          <template v-if="!showNewUserTask">
             <!-- 大师任务 -->
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
@@ -288,6 +288,15 @@ export default {
     // 显示王者任务
     showKingTask () {
       return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+    },
+    // 显示新手任务
+    showNewUserTask () {
+      let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let isxmChannel = XMCHANNEM.find(item => {
+		return item == APP_CHANNEL
+	  })
+      return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
   filters: {
@@ -731,7 +740,7 @@ export default {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
         value: 'NewUserStairTask'
       }).then((res) => {
-        if (res.data.data.isNew) {
+        if (res.data.data && res.data.data.isNew) {
           GLOBALS.marchSetsPoint('S_00000000000010', {
             project_id: this.currentGameType,
             target_project_id: this.currentGameType
