@@ -4,7 +4,7 @@
       <li v-for="(item, index) in mowangList">
         <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;flex:1">
           <div class="pic">
-            <img :src="item.awardsImage | filter" alt="">
+            <img src="../img/mowang_icon.png" alt="">
           </div>
           <div class="item-text">
             <div class="title">
