@@ -95,8 +95,12 @@
                 <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
               </ul>
             </div>
+            <!-- 人人大恶魔勋章 -->
+            <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
           <template v-if="!showNewUserTask">
+            <!-- 人人大恶魔勋章 -->
+            <renren-mowang v-if="channel==='100049'"></renren-mowang>
             <!-- 大师任务 -->
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
@@ -317,6 +321,7 @@ export default {
   components: {
     poplog,
     crushMasterTask: () => import('./component/crushMasterTask'),
+    renrenMowang: () => import('./component/renrenMowang'),
     masterPop: () => import('./component/dialog'),
     commonPop: () => import('./component/commonPop'),
     boxDialog: () => import('./component/boxDialog'),
@@ -332,9 +337,6 @@ export default {
     async jumpMine () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
       parent.location.href = this.jumpToPlat() + '#/personal'
-    },
-    jumpToPlat () {
-      return window.linkUrl.getBackUrl(this.channel)
     },
     async getHuafeiNum () {
       let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
@@ -435,9 +437,7 @@ export default {
         this.crushTaskList = crushTaskList
       }
     },
-    jumpToPlat () {
-      return window.linkUrl.getBackUrl(this.channel)
-    },
+
     getDegradeTaskStatus () {
       this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
         .then(res => {
@@ -457,7 +457,6 @@ export default {
       switch (this.currentGameType) {
         // 糖果
         case '12':
-          GLOBALS.buriedPoint(1210040820, 'H5平台-游戏内任务页-糖果成就任务加载成功')
           return 'crush-king-achievement'
           break
         // 弹珠大师
@@ -465,12 +464,10 @@ export default {
           return 'marbles-achievement'
           break
         case '2':
-          GLOBALS.buriedPoint(1210040830, 'H5平台-游戏内任务页-桌球成就任务加载成功')
           return 'bill-achievement'
           break
         // 捕鱼
         case '10':
-          GLOBALS.buriedPoint(1210040840, 'H5平台-游戏内任务页-捕鱼成就任务加载成功')
           return 'fish-achievement'
           break
         case '5':
@@ -492,24 +489,8 @@ export default {
           return ''
       }
     },
-    async jumpMine () {
-      await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
-      parent.location.href = this.jumpToPlat() + '#/personal'
-    },
     jumpToPlat () {
-      let baiduChannel = ['100039', '100040', '100041', '100042', '100045', '100046',
-        '100001', '100022', '100023', '100026', '100028', '100027', '100029', '100035', '100036', '100038', '100006', '100049', '100050', '100054', '100056']
-      if (baiduChannel.includes(this.channel)) {
-        return `https://wap.beeplay123.com/bdWap?channel=${this.channel}`
-      } else if (this.channel == '700002') {
-        return `https://wap.beeplay123.com/llwWap?channel=${this.channel}`
-      } else {
-        return `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
-      }
-    },
-    async getHuafeiNum () {
-      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
-      this.huafeiNum = data.data
+      return window.linkUrl.getBackUrl(this.channel)
     },
     checkTaskStatus (item, type, index) {
       if (item.taskStatus == 0) {
@@ -814,10 +795,6 @@ export default {
     kfclick () {
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
-    },
-    async gotokf () {
-      await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     goTask () {
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '/#/taskview')
