@@ -292,7 +292,7 @@ export default {
     // 显示新手任务
     showNewUserTask () {
       let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let XMCHANNEM = ['100051', '100051003', '100051005', '100059']
 	  let isxmChannel = XMCHANNEM.find(item => {
 		return item == APP_CHANNEL
 	  })
