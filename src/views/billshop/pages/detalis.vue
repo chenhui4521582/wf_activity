@@ -39,7 +39,7 @@
                         <span class="item-number-title" v-if="allUsersTodayAvailableQuota">（剩余库存充足）</span>
                         <span class="item-number-title" v-if="!allUsersTodayAvailableQuota">（剩余库存为0）</span>
                         <div class="item-number-add">
-                            <field v-model="specNumber" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
+                            <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@ export default {
                 // 成功后执行 减去库存
                 this.updateCurrentList(id,this.specNumber)
             }
-            if(code===102||code===104||code===200){
+            if(code===102||code===104||code===200||code===107){
                 this.dialogShow = true;
             }else{
                 this.$toast.show({
