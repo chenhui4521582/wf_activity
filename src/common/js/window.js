@@ -150,7 +150,8 @@ window.GLOBALS = {
             task_name: null,
             marketing_id: null,
             residual_jingdong: null,
-            residual_phone: null
+            residual_phone: null,
+            entrance:localStorage.getItem('platSource')||'plat'
           }, eventcontent)
         }
       ]
