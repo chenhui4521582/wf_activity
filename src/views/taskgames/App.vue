@@ -98,10 +98,32 @@
           </div>
           <template v-if="!showNewUserTask">
             <!-- 大师任务 -->
-            <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+            <crush-master-task
+              v-if="showCrushMasterTask"
+              :crushTaskList="crushTaskList"
+              :showReceiveMedal="showReceiveMedal"
+              :showMedalAnimate="showMedalAnimate"
+              :currentMedalIndex="currentMedalIndex"
+              :currentGameType="currentGameType"
+              @checkTaskStatus="checkTaskStatus"
+              @hideMedalAnimate="showMedalAnimate = false"
+              @receive="receive"
+              @refreshTask="refreshTask"
+            />
             <!-- 王者任务 -->
-            <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
-            <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems && !newTaskItems.isNew">
+            <king-task
+              v-if="showKingTask"
+              :crushTaskList="crushTaskList"
+              :showReceiveMedal="showReceiveMedal"
+              :showMedalAnimate="showMedalAnimate"
+              :currentMedalIndex="currentMedalIndex"
+              :currentGameType="currentGameType"
+              @checkTaskStatus="checkTaskStatus"
+              @hideMedalAnimate="showMedalAnimate = false"
+              @receive="receive"
+              @refreshTask="refreshTask"
+            />
+            <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
               <h4 class="h-title h-first-title">当前游戏每日任务</h4>
               <ul class="t-items">
                 <li v-for="(item, index) in currentGamesItems" :key="index">
@@ -164,11 +186,28 @@
               </ul>
             </div>
           </template>
-          <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
+          <poplog
+            v-if="isPopLog"
+            :crushTaskList="crushTaskList"
+            :awardItem="awardItem"
+            :motherTask="motherTask"
+            :isNewTask="isNewTask"
+            :masterTask="masterTask"
+            :newUserTaskFinish="newUserTaskFinish"
+            @close="closePopLog"
+          >
           </poplog>
-          <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
+          <daily-task-receive-pop
+            v-if="isDailyReceivePop"
+            :awards="receiveAwards"
+            @closePop="closeDailyReceivePop"
+          />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
-          <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
+          <box-dialog
+            v-if="showBoxDialog"
+            :awardItem="awardItem"
+            @closeBoxDialog="closeBoxDialog"
+          />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
         </div>
         <div class="t-content" v-show="isTfStatus">
@@ -292,7 +331,7 @@ export default {
     // 显示新手任务
     showNewUserTask () {
       let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-	  let XMCHANNEM = ['100051', '100051003', '100051005', '100059']
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
 	  let isxmChannel = XMCHANNEM.find(item => {
 		return item == APP_CHANNEL
 	  })
