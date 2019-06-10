@@ -777,11 +777,11 @@ export default {
       })
     },
     backIndexPage (param) { // 回到平台首页
-      if (parent.CONFIG && parent.CONFIG.onBackHome) { // cocos返回大厅的方法
-        parent.CONFIG.onBackHome()
-      } else {
-        parent.location.href = window.linkUrl.getBackUrl(this.channel, '', false, true, param)
-      }
+      // if (parent.CONFIG && parent.CONFIG.onBackHome) { // cocos返回大厅的方法
+      //   parent.CONFIG.onBackHome()
+      // } else {
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', false, true, param)
+      // }
     },
     kfclick () {
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
