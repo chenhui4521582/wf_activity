@@ -170,6 +170,7 @@
           </template>
           <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
+          <!-- 新版奖励弹窗 -->
           <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
           <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
@@ -296,10 +297,10 @@ export default {
     // 显示新手任务
     showNewUserTask () {
       let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-	  let XMCHANNEM = ['100051', '100051003', '100051005']
-	  let isxmChannel = XMCHANNEM.find(item => {
-		return item == APP_CHANNEL
-	  })
+      let XMCHANNEM = ['100051', '100051003', '100051005']
+      let isxmChannel = XMCHANNEM.find(item => {
+        return item == APP_CHANNEL
+      })
       return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -573,6 +574,10 @@ export default {
           parent.location.href = url
           return false
         }
+        if (url === 'push_czhk') {
+          this.backIndexPage('&from=push_czhk')
+          return
+        }
         // 跳转到首页（关闭）
         if (action == 36 || url == '/plat/') {
           this.backIndexPage()
@@ -771,25 +776,11 @@ export default {
         }
       })
     },
-    backIndexPage () { // 回到平台首页
-      let from = this.getUrlParam('from')
+    backIndexPage (param) { // 回到平台首页
       if (parent.CONFIG && parent.CONFIG.onBackHome) { // cocos返回大厅的方法
         parent.CONFIG.onBackHome()
-      } else if (from && ['wap', 'jsWap', 'bdWap'].includes(from)) {
-        parent.location.href = from != 'wap' ? `https://wap.beeplay123.com/${from}/?channel=${this.channel}` : `https://wap.beeplay123.com/${from}/home?channel=${this.channel}`
-      } else { // 暂行方式
-        const wapChannels = ['100002', '100004', '100005']
-        const jsWapChannels = ['100001', '100006', '100022', '100023', '100026', '100028', '100027', '100029', '100035', '100036', '100038']
-        const bdWapChannels = ['100039', '100040', '100041', '100042']
-        if (this.channel == '100032') {
-          parent.location.href = `https://wap.beeplay123.com/qingWap/?channel=${this.channel}`
-        } else if (jsWapChannels.includes(this.channel)) {
-          parent.location.href = `https://wap.beeplay123.com/jsWap/?channel=${this.channel}`
-        } else if (bdWapChannels.includes(this.channel)) {
-          parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${this.channel}`
-        } else {
-          parent.location.href = `https://wap.beeplay123.com/wap/home?channel=${this.channel}`
-        }
+      } else {
+        parent.location.href = window.linkUrl.getBackUrl(this.channel, '', false, true, param)
       }
     },
     kfclick () {
