@@ -22,6 +22,10 @@ export default {
         storeMax:{
             type:Number,
             default:0
+        },
+        disabled:{
+            type:Boolean,
+            default:false
         }
     },
     watch:{
@@ -38,6 +42,7 @@ export default {
             this.inputValue--
         },
         addClick(){
+            if(this.disabled){return}
             this.inputValue++
         },
         handleInput(event){
