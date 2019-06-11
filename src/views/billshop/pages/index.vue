@@ -19,7 +19,7 @@
       <scroll :data="rewardList[selectedIndex].items">
         <ul v-if="rewardList[selectedIndex].items">
           <!-- :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}" -->
-          <li v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)" :class="{'buyone':buyone(item.productList),'nosurplus':nosurplus(item.productList),'buyover':buyover(item.productList)}" :key="index">
+          <li v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)" :class="{'buyone':buyone(item.productList),'tehui':item.productList[0].phyAwardsId === 232,'nosurplus':nosurplus(item.productList),'buyover':buyover(item.productList)}" :key="index">
             <template v-if="item.productList.length>0">
               <div class="pic-box">
                 <img :src="item.productList[0].picture | filter">
@@ -34,11 +34,11 @@
   </div>
 </template>
 <script>
-import baseHeader from "../components/baseHeader/baseHeader"
+import baseHeader from '../components/baseHeader/baseHeader'
 import scroll from '../../../components/scroll/scroll.vue'
-import { billList } from "../utils/api"
-import { getUrlParam, marchSetsPoint } from "../utils/common"
-import { fail } from 'assert';
+import { billList } from '../utils/api'
+import { getUrlParam, marchSetsPoint } from '../utils/common'
+import { fail } from 'assert'
 export default {
   name: 'index',
   components: { baseHeader, scroll },
@@ -46,7 +46,7 @@ export default {
     return {
       accountBalance: 0,
       rewardList: [],
-      selectedIndex: 0,
+      selectedIndex: 0
     }
   },
   mounted () {
@@ -59,17 +59,17 @@ export default {
           return item.name
         })
       }
-    },
+    }
   },
   methods: {
     // 页面初始化获取列表
     async pageInit () {
       const { data, code } = await billList()
       if (code === 200) {
-        this.rewardList = data.categoryList;
+        this.rewardList = data.categoryList
         this.accountBalance = data.accountBalance
         await marchSetsPoint('P_H5PT0035', {
-          residual_phone: this.accountBalance,
+          residual_phone: this.accountBalance
         })
       }
     },
@@ -137,29 +137,29 @@ export default {
         return false
       }
       if (list.length === 1 && list[0].limitPerPersonDay === 1) {
-        return true;
+        return true
       }
     },
     // 缺货
     nosurplus (list) {
-      let number = 0;
+      let number = 0
       list.forEach(item => {
         if (item['allUsersTodayAvailableQuota'] !== 0) {
           number++
         }
       })
-      return number === 0 ? true : false;
+      return number === 0
     },
     // 今日已经购完
     buyover (list) {
-      let number = 0;
+      let number = 0
       list.forEach(item => {
         if (item['currentUserTodayAvailableQuota'] === 0) {
           number++
         }
       })
-      return number === list.length ? true : false;
-    },
+      return number === list.length
+    }
   }
 }
 </script>
@@ -311,6 +311,15 @@ a {
       width: 0.98rem;
       height: 0.96rem;
       background: url("../images/buyone.png") no-repeat;
+      background-size: 100% 100%;
+    }
+    &.tehui:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 0.84rem;
+      height: 0.36rem;
+      background: url("../images/tehui_icon.png") no-repeat;
       background-size: 100% 100%;
     }
     &.buyover:before {
