@@ -574,6 +574,10 @@ export default {
           parent.location.href = url
           return false
         }
+        if (url === 'luckdraw') {
+          this.backIndexPage('#/luckdraw')
+          return
+        }
         if (url === 'push_czhk') {
           this.backIndexPage('&from=push_czhk')
           return
