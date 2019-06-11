@@ -114,15 +114,15 @@ export default {
     },
     // 打开详情
     async goDetail (data, e) {
-      if (!e._constructed) {
-        return
-      }
-      localStorage.BILL_DETAILS = JSON.stringify(data.productList)
-      await marchSetsPoint('A_H5PT0035001264', {
+      await GLOBALS.marchSetsPoint('A_H5PT0035001264', {
         awards_name: data.phyAwardsTypeName,
         residual_phone: this.accountBalance,
         product_id: data.productList[0].phyAwardsType
       })
+      if (!e._constructed) {
+        return
+      }
+      localStorage.BILL_DETAILS = JSON.stringify(data.productList)
       this.$router.push({
         name: 'detail',
         query: {
