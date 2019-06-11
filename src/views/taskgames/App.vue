@@ -575,11 +575,11 @@ export default {
           return false
         }
         if (url === 'luckdraw') {
-          this.backIndexPage('#/luckdraw')
+          this.backIndexPage(false, `#/luckdraw?channel=${this.channel}`)
           return
         }
         if (url === 'push_czhk') {
-          this.backIndexPage('&from=push_czhk')
+          this.backIndexPage(false, `#/?channel=${this.channel}&from=push_czhk`)
           return
         }
         // 跳转到首页（关闭）
@@ -780,11 +780,11 @@ export default {
         }
       })
     },
-    backIndexPage (param) { // 回到平台首页
+    backIndexPage (isAddChannel = true, param) { // 回到平台首页
       // if (parent.CONFIG && parent.CONFIG.onBackHome) { // cocos返回大厅的方法
       //   parent.CONFIG.onBackHome()
       // } else {
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', false, true, param)
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', false, isAddChannel, param)
       // }
     },
     kfclick () {
