@@ -18,11 +18,11 @@ axios.interceptors.request.use(function (config) {
     if(!config.headers.Authorization) {
         config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN');
     }
-    
+
     if(!config.headers['App-Channel']) {
         config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL');
     }
-    
+
     // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
     // config.headers['App-Channel'] = '100006';
     localStorage.setItem('APP_VERSION','1.0.0')
@@ -56,11 +56,15 @@ axios.interceptors.response.use(
                     break;
                 case 401:
                     let uid=localStorage.getItem('user_Info')&&JSON.parse(localStorage.getItem('user_Info'))&&JSON.parse(localStorage.getItem('user_Info')).userId||''
-                    if(uid&&(localStorage.getItem('APP_CHANNEL') == 100039||localStorage.getItem('APP_CHANNEL') == 100042||localStorage.getItem('APP_CHANNEL') == 100047001||localStorage.getItem('APP_CHANNEL') == 100048001)){
+                    if(uid){
                         axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res=>{
                             localStorage.removeItem('ACCESS_TOKEN');
                             if(res.data.code==200&&res.data.data){//游客模式
-                                window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
+                                if(localStorage.getItem('APP_CHANNEL') == 100039||localStorage.getItem('APP_CHANNEL') == 100042||localStorage.getItem('APP_CHANNEL') == 100047001||localStorage.getItem('APP_CHANNEL') == 100048001){
+                                    window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
+                                }else{
+                                    window.location.href = `https://wap.beeplay123.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
+                                }
                             }else{
                                 Vue.prototype.$toast.show({
                                     message: '未授权，请登录！',
@@ -136,7 +140,7 @@ axios.interceptors.response.use(
                             break;
                         }
                      }
-                     
+
             }
 
         }
