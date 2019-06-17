@@ -1,6 +1,6 @@
 <template>
   <transition name="scalc">
-    <div class="rule" v-if="showHistory">
+    <div class="rule" @touchmove.prevent v-if="showHistory">
       <div class="mask"></div>
       <div class="box">
         <div class="title">翻倍记录</div>
@@ -112,6 +112,7 @@ export default {
       border-radius: 0 0 10px 10px;
       background: #fdbe68;
       min-height: 5.44rem;
+      font-family: "Avenir", Helvetica, Arial, sans-serif;
       .rule-table {
         text-align: center;
         .rule-title {
@@ -130,7 +131,7 @@ export default {
           }
         }
         .rule-list {
-          font-size: 0.2rem;
+          font-size: 0.22rem;
           color: #ce723e;
           li {
             display: flex;

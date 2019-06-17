@@ -1,7 +1,7 @@
 <template>
   <transition name="scalc">
-    <div class="rule" v-if="showRule">
-      <div class="mask" @touchmove.prevent></div>
+    <div class="rule" @touchmove.prevent v-if="showRule">
+      <div class="mask"></div>
       <div class="box">
         <div class="title">活动规则</div>
         <div class="content">
@@ -142,7 +142,7 @@ export default {
                 flex: 0.94rem 0 0;
               }
               &:last-child {
-                flex: 1.98rem 0 0;
+                flex: 2.18rem 0 0;
               }
             }
           }
@@ -163,12 +163,13 @@ export default {
               flex: 1;
               height: 0.38rem;
               line-height: 0.38rem;
+              white-space: nowrap;
               &:first-child {
                 flex: 0.94rem 0 0;
                 border-right: 1px solid #c23834;
               }
               &:last-child {
-                flex: 1.98rem 0 0;
+                flex: 2.18rem 0 0;
                 border-left: 1px solid #c23834;
               }
             }

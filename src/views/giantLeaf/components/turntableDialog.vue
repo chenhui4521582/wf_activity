@@ -1,14 +1,14 @@
 <template>
   <transition name="scalc">
-    <div class="dialog" v-if="showDialog">
-      <div class="mask" @touchmove.prevent></div>
+    <div class="dialog" @touchmove.prevent v-if="showDialog">
+      <div class="mask"></div>
       <div class="dialog-loader" v-if="dialogStatus== 'loader'">
         <div class="bg">
           <img src="../images/pop_tv.png" alt="">
         </div>
         <div class="content">
           <p>
-            {{jyzUserInfo.betRecordNum ?'免费':'新增'}}<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
+            {{jyzUserInfo.betRecordNum ?'新增':'免费'}}<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
           </p>
           <div class="btn" @click="going(true)">
             翻倍{{jyzUserInfo.betStage}}金叶
@@ -154,7 +154,7 @@ img {
   right: 0;
   top: 0;
   z-index: 10;
-  font-family: AlibabaPuHuiTiB;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   .mask {
     position: fixed;
     left: 0;
@@ -178,7 +178,7 @@ img {
       width: 100%;
       font-size: 0.48rem;
       color: #ffdfdd;
-      font-family: AlibabaPuHuiTiB;
+      font-family: "Avenir", Helvetica, Arial, sans-serif;
       p {
         position: absolute;
         top: 3.26rem;
@@ -225,7 +225,7 @@ img {
       top: 0;
       left: 0;
       width: 100%;
-      font-family: AlibabaPuHuiTiB;
+      font-family: "Avenir", Helvetica, Arial, sans-serif;
       .price {
         margin: 3.8rem auto 0;
         width: 2.24rem;
@@ -291,7 +291,7 @@ img {
       top: 0;
       left: 0;
       width: 100%;
-      font-family: AlibabaPuHuiTiB;
+      font-family: "Avenir", Helvetica, Arial, sans-serif;
       .no-yezi {
         .price {
           margin: 3.5rem auto 0;
