@@ -1,12 +1,12 @@
 <template>
   <transition name="scalc">
     <div class="rule" v-if="showRule">
-      <div class="mask"></div>
+      <div class="mask" @touchmove.prevent></div>
       <div class="box">
         <div class="title">活动规则</div>
         <div class="content">
           <div class="rule-text">
-            1 参与本活动可免费获得1 次翻倍机会;累计充值达到相应额度可获得额外的翻倍机会（累充从活动开始计）;
+            1 参与本活动可免费获得{{rechargeNumber}}次翻倍机会;累计充值达到相应额度可获得额外的翻倍机会（累充从活动开始计）;
             <br>
             2 每次翻倍需拿出相应数量的金叶，拿出的金叶越多，奖励也越丰厚;
             <br>
@@ -60,6 +60,14 @@ export default {
         { sort: 8, recharge: 1500, betAmount: 148888 },
         { sort: 9, recharge: 2500, betAmount: 248888 }
       ]
+    }
+  },
+  computed: {
+    rechargeNumber () {
+      let rechargeList = this.list.filter(element => {
+        return element.recharge === 0
+      })
+      return rechargeList.length
     }
   },
   methods: {
@@ -175,8 +183,8 @@ export default {
       margin-left: -0.3rem;
       width: 0.6rem;
       height: 0.6rem;
-      background: url("../images/closed_icon.png") no-repeat center center / 100%
-        100%;
+      background: url("../images/closed_icon.png") no-repeat center center /
+        100% 100%;
     }
   }
 }

@@ -130,7 +130,7 @@ export default {
           }
         }
         .rule-list {
-          font-size: 0.18rem;
+          font-size: 0.2rem;
           color: #ce723e;
           li {
             display: flex;

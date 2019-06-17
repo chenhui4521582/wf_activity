@@ -1,14 +1,14 @@
 <template>
   <transition name="scalc">
     <div class="dialog" v-if="showDialog">
-      <div class="mask"></div>
+      <div class="mask" @touchmove.prevent></div>
       <div class="dialog-loader" v-if="dialogStatus== 'loader'">
         <div class="bg">
           <img src="../images/pop_tv.png" alt="">
         </div>
         <div class="content">
           <p>
-            {{jyzUserInfo.betRecordNum ?'免费':'获得'}}<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
+            {{jyzUserInfo.betRecordNum ?'免费':'新增'}}<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
           </p>
           <div class="btn" @click="going(true)">
             翻倍{{jyzUserInfo.betStage}}金叶
