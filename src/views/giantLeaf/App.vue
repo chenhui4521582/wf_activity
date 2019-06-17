@@ -96,7 +96,7 @@ export default {
     },
     getProfit () {
       if (this.jyzUserInfo) {
-        return this.jyzUserInfo.profit
+        return this.jyzUserInfo.profit || 0
       }
     },
     getBetStage () {
