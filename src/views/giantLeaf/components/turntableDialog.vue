@@ -8,7 +8,7 @@
         </div>
         <div class="content">
           <p>
-            免费<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
+            {{jyzUserInfo.betRecordNum ?'免费':'获得'}}<span>{{jyzUserInfo.betIncreaseNum}}</span> 次金叶翻倍
           </p>
           <div class="btn" @click="going(true)">
             翻倍{{jyzUserInfo.betStage}}金叶
@@ -154,6 +154,7 @@ img {
   right: 0;
   top: 0;
   z-index: 10;
+  font-family: AlibabaPuHuiTiB;
   .mask {
     position: fixed;
     left: 0;
@@ -177,12 +178,16 @@ img {
       width: 100%;
       font-size: 0.48rem;
       color: #ffdfdd;
+      font-family: AlibabaPuHuiTiB;
       p {
         position: absolute;
         top: 3.26rem;
         left: 50%;
         transform: translateX(-50%);
         white-space: nowrap;
+        span {
+          color: #fedf63;
+        }
       }
       .btn {
         font-size: 0.36rem;
@@ -220,6 +225,7 @@ img {
       top: 0;
       left: 0;
       width: 100%;
+      font-family: AlibabaPuHuiTiB;
       .price {
         margin: 3.8rem auto 0;
         width: 2.24rem;
@@ -285,6 +291,7 @@ img {
       top: 0;
       left: 0;
       width: 100%;
+      font-family: AlibabaPuHuiTiB;
       .no-yezi {
         .price {
           margin: 3.5rem auto 0;
