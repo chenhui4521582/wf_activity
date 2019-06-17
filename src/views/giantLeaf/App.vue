@@ -264,7 +264,7 @@ export default {
       this.showRule = false
     },
     handHistory () {
-      // GLOBALS.marchSetsPoint('A_H5PT0074001127')
+      GLOBALS.marchSetsPoint('A_H5PT0074001340')
       this.showHistory = true
     },
     hideHistory () {
