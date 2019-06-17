@@ -25,9 +25,9 @@
             <div class="rule-list">
               <ul>
                 <li v-for="(item, index) in list" :key="index">
-                  <span>{{item.time}}</span>
-                  <span>{{item.awardsFrom}}</span>
-                  <span>{{item.awardsName}}</span>
+                  <span>第{{item.sort}}次</span>
+                  <span>{{!item.recharge?'赠送':'累充'+item.recharge+'元'}}</span>
+                  <span>拿出{{item.betAmount}}金叶</span>
                 </li>
               </ul>
             </div>
@@ -46,21 +46,22 @@ export default {
     showRule: {
       type: Boolean,
       default: false
+    },
+    list: {
+      type: Array,
+      default: [
+        { sort: 1, recharge: 0, betAmount: 188 },
+        { sort: 2, recharge: 10, betAmount: 588 },
+        { sort: 3, recharge: 50, betAmount: 4888 },
+        { sort: 4, recharge: 120, betAmount: 10888 },
+        { sort: 5, recharge: 300, betAmount: 25888 },
+        { sort: 6, recharge: 500, betAmount: 42888 },
+        { sort: 7, recharge: 900, betAmount: 98888 },
+        { sort: 8, recharge: 1500, betAmount: 148888 },
+        { sort: 9, recharge: 2500, betAmount: 248888 }
+      ]
     }
   },
-  data: () => ({
-    list: [
-      { time: '第1次', awardsFrom: '赠送', awardsName: '拿出188金叶' },
-      { time: '第2次', awardsFrom: '累充10元', awardsName: '拿出588金叶' },
-      { time: '第3次', awardsFrom: '累充50元', awardsName: '拿出4888金叶' },
-      { time: '第4次', awardsFrom: '累充120元', awardsName: '拿出10888金叶' },
-      { time: '第5次', awardsFrom: '累充300元', awardsName: '拿出25888金叶' },
-      { time: '第6次', awardsFrom: '累充500元', awardsName: '拿出42888金叶' },
-      { time: '第7次', awardsFrom: '累充900元', awardsName: '拿出98888金叶' },
-      { time: '第8次', awardsFrom: '累充1500元', awardsName: '拿出148888金叶' },
-      { time: '第9次', awardsFrom: '累充2500元', awardsName: '拿出248888金叶' },
-    ]
-  }),
   methods: {
     hideRule () {
       this.$emit('hideRule')
@@ -78,6 +79,7 @@ export default {
   bottom: 0;
   right: 0;
   top: 0;
+  z-index: 10;
   .mask {
     position: fixed;
     left: 0;
@@ -173,7 +175,7 @@ export default {
       margin-left: -0.3rem;
       width: 0.6rem;
       height: 0.6rem;
-      background: url("../images/closed.png") no-repeat center center / 100%
+      background: url("../images/closed_icon.png") no-repeat center center / 100%
         100%;
     }
   }
