@@ -124,7 +124,7 @@ export default {
       }, 1000)
     },
     setMainTimer (speed = 100) {
-      if (this.mainTimes > 60 && this.finalAwards.returnRatio === this.awardsList[this.activatedIndex].returnRatio) {
+      if (this.mainTimes > 30 && this.finalAwards.returnRatio === this.awardsList[this.activatedIndex].returnRatio) {
         clearTimeout(this.mainTimer)
         this.activatedIndex = 0
         this.mainTimes = 0
@@ -142,7 +142,7 @@ export default {
       if (this.activatedIndex > 9) {
         this.activatedIndex = 0
       }
-      if (this.mainTimes < 50) {
+      if (this.mainTimes < 30) {
         speed = 100
       } else {
         speed = 200
@@ -518,7 +518,9 @@ export default {
           font-size: 0.32rem;
         }
         &.btn_gray {
+          background: url("./images/btn_gray.png") no-repeat top center / 100% 100%;
           p {
+            font-size: 0.38rem;
             line-height: 1rem;
           }
         }

@@ -32,7 +32,7 @@
           <div v-else class="btn" @click="going(false)">
             知道了
           </div>
-          <p class="other" v-if="priceData.data.betStage>0">最多得{{priceData.data.betStage * 8 > 10000? Math.floor(priceData.data.betStage * 8 / 10000)+'万' : priceData.data.betStage * 8}}金叶</p>
+          <p class="other" v-if="priceData.data.betStage>0">最多得{{priceData.data.betStage * 8 > 10000? Math.floor(priceData.data.betStage * 8 / 1000) / 10+'万' : priceData.data.betStage * 8}}金叶</p>
         </div>
         <div class="closed" @click="hideDialog"></div>
       </div>
@@ -51,7 +51,7 @@
               </p>
               差<span>{{priceData.message}}金叶</span>可继续翻倍
               <br>
-              最多得<span>{{jyzUserInfo.betStage * 8 > 10000? Math.floor(jyzUserInfo.betStage * 8 / 10000)+'万' : jyzUserInfo.betStage * 8}}金叶</span>
+              最多得<span>{{jyzUserInfo.betStage * 8 > 10000? Math.floor(jyzUserInfo.betStage * 8 / 1000) / 10 + '万' : jyzUserInfo.betStage * 8}}金叶</span>
             </div>
             <div class="btn" @click="goShopping(true)">
               充{{Math.ceil(parseInt(priceData.message) / 1000)}}元补金叶
@@ -67,7 +67,7 @@
               </p>
               充值<span>{{priceData.message}}元</span>继续翻倍
               <br>
-              最多得<span>{{jyzUserInfo.betStage * 8 > 10000? Math.floor(jyzUserInfo.betStage * 8 / 10000)+'万' : jyzUserInfo.betStage * 8}}金叶</span>
+              最多得<span>{{jyzUserInfo.betStage * 8 > 10000? Math.floor(jyzUserInfo.betStage * 8 / 1000) / 10 +'万' : jyzUserInfo.betStage * 8}}金叶</span>
             </div>
             <div class="btn" @click="goShopping(true)">
               去充{{priceData.message}}元
