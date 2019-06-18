@@ -658,7 +658,7 @@ export default {
         // // }
         // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
-        parent.location.href = GLOBALS.getJumpToGameUrl(url)
+        url&&(parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
     },
     closePopLog (val) {
