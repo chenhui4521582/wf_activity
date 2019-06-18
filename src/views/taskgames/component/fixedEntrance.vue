@@ -22,8 +22,8 @@
           </div>
         </div>
         <p class="btn-box">
-          <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 1" @click="receive(item)">领取</a>
-          <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'new_user_task_fixed_entrance')">去完成</a>
+          <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+          <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="checkTaskStatus(item,'new_user_task_fixed_entrance')">去完成</a>
           <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
         </p>
       </li>
@@ -92,17 +92,15 @@ export default {
       this.$emit('checkTaskStatus', item, type, index)
     },
     receive (item) {
-      this.awardItem = item
-      this.$set(this.awardItem, 'isShow', true)
-      // this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
-      //   taskId: item.taskId,
-      //   taskLogId: item.taskLogId
-      // }).then(res => {
-      //   if (res.data.code === 200) {
-      //     this.awardItem = item
-      //     this.$set(this.awardItem, 'isShow', true)
-      //   }
-      // })
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+        taskId: item.taskId,
+        taskLogId: item.taskLogId
+      }).then(res => {
+        if (res.data.code === 200) {
+          this.awardItem = item
+          this.$set(this.awardItem, 'isShow', true)
+        }
+      })
     },
     close () {
       this.$set(this.awardItem, 'isShow', false)
