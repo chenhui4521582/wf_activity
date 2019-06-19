@@ -593,7 +593,6 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-          GLOBALS.marchSetsPoint('A_H5PT0022001262')
           this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
             taskId: taskId
           }).then((res) => {
@@ -611,6 +610,7 @@ export default {
           if (res.data.code == 200) {
             this.quitConfig = res.data.data
             this.isRRZQPop = true
+            GLOBALS.marchSetsPoint('A_H5PT0022001262')
             return
           }
         })
