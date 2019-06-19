@@ -827,7 +827,7 @@ export default {
       this.showzspop = true
     },
     goTask () {
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '/#/taskview')
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '#/taskview')
     },
     closeNewUser () {
       if (parent.closeTaksPage) {

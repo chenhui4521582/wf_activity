@@ -4,8 +4,8 @@
       <div class="wf-pop" id="wf-pop">
         <div class="header">
           <div class="h-tx">
-            <img :src="userInfo.head | filter" class="pic-tx pull-fl" v-if="userInfo&&userInfo.head"/>
-            <img src="./images/img_photo.png" class="pic-tx pull-fl" v-else/>
+            <img :src="userInfo.head | filter" class="pic-tx pull-fl" v-if="userInfo&&userInfo.head" />
+            <img src="./images/img_photo.png" class="pic-tx pull-fl" v-else />
             <div class="tx-box pull-fl" id="tx-box">
               <img src="./images/icon-leaf.png" class="pic-leaf" />
               <div class="leaf-num">{{userInfo&&userInfo.amount}}</div>
@@ -45,7 +45,7 @@
                   <img class="img3" src="./img/clock.png" alt="">
                   <span>{{newTaskItems.countDown | formatTime}}</span>
                 </div>
-                <div class="middle" >
+                <div class="middle">
                   <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得3元话费</i></div>
                   <div class="finish-title" v-else>恭喜！完成了新人任务！</div>
                   <div class="probar-wrap">
@@ -59,9 +59,7 @@
                   </div>
                 </div>
               </div>
-              <ul class="bottom"
-                  v-if="motherTask.hasFinishedNum != motherTask.allTaskNum"
-                  @click="checkTaskStatus(newUserTaskobj,'new_user_task')
+              <ul class="bottom" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum" @click="checkTaskStatus(newUserTaskobj,'new_user_task')
               ">
                 <li class="description">
                   <div class="head-img">
@@ -101,10 +99,10 @@
             </div>
           </div>
           <div v-else>
-            <div  v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
+            <div v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
               <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length">成就任务</h4>
               <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length">
-                <li v-for="item in cjTaskItems" >
+                <li v-for="item in cjTaskItems">
                   <div class="description">
                     <div class="head-img">
                       <img :src="item.icon | filter" alt="">
@@ -125,7 +123,7 @@
                   </div>
                   <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
                   <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" >
+                  <div class="btn received" v-if="item.taskStatus == 2">
                     已完成
                   </div>
                 </li>
@@ -134,7 +132,7 @@
 
               <h4 class="groups-title" v-if="dayTaskItems&&dayTaskItems.length">每日任务</h4>
               <ul class="task-list" v-if="dayTaskItems&&dayTaskItems.length">
-                <li v-for="item in dayTaskItems" >
+                <li v-for="item in dayTaskItems">
                   <div class="description">
                     <div class="head-img">
                       <img :src="item.icon | filter" alt="">
@@ -155,7 +153,7 @@
                   </div>
                   <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</div>
                   <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</div>
-                  <div class="btn received" v-if="item.taskStatus == 2" >
+                  <div class="btn received" v-if="item.taskStatus == 2">
                     已完成
                   </div>
                 </li>
@@ -166,14 +164,7 @@
               <p>暂无数据~</p>
             </div>
           </div>
-          <poplog
-            v-if="isPopLog"
-            :awardItem="awardItem"
-            :motherTask="motherTask"
-            :masterTask="masterTask"
-            :newUserTaskFinish="newUserTaskFinish"
-            @close="closePopLog"
-          >
+          <poplog v-if="isPopLog" :awardItem="awardItem" :motherTask="motherTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
@@ -191,11 +182,7 @@
                   <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
                   <div class="g-exchange">
                     <span>兑换码：<i>{{item.gameCdkeyRsp.cdKey}}</i></span>
-                    <a href="javascript:" class="btn-fz"
-                      v-clipboard:copy=item.gameCdkeyRsp.cdKey
-                      v-clipboard:success="onCopy"
-                      v-clipboard:error="onError"
-                    >复制兑换码</a>
+                    <a href="javascript:" class="btn-fz" v-clipboard:copy=item.gameCdkeyRsp.cdKey v-clipboard:success="onCopy" v-clipboard:error="onError">复制兑换码</a>
                   </div>
                 </div>
                 <div v-else>
@@ -223,40 +210,40 @@
 <script>
 import '../../common/js/window'
 import poplog from './poplog'
-import common from "../../common/js/utils";
-import base64url from 'base64-url';
+import common from '../../common/js/utils'
+import base64url from 'base64-url'
 export default {
-  data() {
-      return {
-        userInfo: null,
-        cdkArr: null,
-        isTabUse: false,
-        curlink: null,
-        hideBackArr: ['100037','100033001'],
-        curChannel: null,
-        curToken: null,
-        curIndex: 0,
-        dayTaskItems: null,
-        cjTaskItems: null,
-        gameType: null,
-        isFighur: false,
-        timer1: null,
-        cGameType: null,
-		newTaskItems: false,
-		awardItem: null,
-		isNewTask: null,
-		newUserTaskFinish: false,
-		isPopLog: false,
-		masterTask : false
-      }
+  data () {
+    return {
+      userInfo: null,
+      cdkArr: null,
+      isTabUse: false,
+      curlink: null,
+      hideBackArr: ['100037', '100033001'],
+      curChannel: null,
+      curToken: null,
+      curIndex: 0,
+      dayTaskItems: null,
+      cjTaskItems: null,
+      gameType: null,
+      isFighur: false,
+      timer1: null,
+      cGameType: null,
+      newTaskItems: false,
+      awardItem: null,
+      isNewTask: null,
+      newUserTaskFinish: false,
+      isPopLog: false,
+      masterTask: false
+    }
   },
-  mounted() {
-    this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL'):this.getUrlParam('channel')
-    this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN'):this.getUrlParam('token')
+  mounted () {
+    this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
+    this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
     this.cGameType = this.getUrlParam('gameType') || ''
     let cururl = window.location.href
     this.curlink = this.getUrlParam('wf_cur_link')
-    if(this.curChannel && this.curChannel.indexOf('100') != -1) {
+    if (this.curChannel && this.curChannel.indexOf('100') != -1) {
       this.getUserInfo()
       this.getCdkeyStatus()
       this.getDayTask()
@@ -265,103 +252,103 @@ export default {
     }
   },
   components: {
-	poplog
+    poplog
   },
   computed: {
-    isHideMenu() {
+    isHideMenu () {
       return this.hideBackArr.includes(this.curChannel)
     },
-    isDayTaskRed() {
+    isDayTaskRed () {
       let newArr = []
-      if(this.dayTaskItems && this.cjTaskItems) {
+      if (this.dayTaskItems && this.cjTaskItems) {
         newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
       }
-      return newArr && newArr.filter((item)=> {
+      return newArr && newArr.filter((item) => {
         return item.taskStatus == 0
       }).length
     },
-    isCjTaskRed() {
-      return this.cdkArr && this.cdkArr.filter((item)=> {
-        return item.gameCdkeyRsp.remainNum*100 > 0
+    isCjTaskRed () {
+      return this.cdkArr && this.cdkArr.filter((item) => {
+        return item.gameCdkeyRsp.remainNum * 100 > 0
       }).length
     },
-	motherTask () {
-	  let list = this.newTaskItems && this.newTaskItems.taskList || []
-	  let motherTask = list.filter(item=>{
-		return item.subTask
-	  })[0]
-	  list = list.filter(item => {
-		return !item.subTask
-	  })
-	  let finishedTaskNum = list.filter(item=>{
-		return item.taskStatus == 2
-	  }).length
-	  if(motherTask) {
-		motherTask.allTaskNum = list.length
-		motherTask.hasFinishedNum = finishedTaskNum
-		return motherTask
-	  }
-	  return ''
-	},
-	newUserTaskobj () {
-	  let list = this.newTaskItems && this.newTaskItems.taskList || []
-	  let taskObj = null
-	  list = list.filter(item => { // 刷选出子任务
-		return !item.subTask
-	  })
-	  // 找到当前需要展示的任务，第一个taskStatus不为2的任务
-	  for(let i=0; i<list.length; i++){
-		if(list[i].taskStatus != 2){  // taskStatus: 0-带领取 1-未完成 2-已领取
-		  taskObj = list[i]
-		  break
-		}
-	  }
-	  return taskObj
-	}
+    motherTask () {
+      let list = this.newTaskItems && this.newTaskItems.taskList || []
+      let motherTask = list.filter(item => {
+        return item.subTask
+      })[0]
+      list = list.filter(item => {
+        return !item.subTask
+      })
+      let finishedTaskNum = list.filter(item => {
+        return item.taskStatus == 2
+      }).length
+      if (motherTask) {
+        motherTask.allTaskNum = list.length
+        motherTask.hasFinishedNum = finishedTaskNum
+        return motherTask
+      }
+      return ''
+    },
+    newUserTaskobj () {
+      let list = this.newTaskItems && this.newTaskItems.taskList || []
+      let taskObj = null
+      list = list.filter(item => { // 刷选出子任务
+        return !item.subTask
+      })
+      // 找到当前需要展示的任务，第一个taskStatus不为2的任务
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].taskStatus != 2) {  // taskStatus: 0-带领取 1-未完成 2-已领取
+          taskObj = list[i]
+          break
+        }
+      }
+      return taskObj
+    }
   },
   methods: {
-    receive(item) {
-        this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
-          taskId: item.taskId,
-          taskLogId: item.taskLogId
-        },{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        }).then((res)=> {
-          if(res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功！',
-              duration: 1500
-            });
-            item.taskStatus = 2;
-            this.getPlatTaskByBatch()
-            this.getDayTask()
-          }
-        })
+    receive (item) {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+        taskId: item.taskId,
+        taskLogId: item.taskLogId
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$toast.show({
+            message: '领取成功！',
+            duration: 1500
+          })
+          item.taskStatus = 2
+          this.getPlatTaskByBatch()
+          this.getDayTask()
+        }
+      })
     },
-    goFinish({gameType, url, action, taskId},type) {
-      let actionsArr = [39,35,34,32]
+    goFinish ({ gameType, url, action, taskId }, type) {
+      let actionsArr = [39, 35, 34, 32]
       // 跳转到首页（关闭）
-      if(action == 36 || url == '/plat/') {
-          parent.location.href = this.jumpToPlat()
-          return
+      if (action == 36 || url == '/plat/') {
+        parent.location.href = this.jumpToPlat()
+        return
       }
       // 跳转商城
       if (gameType == 0 && actionsArr.includes(action)) {
-          parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
-          return
+        parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+        return
       }
       // 跳平台(关闭)
       if (gameType == 0 && action == 2) {
-          parent.location.href = this.jumpToPlat()
-          return
+        parent.location.href = this.jumpToPlat()
+        return
       }
       // 跳转固定入口
-      if(url && url.indexOf('?fixedEntry') != -1) {
-          parent.location.href = GLOBALS.getJumpToGameUrl(url)
-          return;
+      if (url && url.indexOf('?fixedEntry') != -1) {
+        parent.location.href = GLOBALS.getJumpToGameUrl(url)
+        return
       }
 
       clearTimeout(this.timer1)
@@ -371,89 +358,89 @@ export default {
       }, 3000)
       parent.location.href = GLOBALS.getJumpToGameUrl(url)
     },
-    trimStr:function(str) {
-        return str.replace(/(^\s*)|(\s*$)/g, '')
+    trimStr: function (str) {
+      return str.replace(/(^\s*)|(\s*$)/g, '')
     },
-    jumpToPlat(){
-        return window.linkUrl.getBackUrl(this.curChannel)
+    jumpToPlat () {
+      return window.linkUrl.getBackUrl(this.curChannel)
     },
-    transUint(finishNum,taskOps){
-        let finish = finishNum > 10000 ? (finishNum/10000).toFixed(2) + '万' : finishNum,
-            ops = taskOps > 10000 ? taskOps/10000+'万' : taskOps
-        return  finish+'/'+ops
+    transUint (finishNum, taskOps) {
+      let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
+        ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
+      return finish + '/' + ops
     },
-    getPlatTaskByBatch() {
+    getPlatTaskByBatch () {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: this.cGameType+"-achievementTask",
-        from: "sdk",
+        value: this.cGameType + '-achievementTask',
+        from: 'sdk',
         gameType: this.cGameType || ''
-      },{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        }).then((res) => {
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
         this.cjTaskItems = res.data.data
       })
     },
-    getDayTask() {
+    getDayTask () {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: this.cGameType+"-dayTask",
-        from: "sdk",
+        value: this.cGameType + '-dayTask',
+        from: 'sdk',
         gameType: this.cGameType || ''
-      },{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        }).then((res) => {
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
         this.dayTaskItems = res.data.data
       })
     },
-    tabNav(idx) {
+    tabNav (idx) {
       this.curIndex = idx
     },
-    //获取地址栏问号后面的参数值
+    // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-        var url = window.location.href;
-        var Request = new Object();
-        if (url.indexOf("?") != -1) {
-            var str = url.split('?')[1];
-            var strs = str.split("&");
-            for (var i = 0; i < strs.length; i++) {
-                Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
-            }
-        } else {
-            return '';
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
         }
-        return Request[ename];
+      } else {
+        return ''
+      }
+      return Request[ename]
     },
-    goMenu() {
+    goMenu () {
       localStorage.removeItem('gurlSDK')
       top.location.href = window.linkUrl.getBackUrl(this.curChannel)
     },
-    onCopy() {
+    onCopy () {
       this.$toast.show({
         message: '复制成功！',
         duration: 1500
-      });
+      })
     },
-    onError() {
+    onError () {
       this.$toast.show({
         message: '复制失败！',
         duration: 1500
-      });
+      })
     },
-    getAward(item) {
+    getAward (item) {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
-      },{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        }).then((res)=> {
-        if(res.data.code == 200) {
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
           this.$toast.show({
             message: '领取成功',
             duration: 1500
@@ -462,123 +449,123 @@ export default {
         }
       })
     },
-    handleTabUse() {
+    handleTabUse () {
       this.isTabUse = !this.isTabUse
     },
-    getUserInfo() {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo',{},{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        })
-        .then((res)=> {
-          if(res.data.code == 200) {
-            this.userInfo = res.data.data
-          }
-        })
-    },
-    getCdkeyStatus() {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
-        value: this.curlink
-      },{
-            headers: {
-                'App-Channel': this.curChannel,
-                'Authorization': this.curToken
-            }
-        }).then((res)=> {
-        if(res.data.code == 200) {
-          this.cdkArr = res.data.data
-        }
-      })
-    },
-	getNewTask() {
-	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
-      {
-		value: 'NewUserStairTask'
-	  },
-      {
-		headers: {
-		  'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-		}
-	  }).then((res)=> {
-		if(res.data.code == 200) {
-		  this.newTaskItems = res.data.data
-		}
-		if(parent.LoadTaskFinish) {
-		  parent.LoadTaskFinish()
-		}
-	  })
-	},
-	checkTaskStatus (item, type, index) {
-	  if (item.taskStatus == 0) {
-		this.receive1(item, type, index)
-	  } else if (type == 'day_task' || item.taskStatus == 1) {
-		this.goFinish(item, type)
-	  }
-	},
-	receive1(item, type,index,medalimg) {
-	  if(type == 'crush_task' || type == 'mother_crush_task'){
-		item.awardsFlag = type
-		item.index = index
-		item.medalimg = medalimg
-		GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType,null,{taskId:item.taskId}) //事件ID 事件名称 游戏ID 游戏位置
-	  }else{
-		  //游戏内任务-去完成
-		}
-	  this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
-		taskId: item.taskId,
-		taskLogId: item.taskLogId
-      },{
+    getUserInfo () {
+      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo', {}, {
         headers: {
           'App-Channel': this.curChannel,
           'Authorization': this.curToken
         }
-      }).then((res)=> {
-		if(res.data.code == 200) {
-		  this.awardItem = item
-		  switch(type) {
-			case 'mother_task':
-			  this.newUserTaskFinish = true
-			  this.getNewTask()
-			  break;
-			default:
-			  item.taskStatus = 2
-		  }
-		  this.isPopLog = true
-		}else{
-		  this.$toast.show({
-			message: res.data.message,
-			duration: 1500
-		  })
-		}
-	  })
-	},
-	goTask () {
-      parent.location.href =window.linkUrl.getBackUrl(this.curChannel,'','',true,'/#/taskview')
-	},
-	closePopLog(val) {
-	  this.isPopLog = false
-      if(val){
+      })
+        .then((res) => {
+          if (res.data.code == 200) {
+            this.userInfo = res.data.data
+          }
+        })
+    },
+    getCdkeyStatus () {
+      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
+        value: this.curlink
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.cdkArr = res.data.data
+        }
+      })
+    },
+    getNewTask () {
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
+        {
+          value: 'NewUserStairTask'
+        },
+        {
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
+          }
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.newTaskItems = res.data.data
+          }
+          if (parent.LoadTaskFinish) {
+            parent.LoadTaskFinish()
+          }
+        })
+    },
+    checkTaskStatus (item, type, index) {
+      if (item.taskStatus == 0) {
+        this.receive1(item, type, index)
+      } else if (type == 'day_task' || item.taskStatus == 1) {
+        this.goFinish(item, type)
+      }
+    },
+    receive1 (item, type, index, medalimg) {
+      if (type == 'crush_task' || type == 'mother_crush_task') {
+        item.awardsFlag = type
+        item.index = index
+        item.medalimg = medalimg
+        GLOBALS.buriedPoint(1210040826, 'H5平台-游戏内成就任务页-领取', item.gameType, null, { taskId: item.taskId }) // 事件ID 事件名称 游戏ID 游戏位置
+      } else {
+        // 游戏内任务-去完成
+      }
+      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+        taskId: item.taskId,
+        taskLogId: item.taskLogId
+      }, {
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.awardItem = item
+          switch (type) {
+            case 'mother_task':
+              this.newUserTaskFinish = true
+              this.getNewTask()
+              break
+            default:
+              item.taskStatus = 2
+          }
+          this.isPopLog = true
+        } else {
+          this.$toast.show({
+            message: res.data.message,
+            duration: 1500
+          })
+        }
+      })
+    },
+    goTask () {
+      parent.location.href = window.linkUrl.getBackUrl(this.curChannel, '', '', true, '#/taskview')
+    },
+    closePopLog (val) {
+      this.isPopLog = false
+      if (val) {
         this.goTask()
       }
-	}
+    }
   },
-  filters:{
-	formatTime (time) {
-	  let days = time / 1000 / 3600 / 24
-	  let day = Math.floor(days)
-	  let hours = Math.ceil((days-day) * 24)
-	  return `仅剩${day}天${hours}小时`
-	}
+  filters: {
+    formatTime (time) {
+      let days = time / 1000 / 3600 / 24
+      let day = Math.floor(days)
+      let hours = Math.ceil((days - day) * 24)
+      return `仅剩${day}天${hours}小时`
+    }
   }
 }
 
 </script>
 <style lang="less" scoped>
-@import '../../common/css/base.css';
-@import './wj.less';
+@import "../../common/css/base.css";
+@import "./wj.less";
 .fighur {
   width: 0.87rem;
   position: fixed;
@@ -586,19 +573,19 @@ export default {
   top: 50%;
   margin-top: -0.32rem;
   z-index: 100;
-  animation: touch .6s ease-in-out alternate infinite;
+  animation: touch 0.6s ease-in-out alternate infinite;
 }
 @keyframes touch {
-    0%{
-        transform : translateX(.2rem)
-    }
-    100%{
-        transform : translateX(0)
-    }
+  0% {
+    transform: translateX(0.2rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 .ball {
-  width: 1.0rem;
-  height: 1.0rem;
+  width: 1rem;
+  height: 1rem;
   background: #ccc;
   border-radius: 50%;
 }
@@ -627,23 +614,22 @@ img {
 
 .useage-methods {
   width: 91%;
-  font-size: .24rem;
-  color: #CCDDFF;
+  font-size: 0.24rem;
+  color: #ccddff;
   margin: 0 auto;
   box-sizing: border-box;
-  line-height: .35rem;
+  line-height: 0.35rem;
   &.useage-tips {
     height: 0;
     overflow: hidden;
   }
-
 }
 
 .useage-methods span {
   display: block;
-  background: #1F2A4D;
-  padding: .15rem .5rem .15rem .29rem;
-  margin-bottom: .4rem;
+  background: #1f2a4d;
+  padding: 0.15rem 0.5rem 0.15rem 0.29rem;
+  margin-bottom: 0.4rem;
 }
 
 .g-exchange {
@@ -653,14 +639,14 @@ img {
 }
 .g-exchange span {
   display: inline-block;
-  max-width: 3.0rem;
-  word-break:keep-all;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  max-width: 3rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .g-exchange a {
-  color: #FF9933;
+  color: #ff9933;
 }
 
 .g-exchange i {
@@ -675,13 +661,13 @@ img {
   left: 0;
   top: 0;
   overflow: hidden;
-  background: #0F1B33;
-  transition: right .2s;
+  background: #0f1b33;
+  transition: right 0.2s;
 }
 
 .wf-pop .header {
   height: 1.08rem;
-  background: linear-gradient(0deg, #132641, #183E68);
+  background: linear-gradient(0deg, #132641, #183e68);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -696,17 +682,18 @@ img {
   float: right;
 }
 
-.wf-pop .h-tx {}
+.wf-pop .h-tx {
+}
 
 .wf-pop .h-tx .pic-tx {
-  width: .48rem;
-  height: .48rem;
+  width: 0.48rem;
+  height: 0.48rem;
   margin-right: 0.1rem;
 }
 
 .wf-pop .h-tx .tx-box {
   width: 2.16rem;
-  height: .54rem;
+  height: 0.54rem;
   background: url(./images/leaf-bg.png) no-repeat;
   background-size: 100% 100%;
   display: flex;
@@ -714,14 +701,14 @@ img {
 }
 
 .wf-pop .h-tx .pic-leaf {
-  width: .20rem;
-  height: .20rem;
-  margin: 0 .07rem 0 .13rem;
+  width: 0.2rem;
+  height: 0.2rem;
+  margin: 0 0.07rem 0 0.13rem;
 }
 
 .wf-pop .icon-add {
-  width: .41rem;
-  height: .4rem;
+  width: 0.41rem;
+  height: 0.4rem;
 }
 
 .wf-pop .leaf-num {
@@ -729,19 +716,19 @@ img {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: .22rem;
-  color: #FFD997;
+  font-size: 0.22rem;
+  color: #ffd997;
 }
 
 .wf-pop .wf-back {
   width: 1.36rem;
-  height: .54rem;
+  height: 0.54rem;
   background: url(./images/back.png) no-repeat;
   background-size: 100% 100%;
   display: flex;
   align-items: center;
-  font-size: .16rem;
-  color: #FFD997;
+  font-size: 0.16rem;
+  color: #ffd997;
   justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -749,39 +736,39 @@ img {
 }
 
 .wf-pop .wf-back .icon-home {
-  width: .38rem;
-  height: .38rem;
-  margin-right: .03rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin-right: 0.03rem;
 }
 
 .wf-pop .icon-pac {
-  width: .18rem;
-  height: .18rem;
+  width: 0.18rem;
+  height: 0.18rem;
 }
 
 .wf-pop .wf-title {
   color: #fff;
-  height: .45rem;
+  height: 0.45rem;
   position: relative;
-  margin: 0 0 .22rem 0;
+  margin: 0 0 0.22rem 0;
   display: flex;
   justify-content: center;
 }
 
 .wf-pop .wf-title h4 {
-  font-size: .34rem;
+  font-size: 0.34rem;
   display: flex;
   align-items: center;
 }
 
 .wf-pop .wf-title .icon-pac {
-  width: .41rem;
-  height: .38rem;
-  margin: 0 .07rem 0 .22rem;
+  width: 0.41rem;
+  height: 0.38rem;
+  margin: 0 0.07rem 0 0.22rem;
 }
 
 .wf-pop .wf-title .btn-useage {
-  font-size: .24rem;
+  font-size: 0.24rem;
   color: #fff;
   display: flex;
   align-items: center;
@@ -790,18 +777,18 @@ img {
 
 .wf-pop .btn-useage .icon-ys {
   display: inline-block;
-  width: .18rem;
-  height: .18rem;
-  margin-left: .08rem;
+  width: 0.18rem;
+  height: 0.18rem;
+  margin-left: 0.08rem;
 }
 
 .wf-pop .btn-useage .icon-xl {
-  background: url('./images/icon-xl.png') no-repeat;
+  background: url("./images/icon-xl.png") no-repeat;
   background-size: 100% 100%;
 }
 
 .wf-pop .btn-useage .icon-sl {
-  background: url('./images/icon-sl.png') no-repeat;
+  background: url("./images/icon-sl.png") no-repeat;
   background-size: 100% 100%;
 }
 
@@ -813,18 +800,18 @@ img {
 
 .wf-pop .groups li {
   width: 91%;
-  background: #1F2A4D;
+  background: #1f2a4d;
   color: #fff;
-  margin: 0 auto .2rem;
+  margin: 0 auto 0.2rem;
   padding: 0.15rem 0.24rem;
   box-sizing: border-box;
   &:last-child {
     margin: 0 auto;
-  };
+  }
 }
 
 .wf-pop .groups li h4 {
-  font-size: .28rem;
+  font-size: 0.28rem;
 }
 
 .wf-pop .groups li a.btn-normal {
@@ -834,25 +821,23 @@ img {
   /*height: .45rem;*/
   /*line-height: .45rem;*/
   text-align: center;
-  font-size: .22rem;
+  font-size: 0.22rem;
   font-weight: normal;
-  border-radius:0.08rem;
+  border-radius: 0.08rem;
 }
 
 .wf-pop .groups li a.btn-lq {
-  background:rgba(238,111,11,1);
+  background: rgba(238, 111, 11, 1);
   background-size: 100% 100%;
 }
 .wf-pop .groups li a.btn-qwc {
-  background: #1976D2;
+  background: #1976d2;
   background-size: 100% 100%;
 }
 .wf-pop .groups li a.btn-gq {
-  background:rgba(132,139,167,1);
+  background: rgba(132, 139, 167, 1);
   background-size: 100% 100%;
 }
-
-
 
 /*&.play{
     background: #1976D2;
@@ -867,7 +852,7 @@ img {
     color: #fff;
 }*/
 
-.h5game-fuli{
+.h5game-fuli {
   width: 0.5rem;
   position: absolute;
   right: 18%;
@@ -878,32 +863,32 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .2rem 0 .32rem 0;
+  padding: 0.2rem 0 0.32rem 0;
 }
 
 .wf-pop .groups .g-text {
-  font-size: .22rem;
+  font-size: 0.22rem;
   line-height: 0.35rem;
-  color: #CCDDFF;
-  margin-bottom: .1rem;
+  color: #ccddff;
+  margin-bottom: 0.1rem;
 }
 
 .wf-pop .groups .g-percent {
-  height: .22rem;
-  background: #0F1B33;
-  border-radius: .1rem;
-  margin-top: .23rem;
+  height: 0.22rem;
+  background: #0f1b33;
+  border-radius: 0.1rem;
+  margin-top: 0.23rem;
   position: relative;
 }
 
 .wf-pop .groups .g-percent .g-percent-bg {
   max-width: 100%;
   min-width: 30%;
-  height: .22rem;
-  line-height: .22rem;
+  height: 0.22rem;
+  line-height: 0.22rem;
   font-size: 0.2rem;
-  background: #3A58B5;
-  border-radius: .10rem;
+  background: #3a58b5;
+  border-radius: 0.1rem;
   position: absolute;
   left: 0;
   top: 0;
@@ -914,258 +899,257 @@ img {
   text-align: center;
   p {
     font-size: 0.24rem;
-    color: #CCDDFF;
-    padding-top: 0.3rem
+    color: #ccddff;
+    padding-top: 0.3rem;
   }
 }
 
 .wf-pop .groups .nodata {
-  font-size: .22rem;
-  color: #CCDDFF;
+  font-size: 0.22rem;
+  color: #ccddff;
   text-align: center;
   padding-top: 10%;
-
 }
 
 .wf-pop .groups .nodata img {
   display: block;
-  margin: 0 auto .33rem;
+  margin: 0 auto 0.33rem;
 }
 
-.progress-bg{
-    background: #0F1726;
-    width: 90px;
-    margin-right: 5px;
-    position: relative;
-    height: 15px;
-    border-radius: 3px;
-    overflow: hidden;
-    .progress-bar{
-        background: #507BCC;
-        position: absolute;
-        height: 100%;
-        left: 0;
-        width: 30%;
-    }
-    span{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        color: #fff;
-        font-size: 11px;
-        left: 0;
-        line-height: 15px;
-        text-align: center;
-    }
+.progress-bg {
+  background: #0f1726;
+  width: 90px;
+  margin-right: 5px;
+  position: relative;
+  height: 15px;
+  border-radius: 3px;
+  overflow: hidden;
+  .progress-bar {
+    background: #507bcc;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    width: 30%;
+  }
+  span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 11px;
+    left: 0;
+    line-height: 15px;
+    text-align: center;
+  }
 }
-.groups-title{
+.groups-title {
   font-size: 0.28rem;
-  font-weight:bold;
-  color:rgba(255,255,255,1);
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
   margin-left: 4.5%;
   margin-bottom: 0.3rem;
 }
-.task-list-margin{
+.task-list-margin {
   margin-bottom: 0.7rem;
 }
-.task-list{
-        >li{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 3%;
-            background: #141F33;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 3%;
-            .description{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                width: 80%;
-                .head-img{
-                    width: 0.6rem;
-                    height: 0.6rem;
-                    border-radius: 6px;
-                    overflow: hidden;
-                    margin-right: 3%;
-                    img{
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
-                .content{
-                    >p{
-                        font-size: 0.24rem;
-                        font-weight: bold;
-                        margin-bottom: 5%;
-                    }
-                    .progress{
-                        display: flex;
-                        align-items: center;
-
-                        .num{
-                            img{
-                                height: 0.2rem;
-                                display: inline;
-                            }
-                            span{
-                                font-size: 0.2rem;
-                                color: #FFD338;
-                            }
-                        }
-                    }
-                }
-            }
-            .btn{
-                color: #fff;
-                font-weight: bold;
-                font-size: 0.2rem;
-                background: #EE6F0B;
-                padding:2% 3%;
-                border-radius: 4px;
-                text-align: center;
-                box-sizing: border-box;
-                width: 20%;
-              word-break:keep-all;
-              white-space:nowrap;
-                &.play{
-                    background: #1976D2;
-                }
-                &.gray{
-                    background: #fff;
-                    color: #141F33;
-                }
-                &.received{
-                    position: relative;
-                    background: #848BA7;
-                    color: #fff;
-                }
-            }
-            .in-game{
-                position: absolute;
-                bottom: -.25rem;
-                left: .2rem;
-                color: #2F3C49;
-                font-size: .18rem;
-            }
+.task-list {
+  > li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    background: #141f33;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3%;
+    .description {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 80%;
+      .head-img {
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-right: 3%;
+        img {
+          width: 100%;
+          height: 100%;
         }
+      }
+      .content {
+        > p {
+          font-size: 0.24rem;
+          font-weight: bold;
+          margin-bottom: 5%;
+        }
+        .progress {
+          display: flex;
+          align-items: center;
 
+          .num {
+            img {
+              height: 0.2rem;
+              display: inline;
+            }
+            span {
+              font-size: 0.2rem;
+              color: #ffd338;
+            }
+          }
+        }
+      }
     }
-.cj-text-ys {
-      font-size: .18rem;
-      color: #394778;
+    .btn {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.2rem;
+      background: #ee6f0b;
+      padding: 2% 3%;
+      border-radius: 4px;
       text-align: center;
-      line-height: .35rem;
-      padding: .1rem 3.5% 0;
+      box-sizing: border-box;
+      width: 20%;
+      word-break: keep-all;
+      white-space: nowrap;
+      &.play {
+        background: #1976d2;
+      }
+      &.gray {
+        background: #fff;
+        color: #141f33;
+      }
+      &.received {
+        position: relative;
+        background: #848ba7;
+        color: #fff;
+      }
     }
+    .in-game {
+      position: absolute;
+      bottom: -0.25rem;
+      left: 0.2rem;
+      color: #2f3c49;
+      font-size: 0.18rem;
+    }
+  }
+}
+.cj-text-ys {
+  font-size: 0.18rem;
+  color: #394778;
+  text-align: center;
+  line-height: 0.35rem;
+  padding: 0.1rem 3.5% 0;
+}
 
-
-
-
-.new-user-task{
+.new-user-task {
   padding: 4.5%;
   margin-top: 4%;
-  .box{
+  .box {
     border-radius: 5px;
     position: relative;
   }
-  .progress-bar{color: #507BCC !important}
-  .bg-lines{
+  .progress-bar {
+    color: #507bcc !important;
+  }
+  .bg-lines {
     position: relative;
-    background:url(./img/bg.png) no-repeat;
+    background: url(./img/bg.png) no-repeat;
     background-size: 100% 100%;
     height: 3.18rem;
-    padding: 0 .21rem 0 .24rem;
+    padding: 0 0.21rem 0 0.24rem;
     box-sizing: border-box;
-    &.bg-height{
+    &.bg-height {
       height: 3.18rem;
     }
     .tips {
       animation: tips 4s infinite;
       position: absolute;
       right: 1.61rem;
-      top: -.1rem;
+      top: -0.1rem;
       width: 1.31rem;
-      height: .4rem;
+      height: 0.4rem;
       img {
         width: 100%;
         height: 100%;
         vertical-align: top;
       }
     }
-    .text{
+    .text {
       position: absolute;
       top: 1.19rem;
-      left: .24rem;
+      left: 0.24rem;
       display: flex;
       justify-content: left;
       align-items: flex-end;
-      .img1{
-        margin-right: .14rem;
+      .img1 {
+        margin-right: 0.14rem;
         width: 1.9rem;
-        height: .32rem;
+        height: 0.32rem;
         display: block;
       }
-      .img2{
-        width: .96rem;
-        height: .26rem;
+      .img2 {
+        width: 0.96rem;
+        height: 0.26rem;
         display: block;
       }
     }
-    .time{
+    .time {
       position: absolute;
       top: 1.2rem;
-      right: .21rem;
+      right: 0.21rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1%;
       border-radius: 0 0 0 5px;
-      .img3{
+      .img3 {
         display: inline;
-        width: .22rem;
-        height: .22rem;
-        margin-right: .06rem;
+        width: 0.22rem;
+        height: 0.22rem;
+        margin-right: 0.06rem;
       }
-      span{
-        font-size: .18rem ;
+      span {
+        font-size: 0.18rem;
         color: #b48dd7;
       }
     }
   }
-  .right-li{
-    background: #7B38F4 !important;
-    padding: .1rem .2rem !important;
-    span{color: rgba(255,255,255,.5) !important}
+  .right-li {
+    background: #7b38f4 !important;
+    padding: 0.1rem 0.2rem !important;
+    span {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
   }
-  .middle{
+  .middle {
     padding-top: 1.88rem;
-    font-size: .26rem;
-    .finish-title{
+    font-size: 0.26rem;
+    .finish-title {
       color: #fff;
-      font-size: .26rem;
-      margin-bottom: .18rem;
-      i{
-        margin-left: .1rem;
-        color: #FFD338;
+      font-size: 0.26rem;
+      margin-bottom: 0.18rem;
+      i {
+        margin-left: 0.1rem;
+        color: #ffd338;
       }
     }
-    .finish-get{
+    .finish-get {
       display: flex;
       align-items: center;
-      justify-content:center;
-      .num{
+      justify-content: center;
+      .num {
         font-size: 40px;
         font-weight: bolder;
       }
-      .text{
+      .text {
         line-height: normal;
         text-align: center;
-        .p1{
+        .p1 {
           font-size: 8px;
-          color: #5E7CAD;
+          color: #5e7cad;
           background: #fff;
           padding: 0;
           width: 100%;
@@ -1174,46 +1158,46 @@ img {
           text-align: center;
           // margin-bottom: 2px;
         }
-        .p2{
+        .p2 {
           text-align: center;
           font-weight: bolder;
           font-size: 16px;
         }
       }
     }
-    .probar-wrap{
+    .probar-wrap {
       position: relative;
       width: 100%;
-      margin-bottom: .13rem;
+      margin-bottom: 0.13rem;
     }
     .probar-ball {
       width: 100%;
-      height:.3rem;
-      line-height: .3rem;
+      height: 0.3rem;
+      line-height: 0.3rem;
       text-align: center;
       background: #000;
       position: relative;
       border-radius: 4px;
-      font-weight:normal;
-      overflow:hidden;
-      .bar{
+      font-weight: normal;
+      overflow: hidden;
+      .bar {
         display: block;
-        height:100%;
-        background: #507BCC;
+        height: 100%;
+        background: #507bcc;
         position: absolute;
-        left:0;
-        top:0;
+        left: 0;
+        top: 0;
         border-radius: 4px 0 0 4px;
       }
 
       p {
         position: absolute;
         bottom: 0;
-        z-index:2;
+        z-index: 2;
         height: 100%;
         width: 100%;
-        line-height: .33rem;
-        font-size: .18rem;
+        line-height: 0.33rem;
+        font-size: 0.18rem;
       }
     }
     .probar-text {
@@ -1222,23 +1206,23 @@ img {
       justify-content: space-between;
       align-items: center;
       span {
-        font-size: .22rem;
+        font-size: 0.22rem;
       }
       .receive {
-        font-size: .2rem;
+        font-size: 0.2rem;
       }
     }
   }
-  .bottom{
+  .bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 3%;
     background: #202a4d;
-    border-radius:0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
     position: relative;
     overflow: hidden;
-    .description{
+    .description {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -1246,41 +1230,41 @@ img {
       margin: 0;
       padding: 0;
       background: none;
-      .head-img{
+      .head-img {
         width: 44px;
         height: 44px;
         border-radius: 6px;
         overflow: hidden;
         margin-right: 3%;
-        img{
+        img {
           width: 100%;
           height: 100%;
         }
       }
-      .content{
-        >p{
-          font-size: .26rem;
+      .content {
+        > p {
+          font-size: 0.26rem;
           margin-bottom: 5%;
         }
-        .progress{
+        .progress {
           display: flex;
           align-items: center;
-          .progress-bg{
-            background: #0F1726;
+          .progress-bg {
+            background: #0f1726;
             width: 1.98rem;
             margin-right: 5px;
             position: relative;
-            height: .3rem;
+            height: 0.3rem;
             border-radius: 3px;
             overflow: hidden;
-            .progress-bar{
-              background: #507BCC;
+            .progress-bar {
+              background: #507bcc;
               position: absolute;
               height: 100%;
               left: 0;
               width: 30%;
             }
-            span{
+            span {
               position: absolute;
               width: 100%;
               height: 100%;
@@ -1291,37 +1275,37 @@ img {
               text-align: center;
             }
           }
-          .num{
-            img{
+          .num {
+            img {
               height: 12px;
               display: inline;
             }
-            span{
+            span {
               font-size: 12px;
-              color: #FFD338;
+              color: #ffd338;
             }
           }
         }
       }
     }
-    .btn{
+    .btn {
       width: 1.2rem;
-      height: .46rem;
+      height: 0.46rem;
       color: #fff;
       font-size: 12px;
-      background: #EE6F0B;
+      background: #ee6f0b;
       border-radius: 4px;
       text-align: center;
-      line-height: .46rem;
+      line-height: 0.46rem;
       margin: 0;
       padding: 0;
-      &.play{
-        background: #1976D2;
+      &.play {
+        background: #1976d2;
       }
     }
-    .label{
+    .label {
       color: #fff;
-      background: #E64A19;
+      background: #e64a19;
       width: 12%;
       font-size: 10px;
       position: absolute;
@@ -1332,7 +1316,7 @@ img {
       border-radius: 0 0 4px 0;
     }
   }
-  .finish{
+  .finish {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1340,48 +1324,48 @@ img {
     background: #202a4d;
     position: relative;
     overflow: hidden;
-    li{
-      word-break:keep-all;
+    li {
+      word-break: keep-all;
       padding: 0;
       margin: 0;
-      white-space:nowrap;
-      &:first-child{
+      white-space: nowrap;
+      &:first-child {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         width: 80%;
-        .head-img{
+        .head-img {
           width: 44px;
           height: 44px;
           border-radius: 6px;
           overflow: hidden;
           margin-right: 3%;
-          img{
+          img {
             width: 100%;
             height: 100%;
           }
         }
-        .content{
+        .content {
           position: relative;
-          p{
-            font-size: .26rem;
+          p {
+            font-size: 0.26rem;
             font-weight: bold;
-            &:last-child{
-              font-size: .22rem;
-              margin-top: .16rem;
+            &:last-child {
+              font-size: 0.22rem;
+              margin-top: 0.16rem;
             }
           }
         }
       }
-      &:last-child{
+      &:last-child {
         color: #fff;
         font-weight: bold;
         width: 1.2rem;
-        height: .46rem;
+        height: 0.46rem;
         text-align: center;
-        line-height:.46rem;
+        line-height: 0.46rem;
         font-size: 12px;
-        background: #EE6F0B;
+        background: #ee6f0b;
         border-radius: 4px;
       }
     }
@@ -1413,8 +1397,5 @@ img {
     transform-origin: right bottom;
     transform: scale(0) rotate(0);
   }
-
 }
-
-
 </style>

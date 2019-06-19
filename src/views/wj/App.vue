@@ -210,8 +210,8 @@
 <script>
 import '../../common/js/window'
 import poplog from './poplog'
-import common from "../../common/js/utils";
-import base64url from 'base64-url';
+import common from '../../common/js/utils'
+import base64url from 'base64-url'
 export default {
   data () {
     return {
@@ -318,43 +318,43 @@ export default {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$toast.show({
+            message: '领取成功！',
+            duration: 1500
+          })
+          switch (type) {
+            case 'cjTask':
+              GLOBALS.marchSetsPoint('A_H5PT0121001154', {
+                project_id: this.cGameType,
+                position_id: index + 1,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
+              break
+            case 'dayTask':
+              GLOBALS.marchSetsPoint('A_H5PT0121001156', {
+                project_id: this.cGameType,
+                position_id: index + 1,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              }) // H5平台-H5游戏内SDK-页面
+              break
+            default:
+              break
           }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功！',
-              duration: 1500
-            });
-            switch (type) {
-              case 'cjTask':
-                GLOBALS.marchSetsPoint('A_H5PT0121001154', {
-                  project_id: this.cGameType,
-                  position_id: index + 1,
-                  target_project_id: item.gameType,
-                  task_id: item.taskId,
-                  task_name: item.taskName
-                }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
-                break;
-              case 'dayTask':
-                GLOBALS.marchSetsPoint('A_H5PT0121001156', {
-                  project_id: this.cGameType,
-                  position_id: index + 1,
-                  target_project_id: item.gameType,
-                  task_id: item.taskId,
-                  task_name: item.taskName
-                }) // H5平台-H5游戏内SDK-页面
-                break;
-              default:
-                break;
-            }
-            item.taskStatus = 2;
-            this.getPlatTaskByBatch()
-            this.getDayTask()
-          }
-        })
+          item.taskStatus = 2
+          this.getPlatTaskByBatch()
+          this.getDayTask()
+        }
+      })
     },
     goFinish ({ gameType, url, action, taskId, taskName }, type, index) {
       let actionsArr = [39, 35, 34, 32]
@@ -376,7 +376,7 @@ export default {
       // 跳转固定入口
       if (url && url.indexOf('?fixedEntry') != -1) {
         parent.location.href = GLOBALS.getJumpToGameUrl(url)
-        return;
+        return
       }
 
       if (type == 'new_user_task') {
@@ -397,7 +397,7 @@ export default {
               task_id: taskId,
               task_name: taskName
             }) // H5平台-H5游戏内SDK-任务-成就任务-去完成
-            break;
+            break
           case 'dayTask':
             GLOBALS.marchSetsPoint('A_H5PT0121001155', {
               project_id: this.cGameType,
@@ -406,9 +406,9 @@ export default {
               task_id: taskId,
               task_name: taskName
             }) // H5平台-H5游戏内SDK-任务-每日任务-去完成
-            break;
+            break
           default:
-            break;
+            break
         }
         clearTimeout(this.timer1)
         this.isFighur = true
@@ -416,8 +416,6 @@ export default {
           this.isFighur = false
         }, 3000)
       }
-
-
     },
     trimStr: function (str) {
       return str.replace(/(^\s*)|(\s*$)/g, '')
@@ -432,60 +430,60 @@ export default {
     },
     getPlatTaskByBatch () {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: this.cGameType + "-achievementTask",
-        from: "sdk",
+        value: this.cGameType + '-achievementTask',
+        from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          this.cjTaskItems = res.data.data
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        this.cjTaskItems = res.data.data
+      })
     },
     getDayTask () {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
-        value: "dayTask",
-        from: "sdk",
+        value: 'dayTask',
+        from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          this.dayTaskItems = res.data.data
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        this.dayTaskItems = res.data.data
+      })
     },
     tabNav (idx) {
       this.curIndex = idx
       switch (idx) {
         case 0:
           GLOBALS.marchSetsPoint('A_H5PT0121001152', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-任务
-          break;
+          break
         case 1:
           GLOBALS.marchSetsPoint('A_H5PT0121001157', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-礼包
-          break;
+          break
 
         default:
-          break;
+          break
       }
     },
-    //获取地址栏问号后面的参数值
+    // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-      var url = window.location.href;
-      var Request = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.split('?')[1];
-        var strs = str.split("&");
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
         for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
         }
       } else {
-        return '';
+        return ''
       }
-      return Request[ename];
+      return Request[ename]
     },
     async goMenu () {
       localStorage.removeItem('gurlSDK')
@@ -497,31 +495,31 @@ export default {
       this.$toast.show({
         message: '复制成功！',
         duration: 1500
-      });
+      })
     },
     onError () {
       this.$toast.show({
         message: '复制失败！',
         duration: 1500
-      });
+      })
     },
     getAward (item) {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功',
-              duration: 1500
-            })
-            this.getCdkeyStatus()
-          }
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$toast.show({
+            message: '领取成功',
+            duration: 1500
+          })
+          this.getCdkeyStatus()
+        }
+      })
     },
     handleTabUse () {
       this.isTabUse = !this.isTabUse
@@ -545,15 +543,15 @@ export default {
       this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
         value: this.curlink
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.cdkArr = res.data.data
-          }
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.cdkArr = res.data.data
+        }
+      })
     },
     getNewTask () {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
@@ -587,12 +585,13 @@ export default {
         item.index = index
         item.medalimg = medalimg
       } else {
-        //游戏内任务-去完成
+        // 游戏内任务-去完成
       }
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
-      }, {
+      },
+        {
           headers: {
             'App-Channel': this.curChannel,
             'Authorization': this.curToken
@@ -604,7 +603,7 @@ export default {
               case 'mother_task':
                 this.newUserTaskFinish = true
                 this.getNewTask()
-                break;
+                break
               default:
                 item.taskStatus = 2
             }
@@ -618,7 +617,7 @@ export default {
         })
     },
     goTask () {
-      parent.location.href = window.linkUrl.getBackUrl(this.curChannel, '', '', true, '/#/taskview')
+      parent.location.href = window.linkUrl.getBackUrl(this.curChannel, '', '', true, '#/taskview')
     },
     closePopLog (val) {
       this.isPopLog = false
