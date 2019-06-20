@@ -176,7 +176,7 @@ window.GLOBALS = {
     }
     return Request[ename]
   },
-  remainingTime (_this, millisecond, obj, fn) {
+  remainingTime (_this, millisecond, obj,isText=false, fn) {
     var that = this
     timer()
     var t = setInterval(timer, 1000)
@@ -195,7 +195,11 @@ window.GLOBALS = {
       var minute = that.Appendzero(Math.floor((millisecond % (1000 * 60 * 60)) / (1000 * 60)))
       var second = that.Appendzero(Math.floor((millisecond % (1000 * 60)) / 1000))
       var hours = that.Appendzero(day * 24 + hour)
-      _this.$set(obj, 'time', hours + ':' + minute + ':' + second)
+      if(isText){
+        _this.$set(obj, 'time', `${day}天${hour}小时${minute}分${second}秒`)
+      }else{
+        _this.$set(obj, 'time', hours + ':' + minute + ':' + second)
+      }
       millisecond = millisecond - 1000
     }
   },

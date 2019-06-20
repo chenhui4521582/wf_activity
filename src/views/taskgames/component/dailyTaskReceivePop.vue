@@ -4,8 +4,10 @@
     <div class="content-box" @touchmove.prevent>
       <div class="content-wrapper">
         <img :src="awards.awardsImage|filter" alt="">
-        <p>{{awards.awardsName}}<span v-if="awards.awardsNum>1">x{{awards.awardsNum}}</span></p>
+        <p v-if="awards.awardsNum>1">{{getPrizeName(awards)}}</p>
+        <p v-else>{{awards.awardsName}}</p>
         <p class="btn" @click="closePop">朕收下啦</p>
+        <p class="text">完成每日任务,领更多红包</p>
       </div>
       <div class="close" @click="closePop"></div>
     </div>
@@ -24,6 +26,17 @@ export default {
   methods: {
     closePop () {
       this.$emit('closePop')
+    },
+    getPrizeName(awards){
+      Number.prototype.mul = function (arg)
+      {
+        var m=0,s1=this.toString(),s2=arg.toString();
+        try{m+=s1.split(".")[1].length}catch(e){}
+        try{m+=s2.split(".")[1].length}catch(e){}
+        return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+      }
+
+      return (parseFloat(awards.awardsName).mul(awards.awardsNum))+awards.awardsName.match( /[\u4e00-\u9fa5]/g).join("")
     }
   }
 }
@@ -79,6 +92,12 @@ export default {
       margin: 1.22rem auto 0;
       background: url("../img/dailyTaskPop/update_dailytask_btn_light.png")
         no-repeat center / 100% 100%;
+    }
+    .text{
+      margin-top: .1rem;
+      font-size: .26rem;
+      font-weight: bold;
+      color: #f8cea8;
     }
   }
   .close {
