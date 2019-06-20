@@ -19,7 +19,7 @@ axios.interceptors.request.use(function (config) {
 
   if (!config.headers['App-Channel']) {
     let _channel = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-    config.headers['App-Channel'] = _channel && /\d+/.exec(_channel)[0]
+    config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
   }
 
   // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';

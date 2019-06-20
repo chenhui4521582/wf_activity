@@ -19,7 +19,7 @@ axios.interceptors.request.use(function (config) {
   }
 
   if (!config.headers['App-Channel']) {
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
+    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
   }
 
   config.headers['App-Version'] = '1.0.0'

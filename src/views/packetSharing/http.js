@@ -23,7 +23,7 @@ axios.interceptors.request.use(function (config) {
   }
 
   if (!config.headers['App-Channel']) {
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
+    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
   }
   // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
   // config.headers['App-Channel'] = '100006';

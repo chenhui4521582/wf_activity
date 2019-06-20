@@ -15,7 +15,7 @@ localStorage.setItem('APP_VERSION', '1.0.0')
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
   config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
-  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
+  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
   config.headers['App-Version'] = '1.0.0'
   return config
 }, function (error) {

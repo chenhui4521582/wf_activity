@@ -14,7 +14,7 @@ axios.defaults.timeout = 5000
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
   config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
-  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
+  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
   config.headers['App-Version'] = localStorage.getItem('APP_VERSION')
   config.headers['Content-Type'] = 'application/json'
   config.headers['Repeated-Submission'] = 1
