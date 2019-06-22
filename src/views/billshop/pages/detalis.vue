@@ -58,7 +58,7 @@
 <script>
 import baseHeader from '../components/baseHeader/baseHeader'
 import field from '../components/field/field'
-import { placeOrder } from '../utils/api'
+import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
@@ -72,12 +72,19 @@ export default {
       dialogShow: false,
       statusCode: '',
       TIME: null,
+      phyAwardsType: this.$route.query['phyAwardsType'],
+      goodsName: this.$route.query['goodsName'],
+      showOut: this.$route.query['showOut'],
       accountBalance: parseFloat(this.$route.query['accountBalance']),
       currentList: []
     }
   },
-  created () {
-    this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+  async created () {
+    // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+    const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
+    if (code === 200) {
+      this.currentList = data
+    }
   },
   computed: {
     bannerImg () {

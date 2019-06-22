@@ -123,12 +123,18 @@ export default {
         return
       }
       localStorage.BILL_DETAILS = JSON.stringify(data.productList)
+      let query = {
+        ...this.$route.query,
+        accountBalance: this.accountBalance,
+        phyAwardsType: data.productList[0].phyAwardsType,
+        goodsName: data.productList[0].name,
+      }
+      if (query.phyAwardsType !== 9) {
+        delete query.goodsName
+      }
       this.$router.push({
         name: 'detail',
-        query: {
-          ...this.$route.query,
-          accountBalance: this.accountBalance
-        }
+        query
       })
     },
     // 每日限购一次
@@ -312,6 +318,7 @@ a {
       height: 0.96rem;
       background: url("../images/buyone.png") no-repeat;
       background-size: 100% 100%;
+      z-index: 1;
     }
     &.tehui:before {
       content: "";
