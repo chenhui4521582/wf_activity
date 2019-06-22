@@ -127,6 +127,7 @@ export default {
         ...this.$route.query,
         accountBalance: this.accountBalance,
         phyAwardsType: data.productList[0].phyAwardsType,
+        phyAwardsId: data.productList[0].phyAwardsId,
         goodsName: data.productList[0].name,
       }
       if (query.phyAwardsType !== 9) {
