@@ -98,6 +98,7 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
+          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
@@ -364,7 +365,8 @@ export default {
     kingTask: () => import('./component/kingTask'),
     sdkRecommend: () => import('./component/recommend'),
     dailyTaskReceivePop: () => import('./component/dailyTaskReceivePop'),
-    sdkTabBox: () => import('./component/tabBox')
+    sdkTabBox: () => import('./component/tabBox'),
+    fixedEntrance: () => import('./component/fixedEntrance')
   },
   methods: {
     closeRRZQPop () {
@@ -590,8 +592,7 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
-        if (localStorage.getItem('APP_CHANNEL') == '100049') {
-          GLOBALS.marchSetsPoint('A_H5PT0022001262')
+        // if (localStorage.getItem('APP_CHANNEL') == '100049') {
           this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
             taskId: taskId
           }).then((res) => {
@@ -601,7 +602,18 @@ export default {
               return
             }
           })
-        }
+        // }
+      }else if(type=='new_user_task_fixed_entrance'){
+        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+          taskId: taskId
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.quitConfig = res.data.data
+            this.isRRZQPop = true
+            GLOBALS.marchSetsPoint('A_H5PT0022001262')
+            return
+          }
+        })
       }
       setTimeout(() => {
         // 跳转平台 并且弹出转盘
@@ -646,7 +658,7 @@ export default {
         // // }
         // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
-        parent.location.href = GLOBALS.getJumpToGameUrl(url)
+        url&&(parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
     },
     closePopLog (val) {
@@ -827,7 +839,7 @@ export default {
       this.showzspop = true
     },
     goTask () {
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '/#/taskview')
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '#/taskview')
     },
     closeNewUser () {
       if (parent.closeTaksPage) {
@@ -841,6 +853,10 @@ export default {
     },
     closeDailyReceivePop () {
       this.isDailyReceivePop = false
+    },
+    closeFixedEntrance(){
+      this.getTransInfo()
+      this.getPhoneFragment()
     }
   }
 }
