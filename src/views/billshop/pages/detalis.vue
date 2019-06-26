@@ -58,7 +58,7 @@
 <script>
 import baseHeader from '../components/baseHeader/baseHeader'
 import field from '../components/field/field'
-import { placeOrder } from '../utils/api'
+import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
@@ -72,12 +72,26 @@ export default {
       dialogShow: false,
       statusCode: '',
       TIME: null,
+      phyAwardsId: this.$route.query['phyAwardsId'],
+      phyAwardsType: this.$route.query['phyAwardsType'],
+      goodsName: this.$route.query['goodsName'],
+      showOut: this.$route.query['showOut'],
       accountBalance: parseFloat(this.$route.query['accountBalance']),
       currentList: []
     }
   },
-  created () {
-    this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+  async created () {
+    // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+    const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
+    if (code === 200 && data && data.length) {
+      this.currentList = data.filter(item => {
+        if (this.phyAwardsId == '232') {
+          return item.phyAwardsId === 232
+        }else{
+          return item.phyAwardsId !== 232
+        }
+      })
+    }
   },
   computed: {
     bannerImg () {
