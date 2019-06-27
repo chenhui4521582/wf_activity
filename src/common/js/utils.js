@@ -55,7 +55,7 @@ export default {
     },
     jumpToGame:function (item) {
         let token = localStorage.getItem('OPEN_ACCESS_TOKEN')
-        let channel = localStorage.getItem('APP_CHANNEL')
+        let channel= GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
         if (item && item.url.indexOf('external=1') != -1) {
             if (item.url.includes('?external=1')) {
                 let url =
@@ -100,7 +100,7 @@ export default {
     },
     jumpToGameUrl:function (item) {
         let token=localStorage.getItem('OPEN_ACCESS_TOKEN')
-        let channel=localStorage.getItem('APP_CHANNEL')
+        let channel= GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
         if (item && item.url.indexOf('external=1') != -1) {
             if (item.url.includes('?external=1')) {
                     return this.trimStr(item.url) +
