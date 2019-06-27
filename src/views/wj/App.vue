@@ -497,7 +497,19 @@ export default {
     async goMenu () {
       localStorage.removeItem('gurlSDK')
       await GLOBALS.marchSetsPoint('A_H5PT0121001151', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-游戏大厅
-      top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+
+      /** 返回小米平台 **/
+	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let isxmChannel = XMCHANNEM.find(item => {
+		return item == APP_CHANNEL
+	  })
+      if(isxmChannel) {
+		top.location.href = 'https://wap.beeplay123.com/xmWap/?channel='+isxmChannel
+      }else {
+		top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+      }
+
     },
     onCopy () {
       GLOBALS.marchSetsPoint('A_H5PT0121001159', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-礼包-复制兑换码
