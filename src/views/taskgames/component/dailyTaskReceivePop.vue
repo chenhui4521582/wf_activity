@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="mask" @touchmove.prevent></div>
-    <div class="content-box" @touchmove.prevent>
+    <div class="mask"></div>
+    <div class="content-box">
       <div class="content-wrapper">
         <img :src="awards.awardsImage|filter" alt="">
         <p v-if="awards.awardsNum>1">{{getPrizeName(awards)}}</p>
@@ -27,16 +27,15 @@ export default {
     closePop () {
       this.$emit('closePop')
     },
-    getPrizeName(awards){
-      Number.prototype.mul = function (arg)
-      {
-        var m=0,s1=this.toString(),s2=arg.toString();
-        try{m+=s1.split(".")[1].length}catch(e){}
-        try{m+=s2.split(".")[1].length}catch(e){}
-        return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+    getPrizeName (awards) {
+      Number.prototype.mul = function (arg) {
+        var m = 0, s1 = this.toString(), s2 = arg.toString()
+        try { m += s1.split('.')[1].length } catch (e) { }
+        try { m += s2.split('.')[1].length } catch (e) { }
+        return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m)
       }
 
-      return (parseFloat(awards.awardsName).mul(awards.awardsNum))+awards.awardsName.match( /[\u4e00-\u9fa5]/g).join("")
+      return (parseFloat(awards.awardsName).mul(awards.awardsNum)) + awards.awardsName.match(/[\u4e00-\u9fa5]/g).join('')
     }
   }
 }
@@ -93,9 +92,9 @@ export default {
       background: url("../img/dailyTaskPop/update_dailytask_btn_light.png")
         no-repeat center / 100% 100%;
     }
-    .text{
-      margin-top: .1rem;
-      font-size: .26rem;
+    .text {
+      margin-top: 0.1rem;
+      font-size: 0.26rem;
       font-weight: bold;
       color: #f8cea8;
     }
