@@ -31,7 +31,7 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <div class="new-user-task" v-if="newTaskItems.isNew">
+          <div class="new-user-task" v-if="showNewUserTask">
             <div class="box">
               <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
                 <div class="tips">
@@ -310,7 +310,16 @@ export default {
         }
       }
       return taskObj
-    }
+    },
+	// 显示新手任务
+	showNewUserTask () {
+	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let isxmChannel = XMCHANNEM.find(item => {
+		return item == APP_CHANNEL
+	  })
+	  return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+	}
   },
   methods: {
     receive (item, type, index) {
