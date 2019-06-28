@@ -6,37 +6,29 @@
 import axios from 'axios'
 // import router from './router'
 import Vue from 'vue'
-import utils from './common/js/utils'
+import utils from '../../common/js/utils'
 // axios 配置
-axios.defaults.timeout = 5000
-
-let channel = utils.getUrlParam('channel')||localStorage.getItem('APP_CHANNEL'),
-  url_token = utils.getUrlParam('token')||localStorage.getItem('ACCESS_TOKEN'),
-  everyDayLottery = utils.getUrlParam('everyDayLottery')
-
-localStorage.setItem('ACCESS_TOKEN', url_token)
-localStorage.setItem('APP_CHANNEL', channel)
-if (localStorage.getItem('APP_CHANNEL') == '100022') {
-  localStorage.setItem('APP_VERSION', '1.0.0')
-} else {
-  if (everyDayLottery == 1) {
-    localStorage.setItem('APP_VERSION', '1.0.0')
-  } else {
-    localStorage.setItem('APP_VERSION', '1.0.0')
-  }
-}
+axios.defaults.timeout = 10000
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-  config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
-  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
-  config.headers['App-Version'] = localStorage.getItem('APP_VERSION')
+  // if (!config.headers.Authorization) {
+    config.headers.Authorization =localStorage.getItem('ACCESS_TOKEN')
+  // }
+
+  // if (!config.headers['App-Channel']) {
+    let _channel = localStorage.getItem('APP_CHANNEL')
+    config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
+  // }
+
+  // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
+  // config.headers['App-Channel'] = '100006';
+  localStorage.setItem('APP_VERSION', '1.0.0')
   return config
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error)
-  // return '';
 })
 
 // 添加响应拦截器
@@ -140,13 +132,9 @@ axios.interceptors.response.use(
 
     } else {
       error = JSON.stringify(error)
-      // if(error.indexOf('timeout') != -1) {
-      //     Vue.prototype.$toast.show({
-      //         message: '请求超时',
-      //         duration: 1500
-      //     });
-      //     return;
-      // }
+      if (error.indexOf('timeout') != -1) {
+        return
+      }
     }
     return Promise.reject(error)
     // return '';
