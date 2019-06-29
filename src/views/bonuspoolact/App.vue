@@ -6,7 +6,7 @@
         <div class="back" @click="back"></div>
         <!--第一屏-->
         <div class="section1" id="section1" :class="{noopen:detailData&&!detailData.activityIsOpen}">
-            <div class="time" v-if="detailData">活动时间：{{detailData.activityTimeline}}</div>
+            <div class="time" v-if="detailData">活动时间:{{detailData.activityTimeline}}</div>
             <div class="bonus">
                 <img :src="detailData.activityImage|filter" alt="" v-if="detailData">
             </div>
@@ -374,8 +374,8 @@
         .time{
             position: absolute;
             top: 2.3rem;
-            left: 2.15rem;
-            font-size: .22rem;
+            left: 2.2rem;
+            font-size: .2rem;
             color: #fff;
         }
         .bonus{
