@@ -310,7 +310,7 @@
                     }
                 }else{
                     GLOBALS.marchSetsPoint('A_H5PT0074001378')//H5平台-奖池瓜分页面-关闭消息提醒
-                    this.fetch('/ops/api/jackpot/userCloseSms')//用户关闭短信提醒
+                    this.fetch('/ops/api/jackpot/userCloseSms',{isShowToast:false})//用户关闭短信提醒
                 }
             },
             "countdown.time":function (val) {
@@ -406,7 +406,7 @@
             background: url("./images/bonus/btn1.png");
             background-size: 100% 100%;
             &.finger{
-                -webkit-animation: ychange 3s infinite;
+                -webkit-animation: ychange 1.5s infinite;
                 &:before{
                     content: '';
                     position: absolute;
@@ -416,7 +416,7 @@
                     height: .9rem;
                     background: url("./images/bonus/finger.png");
                     background-size: 100% 100%;
-                    -webkit-animation: myPlay1 3s infinite;
+                    -webkit-animation: myPlay1 1.5s infinite;
                 }
             }
             &.showfingerPress{
