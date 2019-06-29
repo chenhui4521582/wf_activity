@@ -20,7 +20,7 @@
                     <!--已报名未瓜分-->
                     <div class="btn" v-if="detailData.userState==2">{{countdown.time}}开启奖池</div>
                     <!--开始瓜分-->
-                    <div class="btn" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池{{countdown.time}}</div>
+                    <div class="btn" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
                 </template>
             </template>
             <div class="tip" v-if="switches.tzo!=null">

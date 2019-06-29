@@ -169,7 +169,7 @@
             font-size:.22rem;
             font-weight:400;
             color:rgba(255,230,167,1);
-            line-height:36px;
+            line-height:.36rem;
             i{
                 color: #5c0421;
                 text-decoration: underline;
