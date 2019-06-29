@@ -373,6 +373,9 @@ export default {
       this.isRRZQPop = false
     },
     async jumpMine () {
+      if(this.channel.indexOf(100051) > -1) {
+        return false
+      }
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
       parent.location.href = this.jumpToPlat() + '#/personal'
     },
@@ -835,6 +838,9 @@ export default {
       // }
     },
     kfclick () {
+	  if(this.channel.indexOf(100051) > -1) {
+		return false
+	  }
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
     },
