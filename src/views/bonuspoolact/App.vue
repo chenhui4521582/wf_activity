@@ -6,7 +6,7 @@
         <div class="back" @click="back"></div>
         <!--第一屏-->
         <div class="section1" id="section1" :class="{noopen:detailData&&!detailData.activityIsOpen}">
-            <div class="time" v-if="detailData">活动时间：{{getDateInfo(detailData.activityBeginDate)}}-{{getDateInfo(detailData.activityEndDate)}}</div>
+            <div class="time" v-if="detailData">活动时间：{{detailData.activityTimeline}}</div>
             <div class="bonus">
                 <img :src="detailData.activityImage|filter" alt="" v-if="detailData">
             </div>
@@ -18,9 +18,9 @@
                     <!--未报名-->
                     <div class="btn" :class="{finger:showfinger}" v-if="detailData.userState==1" @click="appointmentBonus">立即报名瓜分奖池</div>
                     <!--已报名未瓜分-->
-                    <div class="btn" v-if="detailData.userState==2">{{countdown.time}}开启奖池</div>
+                    <div class="btn showfingerPress" v-if="detailData.userState==2">{{countdown.time}}开启奖池</div>
                     <!--开始瓜分-->
-                    <div class="btn" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
+                    <div class="btn showfingerPress" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
                 </template>
             </template>
             <div class="tip" v-if="switches.tzo!=null">
@@ -95,6 +95,7 @@
                 detailData:null,//活动信息
                 awards:null,//瓜分奖品
                 showfinger:false,
+                showfingerPress:false,
             }
         },
         async mounted() {
@@ -193,7 +194,7 @@
                     const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
                     if (res.data.code == 200 && res.data.data) {
                         this.detailData = res.data.data;
-                        this.showfinger=res.data.data.status==1
+                        this.showfinger=res.data.data.userState==1
                         this.switches= {
                             tzo:this.detailData.userIsOpenSms
                         }
@@ -269,6 +270,7 @@
             },
             async appointmentBonus(){//报名
                 this.showfinger=false
+                this.showfingerPress=true
                 GLOBALS.marchSetsPoint('A_H5PT0074001375')
                 let {data:data}=await this.fetch('/ops/api/jackpot/userApply')
                 if(data.code==200){
@@ -416,6 +418,11 @@
                     background-size: 100% 100%;
                     -webkit-animation: myPlay1 3s infinite;
                 }
+            }
+            &.showfingerPress{
+                padding-top: .4rem;
+                background: url("./images/bonus/btn1_press.png");
+                background-size: 100% 100%;
             }
         }
         .info{
