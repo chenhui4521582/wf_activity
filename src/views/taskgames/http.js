@@ -46,7 +46,7 @@ axios.interceptors.response.use(
             axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res => {
               localStorage.removeItem('ACCESS_TOKEN')
               if (res.data.code == 200 && res.data.data) { // 游客模式
-                if (localStorage.getItem('APP_CHANNEL') == 100039 || localStorage.getItem('APP_CHANNEL') == 100042 || localStorage.getItem('APP_CHANNEL') == 100047001 || localStorage.getItem('APP_CHANNEL') == 100048001) {
+                if (window.linkUrl.getYKChannel(localStorage.getItem('APP_CHANNEL'))) {
                   window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
                 } else {
                   window.location.href = `https://wap.beeplay123.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
