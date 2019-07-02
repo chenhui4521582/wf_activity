@@ -103,31 +103,9 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
             <!-- 大师任务 -->
-            <crush-master-task
-              v-if="showCrushMasterTask"
-              :crushTaskList="crushTaskList"
-              :showReceiveMedal="showReceiveMedal"
-              :showMedalAnimate="showMedalAnimate"
-              :currentMedalIndex="currentMedalIndex"
-              :currentGameType="currentGameType"
-              @checkTaskStatus="checkTaskStatus"
-              @hideMedalAnimate="showMedalAnimate = false"
-              @receive="receive"
-              @refreshTask="refreshTask"
-            />
+            <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
-            <king-task
-              v-if="showKingTask"
-              :crushTaskList="crushTaskList"
-              :showReceiveMedal="showReceiveMedal"
-              :showMedalAnimate="showMedalAnimate"
-              :currentMedalIndex="currentMedalIndex"
-              :currentGameType="currentGameType"
-              @checkTaskStatus="checkTaskStatus"
-              @hideMedalAnimate="showMedalAnimate = false"
-              @receive="receive"
-              @refreshTask="refreshTask"
-            />
+            <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
               <h4 class="h-title h-first-title">当前游戏每日任务</h4>
               <ul class="t-items">
@@ -151,9 +129,10 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
                     <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
                   </p>
                 </li>
               </ul>
@@ -182,34 +161,22 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
                     <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
+                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
                     <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
                   </p>
                 </li>
               </ul>
             </div>
           </template>
-          <poplog
-            v-if="isPopLog"
-            :crushTaskList="crushTaskList"
-            :awardItem="awardItem"
-            :motherTask="motherTask"
-            :isNewTask="isNewTask"
-            :masterTask="masterTask"
-            :newUserTaskFinish="newUserTaskFinish"
-            @close="closePopLog"
-          >
+          <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
           <!-- 新版奖励弹窗 -->
           <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
-          <box-dialog
-            v-if="showBoxDialog"
-            :awardItem="awardItem"
-            @closeBoxDialog="closeBoxDialog"
-          />
+          <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
         </div>
         <div class="t-content" v-show="isTfStatus">
@@ -262,7 +229,8 @@ export default {
       quitConfig: null,
       showBoxDialog: false, // 踏青寻宝   活动特有  活动下线 删除
       isDailyReceivePop: false,
-      receiveAwards: {}
+      receiveAwards: {},
+      selectItem: {}
     }
   },
   mounted () {
@@ -284,6 +252,9 @@ export default {
     this.getHuafeiNum()
   },
   computed: {
+    woolUserType () {
+      return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+    },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -373,7 +344,7 @@ export default {
       this.isRRZQPop = false
     },
     async jumpMine () {
-      if(this.channel.indexOf(100051) > -1) {
+      if (this.channel.indexOf(100051) > -1) {
         return false
       }
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
@@ -535,6 +506,11 @@ export default {
     },
     checkTaskStatus (item, type, index) {
       if (item.taskStatus == 0) {
+        if (this.woolUserType) {
+          this.selectItem = { item, type, index }
+          this.goMovie()
+          return
+        }
         this.receive(item, type, index)
       } else if (item.taskStatus == 1) {
         this.goFinishs(item, index, type)
@@ -596,17 +572,17 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
-            taskId: taskId
-          }).then((res) => {
-            if (res.data.code == 200) {
-              this.quitConfig = res.data.data
-              this.isRRZQPop = true
-              return
-            }
-          })
+        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+          taskId: taskId
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.quitConfig = res.data.data
+            this.isRRZQPop = true
+            return
+          }
+        })
         // }
-      }else if(type=='new_user_task_fixed_entrance'){
+      } else if (type == 'new_user_task_fixed_entrance') {
         this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
@@ -661,7 +637,7 @@ export default {
         // // }
         // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
-        url&&(parent.location.href = GLOBALS.getJumpToGameUrl(url))
+        url && (parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
     },
     closePopLog (val) {
@@ -838,9 +814,9 @@ export default {
       // }
     },
     kfclick () {
-	  if(this.channel.indexOf(100051) > -1) {
-		return false
-	  }
+      if (this.channel.indexOf(100051) > -1) {
+        return false
+      }
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
     },
@@ -860,10 +836,46 @@ export default {
     closeDailyReceivePop () {
       this.isDailyReceivePop = false
     },
-    closeFixedEntrance(){
+    closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
+    },
+    goMovie () {
+      setTimeout(function () {
+        window.rewardVideo.show()
+      }, 100)
     }
+    // async goMovie () {
+    //   localStorage.removeItem('ENTRANCE')
+    //   localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+    //   let that = this
+    //   try {
+    //     rewardVideo.show()
+    //     // 关闭广告
+    //     window.createFun('JLGG_closeAdver', async rsp => {
+    //       if (rsp) {
+    //         window.jladverObj.hasAdStatus = true
+    //         window.jladverObj.isAdverStatus = false
+    //         this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
+    //       } else {
+    //         this.$toast.show({
+    //           message: '广告播放未完成，奖励领取失败',
+    //           duration: 2000
+    //         })
+    //       }
+    //     })
+    //     // 暂无广告提示
+    //     window.createFun('JLGG_closeNoAdver', async rsp => {
+    //       that.$toast.show({
+    //         message: rsp,
+    //         duration: 1500
+    //       })
+    //     })
+    //   } catch (error) {
+    //     console.log(error)
+    //     this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
+    //   }
+    // }
   }
 }
 </script>
