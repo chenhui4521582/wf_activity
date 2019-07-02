@@ -90,6 +90,7 @@
             color:rgba(254,223,42,1);
             overflow: hidden;
             ul{
+                margin-top: .1rem;
                 display: flex;
                 flex-direction: column;
                 li{
