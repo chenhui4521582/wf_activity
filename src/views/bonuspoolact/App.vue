@@ -12,7 +12,12 @@
             </div>
             <template v-if="detailData">
                 <!--活动未开启-->
-                <div class="btn" v-if="!detailData.activityIsOpen">{{countdown.time}}后准时开启</div>
+                <template v-if="!detailData.activityIsOpen">
+                  <!--开始瓜分-->
+                  <div class="btn showfingerPress" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
+                  <div class="btn showfingerPress" v-else-if="detailData.activityCountdown==0">活动结束啦</div>
+                  <div class="btn" v-else>{{countdown.time}}后准时开启</div>
+                </template>
                 <!--活动开启-->
                 <template v-else>
                     <!--未报名-->
@@ -208,26 +213,6 @@
 
                 }
             },//获取myDetails数据
-            async openBonus() {//点击开启红包
-                if (this.detailData && this.detailData.availableAmount) {
-                    this.burryPoint('1207003025', '春节红包-开红包')
-                    try {
-                        const res = await this.fetch('/ops/api/springFestival/redEnvelope/open')
-                        if (res.data.code == 200 && res.data.data) {
-                            this.bonusOpenedData = res.data.data;
-                            this.bonusOpenedData.num = this.detailData && this.detailData.availableAmount || 0
-                            this.isshowBonusOpened = true
-                            this.myDetails();
-                        }
-                    } catch (e) {
-
-                    }
-                } else {
-                    this.$nextTick(() => {
-                        this.getAnchor('section2')
-                    })
-                }
-            },
             //礼包
             async getPackage() {//获取礼包数据
                 try {
@@ -254,19 +239,17 @@
             },
             async divideBonus(){//开始瓜分
                 GLOBALS.marchSetsPoint('A_H5PT0074001376')
-                let {data:data}=await this.fetch('/ops/api/jackpot/divideUp')
+                let {data:data}=await this.fetch('/ops/api/jackpot/divideUp',{isShowTotast:false})
                 if(data.code==200){
                     this.awards=data.data//瓜分奖品
                     this.isshowBonusOpened=true
-                    this.myDetails()
                 }else{
-                    if(data.code!=101){
-                        this.$toast.show({
-                            message:data.message,
-                            duration:2000
-                        })
-                    }
+                  this.$toast.show({
+                    message:data.message,
+                    duration:2000
+                  })
                 }
+                this.myDetails()
             },
             async appointmentBonus(){//报名
                 this.showfinger=false
@@ -278,13 +261,13 @@
                         message:'报名成功',
                         duration:2000
                     })
-                    this.myDetails()
                 }else{
                     this.$toast.show({
                         message:data.message,
                         duration:2000
                     })
                 }
+                this.myDetails()
             },
             closeBonusRes(){
                 this.isshowBonusOpened=false
@@ -368,6 +351,7 @@
         background: url("./images/bonus/section1_bg.png");
         background-size: 100% 100%;
         &.noopen{
+            height: 9.81rem;
             background: url("./images/bonus/section0_bg.png");
             background-size: 100% 100%;
         }
@@ -406,7 +390,7 @@
             background: url("./images/bonus/btn1.png");
             background-size: 100% 100%;
             &.finger{
-                -webkit-animation: ychange 1.5s infinite;
+                -webkit-animation: ychange 1s infinite;
                 &:before{
                     content: '';
                     position: absolute;
@@ -416,7 +400,7 @@
                     height: .9rem;
                     background: url("./images/bonus/finger.png");
                     background-size: 100% 100%;
-                    -webkit-animation: myPlay1 1.5s infinite;
+                    -webkit-animation: myPlay1 1s infinite;
                 }
             }
             &.showfingerPress{
@@ -443,10 +427,10 @@
             flex-direction: column;
             .label{
                 position: absolute;
-                top: 4px;
-                right: .29rem;
+                top: 6px;
+                right: .200rem;
                 z-index: 1;
-                font-size: 16px;
+                font-size: ;
                 font-weight: 400;
                 color: #0a1354;
                 &.open{
