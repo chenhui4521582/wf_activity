@@ -841,42 +841,25 @@ export default {
       this.getPhoneFragment()
     },
     goMovie () {
-      setTimeout(function () {
-        window.rewardVideo.show()
-      }, 100)
+      startMovie()
+      window.closeIFrame = data => {
+        console.log("关闭子页面");
+        let HASE_AD_IFRAME = document.querySelector('#adIframe')
+        HASE_AD_IFRAME.parentNode.removeChild(HASE_AD_IFRAME)
+        if (data === 6) {
+          this.$toast.show({
+            message: '广告播放未完成，奖励领取失败',
+            duration: 2000
+          })
+          return
+        } else if (data === 5) {
+          this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
+        } else {
+          this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
+          console.log('error', data)
+        }
+      }
     }
-    // async goMovie () {
-    //   localStorage.removeItem('ENTRANCE')
-    //   localStorage.setItem('ENTRANCE', 'SDK内每日任务')
-    //   let that = this
-    //   try {
-    //     rewardVideo.show()
-    //     // 关闭广告
-    //     window.createFun('JLGG_closeAdver', async rsp => {
-    //       if (rsp) {
-    //         window.jladverObj.hasAdStatus = true
-    //         window.jladverObj.isAdverStatus = false
-    //         this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
-    //       } else {
-    //         this.$toast.show({
-    //           message: '广告播放未完成，奖励领取失败',
-    //           duration: 2000
-    //         })
-    //       }
-    //     })
-    //     // 暂无广告提示
-    //     window.createFun('JLGG_closeNoAdver', async rsp => {
-    //       console.log(rsp)
-    //    // that.$toast.show({
-    //    //   message: rsp,
-    //    //   duration: 1500
-    //    // })
-    //     })
-    //   } catch (error) {
-    //     console.log(error)
-    //     this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
-    //   }
-    // }
   }
 }
 </script>

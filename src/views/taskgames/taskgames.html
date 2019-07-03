@@ -16,20 +16,6 @@
         <meta name="x5-page-mode" content="app"/> -->
   <!-- <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
   <!-- <script src="https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/2.5.1/vconsole.min.js"></script> -->
-  <script type="text/javascript">
-    window.confirm = function (message) {
-      var iframe = document.createElement("IFRAME");
-      iframe.style.display = "none";
-      iframe.setAttribute("src", 'data:text/plain,');
-      document.documentElement.appendChild(iframe);
-      var alertFrame = window.frames[0];
-      var result = alertFrame.window.confirm(message);
-      iframe.parentNode.removeChild(iframe);
-      return result;
-    }
-  </script>
-  <script type="text/javascript"
-    src="https://na0.bdstatic.com/static/cover/static/rewardVideo/index-1.0.0.js?time=2015"></script>
   <script type="text/javascript" src="https://wap.beeplay123.com/ErrorPage/sdkLink.js"></script>
   <script type="text/javascript">
     new function () {
@@ -72,189 +58,18 @@
 <script src="//file.beeplay123.com/axios/0.15.3/axios.min.js"></script>
 <!-- 百度统计代码 -->
 <script type="text/javascript" src="./static/js/BaiduTongji.js"></script>
-<!-- 好看激励广告开始 -->
-<script type="text/javascript">
-  var gChannel = localStorage.getItem('APP_CHANNEL')
-  if (gChannel == '100039' || gChannel == '100042') {
-    setAdverData()
+<!--广告修改-->>
+<script>
+  sessionStorage.woolUserType = 1
+  localStorage.removeItem('ADS_DATA')
+  function startMovie() {
+    let iframe = document.createElement('iframe');
+    iframe.name = 'adIframe'
+    iframe.id = 'adIframe'
+    iframe.src = 'https://wap.beeplay123.com/ads/index.html';
+    iframe.style = 'position: fixed;top: 0;left: 0;width: 100vw;height: 100vh;border:0;z-index:999;overflow:hidden';
+    document.body.appendChild(iframe)
   }
-
-  function getNewSignList() {
-    return axios.post('https://platform-api.beeplay123.com/wap/api/continuous/signIn/new/list', {}, {
-      headers: {
-        'Authorization': localStorage.getItem('ACCESS_TOKEN'),
-        'App-Channel': localStorage.getItem('APP_CHANNEL'),
-        'App-Version': '1.0.0'
-      }
-    })
-  }
-  function getTodayStatus() {
-    return axios.post('https://platform-api.beeplay123.com/wap/api/continuous/signIn/new/todayStatus', {}, {
-      headers: {
-        'Authorization': localStorage.getItem('ACCESS_TOKEN'),
-        'App-Channel': localStorage.getItem('APP_CHANNEL'),
-        'App-Version': '1.0.0'
-      }
-    })
-  }
-  function setRecordAdLog(params) {
-    return axios.post('https://platform-api.beeplay123.com/wap/api/user/adLog/recordAdLog', params, {
-      headers: {
-        'Authorization': localStorage.getItem('ACCESS_TOKEN'),
-        'App-Channel': localStorage.getItem('APP_CHANNEL'),
-        'App-Version': '1.0.0'
-      }
-    })
-  }
-  function setReadAdStatus(params) {
-    return axios.post('https://ops-api.beeplay123.com/ops/api/fee/wheel/readAdStatus', params, {
-      headers: {
-        'Authorization': localStorage.getItem('ACCESS_TOKEN'),
-        'App-Channel': localStorage.getItem('APP_CHANNEL'),
-        'App-Version': '1.0.0'
-      }
-    })
-  }
-  function setAdverData() {
-    localStorage.removeItem('ADS_ERROR')
-    var that = this
-    let sendBeaconCount = 0
-    window.navigator.sendBeacon = function (e) {
-      if (!sendBeaconCount) {
-        //广告开始播放
-        window.GLOBALS.marchSetsPoint('A_H5PT0140001404', { entrance: localStorage.ENTRANCE })
-      }
-      else if (sendBeaconCount == 3) {
-        //广告结束播放
-        window.GLOBALS.marchSetsPoint('A_H5PT0140001405', { entrance: localStorage.ENTRANCE })
-      }
-      var t = new Image;
-      t.onload = t.onerror = function () { }
-      t.src = e
-      sendBeaconCount++;
-    }
-    let readADsLogDate = null
-    window.jladverObj = {
-      isAdverStatus: false,
-      scr_id: 1725,
-      product_id: 25,
-      hasAdStatus: false
-    }
-
-    if (gChannel == '100039') {
-      window.jladverObj.scr_id = 1725
-      window.jladverObj.product_id = 25
-    } else if (gChannel == '100042') {
-      window.jladverObj.scr_id = 1726
-      window.jladverObj.product_id = 30
-    }
-    window.GLOBALS.marchSetsPoint('A_H5PT0140001406')
-    rewardVideo.init({
-      pageColor: '#24B46A',
-      isMuted: true,
-      productId: window.jladverObj.product_id,
-      srcid: window.jladverObj.scr_id,
-      onStartPlay: async function () {
-        let ENTRANCE = localStorage.ENTRANCE
-        let SOURCETYPE = 4
-        switch (ENTRANCE) {
-          case 'SDK内每日任务':
-            SOURCETYPE = 4
-            break;
-
-          default:
-            SOURCETYPE = 4
-            break;
-        }
-        readADsLogDate = new Date().getTime()
-        setRecordAdLog({ logId: readADsLogDate, status: 1, type: SOURCETYPE })
-        window.GLOBALS.marchSetsPoint('A_H5PT0140001417', { entrance: ENTRANCE })
-        let HASE_CLOSE_SELF = document.querySelector('.AD-close-self')
-        let CLOSE = document.querySelector('.ad-video-page .close')
-        if (HASE_CLOSE_SELF) {
-          CLOSE.removeChild(HASE_CLOSE_SELF)
-        }
-        let CLOSE_SELF = document.createElement('DIV')
-        CLOSE_SELF.className = "AD-close-self"
-        CLOSE.appendChild(CLOSE_SELF)
-        document.querySelector('.AD-close-self').onclick = function (e) {
-          if (!confirm('看完广告将获得游戏奖励，是否关闭广告')) {
-            e.stopPropagation();
-          } else {
-            sendBeaconCount = 4;
-          }
-          sendBeaconCount = 4;
-        }
-      },
-      onEndPlay: function () {
-        let ENTRANCE = localStorage.ENTRANCE
-        let SOURCETYPE = 4
-        switch (ENTRANCE) {
-          case 'SDK内每日任务':
-            SOURCETYPE = 4
-            break;
-
-          default:
-            SOURCETYPE = 4
-            break;
-        }
-        if (readADsLogDate) {
-          setRecordAdLog({ logId: readADsLogDate, status: 3, type: SOURCETYPE })
-          window.GLOBALS.marchSetsPoint('A_H5PT0140001418', { entrance: ENTRANCE })
-          readADsLogDate = null
-        }
-        window.jladverObj.isAdverStatus = true
-      },
-      onAdClose: function (data) {
-        // type:
-        // NAVIDEO: 表示是视频页面
-        // NAVIDEO_TAIL: 表示是尾帧页面
-        try {
-          let ENTRANCE = localStorage.ENTRANCE
-          let SOURCETYPE = 4
-          switch (ENTRANCE) {
-            case 'SDK内每日任务':
-              SOURCETYPE = 4
-              break;
-
-            default:
-              SOURCETYPE = 4
-              break;
-          }
-          window.JLGG_closeAdver(window.jladverObj.isAdverStatus)
-          setRecordAdLog({ logId: readADsLogDate, status: 2, type: SOURCETYPE })
-          readADsLogDate = null
-        } catch (e) {
-        }
-
-        rewardVideo.destroy()
-        // that.hasAd = false
-        setAdverData()
-      },
-      onAdClick: function (data) {
-        // type:
-        // NAVIDEO: 表示是视频页面
-        // NAVIDEO_TAIL: 表示是尾帧页面
-        console.log('this is ad click', data)
-      }
-    }).then(function (res) {
-      if (res.errno) {
-        localStorage.setItem('ADS_ERROR', true)
-        that.hasAd = false
-        window.jladverObj.hasAdStatus = false
-        window.JLGG_closeNoAdver('暂无广告')
-        console.log('error:', res.errmsg)
-        return
-      }
-      window.GLOBALS.marchSetsPoint('A_H5PT0140001407')
-      that.hasAd = true
-      window.jladverObj.hasAdStatus = true
-      // window.JLGG_adverInitFun(window.jladverObj.hasAdStatus)
-    })
-  }
-
 </script>
-
-<!-- 好看激励广告结束 -->
 
 </html>
