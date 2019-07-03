@@ -866,10 +866,11 @@ export default {
     //     })
     //     // 暂无广告提示
     //     window.createFun('JLGG_closeNoAdver', async rsp => {
-    //       that.$toast.show({
-    //         message: rsp,
-    //         duration: 1500
-    //       })
+    //       console.log(rsp)
+    //    // that.$toast.show({
+    //    //   message: rsp,
+    //    //   duration: 1500
+    //    // })
     //     })
     //   } catch (error) {
     //     console.log(error)
