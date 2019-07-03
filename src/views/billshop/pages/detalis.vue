@@ -119,7 +119,7 @@ export default {
       }
     },
     residueNumber() {
-      return this.currentItem.currentUserTodayAvailableQuota || 0
+      return this.currentItem.currentUserTodayAvailableQuota === null ? this.currentItem.allUsersTodayAvailableQuota : this.currentItem.currentUserTodayAvailableQuota
     }
   },
   mounted () {
