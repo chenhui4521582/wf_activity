@@ -219,7 +219,7 @@ export default {
       cdkArr: null,
       isTabUse: false,
       curlink: null,
-      hideBackArr: ['100037', '100033001'],
+      hideBackArr: ['100037', '100033001', '700003'],
       curChannel: null,
       curToken: null,
       curIndex: 0,
@@ -242,7 +242,7 @@ export default {
     this.cGameType = this.getUrlParam('gameType') || ''
     let cururl = window.location.href
     this.curlink = this.getUrlParam('wf_cur_link')
-    if (this.curChannel && this.curChannel.indexOf('100') != -1) {
+    if (this.curChannel && (this.curChannel.indexOf('100') != -1 || this.curChannel.indexOf('700') != -1)) {
       this.getUserInfo()
       this.getCdkeyStatus()
       if (this.cGameType && this.cGameType != null && this.cGameType != 'null') {
