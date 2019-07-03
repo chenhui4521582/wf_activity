@@ -847,8 +847,9 @@ export default {
       this.getPhoneFragment()
     },
     goMovie () {
-      localStorage.ADSDATA = JSON.stringify(this.selectItem)
-      parent.GameEval('openweb','https://wap.beeplay123.com/ads/index.html')
+      localStorage.removeItem('ADSDATA')
+      localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
+      parent.GameEval('openweb', 'https://wap.beeplay123.com/ads/index.html')
     }
   }
 }
