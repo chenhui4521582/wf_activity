@@ -724,6 +724,12 @@ export default {
               this.getCrushTask(this.currentMedalIndex, '', this.checkCurrentTask())
               break
             case 'dayTask':
+              GLOBALS.marchSetsPoint('A_H5PT0061001408', {
+                position_id: index + 1,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              })//H5平台-任务-每日任务-领取
               this.getDayTask()
               break
             default:
@@ -841,24 +847,8 @@ export default {
       this.getPhoneFragment()
     },
     goMovie () {
-      startMovie()
-      window.closeIFrame = data => {
-        console.log("关闭子页面");
-        let HASE_AD_IFRAME = document.querySelector('#adIframe')
-        HASE_AD_IFRAME.parentNode.removeChild(HASE_AD_IFRAME)
-        if (data === 6) {
-          this.$toast.show({
-            message: '广告播放未完成，奖励领取失败',
-            duration: 2000
-          })
-          return
-        } else if (data === 5) {
-          this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
-        } else {
-          this.receive(this.selectItem.item, this.selectItem.type, this.selectItem.index)
-          console.log('error', data)
-        }
-      }
+      localStorage.ADSDATA = JSON.stringify(this.selectItem)
+      parent.GameEval('openweb','https://wap.beeplay123.com/ads/index.html')
     }
   }
 }
