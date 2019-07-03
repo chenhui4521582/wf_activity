@@ -847,7 +847,9 @@ export default {
       this.getPhoneFragment()
     },
     goMovie () {
+      localStorage.removeItem('ENTRANCE')
       localStorage.removeItem('ADSDATA')
+      localStorage.setItem('ENTRANCE', 'SDK内每日任务')
       localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
       parent.GameEval('openweb', 'https://wap.beeplay123.com/ads/index.html')
     }
