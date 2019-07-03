@@ -97,6 +97,7 @@
                     display: flex;
                     justify-content: space-between;
                     margin-bottom: .2rem;
+                    line-height: .2rem;
                 }
             }
         }
