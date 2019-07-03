@@ -31,9 +31,8 @@
         <div class="spec-item">
           <div class="item-title">数量</div>
           <div class="item-content">
-            <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null">（剩余库存充足）</span>
-            <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota > 0">（剩余库存: {{currentItem.allUsersTodayAvailableQuota}}）</span>
-            <span class="item-number-title" v-if="!allUsersTodayAvailableQuota">（剩余库存: 0）</span>
+            <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
+            <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
             <div class="item-number-add">
               <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
             </div>
@@ -118,6 +117,9 @@ export default {
       if (this.currentItem.allUsersTodayAvailableQuota === null || this.currentItem.allUsersTodayAvailableQuota !== 0) {
         return true
       }
+    },
+    residueNumber() {
+      return this.currentItem.currentUserTodayAvailableQuota || 0
     }
   },
   mounted () {
