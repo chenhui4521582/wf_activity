@@ -506,7 +506,7 @@ export default {
     },
     checkTaskStatus (item, type, index) {
       if (item.taskStatus == 0) {
-        if (this.woolUserType) {
+        if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
           this.goMovie()
           return
