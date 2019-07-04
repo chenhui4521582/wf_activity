@@ -18,20 +18,20 @@
       </div>
     </div>
     <!--充值加赠-->
-    <!--<div class="section2" id="section2">-->
-    <!--<div class="container">-->
-    <!--<img src="./images/package/600@2x.png" alt="">-->
-    <!--<img src="./images/package/350@2x.png" alt="">-->
-    <!--<img src="./images/package/168@2x.png" alt="">-->
-    <!--<img src="./images/package/88@2x.png" alt="">-->
-    <!--</div>-->
-    <!--</div>-->
+    <div class="section2" id="section2">
+    <div class="container">
+    <img src="./images/package/600@2x.png" alt="">
+    <img src="./images/package/350@2x.png" alt="">
+    <img src="./images/package/168@2x.png" alt="">
+    <img src="./images/package/88@2x.png" alt="">
+    </div>
+    </div>
     <!--任务-->
     <div class="section3" id="section3">
       <div class="container">
         <div class="info">
           <span>任务累计积分：{{bonusData.jifen}}</span>
-          <img src="./images/package/rule.png" alt="">
+          <img src="./images/package/rule.png" alt="" @click="showrule">
         </div>
         <div class="bonus">
           <ul>
@@ -81,33 +81,28 @@
       </div>
     </div>
     <!--充值加赠-->
-    <div class="section5" id="section5">
-      <div class="container">
-        <img src="./images/package/plusgained.png" alt="">
-      </div>
-    </div>
+    <!--<div class="section5" id="section5">-->
+    <!--<div class="container">-->
+    <!--<img src="./images/package/plusgained.png" alt="">-->
+    <!--</div>-->
+    <!--</div>-->
     <!--以下都是弹窗-->
-    <!--&lt;!&ndash;规则&ndash;&gt;-->
-    <!--<bonus-success v-if="showrulepop" :count="0"-->
-                   <!--@close="showrulepop=false"-->
-                   <!--:dataStr="detailData&&(detailData.activityBeginDate+'-'+detailData.activityEndDate)||''"></bonus-success>-->
-    <!--&lt;!&ndash;绑定手机号&ndash;&gt;-->
-    <!--<bonus-success v-if="isOpen" :count="1"-->
-                   <!--@close="isOpen=false" @closemobile="closemobile" @refresh="myDetails"></bonus-success>-->
-    <!--&lt;!&ndash;开启红包弹窗&ndash;&gt;-->
-    <!--<bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes"></bonus-opened>-->
+    <!--规则-->
+    <rule v-if="showrulepop" @close="showrulepop=false"></rule>
+    <!--奖品弹窗-->
+    <award-pop v-if="showAwardPop" :type="awardType" @close="showAwardPop=false"></award-pop>
   </div>
 </template>
 <script>
   import '../../common/js/window.js';
-  // import bonusSuccess from './components/bonusSuccess'
-  // import bonusOpened from './components/bonusOpened'
-  // import bonusRecord from './components/bonusRecord'
-  import common from "../../common/js/utils";
+  import rule from './components/rule'
+  import awardPop from './components/awardPop'
   import scroll from './components/scroll'
   export default {
     data() {
       return {
+        showAwardPop:false,
+        awardType:0,
         bonusData: {
           data: [{
             jifen: 2,
@@ -252,7 +247,7 @@
       },//请求封装方法
       async myDetails() {
         try {
-          const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
+          const res = await this.fetch('/ops/api/activity/points/activityLogin')
           if (res.data.code == 200 && res.data.data) {
             this.detailData = res.data.data;
             this.showfinger = res.data.data.userState == 1
@@ -292,7 +287,7 @@
       }
     },
     components: {
-      scroll
+      scroll,rule,awardPop
     }
   }
 
@@ -351,10 +346,13 @@
     span {
       position: absolute;
       top: 1.74rem;
-      left: 1.71rem;
+      left:0;
+      right: 0;
+      margin: auto;
       font-size: .3rem;
       font-weight: 300;
       color: rgba(222, 201, 169, 1);
+      text-align: center;
     }
   }
 
