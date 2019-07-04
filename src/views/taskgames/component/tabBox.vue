@@ -129,6 +129,9 @@ export default {
         case 'feedback':
           break// 打开充值回馈
         case 'open_payTurntable':
+              parent&&parent.closeTaksPage()
+              let url5 = `https://wap.beeplay123.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url5)
           break
         case 'recharge':
           if (localStorage.getItem('ACCESS_TOKEN')) {
@@ -270,12 +273,7 @@ export default {
               parent&&parent.closeTaksPage()
               let url4 = `https://wap.beeplay123.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url4)
-              break
-          case 'open_payTurntable': //打开转盘
-              parent&&parent.closeTaksPage()
-              let url5 = `https://wap.beeplay123.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url5)
-              break
+              break              
               
         default:
           url.includes('//') && (parent.location.href = url)
