@@ -271,6 +271,12 @@ export default {
               let url4 = `https://wap.beeplay123.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url4)
               break
+          case 'open_payTurntable': //打开转盘
+              parent&&parent.closeTaksPage()
+              let url5 = `https://wap.beeplay123.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url5)
+              break
+              
         default:
           url.includes('//') && (parent.location.href = url)
           break
