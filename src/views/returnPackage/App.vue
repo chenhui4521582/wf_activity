@@ -5,30 +5,29 @@
     <template v-if="detailData&&detailData.showFlag">
       <div class="section0"><span>截止时间：{{detailData.endDateTime}}</span></div>
       <!--签到-->
-      <div class="section1" id="section1">
+      <div class="section1" id="section1" v-if="signData&&[2500,5000,10000,25000].includes(signData.count)">
+        <img class="title_bg" :src="require(`./images/package/signtab_${signData.count}.png`)">
         <div class="container">
           <ul class="signlist">
-            <li v-for="item in 5">
-              <img src="./images/package/sign_500.png" alt="" v-if="item>1">
-              <img src="./images/package/signed.png" alt="" v-if="item==1">
-              <div>第{{item}}天</div>
+            <li v-for="(item,index) in signData.signInfoList">
+              <img :src="require(`./images/package/${signData.count/5}.png`)" alt="" v-if="!item.status">
+              <img src="./images/package/signed.png" alt="" v-if="item.status">
+              <div>第{{index+1}}天</div>
             </li>
           </ul>
-          <!--<div class="btn">立即签到领取</div>-->
-          <div class="btn signed">今日已经领取500金叶</div>
+          <div class="btn" v-if="!signData.todayStatus" @click="sign(signData.count/5)">立即签到领取</div>
+          <div class="btn signed" v-else>今日已经领取{{signData.count/5}}金叶</div>
         </div>
       </div>
       <!--充值加赠-->
-      <div class="section2" id="section2">
+      <div class="section2" id="section2" v-if="packageData&&!packageData.hasBuy&&packageData.list.length" :class="{package4:packageData&&packageData.list.length>2}">
         <div class="container">
-          <img src="./images/package/600@2x.png" alt="">
-          <img src="./images/package/350@2x.png" alt="">
-          <img src="./images/package/168@2x.png" alt="">
-          <img src="./images/package/88@2x.png" alt="">
+          <img :src="item.icon|filter" alt="" v-for="item in packageData.list" @click="gotopay(item)">
         </div>
       </div>
       <!--任务-->
-      <div class="section3" id="section3" v-if="bonusData" :class="{hasbtn:bonusData&&bonusData.pointsExchangeTaskVOS&&bonusData.pointsExchangeTaskVOS[0]&&bonusData.pointsExchangeTaskVOS[0].status!=1}">
+      <div class="section3" id="section3" v-if="bonusData&&[35,70,175,340].includes(bonusData.totalAwardsNum)" :class="{hasbtn:bonusData&&bonusData.pointsExchangeTaskVOS&&bonusData.pointsExchangeTaskVOS[0]&&bonusData.pointsExchangeTaskVOS[0].status!=1}">
+        <img class="title_bg" :src="require(`./images/package/dailytasktab_${bonusData.totalAwardsNum}.png`)">
         <div class="container">
           <div class="info">
             <span>任务累计积分：{{bonusData.points}}</span>
@@ -39,7 +38,6 @@
               <li v-for="(item,index) in bonusData.pointsExchangeTaskVOS">
                 <div class="jifen">{{item.points}}积分</div>
                 <div class="award_name">{{item.awardsName}}</div>
-                <!--v-if="bonusData.points>=item.points"-->
                 <div class="award_status" :class="{gained:item.status==2}" @click="exchange(item,3)" v-if="item.status!=1"></div>
               </li>
             </ul>
@@ -56,14 +54,15 @@
       <div class="section4" id="section4" v-if="gameTasks">
         <div class="tabs">
           <ul>
-            <li :class="{actived:currentGameTask==0}" @click="selectIndex(0)">糖果</li>
-            <li :class="{actived:currentGameTask==1}" @click="selectIndex(1)">桌球</li>
-            <li :class="{actived:currentGameTask==2}" @click="selectIndex(2)">捕鱼</li>
-            <li :class="{actived:currentGameTask==3}" @click="selectIndex(3)">赏金</li>
+            <li v-for="(item,index) in gamesArr" :class="{actived:currentGameTask==index}" @click="selectIndex(index)">
+              <template v-if="item=='crush-daytask-pionts'">糖果</template>
+              <template v-if="item=='bill-daytask-pionts'">桌球</template>
+              <template v-if="item=='fish-daytask-pionts'">捕鱼</template>
+              <template v-if="item=='marbles-daytask-pionts'">赏金</template>
+            </li>
           </ul>
         </div>
         <div class="list">
-          <!--<scroll :data="true">-->
             <div>
               <div class="game_item" v-for="item in gameTasks[gamesArr[currentGameTask]]">
                 <img :src="item.icon|filter" alt="" class="pic">
@@ -80,19 +79,19 @@
                   </div>
                 </div>
                 <div class="btn btn0" v-if="item.taskStatus==0" @click="exchange(item,4)">领取积分</div>
-                <div class="btn btn1" v-if="item.taskStatus==1" @click="exchange(item,4)">去完成</div>
+                <div class="btn btn1" v-if="item.taskStatus==1" @click="gotoplay">去完成</div>
                 <div class="btn btn2" v-if="item.taskStatus==2">已领取</div>
               </div>
             </div>
-          <!--</scroll>-->
         </div>
       </div>
       <!--充值加赠-->
-      <!--<div class="section5" id="section5">-->
-      <!--<div class="container">-->
-      <!--<img src="./images/package/plusgained.png" alt="">-->
-      <!--</div>-->
-      <!--</div>-->
+      <div class="section5" id="section5" v-if="packageData&&packageData.hasBuy">
+        <div class="container">
+          <div class="text" style="font-size: .18rem;font-weight:300;color:rgba(222,201,169,1);">{{packageData.dateRange}}连续登录，分天到账加赠部分</div>
+          <img src="./images/package/plusgained.png" alt="">
+        </div>
+      </div>
     </template>
     <!--以下都是弹窗-->
     <!--规则-->
@@ -105,40 +104,26 @@
   import '../../common/js/window.js';
   import rule from './components/rule'
   import awardPop from './components/awardPop'
-  import scroll from './components/scroll'
-
   export default {
     data() {
       return {
         gameTasks: null,
         currentGameTask: 1,
-        gamesArr:["crush-daytask-pionts","bill-daytask-pionts","fish-daytask-pionts","marbles-daytask-pionts"],
+        gamesArr:[],
         awardsname: '',
         showAwardPop: false,
         awardType: 0,//1.签到送叶子 2.加赠送叶子 3.任务积分领红包 4.游戏任务领积分
         detailData: null,//活动信息
+        signData:null,//签到数据
+        packageData: null,//礼包数据
         bonusData: null,
         curChannel: null,
         curToken: null,
-        countdown: {//红包榜外显倒计时，最后一天显示
-          time: ''
-        },
-        showrulepop: false,
-        switches: {
-          tzo: null
-        },
-        isOpen: false,
-        showmobilepop: false,
-        candivide: true,
-        isshowBonusOpened: false,//是否显示开启红包弹窗
-        packageData: [],//礼包数据
-        bonusListData: [],//瓜分记录
-        awards: null,//瓜分奖品
-        showfinger: false,
-        showfingerPress: false,
+        showrulepop: false
       }
     },
     async mounted() {
+      GLOBALS.marchSetsPoint('A_H5PT0074001432')
       this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
       this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
       //活动信息
@@ -150,45 +135,46 @@
       }
     },
     methods: {
+      async sign(num){
+        GLOBALS.marchSetsPoint('A_H5PT0074001434')
+        try {
+          const res = await this.fetch('/ops/api/bigCustomersRecall/sign')
+          if (res.data.code == 200 && res.data.data) {
+            this.awardsname = `${num}金叶子`;
+            this.awardType = 1;
+            this.showAwardPop = true
+            this.getSignList()//刷新签到数据
+          }
+        } catch (e) {
+
+        }
+      },
       transUint (finishNum, taskOps) {
         let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
           ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
         return finish + '/' + ops
       },
-      gotoplay(item){
+      async gotoplay(item){
+        GLOBALS.marchSetsPoint('A_H5PT0074001439',{target_project_id:item.gameType,task_id:item.taskId,task_name:item.taskName})
+        await this.fetch('/task/api/usertask/cacheLastGameOfActivity',{value:this.gamesArr[this.currentGameTask]})
         GLOBALS.jumpOutsideGame(item.url)
       },
       closeAwardPop(){
         this.showAwardPop=false;
         //1.签到送叶子 2.加赠送叶子 3.任务积分领红包 4.游戏任务领积分
-        if(this.type==1){
+        if(this.awardType==1){
 
-        }else if(this.type==2){
+        }else if(this.awardType==2){
 
-        }else if(this.type==3){
+        }else if(this.awardType==3){
           this.userPointTask()
         }else{
-          this.getGameTasks()
+          this.userPointTask()//刷新积分兑换话费券接口
         }
       },
       selectIndex(index) {
+        GLOBALS.marchSetsPoint('A_H5PT0074001438',{target_project_id:this.gameTasks[this.gamesArr[index]][0]&&this.gameTasks[this.gamesArr[index]][0].gameType})
         this.currentGameTask=index
-      },
-      getPrizeName(awards) {
-        Number.prototype.mul = function (arg) {
-          var m = 0, s1 = this.toString(), s2 = arg.toString()
-          try {
-            m += s1.split('.')[1].length
-          } catch (e) {
-          }
-          try {
-            m += s2.split('.')[1].length
-          } catch (e) {
-          }
-          return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m)
-        }
-
-        return (parseFloat(awards.awardsName).mul(awards.awardsNum)) + awards.awardsName.match(/[\u4e00-\u9fa5]/g).join('')
       },
       getpercent(arr, jifen) {
         if (jifen == 0) {
@@ -218,6 +204,7 @@
         return `${month}月${day}日`
       },
       showrule() {
+        GLOBALS.marchSetsPoint('A_H5PT0074001436')
         this.showrulepop = true
       },
       //获取地址栏问号后面的参数值
@@ -237,6 +224,7 @@
         return Request[ename];
       },
       back() {
+        GLOBALS.marchSetsPoint('A_H5PT0074001433')
         top.location.href = window.linkUrl.getBackUrl(this.curChannel)
       },//回到首页
       getComputedStyle(ele, attr) {
@@ -249,7 +237,7 @@
         if (url.startsWith('/wap/api') || url.startsWith('/task/api')) {
           url = '//platform-api.beeplay123.com' + url
         }
-        if (url.startsWith('/wap/api')) {
+        if (url.startsWith('/shop/api')) {
           url = '//shop-api.beeplay123.com' + url
         }
         return this.axios.post(url, params, {})
@@ -262,14 +250,26 @@
             if (this.detailData && this.detailData.showFlag) {
               let arr = res.data.data.endDateTime.split(' ')
               this.detailData.endDateTime = parseInt(arr[0].split('-')[1]) + '月' + parseInt(arr[0].split('-')[2]) + '日 ' + arr[1]
+              this.getSignList()//签到数据
+              this.getPackage()//加赠礼包数据
               this.userPointTask()//活动信息
-              this.getGameTasks()//游戏任务
+              this.getGameTasks(-1)//游戏任务
             }
           }
         } catch (e) {
 
         }
       },//获取myDetails数据POST
+      async getSignList(){
+        try {
+          const res = await this.fetch('/ops/api/bigCustomersRecall/list')
+          if (res.data.code == 200 && res.data.data) {
+            this.signData = res.data.data
+          }
+        } catch (e) {
+
+        }
+      },
       async userPointTask() {//累计积分兑换话费查询
         try {
           const res = await this.fetch('/ops/api/activity/points/userPointTask')
@@ -285,26 +285,22 @@
           if (item.status == 2) {
             return
           }
-          this.awardsname = item.awardsName;
-          this.awardType = type;
-          this.showAwardPop = true
-          // try {
-          //   const res = await this.fetch('/ops/api/activity/points/points/exchange',{
-          //     order:item.order
-          //   })
-          //   if (res.data.code == 200 && res.data.data) {
-          //     this.awardsname = item.awardsName;
-          //     this.awardType = type;
-          //     this.showAwardPop = true
-          //   }
-          // } catch (e) {
-          //
-          // }
+          GLOBALS.marchSetsPoint('A_H5PT0074001437',{task_id:item.order,task_name:item.awardsName})
+          try {
+            const res = await this.fetch('/ops/api/activity/points/points/exchange',{
+              order:item.order
+            })
+            if (res.data.code == 200 && res.data.data) {
+              this.awardsname = item.awardsName;
+              this.awardType = type;
+              this.showAwardPop = true
+            }
+          } catch (e) {
+
+          }
         }
         if(type==4){
-          // this.awardsname = item.awardsName;
-          // this.awardType = type;
-          // this.showAwardPop = true
+          GLOBALS.marchSetsPoint('A_H5PT0074001440',{target_project_id:item.gameType,task_id:item.taskId,task_name:item.taskName})
           try {
             const res = await this.fetch('/task/api/usertask/finish',{
               taskId: item.taskId,
@@ -314,33 +310,53 @@
               this.awardsname = item.awardsName;
               this.awardType = type;
               this.showAwardPop = true//领取积分
-              this.getGameTasks()//刷新游戏任务挣积分
-              this.userPointTask()//刷新积分兑换话费券接口
+              this.getGameTasks(this.awardType)//刷新游戏任务挣积分
             }
           } catch (e) {
           }
         }
       },
-      async getGameTasks() {
+      async getGameTasks(index=-1) {
         let {data: data} = await this.fetch('/task/api/usertask/dayTaskByBatch')
         if (data.code == 200) {
           this.gameTasks = data.data;
+          if(index<0){
+            let {data: dataA} = await this.fetch('/task/api/usertask/cacheLastGameOfActivity',{value:''})
+            if(dataA.code == 200){
+              if(dataA.data){
+                this.gamesArr=[...new Set([dataA.data,...Object.keys(this.gameTasks)])]
+                this.currentGameTask=this.gamesArr.indexOf(dataA.data)<0?0:this.gamesArr.indexOf(dataA.data)
+              }else{
+                this.gamesArr=['crush-daytask-pionts','bill-daytask-pionts','fish-daytask-pionts','marbles-daytask-pionts']
+                this.currentGameTask=0
+              }
+            }
+          }
         }
       },
       //礼包
-      async getPackage() {//获取礼包数据
+      async getPackage() {//获取礼包数据get
         try {
-          const {data: data} = await this.axios.post('https://shop-api.beeplay123.com/shop/api/mall/leaguePacksList')
+          const {data: data} = await this.fetch('/shop/api/mall/bigCustomerRecallProducts')
           if (data.code == 200) {
-            this.packageData = data.data.leaguePacksList || []
-            console.log('this.packageData', data.data.leaguePacksList.length)
+            this.packageData = data.data
+            if(this.packageData&&this.packageData.hasBuy){
+              const {data:dataA}=await this.fetch('/shop/api/mall/sendBigCustomerAdditionalRewards')
+              if(dataA.code==200){
+                this.awardType=2;
+                let dailyAmount = dataA.dailyAmount > 10000 ? (dataA.dailyAmount / 10000).toFixed(2) + '万' : dataA.dailyAmount;
+                let totalAmount = dataA.amount > 10000 ? (dataA.amount / 10000).toFixed(2) + '万' : dataA.amount;
+                this.awardsname=`${data.dateRange};${totalAmount};${dailyAmount}金叶子`
+                this.showAwardPop=true;
+              }
+            }
           }
         } catch (e) {
 
         }
       },
       gotopay(val) {
-        GLOBALS.marchSetsPoint('A_H5PT0074001379', {product_id: val.bizId})
+        GLOBALS.marchSetsPoint('A_H5PT0074001435', {product_id: val.bizId})
         localStorage.setItem('JDD_PARAM', JSON.stringify(val))
         if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {//好看、全民小视频
           top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
@@ -350,7 +366,7 @@
       }
     },
     components: {
-      scroll, rule, awardPop
+      rule, awardPop
     }
   }
 
@@ -360,7 +376,7 @@
 
   #app {
     max-height: 23.61rem;
-    min-height: 19.09rem;
+    min-height: 100%;
     background: #26262E;
     font-size: .24rem;
   }
@@ -424,16 +440,13 @@
     width: 7.2rem;
     height: 2.8rem;
     margin-bottom: .28rem;
-    &:before {
-      content: '';
+    .title_bg{
       position: absolute;
       left: 0;
       right: 0;
       margin: auto;
       width: 6.09rem;
       height: .37rem;
-      background: url("./images/package/signtab.png");
-      background-size: 100% 100%;
     }
     .container {
       position: absolute;
@@ -490,8 +503,11 @@
 
   .section2 {
     position: relative;
-    height: 6.52rem;
-    margin-bottom: .28rem;
+    height: 4rem;
+    &.package4{
+      height: 6.52rem;
+      margin-bottom: .28rem;
+    }
     &:before {
       content: '';
       position: absolute;
@@ -528,16 +544,13 @@
       height: 3rem;
       padding-bottom: .37rem;
     }
-    &:before {
-      content: '';
+    .title_bg {
       position: absolute;
       left: 0;
       right: 0;
       margin: auto;
       width: 6.09rem;
       height: .36rem;
-      background: url("./images/package/dailytasktab@2x.png");
-      background-size: 100% 100%;
     }
     .container {
       position: relative;
@@ -785,7 +798,7 @@
     }
     .container {
       position: absolute;
-      top: 1.17rem;
+      top: .47rem;
       bottom: 0;
       left: 1rem;
       right: 1.04rem;
@@ -793,6 +806,7 @@
       flex-shrink: 0;
       flex-wrap: wrap;
       justify-content: center;
+      background: #26262E;
       img {
         width: 2.47rem;
         height: 2.42rem;

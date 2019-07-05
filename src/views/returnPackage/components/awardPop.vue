@@ -7,10 +7,11 @@
         <img src="../images/package/fen1.png" alt="" v-else-if="type==4" style="max-width: 70%">
         <img src="../images/package/leaf.png" alt="" v-else style="max-width: 70%">
       </div>
-      <span class="title">{{awardsname}}领取成功</span>
+      <span class="title" v-if="type!=2">{{awardsname}}领取成功</span>
+      <span class="title" v-else>{{awardsname.split(';')[2]}}到账</span>
       <div class="info">
         <div class="desc" v-if="type==2">
-          <p><i>6月21日~6月25日</i>连续登录<br>可领完<i>全部60万</i>加赠金叶子</p>
+          <p><i>{{awardsname.split(';')[0]}}</i>连续登录<br>可领完<i>全部{{awardsname.split(';')[1]}}</i>加赠金叶子</p>
         </div>
         <div class="close" @click="close">好的</div>
       </div>
