@@ -289,7 +289,7 @@
                     if(!this.detailData.userIsBindPhone){
                         this.isOpen=true
                     }else{
-                        this.fetch('/ops/api/jackpot/userOpenSms')
+                        this.fetch('/ops/api/jackpot/userOpenSms',{value:''})
                     }
                 }else{
                     GLOBALS.marchSetsPoint('A_H5PT0074001378')//H5平台-奖池瓜分页面-关闭消息提醒
