@@ -13,13 +13,14 @@ axios.defaults.timeout = 10000
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-  if (!config.headers.Authorization) {
-    config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
-  }
+  // if (!config.headers.Authorization) {
+    config.headers.Authorization =localStorage.getItem('ACCESS_TOKEN')
+  // }
 
-  if (!config.headers['App-Channel']) {
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
-  }
+  // if (!config.headers['App-Channel']) {
+    let _channel = localStorage.getItem('APP_CHANNEL')
+    config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
+  // }
 
   // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
   // config.headers['App-Channel'] = '100006';
@@ -53,35 +54,10 @@ axios.interceptors.response.use(
           })
           break
         case 401:
-          let uid = localStorage.getItem('user_Info') && JSON.parse(localStorage.getItem('user_Info')) && JSON.parse(localStorage.getItem('user_Info')).userId || ''
-          if (uid) {
-            axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res => {
-              localStorage.removeItem('ACCESS_TOKEN')
-              if (res.data.code == 200 && res.data.data) { // 游客模式
-                if (window.linkUrl.getYKChannel(localStorage.getItem('APP_CHANNEL'))) {
-                  window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
-                } else {
-                  window.location.href = `https://wap.beeplay123.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
-                }
-              } else {
-                Vue.prototype.$toast.show({
-                  message: '未授权，请登录！',
-                  duration: 1500
-                })
-              }
-            }).catch(e => {
-              localStorage.removeItem('ACCESS_TOKEN')
-              Vue.prototype.$toast.show({
-                message: '未授权，请登录！',
-                duration: 1500
-              })
-            })
-          } else {
-            Vue.prototype.$toast.show({
-              message: '未授权，请登录！',
-              duration: 1500
-            })
-          }
+          Vue.prototype.$toast.show({
+            message: '未授权，请登录！',
+            duration: 1500
+          })
           break
         case 404:
           Vue.prototype.$toast.show({
@@ -135,11 +111,14 @@ axios.interceptors.response.use(
           var result = response.config && response.config.data
           if (result) {
             result = JSON.parse(result)
-            if (result && result.isShowToast == 'false') {
+            if (result && !result.isShowToast) {
               break
             }
           }
-
+          Vue.prototype.$toast.show({
+            message: res.message,
+            duration: 1500
+          })
       }
     }
     return response
@@ -154,10 +133,6 @@ axios.interceptors.response.use(
     } else {
       error = JSON.stringify(error)
       if (error.indexOf('timeout') != -1) {
-        Vue.prototype.$toast.show({
-          message: '请求超时',
-          duration: 1500
-        })
         return
       }
     }

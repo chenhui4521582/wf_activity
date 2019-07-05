@@ -31,8 +31,8 @@
         <div class="spec-item">
           <div class="item-title">数量</div>
           <div class="item-content">
-            <span class="item-number-title" v-if="allUsersTodayAvailableQuota">（剩余库存充足）</span>
-            <span class="item-number-title" v-if="!allUsersTodayAvailableQuota">（剩余库存为0）</span>
+            <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
+            <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
             <div class="item-number-add">
               <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
             </div>
@@ -58,7 +58,7 @@
 <script>
 import baseHeader from '../components/baseHeader/baseHeader'
 import field from '../components/field/field'
-import { placeOrder } from '../utils/api'
+import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
@@ -72,12 +72,26 @@ export default {
       dialogShow: false,
       statusCode: '',
       TIME: null,
+      phyAwardsId: this.$route.query['phyAwardsId'],
+      phyAwardsType: this.$route.query['phyAwardsType'],
+      goodsName: this.$route.query['goodsName'],
+      showOut: this.$route.query['showOut'],
       accountBalance: parseFloat(this.$route.query['accountBalance']),
       currentList: []
     }
   },
-  created () {
-    this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+  async created () {
+    // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
+    const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
+    if (code === 200 && data && data.length) {
+      this.currentList = data.filter(item => {
+        if (this.phyAwardsId == '232') {
+          return item.phyAwardsId === 232
+        }else{
+          return item.phyAwardsId !== 232
+        }
+      })
+    }
   },
   computed: {
     bannerImg () {
@@ -103,6 +117,9 @@ export default {
       if (this.currentItem.allUsersTodayAvailableQuota === null || this.currentItem.allUsersTodayAvailableQuota !== 0) {
         return true
       }
+    },
+    residueNumber() {
+      return this.currentItem.currentUserTodayAvailableQuota === null ? this.currentItem.allUsersTodayAvailableQuota : this.currentItem.currentUserTodayAvailableQuota
     }
   },
   mounted () {
@@ -147,6 +164,10 @@ export default {
         awards_name: name,
         residual_phone: this.accountBalance
       })
+      /** 梁婷需求增加兑换验证是否实名认证 **/
+      //uic-api.beeplay123.com/uic/api/user/center/authStatus
+
+
       const { data, code, message } = await placeOrder(id, this.specNumber)
       if (code === 200) {
         // 成功后执行 减去库存

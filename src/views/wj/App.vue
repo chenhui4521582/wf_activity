@@ -31,7 +31,7 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <div class="new-user-task" v-if="newTaskItems.isNew">
+          <div class="new-user-task" v-if="showNewUserTask">
             <div class="box">
               <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
                 <div class="tips">
@@ -219,7 +219,7 @@ export default {
       cdkArr: null,
       isTabUse: false,
       curlink: null,
-      hideBackArr: ['100037', '100033001'],
+      hideBackArr: ['100037', '100033001', '700003'],
       curChannel: null,
       curToken: null,
       curIndex: 0,
@@ -242,7 +242,7 @@ export default {
     this.cGameType = this.getUrlParam('gameType') || ''
     let cururl = window.location.href
     this.curlink = this.getUrlParam('wf_cur_link')
-    if (this.curChannel && this.curChannel.indexOf('100') != -1) {
+    if (this.curChannel && (this.curChannel.indexOf('100') != -1 || this.curChannel.indexOf('700') != -1)) {
       this.getUserInfo()
       this.getCdkeyStatus()
       if (this.cGameType && this.cGameType != null && this.cGameType != 'null') {
@@ -310,7 +310,16 @@ export default {
         }
       }
       return taskObj
-    }
+    },
+	// 显示新手任务
+	showNewUserTask () {
+	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let isxmChannel = XMCHANNEM.find(item => {
+		return item == APP_CHANNEL
+	  })
+	  return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+	}
   },
   methods: {
     receive (item, type, index) {
@@ -488,7 +497,19 @@ export default {
     async goMenu () {
       localStorage.removeItem('gurlSDK')
       await GLOBALS.marchSetsPoint('A_H5PT0121001151', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-游戏大厅
-      top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+
+      /** 返回小米平台 **/
+	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+	  let XMCHANNEM = ['100051', '100051003', '100051005']
+	  let isxmChannel = XMCHANNEM.find(item => {
+		return item == APP_CHANNEL
+	  })
+      if(isxmChannel) {
+		top.location.href = 'https://wap.beeplay123.com/xmWap/?channel='+isxmChannel
+      }else {
+		top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+      }
+
     },
     onCopy () {
       GLOBALS.marchSetsPoint('A_H5PT0121001159', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-礼包-复制兑换码

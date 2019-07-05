@@ -35,7 +35,7 @@
         </ul>
       </div>
       <div class="user-info">
-        我翻倍已赚<span>{{getProfit}}</span><img src="./images/leaf_icon.png" /><span class="btn_look" @click.stop="handHistory">查看</span>
+        去除本金已赚<span>{{getProfit}}</span><img src="./images/leaf_icon.png" /><span class="btn_look" @click.stop="handHistory">查看</span>
       </div>
       <div class="count-down-clock">
         <img src="./images/time_icon.png" />距离活动结束：{{countTime}}
@@ -298,6 +298,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .giant-leaf-new {
+  min-height: calc(~'100vh' - 0.5rem);
+  width: 100vw;
+  background: #f1a927;
   .bg_img {
     position: absolute;
     top: 0;
@@ -367,7 +370,7 @@ export default {
     }
   }
   .fh-box {
-    margin-top: 0.49rem;
+    margin-top: 0.5rem;
     position: relative;
     z-index: 2;
     .btn {
@@ -518,7 +521,8 @@ export default {
           font-size: 0.32rem;
         }
         &.btn_gray {
-          background: url("./images/btn_gray.png") no-repeat top center / 100% 100%;
+          background: url("./images/btn_gray.png") no-repeat top center / 100%
+            100%;
           p {
             font-size: 0.38rem;
             line-height: 1rem;
