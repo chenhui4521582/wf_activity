@@ -7,9 +7,9 @@
         <img src="../images/package/fen1.png" alt="" v-else-if="type==4" style="max-width: 70%">
         <img src="../images/package/leaf.png" alt="" v-else style="max-width: 70%">
       </div>
-      <span class="title">5元话费券领取成功</span>
+      <span class="title">{{awardsname}}领取成功</span>
       <div class="info">
-        <div class="desc">
+        <div class="desc" v-if="type==2">
           <p><i>6月21日~6月25日</i>连续登录<br>可领完<i>全部60万</i>加赠金叶子</p>
         </div>
         <div class="close" @click="close">好的</div>
@@ -27,6 +27,10 @@
       type:{
         type: Number,
         default:0//1.签到送叶子 2.加赠送叶子 3.任务积分领红包 4.游戏任务领积分
+      },
+      awardsname:{
+        type:String,
+        default: ''
       }
     },
     methods: {

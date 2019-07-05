@@ -11,6 +11,7 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 10000
 
 // 添加请求拦截器
+localStorage.setItem('ACCESS_TOKEN','2f4b7321ed3f4b13bf5bc1d6310f75f9')
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
   // if (!config.headers.Authorization) {
