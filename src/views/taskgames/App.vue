@@ -230,7 +230,8 @@ export default {
       showBoxDialog: false, // 踏青寻宝   活动特有  活动下线 删除
       isDailyReceivePop: false,
       receiveAwards: {},
-      selectItem: {}
+      selectItem: {},
+      woolUserType: false
     }
   },
   mounted () {
@@ -246,16 +247,17 @@ export default {
     }
     localStorage.setItem('ACCESS_TOKEN', this.token)
     localStorage.setItem('APP_CHANNEL', this.channel)
+    this.init()
     this.getDegradeTaskStatus()
     this.getTransInfo()
     this.getPhoneFragment()
     this.getHuafeiNum()
   },
   computed: {
-    woolUserType () {
-      return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
-      // return true
-    },
+    // woolUserType () {
+    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+    //   // return true
+    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -352,6 +354,16 @@ export default {
       iframe.src = "https://wap.beeplay123.com/ads/index.html";
       iframe.style = "position:fixed;width:100%;height:100%;top:0;bottom:0;left:0;border:none;margin:0;padding:0";
       parent.document.body.appendChild(iframe);
+    },
+    init () {
+      this.axios.post('//platform-api.beeplay123.com/wap/api/continuous/signIn/new/list')
+        .then(res => {
+          sessionStorage.removeItem('woolUserType')
+          if (res.data.code == 200) {
+            sessionStorage.woolUserType = res.data.data.userType
+            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+          }
+        })
     },
     closeRRZQPop () {
       this.isRRZQPop = false
