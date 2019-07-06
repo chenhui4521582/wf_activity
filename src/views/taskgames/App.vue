@@ -254,6 +254,7 @@ export default {
   computed: {
     woolUserType () {
       return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+      // return true
     },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
@@ -340,6 +341,18 @@ export default {
     fixedEntrance: () => import('./component/fixedEntrance')
   },
   methods: {
+    initParentAd () {
+      var iframeads = parent.document.querySelector("#iframe_ads")
+      if (iframeads) {
+        iframeads.parentNode.removeChild(iframeads)
+      }
+      var iframe = document.createElement('iframe');
+      iframe.id = 'iframe_ads';
+      iframe.name = 'iframe_ads';
+      iframe.src = "https://wap.beeplay123.com/ads/index.html";
+      iframe.style = "position:fixed;width:100%;height:100%;top:0;bottom:0;left:0;border:none;margin:0;padding:0";
+      parent.document.body.appendChild(iframe);
+    },
     closeRRZQPop () {
       this.isRRZQPop = false
     },
@@ -506,9 +519,18 @@ export default {
     },
     checkTaskStatus (item, type, index) {
       if (item.taskStatus == 0) {
+        localStorage.removeItem('ENTRANCE')
+        localStorage.removeItem('ADSDATA')
         if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
-          this.goMovie()
+          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
+          //为父窗口（游戏界面） 创建script
+          try {
+            this.initParentAd();
+          } catch (error) {
+            this.receive(item, type, index)
+          }
           return
         }
         this.receive(item, type, index)
@@ -845,13 +867,6 @@ export default {
     closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
-    },
-    goMovie () {
-      localStorage.removeItem('ENTRANCE')
-      localStorage.removeItem('ADSDATA')
-      localStorage.setItem('ENTRANCE', 'SDK内每日任务')
-      localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
-      parent.GameEval('openweb', 'https://wap.beeplay123.com/ads/index.html')
     }
   }
 }
