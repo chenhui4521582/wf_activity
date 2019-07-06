@@ -20,7 +20,11 @@
         </div>
       </div>
       <!--充值加赠-->
-      <div class="section2" id="section2" v-if="packageData&&!packageData.hasBuy&&packageData.list.length" :class="{package4:packageData&&packageData.list.length>2}">
+      <div class="section2"
+           id="section2"
+           v-if="packageData&&!packageData.haveBuy&&packageData.list.length"
+           :class="{package4:packageData&&packageData.list.length>2}"
+      >
         <div class="container">
           <img :src="item.icon|filter" alt="" v-for="item in packageData.list" @click="gotopay(item)">
         </div>
@@ -79,14 +83,14 @@
                   </div>
                 </div>
                 <div class="btn btn0" v-if="item.taskStatus==0" @click="exchange(item,4)">领取积分</div>
-                <div class="btn btn1" v-if="item.taskStatus==1" @click="gotoplay">去完成</div>
+                <div class="btn btn1" v-if="item.taskStatus==1" @click="gotoplay(item)">去完成</div>
                 <div class="btn btn2" v-if="item.taskStatus==2">已领取</div>
               </div>
             </div>
         </div>
       </div>
       <!--充值加赠-->
-      <div class="section5" id="section5" v-if="packageData&&packageData.hasBuy">
+      <div class="section5" id="section5" v-if="packageData&&packageData.haveBuy">
         <div class="container">
           <div class="text" style="font-size: .18rem;font-weight:300;color:rgba(222,201,169,1);">{{packageData.dateRange}}连续登录，分天到账加赠部分</div>
           <img src="./images/package/plusgained.png" alt="">
@@ -122,43 +126,166 @@
         showrulepop: false
       }
     },
-    async mounted() {
-      GLOBALS.marchSetsPoint('A_H5PT0074001432')
-      this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
-      this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
-      //活动信息
-      this.myDetails();
-    },
-    computed: {
-      isHasIframe() {
-        return window != window.top
-      }
-    },
+	components: {
+	  rule, awardPop
+	},
     methods: {
-      async sign(num){
-        GLOBALS.marchSetsPoint('A_H5PT0074001434')
-        try {
-          const res = await this.fetch('/ops/api/bigCustomersRecall/sign')
-          if (res.data.code == 200 && res.data.data) {
-            this.awardsname = `${num}金叶子`;
-            this.awardType = 1;
-            this.showAwardPop = true
-            this.getSignList()//刷新签到数据
-          }
-        } catch (e) {
+	  /** 请求封装方法 **/
+	  fetch(url, params) {
+		if (url.startsWith('/ops/api')) {
+		  url = '//ops-api.beeplay123.com' + url
+		}
+		if (url.startsWith('/wap/api') || url.startsWith('/task/api')) {
+		  url = '//platform-api.beeplay123.com' + url
+		}
+		if (url.startsWith('/shop/api')) {
+		  url = '//shop-api.beeplay123.com' + url
+		}
+		return this.axios.post(url, params, {})
+	  },
+	  /** 获取myDetails数据POST **/
+	  async myDetails() {
+		try {
+		  const res = await this.fetch('/ops/api/activity/points/activityLogin')
+		  if (res.data.code == 200 && res.data.data) {
+			this.detailData = res.data.data;
+			if (this.detailData && this.detailData.showFlag) {
+			  let arr = res.data.data.endDateTime.split(' ')
+			  this.detailData.endDateTime = parseInt(arr[0].split('-')[1]) + '月' + parseInt(arr[0].split('-')[2]) + '日 ' + arr[1]
+			  this.getSignList()//签到数据
+			  this.getPackage()//加赠礼包数据
+			  this.userPointTask()//活动信息
+			  this.getGameTasks(-1)//游戏任务
+			}
+		  }
+		} catch (e) {
 
-        }
-      },
+		}
+	  },
+	  /** 获取签到列表**/
+	  async getSignList(){
+		try {
+		  const res = await this.fetch('/ops/api/bigCustomersRecall/list')
+		  if (res.data.code == 200 && res.data.data) {
+			this.signData = res.data.data
+		  }
+		} catch (e) {
+
+		}
+	  },
+	  /** 累计积分兑换话费查询 **/
+	  async userPointTask() {
+		try {
+		  const res = await this.fetch('/ops/api/activity/points/userPointTask')
+		  if (res.data.code == 200 && res.data.data) {
+			this.bonusData = res.data.data
+		  }
+		} catch (e) {
+
+		}
+	  },
+	  /** 签到 **/
+	  async sign(num){
+		GLOBALS.marchSetsPoint('A_H5PT0074001434')
+		try {
+		  const res = await this.fetch('/ops/api/bigCustomersRecall/sign')
+		  if (res.data.code == 200 && res.data.data) {
+			this.awardsname = `${num}金叶子`;
+			this.awardType = 1;
+			this.showAwardPop = true
+			this.getSignList()//刷新签到数据
+		  }
+		} catch (e) {
+
+		}
+	  },
+	  /** 获取礼包数据 **/
+	  async getPackage() {
+		try {
+		  const {data: data} = await this.fetch('/shop/api/bigCustomer/bigCustomerRecallProducts')
+		  if (data.code == 200) {
+			this.packageData = data.data
+			if(this.packageData&&this.packageData.haveBuy){
+			  const {data:dataA}=await this.fetch('/shop/api/bigCustomer/sendBigCustomerAdditionalRewards')
+              console.log(dataA)
+			  if(dataA.code==200){
+				this.awardType=2;
+				let dailyAmount = dataA.data.dailyAmount > 10000 ? (dataA.data.dailyAmount / 10000).toFixed(2) + '万' : dataA.data.dailyAmount;
+				let totalAmount = dataA.data.amount > 10000 ? (dataA.data.amount / 10000).toFixed(2) + '万' : dataA.data.amount;
+				this.awardsname=`${dataA.data.dateRange};${totalAmount};${dailyAmount}金叶子`
+				this.showAwardPop=true;
+			  }
+			}
+		  }
+		} catch (e) {
+		}
+	  },
+	  /** 兑换话费 **/
+	  async exchange(item,type) {//积分兑换话费
+		if(type==3){
+		  if (item.status == 2) {
+			return
+		  }
+		  GLOBALS.marchSetsPoint('A_H5PT0074001437',{task_id:item.order,task_name:item.awardsName})
+		  try {
+			const res = await this.fetch('/ops/api/activity/points/points/exchange',{
+			  order:item.order
+			})
+			if (res.data.code == 200 && res.data.data) {
+			  this.awardsname = item.awardsName;
+			  this.awardType = type;
+			  this.showAwardPop = true
+			}
+		  } catch (e) {
+
+		  }
+		}
+		if(type==4){
+		  GLOBALS.marchSetsPoint('A_H5PT0074001440',{target_project_id:item.gameType,task_id:item.taskId,task_name:item.taskName})
+		  try {
+			const res = await this.fetch('/task/api/usertask/finish',{
+			  taskId: item.taskId,
+			  taskLogId: item.taskLogId
+			})
+			if (res.data.code == 200 && res.data.data) {
+			  this.awardsname = item.awardsName;
+			  this.awardType = type;
+			  this.showAwardPop = true//领取积分
+			  this.getGameTasks(this.awardType)//刷新游戏任务挣积分
+			}
+		  } catch (e) {
+		  }
+		}
+	  },
+	  /** 获取地址栏问号后面的参数值 **/
+	  getUrlParam: function (ename) {
+		// var url = document.referrer;
+		var url = window.location.href;
+		var Request = new Object();
+		if (url.indexOf("?") != -1) {
+		  var str = url.split('?')[1];
+		  var strs = str.split("&");
+		  for (var i = 0; i < strs.length; i++) {
+			Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+		  }
+		} else {
+		  return '';
+		}
+		return Request[ename];
+	  },
+      /** 单位转换 **/
       transUint (finishNum, taskOps) {
         let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
           ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
         return finish + '/' + ops
       },
+      /** 去玩游戏 **/
       async gotoplay(item){
         GLOBALS.marchSetsPoint('A_H5PT0074001439',{target_project_id:item.gameType,task_id:item.taskId,task_name:item.taskName})
         await this.fetch('/task/api/usertask/cacheLastGameOfActivity',{value:this.gamesArr[this.currentGameTask]})
         GLOBALS.jumpOutsideGame(item.url)
       },
+      /** 关闭奖励弹框 **/
       closeAwardPop(){
         this.showAwardPop=false;
         //1.签到送叶子 2.加赠送叶子 3.任务积分领红包 4.游戏任务领积分
@@ -172,150 +299,42 @@
           this.userPointTask()//刷新积分兑换话费券接口
         }
       },
+      /** 游戏切换 **/
       selectIndex(index) {
         GLOBALS.marchSetsPoint('A_H5PT0074001438',{target_project_id:this.gameTasks[this.gamesArr[index]][0]&&this.gameTasks[this.gamesArr[index]][0].gameType})
         this.currentGameTask=index
       },
-      getpercent(arr, jifen) {
-        if (jifen == 0) {
-          return '0%'
-        } else if (jifen < arr[0].points) {
-          return 4.0 * (jifen * 1.0 / arr[0].points) + '%'
-        } else if (jifen == arr[0].points) {
-          return '11%'
-        } else if (jifen < arr[1].points) {
-          return (11 + 15 * (jifen - arr[0].points) / (arr[1].points - arr[0].points)) + '%'
-        } else if (jifen == arr[1].points) {
-          return '33%'
-        } else if (jifen < arr[2].points) {
-          return (33.5 + 22 * (jifen - arr[1].points) / (arr[2].points - arr[1].points)) + '%'
-        } else if (jifen == arr[2].points) {
-          return '62%'
-        } else if (jifen < arr[3].points) {
-          return (62 + 25 * (jifen - arr[2].points) / (arr[3].points - arr[2].points)) + '%'
-        } else {
-          return '100%'
-        }
-      },
+      /** 去支付 **/
+	  gotopay(val) {
+		GLOBALS.marchSetsPoint('A_H5PT0074001435', {product_id: val.bizId})
+		localStorage.setItem('JDD_PARAM', JSON.stringify(val))
+        localStorage.setItem('originDeffer', location.href)
+		if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {
+		  //好看、全民小视频
+		  setTimeout(function () {
+			top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
+		  },3000)
+		} else {
+		  top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
+		}
+	  },
+      /** 时间转换 **/
       getDateInfo(date) {
         let dateObj = new Date(date);
         let month = dateObj.getMonth() + 1;
         let day = dateObj.getDate();
         return `${month}月${day}日`
       },
+      /** 显示规则 **/
       showrule() {
         GLOBALS.marchSetsPoint('A_H5PT0074001436')
         this.showrulepop = true
       },
-      //获取地址栏问号后面的参数值
-      getUrlParam: function (ename) {
-        // var url = document.referrer;
-        var url = window.location.href;
-        var Request = new Object();
-        if (url.indexOf("?") != -1) {
-          var str = url.split('?')[1];
-          var strs = str.split("&");
-          for (var i = 0; i < strs.length; i++) {
-            Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
-          }
-        } else {
-          return '';
-        }
-        return Request[ename];
-      },
-      back() {
-        GLOBALS.marchSetsPoint('A_H5PT0074001433')
-        top.location.href = window.linkUrl.getBackUrl(this.curChannel)
-      },//回到首页
-      getComputedStyle(ele, attr) {
-        return window.getComputedStyle(ele, null)[attr]
-      },
-      fetch(url, params) {
-        if (url.startsWith('/ops/api')) {
-          url = '//ops-api.beeplay123.com' + url
-        }
-        if (url.startsWith('/wap/api') || url.startsWith('/task/api')) {
-          url = '//platform-api.beeplay123.com' + url
-        }
-        if (url.startsWith('/shop/api')) {
-          url = '//shop-api.beeplay123.com' + url
-        }
-        return this.axios.post(url, params, {})
-      },//请求封装方法
-      async myDetails() {
-        try {
-          const res = await this.fetch('/ops/api/activity/points/activityLogin')
-          if (res.data.code == 200 && res.data.data) {
-            this.detailData = res.data.data;
-            if (this.detailData && this.detailData.showFlag) {
-              let arr = res.data.data.endDateTime.split(' ')
-              this.detailData.endDateTime = parseInt(arr[0].split('-')[1]) + '月' + parseInt(arr[0].split('-')[2]) + '日 ' + arr[1]
-              this.getSignList()//签到数据
-              this.getPackage()//加赠礼包数据
-              this.userPointTask()//活动信息
-              this.getGameTasks(-1)//游戏任务
-            }
-          }
-        } catch (e) {
-
-        }
-      },//获取myDetails数据POST
-      async getSignList(){
-        try {
-          const res = await this.fetch('/ops/api/bigCustomersRecall/list')
-          if (res.data.code == 200 && res.data.data) {
-            this.signData = res.data.data
-          }
-        } catch (e) {
-
-        }
-      },
-      async userPointTask() {//累计积分兑换话费查询
-        try {
-          const res = await this.fetch('/ops/api/activity/points/userPointTask')
-          if (res.data.code == 200 && res.data.data) {
-            this.bonusData = res.data.data
-          }
-        } catch (e) {
-
-        }
-      },
-      async exchange(item,type) {//积分兑换话费
-        if(type==3){
-          if (item.status == 2) {
-            return
-          }
-          GLOBALS.marchSetsPoint('A_H5PT0074001437',{task_id:item.order,task_name:item.awardsName})
-          try {
-            const res = await this.fetch('/ops/api/activity/points/points/exchange',{
-              order:item.order
-            })
-            if (res.data.code == 200 && res.data.data) {
-              this.awardsname = item.awardsName;
-              this.awardType = type;
-              this.showAwardPop = true
-            }
-          } catch (e) {
-
-          }
-        }
-        if(type==4){
-          GLOBALS.marchSetsPoint('A_H5PT0074001440',{target_project_id:item.gameType,task_id:item.taskId,task_name:item.taskName})
-          try {
-            const res = await this.fetch('/task/api/usertask/finish',{
-              taskId: item.taskId,
-              taskLogId: item.taskLogId
-            })
-            if (res.data.code == 200 && res.data.data) {
-              this.awardsname = item.awardsName;
-              this.awardType = type;
-              this.showAwardPop = true//领取积分
-              this.getGameTasks(this.awardType)//刷新游戏任务挣积分
-            }
-          } catch (e) {
-          }
-        }
-      },
+	  /** 回到首页 **/
+	  back() {
+		GLOBALS.marchSetsPoint('A_H5PT0074001433')
+		top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+	  },
       async getGameTasks(index=-1) {
         let {data: data} = await this.fetch('/task/api/usertask/dayTaskByBatch')
         if (data.code == 200) {
@@ -334,42 +353,44 @@
           }
         }
       },
-      //礼包
-      async getPackage() {//获取礼包数据get
-        try {
-          const {data: data} = await this.fetch('/shop/api/mall/bigCustomerRecallProducts')
-          if (data.code == 200) {
-            this.packageData = data.data
-            if(this.packageData&&this.packageData.hasBuy){
-              const {data:dataA}=await this.fetch('/shop/api/mall/sendBigCustomerAdditionalRewards')
-              if(dataA.code==200){
-                this.awardType=2;
-                let dailyAmount = dataA.dailyAmount > 10000 ? (dataA.dailyAmount / 10000).toFixed(2) + '万' : dataA.dailyAmount;
-                let totalAmount = dataA.amount > 10000 ? (dataA.amount / 10000).toFixed(2) + '万' : dataA.amount;
-                this.awardsname=`${data.dateRange};${totalAmount};${dailyAmount}金叶子`
-                this.showAwardPop=true;
-              }
-            }
-          }
-        } catch (e) {
-
-        }
-      },
-      gotopay(val) {
-        GLOBALS.marchSetsPoint('A_H5PT0074001435', {product_id: val.bizId})
-        localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-        if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {//好看、全民小视频
-          top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
-        } else {
-          top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
-        }
-      }
+	  getpercent(arr, jifen) {
+		if (jifen == 0) {
+		  return '0%'
+		} else if (jifen < arr[0].points) {
+		  return 4.0 * (jifen * 1.0 / arr[0].points) + '%'
+		} else if (jifen == arr[0].points) {
+		  return '11%'
+		} else if (jifen < arr[1].points) {
+		  return (11 + 15 * (jifen - arr[0].points) / (arr[1].points - arr[0].points)) + '%'
+		} else if (jifen == arr[1].points) {
+		  return '33%'
+		} else if (jifen < arr[2].points) {
+		  return (33.5 + 22 * (jifen - arr[1].points) / (arr[2].points - arr[1].points)) + '%'
+		} else if (jifen == arr[2].points) {
+		  return '62%'
+		} else if (jifen < arr[3].points) {
+		  return (62 + 25 * (jifen - arr[2].points) / (arr[3].points - arr[2].points)) + '%'
+		} else {
+		  return '100%'
+		}
+	  },
+	  getComputedStyle(ele, attr) {
+		return window.getComputedStyle(ele, null)[attr]
+	  },
     },
-    components: {
-      rule, awardPop
-    }
+	computed: {
+	  isHasIframe() {
+		return window != window.top
+	  }
+	},
+	async mounted() {
+	  GLOBALS.marchSetsPoint('A_H5PT0074001432')
+	  this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
+	  this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
+	  //活动信息
+	  this.myDetails();
+	},
   }
-
 </script>
 <style lang="less" scoped>
   @import '../../common/css/base.css';
