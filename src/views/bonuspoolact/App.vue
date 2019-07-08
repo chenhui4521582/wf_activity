@@ -28,10 +28,10 @@
                     <div class="btn showfingerPress" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
                 </template>
             </template>
-            <div class="tip" v-if="switches.tzo!=null">
-                <span class="label" :class="{open:switches.tzo}">{{switches.tzo?'开':'关'}}</span><switches v-model="switches.tzo" class="notice-sw" theme="bulma" color="default" type-bold="true"></switches>
-                <div class="txt">奖池开启提醒</div>
-            </div>
+            <!--<div class="tip" v-if="switches.tzo!=null">-->
+                <!--<span class="label" :class="{open:switches.tzo}">{{switches.tzo?'开':'关'}}</span><switches v-model="switches.tzo" class="notice-sw" theme="bulma" color="default" type-bold="true"></switches>-->
+                <!--<div class="txt">奖池开启提醒</div>-->
+            <!--</div>-->
             <div class="info" v-if="detailData&&detailData.activityIsOpen">已有{{detailData.activityApplyCount}}人参与瓜分</div>
         </div>
         <!--瓜分记录-->
@@ -78,7 +78,7 @@
     import bonusOpened from './components/bonusOpened'
     import bonusRecord from './components/bonusRecord'
     import common from "../../common/js/utils";
-    import Switches from 'vue-switches';
+    // import Switches from 'vue-switches';
     export default {
         data() {
             return {
@@ -88,9 +88,9 @@
                     time: ''
                 },
                 showrulepop:false,
-                switches: {
-                    tzo:null
-                },
+                // switches: {
+                //     tzo:null
+                // },
                 isOpen:false,
                 showmobilepop:false,
                 candivide:true,
@@ -107,10 +107,10 @@
             this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
             this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
             await this. myDetails()
-            document.querySelectorAll('#app .vue-switcher div')[0].style.backgroundColor='rgba(255,255,255,0.4)'
-            document.querySelectorAll('#app .vue-switcher div')[0].style.width='100%'
-            document.querySelectorAll('#app .vue-switcher div')[0].style.top=0
-            document.querySelectorAll('#app .vue-switcher div')[0].style.left=0
+            // document.querySelectorAll('#app .vue-switcher div')[0].style.backgroundColor='rgba(255,255,255,0.4)'
+            // document.querySelectorAll('#app .vue-switcher div')[0].style.width='100%'
+            // document.querySelectorAll('#app .vue-switcher div')[0].style.top=0
+            // document.querySelectorAll('#app .vue-switcher div')[0].style.left=0
             // document.querySelectorAll('#app .vue-switcher div')[0].style.transform='scale(1.5)'
             await GLOBALS.marchSetsPoint('A_H5PT0074001374')//H5平台-奖池瓜分页面加载
             this.bonusListClick()
@@ -200,9 +200,9 @@
                     if (res.data.code == 200 && res.data.data) {
                         this.detailData = res.data.data;
                         this.showfinger=res.data.data.userState==1
-                        this.switches= {
-                            tzo:this.detailData.userIsOpenSms
-                        }
+                        // this.switches= {
+                        //     tzo:this.detailData.userIsOpenSms
+                        // }
                         !this.countdown.time && this.detailData.activityCountdown && GLOBALS.remainingTime(
                             this,
                             this.detailData.activityCountdown,
@@ -273,29 +273,29 @@
                 this.isshowBonusOpened=false
             },
             closemobile(){
-                this.switches.tzo=false
+                // this.switches.tzo=false
                 this.isOpen=false
             }
         },
         components: {
-            bonusSuccess, bonusOpened, bonusRecord,Switches
+            bonusSuccess, bonusOpened, bonusRecord
         },
         watch:{
-            "switches.tzo":function(open,o){
-                //n代表0开启1关闭,盈利榜奖励到账通知
-                if(o === null) return
-                if(open){
-                    GLOBALS.marchSetsPoint('A_H5PT0074001377')//H5平台-奖池瓜分页面-开启消息提醒
-                    if(!this.detailData.userIsBindPhone){
-                        this.isOpen=true
-                    }else{
-                        this.fetch('/ops/api/jackpot/userOpenSms',{value:''})
-                    }
-                }else{
-                    GLOBALS.marchSetsPoint('A_H5PT0074001378')//H5平台-奖池瓜分页面-关闭消息提醒
-                    this.fetch('/ops/api/jackpot/userCloseSms',{isShowToast:false})//用户关闭短信提醒
-                }
-            },
+            // "switches.tzo":function(open,o){
+            //     //n代表0开启1关闭,盈利榜奖励到账通知
+            //     if(o === null) return
+            //     if(open){
+            //         GLOBALS.marchSetsPoint('A_H5PT0074001377')//H5平台-奖池瓜分页面-开启消息提醒
+            //         if(!this.detailData.userIsBindPhone){
+            //             this.isOpen=true
+            //         }else{
+            //             this.fetch('/ops/api/jackpot/userOpenSms',{value:''})
+            //         }
+            //     }else{
+            //         GLOBALS.marchSetsPoint('A_H5PT0074001378')//H5平台-奖池瓜分页面-关闭消息提醒
+            //         this.fetch('/ops/api/jackpot/userCloseSms',{isShowToast:false})//用户关闭短信提醒
+            //     }
+            // },
             "countdown.time":function (val) {
                 if(!val){
                     this.myDetails()
