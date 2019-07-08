@@ -275,7 +275,7 @@
 	  },
       /** 单位转换 **/
       transUint (finishNum, taskOps) {
-        let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
+        let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(1) + '万' : finishNum,
           ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
         return finish + '/' + ops
       },
@@ -682,7 +682,7 @@
   .section4 {
     position: relative;
     height: 6.6rem;
-    padding-bottom: .78rem;
+    padding-bottom: .28rem;
     .tabs {
       position: absolute;
       left: 0;
