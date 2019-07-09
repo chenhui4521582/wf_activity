@@ -344,16 +344,24 @@ export default {
   },
   methods: {
     initParentAd () {
-      var iframeads = parent.document.querySelector("#iframe_ads")
+      var iframeads = parent.document.querySelector('#iframe_ads')
       if (iframeads) {
         iframeads.parentNode.removeChild(iframeads)
       }
-      var iframe = document.createElement('iframe');
-      iframe.id = 'iframe_ads';
-      iframe.name = 'iframe_ads';
-      iframe.src = "https://wap.beeplay123.com/ads/index.html";
-      iframe.style = "position:fixed;width:100%;height:100%;top:0;bottom:0;left:0;border:none;margin:0;padding:0";
-      parent.document.body.appendChild(iframe);
+      var iframe = document.createElement('iframe')
+      iframe.id = 'iframe_ads'
+      iframe.name = 'iframe_ads'
+      iframe.style.position = 'fixed'
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.top = 0
+      iframe.style.bottom = 0
+      iframe.style.left = 0
+      iframe.style.border = 'none'
+      iframe.style.margin = 0
+      iframe.style.padding = 0
+      iframe.src = 'https://wap.beeplay123.com/ads/index.html'
+      parent.document.body.appendChild(iframe)
     },
     init () {
       this.axios.post('//platform-api.beeplay123.com/wap/api/continuous/signIn/new/list')
@@ -408,8 +416,8 @@ export default {
             return
           }
         })
-        let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-          finishLength = 0
+        let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length
+        let finishLength = 0
         currentParentTask.subListA.map(item => {
           item.taskStatus == 2 ? finishLength += 1 : ''
         })
@@ -537,8 +545,8 @@ export default {
             target_project_id: item.gameType,
             task_id: item.taskId,
             task_name: item.taskName
-          })//H5平台-任务-每日任务-领取
-          break;
+          })// H5平台-任务-每日任务-领取
+          break
         case 'crush_task':
           GLOBALS.marchSetsPoint('A_H5PT0061000538', {
             project_id: item.gameType,
@@ -546,7 +554,7 @@ export default {
             task_id: item.taskId,
             task_name: item.taskName
           }) // H5平台-游戏内SDK-成就任务-去领取
-          break;
+          break
         case 'mother_crush_task':
           GLOBALS.marchSetsPoint('A_H5PT0061000538', {
             project_id: item.gameType,
@@ -554,7 +562,7 @@ export default {
             task_id: item.taskId,
             task_name: item.taskName
           }) // H5平台-游戏内SDK-成就任务-去领取
-          break;
+          break
         case 'newtask':
           GLOBALS.marchSetsPoint('A_H5PT0061000541', {
             project_id: item.gameType,
@@ -562,9 +570,9 @@ export default {
             task_id: item.taskId,
             task_name: item.taskName
           }) // H5平台-游戏内SDK-新人任务-去领取
-          break;
+          break
         default:
-          break;
+          break
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ENTRANCE')
@@ -573,9 +581,9 @@ export default {
           this.selectItem = { item, type, index }
           localStorage.setItem('ENTRANCE', 'SDK内每日任务')
           localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
-          //为父窗口（游戏界面） 创建script
+          // 为父窗口（游戏界面） 创建script
           try {
-            this.initParentAd();
+            this.initParentAd()
           } catch (error) {
             this.receive(item, type, index)
           }
