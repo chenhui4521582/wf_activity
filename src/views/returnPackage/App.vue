@@ -311,9 +311,7 @@
         localStorage.setItem('originDeffer', location.href)
 		if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {
 		  //好看、全民小视频
-		  setTimeout(function () {
-			top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
-		  },3000)
+      top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
 		} else {
 		  top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
 		}
