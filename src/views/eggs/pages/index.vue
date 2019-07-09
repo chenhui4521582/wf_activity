@@ -10,33 +10,15 @@
 			<a href="javascript:" class="btn-hit">消耗锤子砸彩蛋</a>
 			<div class="e-items">
 				<ul>
-					<li class="">
-						<small-egg sColor="green"></small-egg>
+					<li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr">
+						<small-egg 
+							:sColor="item.sColor" 
+							:isTipsNumber="item.isTipsNumber"
+							:isBigStatus="item.isBigStatus"
+							hammersNumber="100"
+						>
+						</small-egg>
 					</li>
-					<!-- <li>
-						<small-egg sColor="green"></small-egg>
-					</li>
-					<li>
-						<small-egg sColor="green"></small-egg>
-					</li>
-					<li>
-						<small-egg sColor="green"></small-egg>
-					</li>
-					<li>
-						<small-egg sColor="green"></small-egg>
-					</li> -->
-					<!--<li>
-						<small-egg sColor="purplish"></small-egg>
-					</li>
-					 <li>
-						<small-egg sColor="red"></small-egg>
-					</li>
-					<li>
-						<small-egg sColor="blue"></small-egg>
-					</li> -->
-					<!-- <li>
-						<small-egg sColor="big" isBigStatus="true"></small-egg>
-					</li> -->
 				</ul>
 			</div>
 		</div>
@@ -46,11 +28,67 @@
 	export default {
 		data() {
 			return {
+				styleItemsArr: [
+					{
+						sColor: "green",
+						isTipsNumber: "2"
+					},
+					{
+						sColor: "green"
+					},
+					{
+						sColor: "green"
+					},
+					{
+						sColor: "green"
+					},
+					{
+						sColor: "green"
+					},
+					{
+						sColor: "blue"
+					},
+					{
+						sColor: "blue",
+						isTipsNumber: "1"
+					},
+					{
+						sColor: "blue"
+					},
+					{
+						sColor: "blue"
+					},
+					{
+						sColor: "purplish"
+					},
+					{
+						sColor: "purplish",
+						isTipsNumber: "3"
+					},
+					{
+						sColor: "purplish"
+					},
+					{
+						sColor: "red"
+					},
+					{
+						sColor: "red"
+					},
+					{
+						sColor: "big",
+						isBigStatus: true
+					}
+				]
 			}
 		},
 		components: {
 			smallEgg: () => import('../components/smallEgg')
 		},
+		methods: {
+			getLiClass(index) {
+				return  `e-item${index+1}`
+			}
+		}
 	}
 </script>
 <style lang="less" scoped>
