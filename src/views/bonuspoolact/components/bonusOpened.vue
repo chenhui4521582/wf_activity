@@ -125,7 +125,7 @@ export default {
     }
   }
 
-  @keyframes letterani {
+  @-webkit-keyframes letterani {
     0% {
       margin-top: 1.5rem;
     }
@@ -136,7 +136,7 @@ export default {
       margin-top: 1.5rem;
     }
   }
-  @keyframes opacitychange {
+  @-webkit-keyframes opacitychange {
     0% {
       opacity: 0;
     }
@@ -197,7 +197,7 @@ export default {
     }
   }
 
-  @keyframes front {
+  @-webkit-keyframes front {
     0% {
       top: -4.5rem;
       overflow: hidden;
@@ -250,7 +250,7 @@ export default {
       -webkit-animation-delay: 0.5s;
     }
   }
-  @keyframes opacitychangecoin {
+  @-webkit-keyframes opacitychangecoin {
     0% {
       opacity: 0.1;
     }
@@ -261,7 +261,7 @@ export default {
       opacity: 0;
     }
   }
-  @keyframes top-envolope {
+  @-webkit-keyframes top-envolope {
     0% {
       -webkit-transform: scalez(0);
     }
@@ -288,7 +288,7 @@ export default {
     background: url("../images/bonus/close.png") no-repeat center / 100% 100%;
   }
 }
-@keyframes dailyScale {
+@-webkit-keyframes dailyScale {
   0% {
     transform: scale(0, 0);
   }
