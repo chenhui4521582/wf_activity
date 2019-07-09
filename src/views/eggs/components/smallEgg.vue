@@ -88,6 +88,7 @@
 		display: block;
 		width: 0.62rem;
 		height: 0.3rem;
+		line-height: 0.3rem;
 		background:rgba(248,185,24,1);
 		border-radius:0.15rem;
 		font-size:0.2rem;

@@ -131,3 +131,43 @@
       top: -1.0rem;
     }
 }
+.eggs-info {
+  width: 1.57rem;
+  position: fixed;
+  left: 0;
+  top: 30%;
+  overflow-y: hidden;
+  font-weight:bold;
+  background: #FBC230;
+  border-radius:0 0.32rem 0.32rem 0;
+  z-index: 10;
+  text-align: center;
+  animation:mymove 0.2s;
+  h4 {
+    width:100%;
+    height:0.41rem;
+    line-height:0.46rem;
+    background:rgba(136,67,0,1);
+    font-size: 0.26rem;
+    color: #FBC230;
+  }
+  ul {
+    padding-top: 0.16rem;
+  }
+  li {
+    font-size:0.2rem;
+    color:rgba(136,67,0,1);
+    margin-bottom: 0.16rem;
+  }
+}
+
+@keyframes mymove {
+  from {
+    transform: translateX(-100%);
+    transition: all 1s;
+  }
+  to {
+    transition: all 1s;
+    transform: translateX(0);
+  }
+}
