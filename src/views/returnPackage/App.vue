@@ -210,8 +210,8 @@
               console.log(dataA)
 			  if(dataA.code==200){
 				this.awardType=2;
-				let dailyAmount = dataA.data.dailyAmount > 10000 ? (dataA.data.dailyAmount / 10000).toFixed(2) + '万' : dataA.data.dailyAmount;
-				let totalAmount = dataA.data.amount > 10000 ? (dataA.data.amount / 10000).toFixed(2) + '万' : dataA.data.amount;
+				let dailyAmount = dataA.data.dailyAmount > 10000 ? parseFloat((dataA.data.dailyAmount / 10000).toFixed(1)) + '万' : dataA.data.dailyAmount;
+				let totalAmount = dataA.data.amount > 10000 ? parseFloat((dataA.data.amount / 10000).toFixed(1)) + '万' : dataA.data.amount;
 				this.awardsname=`${dataA.data.dateRange};${totalAmount};${dailyAmount}金叶子`
 				this.showAwardPop=true;
 			  }
@@ -275,7 +275,7 @@
 	  },
       /** 单位转换 **/
       transUint (finishNum, taskOps) {
-        let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(1) + '万' : finishNum,
+        let finish = finishNum > 10000 ? parseFloat((finishNum / 10000).toFixed(1)) + '万' : finishNum,
           ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
         return finish + '/' + ops
       },
