@@ -1,7 +1,7 @@
 <template>
   <div class="pop-window">
     <div class="pop-mask" @touchmove.prevent></div>
-    <div class="bonus-success">
+    <div class="bonus-success" :class="{plus:type==2}">
       <div class="img" v-if="type">
         <img src="../images/package/bonus2.png" alt="" v-if="type==3" style="max-width: 50%">
         <img src="../images/package/fen1.png" alt="" v-else-if="type==4" style="max-width: 70%">
@@ -80,6 +80,10 @@
     background: url("../images/package/pop1.png");
     background-size: 100% 100%;
     z-index: 11;
+    &.plus{
+      background: url("../images/package/pop2.png");
+      background-size: 100% 100%;
+    }
     .img{
       position: absolute;
       top: 1.05rem;

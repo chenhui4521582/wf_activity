@@ -511,6 +511,9 @@
         font-size: .3rem;
         font-weight: bold;
         color: rgba(57, 61, 80, 1);
+        left: 0;
+        right: 0;
+        margin: auto;
         &.signed {
           background: url("./images/package/signed_btn.png");
           background-size: 100% 100%;
