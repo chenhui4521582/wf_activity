@@ -9,7 +9,7 @@
                     <ul>
                         <li v-for="item in data">
                             <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 2rem">{{item.nickName||''}}</div>
-                            <div style="width: 2rem;text-align: center;">{{item.receiveTime||''}}</div>
+                            <div style="width: 3rem;text-align: center;">{{item.receiveTime||''}}</div>
                             <div style="width: 1.8rem;text-align: right;">{{item.awardsName||''}}</div>
                         </li>
                     </ul>
