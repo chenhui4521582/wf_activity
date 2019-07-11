@@ -256,71 +256,67 @@ export default {
     poplog
   },
   computed: {
-    isCjTaskAllComplete () {
-      return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
-        return item.taskStatus == 2
-      }).length == this.cjTaskItems.length)
-    },
-    isHideMenu () {
-      return this.hideBackArr.includes(this.curChannel)
-    },
-    isDayTaskRed () {
-      let newArr = []
-      if (this.dayTaskItems && this.cjTaskItems) {
-        newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
-      }
-      return newArr && newArr.filter((item) => {
-        return item.taskStatus == 0
-      }).length
-    },
-    isCjTaskRed () {
-      return this.cdkArr && this.cdkArr.filter((item) => {
-        return item.gameCdkeyRsp.remainNum * 100 > 0
-      }).length
-    },
-    motherTask () {
-      let list = this.newTaskItems && this.newTaskItems.taskList || []
-      let motherTask = list.filter(item => {
-        return item.subTask
-      })[0]
-      list = list.filter(item => {
-        return !item.subTask
-      })
-      let finishedTaskNum = list.filter(item => {
-        return item.taskStatus == 2
-      }).length
-      if (motherTask) {
-        motherTask.allTaskNum = list.length
-        motherTask.hasFinishedNum = finishedTaskNum
-        return motherTask
-      }
-      return ''
-    },
-    newUserTaskobj () {
-      let list = this.newTaskItems && this.newTaskItems.taskList || []
-      let taskObj = null
-      list = list.filter(item => { // 刷选出子任务
-        return !item.subTask
-      })
-      // 找到当前需要展示的任务，第一个taskStatus不为2的任务
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].taskStatus != 2) {  // taskStatus: 0-带领取 1-未完成 2-已领取
-          taskObj = list[i]
-          break
-        }
-      }
-      return taskObj
-    },
-	// 显示新手任务
-	showNewUserTask () {
-	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-	  let XMCHANNEM = ['100051', '100051003', '100051005']
-	  let isxmChannel = XMCHANNEM.find(item => {
-		return item == APP_CHANNEL
-	  })
-	  return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
-	}
-  },
+		isCjTaskAllComplete() {
+			return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
+				return item.taskStatus == 2
+			}).length == this.cjTaskItems.length)
+		},
+		isHideMenu() {
+			return this.hideBackArr.includes(this.curChannel)
+		},
+		isDayTaskRed() {
+			let newArr = []
+			if (this.dayTaskItems && this.cjTaskItems) {
+				newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
+			}
+			return newArr && newArr.filter((item) => {
+				return item.taskStatus == 0
+			}).length
+		},
+		isCjTaskRed() {
+			return this.cdkArr && this.cdkArr.filter((item) => {
+				return item.gameCdkeyRsp.remainNum * 100 > 0
+			}).length
+		},
+		motherTask() {
+			let list = this.newTaskItems && this.newTaskItems.taskList || []
+			let motherTask = list.filter(item => {
+				return item.subTask
+			})[0]
+			list = list.filter(item => {
+				return !item.subTask
+			})
+			let finishedTaskNum = list.filter(item => {
+				return item.taskStatus == 2
+			}).length
+			if (motherTask) {
+				motherTask.allTaskNum = list.length
+				motherTask.hasFinishedNum = finishedTaskNum
+				return motherTask
+			}
+			return ''
+		},
+		newUserTaskobj() {
+			let list = this.newTaskItems && this.newTaskItems.taskList || []
+			let taskObj = null
+			list = list.filter(item => { // 刷选出子任务
+				return !item.subTask
+			})
+			// 找到当前需要展示的任务，第一个taskStatus不为2的任务
+			for (let i = 0; i < list.length; i++) {
+				if (list[i].taskStatus != 2) {  // taskStatus: 0-带领取 1-未完成 2-已领取
+					taskObj = list[i]
+					break
+				}
+			}
+			return taskObj
+		},
+		// 显示新手任务
+		showNewUserTask() {
+			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+			return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+		}
+	},
   methods: {
     receive (item, type, index) {
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {

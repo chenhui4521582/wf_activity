@@ -129,6 +129,9 @@ export default {
         case 'feedback':
           break// 打开充值回馈
         case 'open_payTurntable':
+              parent&&parent.closeTaksPage()
+              let url5 = `https://wap.beeplay123.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url5)
           break
         case 'recharge':
           if (localStorage.getItem('ACCESS_TOKEN')) {
@@ -251,6 +254,27 @@ export default {
         case 'openGiantLeaf':
           parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
+          case 'openGameTreasureGift': //打开夺宝礼包
+              parent&&parent.closeTaksPage()
+              let url1 = `https://wap.beeplay123.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url1)
+              break
+          case 'openGameHalloween': //打开超值礼包
+              parent&&parent.closeTaksPage()
+              let url2 = `https://wap.beeplay123.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url2)
+              break
+          case 'openGameMiniFeedBack': //打开葫芦娃
+              parent&&parent.closeTaksPage()
+              let url3 = `https://wap.beeplay123.com/payment/#/miniFeedBack?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url3)
+              break
+          case 'openGamePopGame': //打开盈利榜
+              parent&&parent.closeTaksPage()
+              let url4 = `https://wap.beeplay123.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              parent && parent.GameEval('openweb',url4)
+              break              
+              
         default:
           url.includes('//') && (parent.location.href = url)
           break
