@@ -306,12 +306,8 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-      let XMCHANNEM = ['100051', '100051003', '100051005']
-      let isxmChannel = XMCHANNEM.find(item => {
-        return item == APP_CHANNEL
-      })
-      return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
   filters: {
