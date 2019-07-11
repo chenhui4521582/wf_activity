@@ -95,7 +95,6 @@
     "sinon": "2.4.1",
     "sinon-chai": "2.14.0",
     "url-loader": "0.5.9",
-    "vue-clipboard2": "0.0.8",
     "vue-loader": "12.2.2",
     "vue-style-loader": "3.1.2",
     "vue-template-compiler": "2.6.10",
