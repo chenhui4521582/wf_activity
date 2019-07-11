@@ -19,12 +19,23 @@ export const betAwards = async () => {
   return data
 }
 /**
- * @description 批量投注
+ * @description 单次投注
+ * @param {Number} value sort
  * @return {Object} data
  */
 
-export const betBatch = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-batch')
+export const betSingle = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-single', params)
+  return data
+}
+/**
+ * @description 批量投注
+ * @param {Number} value awardsLev
+ * @return {Object} data
+ */
+
+export const betBatch = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-batch', params)
   return data
 }
 /**
@@ -34,15 +45,6 @@ export const betBatch = async () => {
 
 export const betProgress = async () => {
   const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-progress')
-  return data
-}
-/**
- * @description 单次投注
- * @return {Object} data
- */
-
-export const betSingle = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-single')
   return data
 }
 /**

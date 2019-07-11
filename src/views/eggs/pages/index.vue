@@ -3,7 +3,7 @@
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
       <h4 class="e-time">截止时间：7月7日23:59:59</h4>
-      <img src="./images/index/back.png" class="e-back">
+      <img src="./images/index/back.png" class="e-back" @click="back">
     </div>
     <div class="header2">
       <div class="eggs-info" :class="{show:isEggsInfoShow}">
@@ -17,55 +17,64 @@
       <div class="e-items">
         <ul>
           <li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr" :key="index" @click.stop="clickEgg(item,index)" :style="{left:eggStyle[index][0]+'rem',bottom:eggStyle[index][1]+'rem'}">
-            <small-egg :awards-item="item" :isActived="currentIndex === index"></small-egg>
+            <small-egg :awards-item="item" :isActived="index === currentIndex || item.awardsLev === currentLev && !item.status"></small-egg>
           </li>
         </ul>
       </div>
     </div>
-    <a href="javascript:" v-if="canHit" class="btn-hit" @click.stop="goHit">消耗锤子砸彩蛋</a>
-    <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
+    <div class="btn-wrp">
+      <a href="javascript:" v-if="currentItem.awardsLev === activedLev" class="btn-hit" @click.stop="goHit">消耗锤子砸彩蛋</a>
+      <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
+      <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
+    </div>
   </div>
 </template>
 <script type="text/javascript">
-import { betProgress, betAwards } from '../utils/api'
+import { betProgress, betAwards, betSingle, betBatch } from '../utils/api'
 export default {
   data () {
     return {
       isEggsInfoShow: false,
       styleItemsArr: [],
-      nodeList: [4, 8, 11, 13],
-      currentIndex: 0,
-      currentItem: 0,
-      activedIndex: 0,
+      activedLev: 1,
+      currentLev: 0,
+      currentIndex: null,
+      currentItem: {},
       eggStyle: [[3, 0.56], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
       awardsList: [],
       eggsInfoList: [],
-      canHit: true
     }
   },
   components: {
     smallEgg: () => import('../components/smallEgg')
   },
+  computed: {
+
+  },
   methods: {
+    back () {
+      history.go(-1)
+    },
     getLiClass (index) {
       return `e-item${index + 1}`
     },
-    goHit () {
-
+    async goHit () {
+      const { code, data } = await betSingle({ value: this.currentItem.sort })
+    },
+    async goHitAll () {
+      this.currentIndex = null
+      this.currentLev = this.activedLev
+      const { code, data } = await betBatch({ value: this.activedLev })
     },
     clickEgg (item, index) {
       if (item.status) return
+      this.currentLev = 0
       this.currentIndex = index
       this.currentItem = item
       this.isEggsInfoShow = true
       this.eggsInfoList = this.awardsList.filter(element => {
         return element.awardsLev === item.awardsLev
       })
-      if (index <= this.nodeList[this.nodeList.findIndex(element => this.activedIndex < element)]) {
-        this.canHit = true
-      } else {
-        this.canHit = false
-      }
     },
     async getBetAwards () {
       const { code, data } = await betAwards()
@@ -76,31 +85,13 @@ export default {
     async init () {
       const { code, data } = await betProgress()
       if (code === 200) {
-        this.styleItemsArr = data.map((element, index) => {
-          switch (index) {
-            case 0:
-              element.status = 1
-              element.awardsType = 'hfq'
-              break;
-            case 1:
-              element.status = 1
-              element.awardsType = 'jdk'
-              break;
-            case 2:
-              element.status = 1
-              element.awardsType = 'yg'
-              break;
-
-            default:
-              break;
-          }
-          return element
-        })
+        this.styleItemsArr = data
         for (let index = 0; index < data.length; index++) {
           if (data[index].status === 0) {
+            this.currentLev = 0
             this.currentIndex = index
             this.currentItem = data[index]
-            this.activedIndex = index
+            this.activedLev = data[index].awardsLev
             return
           }
         }
