@@ -34,6 +34,8 @@
 				</ul>
 			</div>
 		</div>
+		<!-- dropDown -->
+		<dropDown/>
 	</div>
 </template>
 <script type="text/javascript">
@@ -95,7 +97,8 @@
 			}
 		},
 		components: {
-			smallEgg: () => import('../components/smallEgg')
+			smallEgg: () => import('../components/smallEgg'),
+			dropDown: () => import('./dropDown')
 		},
 		methods: {
 			getLiClass(index) {

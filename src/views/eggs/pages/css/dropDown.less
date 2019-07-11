@@ -1,0 +1,43 @@
+.pop-mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: rgba(0,0,0,0.6);
+	z-index: 10;
+}
+.drop-down-content {
+	width: 100%;
+	min-height: 9.0rem;
+	background: #FFE6B3;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	border-radius: 0.4rem 0.4rem 0 0;
+	font-size: 0.2rem;
+	z-index: 12;
+	.d-tab {
+		border-radius: 0.4rem 0.4rem 0 0;
+		overflow-y: hidden;
+		background: #E2812A;
+		ul {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 0.4rem 0.4rem 0 0;
+		}
+		li {
+			flex: 1;
+			height: 0.84rem;
+			line-height: 0.84rem;
+			text-align: center;
+			font-size: 0.36rem;
+			color: #FFE6B3;
+			&.active {
+				background: #FFE6B3;
+				color: #E2812A;
+			}
+		}
+	}
+}
