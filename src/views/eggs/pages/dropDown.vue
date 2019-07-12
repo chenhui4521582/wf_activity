@@ -9,7 +9,9 @@
 				</ul>
 			</div>
 			<!-- 获取锤子组件 -->
-			<getHammer/>
+			<!-- <getHammer/> -->
+			<!-- 排行榜 -->
+			<profit/>
 		</div>
 	</div>
 </template>
@@ -21,7 +23,8 @@
 			}
 		},
 		components: {
-			getHammer: () => import('./component/getHammer')
+			getHammer: () => import('./component/getHammer'),
+			profit: () => import('./component/profit')
 		},
 		mounted() {
 
