@@ -1,5 +1,7 @@
 <template>
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
+    <p style="width: 50px;height: 50px;background: red;position: fixed;
+  	right: 0;bottom: 0;font-size: 18px;" @click="isDropDown = true">openProfit test</p>
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
       <h4 class="e-time">截止时间：7月7日23:59:59</h4>
@@ -30,6 +32,7 @@
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
     <common-pop :pop-type="popType" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getMore"></common-pop>
+    <dropDown @close="closeDropDown" v-if="isDropDown" />
   </div>
 </template>
 <script type="text/javascript">
@@ -48,14 +51,16 @@ export default {
       eggsInfoList: [],
       awardsList: [],
       popType: 0,
-      isShowPop: false
+      isShowPop: false,
+      isDropDown: true
     }
   },
   components: {
     smallEgg: () => import('../components/smallEgg'),
     myAwards: () => import('../components/myAwards'),
     commonPop: () => import('../components/commonPop'),
-    rule: () => import('../components/rule')
+    rule: () => import('../components/rule'),
+    dropDown: () => import('./dropDown')
   },
   computed: {
 
@@ -124,7 +129,10 @@ export default {
       this.isShowPop = false;
     },
     keepHit () { },
-    getMore () { }
+    getMore () { },
+    closeDropDown () {
+      this.isDropDown = false
+    }
   },
   mounted () {
     this.init()

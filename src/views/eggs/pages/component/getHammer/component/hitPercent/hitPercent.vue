@@ -7,13 +7,13 @@
             <ul>
                 <li v-for="item in envelopsItem" v-if="!item.dot">
                     <h2>支持金叶</h2>
-                    <h4>{{item.taskOps}}元</h4>
+                    <h4>{{item.amount | filterPrice}}</h4>
                     <div class="hb-line"></div>
-                    <div class="envelopes">{{item.awardsNum}}个</div>
-                    <div class="btn btn-complete" v-if="item.taskStatus == 2">完成</div>
-                    <div class="btn btn-receive" v-if="item.taskStatus == 0"
+                    <div class="envelopes">{{item.awards}}个</div>
+                    <div class="btn btn-complete" v-if="item.status == 2">完成</div>
+                    <div class="btn btn-receive" v-if="item.status == 0"
                        @click="getjiazbonus(item)">领取</div>
-                    <div class="btn btn-default" v-if="item.taskStatus == 1"
+                    <div class="btn btn-default" v-if="item.status == 1"
                        @click="gotocomplete">去完成</div>
                 </li>
                 <li class="hb-dot-box" v-else>
@@ -29,75 +29,76 @@
 	</div>
 </template>
 <script type="text/javascript">
+    import { gameProgress } from '../../../../../utils/api'
 	export default {
 		data() {
 			return {
 				hbItems: null,
 				hbTestData: [{
                     "taskId": 412,
-                    "taskOps": 10,
+                    "amount": 10,
                     "finishNum": 0,
-                    "taskStatus": 2,
-                    "awardsNum": 1,
+                    "status": 2,
+                    "awards": 1,
                 }, {
                     "taskId": 413,
-                    "taskOps": 28,
+                    "amount": 28,
                     "finishNum": 0,
-                    "taskStatus": 2,
-                    "awardsNum": 2,
+                    "status": 2,
+                    "awards": 2,
                 }, {
                     "taskId": 414,
-                    "taskOps": 58,
+                    "amount": 58,
                     "finishNum": 57,
-                    "taskStatus": 2,
-                    "awardsNum": 3,
+                    "status": 2,
+                    "awards": 3,
                 }, {
                     "taskId": 415,
-                    "taskOps": 128,
+                    "amount": 128,
                     "finishNum": 64,
-                    "taskStatus": 2,
-                    "awardsNum": 6,
+                    "status": 2,
+                    "awards": 6,
                 }, {
                     "taskId": 416,
-                    "taskOps": 320,
+                    "amount": 320,
                     "finishNum": 2,
-                    "taskStatus": 1,
-                    "awardsNum": 20,
+                    "status": 1,
+                    "awards": 20,
                 }, {
                     "taskId": 417,
-                    "taskOps": 620,
+                    "amount": 620,
                     "finishNum": 0,
-                    "taskStatus": 2,
-                    "awardsNum": 30,
+                    "status": 2,
+                    "awards": 30,
                 }, {
                     "taskId": 418,
-                    "taskOps": 1200,
+                    "amount": 1200,
                     "finishNum": 1200,
-                    "taskStatus": 2,
-                    "awardsNum": 58,
+                    "status": 2,
+                    "awards": 58,
                 }, {
                     "taskId": 421,
-                    "taskOps": 16961,
+                    "amount": 16961,
                     "finishNum": 2,
-                    "taskStatus": 1,
-                    "awardsNum": 888,
+                    "status": 1,
+                    "awards": 888,
                 }, {
                     "taskId": 419,
-                    "taskOps": 3080,
+                    "amount": 3080,
                     "finishNum": 1540,
-                    "taskStatus": 2,
-                    "awardsNum": 188,
+                    "status": 2,
+                    "awards": 188,
                 }, {
                     "taskId": 420,
-                    "taskOps": 8080,
+                    "amount": 8080,
                     "finishNum": 0,
-                    "taskStatus": 2,
-                    "awardsNum": 500,
+                    "status": 2,
+                    "awards": 500,
                 }],
 			}
 		},
 		mounted() {
-			this.getEnvelopesList()
+			this.getGameProgress()
 		},
 		computed: {
 			envelopsItem() {
@@ -107,7 +108,7 @@
 
                 // 获取最大值
                 let maxItem = this.hbItems&&this.hbItems.length&&this.hbItems.sort((a, b) => {
-                    return a.taskOps - b.taskOps
+                    return a.amount - b.amount
                 })[this.hbItems.length - 1]
 
                 // 删除数组最后一位
@@ -115,14 +116,14 @@
                 data.pop()
 
                 let nArr = data.filter((item) => {
-                    return item.taskStatus != 2
+                    return item.status != 2
                 }).sort((a, b) => {
-                    return a.taskOps - b.taskOps
+                    return a.amount - b.amount
                 })
                 let tArr = data.filter((item) => {
-                    return item.taskStatus == 2
+                    return item.status == 2
                 }).sort((a, b) => {
-                    return a.taskOps - b.taskOps
+                    return a.amount - b.amount
                 })
                 let result = []
                 if (nArr.length > 4) {
@@ -147,13 +148,13 @@
                     return
                 }
                 if (this.hbItems && this.envelopsItem) {
-                    if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].taskStatus != 1) {
+                    if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].status != 1) {
                         return '100%'
                     } else {
                         let minUnfinished = this.hbItems.filter((item) => {
-                            return item.taskStatus == 1
+                            return item.status == 1
                         }).sort((a, b) => {
-                            return a.taskOps - b.taskOps
+                            return a.amount - b.amount
                         })[0]
                         let idArr = [...this.envelopsItem.map(c => c.taskId)].indexOf(minUnfinished.taskId)
                         if (this.envelopsItem.length == 6) {
@@ -162,16 +163,16 @@
                                 return parseFloat(5 * 100 / 6).toFixed(2) + '%'
                             } else {
                                 if (idArr == 0) {
-                                    return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
+                                    return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.amount)) * 100 / 12) + '%'
                                 } else {
-                                    return parseFloat((1 / 12 + (idArr - 1) / 6 + minUnfinished.finishNum / (minUnfinished.taskOps) / 6) * 100) + '%'
+                                    return parseFloat((1 / 12 + (idArr - 1) / 6 + minUnfinished.finishNum / (minUnfinished.amount) / 6) * 100) + '%'
                                 }
                             }
                         } else {
                             if (idArr == 0) {
-                                return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
+                                return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.amount)) * 100 / 12) + '%'
                             } else {
-                                return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + minUnfinished.finishNum / (minUnfinished.taskOps) * 5 / 24) * 100) + '%'
+                                return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + minUnfinished.finishNum / (minUnfinished.amount) * 5 / 24) * 100) + '%'
                             }
                         }
                     }
@@ -182,13 +183,12 @@
 		},
 		methods: {
 			// 获取红包任务列表
-            getEnvelopesList() {
-                this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platCommonTaskByBatch', {
-                    value: "SpringFestival-recharge"
-                }).then((res) => {
-                    if (res.data.code == 200) {
-                        // this.hbItems = res.data.data
-                        this.hbItems = this.hbTestData
+            getGameProgress() {
+                gameProgress().then((res) => {
+                    if (res.code == 200) {
+                        this.hbItems = res.data
+                        // 下面是测试数据
+                        // this.hbItems = this.hbTestData  
 
                     }
                 })
@@ -197,10 +197,13 @@
                 if (newArr.length < 4) {
                     var len = 4 - newArr.length;
                     return newArr.concat(completeArr.splice(completeArr.length - len, len)).sort(function (a, b) {
-                        return a.taskOps - b.taskOps
+                        return a.amount - b.amount
                     })
                 }
             },
+            gotocomplete() {
+
+            }
 		}
 	}
 </script>

@@ -5,16 +5,16 @@
 		<div class="g-package">
 			<div class="g-package-container g1">
 				<ul>
-					<li v-for="item in 3" >
-						<span class="item-text">28.8万金叶子<br/>+15锤子</span>
-						<a href="javascript:" class="btn-price">￥288</a>
+					<li v-for="item in leaguePacksListArr" >
+						<span class="item-text">{{item.content.split('+')[0]}}<br/>+{{item.content.split('+')[1]}}</span>
+						<a href="javascript:" class="btn-price">￥{{item.price}}</a>
 					</li>
 				</ul>	
 			</div>
 			<div class="g-package-info">
 				<ul>
-					<li>已购买礼包：4次</li>
-					<li>累计锤子：720个</li>
+					<li>已购买礼包：{{pUserInfo.rechargeTime}}次</li>
+					<li>累计锤子：{{pUserInfo.rechargeReturnNum}}个</li>
 				</ul>
 			</div>
 		</div>
@@ -26,34 +26,56 @@
 			</div>
 			<div class="g-package-info">
 				<ul>
-					<li>已购买礼包：4次</li>
-					<li>累计锤子：720个</li>
+					<li>已支持金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
+					<li>累计锤子：{{pUserInfo.gameReturnNum }}个</li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
+	import { showLeaguePacksList,userInfo } from '../../../utils/api'
 	export default {
 		data() {
 			return {
-
+				leaguePacksListArr: [],
+				pUserInfo: {}
 			}
 		},
 		components: {
 			hitPercent: () => import('./component/hitPercent/hitPercent.vue')
 		},
 		mounted() {
-
+			this.getShowLeaguePacksList()
+			this.getUserInfo()
+		},
+		filters: {
+			filterPrice: function(value) {
+				if(value) {
+					return value > 10000 ? value/10000+'万':value
+				}
+			}
 		},
 		methods: {
-
+			getShowLeaguePacksList() {
+				showLeaguePacksList().then((res)=> {
+					this.leaguePacksListArr = res.data.leaguePacksList
+				})
+			},
+			getUserInfo() {
+				userInfo().then((res)=> {
+					this.pUserInfo = res.data
+				})
+			},
+			isGoBDPayment () {
+			    return window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap'
+			},
 		}
 	}
 </script>
 <style lang="less" scoped>
 	.get-hammer {
-		padding: 0.4rem 0.38rem 0;
+		padding: 1.24rem 0.38rem 0;
 		.s-title {
 			font-size: 0.24rem;
 			color: #C07002;
