@@ -1,5 +1,7 @@
 <template>
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
+  	<p style="width: 50px;height: 50px;background: red;position: fixed;
+  	right: 0;bottom: 0;font-size: 18px;" @click="isDropDown = true">openProfit test</p>
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
       <h4 class="e-time">截止时间：7月7日23:59:59</h4>
@@ -27,7 +29,7 @@
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
-    <dropDown/>
+    <dropDown @close="closeDropDown" v-if="isDropDown" />
   </div>
 </template>
 <script type="text/javascript">
@@ -44,6 +46,7 @@ export default {
       eggStyle: [[3, 0.56], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
       awardsList: [],
       eggsInfoList: [],
+      isDropDown: false
     }
   },
   components: {
@@ -98,6 +101,9 @@ export default {
           }
         }
       }
+    },
+    closeDropDown() {
+    	this.isDropDown = false
     }
   },
   mounted () {
