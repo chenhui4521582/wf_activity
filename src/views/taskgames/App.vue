@@ -103,31 +103,9 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
             <!-- 大师任务 -->
-            <crush-master-task
-              v-if="showCrushMasterTask"
-              :crushTaskList="crushTaskList"
-              :showReceiveMedal="showReceiveMedal"
-              :showMedalAnimate="showMedalAnimate"
-              :currentMedalIndex="currentMedalIndex"
-              :currentGameType="currentGameType"
-              @checkTaskStatus="checkTaskStatus"
-              @hideMedalAnimate="showMedalAnimate = false"
-              @receive="receive"
-              @refreshTask="refreshTask"
-            />
+            <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
-            <king-task
-              v-if="showKingTask"
-              :crushTaskList="crushTaskList"
-              :showReceiveMedal="showReceiveMedal"
-              :showMedalAnimate="showMedalAnimate"
-              :currentMedalIndex="currentMedalIndex"
-              :currentGameType="currentGameType"
-              @checkTaskStatus="checkTaskStatus"
-              @hideMedalAnimate="showMedalAnimate = false"
-              @receive="receive"
-              @refreshTask="refreshTask"
-            />
+            <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
               <h4 class="h-title h-first-title">当前游戏每日任务</h4>
               <ul class="t-items">
@@ -151,9 +129,10 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
                     <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
                   </p>
                 </li>
               </ul>
@@ -182,34 +161,22 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item,'dayTask')">领取</a>
+                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
                     <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
+                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
                     <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
                   </p>
                 </li>
               </ul>
             </div>
           </template>
-          <poplog
-            v-if="isPopLog"
-            :crushTaskList="crushTaskList"
-            :awardItem="awardItem"
-            :motherTask="motherTask"
-            :isNewTask="isNewTask"
-            :masterTask="masterTask"
-            :newUserTaskFinish="newUserTaskFinish"
-            @close="closePopLog"
-          >
+          <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
           <!-- 新版奖励弹窗 -->
           <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
-          <box-dialog
-            v-if="showBoxDialog"
-            :awardItem="awardItem"
-            @closeBoxDialog="closeBoxDialog"
-          />
+          <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
         </div>
         <div class="t-content" v-show="isTfStatus">
@@ -262,7 +229,9 @@ export default {
       quitConfig: null,
       showBoxDialog: false, // 踏青寻宝   活动特有  活动下线 删除
       isDailyReceivePop: false,
-      receiveAwards: {}
+      receiveAwards: {},
+      selectItem: {},
+      woolUserType: false
     }
   },
   mounted () {
@@ -278,12 +247,17 @@ export default {
     }
     localStorage.setItem('ACCESS_TOKEN', this.token)
     localStorage.setItem('APP_CHANNEL', this.channel)
+    this.init()
     this.getDegradeTaskStatus()
     this.getTransInfo()
     this.getPhoneFragment()
     this.getHuafeiNum()
   },
   computed: {
+    // woolUserType () {
+    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+    //   // return true
+    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -332,12 +306,8 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-      let XMCHANNEM = ['100051', '100051003', '100051005']
-      let isxmChannel = XMCHANNEM.find(item => {
-        return item == APP_CHANNEL
-      })
-      return isxmChannel ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
   filters: {
@@ -369,11 +339,41 @@ export default {
     fixedEntrance: () => import('./component/fixedEntrance')
   },
   methods: {
+    initParentAd () {
+      var iframeads = parent.document.querySelector('#iframe_ads')
+      if (iframeads) {
+        iframeads.parentNode.removeChild(iframeads)
+      }
+      var iframe = document.createElement('iframe')
+      iframe.id = 'iframe_ads'
+      iframe.name = 'iframe_ads'
+      iframe.style.position = 'fixed'
+      iframe.style.width = '100%'
+      iframe.style.height = '100%'
+      iframe.style.top = 0
+      iframe.style.bottom = 0
+      iframe.style.left = 0
+      iframe.style.border = 'none'
+      iframe.style.margin = 0
+      iframe.style.padding = 0
+      iframe.src = 'https://wap.beeplay123.com/ads/index.html'
+      parent.document.body.appendChild(iframe)
+    },
+    init () {
+      this.axios.post('//platform-api.beeplay123.com/wap/api/continuous/signIn/new/list')
+        .then(res => {
+          sessionStorage.removeItem('woolUserType')
+          if (res.data.code == 200) {
+            sessionStorage.woolUserType = res.data.data.userType
+            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+          }
+        })
+    },
     closeRRZQPop () {
       this.isRRZQPop = false
     },
     async jumpMine () {
-      if(this.channel.indexOf(100051) > -1) {
+      if (this.channel.indexOf(100051) > -1) {
         return false
       }
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
@@ -412,8 +412,8 @@ export default {
             return
           }
         })
-        let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
-          finishLength = 0
+        let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length
+        let finishLength = 0
         currentParentTask.subListA.map(item => {
           item.taskStatus == 2 ? finishLength += 1 : ''
         })
@@ -534,7 +534,57 @@ export default {
       return window.linkUrl.getBackUrl(this.channel)
     },
     checkTaskStatus (item, type, index) {
+      switch (type) {
+        case 'dayTask':
+          GLOBALS.marchSetsPoint('A_H5PT0061001408', {
+            position_id: index + 1,
+            target_project_id: item.gameType,
+            task_id: item.taskId,
+            task_name: item.taskName
+          })// H5平台-任务-每日任务-领取
+          break
+        case 'crush_task':
+          GLOBALS.marchSetsPoint('A_H5PT0061000538', {
+            project_id: item.gameType,
+            target_project_id: item.gameType,
+            task_id: item.taskId,
+            task_name: item.taskName
+          }) // H5平台-游戏内SDK-成就任务-去领取
+          break
+        case 'mother_crush_task':
+          GLOBALS.marchSetsPoint('A_H5PT0061000538', {
+            project_id: item.gameType,
+            target_project_id: item.gameType,
+            task_id: item.taskId,
+            task_name: item.taskName
+          }) // H5平台-游戏内SDK-成就任务-去领取
+          break
+        case 'newtask':
+          GLOBALS.marchSetsPoint('A_H5PT0061000541', {
+            project_id: item.gameType,
+            target_project_id: item.gameType,
+            task_id: item.taskId,
+            task_name: item.taskName
+          }) // H5平台-游戏内SDK-新人任务-去领取
+          break
+        default:
+          break
+      }
       if (item.taskStatus == 0) {
+        localStorage.removeItem('ENTRANCE')
+        localStorage.removeItem('ADSDATA')
+        if (this.woolUserType && type === 'dayTask') {
+          this.selectItem = { item, type, index }
+          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
+          // 为父窗口（游戏界面） 创建script
+          try {
+            this.initParentAd()
+          } catch (error) {
+            this.receive(item, type, index)
+          }
+          return
+        }
         this.receive(item, type, index)
       } else if (item.taskStatus == 1) {
         this.goFinishs(item, index, type)
@@ -596,17 +646,17 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
-            taskId: taskId
-          }).then((res) => {
-            if (res.data.code == 200) {
-              this.quitConfig = res.data.data
-              this.isRRZQPop = true
-              return
-            }
-          })
+        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+          taskId: taskId
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.quitConfig = res.data.data
+            this.isRRZQPop = true
+            return
+          }
+        })
         // }
-      }else if(type=='new_user_task_fixed_entrance'){
+      } else if (type == 'new_user_task_fixed_entrance') {
         this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
@@ -661,7 +711,7 @@ export default {
         // // }
         // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
-        url&&(parent.location.href = GLOBALS.getJumpToGameUrl(url))
+        url && (parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
     },
     closePopLog (val) {
@@ -704,22 +754,6 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      if (type == 'crush_task' || type == 'mother_crush_task') {
-        GLOBALS.marchSetsPoint('A_H5PT0061000538', {
-          project_id: item.gameType,
-          target_project_id: item.gameType,
-          task_id: item.taskId,
-          task_name: item.taskName
-        }) // H5平台-游戏内SDK-成就任务-去领取
-      } else if (type === 'newtask') {
-        GLOBALS.marchSetsPoint('A_H5PT0061000541', {
-          project_id: item.gameType,
-          target_project_id: item.gameType,
-          task_id: item.taskId,
-          task_name: item.taskName
-        }) // H5平台-游戏内SDK-新人任务-去领取
-      } else {
-      }
       this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
@@ -838,9 +872,9 @@ export default {
       // }
     },
     kfclick () {
-	  if(this.channel.indexOf(100051) > -1) {
-		return false
-	  }
+      if (this.channel.indexOf(100051) > -1) {
+        return false
+      }
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
     },
@@ -860,7 +894,7 @@ export default {
     closeDailyReceivePop () {
       this.isDailyReceivePop = false
     },
-    closeFixedEntrance(){
+    closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
     }
