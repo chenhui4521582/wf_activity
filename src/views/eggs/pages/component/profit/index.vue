@@ -2,7 +2,7 @@
 	<div class="profit-container">
 		<div class="profit-inner-container">
 			<img src="../../images/package/profit/title.png" class="title">
-			<h4 class="p-time">发榜倒计时：1天23:59:59</h4>
+			<h4 class="p-time">发榜倒计时：{{countTime}}</h4>
 			<div class="profit-tx-container">
 				<ul class="profit-icon">
 					<li v-for="(item,index) in topthreeData">
@@ -59,7 +59,7 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import { rankList } from '../../../utils/api'
+	import { rankList,activityInfo } from '../../../utils/api'
 	export default {
 		data() {
 			return {
@@ -67,13 +67,16 @@
 				profitData: [],
 				topthreeData: [],
 				behindThreeData: [],
-				isOpen: false
+				isOpen: false,
+				countTime: '',
+				countdown: 0
 			}
 		},
 		components: {
 		},
 		mounted() {
 			this.getGameProgress() 
+			this.getActivityInfo()
 		},
 		methods: {
 			closeOpenProfit() {
@@ -88,7 +91,35 @@
 						this.topthreeData = this.profitData.slice(0,3)
 					}
 				})
-			}
+			},
+			getActivityInfo() {
+				activityInfo().then((res)=> {
+					if(res.code == 200) {
+						this.countDown(res.data.countdown)
+					}
+				})
+			},
+			countDown (item) {
+
+		        if(!item) return false
+				let date = item / 1000
+		        this.timer = setInterval(() => {
+				  date = date-1
+		          if(date <= 0) {
+		            date = 0
+		            clearInterval(this.timer)
+		          }
+		          let day= Math.floor(date / 86400)
+		          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+				  let minute = Math.floor(parseInt(date / 60) % 60)
+				  let second = Math.floor(date % 60)
+				  let countDay = day >= 10 ? day : '0'+day
+				  let countHour = hour >= 10 ? hour : '0'+hour
+				  let countMinute = minute >= 10 ? minute : '0'+minute
+				  let countSecond = second >= 10 ? second : '0'+second
+				  this.countTime = `${countDay}天${countHour}时${countMinute}分${countSecond}秒`
+				}, 1000)
+		      },
 		}
 	}
 </script>
