@@ -9,9 +9,9 @@
 				</ul>
 			</div>
 			<!-- 获取锤子组件 -->
-			<!-- <getHammer/> -->
+			<getHammer v-if="curIndex == 0"/>
 			<!-- 排行榜 -->
-			<profit/>
+			<profit v-if="curIndex == 1"/>
 		</div>
 	</div>
 </template>

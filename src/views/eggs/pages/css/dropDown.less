@@ -9,11 +9,15 @@
 }
 .drop-down-content {
 	width: 100%;
-	min-height: 11.0rem;
+	height: 80%;
+	max-height: 80%;
 	background: #FFE6B3;
 	position: fixed;
 	left: 0;
 	bottom: 0;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-user-select: none;
 	border-radius: 0.4rem 0.4rem 0 0;
 	font-size: 0.2rem;
 	z-index: 12;
@@ -21,6 +25,9 @@
 		border-radius: 0.4rem 0.4rem 0 0;
 		overflow-y: hidden;
 		background: #E2812A;
+		width: 100%;
+		position: fixed;
+		z-index: 5;
 		ul {
 			display: flex;
 			align-items: center;

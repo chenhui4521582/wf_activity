@@ -1,6 +1,8 @@
 .profit-container {
 	text-align: center;
-	padding: 0 0.25rem;
+	padding: 1.11rem 0.25rem 0;
+	position: relative;
+	overflow-y: scroll;
 	.title {
 		width: 4.25rem;
 		margin: 0.27rem auto 0.11rem;
@@ -12,7 +14,6 @@
 	}
 }
 .profit-tx-container {
-	/*width: 6.64rem;*/
 	width: 100%;
 	height: 5.24rem;
 	background: url(../../images/package/profit/profit-tx-bg.png) no-repeat center bottom;
@@ -58,6 +59,16 @@
 				border: none;
 			}
 		}
+		.profit-award {
+			width: 1.72rem;
+			height: 0.95rem;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.24rem;
+			color: #8E3D0D;
+		}
 		&:nth-child(1){
 			left:2.5rem;
 			top: 0.03rem;
@@ -79,7 +90,6 @@
 				img {
 					width: 1.58rem;
 					height: 1.58rem;
-					background: red;
 					top: 0.36rem;
 				}
 			}
@@ -87,6 +97,13 @@
 				background: url(../../images/package/profit/icon-one.png) no-repeat;
 				background-size: 100% 100%;
 			}
+			.profit-award{
+				width: 2.25rem;
+				height: 1.03rem;
+				left: -0.30rem;
+    			bottom: -2.68rem;
+			}
+			
 		};
 		&:nth-child(2){
 			left: 0.45rem;
@@ -95,6 +112,10 @@
 				background: url(../../images/package/profit/icon-two.png) no-repeat;
 				background-size: 100% 100%;
 			}
+			.profit-award{
+				left: -0.36rem;
+    			bottom: -2.46rem;
+			}
 		};
 		&:nth-child(3){
 			right: 0.45rem;
@@ -102,6 +123,10 @@
 			.icon-number {
 				background: url(../../images/package/profit/icon-three.png) no-repeat;
 				background-size: 100% 100%;
+			}
+			.profit-award{
+				left: 0.09rem;
+    			bottom: -2.46rem;
 			}
 		};
 		.s-text {
@@ -116,12 +141,7 @@
 }
 .profit-items{
 	width: 100%;
-    min-height: 100vh;
     background: #FEC041;
-    position: absolute;
-    top: 5.24rem;
-    bottom: 0;
-    overflow-y: scroll;
     padding: 0 0.08rem;
     box-sizing: border-box;
     .p-header {
@@ -156,22 +176,69 @@
     	}
     }
     .p-items {
-    	width: 98%;
-    	background: #eee;
-	    position: absolute;
-	    top: 0.71rem;
-	    left: 1%;
-	    bottom: 0;
-	    overflow-y: scroll;
+    	background: #FFFAF1;
 	    box-sizing: border-box;
+	    &.p-items-content{
+		    position: relative;
+		    height: auto;
+		    overflow-y: hidden;
+	    	font-size: 0.2rem;
+	    	color: #DC8D00;
+	    	&.p-its1 {
+	    		height: 2.37rem;
+	    		ul {
+	    			overflow-y: hidden;
+	    		}
+	    	}
+	    }
+	    &.p-items-header {
+	    	width: 100%;
+	    	color: #FEC041;
+	    	font-size: 0.18rem;
+	    	li {
+	    		span:nth-child(1):after,
+	    		span:nth-child(2):after,
+	    		span:nth-child(3):after{	
+	    			content: '';
+	    			width:1px;
+					height:0.15rem;
+					background:rgba(254,192,65,1);
+					position: absolute;
+					top: 50%;
+					right: 0;
+					margin-top: -0.075rem;
+	    		};
+	    	}
+	    }
+	    
 	    li {
 	    	height: 0.68rem;
 	    	display: flex;
 	    	flex-wrap: wrap;
 	    	align-items: center;
 	    	border-bottom: 0.01rem solid #FEC041;
+	    	padding: 0.05rem 0;
 	    	span {
-	    		flex: 1;
+	    		display: inline-block;
+	    		height: 0.68rem;
+	    		display: flex;
+	    		align-items: center;
+	    		justify-content: center;
+	    		position: relative;
+
+	    		&:nth-child(1){
+	    			flex: 0 0 14.75%;
+	    		};
+	    		&:nth-child(2){
+	    			flex: 0 0 21.68%;
+	    		};
+	    		&:nth-child(3){
+	    			flex: 0 0 27.41%;
+	    		};
+	    		&:nth-child(4){
+	    			flex: 1;
+	    			line-height: 0.34rem;
+	    		};
 	    	}
 	    	.icon-dot {
 	    		display: block;
@@ -188,4 +255,24 @@
 	    	}
 	    }
     }
+}
+.profit-footer {
+	height: 0.89rem;
+	line-height: 0.89rem;
+	font-size: 0.3rem;
+	color: #F78102;
+	font-weight:400;
+}
+.btn-check-profit {
+	display: block;
+	width: 2.64rem;
+	height: 0.46rem;
+	line-height: 0.46rem;
+	text-align: left;
+	text-indent: 0.19rem;
+	font-size: 0.24rem;
+	color: #8A3606;
+	background: url(../../images/package/profit/btn-check-profit.png) no-repeat;
+	background-size: 100% 100%;
+	margin: 0.12rem auto;
 }

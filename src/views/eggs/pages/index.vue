@@ -27,6 +27,7 @@
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
+    <dropDown/>
   </div>
 </template>
 <script type="text/javascript">
@@ -46,7 +47,8 @@ export default {
     }
   },
   components: {
-    smallEgg: () => import('../components/smallEgg')
+    smallEgg: () => import('../components/smallEgg'),
+    dropDown: () => import('./dropDown')
   },
   computed: {
 
