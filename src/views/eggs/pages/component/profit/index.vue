@@ -38,8 +38,10 @@
 							<span>奖励</span>
 						</li>
 					</ul>
+				</div>
+				<div class="p-items p-items-content">
 					<ul class="p-item-title">
-						<li v-for="(item,index) in 2">
+						<li v-for="(item,index) in 20">
 							<span><i class="icon-dot">{{index+1}}</i></span>
 							<span>这里是昵称</span>
 							<span>155555个</span>
