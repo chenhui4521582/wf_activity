@@ -62,6 +62,8 @@ export default {
     }
     .s-text {
       bottom: 0.06rem;
+      background: #ffe361;
+      color: #884300;
     }
   }
   .small-egg {
@@ -100,12 +102,11 @@ export default {
         height: 100%;
       }
       .s-text {
-        width: 1.01rem;
+        padding: 0 0.2rem;
         height: 0.49rem;
         line-height: 0.49rem;
         border-radius: 0.24rem;
         font-size: 0.32rem;
-        margin-left: -0.47rem;
       }
     }
   }
@@ -115,19 +116,21 @@ export default {
   }
   .s-text {
     display: block;
-    width: 0.62rem;
+    min-width: 0.42rem;
+    padding: 0 0.1rem;
     height: 0.3rem;
     line-height: 0.3rem;
-    background: rgba(248, 185, 24, 1);
+    background: #f8b918;
     border-radius: 0.15rem;
     font-size: 0.2rem;
     font-weight: bold;
-    color: rgba(154, 80, 21, 1);
+    color: #9a5015;
     text-align: center;
     position: absolute;
     left: 50%;
     bottom: 0;
-    margin-left: -0.28rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
   }
 }
 </style>
