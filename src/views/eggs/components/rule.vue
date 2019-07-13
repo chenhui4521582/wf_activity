@@ -6,6 +6,11 @@
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
           <div class="main">
+            <p>1、消耗锤子可砸开彩蛋，获取奖励。砸完当前所有蛋，将会生成新蛋供您砸；</p>
+            <p>2、购买活动内礼包可获得锤子，重复购买可重复获取；</p>
+            <p>3、在以下游戏中，活动期间累计支持金叶子到一定值可获得锤子：</p>
+            <p>{{ruleMain}}</p>
+            <p>4、活动结束后，将按累计获得的锤子数（不管是否被消耗）排名，前30名有奖励。</p>
           </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
@@ -19,17 +24,14 @@ export default {
   name: 'rule',
   data () {
     return {
-      isShowPop: false
+      isShowPop: false,
     }
   },
-  methods: {
-
-  },
-  mounted () {
-
-  },
-  destroyed () {
-
+  props: {
+    ruleMain: {// 图标颜色
+      type: String,
+      default: ''
+    }
   }
 }
 </script>
@@ -40,7 +42,7 @@ export default {
   top: 1.64rem;
   left: 50%;
   margin-left: -2.46rem;
-  z-index: 10;
+  z-index: 1;
   img {
     width: 0.87rem;
     height: 0.87rem;
@@ -67,20 +69,22 @@ export default {
         100% 100%;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 2.16rem 0.5rem 0;
+      padding: 2.16rem 0.26rem 0;
       .main {
         font-size: 0.24rem;
-        line-height: 0.3rem;
         letter-spacing: 0.02rem;
         font-weight: bold;
         color: #fff;
+        p {
+          line-height: 0.32rem;
+        }
       }
     }
     .close-icon {
       width: 0.6rem;
       height: 0.6rem;
-      background: url("../pages/images/common/close.png") no-repeat center center /
-        100% 100%;
+      background: url("../pages/images/common/close.png") no-repeat center
+        center / 100% 100%;
       margin: 0.4rem auto 0;
     }
   }

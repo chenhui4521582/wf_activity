@@ -75,6 +75,14 @@ export const rankList = async () => {
   return data
 }
 /**
+ * @description 用户新增锤子数
+ * @return {Object} data
+ */
+export const userIncrement = async () => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/user-increment')
+  return data
+}
+/**
  * @description 用户信息
  * @return {Object} data
  */
@@ -93,5 +101,3 @@ export const showLeaguePacksList = async () => {
   const { data } = await $axios.post('//shop-api.beeplay123.com/shop/api/mall/showLeaguePacksList/20190711')
   return data
 }
-
-

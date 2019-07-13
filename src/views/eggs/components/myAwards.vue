@@ -7,9 +7,9 @@
         <div class="wrap">
           <div class="main">
             <ul class="awards-list">
-              <li class="hfq"><span>话费券{{hfqAmount}}</span></li>
-              <li class="jdk"><span>京东卡{{jdkAmount}}</span></li>
-              <li class="yg"><span>鱼干{{ygAmount}}</span></li>
+              <li class="hfq"><span>{{hfqAmount|numberFilter}}</span></li>
+              <li class="jdk"><span>{{jdkAmount|numberFilter}}</span></li>
+              <li class="yg"><span>{{ygAmount|ygFilter}}</span></li>
             </ul>
             <p class="title">砸蛋记录</p>
             <div class="awards-history-title">
@@ -63,7 +63,19 @@ export default {
       let dateArr = date.split(' ')[0].split('-')
       let timeArr = date.split(' ')[1].split(':')
       return `${dateArr[1]}-${dateArr[2]} ${timeArr[0]}:${timeArr[1]}`
-    }
+    },
+    numberFilter (number) {
+      if (number > 10000) {
+        return Math.floor(number / 100) / 100 + 'w'
+      }
+      return number
+    },
+    ygFilter (number) {
+      if (number > 1000) {
+        return Math.floor(number / 10) / 100 + 'kg'
+      }
+      return number + 'g'
+    },
   },
   mounted () {
   },
@@ -79,7 +91,7 @@ export default {
   top: 1.36rem;
   left: 50%;
   margin-left: -2.46rem;
-  z-index: 10;
+  z-index: 1;
   img {
     width: 1.1rem;
     height: 0.94rem;
@@ -127,17 +139,17 @@ export default {
             height: 1.4rem;
             position: relative;
             &.hfq {
-              background: url("../pages/images/common/hfq-with-bg.png") no-repeat center
-                center / 100% 100%;
+              background: url("../pages/images/common/hfq-with-bg.png")
+                no-repeat center center / 100% 100%;
             }
             &.jdk {
-              background: url("../pages/images/common/jdk-with-bg.png") no-repeat center
-                center / 100% 100%;
+              background: url("../pages/images/common/jdk-with-bg.png")
+                no-repeat center center / 100% 100%;
               margin: 0 0.08rem;
             }
             &.yg {
-              background: url("../pages/images/common/yg-with-bg.png") no-repeat center
-                center / 100% 100%;
+              background: url("../pages/images/common/yg-with-bg.png") no-repeat
+                center center / 100% 100%;
             }
             span {
               position: absolute;

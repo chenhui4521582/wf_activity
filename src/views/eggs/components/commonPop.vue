@@ -3,7 +3,7 @@
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
-        <div class="wrap">
+        <div class="wrap" :class="{'hammer-wrap':popType===3}">
           <div class="main">
             <ul class="awards-list" :class="`length-${awardsList.length}`">
               <li :class="item.awardsType" v-for="(item,index) in awardsList" :key="index">
@@ -11,7 +11,7 @@
               </li>
             </ul>
           </div>
-          <div class="hit-egg-btn" @click="keepHit">{{popType?'立即':'继续'}}砸彩蛋</div>
+          <div class="hit-egg-btn" @click="keepHit" v-if="popType<3">{{popType>1?'立即':'继续'}}砸彩蛋</div>
           <div class="get-cz-btn" @click="getMore">获取更多锤子</div>
         </div>
         <div class="close-icon" @click="closePop"></div>
@@ -79,11 +79,20 @@ export default {
     .wrap {
       width: 4.92rem;
       height: 7.38rem;
-      background: url("../pages/images/common/bg.png") no-repeat center center /
-        100% 100%;
+      background: no-repeat center center / 100% 100%;
+      background-image: url("../pages/images/common/bg.png");
       margin: 0 auto;
       box-sizing: border-box;
       padding: 2.32rem 0.26rem 0;
+      &.hammer-wrap {
+        height: 6.2rem;
+        background-image: url("../pages/images/common/no-hammer-bg.png");
+        .main {
+          .awards-list {
+            min-height: 2.4rem;
+          }
+        }
+      }
       .main {
         font-size: 0.24rem;
         line-height: 0.3rem;
@@ -109,6 +118,7 @@ export default {
               text-align: center;
               font-size: 0.24rem;
               font-weight: bold;
+              white-space: nowrap;
             }
           }
           &.length-1,
@@ -118,6 +128,9 @@ export default {
               max-width: 1.88rem;
               max-height: 1.88rem;
               background-size: 1.22rem 1.22rem;
+              &.hammer {
+                background-image: url("../pages/images/common/hammer.png");
+              }
               &.hfq {
                 background-image: url("../pages/images/common/hfq.png");
               }
@@ -157,6 +170,7 @@ export default {
               }
               span {
                 bottom: 0;
+                font-size: 0.18rem;
               }
               margin: 0.1rem 0.06rem;
             }
