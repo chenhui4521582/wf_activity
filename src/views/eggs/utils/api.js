@@ -124,16 +124,7 @@ export const userRanking = async () => {
  * @return {Object} data
  */
 
-export const getGuidePosition = async () => {
-  const { data } = await $axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/get-guide-position', { version: 6 })
-  return data
-}
-/**
- * @description 报存用户新手引导
- * @return {Object} data
- */
-
-export const setGuidePosition = async () => {
-  const { data } = await $axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/set-guide-position', { version: 6 })
+export const activityGuide = async () => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/activity-guide')
   return data
 }

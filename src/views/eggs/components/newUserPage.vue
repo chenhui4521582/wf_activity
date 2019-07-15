@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getGuidePosition, setGuidePosition } from "../utils/api";
+import { activityGuide } from "../utils/api";
 export default {
   name: 'newUserPage',
   data () {
@@ -45,12 +45,12 @@ export default {
   },
   methods: {
     async init () {
-      const { code, data } = await getGuidePosition()
-      if (code === 200) {
-        this.isShow = true
+      const { code, data } = await activityGuide()
+      if (code === 200 && data) {
+        this.isShow = data
         this.$emit('set-big-egg')
         this.$nextTick(function () {
-          this.isAnimation = true
+          this.isAnimation = data
         })
       }
     },
