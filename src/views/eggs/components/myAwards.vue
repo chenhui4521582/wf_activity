@@ -1,5 +1,5 @@
 <template>
-  <section class="myAwards">
+  <section class="myAwards" :style="{zIndex:isShowPop?2:1}">
     <img src="../pages/images/myAwards/icon.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop"></div>
     <transition name="scalc">
@@ -91,7 +91,6 @@ export default {
   top: 1.36rem;
   left: 50%;
   margin-left: -2.46rem;
-  z-index: 1;
   img {
     width: 1.1rem;
     height: 0.94rem;

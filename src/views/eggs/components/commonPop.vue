@@ -2,7 +2,7 @@
   <section class="commonPop" @touchmove.prevent>
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
-      <div class="pop" v-if="isShowPop">
+      <div class="pop" v-if="isShowPop && !isEnd">
         <div class="wrap" :class="{'hammer-wrap':popType===3}">
           <div class="main">
             <ul class="awards-list" :class="`length-${awardsList.length}`">
@@ -13,6 +13,21 @@
           </div>
           <div class="hit-egg-btn" @click="keepHit" v-if="popType<3">{{popType>1?'立即':'继续'}}砸彩蛋</div>
           <div class="get-cz-btn" @click="getMore">获取更多锤子</div>
+        </div>
+        <div class="close-icon" @click="closePop"></div>
+      </div>
+      <div class="pop" v-if="isShowPop && isEnd">
+        <div class="wrap end-wrap">
+          <div class="main">
+            <ul class="awards-list" :class="`length-${awardsList.length}`">
+              <li :class="item.awardsType" v-for="(item,index) in awardsList" :key="index">
+                <span>{{item.awardsName}}</span>
+              </li>
+            </ul>
+            <p v-if="myRank<=rankSize">恭喜您排名{{myRank}}，获得以上奖品</p>
+            <p v-if="myRank>rankSize">恭喜您排名{{myRank?myRank:'1000+'}}，<br>{{rankSize}}名以外不能领取奖励</p>
+          </div>
+          <div class="hit-egg-btn" @click="closePop">好的</div>
         </div>
         <div class="close-icon" @click="closePop"></div>
       </div>
@@ -28,6 +43,10 @@ export default {
     }
   },
   props: {
+    isEnd: {
+      type: Boolean,
+      default: false
+    },
     isShowPop: {
       type: Boolean,
       default: false
@@ -39,6 +58,14 @@ export default {
     awardsList: {
       type: Array,
       default: []
+    },
+    myRank: {
+      type: Number,
+      default: 0
+    },
+    rankSize: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
@@ -53,7 +80,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.isShowPop)
   }
 }
 </script>
@@ -90,6 +116,47 @@ export default {
         .main {
           .awards-list {
             min-height: 2.4rem;
+          }
+        }
+      }
+      &.end-wrap {
+        height: 6.6rem;
+        background-image: url("../pages/images/common/end-bg.png");
+        .main {
+          .awards-list {
+            min-height: 2rem;
+            &.length-1 {
+              li.end-empty {
+                max-width: 1.28rem;
+                max-height: 1.66rem;
+                background-color: transparent;
+                background-size: 100% 100%;
+                background-image: url("../pages/images/common/end-empty.png");
+              }
+            }
+            &.length-2 {
+              li {
+                max-width: 1.28rem;
+                max-height: 1.28rem;
+                background-size: 100% 100%;
+                &.jyz {
+                  background-image: url("../pages/images/common/jyz-with-bg.png");
+                }
+                &.jdk {
+                  background-image: url("../pages/images/common/jdk-with-bg1.png");
+                }
+                span {
+                  bottom: 0.08rem;
+                }
+              }
+            }
+          }
+          p {
+            text-align: center;
+            font-size: 0.28rem;
+            font-weight: bold;
+            color: #c85501;
+            min-height: 0.6rem;
           }
         }
       }

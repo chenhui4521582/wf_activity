@@ -66,6 +66,15 @@ export const myAwards = async () => {
   return data
 }
 /**
+ * @description 跑马灯
+ * @return {Object} data
+ */
+
+export const noticeList = async () => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/notice-list')
+  return data
+}
+/**
  * @description 排行榜列表
  * @return {Object} data
  */
@@ -99,5 +108,32 @@ export const userInfo = async () => {
 
 export const showLeaguePacksList = async () => {
   const { data } = await $axios.post('//shop-api.beeplay123.com/shop/api/mall/showLeaguePacksList/20190711')
+  return data
+}
+/**
+ * @description 用户排名
+ * @return {Object} data
+ */
+
+export const userRanking = async () => {
+  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/user-ranking')
+  return data
+}
+/**
+ * @description 获取用户是否需要新手引导
+ * @return {Object} data
+ */
+
+export const getGuidePosition = async () => {
+  const { data } = await $axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/get-guide-position', { version: 6 })
+  return data
+}
+/**
+ * @description 报存用户新手引导
+ * @return {Object} data
+ */
+
+export const setGuidePosition = async () => {
+  const { data } = await $axios.post('//platform-api.beeplay123.com/wap/api/plat/newUser/set-guide-position', { version: 6 })
   return data
 }

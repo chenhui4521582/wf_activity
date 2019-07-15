@@ -1,5 +1,5 @@
 <template>
-  <section class="rule">
+  <section class="rule" :style="{zIndex:isShowPop?2:1}">
     <img src="../pages/images/rule/icon.png" alt="" @click="isShowPop = true">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
@@ -42,10 +42,9 @@ export default {
   top: 1.64rem;
   left: 50%;
   margin-left: -2.46rem;
-  z-index: 1;
   img {
-    width: 0.87rem;
-    height: 0.87rem;
+    width: 0.88rem;
+    height: 0.88rem;
     position: fixed;
     left: 0.14rem;
     top: 2.18rem;

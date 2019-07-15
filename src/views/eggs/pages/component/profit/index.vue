@@ -1,8 +1,10 @@
 <template>
-  <div class="profit-container">
+  <div class="profit-container" :class="{full:isFull}">
     <div class="profit-inner-container">
       <img src="../../images/package/profit/title.png" class="title">
-      <h4 class="p-time">发榜倒计时：{{countTime}}</h4>
+      <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
+      <h4 v-else-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
+      <h4 v-else class="p-time">发榜倒计时：{{endTime}}</h4>
       <div class="profit-tx-container">
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
@@ -10,9 +12,11 @@
               <img :src="item.profilePhoto | filter">
             </div>
             <span class="icon-number"></span>
-            <span class="s-text">第{{item.rank}}名</span>
+            <span class="s-text">{{item.nickName}}</span>
+            <span class="hammer-number">{{item.plantFoodNum}}个</span>
+            <!-- <span class="s-text">第{{item.rank}}名</span> -->
             <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
-            <div class="profit-award"></div>
+            <!-- <div class="profit-award"></div> -->
           </li>
         </ul>
       </div>
@@ -21,21 +25,21 @@
           <ul>
             <li>
               <h4>我的排名</h4>
-              <span>128</span>
+              <span>{{myInfo.myRank}}</span>
             </li>
             <li>
               <h4>累计获得锤子</h4>
-              <span>128个</span>
+              <span>{{myInfo.totalNum}}个</span>
             </li>
             <li>
               <h4>当前奖励</h4>
-              <span>500万金叶+1000京东卡</span>
+              <span>{{myInfo.currentAwards}}</span>
             </li>
           </ul>
         </div>
         <div class="p-items p-items-header">
           <ul class="p-item-title">
-            <li>
+            <li style="border:none">
               <span>排名</span>
               <span>昵称</span>
               <span>累计锤子</span>
@@ -43,9 +47,24 @@
             </li>
           </ul>
         </div>
-        <div class="p-items p-items-content" :class=" !isOpen?'p-its1':'' ">
+        <div class="p-items p-items-content">
           <ul class="p-item-title">
             <li v-for="(item,index) in behindThreeData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span>{{item.nickName || '暂无昵称'}}</span>
+              <span>{{item.plantFoodNum}}个</span>
+              <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
+            </li>
+            <li v-if="isOpen" v-for="(item,index) in otherData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span>{{item.nickName || '暂无昵称'}}</span>
+              <span>{{item.plantFoodNum}}个</span>
+              <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
+            </li>
+            <li v-if="!isOpen">
+              <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
+            </li>
+            <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span>{{item.nickName || '暂无昵称'}}</span>
               <span>{{item.plantFoodNum}}个</span>
@@ -54,13 +73,12 @@
           </ul>
         </div>
       </div>
-      <div class="profit-footer" v-if="isOpen">仅30名及以内有奖励</div>
-      <a href="javascript:" class="btn-check-profit" v-else @click.stop="closeOpenProfit">点击展开完整榜单</a>
+      <div class="profit-footer">仅30名及以内有奖励</div>
     </div>
   </div>
 </template>
 <script type="text/javascript">
-import { rankList, activityInfo } from '../../../utils/api'
+import { rankList, activityInfo, userRanking } from '../../../utils/api'
 export default {
   data () {
     return {
@@ -68,9 +86,18 @@ export default {
       profitData: [],
       topthreeData: [],
       behindThreeData: [],
-      isOpen: false,
-      countTime: '',
-      countdown: 0
+      otherData: [],
+      lastThreeData: [],
+      isOpen: true,
+      countTime: 0,
+      endTime: '',
+      myInfo: {}
+    }
+  },
+  props: {
+    isFull: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -78,30 +105,46 @@ export default {
   mounted () {
     this.getGameProgress()
     this.getActivityInfo()
+    this.getUserRanking()
   },
   methods: {
     closeOpenProfit () {
       this.isOpen = true
     },
-    getGameProgress () {
-      rankList().then((res) => {
-        console.log('res::', res)
-        if (res.code == 200) {
-          this.profitData = res.data
-          this.behindThreeData = this.profitData.slice(3, this.profitData.length - 3)
-          this.topthreeData = this.profitData.slice(0, 3)
+    async getGameProgress () {
+      const { code, data } = await rankList()
+      if (code == 200) {
+        this.profitData = data
+        if (this.profitData.length > 6) {
+          this.lastThreeData = this.profitData.slice(6)
         }
-      })
+        if (this.profitData.length > 9) {
+          this.isOpen = false
+          this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
+          this.otherData = this.profitData.slice(6, this.profitData.length - 3)
+        }
+        this.topthreeData = this.profitData.slice(0, 3)
+        this.behindThreeData = this.profitData.slice(3, 6)
+      }
+
     },
-    getActivityInfo () {
-      activityInfo().then((res) => {
-        if (res.code == 200) {
-          this.countDown(res.data.countdown)
+    async getActivityInfo () {
+      const { code, data } = await activityInfo()
+      if (code == 200) {
+        this.endTime = data.endTime
+        this.countDown(data.countdown)
+      }
+    },
+    async getUserRanking () {
+      const { code, data } = await userRanking()
+      if (code == 200) {
+        this.myInfo = data
+        if (this.isFull) {
+          this.$emit('set-my-info', data)
         }
-      })
+      }
     },
     countDown (item) {
-
       if (!item) return false
       let date = item / 1000
       this.timer = setInterval(() => {
@@ -118,7 +161,11 @@ export default {
         let countHour = hour >= 10 ? hour : '0' + hour
         let countMinute = minute >= 10 ? minute : '0' + minute
         let countSecond = second >= 10 ? second : '0' + second
-        this.countTime = `${countDay}天${countHour}时${countMinute}分${countSecond}秒`
+        if (day >= 2) {
+          this.countTime = 0
+        } else {
+          this.countTime = `${countDay}天${countHour}:${countMinute}:${countSecond}`
+        }
       }, 1000)
     },
   }
