@@ -5,7 +5,7 @@
     <div class="g-package">
       <div class="g-package-container g1">
         <ul>
-          <li v-for="item in leaguePacksListArr" @click="gotopay">
+          <li v-for="item in leaguePacksListArr" @click="gotopay(item)">
             <span class="item-text">{{item.content.split('+')[0]}}<br />+{{item.content.split('+')[1]}}</span>
             <a href="javascript:" class="btn-price">￥{{item.price}}</a>
           </li>
