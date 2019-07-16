@@ -4,7 +4,7 @@
       <img src="../../images/package/profit/title.png" class="title">
       <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
       <h4 v-else-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
-      <h4 v-else class="p-time">发榜倒计时：{{endTime}}</h4>
+      <h4 v-else class="p-time">发榜时间 ：{{endTime}}</h4>
       <div class="profit-tx-container">
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
