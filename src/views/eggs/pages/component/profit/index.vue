@@ -157,7 +157,7 @@ export default {
     },
     async getUserRanking () {
       const { code, data } = await userRanking()
-      if (code == 200) {
+      if (code === 200) {
         this.myInfo = data
         if (this.isFull) {
           this.$emit('set-my-info', data)
