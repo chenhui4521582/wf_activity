@@ -1,7 +1,9 @@
 <template>
   <section class="commonPop" @touchmove.prevent>
-    <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
-    <transition name="scalc">
+    <div class="pop-mask" v-if="isShowPop || haveGif" @touchmove.prevent>
+      <img v-if="haveGif" src="../pages/images/common/open-eggs.gif" alt="">
+    </div>
+    <transition :name="haveGif?'scalcLong':'scalc'">
       <div class="pop" v-if="isShowPop && !isEnd">
         <div class="wrap" :class="{'hammer-wrap':popType===3}">
           <div class="main">
@@ -44,6 +46,10 @@ export default {
   },
   props: {
     isEnd: {
+      type: Boolean,
+      default: false
+    },
+    haveGif: {
       type: Boolean,
       default: false
     },
@@ -98,6 +104,17 @@ export default {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.55);
+    &.have-gif {
+      background: rgba(0, 0, 0, 0.55) no-repeat center center / 100% 5.2rem;
+      animation: bgChange 1s linear;
+    }
+    img {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      transform: translate(-50%, -50%);
+    }
   }
   .pop {
     position: relative;
@@ -276,6 +293,9 @@ export default {
   }
   .scalc-enter-active {
     animation: fadeAnimation 0.3s ease-in-out;
+  }
+  .scalcLong-enter-active {
+    animation: fadeAnimation 1s ease-in-out;
   }
   @keyframes fadeAnimation {
     0% {

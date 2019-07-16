@@ -19,7 +19,7 @@
     <div class="header3">
       <div class="e-items">
         <ul>
-          <li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr" :key="index" @click.stop="clickEgg(item,index)" :style="{left:eggStyle[index][0]+'rem',bottom:eggStyle[index][1]+'rem'}">
+          <li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr" :key="index" @click.stop="clickEgg(index)" :style="{left:eggStyle[index][0]+'rem',bottom:eggStyle[index][1]+'rem'}">
             <small-egg :awards-item="item" :isActived="index === currentIndex || item.awardsLev === currentLev && !item.status"></small-egg>
           </li>
         </ul>
@@ -31,8 +31,8 @@
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
-    <drop-down ref="dropDown" :rules-explain="rulesExplain"></drop-down>
-    <common-pop :pop-type="popType" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getMore"></common-pop>
+    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs"></drop-down>
+    <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
     <new-user-page @set-big-egg="setBigEgg" @get-hammer="getHammer"></new-user-page>
   </div>
 </template>
@@ -57,7 +57,8 @@ export default {
       endTime: '',
       countTime: 0,
       rulesInfo: '',
-      rulesExplain: ''
+      rulesExplain: '',
+      haveGif: false
     }
   },
   components: {
@@ -90,7 +91,16 @@ export default {
   },
   methods: {
     setBigEgg () {
-      this.clickEgg(this.styleItemsArr[this.styleItemsArr.length - 1], this.styleItemsArr.length - 1)
+      this.clickEgg(this.styleItemsArr.length - 1)
+    },
+    showDefaultEggs () {
+      for (let index = 0; index < this.styleItemsArr.length; index++) {
+        if (this.styleItemsArr[index].status === 0) {
+          this.clickEgg(index)
+          this.activedLev = this.styleItemsArr[index].awardsLev
+          return
+        }
+      }
     },
     back () {
       history.go(-1)
@@ -102,19 +112,27 @@ export default {
       const { code, data, message } = await betSingle({ value: this.currentItem.sort })
       if (code === 200) {
         this.awardsList = data
-        this.isShowPop = true
-        this.popType = 0
-        this.$refs.dropDown.init()
-      } else if (code === 102) {
+        this.haveGif = true
+        setTimeout(() => {
+          this.isShowPop = true
+          this.isEggsInfoShow = false
+          this.popType = 0
+          this.$refs.dropDown.init()
+          setTimeout(() => {
+            this.haveGif = false
+          }, 500)
+        }, 1300)
+      } else if (code === 101) {
         this.$toast.show({
           message,
           duration: 3000
         })
-      } else if (code === 101) {
+      } else if (code === 102) {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
         this.isShowPop = true
+        this.isEggsInfoShow = false
         this.popType = 3
       }
     },
@@ -124,36 +142,36 @@ export default {
       const { code, data, message } = await betBatch({ value: this.activedLev })
       if (code === 200) {
         this.awardsList = data
-        this.isShowPop = true
-        this.popType = 1
-        this.$refs.dropDown.init()
-      } else if (code === 102) {
+        this.haveGif = true
+        setTimeout(() => {
+          this.isShowPop = true
+          this.isEggsInfoShow = false
+          this.popType = 1
+          this.$refs.dropDown.init()
+          setTimeout(() => {
+            this.haveGif = false
+          }, 500)
+        }, 1300)
+      } else if (code === 101) {
         this.$toast.show({
           message,
           duration: 3000
         })
-      } else if (code === 101) {
+      } else if (code === 102) {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
         this.isShowPop = true
+        this.isEggsInfoShow = false
         this.popType = 3
       }
     },
     getHammer () {
-      this.isEggsInfoShow = false
+      this.isShowPop = false
       this.$refs.dropDown.handleTab(0)
-      for (let index = 0; index < this.styleItemsArr.length; index++) {
-        if (this.styleItemsArr[index].status === 0) {
-          this.currentLev = 0
-          this.currentIndex = index
-          this.currentItem = this.styleItemsArr[index]
-          this.activedLev = this.styleItemsArr[index].awardsLev
-          return
-        }
-      }
     },
-    clickEgg (item, index) {
+    clickEgg (index) {
+      let item = this.styleItemsArr[index]
       if (item.status) return
       this.currentLev = 0
       this.currentIndex = index
@@ -173,21 +191,15 @@ export default {
       const { code, data } = await betProgress()
       if (code === 200) {
         this.styleItemsArr = data
-        for (let index = 0; index < data.length; index++) {
-          if (data[index].status === 0) {
-            if (!index) {
-              this.$toast.show({
-                message: '新蛋生成',
-                duration: 3000
-              })
-            }
-            this.currentLev = 0
-            this.currentIndex = index
-            this.currentItem = data[index]
-            this.activedLev = data[index].awardsLev
-            return
+        this.showDefaultEggs()
+        this.$nextTick(() => {
+          if (!this.currentIndex) {
+            this.$toast.show({
+              message: '新蛋生成',
+              duration: 3000
+            })
           }
-        }
+        })
       }
     },
     async getUserIncrement () {
@@ -199,6 +211,7 @@ export default {
         }]
         this.popType = 2
         this.isShowPop = true
+        this.isEggsInfoShow = false
       }
     },
     async closePop () {
@@ -212,9 +225,6 @@ export default {
         return
       }
       await this.goHit()
-    },
-    getMore () {
-      this.closePop()
     },
     countDown (item) {
       if (!item) return false
@@ -241,10 +251,10 @@ export default {
       }, 1000)
     }
   },
-  mounted () {
+  async mounted () {
+    await this.getBetAwards()
     this.getBetProgress()
     this.getUserIncrement()
-    this.getBetAwards()
   }
 }
 </script>

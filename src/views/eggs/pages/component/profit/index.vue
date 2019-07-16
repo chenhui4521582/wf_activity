@@ -1,6 +1,6 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
-    <div class="profit-inner-container">
+    <div v-if="!isLoading" class="profit-inner-container">
       <img src="../../images/package/profit/title.png" class="title">
       <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
       <h4 v-else-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
@@ -75,6 +75,7 @@
       </div>
       <div class="profit-footer">仅30名及以内有奖励</div>
     </div>
+    <loading v-if="isLoading"></loading>
   </div>
 </template>
 <script type="text/javascript">
@@ -91,7 +92,8 @@ export default {
       isOpen: true,
       countTime: 0,
       endTime: '',
-      myInfo: {}
+      myInfo: {},
+      isLoading: false
     }
   },
   props: {
@@ -101,9 +103,10 @@ export default {
     }
   },
   components: {
+    loading: () => import('../../../../../components/common/loading.vue')
   },
   mounted () {
-    this.getGameProgress()
+    this.getRankList()
     this.getActivityInfo()
     this.getUserRanking()
   },
@@ -111,7 +114,8 @@ export default {
     closeOpenProfit () {
       this.isOpen = true
     },
-    async getGameProgress () {
+    async getRankList () {
+      this.isLoading = true
       const { code, data } = await rankList()
       if (code == 200) {
         this.profitData = data
@@ -125,8 +129,8 @@ export default {
         }
         this.topthreeData = this.profitData.slice(0, 3)
         this.behindThreeData = this.profitData.slice(3, 6)
+        this.isLoading = false
       }
-
     },
     async getActivityInfo () {
       const { code, data } = await activityInfo()
@@ -167,7 +171,7 @@ export default {
           this.countTime = `${countDay}天${countHour}:${countMinute}:${countSecond}`
         }
       }, 1000)
-    },
+    }
   }
 }
 </script>

@@ -33,13 +33,12 @@
 </template>
 
 <script>
-import { activityGuide } from "../utils/api";
+import { activityGuide } from '../utils/api'
 export default {
   name: 'newUserPage',
   data () {
     return {
       isShow: false,
-      isAnimation: false,
       isNext: false
     }
   },
@@ -49,13 +48,10 @@ export default {
       if (code === 200 && data) {
         this.isShow = data
         this.$emit('set-big-egg')
-        this.$nextTick(function () {
-          this.isAnimation = data
-        })
       }
     },
     getHammer () {
-      this.isShow = false;
+      this.isShow = false
       this.$emit('get-hammer')
     }
 
@@ -125,6 +121,7 @@ export default {
       width: 1.1rem;
       top: 4.5rem;
       left: 4rem;
+      animation: tranRotateZ 1s linear infinite;
     }
   }
   .step2 {
@@ -223,6 +220,18 @@ export default {
       width: 1.1rem;
       bottom: 4.3rem;
       left: 4.8rem;
+      animation: tranRotateZ 1s linear infinite;
+    }
+  }
+  @keyframes tranRotateZ {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    50% {
+      transform: rotateZ(30deg);
+    }
+    100% {
+      transform: rotateZ(0deg);
     }
   }
 }

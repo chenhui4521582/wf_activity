@@ -48,7 +48,7 @@ export default {
       curIndex: 0,
       isDropDown: false,
       remanentNum: 0,
-      totalNum: 0,
+      totalNum: 0
     }
   },
   props: {
@@ -79,6 +79,7 @@ export default {
     close () {
       this.isDropDown = false
       this.init()
+      this.$emit('show-eggs-info')
     }
   }
 }
