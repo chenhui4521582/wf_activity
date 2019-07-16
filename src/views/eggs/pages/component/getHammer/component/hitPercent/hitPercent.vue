@@ -44,40 +44,37 @@ export default {
     this.getGameProgress()
   },
   computed: {
-    envelopsItem () {
+    envelopsItem() {
       if (!this.hbItems) {
         return []
       }
-
       // 获取最大值
       let maxItem = this.hbItems && this.hbItems.length && this.hbItems.sort((a, b) => {
         return a.amount - b.amount
       })[this.hbItems.length - 1]
-
       // 删除数组最后一位
       const data = this.hbItems.slice()
       data.pop()
-
       let nArr = data.filter((item) => {
-        return item.status != 2
+        return item.status != 1
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let tArr = data.filter((item) => {
-        return item.status == 2
+        return item.status == 1
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let result = []
-      if (nArr.length > 4) {
-        result = nArr.splice(0, 4)
+      if (nArr.length >= 4) {
+        if(tArr.length){
+          result = [tArr[tArr.length-1],...nArr.splice(0, 3)]
+        }else{
+          result = nArr.splice(0, 4)
+        }
         // result.push(nArr.pop())
         // 个数大于5个的时候加个dot
-        result.splice(4, 0, { dot: true })
-        result.push(maxItem)
-        return result
-      } else if (nArr.length == 4) {
-        result = nArr.splice(0, 4)
+        result.splice(4, 0, {dot: true})
         result.push(maxItem)
         return result
       } else {
