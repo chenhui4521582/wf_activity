@@ -145,15 +145,15 @@
           return a.amount - b.amount
         })
         let result = []
-        if (nArr.length > 4) {
-          result = nArr.splice(0, 4)
+        if (nArr.length >= 4) {
+          if(tArr.length){
+            result = [tArr[tArr.length-1],...nArr.splice(0, 3)]
+          }else{
+            result = nArr.splice(0, 4)
+          }
           // result.push(nArr.pop())
           // 个数大于5个的时候加个dot
           result.splice(4, 0, {dot: true})
-          result.push(maxItem)
-          return result
-        } else if (nArr.length == 4) {
-          result = nArr.splice(0, 4)
           result.push(maxItem)
           return result
         } else {
@@ -243,7 +243,7 @@
         GLOBALS.marchSetsPoint('A_H5PT0075001485')
         this.type = 1;
         this.awardsname = `<p>1、消耗锤子可砸开彩蛋，获取奖励。砸完当前所有蛋，将会生成新蛋供您砸</p>
-<p>2、购买活动内礼包可获得锤子，重复购买可重复获取；</p><p>3、在以下游戏中，活动期间累计支持金叶子到一定值可获得锤子<p>
+<p>2、购买活动内礼包可获得锤子，重复购买可重复获取</p><p>3、在以下游戏中，活动期间累计支持金叶子到一定值可获得锤子:<p>
 <p>${this.actInfoData.rulesInfo}<p><p>4、活动结束后，将按累计获得的锤子数（不管是否被消耗）排名，前30名有奖励<p>`
         this.showAwardspop = true;
       },
@@ -516,7 +516,7 @@
           font-size: .2rem;
           font-weight: 400;
           color: rgba(192, 112, 2, 1);
-          line-height: .3rem;
+          line-height: .25rem;
           .dot {
             display: inline-block;
             width: .12rem;
@@ -697,17 +697,17 @@
         }
         .games_container {
           margin-top: .1rem;
-          height: 3.46rem;
+          height: 3.3rem;
           background: rgba(255, 250, 241, 1);
           box-shadow: 0 .05rem .09rem 0 rgba(79, 33, 26, 0.13);
           border-radius: .15rem;
           position: relative;
           .content {
             position: absolute;
-            top: .21rem;
+            top: .15rem;
             bottom: .77rem;
-            left: .3rem;
-            right: .3rem;
+            left: .2rem;
+            right: .2rem;
             background: #fff;
             display: flex;
             justify-content: space-between;
