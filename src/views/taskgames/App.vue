@@ -306,7 +306,7 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -356,6 +356,7 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
+      iframe.style['z-index'] = 5
       iframe.src = 'https://wap.beeplay123.com/ads/index.html'
       parent.document.body.appendChild(iframe)
     },
@@ -581,7 +582,14 @@ export default {
           try {
             this.initParentAd()
           } catch (error) {
-            this.receive(item, type, index)
+            if (this.selectItem.item.action === 71) {
+              this.$toast.show({
+                message: '广告填充中，请稍后再试',
+                duration: 2000
+              })
+            } else {
+              this.receive(item, type, index)
+            }
           }
           return
         }
