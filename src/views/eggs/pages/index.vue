@@ -6,7 +6,7 @@
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
       <h4 v-if="countTime" class="e-time">剩余时间：{{countTime}}</h4>
-      <h4 v-else class="e-time">截止时间：{{endTime}}</h4>
+      <h4 v-if="countTime===0" class="e-time">截止时间：{{endTime}}</h4>
     </div>
     <div class="header2">
       <div class="eggs-info" :class="{show:isEggsInfoShow}">
@@ -56,7 +56,7 @@ export default {
       isShowPop: false,
       isNewUserShow: false,
       endTime: '',
-      countTime: 0,
+      countTime: null,
       rulesInfo: '',
       rulesExplain: '',
       haveGif: false
@@ -175,6 +175,7 @@ export default {
       }
     },
     getHammer () {
+      this.isShowPop = false
       this.isNewUserShow = false
       this.isEggsInfoShow = false
       this.$refs.dropDown.handleTab(0)
