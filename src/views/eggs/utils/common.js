@@ -1,3 +1,4 @@
+import '../../common/js/window'
 /**
  * @description 获取地址栏问号后面的参数值
  * @param {*} ename
@@ -17,19 +18,7 @@ export const getUrlParam = (ename) => {
   let params = Request[ename] ? Request[ename].split('#')[0] : ''
   return params
 }
-/**
- * @description 埋点
- * @param {*} ename
- */
-// 埋点方法
-export const marchSetsPoint = async (event, params = {}) => {
-  await GLOBALS.marchSetsPoint(event, {
-    entrance: getUrlParam('from'),
-    awards_name: params.awards_name ? params.awards_name : '',
-    task_id: params.task_id ? params.task_id : '',
-    residual_phone: params.residual_phone ? params.residual_phone : ''
-  })
-}
+
 /**
  * 倒计时每帧计算
  * @param {num} startTime

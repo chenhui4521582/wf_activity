@@ -46,15 +46,20 @@ export default {
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
         let minute = Math.floor(parseInt(date / 60) % 60)
         let second = Math.floor(date % 60)
-        let countDay = day >= 10 ? day : '0' + day
+        // let countDay = day >= 10 ? day : '0' + day
         let countHour = hour >= 10 ? hour : '0' + hour
         let countMinute = minute >= 10 ? minute : '0' + minute
         let countSecond = second >= 10 ? second : '0' + second
-        this.countTime = `${countDay}天${countHour}:${countMinute}:${countSecond}`
+        if (day > 0) {
+          this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
+        } else {
+          this.countTime = `${countHour}:${countMinute}:${countSecond}`
+        }
       }, 1000)
     }
   },
   mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0075001452') // H5平台-砸金蛋-活动未开始-页面
   }
 }
 </script>

@@ -19,7 +19,7 @@
     <div class="header3">
       <div class="e-items">
         <ul>
-          <li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr" :key="index" @click.stop="clickEgg(index)" :style="{left:eggStyle[index][0]+'rem',bottom:eggStyle[index][1]+'rem'}">
+          <li :class="getLiClass(index)" v-for="(item,index) in styleItemsArr" :key="index" @click.stop="clickEgg(index,true)" :style="{left:eggStyle[index][0]+'rem',bottom:eggStyle[index][1]+'rem'}">
             <small-egg :awards-item="item" :isActived="index === currentIndex || item.awardsLev === currentLev && !item.status"></small-egg>
           </li>
         </ul>
@@ -31,13 +31,13 @@
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
-    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs"></drop-down>
+    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs(false)"></drop-down>
     <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
-    <new-user-page @set-big-egg="setBigEgg" @get-hammer="getHammer"></new-user-page>
+    <new-user-page :is-show="isNewUserShow" @get-hammer="getHammer"></new-user-page>
   </div>
 </template>
 <script type="text/javascript">
-import { betProgress, betAwards, betSingle, betBatch, userIncrement, activityInfo } from '../utils/api'
+import { betProgress, betAwards, betSingle, betBatch, userIncrement, activityInfo, activityGuide } from '../utils/api'
 export default {
   name: 'index',
   data () {
@@ -54,6 +54,7 @@ export default {
       awardsList: [],
       popType: 0,
       isShowPop: false,
+      isNewUserShow: false,
       endTime: '',
       countTime: 0,
       rulesInfo: '',
@@ -93,7 +94,7 @@ export default {
     setBigEgg () {
       this.clickEgg(this.styleItemsArr.length - 1)
     },
-    showDefaultEggs () {
+    showDefaultEggs (isToast) {
       for (let index = 0; index < this.styleItemsArr.length; index++) {
         if (this.styleItemsArr[index].status === 0) {
           this.clickEgg(index)
@@ -103,17 +104,20 @@ export default {
       }
     },
     back () {
+      GLOBALS.marchSetsPoint('A_H5PT0075001458')   // H5平台-砸金蛋-点击返回
       history.go(-1)
     },
     getLiClass (index) {
       return `e-item${index + 1}`
     },
     async goHit () {
+      GLOBALS.marchSetsPoint('A_H5PT0075001462')   // H5平台-砸金蛋-点击消耗锤子砸彩蛋
       const { code, data, message } = await betSingle({ value: this.currentItem.sort })
       if (code === 200) {
         this.awardsList = data
         this.haveGif = true
         setTimeout(() => {
+          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
           this.isShowPop = true
           this.isEggsInfoShow = false
           this.popType = 0
@@ -131,12 +135,14 @@ export default {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
+        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
         this.isShowPop = true
         this.isEggsInfoShow = false
         this.popType = 3
       }
     },
     async goHitAll () {
+      GLOBALS.marchSetsPoint('A_H5PT0075001463')   // H5平台-砸金蛋-点击同色全砸
       this.currentIndex = null
       this.currentLev = this.activedLev
       const { code, data, message } = await betBatch({ value: this.activedLev })
@@ -144,6 +150,7 @@ export default {
         this.awardsList = data
         this.haveGif = true
         setTimeout(() => {
+          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
           this.isShowPop = true
           this.isEggsInfoShow = false
           this.popType = 1
@@ -161,18 +168,23 @@ export default {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
+        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
         this.isShowPop = true
         this.isEggsInfoShow = false
         this.popType = 3
       }
     },
     getHammer () {
-      this.isShowPop = false
+      this.isNewUserShow = false
+      this.isEggsInfoShow = false
       this.$refs.dropDown.handleTab(0)
     },
-    clickEgg (index) {
+    clickEgg (index, isClick) {
       let item = this.styleItemsArr[index]
       if (item.status) return
+      if (isClick) {
+        GLOBALS.marchSetsPoint('A_H5PT0075001460')   // H5平台-砸金蛋-点击任意蛋
+      }
       this.currentLev = 0
       this.currentIndex = index
       this.currentItem = item
@@ -191,16 +203,22 @@ export default {
       const { code, data } = await betProgress()
       if (code === 200) {
         this.styleItemsArr = data
-        this.showDefaultEggs()
-        this.$nextTick(() => {
-          if (!this.currentIndex) {
-            this.$toast.show({
-              message: '新蛋生成',
-              duration: 3000
-            })
-          }
+        this.showDefaultEggs(true)
+      }
+    },
+    async getActivityGuide () {
+      const { code, data } = await activityGuide()
+      if (code === 200 && data) {
+        this.isNewUserShow = true
+        this.setBigEgg()
+      }
+      if (this.currentIndex === 0 && !data) {
+        this.$toast.show({
+          message: '新蛋生成',
+          duration: 3000
         })
       }
+      this.getUserIncrement()
     },
     async getUserIncrement () {
       const { code, data } = await userIncrement()
@@ -210,15 +228,18 @@ export default {
           awardsName: '新增' + data + '个锤子'
         }]
         this.popType = 2
-        this.isShowPop = true
-        this.isEggsInfoShow = false
+        if (!this.isNewUserShow) {
+          GLOBALS.marchSetsPoint('A_H5PT0075001454')   // H5平台-砸金蛋-展现恭喜新增锤子弹窗
+          this.isShowPop = true
+          this.isEggsInfoShow = false
+        }
       }
     },
     async closePop () {
       this.isShowPop = false
       await this.getBetProgress()
     },
-    async keepHit (type) {
+    async keepHit () {
       await this.closePop()
       if (this.popType === 1) {
         await this.goHitAll()
@@ -239,22 +260,26 @@ export default {
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
         let minute = Math.floor(parseInt(date / 60) % 60)
         let second = Math.floor(date % 60)
+        // let countDay = day >= 10 ? day : '0' + day
         let countDay = day >= 10 ? day : '0' + day
         let countHour = hour >= 10 ? hour : '0' + hour
         let countMinute = minute >= 10 ? minute : '0' + minute
         let countSecond = second >= 10 ? second : '0' + second
         if (day >= 2) {
           this.countTime = 0
+        } else if (day > 0) {
+          this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
         } else {
-          this.countTime = `${countDay}天${countHour}:${countMinute}:${countSecond}`
+          this.countTime = `${countHour}:${countMinute}:${countSecond}`
         }
       }, 1000)
     }
   },
   async mounted () {
     await this.getBetAwards()
-    this.getBetProgress()
-    this.getUserIncrement()
+    await this.getBetProgress()
+    await this.getActivityGuide()
+    GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
   }
 }
 </script>

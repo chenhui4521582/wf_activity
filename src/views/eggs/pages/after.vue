@@ -1,8 +1,8 @@
 <template>
   <section class="after">
     <img src="./images/index/back.png" class="e-back" @click="back">
-    <rule :rule-main="rulesInfo"></rule>
-    <profit :is-full="true" @set-my-info="setMyInfo"></profit>
+    <rule :rule-main="rulesInfo" :from="1"></rule>
+    <profit :is-full="true" @set-my-info="setMyInfo" :from="1"></profit>
     <common-pop :is-show-pop="isShowPop" :my-rank="myInfo.myRank" :rank-size="myInfo.rankSize" :is-end="true" :awards-list="awardsList" @close-pop="closePop"></common-pop>
   </section>
 </template>
@@ -43,6 +43,7 @@ export default {
   methods: {
     back () {
       history.go(-1)
+      GLOBALS.marchSetsPoint('A_H5PT0075001481')   // H5平台-砸金蛋-活动已结束-点击返回
     },
     async closePop () {
       this.isShowPop = false
@@ -64,6 +65,9 @@ export default {
         }]
       }
     }
+  },
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0075001480')   // H5平台-砸金蛋-活动已结束-页面
   }
 }
 </script>

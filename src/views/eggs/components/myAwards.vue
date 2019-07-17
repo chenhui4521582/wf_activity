@@ -1,7 +1,7 @@
 <template>
   <section class="myAwards" :style="{zIndex:isShowPop?2:1}">
     <img src="../pages/images/myAwards/icon.png" alt="" @click="showPop">
-    <div class="pop-mask" v-if="isShowPop"></div>
+    <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">

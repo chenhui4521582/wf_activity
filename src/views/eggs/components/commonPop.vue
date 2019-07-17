@@ -13,7 +13,7 @@
               </li>
             </ul>
           </div>
-          <div class="hit-egg-btn" @click="keepHit" v-if="popType<3">{{popType>1?'立即':'继续'}}砸彩蛋</div>
+          <div class="hit-egg-btn" @click="keepHit()" v-if="popType<3">{{popType>1?'立即':'继续'}}砸彩蛋</div>
           <div class="get-cz-btn" @click="getMore">获取更多锤子</div>
         </div>
         <div class="close-icon" @click="closePop"></div>
@@ -76,12 +76,45 @@ export default {
   },
   methods: {
     closePop () {
+      switch (this.popType) {
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0075001457')   // H5平台-砸金蛋-恭喜新增锤子弹窗-点击关闭
+          break;
+        case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0075001479')   // H5平台-砸金蛋-砸蛋失败弹窗-点击关闭
+          break;
+
+        default:
+          GLOBALS.marchSetsPoint('A_H5PT0075001476')   // H5平台-砸金蛋-砸蛋成功弹窗-点击关闭
+          break;
+      }
       this.$emit('close-pop')
     },
     keepHit () {
+      switch (this.popType) {
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0075001455')   // H5平台-砸金蛋-恭喜新增锤子弹窗-点击立即砸彩蛋
+          break;
+
+        default:
+          GLOBALS.marchSetsPoint('A_H5PT0075001474')   // H5平台-砸金蛋-砸蛋成功弹窗-点击继续砸彩蛋
+          break;
+      }
       this.$emit('keep-hit')
     },
     getMore () {
+      switch (this.popType) {
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0075001456')   // H5平台-砸金蛋-恭喜新增锤子弹窗-点击获取更多锤子
+          break;
+        case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0075001478')   // H5平台-砸金蛋-砸蛋失败弹窗-点击获取更多锤子
+          break;
+
+        default:
+          GLOBALS.marchSetsPoint('A_H5PT0075001475')   // H5平台-砸金蛋-砸蛋成功弹窗-点击获取更多锤子
+          break;
+      }
       this.$emit('get-more')
     }
   },
@@ -163,7 +196,11 @@ export default {
                   background-image: url("../pages/images/common/jdk-with-bg1.png");
                 }
                 span {
-                  bottom: 0.08rem;
+                  bottom: 0;
+                  display: block;
+                  text-align: center;
+                  height: 0.34rem;
+                  line-height: 0.36rem;
                 }
               }
             }

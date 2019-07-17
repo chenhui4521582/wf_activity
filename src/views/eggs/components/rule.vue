@@ -1,6 +1,6 @@
 <template>
   <section class="rule" :style="{zIndex:isShowPop?2:1}">
-    <img src="../pages/images/rule/icon.png" alt="" @click="isShowPop = true">
+    <img src="../pages/images/rule/icon.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
@@ -21,19 +21,33 @@
 
 <script>
 export default {
-  name: 'rule',
+  name: "rule",
   data () {
     return {
-      isShowPop: false,
-    }
+      isShowPop: false
+    };
   },
   props: {
-    ruleMain: {// 图标颜色
+    ruleMain: {
       type: String,
-      default: ''
+      default: ""
+    },
+    from: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    showPop () {
+      this.isShowPop = true
+      if (this.from) {
+        GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
+      }
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <section class="newUserPage" v-if="isShow" @click.stop="false">
+  <section class="newUserPage" v-if="isShow" @click.stop="">
     <section class="step1" :class="{first:!isNext}">
       <div class="circle"></div>
     </section>
@@ -38,26 +38,23 @@ export default {
   name: 'newUserPage',
   data () {
     return {
-      isShow: false,
       isNext: false
     }
   },
+  props: {
+    isShow: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   methods: {
-    async init () {
-      const { code, data } = await activityGuide()
-      if (code === 200 && data) {
-        this.isShow = data
-        this.$emit('set-big-egg')
-      }
-    },
     getHammer () {
-      this.isShow = false
       this.$emit('get-hammer')
     }
 
   },
   mounted () {
-    this.init()
   },
   destroyed () {
 

@@ -11,7 +11,7 @@
           <div class="hb-line"></div>
           <div class="envelopes">{{item.awards}}个</div>
           <div class="btn btn-complete" v-if="item.status == 1">完成</div>
-          <div class="btn btn-default" v-else @click="gotocomplete">去完成</div>
+          <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
         </li>
         <li class="hb-dot-box" v-else>
           <span class="hb-dot hb-dot1">
@@ -44,7 +44,7 @@ export default {
     this.getGameProgress()
   },
   computed: {
-    envelopsItem() {
+    envelopsItem () {
       if (!this.hbItems) {
         return []
       }
@@ -67,14 +67,14 @@ export default {
       })
       let result = []
       if (nArr.length >= 4) {
-        if(tArr.length){
-          result = [tArr[tArr.length-1],...nArr.splice(0, 3)]
-        }else{
+        if (tArr.length) {
+          result = [tArr[tArr.length - 1], ...nArr.splice(0, 3)]
+        } else {
           result = nArr.splice(0, 4)
         }
         // result.push(nArr.pop())
         // 个数大于5个的时候加个dot
-        result.splice(4, 0, {dot: true})
+        result.splice(4, 0, { dot: true })
         result.push(maxItem)
         return result
       } else {
@@ -140,7 +140,8 @@ export default {
         })
       }
     },
-    gotocomplete () {
+    gotocomplete (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0075001468')   // H5平台-砸金蛋-获取锤子大浮层-点击任意去完成
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }

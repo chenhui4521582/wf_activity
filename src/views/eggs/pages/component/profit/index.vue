@@ -3,8 +3,8 @@
     <div v-if="!isLoading" class="profit-inner-container">
       <img src="../../images/package/profit/title.png" class="title">
       <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
-      <h4 v-else-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
-      <h4 v-else class="p-time">发榜时间 ：{{endTime}}</h4>
+      <h4 v-if="!isFull&&countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
+      <h4 v-if="!isFull&&countTime===0" class="p-time">发榜时间 ：{{endTime}}</h4>
       <div class="profit-tx-container">
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
@@ -50,7 +50,7 @@
         <div class="p-items p-items-content">
           <ul class="p-item-title">
             <li v-for="(item,index) in behindThreeData">
-              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span>{{item.nickName || '暂无昵称'}}</span>
               <span>{{item.plantFoodNum}}个</span>
               <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
@@ -107,7 +107,7 @@ export default {
       otherData: [],
       lastThreeData: [],
       isOpen: true,
-      countTime: 0,
+      countTime: null,
       endTime: '',
       myInfo: {},
       isLoading: false
@@ -117,6 +117,10 @@ export default {
     isFull: {
       type: Boolean,
       default: false
+    },
+    from: {
+      type: Number,
+      default: 0
     }
   },
   components: {
@@ -129,6 +133,11 @@ export default {
   methods: {
     closeOpenProfit () {
       this.isOpen = true
+      if (this.from) {
+        GLOBALS.marchSetsPoint('A_H5PT0075001483')   // H5平台-砸金蛋-活动已结束-点击展开完整榜单
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0075001471')   // H5平台-砸金蛋-有奖排行榜大浮层-点击展开完整榜单
+      }
     },
     async getRankList () {
       this.isLoading = true
@@ -177,14 +186,16 @@ export default {
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
         let minute = Math.floor(parseInt(date / 60) % 60)
         let second = Math.floor(date % 60)
-        let countDay = day >= 10 ? day : '0' + day
+        // let countDay = day >= 10 ? day : '0' + day
         let countHour = hour >= 10 ? hour : '0' + hour
         let countMinute = minute >= 10 ? minute : '0' + minute
         let countSecond = second >= 10 ? second : '0' + second
         if (day >= 2) {
           this.countTime = 0
+        } else if (day > 0) {
+          this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
         } else {
-          this.countTime = `${countDay}天${countHour}:${countMinute}:${countSecond}`
+          this.countTime = `${countHour}:${countMinute}:${countSecond}`
         }
       }, 1000)
     }
@@ -194,33 +205,33 @@ export default {
 <style lang="less" scoped>
 @import "./index.less";
 .loading-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 15;
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // height: 100%;
+  // background-color: rgba(0, 0, 0, 0);
+  // z-index: 15;
 }
 .container {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 10%;
 }
 .spinner {
-  height: 40%;
-  width: 40%;
+  height: 100%;
+  width: 100%;
   position: relative;
   margin: 0 auto;
 }
 .spinner div {
   width: 10%;
   height: 26%;
-  background-color: white;
+  background-color: #e2812a;
   position: absolute;
   left: 44.5%;
   top: 37%;
