@@ -87,7 +87,7 @@ export default {
       this.currentList = data.filter(item => {
         if (this.phyAwardsId == '232') {
           return item.phyAwardsId === 232
-        }else{
+        } else {
           return item.phyAwardsId !== 232
         }
       })
@@ -118,7 +118,7 @@ export default {
         return true
       }
     },
-    residueNumber() {
+    residueNumber () {
       return this.currentItem.currentUserTodayAvailableQuota === null ? this.currentItem.allUsersTodayAvailableQuota : this.currentItem.currentUserTodayAvailableQuota
     }
   },
@@ -369,6 +369,10 @@ export default {
     font-size: 0.22rem;
     width: 100%;
     overflow: hidden;
+    img {
+      width: 100% !important;
+      height: auto !important;
+    }
   }
 }
 .button-warp {
