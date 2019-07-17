@@ -45,13 +45,16 @@
         <div class="details" id="product_description" v-html="currentItem.description"></div>
       </div>
     </div>
-    <div class="button-warp" @click="goExchange">
+    <div class="button-warp" @click="goExchange(false)">
       <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
-        <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取</span>
+        <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取
+          <i v-if="accountBalance>=currentItem.purchasePrice*specNumber"><br>话费券余额：{{accountBalance}}</i>
+        </span>
         <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
       </div>
     </div>
     <!-- 提升弹框 -->
+    <dialog-gain-mask v-model="dialogGainShow" :status-code="200" @on-checkprize="checkprize"  @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentList"/>
     <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
   </div>
 </template>
@@ -60,10 +63,11 @@ import baseHeader from '../components/baseHeader/baseHeader'
 import field from '../components/field/field'
 import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
+import dialogGainMask from '../components/dialog/dialogGain'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
   name: 'detailsPage',
-  components: { baseHeader, field, dialogMask },
+  components: { baseHeader, field, dialogMask,dialogGainMask },
   data () {
     return {
       selectedIndex: 0,
@@ -77,7 +81,8 @@ export default {
       goodsName: this.$route.query['goodsName'],
       showOut: this.$route.query['showOut'],
       accountBalance: parseFloat(this.$route.query['accountBalance']),
-      currentList: []
+      currentList: [],
+      dialogGainShow:false
     }
   },
   async created () {
@@ -91,6 +96,7 @@ export default {
           return item.phyAwardsId !== 232
         }
       })
+      console.log('currentList',this.currentList)
     }
   },
   computed: {
@@ -150,10 +156,14 @@ export default {
       })
     },
     // 兑换话费
-    async goExchange () {
+    async goExchange (isFromDialogGain=false) {
       const { id, purchasePrice, name, phyAwardsId } = this.currentItem
       // 库存不足
       if (!this.allUsersTodayAvailableQuota) { return }
+      if((!isFromDialogGain)&&this.accountBalance>=purchasePrice*this.specNumber){
+        this.dialogGainShow=true
+        return
+      }
       // 防止用户疯狂点击请求接口
       if (this.requestType) { return }
       this.requestType = true
@@ -169,6 +179,7 @@ export default {
 
 
       const { data, code, message } = await placeOrder(id, this.specNumber)
+
       if (code === 200) {
         // 成功后执行 减去库存
         this.updateCurrentList(id, this.specNumber)
@@ -381,10 +392,18 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
-    line-height: 0.9rem;
-    text-align: center;
-    font-size: 0.28rem;
+    font-size: 0.3rem;
     color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    i{
+      font-style: normal;
+      font-size:.2rem;
+      font-weight:400;
+      color:rgba(255,189,137,1);
+    }
   }
   .save-button-on {
     background-color: #808080;
