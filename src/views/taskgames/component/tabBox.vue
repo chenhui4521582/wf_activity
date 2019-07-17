@@ -276,6 +276,9 @@ export default {
       this.showegg=res.data.code==200&&res.data.data||null
       if(this.showegg&&this.showegg.show){
         GLOBALS.marchSetsPoint('A_H5PT0061001501')
+        if(this.showegg.popup){
+          this.$emit('kickegg',this.showegg.url)
+        }
       }
     })
   }
