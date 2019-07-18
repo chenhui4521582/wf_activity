@@ -125,7 +125,7 @@ export default {
           setTimeout(() => {
             this.haveGif = false
           }, 500)
-        }, 1300)
+        }, 1500)
       } else if (code === 101) {
         this.$toast.show({
           message,
@@ -158,7 +158,7 @@ export default {
           setTimeout(() => {
             this.haveGif = false
           }, 500)
-        }, 1300)
+        }, 1500)
       } else if (code === 101) {
         this.$toast.show({
           message,

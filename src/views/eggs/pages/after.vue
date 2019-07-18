@@ -54,10 +54,10 @@ export default {
       if (this.myInfo && this.myInfo.myRank <= this.myInfo.rankSize) {
         this.awardsList = [{
           awardsType: 'jyz',
-          awardsName: this.myInfo.jyzAmount >= 10000 ? this.myInfo.jyzAmount / 10000 + '万' : this.myInfo.jyzAmount
+          awardsName: this.myInfo.jyzAmount ? (this.myInfo.jyzAmount >= 10000 ? this.myInfo.jyzAmount / 10000 + '万' : this.myInfo.jyzAmount) : 0
         }, {
           awardsType: 'jdk',
-          awardsName: this.myInfo.jdkAmount >= 10000 ? this.myInfo.jdkAmount / 10000 + '万元' : this.myInfo.jdkAmount + '元'
+          awardsName: this.myInfo.jdkAmount ? (this.myInfo.jdkAmount >= 10000 ? this.myInfo.jdkAmount / 10000 + '万元' : this.myInfo.jdkAmount + '元') : 0 + '元'
         }]
       } else {
         this.awardsList = [{

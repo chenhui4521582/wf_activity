@@ -1,7 +1,7 @@
 <template>
   <section class="commonPop" @touchmove.prevent>
     <div class="pop-mask" v-if="isShowPop || haveGif" @touchmove.prevent>
-      <img v-if="haveGif" src="../pages/images/common/open-eggs.gif" alt="">
+      <img id="haveGif" v-if="haveGif" src="" alt="">
     </div>
     <transition :name="haveGif?'scalcLong':'scalc'">
       <div class="pop" v-if="isShowPop && !isEnd">
@@ -26,8 +26,8 @@
                 <span>{{item.awardsName}}</span>
               </li>
             </ul>
-            <p v-if="myRank<=rankSize">恭喜您排名{{myRank}}，获得以上奖品</p>
-            <p v-if="myRank>rankSize">恭喜您排名{{myRank?myRank:'1000+'}}，<br>{{rankSize}}名以外不能领取奖励</p>
+            <p v-if="myRank&&myRank<=rankSize">恭喜您排名{{myRank}}，获得以上奖品</p>
+            <p v-if="myRank>rankSize||!myRank">恭喜您排名{{myRank?myRank:'1000+'}}，<br>{{rankSize}}名以外不能领取奖励</p>
           </div>
           <div class="hit-egg-btn" @click="closePop">好的</div>
         </div>
@@ -42,6 +42,7 @@ export default {
   name: 'commonPop',
   data () {
     return {
+      imgUrl: ''
     }
   },
   props: {
@@ -119,6 +120,7 @@ export default {
     }
   },
   mounted () {
+    document.querySelector("#haveGif").src = `../pages/images/common/open-eggs.gif?${Date.now()}`
   }
 }
 </script>
@@ -317,7 +319,7 @@ export default {
         background: #e55600;
       }
       .get-cz-btn {
-        background: #31a408;
+        background: #f27e11;
       }
     }
     .close-icon {
