@@ -2,7 +2,7 @@
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
     <img src="./images/index/back.png" class="e-back" @click="back">
     <rule :rule-main="rulesInfo"></rule>
-    <message></message>
+    <message ref="message"></message>
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
       <h4 v-if="countTime" class="e-time">剩余时间：{{countTime}}</h4>
@@ -122,6 +122,7 @@ export default {
           this.isEggsInfoShow = false
           this.popType = 0
           this.$refs.dropDown.init()
+          this.$refs.message.init()
           setTimeout(() => {
             this.haveGif = false
           }, 500)
@@ -155,6 +156,7 @@ export default {
           this.isEggsInfoShow = false
           this.popType = 1
           this.$refs.dropDown.init()
+          this.$refs.message.init()
           setTimeout(() => {
             this.haveGif = false
           }, 500)

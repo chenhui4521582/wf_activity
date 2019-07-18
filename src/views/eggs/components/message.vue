@@ -40,12 +40,15 @@ export default {
         this.lamp = data
       }
     },
+    init () {
+      this.getNoticeList()
+      // 导航滚动
+      clearInterval(this.ylbScroll)
+      this.ylbScroll = setInterval(this.scroll, 2500)
+    }
   },
   mounted () {
-    this.getNoticeList()
-    // 导航滚动
-    clearInterval(this.ylbScroll)
-    this.ylbScroll = setInterval(this.scroll, 2500)
+    this.init()
   },
   destroyed () {
     clearInterval(this.ylbScroll)
