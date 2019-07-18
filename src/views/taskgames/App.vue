@@ -306,7 +306,7 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -356,6 +356,7 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
+      iframe.style['z-index'] = 10
       iframe.src = 'https://wap.beeplay123.com/ads/index.html'
       parent.document.body.appendChild(iframe)
     },
