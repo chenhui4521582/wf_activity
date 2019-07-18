@@ -59,7 +59,8 @@ export default {
       countTime: null,
       rulesInfo: '',
       rulesExplain: '',
-      haveGif: false
+      haveGif: false,
+      isHitted: false
     }
   },
   components: {
@@ -111,8 +112,13 @@ export default {
       return `e-item${index + 1}`
     },
     async goHit () {
+      if (this.isHitted) {
+        return
+      }
+      this.isHitted = true
       GLOBALS.marchSetsPoint('A_H5PT0075001462')   // H5平台-砸金蛋-点击消耗锤子砸彩蛋
       const { code, data, message } = await betSingle({ value: this.currentItem.sort })
+      this.isHitted = false
       if (code === 200) {
         this.awardsList = data
         this.haveGif = true
@@ -143,10 +149,15 @@ export default {
       }
     },
     async goHitAll () {
+      if (this.isHitted) {
+        return
+      }
+      this.isHitted = true
       GLOBALS.marchSetsPoint('A_H5PT0075001463')   // H5平台-砸金蛋-点击同色全砸
       this.currentIndex = null
       this.currentLev = this.activedLev
       const { code, data, message } = await betBatch({ value: this.activedLev })
+      this.isHitted = false
       if (code === 200) {
         this.awardsList = data
         this.haveGif = true
