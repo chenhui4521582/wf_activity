@@ -2,13 +2,16 @@
   <div class="details-warp">
     <div class="details-content">
       <base-header title="商品详情" :accountBalance="accountBalance"></base-header>
+      <div class="luck-box" v-if="currentItem.phyAwardsType==7" @click="$router.push('/schedule')">我的幸运盒子 ></div>
       <!-- 头图 -->
       <div class="title-warp">
         <div class="banner-title">
           <img :src="bannerImg | filter" alt="">
         </div>
         <div class="title-tet">
-          <div class="item">{{currentItem.name}}</div>
+          <div class="item">{{currentItem.name}}
+            <div class="buyone" v-if="buyone([currentItem])">每日限购一次</div>
+          </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
       </div>
@@ -146,6 +149,14 @@ export default {
     }
   },
   methods: {
+    buyone (list) {
+      if (list.length > 1) {
+        return false
+      }
+      if (list.length === 1 && list[0].limitPerPersonDay === 1) {
+        return true
+      }
+    },
     // 切换规格
     changeSpec (index) {
       this.selectedIndex = index
@@ -200,33 +211,10 @@ export default {
     checkprize () {
       const item = this.currentItem
       if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
-        switch (getUrlParam('from')) {
-          case 'bdWap':
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/#/schedule'
-            break
-          case 'jsWap':
-            parent.location.href = 'https://wap.beeplay123.com/jsWap/#/schedule'
-            break
-          case 'miniWap':
-            parent.location.href = 'https://wap.beeplay123.com/miniWap/#/schedule'
-            break
-          default:
-            parent.location.href = 'https://wap.beeplay123.com/wap/home/#/schedule'
-        }
-      } else {
-        switch (getUrlParam('from')) {
-          case 'bdWap':
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
-            break
-          case 'jsWap':
-            parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
-            break
-          case 'miniWap':
-            parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
-            break
-          default:
-            parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
-        }
+        parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/schedule')
+      }
+      if (item.phyAwardsType && [7].includes(item.phyAwardsType)) {
+        this.$router.push('/schedule')
       }
     },
     setDetailsImgWidth () {
@@ -269,6 +257,20 @@ export default {
   background-color: #0f1726;
   .details-content {
     padding: 0 0.3rem;
+    .luck-box{
+      width: 1.78rem;
+      height: .38rem;
+      line-height:.38rem;
+      text-align: center;
+      background: #213250;
+      border-radius: .08rem;
+      font-size:.22rem;
+      font-weight:500;
+      color:rgba(139,139,140,1);
+      position: fixed;
+      top: .2rem;
+      right: 0.3rem;
+    }
   }
 }
 .banner-title {
@@ -289,6 +291,21 @@ export default {
   background-color: #141f33;
   .item {
     flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    .buyone{
+      display: inline-block;
+      width: 1.23rem;
+      height: .28rem;
+      line-height:.28rem;
+      font-size:.2rem;
+      font-weight:bold;
+      color:rgba(25,38,61,1);
+      margin-left: .08rem;
+      background: url("../images/buyone1.png");
+      background-size: 100% 100%;
+    }
   }
   div {
     font-size: 0.32rem;
