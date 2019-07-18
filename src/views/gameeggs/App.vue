@@ -43,7 +43,7 @@
                     <div class="hb-line"></div>
                     <div class="envelopes">{{item.awards}}个</div>
                     <div class="btn btn-complete" v-if="item.status == 1">完成</div>
-                    <div class="btn btn-default" v-else @click="closegameeggs(2)">去完成</div>
+                    <div class="btn btn-default" v-else @click="closegameeggs(2,item)">去完成</div>
                   </li>
                   <li class="hb-dot-box" v-else>
                     <span class="hb-dot hb-dot1"></span>
@@ -83,7 +83,7 @@
         </div>
       </div>
     </template>
-    <awards-pop v-if="showAwardspop||(isclose)" :type="type" :awardsname="awardsname" @close="showAwardspop=false"
+    <awards-pop v-if="showAwardspop||(isclose)" :type="type" :awardsname="awardsname" :gametype="currentGameType" @close="showAwardspop=false"
                 @closeview="closegameeggs" @gotoact="gotoact"></awards-pop>
   </div>
 </template>
@@ -222,10 +222,16 @@
         }
         return this.axios.post(url, params, {})
       },//请求封装方法
-      closegameeggs(flag) {
+      closegameeggs(flag,item=null) {
         if (flag) {
-          flag == 1 && GLOBALS.marchSetsPoint('A_H5PT0075001490')
-          flag == 2 && GLOBALS.marchSetsPoint('A_H5PT0075001488')
+          flag == 1 && GLOBALS.marchSetsPoint('A_H5PT0075001490',{
+            from_project_id:this.currentGameType
+          })
+          flag == 2 && GLOBALS.marchSetsPoint('A_H5PT0075001488',{
+            from_project_id:this.currentGameType,
+            task_id:item.sort,
+            task_name:`支持金叶${this.transUint(item.amount)}`
+          })
         }
         if (parent.closeWebView) {
           parent.closeWebView()
@@ -240,7 +246,9 @@
         }
       },
       showrule() {
-        GLOBALS.marchSetsPoint('A_H5PT0075001485')
+        GLOBALS.marchSetsPoint('A_H5PT0075001485',{
+          from_project_id:this.currentGameType
+        })
         this.type = 1;
         this.awardsname = `<p>1、消耗锤子可砸开彩蛋，获取奖励。砸完当前所有蛋，将会生成新蛋供您砸</p>
 <p>2、购买活动内礼包可获得锤子，重复购买可重复获取</p><p>3、在以下游戏中，活动期间累计支持金叶子到一定值可获得锤子:<p>
@@ -249,12 +257,16 @@
       },
       gotoact(flag = 0) {//去活动详情
         if (flag) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001486')
+          GLOBALS.marchSetsPoint('A_H5PT0075001486',{
+            from_project_id:this.currentGameType
+          })
         }
         parent.location.href = `http://wap.beeplay123.com/activities/eggs.html?channel=${this.channel}&token=${this.token}`
       },
       kickeggs(num) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001487')
+        GLOBALS.marchSetsPoint('A_H5PT0075001487',{
+          from_project_id:this.currentGameType
+        })
         if (num) {
           this.awardsname = num;
           this.type = 2;
@@ -269,7 +281,9 @@
           this.show = true;
           this.actInfoData = data.data
           if (data.data.open) {
-            GLOBALS.marchSetsPoint('A_H5PT0075001484')
+            GLOBALS.marchSetsPoint('A_H5PT0075001484',{
+              from_project_id:this.currentGameType
+            })
             GLOBALS.remainingTime(
               this,
               data.data.countdown,
@@ -308,7 +322,9 @@
         }
       },
       gotopay(val) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001489', {product_id: val.bizId})
+        GLOBALS.marchSetsPoint('A_H5PT0075001489', {product_id: val.bizId,from_project_id:this.currentGameType,
+          recharge_rmb:val.price
+        })
         val.needpaybackurl=`https://wap.beeplay123.com/activities/gameeggs.html`
         localStorage.setItem('JDD_PARAM', JSON.stringify(val))
         if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') {//好看、全民小视频

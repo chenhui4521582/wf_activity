@@ -9,12 +9,12 @@
         <template v-if="type==2">
           <div class="info">砸蛋还差{{awardsname}}个锤子</div>
           <img src="../images/chuizi.png" alt="">
-          <div class="btn btn_more" @click="close">获取更多锤子</div>
+          <div class="btn btn_more" @click="close(0)">获取更多锤子</div>
           <div class="btn btn_see" @click="gotoact">去活动页看看</div>
         </template>
         <template v-if="type==3">
           <div class="btn btn_more" @click="gotoact">去砸蛋</div>
-          <div class="btn btn_see"  @click="close">获取更多锤子</div>
+          <div class="btn btn_see"  @click="close(0)">获取更多锤子</div>
         </template>
         <template v-if="type==4">
           <div class="info">活动已结束</div>
@@ -41,27 +41,41 @@
       awardsname:{
         type:String,
         default: ''
+      },
+      gametype:{
+        type:Number,
+        default:0
       }
     },
     components:{scroll},
     methods: {
-      close(flag=0) {
+      close(flag) {
         if(this.type==4){
-          GLOBALS.marchSetsPoint('A_H5PT0075001500')
-          this.$emit('closeview')
+          GLOBALS.marchSetsPoint('A_H5PT0075001500',{
+            from_project_id:this.gametype
+          })
+          this.$emit('closeview',0)
         }else{
           if(this.type==2){
             if(flag){
-              GLOBALS.marchSetsPoint('A_H5PT0075001494')
+              GLOBALS.marchSetsPoint('A_H5PT0075001494',{
+                from_project_id:this.gametype
+              })
             }else{
-              GLOBALS.marchSetsPoint('A_H5PT0075001493')
+              GLOBALS.marchSetsPoint('A_H5PT0075001493',{
+                from_project_id:this.gametype
+              })
             }
           }
           if(this.type==3){
             if(flag){
-              GLOBALS.marchSetsPoint('A_H5PT0075001497')
+              GLOBALS.marchSetsPoint('A_H5PT0075001497',{
+                from_project_id:this.gametype
+              })
             }else{
-              GLOBALS.marchSetsPoint('A_H5PT0075001496')
+              GLOBALS.marchSetsPoint('A_H5PT0075001496',{
+                from_project_id:this.gametype
+              })
             }
           }
           this.$emit('close')
@@ -69,26 +83,38 @@
       },
       gotoact(){
         if(this.type==2){
-          GLOBALS.marchSetsPoint('A_H5PT0075001492')
+          GLOBALS.marchSetsPoint('A_H5PT0075001492',{
+            from_project_id:this.gametype
+          })
         }
         if(this.type==3){
-          GLOBALS.marchSetsPoint('A_H5PT0075001495')
+          GLOBALS.marchSetsPoint('A_H5PT0075001495',{
+            from_project_id:this.gametype
+          })
         }
         if(this.type==4){
-          GLOBALS.marchSetsPoint('A_H5PT0075001499')
+          GLOBALS.marchSetsPoint('A_H5PT0075001499',{
+            from_project_id:this.gametype
+          })
         }
         this.$emit('gotoact')
       }
     },
     mounted() {
       if(this.type==2){
-        GLOBALS.marchSetsPoint('A_H5PT0075001491')
+        GLOBALS.marchSetsPoint('A_H5PT0075001491',{
+          from_project_id:this.gametype
+        })
       }
       if(this.type==3){
-        GLOBALS.marchSetsPoint('A_H5PT0075001495')
+        GLOBALS.marchSetsPoint('A_H5PT0075001495',{
+          from_project_id:this.gametype
+        })
       }
       if(this.type==4){
-        GLOBALS.marchSetsPoint('A_H5PT0075001498')
+        GLOBALS.marchSetsPoint('A_H5PT0075001498',{
+          from_project_id:this.gametype
+        })
       }
     }
   }

@@ -262,7 +262,10 @@ export default {
       }
     },
     kickegg(){
-      GLOBALS.marchSetsPoint('A_H5PT0061001502')
+      GLOBALS.marchSetsPoint('A_H5PT0061001502',{
+        from_project_id:this.currentGameType,
+        task_name: this.showegg.url
+      })
       this.$emit('kickegg',this.showegg.url)
     }
   },
@@ -275,7 +278,9 @@ export default {
     }).then(res=>{
       this.showegg=res.data.code==200&&res.data.data||null
       if(this.showegg&&this.showegg.show){
-        GLOBALS.marchSetsPoint('A_H5PT0061001501')
+        GLOBALS.marchSetsPoint('A_H5PT0061001501',{
+          from_project_id:this.currentGameType
+        })
         if(this.showegg.popup){
           this.$emit('kickegg',this.showegg.url)
         }
