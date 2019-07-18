@@ -16,13 +16,9 @@
     </template>
     <template v-else>
       <div class="content-box">
-        <img class="bg" src="./image/bg.png" alt="">
-        <div class="content">
+        <div class="close" @click="close"></div>
+        <div class="content content1">
           <slot></slot>
-          <div class="btn">
-            <div class="btn1" @click="historygo">再换一个</div>
-            <div class="btn2" @click="close">收下了</div>
-          </div>
         </div>
       </div>
     </template>
@@ -82,6 +78,16 @@
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
+    .close{
+      width: .2rem;
+      height: .2rem;
+      background: url("./image/close-small.png");
+      background-size: 100% 100%;
+      position: absolute;
+      z-index: 1;
+      right: .21rem;
+      top: .21rem;
+    }
     .content-title {
       line-height: .5rem;
       font-size: .3rem;
@@ -100,6 +106,18 @@
       padding: .4rem 2%;
       padding-bottom: 8%;
       height: 100%;
+      &.content1{
+        position: relative;
+        width: 100%;
+        top: 0;
+        padding: .4rem 2%;
+        padding-bottom: 8%;
+        height: 2.5rem;
+        background: #0F1726;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       .title {
         height: 1.18rem;
         display: block;

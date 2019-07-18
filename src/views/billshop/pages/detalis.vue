@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- 提升弹框 -->
-    <dialog-gain-mask v-model="dialogGainShow" :status-code="200" @on-checkprize="checkprize"  @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentList"/>
+    <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize"  @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber"/>
     <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
   </div>
 </template>

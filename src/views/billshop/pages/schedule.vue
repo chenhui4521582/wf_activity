@@ -25,11 +25,15 @@
       </div>
     </div>
     <new-awards-pop v-if="showpop" @close="showpop=false" :flag="flag">
-      <div>
+      <div v-if="!flag">
         <img class="title" src="../images/congratulations-text.png" alt="">
         <img class="awards-img" src="../images/hb-icon.png" alt="">
         <p class="num">{{awardsname}}</p>
         <p class="tips">奖品已发放至我的资产</p>
+      </div>
+      <div v-else>
+        <p class="num">{{awardsname}}</p>
+        <p class="tips" style="margin-top: .14rem;color: rgba(139,139,140,1);">奖品已发放至我的资产</p>
       </div>
     </new-awards-pop>
   </div>
@@ -55,10 +59,10 @@
           let {data:data}=await this.axios.post('//ops-api.beeplay123.com/ops/api/blindBox/open',{
             orderId:item.id
           });
-          data={"code":200,"data":{"awardsName":"4元话费碎片"},"message":null}
           if(data.code==200){
             this.awardsname=data.data.awardsName
             this.showpop=true;
+            this.getCatchedawards()
           }
         }
         if(item.status === 8){

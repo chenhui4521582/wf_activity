@@ -7,7 +7,7 @@
         <div class="close-icon" @click="dialogShow=false"><img src="./image/close-small.png" alt=""></div>
       </div>
       <div class="content">
-        <div class="content-text">当前商品名称：幸运盒子<br>所需话费券：30</div>
+        <div class="content-text">当前商品名称：{{detail&&detail.name}}<br>所需话费券：{{detail&&detail.purchasePrice*specNumber}}</div>
       </div>
       <div class="dialog-button">
         <div class="return base-button save" @click="goExchange">确认换取</div>
@@ -30,9 +30,13 @@
         type: Boolean,
         default: true
       },
-      statusCode: {
-        type: [Number, String],
-        default: ''
+      detail:{
+        type:Object,
+        default:null
+      },
+      specNumber:{
+        type:Number,
+        default:1
       }
     },
     watch: {
