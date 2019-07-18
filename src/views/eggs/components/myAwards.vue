@@ -54,6 +54,7 @@ export default {
       }
     },
     showPop () {
+      GLOBALS.marchSetsPoint('A_H5PT0075001461')   // H5平台-砸金蛋-点击已砸奖励
       this.isShowPop = true;
       this.init()
     }
