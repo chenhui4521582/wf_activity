@@ -321,7 +321,7 @@ export default {
       }
     },
     gotopay (val) {
-      localStorage.setItem('originDeffer', window.location.href)
+      localStorage.setItem('originDeffer', parent.location.href)
       GLOBALS.marchSetsPoint('A_H5PT0075001489', {        product_id: val.bizId, from_project_id: this.currentGameType,
         recharge_rmb: val.price
       })
