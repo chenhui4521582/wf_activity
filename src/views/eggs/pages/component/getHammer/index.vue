@@ -64,6 +64,8 @@ export default {
     filterPrice: function (value) {
       if (value) {
         return value > 10000 ? value / 10000 + '万' : value
+      } else {
+        return 0
       }
     }
   },
