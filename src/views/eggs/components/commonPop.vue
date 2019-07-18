@@ -1,7 +1,7 @@
 <template>
   <section class="commonPop" @touchmove.prevent>
     <div class="pop-mask" v-if="isShowPop || haveGif" @touchmove.prevent>
-      <img id="haveGif" v-if="haveGif" src="" alt="">
+      <img v-if="haveGif" :src="imgUrl" alt="">
     </div>
     <transition :name="haveGif?'scalcLong':'scalc'">
       <div class="pop" v-if="isShowPop && !isEnd">
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import imgUrl from '../pages/images/common/open-eggs.gif'
 export default {
   name: 'commonPop',
   data () {
@@ -73,6 +74,13 @@ export default {
     rankSize: {
       type: Number,
       default: 0
+    }
+  },
+  watch: {
+    haveGif (val) {
+      if (val) {
+        this.imgUrl = imgUrl + '?' + Date.now()
+      }
     }
   },
   methods: {
@@ -120,7 +128,6 @@ export default {
     }
   },
   mounted () {
-    document.querySelector("#haveGif").src = `../pages/images/common/open-eggs.gif?${Date.now()}`
   }
 }
 </script>
