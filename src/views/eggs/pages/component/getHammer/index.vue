@@ -99,6 +99,14 @@ export default {
 <style lang="less" scoped>
 .get-hammer {
   padding: 1.24rem 0.38rem 0;
+    height: calc(100%);
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: scroll;
   .s-title {
     font-size: 0.24rem;
     color: #c07002;

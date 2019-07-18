@@ -1,7 +1,13 @@
 .profit-container {
   text-align: center;
   padding: 1.11rem 0.25rem 0;
-  position: relative;
+  /*position: relative;*/
+  width: 100%;
+  height: calc(100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
   overflow-y: scroll;
 
   .title {
@@ -300,20 +306,31 @@
           align-items: center;
           justify-content: center;
           position: relative;
-
+          
+          em.i-ellipsis{
+              display: block;
+              font-style: normal;
+              overflow: hidden;/*超出部分隐藏*/
+              white-space: nowrap;/*不换行*/
+              text-overflow:ellipsis;/*超出部分文字以...显示*/
+              padding: 0 0.02rem;
+          }
           &:nth-child(1) {
+            width: 14.75%;
             flex: 0 0 14.75%;
           }
 
 
 
           &:nth-child(2) {
+            width: 21.68%;
             flex: 0 0 21.68%;
           }
 
 
 
           &:nth-child(3) {
+            width: 27.41%;
             flex: 0 0 27.41%;
           }
 

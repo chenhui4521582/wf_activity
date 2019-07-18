@@ -41,9 +41,9 @@
           <ul class="p-item-title">
             <li style="border:none">
               <span>排名</span>
-              <span>昵称</span>
-              <span>累计锤子</span>
-              <span>奖励</span>
+              <span><em class="i-ellipsis">昵称</em></span>
+              <span><em class="i-ellipsis">累计锤子</em></span>
+              <span><em class="i-ellipsis">奖励</em></span>
             </li>
           </ul>
         </div>
@@ -51,24 +51,24 @@
           <ul class="p-item-title">
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
-              <span>{{item.nickName || '暂无昵称'}}</span>
-              <span>{{item.plantFoodNum}}个</span>
-              <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}</em>个</span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span>{{item.nickName || '暂无昵称'}}</span>
-              <span>{{item.plantFoodNum}}个</span>
-              <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
               <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
             </li>
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span>{{item.nickName || '暂无昵称'}}</span>
-              <span>{{item.plantFoodNum}}个</span>
-              <span>{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>
         </div>
