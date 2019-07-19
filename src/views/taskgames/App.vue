@@ -572,17 +572,29 @@ export default {
           break
       }
       if (item.taskStatus == 0) {
-        localStorage.removeItem('ENTRANCE')
         localStorage.removeItem('ADSDATA')
         if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
-          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          if (item.action === 71) {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', '看视频任务')
+          } else {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          }
           localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
           // 为父窗口（游戏界面） 创建script
           try {
             this.initParentAd()
           } catch (error) {
-            this.receive(item, type, index)
+            if (item.action === 71) {
+              this.$toast.show({
+                message: '广告填充中，请稍后再试',
+                duration: 2000
+              })
+            } else {
+              this.receive(item, type, index)
+            }
           }
           return
         }
@@ -899,10 +911,10 @@ export default {
       this.getTransInfo()
       this.getPhoneFragment()
     },
-    kickegg(url){
-      if(parent.closeTaksPage){
+    kickegg (url) {
+      if (parent.closeTaksPage) {
         parent.closeTaksPage()
-        parent.GameEval('openweb',`${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
+        parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
       }
     }
   }
