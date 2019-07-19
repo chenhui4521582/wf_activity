@@ -18,7 +18,7 @@
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
     <!-- sdk 新版运营位 -->
-    <sdk-tab-box :currentGameType='currentGameType'>
+    <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
           <div v-if="showNewUserTask" class="new-user-task">
@@ -898,6 +898,12 @@ export default {
     closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
+    },
+    kickegg(url){
+      if(parent.closeTaksPage){
+        parent.closeTaksPage()
+        parent.GameEval('openweb',`${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
+      }
     }
   }
 }
