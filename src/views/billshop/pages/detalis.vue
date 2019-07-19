@@ -89,6 +89,12 @@ export default {
     }
   },
   async created () {
+    if(this.$route.query['accountBalance']){
+      this.accountBalance=parseFloat(this.$route.query['accountBalance'])
+    }else{
+      const {data:userInfo}=await this.axios.post('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+      this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
+    }
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
     if (code === 200 && data && data.length) {
