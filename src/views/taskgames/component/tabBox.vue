@@ -4,6 +4,7 @@
       <li class="tab_item" :class="{'actived':isActived === item.name}" v-for="(item,index) in tabList" :key="index" @click="changeTab(item)"><img :src="require('../images/'+item.name+(isActived === item.name?'_actived':'')+'.png')" alt="">{{item.label}}</li>
       <div class="red" v-if="unreadQuantity">{{unreadQuantity}}</div>
     </ul>
+    <img :src="showegg.icon|filter" alt="" class="egg" @click="kickegg" v-if="showegg&&showegg.show">
     <template v-if="isActived === 'tasks'">
       <!-- <h4 class="crush-master-task" v-if="currentGameType">成就任务</h4> -->
       <slot>
@@ -51,6 +52,9 @@ export default {
   props: {
     currentGameType: {
       default: 0
+    },
+    id:{
+      default: 0
     }
   },
   data () {
@@ -61,7 +65,8 @@ export default {
       activitiesList: [],
       unreadQuantity: 0,
       confirm: false,
-      selectedActivity: {}
+      selectedActivity: {},
+      showegg:null,//是否显示砸金蛋
     }
   },
   methods: {
@@ -280,11 +285,31 @@ export default {
           break
       }
     },
+    kickegg(){
+      GLOBALS.marchSetsPoint('A_H5PT0061001502',{
+        from_project_id:this.currentGameType,
+        task_name: this.showegg.url
+      })
+      this.$emit('kickegg',this.showegg.url)
+    }
   },
   computed: {
   },
   created () {
     this.getDetail()
+    this.axios.post('//ops-api.beeplay123.com/ops/api/activity/sdk-state',{
+      "value": this.currentGameType
+    }).then(res=>{
+      this.showegg=res.data.code==200&&res.data.data||null
+      if(this.showegg&&this.showegg.show){
+        GLOBALS.marchSetsPoint('A_H5PT0061001501',{
+          from_project_id:this.currentGameType
+        })
+        if(this.showegg.popup){
+          this.$emit('kickegg',this.showegg.url)
+        }
+      }
+    })
   }
 }
 </script>
@@ -292,6 +317,14 @@ export default {
 <style scoped lang="less">
 .sdk-tab-box {
   padding: 0.3rem 0.3rem 0;
+  .egg{
+    width: 1.04rem;
+    height: 1.08rem;
+    position: fixed;
+    right: 0;
+    top: .8rem;
+    z-index: 11;
+  }
   .tabs {
     position: relative;
     margin: 0 0.68rem;
