@@ -60,6 +60,7 @@ window.GLOBALS = {
     url = '../../../payment/#/mall'
     return url
   },
+  isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser']>0 : 1,
   loopTime (_this, obj) {
     var date = new Date()
     var hours = date.getHours()

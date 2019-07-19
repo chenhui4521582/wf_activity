@@ -298,11 +298,11 @@ export default {
     },
     // 显示大师任务
     showCrushMasterTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示王者任务
     showKingTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示新手任务
     showNewUserTask () {
