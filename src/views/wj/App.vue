@@ -584,9 +584,7 @@ export default {
           if (res.data.code == 200) {
             this.newTaskItems = res.data.data
           }
-          // if (parent.LoadTaskFinish) {
-          //   parent.LoadTaskFinish()
-          // }
+          
         })
     },
     checkTaskStatus (item, type, index) {
