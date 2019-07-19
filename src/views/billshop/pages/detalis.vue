@@ -51,7 +51,7 @@
     <div class="button-warp" @click="goExchange(false)">
       <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
         <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取
-          <i v-if="accountBalance>=currentItem.purchasePrice*specNumber"><br>话费券余额：{{accountBalance}}</i>
+          <i><br>话费券余额：{{accountBalance}}</i>
         </span>
         <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
       </div>
@@ -83,18 +83,14 @@ export default {
       phyAwardsType: this.$route.query['phyAwardsType'],
       goodsName: this.$route.query['goodsName'],
       showOut: this.$route.query['showOut'],
-      accountBalance: parseFloat(this.$route.query['accountBalance']),
+      accountBalance:0,
       currentList: [],
       dialogGainShow:false
     }
   },
   async created () {
-    if(this.$route.query['accountBalance']){
-      this.accountBalance=parseFloat(this.$route.query['accountBalance'])
-    }else{
-      const {data:userInfo}=await this.axios.post('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
-      this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
-    }
+    const {data:userInfo}=await this.axios.post('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+    this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
     if (code === 200 && data && data.length) {
