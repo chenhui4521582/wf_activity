@@ -216,11 +216,12 @@ export default {
     // 去领奖
     checkprize () {
       const item = this.currentItem
-      if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
-        parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/schedule')
-      }
-      if (item.phyAwardsType && [7].includes(item.phyAwardsType)) {
-        this.$router.push('/schedule')
+      if (item.phyAwardsType) {
+        if([7].includes(item.phyAwardsType)){
+          this.$router.push('/schedule')
+        }else{
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/schedule')
+        }
       }
     },
     setDetailsImgWidth () {
