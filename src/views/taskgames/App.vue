@@ -18,7 +18,7 @@
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
     <!-- sdk 新版运营位 -->
-    <sdk-tab-box :currentGameType='currentGameType'>
+    <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
           <div v-if="showNewUserTask" class="new-user-task">
@@ -356,6 +356,7 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
+      iframe.style['z-index'] = 10
       switch (this.channel) {
         case '100039':
         case '100042':
@@ -396,6 +397,9 @@ export default {
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
+      localStorage.setItem('originGameProblem', true)
+      localStorage.setItem('originGame', parent.location.href)
+
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
@@ -582,17 +586,29 @@ export default {
           break
       }
       if (item.taskStatus == 0) {
-        localStorage.removeItem('ENTRANCE')
         localStorage.removeItem('ADSDATA')
         if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
-          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          if (item.action === 71) {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', '看视频任务')
+          } else {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          }
           localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
           // 为父窗口（游戏界面） 创建script
           try {
             this.initParentAd()
           } catch (error) {
-            this.receive(item, type, index)
+            if (item.action === 71) {
+              this.$toast.show({
+                message: '广告填充中，请稍后再试',
+                duration: 2000
+              })
+            } else {
+              this.receive(item, type, index)
+            }
           }
           return
         }
@@ -908,6 +924,12 @@ export default {
     closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
+    },
+    kickegg (url) {
+      if (parent.closeTaksPage) {
+        parent.closeTaksPage()
+        parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
+      }
     }
   }
 }
