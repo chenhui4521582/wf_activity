@@ -360,13 +360,13 @@ export default {
         case '100039':
         case '100042':
           iframe.src = 'https://wap.beeplay123.com/ads/bdAds.html'
-          break;
+          break
         case '100067':
           iframe.src = 'https://wap.beeplay123.com/ads/qttAds.html?_NO_BRIDGE_=1'
-          break;
+          break
 
         default:
-          break;
+          break
       }
       parent.document.body.appendChild(iframe)
     },
@@ -376,7 +376,7 @@ export default {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042' || this.channel === '100067')) || false
           }
         })
     },
