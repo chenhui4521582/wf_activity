@@ -306,7 +306,7 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -356,7 +356,18 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
-      iframe.src = 'https://wap.beeplay123.com/ads/index.html'
+      switch (this.channel) {
+        case '100039':
+        case '100042':
+          iframe.src = 'https://wap.beeplay123.com/ads/bdAds.html'
+          break;
+        case '100067':
+          iframe.src = 'https://wap.beeplay123.com/ads/qttAds.html?_NO_BRIDGE_=1'
+          break;
+
+        default:
+          break;
+      }
       parent.document.body.appendChild(iframe)
     },
     init () {
