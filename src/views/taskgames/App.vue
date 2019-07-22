@@ -21,7 +21,7 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <div v-if="showNewUserTask" class="new-user-task">
+          <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
               <img src="./img/tips.png" alt="">
             </div>
@@ -98,6 +98,7 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
+         
           <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
