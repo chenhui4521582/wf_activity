@@ -211,13 +211,13 @@ export default {
     },
     fetch (url, params) {
       if (url.startsWith('/ops/api')) {
-        url = '//ops-api.beeplay123.com' + url
+        url = '//ops-api.beeplaying.com' + url
       }
       if (url.startsWith('/wap/api')) {
-        url = '//platform-api.beeplay123.com' + url
+        url = '//platform-api.beeplaying.com' + url
       }
       if (url.startsWith('/wap/api')) {
-        url = '//shop-api.beeplay123.com' + url
+        url = '//shop-api.beeplaying.com' + url
       }
       return this.axios.post(url, params, {})
     },//请求封装方法
@@ -260,7 +260,7 @@ export default {
           from_project_id: this.currentGameType
         })
       }
-      parent.location.href = `http://wap.beeplay123.com/activities/eggs.html?channel=${this.channel}&token=${this.token}`
+      parent.location.href = `http://wap.beeplaying.com/activities/eggs.html?channel=${this.channel}&token=${this.token}`
     },
     kickeggs (num) {
       GLOBALS.marchSetsPoint('A_H5PT0075001487', {
@@ -312,7 +312,7 @@ export default {
     //礼包
     async getPackage () {//获取礼包数据
       try {
-        const { data: data } = await this.axios.post('https://shop-api.beeplay123.com/shop/api/mall/showLeaguePacksList/20190711')
+        const { data: data } = await this.axios.post('https://shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/20190711')
         if (data.code == 200) {
           this.packageData = data.data.leaguePacksList || []
         }
@@ -325,12 +325,12 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0075001489', {        product_id: val.bizId, from_project_id: this.currentGameType,
         recharge_rmb: val.price
       })
-      val.needpaybackurl = `https://wap.beeplay123.com/activities/gameeggs.html`
+      val.needpaybackurl = `https://wap.beeplaying.com/activities/gameeggs.html`
       localStorage.setItem('JDD_PARAM', JSON.stringify(val))
       if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') {//好看、全民小视频
-        location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
+        location.href = 'https://wap.beeplaying.com/payment/#/bdPayment';
       } else {
-        location.href = 'https://wap.beeplay123.com/payment/#/payment';
+        location.href = 'https://wap.beeplaying.com/payment/#/payment';
       }
     },
     async getBetProgress () {

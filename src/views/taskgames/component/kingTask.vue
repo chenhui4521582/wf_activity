@@ -173,7 +173,7 @@ export default {
         // 领取奖励
         receive(item,type){
             this.isMotherType = true
-            this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
+            this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplaying.com${this.getCurentIcon()}`)
         }
     },
     watch:{

@@ -54,7 +54,7 @@ export default {
         getAndroidAPK(href){
             $.ajax({
                 type:'get',
-                url : '//wap.beeplay123.com/games/download.json',
+                url : '//wap.beeplaying.com/games/download.json',
                 dataType : 'json',
                 success : (data) => {
                     if(href == 'inapp'){
@@ -64,7 +64,7 @@ export default {
                     }
                 }
             })
-            // this.axios.get('https://wap.beeplay123.com/games/download.json').then(res => {
+            // this.axios.get('https://wap.beeplaying.com/games/download.json').then(res => {
             //     this.androidAPK = res.android
             // })
         },
@@ -75,7 +75,7 @@ export default {
                     location.href = 'https://itunes.apple.com/cn/app/id1320447707?mt=8'
                 }else{
                     this.getAndroidAPK()
-                    // location.href = 'http://wap.beeplay123.com/m/apk/duoduowan_100030_1.0.1.apk'
+                    // location.href = 'http://wap.beeplaying.com/m/apk/duoduowan_100030_1.0.1.apk'
                 }
             }else{
                 GLOBALS.buriedPoint(4001000101,'微竞猜-引流页面-立即下载');//事件ID 事件名称 游戏ID 游戏位置

@@ -81,7 +81,7 @@
           return
         }
         if(!this.isClick) {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/newFeedback', {
+          this.axios.post('//platform-api.beeplaying.com/wap/api/feedback/newFeedback', {
               description: this.description,
               isLogin: 0,
               phone: this.phoneTxt,
@@ -144,7 +144,7 @@
           })
           return
         }
-        this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
             let message = res.data.code == 200 ? '验证码已发送注意查收' : res.data.message;
             if(res.data.code == 200) {
                 clearInterval(this.timer);

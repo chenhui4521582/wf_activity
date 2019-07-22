@@ -43,13 +43,13 @@ axios.interceptors.response.use(
         case 401:
           let uid = localStorage.getItem('user_Info') && JSON.parse(localStorage.getItem('user_Info')) && JSON.parse(localStorage.getItem('user_Info')).userId || ''
           if (uid && (localStorage.getItem('APP_CHANNEL') == 100039 || localStorage.getItem('APP_CHANNEL') == 100042 || localStorage.getItem('APP_CHANNEL') == 100047001 || localStorage.getItem('APP_CHANNEL') == 100048001)) {
-            axios.post(`//uic-api.beeplay123.com/uic/api/user/center/validateLimit/${uid}`).then(res => {
+            axios.post(`//uic-api.beeplaying.com/uic/api/user/center/validateLimit/${uid}`).then(res => {
               localStorage.removeItem('ACCESS_TOKEN')
               if (res.data.code == 200 && res.data.data) { // 游客模式
                 if (window.linkUrl.getYKChannel(localStorage.getItem('APP_CHANNEL'))) {
-                  window.location.href = 'https://wap.beeplay123.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
+                  window.location.href = 'https://wap.beeplaying.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
                 } else {
-                  window.location.href = `https://wap.beeplay123.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
+                  window.location.href = `https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
                 }
               } else {
                 Vue.prototype.$toast.show({

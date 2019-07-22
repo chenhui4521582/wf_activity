@@ -28,11 +28,11 @@
                 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
                 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
                 if(isAndroid){
-                   window.location.href='https://wap.beeplay123.com/m/baohaowan/app-baohaowan-release.apk'
+                   window.location.href='https://wap.beeplaying.com/m/baohaowan/app-baohaowan-release.apk'
                 }else{
-                    window.location.href='itms-services:///?action=download-manifest&url=https://wap.beeplay123.com/m/baohaowan/bhw.plist'
+                    window.location.href='itms-services:///?action=download-manifest&url=https://wap.beeplaying.com/m/baohaowan/bhw.plist'
                     setTimeout(()=> {
-                        location.href = 'https://wap.beeplay123.com/bhwGuide/guide.html?channel='+GLOBALS.getUrlParam('channel')
+                        location.href = 'https://wap.beeplaying.com/bhwGuide/guide.html?channel='+GLOBALS.getUrlParam('channel')
                     }, 3000)
                 }
             },

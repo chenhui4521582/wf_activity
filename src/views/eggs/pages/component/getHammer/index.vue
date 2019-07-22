@@ -75,9 +75,9 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
-        location.href = 'https://wap.beeplay123.com/payment/#/bdPayment'
+        location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
       } else {
-        location.href = 'https://wap.beeplay123.com/payment/#/payment'
+        location.href = 'https://wap.beeplaying.com/payment/#/payment'
       }
     },
     async getShowLeaguePacksList () {

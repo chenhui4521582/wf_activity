@@ -5,7 +5,7 @@ import $axios from '../http'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/activity-info')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-info')
   return data
 }
 
@@ -15,7 +15,7 @@ export const activityInfo = async () => {
  */
 
 export const betAwards = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-awards')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-awards')
   return data
 }
 /**
@@ -25,7 +25,7 @@ export const betAwards = async () => {
  */
 
 export const betSingle = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-single', params)
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-single', params)
   return data
 }
 /**
@@ -35,7 +35,7 @@ export const betSingle = async (params) => {
  */
 
 export const betBatch = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-batch', params)
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-batch', params)
   return data
 }
 /**
@@ -44,7 +44,7 @@ export const betBatch = async (params) => {
  */
 
 export const betProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/bet-progress')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-progress')
   return data
 }
 /**
@@ -53,7 +53,7 @@ export const betProgress = async () => {
  */
 
 export const gameProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/game-progress')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/game-progress')
   return data
 }
 /**
@@ -62,7 +62,7 @@ export const gameProgress = async () => {
  */
 
 export const myAwards = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/my-awards')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/my-awards')
   return data
 }
 /**
@@ -71,7 +71,7 @@ export const myAwards = async () => {
  */
 
 export const noticeList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/notice-list')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/notice-list')
   return data
 }
 /**
@@ -80,7 +80,7 @@ export const noticeList = async () => {
  */
 
 export const rankList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/rank-list')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/rank-list')
   return data
 }
 /**
@@ -88,7 +88,7 @@ export const rankList = async () => {
  * @return {Object} data
  */
 export const userIncrement = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/user-increment')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-increment')
   return data
 }
 /**
@@ -97,7 +97,7 @@ export const userIncrement = async () => {
  */
 
 export const userInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/user-info')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-info')
   return data
 }
 
@@ -107,7 +107,7 @@ export const userInfo = async () => {
  */
 
 export const showLeaguePacksList = async () => {
-  const { data } = await $axios.post('//shop-api.beeplay123.com/shop/api/mall/showLeaguePacksList/20190711')
+  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/20190711')
   return data
 }
 /**
@@ -116,7 +116,7 @@ export const showLeaguePacksList = async () => {
  */
 
 export const userRanking = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/user-ranking')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-ranking')
   return data
 }
 /**
@@ -125,6 +125,6 @@ export const userRanking = async () => {
  */
 
 export const activityGuide = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/plant-food-v2/activity-guide')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-guide')
   return data
 }

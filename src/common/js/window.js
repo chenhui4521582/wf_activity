@@ -127,7 +127,7 @@ window.GLOBALS = {
     // 用户信息
     var userInfo = JSON.parse(localStorage.getItem('user_Info'))
     if (!userInfo) {
-      let r = await axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo')
+      let r = await axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo')
       userInfo = r.data.data || r.data
       localStorage.setItem('user_Info', JSON.stringify(userInfo))
     };
