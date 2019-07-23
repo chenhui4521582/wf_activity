@@ -10,7 +10,7 @@
     </div>
     <div class="header2">
       <div class="eggs-info" :class="{show:isEggsInfoShow}">
-        <h4>可砸出</h4>
+        <h4>可能砸出</h4>
         <ul>
           <li v-for="(item,index) in eggsInfoList" :key="index">{{item.awardsName}}</li>
         </ul>
@@ -33,7 +33,7 @@
     </div>
     <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs(false)"></drop-down>
     <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
-    <new-user-page :is-show="isNewUserShow" @get-hammer="getHammer"></new-user-page>
+    <new-user-page :is-show="isNewUserShow" @show-default-eggs="showDefaultEggs" @get-hammer="getHammer"></new-user-page>
   </div>
 </template>
 <script type="text/javascript">
@@ -95,7 +95,7 @@ export default {
     setBigEgg () {
       this.clickEgg(this.styleItemsArr.length - 1)
     },
-    showDefaultEggs (isToast) {
+    showDefaultEggs () {
       for (let index = 0; index < this.styleItemsArr.length; index++) {
         if (this.styleItemsArr[index].status === 0) {
           this.clickEgg(index)
