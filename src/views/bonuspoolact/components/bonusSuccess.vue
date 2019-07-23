@@ -47,13 +47,13 @@
         methods: {
             fetch(url, params) {
                 if (url.startsWith('/ops/api')) {
-                    url = '//ops-api.beeplay123.com' + url
+                    url = '//ops-api.beeplaying.com' + url
                 }
                 if (url.startsWith('/wap/api')) {
-                    url = '//platform-api.beeplay123.com' + url
+                    url = '//platform-api.beeplaying.com' + url
                 }
                 if (url.startsWith('/wap/api')) {
-                    url = '//shop-api.beeplay123.com' + url
+                    url = '//shop-api.beeplaying.com' + url
                 }
                 return this.axios.post(url, params, {})
             },//请求封装方法

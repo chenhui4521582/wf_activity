@@ -77,16 +77,16 @@ export default {
     async goMyAward () {
       switch (getUrlParam('from')) {
         case 'bdWap':
-          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+          parent.location.href = 'https://wap.beeplaying.com/bdWap/#/personal?openMyWard=1'
           break
         case 'jsWap':
-          parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+          parent.location.href = 'https://wap.beeplaying.com/bdWap/#/personal?openMyWard=1'
           break
         case 'miniWap':
-          parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+          parent.location.href = 'https://wap.beeplaying.com/miniWap/#/personal?openMyWard=1'
           break
         default:
-          parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+          parent.location.href = 'https://wap.beeplaying.com/wap/home/#/personal?openMyWard=1'
       }
     },
     // 标题切换

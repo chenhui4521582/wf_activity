@@ -73,7 +73,7 @@ export default {
   methods: {
     getItem () {
       // 获取任务内容及进度
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platCommonTaskByBatch', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platCommonTaskByBatch', {
         value: 'renrenMedal'
       }).then((res) => {
         if (res.data.code == 200) {
@@ -89,7 +89,7 @@ export default {
         phase_id: item.finishNum
       }) // H5平台-游戏内SDK-人人勋章任务-去完成
       // 获取最近在玩
-      this.axios.post('//platform-api.beeplay123.com//wap/api/game-category/recently').then((res) => {
+      this.axios.post('//platform-api.beeplaying.com//wap/api/game-category/recently').then((res) => {
         if (res.data.code == 200) {
           let nextGame = res.data.data && res.data.data.list && res.data.data.list[0] || {
             name: '梦想桌球',
@@ -101,7 +101,7 @@ export default {
       })
     },
     receive (item, type) {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then(res => {

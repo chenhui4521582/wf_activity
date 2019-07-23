@@ -176,7 +176,7 @@
     },
     methods: {
 	  getRankingList () {
-		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingList'
+		let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getRankingList'
 		this.axios.post(url, this.rankingParams).then(res => {
 		  let {myRanking = '', rankingList = []} = res.data.data
           if(!this.isEmptyObject(this.myRanking)) {
@@ -200,7 +200,7 @@
         return keys.length ? true : false
       },
       getOldRankingList (newVal) {
-		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getRankingHistoryList'
+		let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getRankingHistoryList'
         let params = Object.assign({}, this.rankingParams, {timelineId: newVal})
 		this.axios.post(url, params).then(res => {
 		  let {myRanking = '', rankingList = []} = res.data.data
@@ -219,7 +219,7 @@
 		})
       },
 	  getAwardsList () {
-		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getAwardsList'
+		let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getAwardsList'
 		this.axios.post(url, this.awardsParams).then(res => {
 		  this.awardsLock = true
           this.awardsList = this.awardsList.concat(res.data.data)
@@ -340,7 +340,7 @@
 		return text
 	  },
 	  getTimeLine () {
-		let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
+		let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getTimeline'
 		this.axios.post(url).then(res => {
 		  let countdown = ''
 		  this.timeLine = res.data.data || [];

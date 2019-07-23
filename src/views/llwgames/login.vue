@@ -75,7 +75,7 @@ export default {
       validatorText: '获取验证码',
       isCanSend: 1,
       num: 0,
-      backurl: 'https://wap.beeplay123.com/wap/home',
+      backurl: 'https://wap.beeplaying.com/wap/home',
       isWechatChannel: false,
       showPage: false,
       showindexpage: true,
@@ -93,7 +93,7 @@ export default {
     if (utils.getUrlParamObj('token') && utils.getUrlParam('token').split('#/')[0]) {
       this.getAccessToken(utils.getUrlParamObj('token') && utils.getUrlParam('token').split('#/')[0])
     } else {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo', { isShowTotast: 'false' }).then((response) => {
+      this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo', { isShowTotast: 'false' }).then((response) => {
         if (response.data.code == 200) {
           this.islogin = false
           this.token = localStorage.getItem('ACCESS_TOKEN')
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     back () {
-      location.replace('https://wap.beeplay123.com/llwWap?channel=' + this.channel)
+      location.replace('https://wap.beeplaying.com/llwWap?channel=' + this.channel)
     },
     getUrlParam: function (ename) {
       var url = window.location.href
@@ -174,14 +174,14 @@ export default {
       }
       var requestTokenurl
       if (this.isWechatChannel) {
-        requestTokenurl = '//uic-api.beeplay123.com/uic/api/user/login/sms/requestTokenWithBind'
+        requestTokenurl = '//uic-api.beeplaying.com/uic/api/user/login/sms/requestTokenWithBind'
         var paramsObj = {
           username: this.vAccount,
           smsCode: this.veCode,
           type: 4 // 微信 openId
         }
       } else {
-        requestTokenurl = this.currentIndex == 0 ? '//uic-api.beeplay123.com/uic/api/user/login/sms/requestToken' : '//uic-api.beeplay123.com/uic/api/user/login/requestToken'
+        requestTokenurl = this.currentIndex == 0 ? '//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken' : '//uic-api.beeplaying.com/uic/api/user/login/requestToken'
         var paramsObj = this.currentIndex == 0 ? {
           username: this.vAccount,
           smsCode: this.veCode,
@@ -200,7 +200,7 @@ export default {
       })
     },
     async getAccessToken (requestToken, isBinding) {
-      let res = await this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+      let res = await this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/accessToken', {
         token: requestToken,
         type: 1
       })
@@ -208,7 +208,7 @@ export default {
         let token = res.data.data.accessToken
         localStorage.setItem('ACCESS_TOKEN', res.data.data.accessToken)
 
-        let { data: dataopenToken } = await this.axios.post('//uic-api.beeplay123.com/uic/api/user/sdk/openToken')
+        let { data: dataopenToken } = await this.axios.post('//uic-api.beeplaying.com/uic/api/user/sdk/openToken')
         if (dataopenToken.code == 200) {
           localStorage.setItem('OPEN_ACCESS_TOKEN', dataopenToken.data.token)
         }
@@ -222,7 +222,7 @@ export default {
             this.back()
           }, 1000)
         } else {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/oauth/wx/config', {
+          this.axios.post('//platform-api.beeplaying.com/wap/api/oauth/wx/config', {
             value: encodeURIComponent(window.location.href.split('#')[0])
           }).then((res) => {
             if (res.data.code != 200) {
@@ -280,7 +280,7 @@ export default {
       }
     },
     SendVerificationCode: function (code) {
-      return this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/sendSmsCode', {
+      return this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/sendSmsCode', {
         username: code,
         receiveRange: 1
       })

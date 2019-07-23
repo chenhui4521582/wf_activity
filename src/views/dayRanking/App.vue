@@ -38,7 +38,7 @@ export default {
       this.$refs.games.show()
     },
     init () {
-      let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getUserIncreaseScore'
+      let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getUserIncreaseScore'
       this.axios.post(url).then(res => {
         let {code, data = 0} = res.data
         if(code == 200 && data > 0) {

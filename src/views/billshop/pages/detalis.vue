@@ -165,7 +165,7 @@ export default {
         residual_phone: this.accountBalance
       })
       /** 梁婷需求增加兑换验证是否实名认证 **/
-      //uic-api.beeplay123.com/uic/api/user/center/authStatus
+      //uic-api.beeplaying.com/uic/api/user/center/authStatus
 
 
       const { data, code, message } = await placeOrder(id, this.specNumber)
@@ -191,30 +191,30 @@ export default {
       if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
         switch (getUrlParam('from')) {
           case 'bdWap':
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/#/schedule'
+            parent.location.href = 'https://wap.beeplaying.com/bdWap/#/schedule'
             break
           case 'jsWap':
-            parent.location.href = 'https://wap.beeplay123.com/jsWap/#/schedule'
+            parent.location.href = 'https://wap.beeplaying.com/jsWap/#/schedule'
             break
           case 'miniWap':
-            parent.location.href = 'https://wap.beeplay123.com/miniWap/#/schedule'
+            parent.location.href = 'https://wap.beeplaying.com/miniWap/#/schedule'
             break
           default:
-            parent.location.href = 'https://wap.beeplay123.com/wap/home/#/schedule'
+            parent.location.href = 'https://wap.beeplaying.com/wap/home/#/schedule'
         }
       } else {
         switch (getUrlParam('from')) {
           case 'bdWap':
-            parent.location.href = 'https://wap.beeplay123.com/bdWap/#/personal?openMyWard=1'
+            parent.location.href = 'https://wap.beeplaying.com/bdWap/#/personal?openMyWard=1'
             break
           case 'jsWap':
-            parent.location.href = 'https://wap.beeplay123.com/jsWap/#/personal?openMyWard=1'
+            parent.location.href = 'https://wap.beeplaying.com/jsWap/#/personal?openMyWard=1'
             break
           case 'miniWap':
-            parent.location.href = 'https://wap.beeplay123.com/miniWap/#/personal?openMyWard=1'
+            parent.location.href = 'https://wap.beeplaying.com/miniWap/#/personal?openMyWard=1'
             break
           default:
-            parent.location.href = 'https://wap.beeplay123.com/wap/home/#/personal?openMyWard=1'
+            parent.location.href = 'https://wap.beeplaying.com/wap/home/#/personal?openMyWard=1'
         }
       }
     },

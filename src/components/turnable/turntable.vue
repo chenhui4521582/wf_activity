@@ -83,7 +83,7 @@ export default {
     },
     methods:{
         getFinalAwards(){
-            this.$http.post('//ops-api.beeplay123.com/ops/api/fee/wheel/betting').then(data => {
+            this.$http.post('//ops-api.beeplaying.com/ops/api/fee/wheel/betting').then(data => {
                 let params = data.body
                 if(params.code == 200){
                     // params.data={description: "188金叶子", awardsType: "188金叶子", awardsName:"88金叶子"}
@@ -113,7 +113,7 @@ export default {
 
         },
         getAwardsList(){
-            this.$http.post('//ops-api.beeplay123.com/ops/api/fee/wheel/status').then(data => {
+            this.$http.post('//ops-api.beeplaying.com/ops/api/fee/wheel/status').then(data => {
                 let params = data.body
                 if(params.code == 200){
                     this.showPage = false

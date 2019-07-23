@@ -63,14 +63,14 @@ export default {
 	  this.confirm = false
     },
     getEndTime () {
-      let url = 'https://ops-api.beeplay123.com/ops/api/plant-food/user-info'
+      let url = 'https://ops-api.beeplaying.com/ops/api/plant-food/user-info'
       this.axios.post(url).then(res => {
         this.endTime = (res.data && res.data.data && res.data.data.settleTime) || 0
       })
     },
     async jump () {
 	  await GLOBALS.marchSetsPoint('A_H5PT0061000782')
-      parent.window.location.href = '//wap.beeplay123.com/moneyTree?time=' + new Date().getTime()
+      parent.window.location.href = '//wap.beeplaying.com/moneyTree?time=' + new Date().getTime()
     }
   },
   computed: {

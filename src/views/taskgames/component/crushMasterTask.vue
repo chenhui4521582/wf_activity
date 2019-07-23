@@ -174,10 +174,10 @@ export default {
         receive(item,type){
             this.isMotherType = true
             if(item.taskName.indexOf('糖果') > -1) {
-			  this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`, 'allFinish')
+			  this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplaying.com${this.getCurentIcon()}`, 'allFinish')
               return false
             }
-		    this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplay123.com${this.getCurentIcon()}`)
+		    this.$emit('receive',item,'mother_crush_task',this.currentMedalList.index,`//file.beeplaying.com${this.getCurentIcon()}`)
         }
     },
     watch:{
