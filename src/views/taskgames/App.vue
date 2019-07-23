@@ -255,10 +255,6 @@ export default {
     this.getHuafeiNum()
   },
   computed: {
-    // woolUserType () {
-    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
-    //   // return true
-    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -378,7 +374,7 @@ export default {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042' || this.channel === '100067')) || false
+            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042')) || false
           }
         })
     },
