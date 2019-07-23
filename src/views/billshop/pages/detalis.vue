@@ -37,7 +37,7 @@
             <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
             <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
             <div class="item-number-add">
-              <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
+              <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota" :buyone="buyone([currentItem])"></field>
             </div>
           </div>
         </div>
