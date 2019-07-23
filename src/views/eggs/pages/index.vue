@@ -27,7 +27,7 @@
     </div>
     <div class="btn-wrp">
       <my-awards></my-awards>
-      <a href="javascript:" v-if="currentItem.awardsLev === activedLev" class="btn-hit" @click.stop="goHit">消耗锤子砸彩蛋</a>
+      <a href="javascript:" v-if="currentItem.awardsLev === activedLev" class="btn-hit" @click.stop="goHit">立即砸蛋</a>
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
