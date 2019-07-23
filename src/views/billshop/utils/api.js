@@ -3,7 +3,7 @@ import $axios from '../http'
  * @description 获取话费券商城列表 新的接口
  */
 export const billList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/mainNew')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/exchangeMall/mainNew')
   return data
 }
 /**
@@ -11,7 +11,7 @@ export const billList = async () => {
  * @param {Number} productId
  */
 export const placeOrder = async (productId, count) => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/placeOrder', { productId, count })
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/exchangeMall/placeOrder', { productId, count })
   return data
 }
 /**
@@ -23,6 +23,6 @@ export const placeOrder = async (productId, count) => {
  */
 
 export const getGoodsDetail = async (phyAwardsType, name, showOut) => {
-  const { data } = await $axios.post('//ops-api.beeplay123.com/ops/api/exchangeMall/detail', { phyAwardsType, name, showOut })
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/exchangeMall/detail', { phyAwardsType, name, showOut })
   return data
 }

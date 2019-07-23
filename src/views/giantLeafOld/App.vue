@@ -98,7 +98,7 @@
                 if(this.jyzUserInfo) {
                     return this.jyzUserInfo.betNum - this.jyzUserInfo.betRecordNum
                 }
-            },  
+            },
             rotate() {
                 var rotateArr = [];
                 var d = 1/10;
@@ -123,7 +123,7 @@
                 if(this.isClicked) return
                     this.isClicked = true
 
-                this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/betting', {
+                this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/betting', {
                     value: this.jyzUserInfo.betStage
                 }).then(data => {
                     let params = this.priceData = data.data
@@ -198,7 +198,7 @@
                 }
             },
             getUserInfo(){
-                this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getUserInfo').then(res => {
+                this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getUserInfo').then(res => {
                     if(res.data.code == 200) {
                         this.jyzUserInfo = res.data.data
                         if(this.jyzUserInfo && this.jyzUserInfo.betIncreaseNum != 0) {
@@ -210,7 +210,7 @@
                 })
             },
             getAwardsList(){
-                this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getActivityInfo').then(data => {
+                this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getActivityInfo').then(data => {
                     let params = data.data
                     if(params.code == 200){
                         this.awardsList = params.data.ratioList
@@ -266,7 +266,7 @@
                 this.circle()
             },
             getNotice() {
-                this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getNoticeList').then(res => {
+                this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getNoticeList').then(res => {
                     if(res.data.code == 200) {
                         this.lamp = res.data.data
                     }
@@ -426,19 +426,19 @@
             height: 5.14rem;
 
         }
-        
+
         .turn-bg {
             width: 5.14rem;
             height: 5.14rem;
             position: absolute;
             left: 0;
-            top: 0;  
+            top: 0;
             transition: all 3s cubic-bezier(0.68, 0.01, 0.13, 1);
             background: url(./images/jp-zp.png) no-repeat;
             background-size: 100% 100%;
             ul {
                 height: 5.14rem;
-            } 
+            }
             li {
                 width: 1.5rem;
                 height: 5.14rem;

@@ -239,7 +239,7 @@ export default {
     this.channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
     this.currentGameType = this.getUrlParam('gametype')
     if (this.channel == '100047001' || this.channel == '100048001') {
-      window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
+      window.location.href = `https://wap.beeplaying.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
       return
     }
     if (parent.loadTaksPage) {
@@ -319,7 +319,7 @@ export default {
     },
     filter (url) {
       if (url && !url.includes('http')) {
-        return '//file.beeplay123.com' + url
+        return '//file.beeplaying.com' + url
       } else {
         return url
       }
@@ -356,11 +356,11 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
-      iframe.src = 'https://wap.beeplay123.com/ads/index.html'
+      iframe.src = 'https://wap.beeplaying.com/ads/index.html'
       parent.document.body.appendChild(iframe)
     },
     init () {
-      this.axios.post('//platform-api.beeplay123.com/wap/api/continuous/signIn/new/list')
+      this.axios.post('//platform-api.beeplaying.com/wap/api/continuous/signIn/new/list')
         .then(res => {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
@@ -380,7 +380,7 @@ export default {
       parent.location.href = this.jumpToPlat() + '#/personal'
     },
     async getHuafeiNum () {
-      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+      let { data } = await this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/getMinHFConvertAmount')
       this.huafeiNum = data.data
     },
     async gotokf () {
@@ -388,7 +388,7 @@ export default {
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
-      let { data } = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', { value: val })
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTask', { value: val })
       if (data.code == 200) {
         let showSubMasterList = [],
           crushList = data.data.list, currentParentTask, currentIndex,
@@ -480,7 +480,7 @@ export default {
     },
 
     getDegradeTaskStatus () {
-      this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
+      this.axios.post('//platform-api.beeplaying.com/wap/api/degrade/task/status')
         .then(res => {
           if (res.data.code == 200) {
             this.isTfStatus = res.data.data.isOpen
@@ -646,7 +646,7 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
           if (res.data.code == 200) {
@@ -657,7 +657,7 @@ export default {
         })
         // }
       } else if (type == 'new_user_task_fixed_entrance') {
-        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
           if (res.data.code == 200) {
@@ -689,12 +689,12 @@ export default {
         }
         // 跳转商城
         if (gameType == 0 && actionsArr.includes(action)) {
-          parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+          parent.location.href = 'https://wap.beeplaying.com/payment/#/mall'
           return
         }
         // 跳平台(关闭)
         if (gameType == 0 && action == 2) {
-          // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+          // parent.location.href = 'https://wap.beeplaying.com/bdWap/?channel=100039'
           this.backIndexPage()
           return
         }
@@ -709,7 +709,7 @@ export default {
         // //   let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
         // //   return parent.location.href = GLOBALS.jumpOutsideGame(url)
         // // }
-        // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+        // // parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
         url && (parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
@@ -754,7 +754,7 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
@@ -811,7 +811,7 @@ export default {
       })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
         value: 'NewUserStairTask'
       }).then((res) => {
         if (res.data.data && res.data.data.isNew) {
@@ -829,7 +829,7 @@ export default {
       })
     },
     getDayTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
@@ -845,14 +845,14 @@ export default {
       })
     },
     getTransInfo () {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res) => {
+      this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo').then((res) => {
         if (res.data.code == 200) {
           this.userInfo = res.data.data
         }
       })
     },
     getPhoneFragment () {
-      this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/richAndconvertList', {
+      this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/richAndconvertList', {
         page: 1,
         pageSize: 10
       }).then((res) => {

@@ -60,7 +60,7 @@ export default {
       this.$emit('hideHistory')
     },
     getList () {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getPlayRecord').then(data => {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getPlayRecord').then(data => {
         let params = data.data
         if (params.code === 200) {
           this.list = params.data

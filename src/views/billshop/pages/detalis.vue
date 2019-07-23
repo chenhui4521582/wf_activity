@@ -89,7 +89,7 @@ export default {
     }
   },
   async created () {
-    const {data:userInfo}=await this.axios.post('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+    const {data:userInfo}=await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
     this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
@@ -188,7 +188,7 @@ export default {
         residual_phone: this.accountBalance
       })
       /** 梁婷需求增加兑换验证是否实名认证 **/
-      //uic-api.beeplay123.com/uic/api/user/center/authStatus
+      //uic-api.beeplaying.com/uic/api/user/center/authStatus
 
 
       const { data, code, message } = await placeOrder(id, this.specNumber)

@@ -56,16 +56,16 @@
         })
         switch (getUrlParam('from')) {
           case 'bdWap':
-            parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
             break
           case 'jsWap':
-            parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
             break
           case 'miniWap':
-            parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            parent.location.href = `https://wap.beeplaying.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
             break
           default:
-            parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+            parent.location.href = `https://wap.beeplaying.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
         }
       },
       // 去看看其他

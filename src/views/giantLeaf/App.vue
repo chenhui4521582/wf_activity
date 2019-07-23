@@ -156,7 +156,7 @@ export default {
       if (this.isClicked) return
       this.isClicked = true
       this.mainTimes = 0
-      this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/betting', {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/betting', {
         value: this.jyzUserInfo.betStage
       }).then(data => {
         let params = this.priceData = data.data
@@ -201,7 +201,7 @@ export default {
       this.getFinalAwards()
     },
     getUserInfo () {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getUserInfo').then(res => {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getUserInfo').then(res => {
         if (res.data.code == 200) {
           this.jyzUserInfo = res.data.data
           if (this.jyzUserInfo && this.jyzUserInfo.betIncreaseNum != 0) {
@@ -213,7 +213,7 @@ export default {
       })
     },
     getAwardsList () {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getActivityInfo').then(data => {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getActivityInfo').then(data => {
         let params = data.data
         if (params.code == 200) {
           this.awardsList = params.data.ratioList
@@ -278,7 +278,7 @@ export default {
       this.circle(isCircle)
     },
     getNotice () {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/leafswheel/getNoticeList').then(res => {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/leafswheel/getNoticeList').then(res => {
         if (res.data.code == 200) {
           this.lamp = res.data.data
         }

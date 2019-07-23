@@ -11,19 +11,19 @@
         name: 'app',
         mounted(){
 //        竞猜游戏loading登录页跳转规则：
-//假设loading页地址为：https://wap.beeplay123.com/loading
+//假设loading页地址为：https://wap.beeplaying.com/loading
 //
-//            1、链接为:https://wap.beeplay123.com/loading?type=home&channel=xxxxx&token=yyyyy，
-//            对应跳转：https://databiger-h5.beeplay123.com/game/#/quizzes/hot?token=yyyyy&channel=xxxxx
+//            1、链接为:https://wap.beeplaying.com/loading?type=home&channel=xxxxx&token=yyyyy，
+//            对应跳转：https://databiger-h5.beeplaying.com/game/#/quizzes/hot?token=yyyyy&channel=xxxxx
 //
-//            2、链接为:https://wap.beeplay123.com/loading?type=match&channel=xxxxx&mid=zzzzz&token=yyyyy，
-//            对应跳转：https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=zzzzz&isShowJingCai=1&token=yyyyy&channel=xxxxx
+//            2、链接为:https://wap.beeplaying.com/loading?type=match&channel=xxxxx&mid=zzzzz&token=yyyyy，
+//            对应跳转：https://databiger-h5.beeplaying.com/football/#/guess/winFlatLoss?lotteryID=90&mid=zzzzz&isShowJingCai=1&token=yyyyy&channel=xxxxx
 //
-//            3、链接为:https://wap.beeplay123.com/loading?type=record&channel=xxxxx&token=yyyyy，
-//            对应跳转：https://databiger-h5.beeplay123.com/game/#/betrecord?token=yyyyy&channel=xxxxx
+//            3、链接为:https://wap.beeplaying.com/loading?type=record&channel=xxxxx&token=yyyyy，
+//            对应跳转：https://databiger-h5.beeplaying.com/game/#/betrecord?token=yyyyy&channel=xxxxx
 //
-//            4、链接为:https://wap.beeplay123.com/loading?type=recharge&channel=xxxxx&token=yyyyy，
-//            对应跳转：https://wap.beeplay123.com/payment/#/shopping?channel=xxxxx&token=yyyyy
+//            4、链接为:https://wap.beeplaying.com/loading?type=recharge&channel=xxxxx&token=yyyyy，
+//            对应跳转：https://wap.beeplaying.com/payment/#/shopping?channel=xxxxx&token=yyyyy
 
 
 
@@ -100,25 +100,25 @@
             },
             getUrl(urlObj, token,isExistBowlsMatch) {//球酷要求的跳转地址
                 if (urlObj.type == 'home') {
-                    return `https://databiger-h5.beeplay123.com/game/#/quizzes/hot?channel=${urlObj.channel}`;
+                    return `https://databiger-h5.beeplaying.com/game/#/quizzes/hot?channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'match') {
-                    return !isExistBowlsMatch?`https://databiger-h5.beeplay123.com/game/#/quizzes/hot?channel=${urlObj.channel}`:`https://databiger-h5.beeplay123.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&channel=${urlObj.channel}`;
+                    return !isExistBowlsMatch?`https://databiger-h5.beeplaying.com/game/#/quizzes/hot?channel=${urlObj.channel}`:`https://databiger-h5.beeplaying.com/football/#/guess/winFlatLoss?lotteryID=90&mid=${urlObj.mid}&isShowJingCai=1&channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'record') {
-                    return `https://databiger-h5.beeplay123.com/game/#/betrecord?channel=${urlObj.channel}`;
+                    return `https://databiger-h5.beeplaying.com/game/#/betrecord?channel=${urlObj.channel}`;
                 }
                 if (urlObj.type == 'recharge') {
-                    return `https://wap.beeplay123.com/payment/#/shopping?channel=${urlObj.channel}`
+                    return `https://wap.beeplaying.com/payment/#/shopping?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'center') {
-                    return `https://databiger-h5.beeplay123.com/center/?channel=${urlObj.channel}`
+                    return `https://databiger-h5.beeplaying.com/center/?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'ring') {
-                    return `https://wap.beeplay123.com/ring?channel=${urlObj.channel}`
+                    return `https://wap.beeplaying.com/ring?channel=${urlObj.channel}`
                 }
                 if (urlObj.type == 'cat') {
-                    return `https://wap.beeplay123.com/cat?channel=${urlObj.channel}`
+                    return `https://wap.beeplaying.com/cat?channel=${urlObj.channel}`
                 }
 
             }

@@ -56,7 +56,7 @@
     methods: {
       async onItemAccept(item, index) {
         if(item.status === 2){
-          let {data:data}=await this.axios.post('//ops-api.beeplay123.com/ops/api/blindBox/open',{
+          let {data:data}=await this.axios.post('//ops-api.beeplaying.com/ops/api/blindBox/open',{
             orderId:item.id
           });
           if(data.code==200){
@@ -72,7 +72,7 @@
         }
       },
       getCatchedawards() {
-        this.axios.post('//ops-api.beeplay123.com/ops/api/blindBox/list').then((response) => {
+        this.axios.post('//ops-api.beeplaying.com/ops/api/blindBox/list').then((response) => {
           if (response.data.code == 200) {
             if (response.data.data.length > 0) {
               this.receiveDatas = response.data.data

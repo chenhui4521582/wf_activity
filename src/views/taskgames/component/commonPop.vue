@@ -100,7 +100,7 @@
                     height: 0.68rem;
                     line-height: 0.68rem;
                     text-align: center;
-                    background: url(//file.beeplay123.com/cdn/wap/images/knapsack/k-sprite.png) -0.1rem -0.1rem;
+                    background: url(//file.beeplaying.com/cdn/wap/images/knapsack/k-sprite.png) -0.1rem -0.1rem;
                     background-size: 3.72rem 2.43rem;
                     margin: 0rem auto 0.4rem;
                     font-size: 0.32rem;

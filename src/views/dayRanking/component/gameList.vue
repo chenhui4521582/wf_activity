@@ -61,12 +61,12 @@
       },
       playGame (type) {
         let games = {
-		  crush: `https://wap.beeplay123.com/crush/?channel=${this.APP_CHANNEL}`,
-		  billiards: `https://wap.beeplay123.com/billiards/?channel=${this.APP_CHANNEL}`,
-		  fish: `https://wap.beeplay123.com/fish/?channel=${this.APP_CHANNEL}`,
-		  square: `https://wap.beeplay123.com/square/?channel=${this.APP_CHANNEL}`,
-          bdWap: `https://wap.beeplay123.com/bdWap/#/cGame?channel=${this.APP_CHANNEL}`,
-          wap: `https://wap.beeplay123.com/wap/home/#/cGame?channel=${this.APP_CHANNEL}`
+		  crush: `https://wap.beeplaying.com/crush/?channel=${this.APP_CHANNEL}`,
+		  billiards: `https://wap.beeplaying.com/billiards/?channel=${this.APP_CHANNEL}`,
+		  fish: `https://wap.beeplaying.com/fish/?channel=${this.APP_CHANNEL}`,
+		  square: `https://wap.beeplaying.com/square/?channel=${this.APP_CHANNEL}`,
+          bdWap: `https://wap.beeplaying.com/bdWap/#/cGame?channel=${this.APP_CHANNEL}`,
+          wap: `https://wap.beeplaying.com/wap/home/#/cGame?channel=${this.APP_CHANNEL}`
         },
 		href = '';
         if(type == 'more') {

@@ -47,7 +47,7 @@
 		return item.status == 0 ? '时间结束' : item.status == 2 ? '敬请期待' : '时间结束'
 	  },
       getTimeLine () {
-        let url = '//ops-api.beeplay123.com/ops/api/hoursRanking/getTimeline'
+        let url = '//ops-api.beeplaying.com/ops/api/hoursRanking/getTimeline'
         this.axios.post(url).then(res => {
           this.timeLine = res.data.data || []
           this.timeLine.map((item, index) => {
