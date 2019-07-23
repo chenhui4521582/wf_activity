@@ -13,8 +13,8 @@
             </div>
             <span class="icon-number"></span>
             <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.plantFoodNum}}个</span>
-            <span class="t-second">{{item.updateTime || ''}}</span>
+            <span class="hammer-number">{{item.plantFoodNum}}个<em class="t-second">{{item.updateTime || ''}}</em></span>
+
             <!-- <span class="s-text">第{{item.rank}}名</span> -->
             <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
             <!-- <div class="profit-award"></div> -->
