@@ -7,7 +7,7 @@
       <img class="text1" src="../pages/images/newUserPage/text1.png" alt="">
       <img class="text2" src="../pages/images/newUserPage/text2.png" alt="">
       <img class="left" src="../pages/images/newUserPage/left.png" alt="">
-      <img class="next" src="../pages/images/newUserPage/next.png" alt="" @click="isNext=true">
+      <img class="next" src="../pages/images/newUserPage/next.png" alt="" @click="clickNext()">
       <img class="hand" src="../pages/images/newUserPage/hand.png" alt="">
     </section>
     <section class="step2" :class="{first:!isNext}">
@@ -51,8 +51,11 @@ export default {
   methods: {
     getHammer () {
       this.$emit('get-hammer')
+    },
+    clickNext () {
+      this.isNext = true
+      this.$emit('show-default-eggs')
     }
-
   },
   mounted () {
   },
