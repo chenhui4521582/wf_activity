@@ -14,7 +14,7 @@
             <span class="icon-number"></span>
             <span class="s-text">{{item.nickName}}</span>
             <span class="hammer-number">{{item.plantFoodNum}}个</span>
-            <span class="t-second">{{item.updateTime}}</span>
+            <span class="t-second">{{item.updateTime || ''}}</span>
             <!-- <span class="s-text">第{{item.rank}}名</span> -->
             <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
             <!-- <div class="profit-award"></div> -->
@@ -52,14 +52,14 @@
           <ul class="p-item-title">
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}<br/>{{item.updateTime}}</em></em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}</em>个</span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}<br/>{{item.updateTime}}</em></em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
@@ -67,8 +67,8 @@
             </li>
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}<br/>{{item.updateTime}}</em></em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>
