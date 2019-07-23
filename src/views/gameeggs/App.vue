@@ -37,9 +37,13 @@
                   <div class="percent-number" :style="{width:wpercent}"></div>
                 </div>
                 <ul>
-                  <li v-for="item in envelopsItem" v-if="!item.dot">
+                  <li v-for="(item,index) in envelopsItem" v-if="!item.dot">
                     <h2>支持金叶</h2>
-                    <h4>{{transUint(item.amount)}}</h4>
+                    <h4 v-if="envelopsItem.length<6">{{transUint(item.amount)}}</h4>
+                    <template v-else>
+                      <h4 v-if="index<envelopsItem.length-1">{{transUint(item.amount)}}</h4>
+                      <h4 v-else>终极档位</h4>
+                    </template>
                     <div class="hb-line"></div>
                     <div class="envelopes">{{item.awards}}个</div>
                     <div class="btn btn-complete" v-if="item.status == 1">完成</div>
