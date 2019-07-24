@@ -278,8 +278,8 @@ export default {
               parent&&parent.closeTaksPage()
               let url4 = `https://wap.beeplaying.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url4)
-              break              
-              
+              break
+
         default:
           url.includes('//') && (parent.location.href = url)
           break
@@ -306,7 +306,9 @@ export default {
           from_project_id:this.currentGameType
         })
         if(this.showegg.popup){
-          this.$emit('kickegg',this.showegg.url)
+          setTimeout(()=>{
+            this.$emit('kickegg',this.showegg.url)
+          },1000)
         }
       }
     })
