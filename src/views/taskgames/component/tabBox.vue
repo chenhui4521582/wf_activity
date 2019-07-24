@@ -310,7 +310,7 @@ export default {
         if(this.showegg.popup){
           setTimeout(()=>{
             this.$emit('kickegg',this.showegg.url)
-          },1000)
+          },2000)
         }
       }
     })
