@@ -8,14 +8,13 @@
         <img src="../images/package/gift.png" alt="" v-else-if="type===5" style="max-width: 70%">
         <img src="../images/package/leaf.png" alt="" v-else style="max-width: 70%">
       </div>
-      <span class="title" v-if="type===5">{{awardsname}}领取成功</span>
+      <span class="title" v-if="type===5">活动期间，亲只能选择一个礼包购买哟，<br>
+        不挑个最划算的么？</span>
       <span class="title" v-else-if="type!==2">{{awardsname}}领取成功</span>
       <span class="title" v-else>{{awardsname.split(';')[2]}}到账</span>
-      <div class="info" v-if="type==5">
-        <div class="close sure">
-          仍旧购买原礼包
-        </div>
-        <div class="close" @click="close">好的</div>
+      <div class="info info5" v-if="type==5">
+        <div class="close sure" @click="stillBuy">仍旧购买原礼包</div>
+        <div class="close" @click="changeBuy">购买加赠100%礼包</div>
       </div>
       <div class="info" v-else>
         <div class="desc" v-if="type==2">
@@ -45,6 +44,12 @@ export default {
   methods: {
     close () {
       this.$emit('close')
+    },
+    stillBuy () {
+      this.$emit('still-buy')
+    },
+    changeBuy () {
+      this.$emit('change-buy')
     }
   },
   mounted () {
@@ -90,10 +95,6 @@ export default {
   z-index: 11;
   &.plus {
     background: url("../images/package/pop2.png");
-    background-size: 100% 100%;
-  }
-  &.gift {
-    background: url("../images/package/pop3.png");
     background-size: 100% 100%;
   }
   .img {
@@ -146,6 +147,40 @@ export default {
     color: rgba(18, 19, 26, 1);
     background: url("../images/package/pop_btn.png");
     background-size: 100% 100%;
+  }
+
+  &.gift {
+    background: url("../images/package/pop3.png");
+    background-size: 100% 100%;
+
+    .title {
+      font-size: 0.2rem;
+      top: 2.6rem;
+    }
+    .img {
+      top: 0.94rem;
+      right: 1.7rem;
+    }
+    .info {
+      top: unset;
+      bottom: 0.24rem;
+      top: 3.82rem;
+      bottom: 0.38rem;
+      .close {
+        width: 2.76rem;
+        height: 0.76rem;
+        line-height: 0.8rem;
+        border-radius: 0.28rem;
+        font-size: 0.24rem;
+        &.sure {
+          width: 2.64rem;
+          height: 0.58rem;
+          line-height: 0.58rem;
+          background: #fff;
+          margin-bottom: 0.1rem;
+        }
+      }
+    }
   }
 }
 </style>

@@ -8,7 +8,7 @@
         <span v-if="detailData&&detailData.activityEndFlag">活动已结束，未领奖励限今日领完</span>
       </div>
       <!--签到-->
-      <div class="section1" id="section1" v-if="signData&&[2500,5000,10000,25000].includes(signData.count)">
+      <div class="section1" id="section1" v-if="signData&&[2500,5000,10000,25000].includes(signData.count) && detailData && !detailData.activityEndFlag">
         <img class="title_bg" :src="require(`./images/package/signtab_${signData.count}.png`)">
         <div class="container">
           <ul class="signlist">
@@ -46,10 +46,10 @@
         </div>
       </div>
       <!--更多游戏活动-->
-      <div class="section4" id="section4" v-if="gameTasks">
+      <div class="section4" id="section4" v-if="gameTasks && !detailData.activityEndFlag">
         <div class="tabs">
           <ul>
-            <li v-for="(item,index) in gamesArr" :class="{actived:currentGameTask==index}" @click="selectIndex(index)">
+            <li v-for="(item,index) in gamesArr" :class="{actived:currentGameTask==index,redDot:isRedDot(item)}" @click="selectIndex(index)">
               <template v-if="item=='crush-daytask-pionts'">糖果</template>
               <template v-if="item=='bill-daytask-pionts'">桌球</template>
               <template v-if="item=='fish-daytask-pionts'">捕鱼</template>
@@ -81,7 +81,7 @@
         </div>
       </div>
       <!--充值加赠-->
-      <div class="section2" id="section2" v-if="packageData&&!packageData.haveBuy&&packageData.list.length" :class="{package4:packageData&&packageData.list.length>2}">
+      <div class="section2" id="section2" v-if="detailData&&!detailData.activityEndFlag&&packageData&&!packageData.haveBuy&&packageData.list.length" :class="{package4:packageData&&packageData.list.length>2}">
         <div class="container">
           <img :class="{item1:!index}" :src="item.icon|filter" alt="" v-for="(item, index) in packageData.list" :key="index" @click="goPay(index,item)">
         </div>
@@ -90,8 +90,21 @@
       <!--充值加赠-->
       <div class="section5" id="section5" v-if="packageData&&packageData.haveBuy">
         <div class="container">
-          <div class="text" style="font-size: .18rem;font-weight:300;color:rgba(222,201,169,1);">{{packageData.dateRange}}连续登录，分天到账加赠部分</div>
           <img src="./images/package/plusgained.png" alt="">
+          <div class="text" style="text-align:center;width:100%;font-size:0.3rem;font-weight:bold;color:rgba(247,172,91,1);line-height:0.36rem;">{{packageData.dateRange}}连续登录<br /> 分天到账加赠部分</div>
+        </div>
+      </div>
+      <!--活动结束-->
+      <div class="section6" id="section6_1" v-if="packageData&&!packageData.haveBuy&&detailData&&detailData.activityEndFlag">
+        <img class="title_bg" src="./images/package/chongzhitips1.png">
+        <div class="container">
+          <img src="./images/package/end.png" alt="">
+        </div>
+      </div>
+      <div class="section6" id="section6_2" v-if="detailData&&detailData.activityEndFlag">
+        <img class="title_bg" v-if="signData&&[2500,5000,10000,25000].includes(signData.count)" :src="require(`./images/package/signtab_${signData.count}.png`)">
+        <div class="container">
+          <img src="./images/package/end.png" alt="">
         </div>
       </div>
     </template>
@@ -99,7 +112,7 @@
     <!--规则-->
     <rule v-if="showrulepop" @close="showrulepop=false"></rule>
     <!--奖品弹窗-->
-    <award-pop v-if="showAwardPop" :awardsname="awardsname" :type="awardType" @close="closeAwardPop"></award-pop>
+    <award-pop v-if="showAwardPop" :awardsname="awardsname" :type="awardType" @close="closeAwardPop" @still-buy="stillBuy" @change-buy="changeBuy"></award-pop>
   </div>
 </template>
 <script>
@@ -235,7 +248,7 @@ export default {
             this.showAwardPop = true
           }
         } catch (e) {
-
+          console.log('1', e)
         }
       }
       if (type == 4) {
@@ -252,6 +265,7 @@ export default {
             this.getGameTasks(this.awardType)//刷新游戏任务挣积分
           }
         } catch (e) {
+          console.log('2', e)
         }
       }
     },
@@ -293,6 +307,8 @@ export default {
 
       } else if (this.awardType == 3) {
         this.userPointTask()
+      } else if (this.awardType == 5) {
+        GLOBALS.marchSetsPoint('A_H5PT0074001561') // H5平台-回归礼包-最大礼包提示弹窗-关闭
       } else {
         this.userPointTask()//刷新积分兑换话费券接口
       }
@@ -303,17 +319,27 @@ export default {
       this.currentGameTask = index
     },
     goPay (index, val) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001435', { product_id: val.bizId })
+      localStorage.setItem('JDD_PARAM', JSON.stringify(val))
       if (index) {
         this.awardType = 5;
         this.showAwardPop = true
+        GLOBALS.marchSetsPoint('A_H5PT0074001558') // H5平台-回归礼包-最大礼包提示弹窗
         return
       }
-      this.gotopay(val)
+      this.gotopay()
+    },
+    stillBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001559') // H5平台-回归礼包-最大礼包提示弹窗-仍旧购买原礼包
+      this.gotopay()
+    },
+    changeBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001560') // H5平台-回归礼包-最大礼包提示弹窗-我再看看
+      localStorage.setItem('JDD_PARAM', JSON.stringify(this.packageData.list[0]))
+      this.gotopay()
     },
     /** 去支付 **/
-    gotopay (val) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001435', { product_id: val.bizId })
-      localStorage.setItem('JDD_PARAM', JSON.stringify(val))
+    gotopay () {
       localStorage.setItem('originDeffer', location.href)
       if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {
         //好看、全民小视频
@@ -356,6 +382,9 @@ export default {
           }
         }
       }
+    },
+    isRedDot (item) {
+      return this.gameTasks[item].filter(element => element.taskStatus === 0).length
     },
     getpercent (arr, jifen) {
       if (jifen == 0) {
@@ -401,7 +430,7 @@ export default {
 
 #app {
   max-height: 23.61rem;
-  min-height: 100%;
+  min-height: 100vh;
   background: #26262e;
   font-size: 0.24rem;
 }
@@ -552,8 +581,7 @@ export default {
   position: relative;
   height: 4rem;
   &.package4 {
-    height: 6.52rem;
-    padding-bottom: 0.28rem;
+    height: 6rem;
   }
   &:before {
     content: "";
@@ -673,12 +701,14 @@ export default {
             height: 0.52rem;
             background: url("./images/package/bonus_btn.png");
             background-size: 100% 100%;
+            animation: jiggle 1s ease-in infinite;
             &.gained {
               margin-top: 0.18rem;
               width: 0.96rem;
               height: 0.4rem;
               background: url("./images/package/bonus_gain_btn.png");
               background-size: 100% 100%;
+              animation: none;
             }
           }
         }
@@ -730,9 +760,21 @@ export default {
       li {
         flex: 1;
         text-align: center;
+        position: relative;
         &.actived {
           background: rgba(95, 101, 137, 1);
           border-radius: 0.1rem;
+        }
+        &.redDot::after {
+          content: "";
+          background: red;
+          display: block;
+          position: absolute;
+          top: 20%;
+          left: 70%;
+          width: 0.1rem;
+          height: 0.1rem;
+          border-radius: 50%;
         }
       }
     }
@@ -816,8 +858,13 @@ export default {
         line-height: 0.46rem;
         font-weight: bold;
         color: rgba(42, 48, 68, 1);
-        background: url("./images/package/gainjifen.png");
         background-size: 100% 100%;
+        border-radius: 0.24rem;
+        &.btn0 {
+          background: #e83e61;
+          color: #fff;
+          animation: jiggle 1s ease-in infinite;
+        }
         &.btn1 {
           background: url("./images/package/goplay.png");
           background-size: 100% 100%;
@@ -831,24 +878,13 @@ export default {
   }
 }
 
-.section5 {
+.section5,
+.section6 {
   position: relative;
-  height: 3.59rem;
-  padding-bottom: 0.94rem;
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 6.09rem;
-    height: 0.66rem;
-    background: url("./images/package/chongzhitips1.png");
-    background-size: 100% 100%;
-  }
+  height: 4.5rem;
   .container {
     position: absolute;
-    top: 0.47rem;
+    top: 0.7rem;
     bottom: 0;
     left: 1rem;
     right: 1.04rem;
@@ -861,6 +897,49 @@ export default {
       width: 2.47rem;
       height: 2.42rem;
     }
+  }
+}
+.section5 {
+  .container {
+    bottom: 0.5rem;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 6.09rem;
+    height: 0.36rem;
+    background: url("./images/package/chongzhitips1.png");
+    background-size: 100% 100%;
+  }
+}
+.section6 {
+  .title_bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 6.09rem;
+    height: 0.37rem;
+  }
+  .container {
+    img {
+      width: 4.26rem;
+      height: 2.94rem;
+    }
+  }
+}
+@keyframes jiggle {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
