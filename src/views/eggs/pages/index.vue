@@ -31,9 +31,9 @@
       <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
-    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs(false)"></drop-down>
+    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
     <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
-    <new-user-page :is-show="isNewUserShow" @show-default-eggs="showDefaultEggs" @get-hammer="getHammer"></new-user-page>
+    <new-user-page :is-show="isNewUserShow" @show-default-eggs="showDefaultEggs()" @get-hammer="getHammer"></new-user-page>
   </div>
 </template>
 <script type="text/javascript">
@@ -72,25 +72,25 @@ export default {
     message: () => import('../components/message'),
     dropDown: () => import('./dropDown')
   },
-  // async beforeRouteEnter (to, from, next) {
-  //   const { code, data } = await activityInfo()
-  //   if (code === 200) {
-  //     if (data.open) {
-  //       next(vm => {
-  //         vm.rulesInfo = data.rulesInfo
-  //         vm.rulesExplain = data.rulesExplain
-  //         vm.endTime = data.endTime
-  //         vm.countDown(data.countdown)
-  //       })
-  //     } else if (data.countdown) {
-  //       next({ path: '/before' })
-  //     } else {
-  //       next({ path: '/after' })
-  //     }
-  //   } else {
-  //     next()
-  //   }
-  // },
+  async beforeRouteEnter (to, from, next) {
+    const { code, data } = await activityInfo()
+    if (code === 200) {
+      if (data.open) {
+        next(vm => {
+          vm.rulesInfo = data.rulesInfo
+          vm.rulesExplain = data.rulesExplain
+          vm.endTime = data.endTime
+          vm.countDown(data.countdown)
+        })
+      } else if (data.countdown) {
+        next({ path: '/before' })
+      } else {
+        next({ path: '/after' })
+      }
+    } else {
+      next()
+    }
+  },
   methods: {
     setBigEgg () {
       this.clickEgg(this.styleItemsArr.length - 1)
@@ -187,13 +187,13 @@ export default {
         this.popType = 3
       }
     },
-    getHammer () {
-      this.closePop()
+    async getHammer () {
+      await this.closePop()
       this.isNewUserShow = false
       this.isEggsInfoShow = false
       this.$refs.dropDown.handleTab(0)
     },
-    clickEgg (index, isClick) {
+    clickEgg (index, isClick = false, isEggsInfoShow = true) {
       let item = this.styleItemsArr[index]
       if (item.status) return
       if (isClick) {
@@ -202,7 +202,7 @@ export default {
       this.currentLev = 0
       this.currentIndex = index
       this.currentItem = item
-      this.isEggsInfoShow = true
+      this.isEggsInfoShow = isEggsInfoShow
       this.eggsInfoList = this.allEggsInfo.filter(element => {
         return element.awardsLev === item.awardsLev
       })
@@ -217,7 +217,7 @@ export default {
       const { code, data } = await betProgress()
       if (code === 200) {
         this.styleItemsArr = data
-        this.showDefaultEggs(true)
+        this.showDefaultEggs()
       }
     },
     async getActivityGuide () {

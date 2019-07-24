@@ -16,22 +16,22 @@ export default {
     commonPop: () => import('../components/commonPop'),
     profit: () => import('./component/profit')
   },
-  async beforeRouteEnter (to, from, next) {
-    const { code, data } = await activityInfo()
-    if (code === 200) {
-      if (data.open) {
-        next({ path: '/' })
-      } else if (data.countdown) {
-        next({ path: '/before' })
-      } else {
-        next(vm => {
-          vm.rulesInfo = data.rulesInfo
-        })
-      }
-    } else {
-      next()
-    }
-  },
+  // async beforeRouteEnter (to, from, next) {
+  //   const { code, data } = await activityInfo()
+  //   if (code === 200) {
+  //     if (data.open) {
+  //       next({ path: '/' })
+  //     } else if (data.countdown) {
+  //       next({ path: '/before' })
+  //     } else {
+  //       next(vm => {
+  //         vm.rulesInfo = data.rulesInfo
+  //       })
+  //     }
+  //   } else {
+  //     next()
+  //   }
+  // },
   data () {
     return {
       isShowPop: false,
