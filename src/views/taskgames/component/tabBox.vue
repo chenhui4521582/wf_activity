@@ -297,6 +297,8 @@ export default {
   },
   created () {
     this.getDetail()
+  },
+  mounted(){
     this.axios.post('//ops-api.beeplaying.com/ops/api/activity/sdk-state',{
       "value": this.currentGameType
     }).then(res=>{
