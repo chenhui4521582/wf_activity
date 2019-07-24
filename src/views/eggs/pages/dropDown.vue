@@ -5,20 +5,20 @@
     <transition name="fade">
       <div class="drop-down" v-if="isDropDown">
         <div class="drop-down-content">
-          
-            <div class="d-tab">
-              <div style="position: absolute;width: 100%;left: 0;top: 0;">
-                <ul>
-                  <li @click="innerHandleTab(0)" :class="{'active':curIndex == 0}">获取锤子</li>
-                  <li @click="innerHandleTab(1)" :class="{'active':curIndex == 1}">有奖排行榜</li>
-                </ul>
-              </div>
+
+          <div class="d-tab">
+            <div style="position: absolute;width: 100%;left: 0;top: 0;">
+              <ul>
+                <li @click="innerHandleTab(0)" :class="{'active':curIndex == 0}">获取锤子</li>
+                <li @click="innerHandleTab(1)" :class="{'active':curIndex == 1}">有奖排行榜</li>
+              </ul>
             </div>
+          </div>
           <!-- 获取锤子组件 -->
           <getHammer :rules-explain="rulesExplain" v-if="curIndex == 0" />
 
           <!-- 排行榜 -->
-          <profit v-if="curIndex == 1" />
+          <profit v-if="curIndex == 1" :is-full="false" />
 
           <!-- 右下角图标 -->
           <img src="./images/package/profit/icon-back.png" class="icon-back" @click.stop="close">

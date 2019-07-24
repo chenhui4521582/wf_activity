@@ -72,25 +72,25 @@ export default {
     message: () => import('../components/message'),
     dropDown: () => import('./dropDown')
   },
-  async beforeRouteEnter (to, from, next) {
-    const { code, data } = await activityInfo()
-    if (code === 200) {
-      if (data.open) {
-        next(vm => {
-          vm.rulesInfo = data.rulesInfo
-          vm.rulesExplain = data.rulesExplain
-          vm.endTime = data.endTime
-          vm.countDown(data.countdown)
-        })
-      } else if (data.countdown) {
-        next({ path: '/before' })
-      } else {
-        next({ path: '/after' })
-      }
-    } else {
-      next()
-    }
-  },
+  // async beforeRouteEnter (to, from, next) {
+  //   const { code, data } = await activityInfo()
+  //   if (code === 200) {
+  //     if (data.open) {
+  //       next(vm => {
+  //         vm.rulesInfo = data.rulesInfo
+  //         vm.rulesExplain = data.rulesExplain
+  //         vm.endTime = data.endTime
+  //         vm.countDown(data.countdown)
+  //       })
+  //     } else if (data.countdown) {
+  //       next({ path: '/before' })
+  //     } else {
+  //       next({ path: '/after' })
+  //     }
+  //   } else {
+  //     next()
+  //   }
+  // },
   methods: {
     setBigEgg () {
       this.clickEgg(this.styleItemsArr.length - 1)
@@ -188,7 +188,7 @@ export default {
       }
     },
     getHammer () {
-      this.isShowPop = false
+      this.closePop()
       this.isNewUserShow = false
       this.isEggsInfoShow = false
       this.$refs.dropDown.handleTab(0)
