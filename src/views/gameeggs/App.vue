@@ -37,9 +37,13 @@
                   <div class="percent-number" :style="{width:wpercent}"></div>
                 </div>
                 <ul>
-                  <li v-for="item in envelopsItem" v-if="!item.dot">
+                  <li v-for="(item,index) in envelopsItem" v-if="!item.dot">
                     <h2>支持金叶</h2>
-                    <h4>{{transUint(item.amount)}}</h4>
+                    <h4 v-if="envelopsItem.length<6">{{transUint(item.amount)}}</h4>
+                    <template v-else>
+                      <h4 v-if="index<envelopsItem.length-1">{{transUint(item.amount)}}</h4>
+                      <h4 v-else>终极档位</h4>
+                    </template>
                     <div class="hb-line"></div>
                     <div class="envelopes">{{item.awards}}个</div>
                     <div class="btn btn-complete" v-if="item.status == 1">完成</div>
@@ -251,7 +255,7 @@ export default {
       this.type = 1;
       this.awardsname = `<p>1、消耗锤子可砸开彩蛋，获取奖励。砸完当前所有蛋，将会生成新蛋供您砸</p>
 <p>2、购买活动内礼包可获得锤子，重复购买可重复获取</p><p>3、在以下游戏中，活动期间累计支持金叶子到一定值可获得锤子:<p>
-<p>${this.actInfoData.rulesInfo}<p><p>4、活动结束后，将按累计获得的锤子数（不管是否被消耗）排名，前30名有奖励<p>`
+<p>${this.actInfoData.rulesInfo}<p><p>4、活动结束后，将按累计获得的锤子数（不管是否被消耗）排名，前30名有奖励，累计锤子数一样的，先累计到该数目的排在前面<p>`
       this.showAwardspop = true;
     },
     gotoact (flag = 0) {//去活动详情

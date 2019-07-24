@@ -97,7 +97,7 @@ export default {
     height: 0.94rem;
     position: fixed;
     left: 0.14rem;
-    bottom: 1.6rem;
+    bottom: 1.64rem;
   }
 
   .pop-mask {
