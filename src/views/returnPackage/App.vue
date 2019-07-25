@@ -133,13 +133,13 @@
 	  /** 请求封装方法 **/
 	  fetch(url, params) {
 		if (url.startsWith('/ops/api')) {
-		  url = '//ops-api.beeplay123.com' + url
+		  url = '//ops-api.beeplaying.com' + url
 		}
 		if (url.startsWith('/wap/api') || url.startsWith('/task/api')) {
-		  url = '//platform-api.beeplay123.com' + url
+		  url = '//platform-api.beeplaying.com' + url
 		}
 		if (url.startsWith('/shop/api')) {
-		  url = '//shop-api.beeplay123.com' + url
+		  url = '//shop-api.beeplaying.com' + url
 		}
 		return this.axios.post(url, params, {})
 	  },
@@ -311,9 +311,9 @@
         localStorage.setItem('originDeffer', location.href)
 		if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {
 		  //好看、全民小视频
-      top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
+      top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment';
 		} else {
-		  top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
+		  top.location.href = 'https://wap.beeplaying.com/payment/#/payment';
 		}
 	  },
       /** 时间转换 **/

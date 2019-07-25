@@ -11,7 +11,7 @@
                 <img v-if="statusCode===102 || statusCode===107" src="./image/short.png" alt="">
                 <img v-if="statusCode===200" src="./image/succecc.png" alt="">
                 <img v-if="statusCode===103" src="./image/succecc.png"  style="width: 1.67rem;height: 1.72rem" alt="">
-                
+
                 <div v-if="statusCode===102" class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
                 <div v-if="statusCode===104" class="content-text">当前商品库存不足<br/>去看看其他商品吧</div>
                 <div v-if="statusCode===103" class="content-text"> 每日限购一次，<br/>请明天再来~</div>
@@ -64,16 +64,16 @@ export default {
             })
             switch (getUrlParam('from')) {
                 case 'bdWap':
-                    parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                    parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
                 break
                 case 'jsWap':
-                    parent.location.href = `https://wap.beeplay123.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                    parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
                 break
                 case 'miniWap':
-                    parent.location.href = `https://wap.beeplay123.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                    parent.location.href = `https://wap.beeplaying.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
                 break
                 default:
-                    parent.location.href = `https://wap.beeplay123.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
+                    parent.location.href = `https://wap.beeplaying.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
                 }
         },
         // 去看看其他

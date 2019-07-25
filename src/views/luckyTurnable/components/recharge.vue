@@ -25,7 +25,7 @@
 export default {
     methods:{
         showMall(){
-            location.href = '//wap.beeplay123.com/payment/#/shopping'
+            location.href = '//wap.beeplaying.com/payment/#/shopping'
         }
     }
 }

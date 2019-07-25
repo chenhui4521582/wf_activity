@@ -9,11 +9,13 @@
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
             <div class="s-tx">
-              <img :src="item.profilePhoto | filter">
+              <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
+              <img v-if="!item.profilePhoto" :src="defaultImg | filter">
             </div>
             <span class="icon-number"></span>
             <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.plantFoodNum}}个</span>
+            <span class="hammer-number">{{item.plantFoodNum}}个<em class="t-second">{{item.updateTime || ''}}</em></span>
+
             <!-- <span class="s-text">第{{item.rank}}名</span> -->
             <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
             <!-- <div class="profit-award"></div> -->
@@ -52,13 +54,13 @@
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}</em>个</span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
@@ -67,7 +69,7 @@
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>
@@ -110,7 +112,8 @@ export default {
       countTime: null,
       endTime: '',
       myInfo: {},
-      isLoading: false
+      isLoading: false,
+      defaultImg: '/cdn/common/images/common/img_photo.png'
     }
   },
   props: {

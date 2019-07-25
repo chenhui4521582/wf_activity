@@ -308,7 +308,7 @@ export default {
   },
   methods: {
     receive (item) {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }, {
@@ -337,7 +337,7 @@ export default {
       }
       // 跳转商城
       if (gameType == 0 && actionsArr.includes(action)) {
-        parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+        parent.location.href = 'https://wap.beeplaying.com/payment/#/mall'
         return
       }
       // 跳平台(关闭)
@@ -370,7 +370,7 @@ export default {
       return finish + '/' + ops
     },
     getPlatTaskByBatch () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: this.cGameType + '-achievementTask',
         from: 'sdk',
         gameType: this.cGameType || ''
@@ -384,7 +384,7 @@ export default {
       })
     },
     getDayTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: this.cGameType + '-dayTask',
         from: 'sdk',
         gameType: this.cGameType || ''
@@ -432,7 +432,7 @@ export default {
       })
     },
     getAward (item) {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/getAwards', {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
       }, {
         headers: {
@@ -453,7 +453,7 @@ export default {
       this.isTabUse = !this.isTabUse
     },
     getUserInfo () {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo', {}, {
+      this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo', {}, {
         headers: {
           'App-Channel': this.curChannel,
           'Authorization': this.curToken
@@ -466,7 +466,7 @@ export default {
         })
     },
     getCdkeyStatus () {
-      this.axios.post('//ops-api.beeplay123.com/ops/api/cdkey/status', {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/status', {
         value: this.curlink
       }, {
         headers: {
@@ -480,7 +480,7 @@ export default {
       })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask',
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask',
         {
           value: 'NewUserStairTask'
         },
@@ -514,7 +514,7 @@ export default {
       } else {
         // 游戏内任务-去完成
       }
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }, {

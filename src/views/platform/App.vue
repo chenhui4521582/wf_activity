@@ -284,7 +284,7 @@ export default {
     saveNewUserGuidePosition() {
       return axios
         .post(
-          "//platform-api.beeplay123.com/wap/api/plat/newUser/guidePoint/1001"
+          "//platform-api.beeplaying.com/wap/api/plat/newUser/guidePoint/1001"
         )
         .then(r => {
           return r && r.data;
@@ -293,7 +293,7 @@ export default {
     backToWap() {
       GLOBALS.marchSetsPoint('A_H5PT0026000620') // H5平台-网游活动中心-游戏大厅点击
       if(localStorage.getItem("APP_CHANNEL") == '700002') {
-        location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
+        location.replace('https://wap.beeplaying.com/llwWap?channel=700002')
         return
       }
       function getUrlParam(ename) {

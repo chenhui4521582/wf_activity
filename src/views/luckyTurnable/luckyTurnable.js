@@ -17,7 +17,7 @@ Vue.prototype.axios = axios;
 
 Vue.filter('filter', function(url){
     if(url && !url.includes('http')){
-        return '//file.beeplay123.com'+ url
+        return '//file.beeplaying.com'+ url
     }else {
         return url
     }

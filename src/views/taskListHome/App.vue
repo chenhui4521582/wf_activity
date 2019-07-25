@@ -33,7 +33,7 @@
                         <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
                     </div>
                 </template>
-                
+
             </div>
             <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
                 <template v-if="tabSelected===0">
@@ -58,7 +58,7 @@
                         @finish="finish"
                     />
                 </template>
-                
+
             </div>
         </div>
         <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
@@ -90,7 +90,7 @@ export default {
             curChannel: localStorage.getItem('APP_CHANNEL'),
             tabSelected:localStorage.getItem('TAB_TASK_INDEX')?1:0,
             maskShow:false
-            
+
         }
     },
     mounted(){
@@ -136,7 +136,7 @@ export default {
     },
     methods: {
         async getMasterTaskNameList(){
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskList')
+            let {data:data} = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskList')
             if(data.code ==200){
                 let list = data.data.batchIds
 //                if(!this.clearFerrule) {  //删除赏金
@@ -172,7 +172,7 @@ export default {
         async backHome(){
             // H5平台-任务-成就大厅-返回
             await GLOBALS.marchSetsPoint('A_H5PT0122001166', {entrance: this.platSource})
-            location.href = `//wap.beeplay123.com/${this.getUrlParam('from')}/#/taskview`
+            location.href = `//wap.beeplaying.com/${this.getUrlParam('from')}/#/taskview`
         },
         checkTaskStatus(item,type,curParentTask){
             if(item.taskStatus == 0){
@@ -189,15 +189,15 @@ export default {
                 task_id: item.taskId,
                 task_name: item.taskName
             })
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/cacheGameType',{value : type})
-            location.href = `//wap.beeplay123.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
+            let {data:data} = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType',{value : type})
+            location.href = `//wap.beeplaying.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
         },
         async receive(item, type , val , curParentTask){
             if(curParentTask.medalIcon.includes('medal-1')){
                 this.curMedelIcon = curParentTask.medalIcon.replace('medal-1','medal-2')
             }
             let {taskId, taskLogId, awardsImage, awardsName, gameType} = item
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+            let {data:data} = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
                 taskId,
                 taskLogId
             })
@@ -214,7 +214,7 @@ export default {
             }
         },
         async getMasterList(val,type,item,otherStatus){
-            let {data:data} = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTaskInHall', {value:val})
+            let {data:data} = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskInHall', {value:val})
             if(data.code == 200 && data.data){
                 let showSubMasterList = [],
                     masterList = data.data.list,

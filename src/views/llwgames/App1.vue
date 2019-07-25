@@ -46,7 +46,7 @@
         },
         methods: {
             onQQLogin1() {
-                location.href = `//uic-api.beeplay123.com/uic/api/wap/qq/toLogin2?channel=${this.channel}&source=1&a=${new Date().getTime()}&redirectwfurl=${encodeURIComponent(location.href)}`
+                location.href = `//uic-api.beeplaying.com/uic/api/wap/qq/toLogin2?channel=${this.channel}&source=1&a=${new Date().getTime()}&redirectwfurl=${encodeURIComponent(location.href)}`
             },
             submit() {
 
@@ -78,7 +78,7 @@
                     });
                     return;
                 }
-                var requestTokenurl = '//uic-api.beeplay123.com/uic/api/user/login/sms/requestToken';
+                var requestTokenurl = '//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken';
                 var paramsObj = {
                     username: this.mobile,
                     smsCode: this.code,
@@ -96,7 +96,7 @@
                 })
             },
             getAccessToken(requestToken){
-                this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+                this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/accessToken', {
                     token: requestToken,
                     type: 1
                 }).then((res) => {
@@ -155,16 +155,16 @@
                 }
             },
             SendVerificationCode: function (code) {
-                return this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/sendSmsCode', {
+                return this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/sendSmsCode', {
                     username: code,
                     receiveRange: 1
                 });
             },
             back(){
-                location.replace('https://wap.beeplay123.com/llwWap?channel=700002')
+                location.replace('https://wap.beeplaying.com/llwWap?channel=700002')
             },
             async getJumpURL(val){
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/plat/entranceRedirect', {
+                let {data:data} = await this.axios.post('//platform-api.beeplaying.com/wap/api/plat/entranceRedirect', {
                     value: val,
                 })
                 if(data.code == 200){
@@ -189,9 +189,9 @@
                         }else{
                             if(params == 'plat'){
                                 if(localStorage.getItem('APP_CHANNEL') == 100001||this.channel.includes('100038')){
-                                    location.href = 'https://wap.beeplay123.com/bdWap?channel='+llw+'&isNewLogin=1&from='+this.platSource
+                                    location.href = 'https://wap.beeplaying.com/bdWap?channel='+llw+'&isNewLogin=1&from='+this.platSource
                                 }else{
-                                    location.href = 'https://wap.beeplay123.com/wap/home?channel='+llw+'&isNewLogin=1&from='+this.platSource
+                                    location.href = 'https://wap.beeplaying.com/wap/home?channel='+llw+'&isNewLogin=1&from='+this.platSource
 
                                 }
                             }else{
@@ -220,7 +220,7 @@
             if (utils.getUrlParamObj('token') && utils.getUrlParam("token").split("#/")[0]) {
                 this.getAccessToken(utils.getUrlParamObj('token') && utils.getUrlParam("token").split("#/")[0]);
             } else {
-                this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo', {isShowTotast: "false"}).then((response) => {
+                this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo', {isShowTotast: "false"}).then((response) => {
                     if (response.data.code == 200) {
                         this.islogin = false;
                         this.token = localStorage.getItem('ACCESS_TOKEN')

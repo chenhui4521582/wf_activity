@@ -73,7 +73,7 @@ export default {
   methods: {
     getItem () {
       // 获取任务内容及进度
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTaskStandard', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTaskStandard', {
         value: 'NewUserStairTask_NoMaternalTask'
       }).then((res) => {
         if (res.data.code == 200) {
@@ -92,7 +92,7 @@ export default {
       this.$emit('checkTaskStatus', item, type, index)
     },
     receive (item) {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then(res => {

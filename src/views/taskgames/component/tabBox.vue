@@ -4,6 +4,7 @@
       <li class="tab_item" :class="{'actived':isActived === item.name}" v-for="(item,index) in tabList" :key="index" @click="changeTab(item)"><img :src="require('../images/'+item.name+(isActived === item.name?'_actived':'')+'.png')" alt="">{{item.label}}</li>
       <div class="red" v-if="unreadQuantity">{{unreadQuantity}}</div>
     </ul>
+    <img :src="showegg.icon|filter" alt="" class="egg" @click="kickegg" v-if="showegg&&showegg.show">
     <template v-if="isActived === 'tasks'">
       <!-- <h4 class="crush-master-task" v-if="currentGameType">成就任务</h4> -->
       <slot>
@@ -51,6 +52,9 @@ export default {
   props: {
     currentGameType: {
       default: 0
+    },
+    id:{
+      default: 0
     }
   },
   data () {
@@ -61,7 +65,8 @@ export default {
       activitiesList: [],
       unreadQuantity: 0,
       confirm: false,
-      selectedActivity: {}
+      selectedActivity: {},
+      showegg:null,//是否显示砸金蛋
     }
   },
   methods: {
@@ -74,7 +79,7 @@ export default {
       }
     },
     getDetail () {
-      let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/details'
+      let url = 'https://ops-api.beeplaying.com/ops/api/sdk/operation/details'
       this.axios.post(url).then(response => {
         let res = response.data && response.data.data
         if (res) {
@@ -84,7 +89,7 @@ export default {
       })
     },
     openPop (item, index) {
-      let url = 'https://ops-api.beeplay123.com/ops/api/sdk/operation/read'
+      let url = 'https://ops-api.beeplaying.com/ops/api/sdk/operation/read'
       let self = this
       this.axios.post(url).then(response => {
         let res = response.data
@@ -130,7 +135,7 @@ export default {
           break// 打开充值回馈
         case 'open_payTurntable':
               parent&&parent.closeTaksPage()
-              let url5 = `https://wap.beeplay123.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              let url5 = `https://wap.beeplaying.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url5)
           break
         case 'recharge':
@@ -159,7 +164,7 @@ export default {
         case 'treasureCeremony':
           break
         case 'platform':
-          parent.location.href = 'https://wap.beeplay123.com/activities/platform.html?from=bdWap'
+          parent.location.href = 'https://wap.beeplaying.com/activities/platform.html?from=bdWap'
           break
         case 'halloween':
           // 万圣节活动
@@ -194,7 +199,7 @@ export default {
           break // 跳到双十一礼包
         // 打开大神榜单
         case 'dashenList':
-          parent.location.href = 'https://wap.beeplay123.com/activities/dashenlist.html'
+          parent.location.href = 'https://wap.beeplaying.com/activities/dashenlist.html'
           break
         // 打开抽奖
         case 'openluckdraw':
@@ -221,7 +226,7 @@ export default {
           break
         // 打开春节红包
         case 'festivalPackage':
-          parent.location.href = `https://wap.beeplay123.com/activities/springfestival.html?from=bdWap&source=hb-lunbo`
+          parent.location.href = `https://wap.beeplaying.com/activities/springfestival.html?from=bdWap&source=hb-lunbo`
           break
         // 打开我的奖品
         case 'schedule':
@@ -239,52 +244,76 @@ export default {
           break
         // 成就任务中心
         case 'taskListHome':
-          parent.location.href = '//wap.beeplay123.com/activities/taskListHome.html?from=bdWap'
+          parent.location.href = '//wap.beeplaying.com/activities/taskListHome.html?from=bdWap'
           break
         // 打开话费券中心
         case 'huafeiquan':
-          parent.location.href = '//wap.beeplay123.com/activities/billshop.html?from=bdWap'
+          parent.location.href = '//wap.beeplaying.com/activities/billshop.html?from=bdWap'
           break
         case 'moneyTreeShowRank':
-          parent.location.href = 'https://wap.beeplay123.com/moneyTree?time=' + (new Date().getTime())
+          parent.location.href = 'https://wap.beeplaying.com/moneyTree?time=' + (new Date().getTime())
           break
         case 'moneyTreePage':
-          parent.location.href = 'https://wap.beeplay123.com/moneyTree?time=' + (new Date().getTime())
+          parent.location.href = 'https://wap.beeplaying.com/moneyTree?time=' + (new Date().getTime())
           break
         case 'openGiantLeaf':
-          parent.location.href = 'https://wap.beeplay123.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
+          parent.location.href = 'https://wap.beeplaying.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
           case 'openGameTreasureGift': //打开夺宝礼包
               parent&&parent.closeTaksPage()
-              let url1 = `https://wap.beeplay123.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url1)
               break
           case 'openGameHalloween': //打开超值礼包
               parent&&parent.closeTaksPage()
-              let url2 = `https://wap.beeplay123.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              let url2 = `https://wap.beeplaying.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url2)
               break
           case 'openGameMiniFeedBack': //打开葫芦娃
               parent&&parent.closeTaksPage()
-              let url3 = `https://wap.beeplay123.com/payment/#/miniFeedBack?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              let url3 = `https://wap.beeplaying.com/payment/#/miniFeedBack?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url3)
               break
           case 'openGamePopGame': //打开盈利榜
               parent&&parent.closeTaksPage()
-              let url4 = `https://wap.beeplay123.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+              let url4 = `https://wap.beeplaying.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
               parent && parent.GameEval('openweb',url4)
-              break              
-              
+              break
+
         default:
           url.includes('//') && (parent.location.href = url)
           break
       }
     },
+    kickegg(){
+      GLOBALS.marchSetsPoint('A_H5PT0061001502',{
+        from_project_id:this.currentGameType,
+        task_name: this.showegg.url
+      })
+      this.$emit('kickegg',this.showegg.url)
+    }
   },
   computed: {
   },
   created () {
     this.getDetail()
+  },
+  mounted(){
+    this.axios.post('//ops-api.beeplaying.com/ops/api/activity/sdk-state',{
+      "value": this.currentGameType
+    }).then(res=>{
+      this.showegg=res.data.code==200&&res.data.data||null
+      if(this.showegg&&this.showegg.show){
+        GLOBALS.marchSetsPoint('A_H5PT0061001501',{
+          from_project_id:this.currentGameType
+        })
+        if(this.showegg.popup){
+          setTimeout(()=>{
+            this.$emit('kickegg',this.showegg.url)
+          },2000)
+        }
+      }
+    })
   }
 }
 </script>
@@ -292,6 +321,14 @@ export default {
 <style scoped lang="less">
 .sdk-tab-box {
   padding: 0.3rem 0.3rem 0;
+  .egg{
+    width: 1.04rem;
+    height: 1.08rem;
+    position: fixed;
+    right: 0;
+    top: .8rem;
+    z-index: 11;
+  }
   .tabs {
     position: relative;
     margin: 0 0.68rem;

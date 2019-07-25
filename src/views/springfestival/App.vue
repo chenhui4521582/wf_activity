@@ -577,26 +577,26 @@
                         this.burryPoint('1207003003', '春节红包-回到平台')
                         switch (this.backUrl) {
                             case 'wap':
-                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplaying.com/wap/home?channel=' + this.curChannel;
                                 break;
                             case 'jswap':
-                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel;
                                 break;
                             case 'bdwap':
-                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel;
+                                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel;
                                 break;
                         }
                     } else {
                         this.burryPoint('1207003030', '春节红包-玩游戏得红包(每日任务)')
                         switch (this.backUrl) {
                             case 'wap':
-                                window.location.href = 'https://wap.beeplay123.com/wap/home?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplaying.com/wap/home?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'jswap':
-                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                             case 'bdwap':
-                                window.location.href = 'https://wap.beeplay123.com/bdWap?channel=' + this.curChannel + '#/' + page;
+                                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel + '#/' + page;
                                 break;
                         }
                     }
@@ -687,13 +687,13 @@
             },//走马灯
             fetch(url, params) {
                 if (url.startsWith('/ops/api')) {
-                    url = '//ops-api.beeplay123.com' + url
+                    url = '//ops-api.beeplaying.com' + url
                 }
                 if (url.startsWith('/wap/api')) {
-                    url = '//platform-api.beeplay123.com' + url
+                    url = '//platform-api.beeplaying.com' + url
                 }
                 if (url.startsWith('/wap/api')) {
-                    url = '//shop-api.beeplay123.com' + url
+                    url = '//shop-api.beeplaying.com' + url
                 }
                 return this.axios.post(url, params, {})
             },//请求封装方法
@@ -803,7 +803,7 @@
             },
             async getPackage() {//获取福袋礼包数据
                 try {
-                    const res = await this.axios.get('//shop-api.beeplay123.com/shop/api/activity/spring')
+                    const res = await this.axios.get('//shop-api.beeplaying.com/shop/api/activity/spring')
                     if (res.data.code == 200 && res.data.data) {
                         this.packageData = res.data.data
                     }
@@ -820,9 +820,9 @@
                 }
                 localStorage.setItem('JDD_PARAM', JSON.stringify(val))
                 if (window.linkUrl.getBackUrlFlag(this.curChannel)=='bdWap') {//好看、全民小视频
-                    top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment';
+                    top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment';
                 } else {
-                    top.location.href = 'https://wap.beeplay123.com/payment/#/payment';
+                    top.location.href = 'https://wap.beeplaying.com/payment/#/payment';
                 }
             },//福袋礼包购买
             burryPoint(id, name, params) {
@@ -830,11 +830,11 @@
             },//埋点方法封装
             share() {
                 this.burryPoint('1207003060', '春节红包-邀好友得红包-去分享')
-                window.location.href='https://wap.beeplay123.com/activities/packetSharing.html'
+                window.location.href='https://wap.beeplaying.com/activities/packetSharing.html'
             },//去分享
             // 获取红包任务列表
             getEnvelopesList() {
-                this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platCommonTaskByBatch', {
+                this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platCommonTaskByBatch', {
                     value: "SpringFestival-recharge"
                 }).then((res) => {
                     if (res.data.code == 200) {
@@ -853,7 +853,7 @@
                 }
             },
             async getjiazbonus(item) {//点击加赠红包领取
-                let res=await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish',{taskId:item.taskId})
+                let res=await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish',{taskId:item.taskId})
                 if(res.data.code==200){
                     this.burryPoint('1207003041', '春节红包-加赠红包-红包获得弹窗')
                     this.jiazengbonusNumber = item.awardsNum
@@ -868,10 +868,10 @@
             gotocomplete() {//点击加赠红包去完成
                 this.burryPoint('1207003044', '春节红包-加赠红包-去完成')
                 // this.isshowBonusFailure = true
-                top.location.href='https://wap.beeplay123.com/payment/#/mall'
+                top.location.href='https://wap.beeplaying.com/payment/#/mall'
             },
             async getBatchRedDot(){
-                let res= await this.fetch('//platform-api.beeplay123.com/task/api/usertask/batchTaskStatus',{
+                let res= await this.fetch('//platform-api.beeplaying.com/task/api/usertask/batchTaskStatus',{
                     value:'dayTask'
                 })
                 if(res.data.code==200){
@@ -891,7 +891,7 @@
                 }
             },
             async getaccountInfo(){
-                let res=await this.fetch('//trans-api.beeplay123.com/trans/api/trans/accountInfo')
+                let res=await this.fetch('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
                 if(res.data.code==200){
                     this.userID=res.data.data&&res.data.data.userId||0
                     this.getAnchor('section1')

@@ -103,7 +103,7 @@
 	                return;
 	            }
 
-	            this.axios.post('//uic-api.beeplay123.com/uic/api/user/password/newPassword',{
+	            this.axios.post('//uic-api.beeplaying.com/uic/api/user/password/newPassword',{
 	                "newPassword": this.vNewCode,
 	                "smsCode": this.vCode,
 	                "username": this.vAccount
@@ -143,7 +143,7 @@
 	                return;
 	            }
 
-				this.axios.post('//uic-api.beeplay123.com/uic/api/user/password/sendForgetCode',{
+				this.axios.post('//uic-api.beeplaying.com/uic/api/user/password/sendForgetCode',{
 	                username: this.vAccount
 	            }).then((response) => {
 	            	if(response.data.code == 200) {
