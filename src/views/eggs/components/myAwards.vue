@@ -209,6 +209,7 @@ export default {
             }
           }
           &.empty {
+            font-size: 0.24rem;
             line-height: 2rem;
             text-align: center;
           }
