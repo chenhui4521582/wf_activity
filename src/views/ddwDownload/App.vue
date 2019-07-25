@@ -29,7 +29,7 @@
                     </div>
                 </div>
            </div>
-           
+
            <div class="btn-download" @click="goDownload">立即下载</div>
        </div>
     </div>

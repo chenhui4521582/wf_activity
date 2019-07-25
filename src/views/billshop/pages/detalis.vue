@@ -2,13 +2,16 @@
   <div class="details-warp">
     <div class="details-content">
       <base-header title="商品详情" :accountBalance="accountBalance"></base-header>
+      <div class="luck-box" v-if="currentItem.phyAwardsType==7" @click="$router.push('/schedule')">我的幸运盒子 ></div>
       <!-- 头图 -->
       <div class="title-warp">
         <div class="banner-title">
           <img :src="bannerImg | filter" alt="">
         </div>
         <div class="title-tet">
-          <div class="item">{{currentItem.name}}</div>
+          <div class="item">{{currentItem.name}}
+            <div class="buyone" v-if="buyone([currentItem])">每日限购一次</div>
+          </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
       </div>
@@ -34,7 +37,7 @@
             <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
             <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
             <div class="item-number-add">
-              <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota"></field>
+              <field v-model="specNumber" :disabled="currentItem.phyAwardsId === 232" :store-max="currentItem.allUsersTodayAvailableQuota" :buyone="buyone([currentItem])"></field>
             </div>
           </div>
         </div>
@@ -45,13 +48,16 @@
         <div class="details" id="product_description" v-html="currentItem.description"></div>
       </div>
     </div>
-    <div class="button-warp" @click="goExchange">
+    <div class="button-warp" @click="goExchange(false)">
       <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
-        <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取</span>
+        <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取
+          <i><br>话费券余额：{{accountBalance}}</i>
+        </span>
         <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
       </div>
     </div>
     <!-- 提升弹框 -->
+    <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize"  @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber"/>
     <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
   </div>
 </template>
@@ -60,10 +66,11 @@ import baseHeader from '../components/baseHeader/baseHeader'
 import field from '../components/field/field'
 import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
+import dialogGainMask from '../components/dialog/dialogGain'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
   name: 'detailsPage',
-  components: { baseHeader, field, dialogMask },
+  components: { baseHeader, field, dialogMask,dialogGainMask },
   data () {
     return {
       selectedIndex: 0,
@@ -76,11 +83,14 @@ export default {
       phyAwardsType: this.$route.query['phyAwardsType'],
       goodsName: this.$route.query['goodsName'],
       showOut: this.$route.query['showOut'],
-      accountBalance: parseFloat(this.$route.query['accountBalance']),
-      currentList: []
+      accountBalance:0,
+      currentList: [],
+      dialogGainShow:false
     }
   },
   async created () {
+    const {data:userInfo}=await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
+    this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
     if (code === 200 && data && data.length) {
@@ -91,6 +101,7 @@ export default {
           return item.phyAwardsId !== 232
         }
       })
+      console.log('currentList',this.currentList)
     }
   },
   computed: {
@@ -140,6 +151,14 @@ export default {
     }
   },
   methods: {
+    buyone (list) {
+      if (list.length > 1) {
+        return false
+      }
+      if (list.length === 1 && list[0].limitPerPersonDay === 1) {
+        return true
+      }
+    },
     // 切换规格
     changeSpec (index) {
       this.selectedIndex = index
@@ -150,10 +169,14 @@ export default {
       })
     },
     // 兑换话费
-    async goExchange () {
+    async goExchange (isFromDialogGain=false) {
       const { id, purchasePrice, name, phyAwardsId } = this.currentItem
       // 库存不足
       if (!this.allUsersTodayAvailableQuota) { return }
+      if((!isFromDialogGain)&&this.accountBalance>=purchasePrice*this.specNumber){
+        this.dialogGainShow=true
+        return
+      }
       // 防止用户疯狂点击请求接口
       if (this.requestType) { return }
       this.requestType = true
@@ -169,6 +192,7 @@ export default {
 
 
       const { data, code, message } = await placeOrder(id, this.specNumber)
+
       if (code === 200) {
         // 成功后执行 减去库存
         this.updateCurrentList(id, this.specNumber)
@@ -188,33 +212,11 @@ export default {
     // 去领奖
     checkprize () {
       const item = this.currentItem
-      if (item.phyAwardsType && [1, 26, 32].includes(item.phyAwardsType)) {
-        switch (getUrlParam('from')) {
-          case 'bdWap':
-            parent.location.href = 'https://wap.beeplaying.com/bdWap/#/schedule'
-            break
-          case 'jsWap':
-            parent.location.href = 'https://wap.beeplaying.com/jsWap/#/schedule'
-            break
-          case 'miniWap':
-            parent.location.href = 'https://wap.beeplaying.com/miniWap/#/schedule'
-            break
-          default:
-            parent.location.href = 'https://wap.beeplaying.com/wap/home/#/schedule'
-        }
-      } else {
-        switch (getUrlParam('from')) {
-          case 'bdWap':
-            parent.location.href = 'https://wap.beeplaying.com/bdWap/#/personal?openMyWard=1'
-            break
-          case 'jsWap':
-            parent.location.href = 'https://wap.beeplaying.com/jsWap/#/personal?openMyWard=1'
-            break
-          case 'miniWap':
-            parent.location.href = 'https://wap.beeplaying.com/miniWap/#/personal?openMyWard=1'
-            break
-          default:
-            parent.location.href = 'https://wap.beeplaying.com/wap/home/#/personal?openMyWard=1'
+      if (item.phyAwardsType) {
+        if([7].includes(item.phyAwardsType)){
+          this.$router.push('/schedule')
+        }else{
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/schedule')
         }
       }
     },
@@ -258,6 +260,20 @@ export default {
   background-color: #0f1726;
   .details-content {
     padding: 0 0.3rem;
+    .luck-box{
+      width: 1.78rem;
+      height: .38rem;
+      line-height:.38rem;
+      text-align: center;
+      background: #213250;
+      border-radius: .08rem;
+      font-size:.22rem;
+      font-weight:500;
+      color:rgba(139,139,140,1);
+      position: fixed;
+      top: .2rem;
+      right: 0.3rem;
+    }
   }
 }
 .banner-title {
@@ -278,6 +294,21 @@ export default {
   background-color: #141f33;
   .item {
     flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    .buyone{
+      display: inline-block;
+      width: 1.23rem;
+      height: .28rem;
+      line-height:.28rem;
+      font-size:.2rem;
+      font-weight:bold;
+      color:rgba(25,38,61,1);
+      margin-left: .08rem;
+      background: url("../images/buyone1.png");
+      background-size: 100% 100%;
+    }
   }
   div {
     font-size: 0.32rem;
@@ -385,10 +416,18 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
-    line-height: 0.9rem;
-    text-align: center;
-    font-size: 0.28rem;
+    font-size: 0.3rem;
     color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    i{
+      font-style: normal;
+      font-size:.2rem;
+      font-weight:400;
+      color:rgba(255,189,137,1);
+    }
   }
   .save-button-on {
     background-color: #808080;

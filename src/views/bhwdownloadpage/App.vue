@@ -3,7 +3,7 @@
         <div  v-show="isWx">
             <img src="./images/fc-bg.png" class="fc-bg">
             <p class="title">点击右上角，选择浏览器查看<img src="./images/arrow.png" class="arrow"></p>
-            
+
         </div>
         <div class="bj-bg"  v-show="isWx"></div>
         <div class="btn" @click="download">立即安装</div>
@@ -46,14 +46,14 @@
             }
         },
         mounted(){
-            
+
             if(this.isWeixn()) {
                 this.isWx = true;
                 GLOBALS.buriedPoint(1207002403,'H5平台-下载引导页加载');
             }else{
                 GLOBALS.buriedPoint(1207002409,'H5平台-下载页加载');
             }
-            
+
         }
     }
 </script>
