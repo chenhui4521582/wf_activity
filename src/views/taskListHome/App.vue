@@ -33,7 +33,7 @@
                         <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
                     </div>
                 </template>
-                
+
             </div>
             <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
                 <template v-if="tabSelected===0">
@@ -58,7 +58,7 @@
                         @finish="finish"
                     />
                 </template>
-                
+
             </div>
         </div>
         <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
@@ -90,7 +90,7 @@ export default {
             curChannel: localStorage.getItem('APP_CHANNEL'),
             tabSelected:localStorage.getItem('TAB_TASK_INDEX')?1:0,
             maskShow:false
-            
+
         }
     },
     mounted(){

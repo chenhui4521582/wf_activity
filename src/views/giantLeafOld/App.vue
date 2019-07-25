@@ -98,7 +98,7 @@
                 if(this.jyzUserInfo) {
                     return this.jyzUserInfo.betNum - this.jyzUserInfo.betRecordNum
                 }
-            },  
+            },
             rotate() {
                 var rotateArr = [];
                 var d = 1/10;
@@ -426,19 +426,19 @@
             height: 5.14rem;
 
         }
-        
+
         .turn-bg {
             width: 5.14rem;
             height: 5.14rem;
             position: absolute;
             left: 0;
-            top: 0;  
+            top: 0;
             transition: all 3s cubic-bezier(0.68, 0.01, 0.13, 1);
             background: url(./images/jp-zp.png) no-repeat;
             background-size: 100% 100%;
             ul {
                 height: 5.14rem;
-            } 
+            }
             li {
                 width: 1.5rem;
                 height: 5.14rem;

@@ -148,7 +148,7 @@ export default {
         checkMedals(value){
           let index = value.index
           let parentTask = this.crushTaskList.allTask[index].parentTask
-          GLOBALS.marchSetsPoint('A_H5PT0061000539', { 
+          GLOBALS.marchSetsPoint('A_H5PT0061000539', {
               project_id: parentTask.taskType,
               target_project_id: parentTask.taskType,
               task_id: parentTask.taskId,
@@ -519,7 +519,7 @@ div{box-sizing: border-box}
                 img{
                     width: .99rem;
                 }
-                
+
             }
         }
     }

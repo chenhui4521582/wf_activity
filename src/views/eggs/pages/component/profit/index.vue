@@ -27,7 +27,7 @@
           <ul>
             <li>
               <h4>我的排名</h4>
-              <span>{{myInfo.myRank}}</span>
+              <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
             <li>
               <h4>累计获得锤子</h4>

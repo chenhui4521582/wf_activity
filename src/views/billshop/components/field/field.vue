@@ -31,6 +31,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    buyone:{
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -48,7 +52,14 @@ export default {
     },
     addClick () {
       if (this.disabled) { return }
-      this.inputValue++
+      if(this.buyone){
+        this.$toast.show({
+          message:'该商品每人限购1次哟',
+          duration:2000
+        })
+      }else{
+        this.inputValue++
+      }
     },
     handleInput (event) {
       if (parseInt(event.target.value) > this.storeMax) {
