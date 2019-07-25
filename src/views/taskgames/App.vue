@@ -360,7 +360,7 @@ export default {
           iframe.src = 'https://wap.beeplaying.com/ads/bdAds.html'
           break
         case '100067':
-          iframe.src = 'https://wap.beeplaying.com/ads/qttAds.html?_NO_BRIDGE_=1'
+          iframe.src = 'https://wap.beeplaying.com/ads/qttAds.html?_NO_BRIDGE_=TRUE'
           break
 
         default:
