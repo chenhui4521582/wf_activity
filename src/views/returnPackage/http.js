@@ -22,8 +22,8 @@ axios.interceptors.request.use(function (config) {
   config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
   // }
 
-  config.headers.Authorization = '88418b95777749e891ad6d6fd482956f'
-  config.headers['App-Channel'] = '100039'
+  // config.headers.Authorization = '88418b95777749e891ad6d6fd482956f'
+  // config.headers['App-Channel'] = '100039'
   localStorage.setItem('APP_VERSION', '1.0.0')
   return config
 }, function (error) {
