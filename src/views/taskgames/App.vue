@@ -146,7 +146,8 @@
                 <li v-for="(item, index) in otherGamesItems" :key="index">
                   <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                     <div class="pic">
-                      <img :src="item.icon | filter" alt="">
+                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                     </div>
                     <div class="item-text">
                       <p class="title" v-html="item.taskDescShow"></p>
@@ -633,7 +634,9 @@ export default {
         }) // H5平台-游戏内SDK-每日任务-去完成
       }
       if(action==72){
-        this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess')
+        this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
+          value:taskId
+        })
         GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
         parent.location.href=url
       }
@@ -676,15 +679,23 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
-          taskId: taskId
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.quitConfig = res.data.data
-            this.isRRZQPop = true
-            return
-          }
-        })
+        if(action==72){
+          this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
+            value:taskId
+          })
+          GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
+          parent.location.href=url
+        }else{
+          this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
+            taskId: taskId
+          }).then((res) => {
+            if (res.data.code == 200) {
+              this.quitConfig = res.data.data
+              this.isRRZQPop = true
+              return
+            }
+          })
+        }
         // }
       } else if (type == 'new_user_task_fixed_entrance') {
         this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
@@ -874,6 +885,9 @@ export default {
           this.otherGamesItems = res.data.data.filter((item) => {
             return (item.gameType != this.getUrlParam('gametype'))
           })
+          if( this.otherGamesItems.filter(item=>item.action==72).length){
+            GLOBALS.marchSetsPoint('A_H5PT0142001563',{target_project_id:this.getUrlParam('gametype'),task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
+          }
         }
       })
     },
