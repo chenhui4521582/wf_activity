@@ -113,7 +113,8 @@
                 <li v-for="(item, index) in currentGamesItems" :key="index">
                   <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                     <div class="pic">
-                      <img :src="item.icon | filter" alt="">
+                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                     </div>
                     <div class="item-text">
                       <p class="title" v-html="item.taskDescShow"></p>
@@ -631,6 +632,11 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-每日任务-去完成
       }
+      if(action==72){
+        this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess')
+        GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
+        parent.location.href=url
+      }
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
       }
@@ -862,6 +868,9 @@ export default {
           this.currentGamesItems = res.data.data.filter((item) => {
             return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
           })
+          if(this.currentGamesItems.filter(item=>item.action==72).length){
+            GLOBALS.marchSetsPoint('A_H5PT0142001563',{target_project_id:this.getUrlParam('gametype'),task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
+          }
           this.otherGamesItems = res.data.data.filter((item) => {
             return (item.gameType != this.getUrlParam('gametype'))
           })
