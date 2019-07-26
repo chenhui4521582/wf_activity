@@ -82,11 +82,11 @@ export default {
       .circle {
         width: 1.8rem;
         height: 1.8rem;
-        border-radius: 50%;
+        border-radius: 0.9rem;
       }
     }
     .circle {
-      box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 0 0 9rem rgba(0, 0, 0, 0.55);
       position: absolute;
       top: 1.5rem;
       left: 2.2rem;
@@ -137,7 +137,7 @@ export default {
       }
     }
     .circle {
-      box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 0 0 9rem rgba(0, 0, 0, 0.55);
       position: absolute;
       left: -0.5rem;
       top: 0.3rem;
@@ -168,7 +168,7 @@ export default {
       position: relative;
       width: 5.7rem;
       .circle {
-        box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.55);
+        box-shadow: 0 0 0 9rem rgba(0, 0, 0, 0.55);
         position: absolute;
         left: 1.98rem;
         bottom: 1.46rem;
@@ -177,11 +177,11 @@ export default {
     .step3_2 {
       overflow: hidden;
       position: relative;
-      width: 1.5rem;
+      width: calc(~"100%" - 5.7rem);
       .circle {
-        box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.55);
+        box-shadow: 0 0 0 9rem rgba(0, 0, 0, 0.55);
         position: absolute;
-        left: 0;
+        right: 0.2rem;
         bottom: 1.4rem;
       }
     }

@@ -16,12 +16,15 @@
               <p>砸蛋时间</p>
               <p>砸蛋奖励</p>
             </div>
-            <ul class="awards-history">
+            <ul v-if="awardsList&&awardsList.length" class="awards-history">
               <li v-for="(item , index) in awardsList" :key="index">
                 <p>{{item.receiverTime | dateFilter}}</p>
                 <p>{{item.awardsName}}</p>
               </li>
             </ul>
+            <div class="awards-history empty" v-else>
+              暂无记录
+            </div>
           </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
@@ -204,6 +207,11 @@ export default {
               flex: 1;
               text-align: center;
             }
+          }
+          &.empty {
+            font-size: 0.24rem;
+            line-height: 2rem;
+            text-align: center;
           }
         }
       }

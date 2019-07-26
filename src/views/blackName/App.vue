@@ -106,9 +106,9 @@
               duration: 1500
           })
         }
-        
 
-        
+
+
       },
       //获取地址栏问号后面的参数值
       getUrlParam: function (ename) {
@@ -152,7 +152,7 @@
                 this.timer = setInterval(() => {
                     this.num = this.num + 1;
                     if (this.num == this.djsNumber) {
-                        clearInterval(this.timer); 
+                        clearInterval(this.timer);
                         this.validatorText = '获取验证码';
                         this.num = 0;
                     } else {
@@ -166,7 +166,7 @@
             });
         })
 
-        
+
       }
     }
   }
@@ -276,7 +276,7 @@
         border-radius: 0.08rem;
         &.btn-code {
           color:rgba(254,254,255,0.3);
-          background: #22365b;  
+          background: #22365b;
         }
         &.btn-djs {
           background: #494949;

@@ -98,7 +98,7 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
-         
+
           <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
@@ -255,10 +255,6 @@ export default {
     this.getHuafeiNum()
   },
   computed: {
-    // woolUserType () {
-    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
-    //   // return true
-    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -358,7 +354,18 @@ export default {
       iframe.style.margin = 0
       iframe.style.padding = 0
       iframe.style['z-index'] = 10
-      iframe.src = 'https://wap.beeplaying.com/ads/index.html'
+      switch (this.channel) {
+        case '100039':
+        case '100042':
+          iframe.src = 'https://wap.beeplaying.com/ads/bdAds.html'
+          break
+        case '100067':
+          iframe.src = 'https://wap.beeplaying.com/ads/qttAds.html'
+          break
+
+        default:
+          break
+      }
       parent.document.body.appendChild(iframe)
     },
     init () {
@@ -367,7 +374,7 @@ export default {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042')) || false
           }
         })
     },
@@ -387,9 +394,9 @@ export default {
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
-        localStorage.setItem('originGameProblem',true)
-        localStorage.setItem('originGame', parent.location.href)
-      
+      localStorage.setItem('originGameProblem', true)
+      localStorage.setItem('originGame', parent.location.href)
+
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {

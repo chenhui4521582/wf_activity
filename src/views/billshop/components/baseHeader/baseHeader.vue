@@ -13,7 +13,6 @@ export default {
             default:''
         },
         accountBalance:{
-            type:Number,
             default:0
         }
     },
