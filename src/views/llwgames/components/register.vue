@@ -83,7 +83,7 @@
 	                return;
 	            }
 
-				this.axios.post('//uic-api.beeplay123.com/uic/api/user/register/sendCode', {
+				this.axios.post('//uic-api.beeplaying.com/uic/api/user/register/sendCode', {
         			username: this.vAccount
         		}).then((res) => {
         			if(res.data.code == 200) {
@@ -104,13 +104,13 @@
 			},
 			codePart() {
 					var that = this;
-					that.axios.post('//uic-api.beeplay123.com/uic/api/user/login/requestToken',{
+					that.axios.post('//uic-api.beeplaying.com/uic/api/user/login/requestToken',{
 		                "username": that.vAccount,
 		                "password": that.vNewCode
 		            }).then((response) => {
 
 		            	if(response.data.code == 200) {
-		            		that.axios.post('//uic-api.beeplay123.com/uic/api/user/login/accessToken', {
+		            		that.axios.post('//uic-api.beeplaying.com/uic/api/user/login/accessToken', {
 		            			token: response.data.data,
 		            			type: 1
 		            		}).then((res) => {
@@ -122,7 +122,7 @@
                                         duration: 1500
                                     });
 									setTimeout(() => {
-                                        location.replace('https://wap.beeplay123.com/llwWap?channel='+this.channel)
+                                        location.replace('https://wap.beeplaying.com/llwWap?channel='+this.channel)
 									}, 2000);
 		            			}else {
 		            				that.$toast.show({
@@ -196,7 +196,7 @@
 	            let userid = localStorage.getItem('userid') ? localStorage.getItem('userid') : '';
 		        if(!ykBindOrigin) {
 
-		        	this.axios.post('//uic-api.beeplay123.com/uic/api/user/register/save', {
+		        	this.axios.post('//uic-api.beeplaying.com/uic/api/user/register/save', {
 	        			"password": this.vNewCode,
 	        			"smsCode": this.vCode,
 	        			"username": this.vAccount,
@@ -212,7 +212,7 @@
 
 	        		})
 		        }else {
-		        	this.axios.post('//uic-api.beeplay123.com/uic/api/user/register/save', {
+		        	this.axios.post('//uic-api.beeplaying.com/uic/api/user/register/save', {
 	        			"password": this.vNewCode,
 	        			"smsCode": this.vCode,
 	        			"username": this.vAccount,
@@ -234,7 +234,7 @@
 				this.showPop = false;
             },
             showProtocal(){
-                location.href = '//wap.beeplay123.com/agreement/platformProtocol.html'
+                location.href = '//wap.beeplaying.com/agreement/platformProtocol.html'
 
                 // this.$router.replace('/protocol')
             }

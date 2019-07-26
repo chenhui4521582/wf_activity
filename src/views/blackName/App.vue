@@ -81,7 +81,7 @@
           return
         }
         if(!this.isClick) {
-          this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/newFeedback', {
+          this.axios.post('//platform-api.beeplaying.com/wap/api/feedback/newFeedback', {
               description: this.description,
               isLogin: 0,
               phone: this.phoneTxt,
@@ -106,9 +106,9 @@
               duration: 1500
           })
         }
-        
 
-        
+
+
       },
       //获取地址栏问号后面的参数值
       getUrlParam: function (ename) {
@@ -144,7 +144,7 @@
           })
           return
         }
-        this.axios.post('//platform-api.beeplay123.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/feedback/sendMsg/'+this.phoneTxt).then((res)=> {
             let message = res.data.code == 200 ? '验证码已发送注意查收' : res.data.message;
             if(res.data.code == 200) {
                 clearInterval(this.timer);
@@ -152,7 +152,7 @@
                 this.timer = setInterval(() => {
                     this.num = this.num + 1;
                     if (this.num == this.djsNumber) {
-                        clearInterval(this.timer); 
+                        clearInterval(this.timer);
                         this.validatorText = '获取验证码';
                         this.num = 0;
                     } else {
@@ -166,7 +166,7 @@
             });
         })
 
-        
+
       }
     }
   }
@@ -276,7 +276,7 @@
         border-radius: 0.08rem;
         &.btn-code {
           color:rgba(254,254,255,0.3);
-          background: #22365b;  
+          background: #22365b;
         }
         &.btn-djs {
           background: #494949;

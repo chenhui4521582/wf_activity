@@ -127,7 +127,7 @@ export default {
       }
 
       localStorage.setItem('originDeffer', window.location.href)
-      window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+      window.location.href = 'https://wap.beeplaying.com/payment/#/mall'
     },
     going (status) {
       if (status) {

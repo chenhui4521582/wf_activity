@@ -107,7 +107,7 @@
         methods: {
             async zanFn(val){
                 GLOBALS.buriedPoint(1207001603,'H5平台-大神攻略-点赞')
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/wap/coterie/praise', {
+                let {data:data} = await this.axios.post('//platform-api.beeplaying.com/wap/api/wap/coterie/praise', {
                     value: this.coterieList && this.coterieList.id,
                 })
                 if(data.code == 101){
@@ -133,7 +133,7 @@
             },
             async getCoterieList(){
 
-                let {data:data} = await this.axios.post('//platform-api.beeplay123.com/wap/api/wap/coterie/list', {
+                let {data:data} = await this.axios.post('//platform-api.beeplaying.com/wap/api/wap/coterie/list', {
                     page : 1,
                     pageSize : 5
                 })
@@ -153,7 +153,7 @@
                     top.location.href =window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
                 }else{
                     GLOBALS.buriedPoint(1207001604,'H5平台-大神攻略-有奖投稿')
-                    location.href = 'https://wap.beeplay123.com/wf_zhengjiling/'
+                    location.href = 'https://wap.beeplaying.com/wf_zhengjiling/'
                 }
             }
         },

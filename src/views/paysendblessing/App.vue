@@ -67,7 +67,7 @@ export default {
 	   GLOBALS.marchSetsPoint('A_H5PT0074000678')
     },
     getRankingList () {
-	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/details';
+	  let url = '//ops-api.beeplaying.com/ops/api/goodFortune/details';
 	  this.axios.post(url, {
 		batchId: this.batchId
 	  }, {
@@ -92,7 +92,7 @@ export default {
 
     },
     getLog () {
-	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/history';
+	  let url = '//ops-api.beeplaying.com/ops/api/goodFortune/history';
 	  this.axios.post(url, {
 		header: {
 		  'App-Channel': this.APP_CHANNEL,
@@ -110,7 +110,7 @@ export default {
 	getBlessingNum () {
 	  let isPaySendBlessingSuccess = localStorage.getItem('paySendBlessingSuccess');
 	  if(!isPaySendBlessingSuccess || isPaySendBlessingSuccess == 'error')  return false
-	  let url = '//ops-api.beeplay123.com/ops/api/goodFortune/latestBonus';
+	  let url = '//ops-api.beeplaying.com/ops/api/goodFortune/latestBonus';
 	  this.axios.post(url, {
 		header: {
 		  'App-Channel': this.APP_CHANNEL,
@@ -144,7 +144,7 @@ export default {
 		  window.history.back(-1);
 		  break;
 		case 'pay' :
-		  window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+		  window.location.href = 'https://wap.beeplaying.com/payment/#/mall'
 		  break;
 	  }
     },

@@ -18,10 +18,10 @@
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
     <!-- sdk 新版运营位 -->
-    <sdk-tab-box :currentGameType='currentGameType'>
+    <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <div v-if="showNewUserTask" class="new-user-task">
+          <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
               <img src="./img/tips.png" alt="">
             </div>
@@ -98,6 +98,7 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
+
           <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
@@ -239,7 +240,7 @@ export default {
     this.channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
     this.currentGameType = this.getUrlParam('gametype')
     if (this.channel == '100047001' || this.channel == '100048001') {
-      window.location.href = `https://wap.beeplay123.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
+      window.location.href = `https://wap.beeplaying.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
       return
     }
     if (parent.loadTaksPage) {
@@ -254,10 +255,6 @@ export default {
     this.getHuafeiNum()
   },
   computed: {
-    // woolUserType () {
-    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
-    //   // return true
-    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -298,15 +295,15 @@ export default {
     },
     // 显示大师任务
     showCrushMasterTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示王者任务
     showKingTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示新手任务
     showNewUserTask () {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -319,7 +316,7 @@ export default {
     },
     filter (url) {
       if (url && !url.includes('http')) {
-        return '//file.beeplay123.com' + url
+        return '//file.beeplaying.com' + url
       } else {
         return url
       }
@@ -356,16 +353,28 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
-      iframe.src = 'https://wap.beeplay123.com/ads/index.html'
+      iframe.style['z-index'] = 10
+      switch (this.channel) {
+        case '100039':
+        case '100042':
+          iframe.src = 'https://wap.beeplaying.com/ads/bdAds.html'
+          break
+        case '100067':
+          iframe.src = 'https://wap.beeplaying.com/ads/qttAds.html'
+          break
+
+        default:
+          break
+      }
       parent.document.body.appendChild(iframe)
     },
     init () {
-      this.axios.post('//platform-api.beeplay123.com/wap/api/continuous/signIn/new/list')
+      this.axios.post('//platform-api.beeplaying.com/wap/api/continuous/signIn/new/list')
         .then(res => {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042')) || false
           }
         })
     },
@@ -380,15 +389,18 @@ export default {
       parent.location.href = this.jumpToPlat() + '#/personal'
     },
     async getHuafeiNum () {
-      let { data } = await this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/getMinHFConvertAmount')
+      let { data } = await this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/getMinHFConvertAmount')
       this.huafeiNum = data.data
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
+      localStorage.setItem('originGameProblem', true)
+      localStorage.setItem('originGame', parent.location.href)
+
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
-      let { data } = await this.axios.post('//platform-api.beeplay123.com/task/api/usertask/achievementTask', { value: val })
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTask', { value: val })
       if (data.code == 200) {
         let showSubMasterList = [],
           crushList = data.data.list, currentParentTask, currentIndex,
@@ -480,7 +492,7 @@ export default {
     },
 
     getDegradeTaskStatus () {
-      this.axios.post('//platform-api.beeplay123.com/wap/api/degrade/task/status')
+      this.axios.post('//platform-api.beeplaying.com/wap/api/degrade/task/status')
         .then(res => {
           if (res.data.code == 200) {
             this.isTfStatus = res.data.data.isOpen
@@ -571,17 +583,29 @@ export default {
           break
       }
       if (item.taskStatus == 0) {
-        localStorage.removeItem('ENTRANCE')
         localStorage.removeItem('ADSDATA')
         if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
-          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          if (item.action === 71) {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', '看视频任务')
+          } else {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          }
           localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
           // 为父窗口（游戏界面） 创建script
           try {
             this.initParentAd()
           } catch (error) {
-            this.receive(item, type, index)
+            if (item.action === 71) {
+              this.$toast.show({
+                message: '广告填充中，请稍后再试',
+                duration: 2000
+              })
+            } else {
+              this.receive(item, type, index)
+            }
           }
           return
         }
@@ -646,7 +670,7 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
           if (res.data.code == 200) {
@@ -657,7 +681,7 @@ export default {
         })
         // }
       } else if (type == 'new_user_task_fixed_entrance') {
-        this.axios.post('//platform-api.beeplay123.com/wap/api/newUser/quit/config', {
+        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
           taskId: taskId
         }).then((res) => {
           if (res.data.code == 200) {
@@ -689,12 +713,12 @@ export default {
         }
         // 跳转商城
         if (gameType == 0 && actionsArr.includes(action)) {
-          parent.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+          parent.location.href = 'https://wap.beeplaying.com/payment/#/mall'
           return
         }
         // 跳平台(关闭)
         if (gameType == 0 && action == 2) {
-          // parent.location.href = 'https://wap.beeplay123.com/bdWap/?channel=100039'
+          // parent.location.href = 'https://wap.beeplaying.com/bdWap/?channel=100039'
           this.backIndexPage()
           return
         }
@@ -709,7 +733,7 @@ export default {
         // //   let gameUrl = this.trimStr(url) + '&channel=' + this.channel + '&token=' + this.token + '&gurl=' + url.split('?')[0] + '&pf=bdWap';
         // //   return parent.location.href = GLOBALS.jumpOutsideGame(url)
         // // }
-        // // parent.location.href = 'https://wap.beeplay123.com' + url + '?channel=' + this.channel + '&token=' + this.token;
+        // // parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
         url && (parent.location.href = GLOBALS.getJumpToGameUrl(url))
       }, 500)
@@ -754,7 +778,7 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/finish', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
@@ -811,7 +835,7 @@ export default {
       })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platNewUserStairTask', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
         value: 'NewUserStairTask'
       }).then((res) => {
         if (res.data.data && res.data.data.isNew) {
@@ -829,7 +853,7 @@ export default {
       })
     },
     getDayTask () {
-      this.axios.post('//platform-api.beeplay123.com/task/api/usertask/platTaskByBatch', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
@@ -845,14 +869,14 @@ export default {
       })
     },
     getTransInfo () {
-      this.axios.post('//uic-api.beeplay123.com/uic/api/user/login/transInfo').then((res) => {
+      this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo').then((res) => {
         if (res.data.code == 200) {
           this.userInfo = res.data.data
         }
       })
     },
     getPhoneFragment () {
-      this.axios.post('//trans-api.beeplay123.com/trans/api/fragment/richAndconvertList', {
+      this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/richAndconvertList', {
         page: 1,
         pageSize: 10
       }).then((res) => {
@@ -897,6 +921,12 @@ export default {
     closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
+    },
+    kickegg (url) {
+      if (parent.closeTaksPage) {
+        parent.closeTaksPage()
+        parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
+      }
     }
   }
 }

@@ -169,13 +169,13 @@ export default {
     },
     fetch (url, params) {
       if (url.startsWith('/ops/api')) {
-        url = '//ops-api.beeplay123.com' + url
+        url = '//ops-api.beeplaying.com' + url
       }
       if (url.startsWith('/wap/api')) {
-        url = '//platform-api.beeplay123.com' + url
+        url = '//platform-api.beeplaying.com' + url
       }
       if (url.startsWith('/wap/api')) {
-        url = '//shop-api.beeplay123.com' + url
+        url = '//shop-api.beeplaying.com' + url
       }
       return this.axios.post(url, params, {})
     }, // 请求封装方法
@@ -214,7 +214,7 @@ export default {
     // 礼包
     async getPackage () { // 获取礼包数据
       try {
-        const { data } = await this.axios.post('https://shop-api.beeplay123.com/shop/api/mall/leaguePacksList')
+        const { data } = await this.axios.post('https://shop-api.beeplaying.com/shop/api/mall/leaguePacksList')
         if (data.code == 200) {
           this.packageData = data.data.leaguePacksList || []
           console.log('this.packageData', data.data.leaguePacksList.length)
@@ -227,9 +227,9 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0074001379', { product_id: val.bizId })
       localStorage.setItem('JDD_PARAM', JSON.stringify(val))
       if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') { // 好看、全民小视频
-        top.location.href = 'https://wap.beeplay123.com/payment/#/bdPayment'
+        top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
       } else {
-        top.location.href = 'https://wap.beeplay123.com/payment/#/payment'
+        top.location.href = 'https://wap.beeplaying.com/payment/#/payment'
       }
     },
     morepackage () {

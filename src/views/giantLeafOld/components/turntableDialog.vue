@@ -99,9 +99,9 @@ export default {
       }else {
         GLOBALS.marchSetsPoint('A_H5PT0074001133')
       }
-      
+
       localStorage.setItem('originDeffer', window.location.href)
-	   window.location.href = 'https://wap.beeplay123.com/payment/#/mall'
+	   window.location.href = 'https://wap.beeplaying.com/payment/#/mall'
     },
 	going (status) {
     if(status) {
@@ -109,7 +109,7 @@ export default {
     }else {
       GLOBALS.marchSetsPoint('A_H5PT0074001131')
     }
-    
+
 	  this.$emit('going')
     }
   }

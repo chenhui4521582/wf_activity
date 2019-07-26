@@ -2,15 +2,15 @@ class shareMiddleware {
     constructor () {
         this.channel = this.getUrlParams('channel')
         this.jumtUrl = {
-            'wechatChannel': 'https://wap.beeplay123.com/payment/#/login?channel='+this.channel,
-            'newDDWlogin': 'https://wap.beeplay123.com/loginPages/newDDWlogin.html?channel=' + this.channel,
-            '100043': 'https://wap.beeplay123.com/wap/home/#/aldLogin?channel='+this.channel,
-            '100061': 'https://wap.beeplay123.com/publicWap/loginPage.html#/?channel=' + this.channel,
-            '110002': 'https://wap.beeplay123.com/payment/#/loginwechat?channel='+this.channel,
-            '100060': 'https://wap.beeplay123.com/activities/wfgames.html?channel=' + this.channel,
-            '100000': 'https://wap.beeplay123.com/payment/#/login?channel=' + this.channel,
-            '100058': 'https://wap.beeplay123.com/downddw/',
-            'other': 'https://wap.beeplay123.com/loginPages/failureLogon.html'
+            'wechatChannel': 'https://wap.beeplaying.com/payment/#/login?channel='+this.channel,
+            'newDDWlogin': 'https://wap.beeplaying.com/loginPages/newDDWlogin.html?channel=' + this.channel,
+            '100043': 'https://wap.beeplaying.com/wap/home/#/aldLogin?channel='+this.channel,
+            '100061': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
+            '110002': 'https://wap.beeplaying.com/payment/#/loginwechat?channel='+this.channel,
+            '100060': 'https://wap.beeplaying.com/activities/wfgames.html?channel=' + this.channel,
+            '100000': 'https://wap.beeplaying.com/payment/#/login?channel=' + this.channel,
+            '100058': 'https://wap.beeplaying.com/downddw/',
+            'other': 'https://wap.beeplaying.com/loginPages/failureLogon.html'
         }
     }
     getUrlParams (ename) {

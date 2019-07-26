@@ -64,7 +64,7 @@ export default {
             try {
               let link = JSON.parse(res.data.link);
               if (link.linkUrl && !link.linkUrl.includes("http")) {
-                vm.backgroundImage = "//file.beeplay123.com" + link.linkUrl;
+                vm.backgroundImage = "//file.beeplaying.com" + link.linkUrl;
               } else {
                 vm.backgroundImage = link.linkUrl;
               }
