@@ -638,7 +638,7 @@ export default {
           value:taskId
         })
         GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
-        parent.location.href=url
+        parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
       }
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
@@ -684,7 +684,7 @@ export default {
             value:taskId
           })
           GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
-          parent.location.href=url
+          parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
         }else{
           this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
             taskId: taskId
