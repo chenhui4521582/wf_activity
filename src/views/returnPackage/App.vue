@@ -34,7 +34,7 @@
               <li v-for="(item,index) in bonusData.pointsExchangeTaskVOS">
                 <div class="jifen">{{item.points}}积分</div>
                 <div class="award_name">{{item.awardsName}}</div>
-                <div class="award_status" :class="{gained:item.status==2}" @click="exchange(item,3)" v-if="item.status!=1"></div>
+                <div class="award_status" :class="{gained:item.status==2}" @click="exchange(item,3)" v-if="item.status!=1">{{item.status==0?'领取':''}}</div>
               </li>
             </ul>
             <div class="progress">
@@ -697,11 +697,16 @@ export default {
           }
           .award_status {
             margin-top: 0.13rem;
-            width: 0.96rem;
-            height: 0.52rem;
-            background: url("./images/package/bonus_btn.png");
+            width: 0.9rem;
+            height: 0.4rem;
+            line-height: 0.36rem;
+            background: #e83e61;
             background-size: 100% 100%;
             animation: jiggle 1s ease-in infinite;
+            text-align: center;
+            border-radius: 0.26rem;
+            font-size: 0.24rem;
+            color: #fff;
             &.gained {
               margin-top: 0.18rem;
               width: 0.96rem;
