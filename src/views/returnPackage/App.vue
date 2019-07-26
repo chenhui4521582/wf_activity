@@ -112,7 +112,7 @@
     <!--规则-->
     <rule v-if="showrulepop" @close="showrulepop=false"></rule>
     <!--奖品弹窗-->
-    <award-pop v-if="showAwardPop" :awardsname="awardsname" :type="awardType" @close="closeAwardPop" @still-buy="stillBuy" @change-buy="changeBuy"></award-pop>
+    <award-pop v-if="showAwardPop" :awardsname="awardsname" :type="awardType" @close="closeAwardPop" @still-buy="stillBuy"></award-pop>
   </div>
 </template>
 <script>
@@ -331,11 +331,6 @@ export default {
     },
     stillBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0074001559') // H5平台-回归礼包-最大礼包提示弹窗-仍旧购买原礼包
-      this.gotopay()
-    },
-    changeBuy () {
-      GLOBALS.marchSetsPoint('A_H5PT0074001560') // H5平台-回归礼包-最大礼包提示弹窗-我再看看
-      localStorage.setItem('JDD_PARAM', JSON.stringify(this.packageData.list[0]))
       this.gotopay()
     },
     /** 去支付 **/

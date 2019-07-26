@@ -14,7 +14,7 @@
       <span class="title" v-else>{{awardsname.split(';')[2]}}到账</span>
       <div class="info info5" v-if="type==5">
         <div class="close sure" @click="stillBuy">仍旧购买原礼包</div>
-        <div class="close" @click="changeBuy">购买加赠100%礼包</div>
+        <div class="close" @click="close">我再看看</div>
       </div>
       <div class="info" v-else>
         <div class="desc" v-if="type==2">
@@ -47,9 +47,6 @@ export default {
     },
     stillBuy () {
       this.$emit('still-buy')
-    },
-    changeBuy () {
-      this.$emit('change-buy')
     }
   },
   mounted () {
