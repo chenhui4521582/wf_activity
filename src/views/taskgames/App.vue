@@ -374,7 +374,7 @@ export default {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType) && (this.channel === '100039' || this.channel === '100042')) || false
+            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType || 0) && (this.channel === '100039' || this.channel === '100042')) || false
           }
         })
     },
