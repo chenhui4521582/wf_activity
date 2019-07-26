@@ -616,7 +616,7 @@ export default {
         this.goFinishs(item, index, type)
       }
     },
-    goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
+    async goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
       if (type == 'crush_task' || type == 'mother_crush_task') {
         GLOBALS.marchSetsPoint('A_H5PT0061000537', {
           project_id: gameType,
@@ -634,10 +634,10 @@ export default {
         }) // H5平台-游戏内SDK-每日任务-去完成
       }
       if(action==72){
-        this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
+        await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
           value:taskId
         })
-        GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
+        await GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
         parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
       }
       if (parent.closeTaksPage) {
@@ -661,7 +661,7 @@ export default {
     trimStr (str) {
       return str.replace(/(^\s*)|(\s*$)/g, '')
     },
-    goFinish ({ gameType, url, action, taskId, taskName }, type) {
+    async goFinish ({ gameType, url, action, taskId, taskName }, type) {
       let actionsArr = [39, 35, 34, 32]
       if (type === 'newtask') {
         GLOBALS.marchSetsPoint('A_H5PT0061000540', {
@@ -680,10 +680,10 @@ export default {
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
         if(action==72){
-          this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
+          await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
             value:taskId
           })
-          GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
+          await GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
           parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
         }else{
           this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
