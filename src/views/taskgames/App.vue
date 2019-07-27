@@ -18,10 +18,10 @@
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
     <!-- sdk 新版运营位 -->
-    <sdk-tab-box :currentGameType='currentGameType'>
+    <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <div v-if="showNewUserTask" class="new-user-task">
+          <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
               <img src="./img/tips.png" alt="">
             </div>
@@ -98,6 +98,7 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
+
           <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
@@ -254,10 +255,6 @@ export default {
     this.getHuafeiNum()
   },
   computed: {
-    // woolUserType () {
-    //   return (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
-    //   // return true
-    // },
     huafeiShow () {
       return this.telFragment && (this.telFragment[0].price.split('元')[0] < this.huafeiNum)
     },
@@ -298,15 +295,15 @@ export default {
     },
     // 显示大师任务
     showCrushMasterTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示王者任务
     showKingTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew
+      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示新手任务
     showNewUserTask () {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
     }
   },
@@ -356,7 +353,19 @@ export default {
       iframe.style.border = 'none'
       iframe.style.margin = 0
       iframe.style.padding = 0
-      iframe.src = 'https://wap.beeplaying.com/ads/index.html'
+      iframe.style['z-index'] = 10
+      switch (this.channel) {
+        case '100039':
+        case '100042':
+          iframe.src = 'https://wap.beeplaying.com/ads/bdAds.html'
+          break
+        case '100067':
+          iframe.src = 'https://wap.beeplaying.com/ads/qttAds.html'
+          break
+
+        default:
+          break
+      }
       parent.document.body.appendChild(iframe)
     },
     init () {
@@ -365,7 +374,7 @@ export default {
           sessionStorage.removeItem('woolUserType')
           if (res.data.code == 200) {
             sessionStorage.woolUserType = res.data.data.userType
-            this.woolUserType = (parseInt(sessionStorage.woolUserType) && (localStorage.getItem('APP_CHANNEL') === '100039' || localStorage.getItem('APP_CHANNEL') === '100042')) || false
+            this.woolUserType = this.channel === '100067' || (parseInt(sessionStorage.woolUserType || 0) && (this.channel === '100039' || this.channel === '100042')) || false
           }
         })
     },
@@ -385,6 +394,9 @@ export default {
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
+      localStorage.setItem('originGameProblem', true)
+      localStorage.setItem('originGame', parent.location.href)
+
       parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
@@ -571,17 +583,29 @@ export default {
           break
       }
       if (item.taskStatus == 0) {
-        localStorage.removeItem('ENTRANCE')
         localStorage.removeItem('ADSDATA')
         if (this.woolUserType && type === 'dayTask') {
           this.selectItem = { item, type, index }
-          localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          if (item.action === 71) {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', '看视频任务')
+          } else {
+            localStorage.removeItem('ENTRANCE')
+            localStorage.setItem('ENTRANCE', 'SDK内每日任务')
+          }
           localStorage.setItem('ADSDATA', JSON.stringify(this.selectItem))
           // 为父窗口（游戏界面） 创建script
           try {
             this.initParentAd()
           } catch (error) {
-            this.receive(item, type, index)
+            if (item.action === 71) {
+              this.$toast.show({
+                message: '广告填充中，请稍后再试',
+                duration: 2000
+              })
+            } else {
+              this.receive(item, type, index)
+            }
           }
           return
         }
@@ -897,6 +921,12 @@ export default {
     closeFixedEntrance () {
       this.getTransInfo()
       this.getPhoneFragment()
+    },
+    kickegg (url) {
+      if (parent.closeTaksPage) {
+        parent.closeTaksPage()
+        parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
+      }
     }
   }
 }

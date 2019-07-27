@@ -10,7 +10,7 @@
         </div>
         <div class="title-tet">
           <div class="item">{{currentItem.name}}
-            <div class="buyone" v-if="buyone([currentItem])">每人每日限购1次</div>
+            <div class="buyone" v-if="buyone([currentItem])">每人限购1次</div>
           </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
@@ -97,7 +97,7 @@ export default {
       this.currentList = data.filter(item => {
         if (this.phyAwardsId == '232') {
           return item.phyAwardsId === 232
-        }else{
+        } else {
           return item.phyAwardsId !== 232
         }
       })
@@ -129,7 +129,7 @@ export default {
         return true
       }
     },
-    residueNumber() {
+    residueNumber () {
       return this.currentItem.currentUserTodayAvailableQuota === null ? this.currentItem.allUsersTodayAvailableQuota : this.currentItem.currentUserTodayAvailableQuota
     }
   },
@@ -299,7 +299,7 @@ export default {
     align-items: center;
     .buyone{
       display: inline-block;
-      width: 1.66rem;
+      width: 1.23rem;
       height: .28rem;
       line-height:.28rem;
       text-align: center;
@@ -401,6 +401,10 @@ export default {
     font-size: 0.22rem;
     width: 100%;
     overflow: hidden;
+    img {
+      width: 100% !important;
+      height: auto !important;
+    }
   }
 }
 .button-warp {

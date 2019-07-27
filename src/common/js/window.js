@@ -60,6 +60,7 @@ window.GLOBALS = {
     url = '../../../payment/#/mall'
     return url
   },
+  isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser']>0 : 1,
   loopTime (_this, obj) {
     var date = new Date()
     var hours = date.getHours()
@@ -196,7 +197,7 @@ window.GLOBALS = {
       var second = that.Appendzero(Math.floor((millisecond % (1000 * 60)) / 1000))
       var hours = that.Appendzero(day * 24 + hour)
       if (isText) {
-        _this.$set(obj, 'time', `${day}天${hour}小时${minute}分${second}秒`)
+        _this.$set(obj, 'time', `${day}天${that.Appendzero(hour)}小时${minute}分${second}秒`)
       } else {
         _this.$set(obj, 'time', hours + ':' + minute + ':' + second)
       }
