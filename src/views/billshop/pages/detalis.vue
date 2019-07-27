@@ -10,7 +10,7 @@
         </div>
         <div class="title-tet">
           <div class="item">{{currentItem.name}}
-            <div class="buyone" v-if="buyone([currentItem])">每日限购一次</div>
+            <div class="buyone" v-if="buyone([currentItem])">每人限购1次</div>
           </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
@@ -302,6 +302,7 @@ export default {
       width: 1.23rem;
       height: .28rem;
       line-height:.28rem;
+      text-align: center;
       font-size:.2rem;
       font-weight:bold;
       color:rgba(25,38,61,1);
