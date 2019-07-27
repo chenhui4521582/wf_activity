@@ -56,28 +56,29 @@
             </div>
             <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
               <ul class="t-items">
-                <li class="not-daily">
-                  <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
-                    <div class="pic">
-                      <img :src="newUserTaskobj.icon | filter" alt="">
-                      <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
-                    </div>
-                    <div class="item-text">
-                      <p class="title" v-html="newUserTaskobj.taskName"></p>
-                      <div class="percent-container">
-                        <div class="percent-box">
-                          <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
-                          <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
+                <li class="not-daily" v-for="(item,index) in newTaskItems.taskList" :key="index">
+                  <div class="item-content">
+                    <div :class="{'actived': item.taskStatus == 2}">
+                      <div class="pic">
+                        <img :src="item.icon | filter" alt="">
+                      </div>
+                      <div class="item-text">
+                        <p class="title" v-html="item.taskName"></p>
+                        <div class="percent-container">
+                          <div class="percent-box">
+                            <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                            <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                          </div>
+                          <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
                         </div>
-                        <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</i></span>
                       </div>
                     </div>
+                    <p class="btn-box">
+                      <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
+                      <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
+                      <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
+                    </p>
                   </div>
-                  <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
-                    <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
-                  </p>
                 </li>
               </ul>
             </div>
