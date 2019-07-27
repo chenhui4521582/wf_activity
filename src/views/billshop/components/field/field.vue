@@ -52,9 +52,9 @@ export default {
     },
     addClick () {
       if (this.disabled) { return }
-      if(this.buyone){
+      if(this.buyone&&this.inputValue==this.buyone){
         this.$toast.show({
-          message:'该商品每人限购1次哟',
+          message:`该商品每人限购${this.buyone}次哟`,
           duration:2000
         })
       }else{

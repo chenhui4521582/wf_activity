@@ -7,14 +7,14 @@
                 <div class="close-icon" @click="dialogShow=false"><img src="./image/close-small.png" alt=""></div>
             </div>
             <div class="content">
-                <img v-if="statusCode===104" src="./image/out-of-stock.png" alt="">
+                <img v-if="statusCode===104||statusCode===103" src="./image/out-of-stock.png" alt="">
                 <img v-if="statusCode===102 || statusCode===107" src="./image/short.png" alt="">
                 <img v-if="statusCode===200" src="./image/succecc.png" alt="">
-                <img v-if="statusCode===103" src="./image/succecc.png"  style="width: 1.67rem;height: 1.72rem" alt="">
+                <!--<img v-if="statusCode===103" src="./image/succecc.png"  style="width: 1.67rem;height: 1.72rem" alt="">-->
 
                 <div v-if="statusCode===102" class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
                 <div v-if="statusCode===104" class="content-text">当前商品库存不足<br/>去看看其他商品吧</div>
-                <div v-if="statusCode===103" class="content-text"> 每日限购一次，<br/>请明天再来~</div>
+                <div v-if="statusCode===103" class="content-text"> 今天已购买过了哟<br/>明天再来吧~</div>
                 <div v-if="statusCode===200" class="content-text">换取成功<br/>快去领取吧</div>
                 <div v-if="statusCode===107" class="content-text"> 完成新手任务后才可以领取，<br/>快去完成新手任务吧</div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="return base-button" @click="dialogShow=false">返回</div>
                 <div class="save base-button" v-if="statusCode===102" @click="earnMoney">去赚话费</div>
                 <div class="save base-button" v-if="statusCode===200" @click="checkprize">去领取</div>
-                <div class="save base-button" v-if="statusCode===104" @click="lookMall">看看其他</div>
+                <div class="save base-button" v-if="statusCode===104||statusCode===103" @click="lookMall">看看其他</div>
                 <div class="save base-button" v-if="statusCode===107" @click="earnMoney">去完成任务</div>
             </div>
         </div>
