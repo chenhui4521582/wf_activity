@@ -9,13 +9,6 @@ import Vue from 'vue'
 import utils from '../../common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000
-
-let channel = utils.getUrlParam('channel'),
-  url_token = utils.getUrlParam('token'),
-  everyDayLottery = utils.getUrlParam('everyDayLottery')
-
-localStorage.setItem('APP_CHANNEL', channel)
-
 if (localStorage.getItem('APP_CHANNEL') == '100001') {
   localStorage.setItem('APP_VERSION', '1.0.0')
 } else {
