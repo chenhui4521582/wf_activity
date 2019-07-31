@@ -1,6 +1,6 @@
 <template>
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
-    <img src="./images/index/back.png" class="e-back" @click="back">
+    <img src="./images/index/back.png" class="e-back" @click.stop="back">
     <rule :rule-main="rulesInfo"></rule>
     <message ref="message"></message>
     <div class="header1">
@@ -106,7 +106,7 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0075001458')   // H5平台-砸金蛋-点击返回
-      history.go(-1)
+      history.back(-1)
     },
     getLiClass (index) {
       return `e-item${index + 1}`
