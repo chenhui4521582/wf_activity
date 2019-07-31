@@ -126,7 +126,8 @@
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-play1" @click="completeClick">{{completeData.userTaskFinishAll ? '完成': '去完成'}}</a>
+                    <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
+                    <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
                   </p>
               </div>
               <!-- 魅族渠道新手完成活动 下线时清删除 -->
