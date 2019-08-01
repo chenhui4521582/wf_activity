@@ -51,7 +51,7 @@ export default {
     setMyInfo (data) {
       this.myInfo = data
       this.isShowPop = true
-      if (this.myInfo && this.myInfo.myRank <= this.myInfo.rankSize) {
+      if (this.myInfo && this.myInfo.myRank && this.myInfo.myRank <= this.myInfo.rankSize) {
         this.awardsList = [{
           awardsType: 'jyz',
           awardsName: this.myInfo.jyzAmount ? (this.myInfo.jyzAmount >= 10000 ? this.myInfo.jyzAmount / 10000 + '万' : this.myInfo.jyzAmount) : 0
