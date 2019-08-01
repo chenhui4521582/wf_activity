@@ -1,92 +1,147 @@
-body {
-  background: rgba(15, 23, 38, 1);
-}
+<template>
+  <section class="new-user-task">
+    <div class="tips">
+      <img src="../img/tips.png" alt="">
+    </div>
+    <div class="new-task-header">
+      <div class="new-task-inner">
+        <h4 class="h-title h-new-title icon-tips">
+          <p class="h-subtitle">
+            <img src="../img/title1.png" class="xr-icon">
+            <img src="../images/small-xs-tips.png" class="small-xs-tips">
+          </p>
+          <div class="text"><img src="../images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
+        </h4>
+        <div class="newTask">
+          <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
+            <span class="text">全部完成</span>
+            <span>再得{{motherTask.awardsNum / 10}}元话费</span>
+          </div>
+          <div class="title" v-else>恭喜！新人任务已全部完成！</div>
+          <ul>
+            <li class="percent-lq">
+              <div class="percent-box">
+                <em :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></em>
+              </div>
+            </li>
+          </ul>
+          <div class="explain">
+            <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
+            <div v-show="newTaskItems.receiverCounter" class="receive">已有{{newTaskItems.receiverCounter}}人领取</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
+      <ul class="t-items">
+        <li class="not-daily" v-for="(item,index) in newTaskItems.taskList" :key="index">
+          <div class="item-content">
+            <div :class="{'actived': item.taskStatus == 2}">
+              <div class="pic">
+                <img :src="item.icon | filter" alt="">
+              </div>
+              <div class="item-text">
+                <p class="title" v-html="item.taskName"></p>
+                <div class="percent-container">
+                  <div class="percent-box">
+                    <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                    <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                  </div>
+                  <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                </div>
+              </div>
+            </div>
+            <p class="btn-box">
+              <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
+              <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item)">去完成</a>
+              <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div v-else>
+      <ul class="finish">
+        <li>
+          <div class="head-img">
+            <img src="../img/signIn-icon.png" alt="">
+          </div>
+          <div class="f-content">
+            <p>快领取话费奖励吧</p>
+            <p>{{motherTask.awardsName}}</p>
+          </div>
+        </li>
+        <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
+      </ul>
+    </div>
+    <!-- 人人大恶魔勋章 -->
+    <renren-mowang v-if="channel==='100049'"></renren-mowang>
+  </section>
+</template>
 
-.task-games {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  background: rgba(15, 23, 38, 1);
-  padding-bottom: 0.3rem;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
+<script>
+export default {
+  name: '',
+  components: {
+    renrenMowang: () => import('../component/renrenMowang')
+  },
+  props: {
+    newTaskItems: {
+      default: null
+    },
+    motherTask: {
+      default: null
+    },
+    newUserTaskobj: {
+      default: null
+    },
+    channel: {
+      default: null
+    }
+  },
+  methods: {
+    receive (item) {
+      this.$emit('receive', item, 'newtask')
+    },
+    goFinish (item) {
+      this.$emit('goFinish', item, 'newtask')
+    }
+  }
 }
+</script>
 
-.header {
-  height: 0.8rem;
-  background: rgba(25, 38, 64, 1);
-  color: #fff;
+<style rel="stylesheet/less" lang="less" scoped>
+.h-title {
+  margin: 0.3rem 0;
   display: flex;
   align-items: center;
+  font-size: 0.28rem;
+  position: relative;
 
-  ul {
-    padding-left: 0.08rem;
+  .xr-icon {
+    width: 2rem;
+    height: 0.344rem;
   }
 
-  li {
-    min-width: 1.0rem;
-    padding: 0 0.15rem 0 0.35rem;
-    height: 0.4rem;
-    line-height: 0.4rem;
-    background: rgba(5, 8, 13, 1);
-    border: 1px solid rgba(53, 79, 127, 1);
-    border-radius: 0.08rem;
-    float: left;
-    text-align: center;
-    margin-left: 0.21rem;
-    font-size: 0.22rem;
-    color: #fff;
-    text-align: left;
-
-    &.leaf {
-      background: url(./images/leaf.png) no-repeat 0.08rem center;
-      background-size: 0.18rem 0.18rem;
-    }
-
-    &.hf-fragment {
-      background: url(./images/hf-fragment.png) no-repeat 0.08rem center;
-      background-size: 0.18rem 0.2rem;
-    }
+  .small-xs-tips {
+    width: 0.78rem;
+    height: 0.21rem;
   }
-}
 
-.t-content {
-  // padding: 0 0.3rem; // sdk运营位修改时注销的
-  color: #fff;
-
-  .h-title {
-    margin: .3rem 0;
+  .text {
+    position: absolute;
+    right: 0;
+    font-weight: normal;
+    font-size: 0.18rem;
     display: flex;
     align-items: center;
-    font-size: 0.28rem;
-    position: relative;
+    opacity: 0.5;
 
-    .xr-icon {
-      width: 2rem;
-      height: 0.344rem;
-    }
-
-    .small-xs-tips {
-      width: 0.78rem;
-      height: 0.21rem;
-    }
-
-    .text {
-      position: absolute;
-      right: 0;
-      font-weight: normal;
-      font-size: 0.18rem;
-      display: flex;
-      align-items: center;
-      opacity: 0.5;
-
-      img {
-        display: inline-block;
-        width: 0.2rem;
-        height: 0.2rem;
-        margin-right: 0.05rem;
-      }
+    img {
+      display: inline-block;
+      width: 0.2rem;
+      height: 0.2rem;
+      margin-right: 0.05rem;
     }
   }
 }
@@ -96,7 +151,7 @@ body {
 
   li {
     height: 0.9rem;
-    background: url('./img/dailytask_item_bg.png') no-repeat center / 100% 100%;
+    background: url("../img/dailytask_item_bg.png") no-repeat center / 100% 100%;
     display: flex;
     align-items: center;
     position: relative;
@@ -104,7 +159,7 @@ body {
     border-radius: 0.04rem;
 
     &.not-daily {
-      background: #141F33;
+      background: #141f33;
     }
 
     .actived {
@@ -114,7 +169,7 @@ body {
   }
 
   .label {
-    background: #DD2C00;
+    background: #dd2c00;
     width: 0.6rem;
     font-size: 0.18rem;
     position: absolute;
@@ -163,7 +218,7 @@ body {
 
   .item-award {
     font-size: 0.2rem;
-    color: #FFD338;
+    color: #ffd338;
     padding-right: 0.1rem;
 
     i {
@@ -208,11 +263,6 @@ body {
   align-items: center;
 }
 
-.bigNum {
-  width: auto;
-  padding: 0 .1rem 0;
-}
-
 .percent-box {
   width: 2rem;
   box-sizing: border-box;
@@ -246,40 +296,12 @@ body {
   }
 }
 
-.h-first-title {
-  margin: 0.3rem 0;
-}
-
-.h-first-title1 {
-  margin-top: .3rem;
-}
-
-.h-second-title {
-
-  /*margin: 0.59rem 0 0.18rem 0;*/
-  p {
-    float: left;
-    position: relative;
-  }
-
-  &.icon-tips p:before {
-    content: '';
-    width: 0.78rem;
-    height: 0.21rem;
-    background: url(./images/xs-tips.png) no-repeat;
-    background-size: 100% 100%;
-    position: absolute;
-    right: -0.88rem;
-    top: 0.06rem;
-  }
-}
-
 .btn-box {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 0.16rem;
-  width: .9rem;
+  width: 0.9rem;
 
   .btn {
     margin: 0 auto;
@@ -299,19 +321,18 @@ body {
     }
 
     &.btn-receive {
-      background: url('./img/get_icon.png') no-repeat center / 100% 100%;
+      background: url("../img/get_icon.png") no-repeat center / 100% 100%;
     }
 
     &.btn-gray {
-      background: #787F97;
-      color: #2A3044;
+      background: #787f97;
+      color: #2a3044;
     }
-
   }
 
   .in-game {
-    color: #2F3C49;
-    font-size: .18rem;
+    color: #2f3c49;
+    font-size: 0.18rem;
   }
 
   .wool_user {
@@ -319,7 +340,7 @@ body {
     right: 0.06rem;
     bottom: -0.18rem;
     color: #7d7f9b;
-    font-size: .14rem;
+    font-size: 0.14rem;
     white-space: nowrap;
   }
 }
@@ -336,7 +357,7 @@ body {
 
     span {
       font-size: 0.22rem;
-      color: #FFD338;
+      color: #ffd338;
       margin-right: 0.11rem;
     }
   }
@@ -354,7 +375,7 @@ body {
   .explain {
     display: flex;
     justify-content: space-between;
-    font-size: .18rem;
+    font-size: 0.18rem;
   }
 }
 
@@ -370,7 +391,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 3%;
-  background: #141F33;
+  background: #141f33;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
@@ -390,8 +411,6 @@ body {
         margin-top: 6%;
       }
     }
-
-    ;
 
     &:last-child {
       color: #f05835;
@@ -424,8 +443,8 @@ body {
 
 /*新人任务*/
 .new-task {
-  background: #141F33;
-  margin-top: .3rem;
+  background: #141f33;
+  margin-top: 0.3rem;
 
   .xr-top {
     display: flex;
@@ -447,7 +466,7 @@ body {
     font-size: 0.22rem;
 
     span {
-      color: #FFD338;
+      color: #ffd338;
       margin-left: 0.07rem;
       margin-right: 0.1rem;
     }
@@ -467,13 +486,10 @@ body {
       margin-right: 0.09rem;
     }
   }
-
-  .new-task-box {}
-
   .new-task-container {
     width: 100%;
     height: 1.01rem;
-    background: url(./img/new-task.png) no-repeat;
+    background: url(../img/new-task.png) no-repeat;
     background-size: 100% 100%;
 
     .percent-box {
@@ -491,10 +507,10 @@ body {
 .new-task-header {
   width: 100%;
   height: 2.76rem;
-  background: url(~./img/bg.png) no-repeat;
+  background: url(~../img/bg.png) no-repeat;
   background-size: 100% 100%;
   box-sizing: border-box;
-  padding-top: .75rem;
+  padding-top: 0.75rem;
 }
 
 .new-task-inner {
@@ -516,7 +532,7 @@ body {
     bottom: 0;
     right: 0;
     z-index: 1;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(0, 0, 0, 0.7);
   }
 
   .content {
@@ -537,14 +553,14 @@ body {
 
     img {
       width: 100%;
-      margin-bottom: .29rem
+      margin-bottom: 0.29rem;
     }
 
     p {
       width: 3.46rem;
-      height: .5rem;
-      line-height: .5rem;
-      font-size: .2rem;
+      height: 0.5rem;
+      line-height: 0.5rem;
+      font-size: 0.2rem;
       font-family: PingFang-SC-Regular;
       font-weight: 400;
       color: rgba(184, 184, 184, 1);
@@ -554,15 +570,15 @@ body {
     }
   }
 }
-
 .new-user-task {
-  margin-top: .3rem;
+  color: #fff;
+  margin-top: 0.3rem;
   position: relative;
 
   .t-items {
     .pic {
-      width: .6rem;
-      height: .6rem;
+      width: 0.6rem;
+      height: 0.6rem;
     }
   }
 
@@ -570,9 +586,9 @@ body {
     animation: tips 2s infinite;
     position: absolute;
     right: 1.3rem;
-    top: -.1rem;
+    top: -0.1rem;
     width: 1.31rem;
-    height: .4rem;
+    height: 0.4rem;
 
     img {
       width: 100%;
@@ -586,9 +602,9 @@ body {
 
     li {
       .head-img {
-        width: .6rem;
-        height: .6rem;
-        margin-right: .2rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        margin-right: 0.2rem;
 
         img {
           width: 100%;
@@ -598,10 +614,10 @@ body {
 
       .f-content {
         p {
-          font-size: .22rem;
+          font-size: 0.22rem;
 
           &:last-child {
-            font-size: .2rem;
+            font-size: 0.2rem;
           }
         }
       }
@@ -609,13 +625,13 @@ body {
       &:last-child {
         padding: 0;
         font-weight: normal;
-        font-size: .2rem;
-        width: .8rem;
-        height: .4rem;
+        font-size: 0.2rem;
+        width: 0.8rem;
+        height: 0.4rem;
         text-align: center;
-        line-height: .4rem;
+        line-height: 0.4rem;
         color: #fff;
-        background: #EE6F0B;
+        background: #ee6f0b;
       }
     }
   }
@@ -652,3 +668,4 @@ body {
     transform: scale(0) rotate(0);
   }
 }
+</style>

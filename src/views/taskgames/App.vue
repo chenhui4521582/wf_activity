@@ -21,6 +21,7 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" v-if="showNewUserTask &&newTaskItems.taskList.length>0"></new-user-task>
           <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
               <img src="./img/tips.png" alt="">
@@ -56,29 +57,28 @@
             </div>
             <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
               <ul class="t-items">
-                <li class="not-daily" v-for="(item,index) in newTaskItems.taskList" :key="index">
-                  <div class="item-content">
-                    <div :class="{'actived': item.taskStatus == 2}">
-                      <div class="pic">
-                        <img :src="item.icon | filter" alt="">
-                      </div>
-                      <div class="item-text">
-                        <p class="title" v-html="item.taskName"></p>
-                        <div class="percent-container">
-                          <div class="percent-box">
-                            <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                            <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
-                          </div>
-                          <span class="item-award"><i><img :src="item.awardsImage | filter" alt="">{{item.awardsName}}</i></span>
+                <li class="not-daily">
+                  <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
+                    <div class="pic">
+                      <img :src="newUserTaskobj.icon | filter" alt="">
+                      <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
+                    </div>
+                    <div class="item-text">
+                      <p class="title" v-html="newUserTaskobj.taskName"></p>
+                      <div class="percent-container">
+                        <div class="percent-box">
+                          <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
+                          <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
                         </div>
+                        <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</i></span>
                       </div>
                     </div>
-                    <p class="btn-box">
-                      <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
-                      <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
-                      <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
-                    </p>
                   </div>
+                  <p class="btn-box">
+                    <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
+                    <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
+                    <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
+                  </p>
                 </li>
               </ul>
             </div>
@@ -99,7 +99,6 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
-
           <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
           <template v-if="!showNewUserTask">
             <!-- 人人大恶魔勋章 -->
@@ -281,9 +280,11 @@ export default {
       let motherTask = list.filter(item => {
         return item.subTask
       })[0]
-      list = list.filter(item => {
-        return !item.subTask
-      })
+      if (!this.newTaskItems.newVersion) {
+        list = list.filter(item => {
+          return !item.subTask
+        })
+      }
       let finishedTaskNum = list.filter(item => {
         return item.taskStatus == 2
       }).length
@@ -326,6 +327,8 @@ export default {
   components: {
     poplog,
     crushMasterTask: () => import('./component/crushMasterTask'),
+    newUserTask: () => import('./component/newUserTask'),
+    newUserTaskOld: () => import('./component/newUserTaskOld'),
     renrenMowang: () => import('./component/renrenMowang'),
     masterPop: () => import('./component/dialog'),
     commonPop: () => import('./component/commonPop'),
@@ -836,7 +839,8 @@ export default {
       })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
+      // this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
+      this.axios.post('//10.33.80.70:8081/task/api/newuser/task', {
         value: 'NewUserStairTask'
       }).then((res) => {
         if (res.data.data && res.data.data.isNew) {
