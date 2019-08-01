@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- 提升弹框 -->
-    <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize"  @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber"/>
+    <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize" @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber" />
     <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
   </div>
 </template>
@@ -70,7 +70,7 @@ import dialogGainMask from '../components/dialog/dialogGain'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
 export default {
   name: 'detailsPage',
-  components: { baseHeader, field, dialogMask,dialogGainMask },
+  components: { baseHeader, field, dialogMask, dialogGainMask },
   data () {
     return {
       selectedIndex: 0,
@@ -83,14 +83,14 @@ export default {
       phyAwardsType: this.$route.query['phyAwardsType'],
       goodsName: this.$route.query['goodsName'],
       showOut: this.$route.query['showOut'],
-      accountBalance:0,
+      accountBalance: 0,
       currentList: [],
-      dialogGainShow:false
+      dialogGainShow: false
     }
   },
   async created () {
-    const {data:userInfo}=await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
-    this.accountBalance=userInfo.code==200&&(parseFloat(userInfo.data.hfSum/ 10).toFixed(1)+'')
+    const { data: userInfo } = await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
+    this.accountBalance = userInfo.code == 200 && (parseFloat(userInfo.data.hfSum / 10).toFixed(1) + '')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
     if (code === 200 && data && data.length) {
@@ -101,7 +101,7 @@ export default {
           return item.phyAwardsId !== 232
         }
       })
-      console.log('currentList',this.currentList)
+      console.log('currentList', this.currentList)
     }
   },
   computed: {
@@ -152,7 +152,7 @@ export default {
   },
   methods: {
     buyone (item) {
-      return item.limitPerPersonDay>=1
+      return item.limitPerPersonDay >= 1
     },
     // 切换规格
     changeSpec (index) {
@@ -164,12 +164,12 @@ export default {
       })
     },
     // 兑换话费
-    async goExchange (isFromDialogGain=false) {
+    async goExchange (isFromDialogGain = false) {
       const { id, purchasePrice, name, phyAwardsId } = this.currentItem
       // 库存不足
       if (!this.allUsersTodayAvailableQuota) { return }
-      if((!isFromDialogGain)&&this.accountBalance>=purchasePrice*this.specNumber){
-        this.dialogGainShow=true
+      if ((!isFromDialogGain) && this.accountBalance >= purchasePrice * this.specNumber) {
+        this.dialogGainShow = true
         return
       }
       // 防止用户疯狂点击请求接口
@@ -183,8 +183,7 @@ export default {
         residual_phone: this.accountBalance
       })
       /** 梁婷需求增加兑换验证是否实名认证 **/
-      //uic-api.beeplaying.com/uic/api/user/center/authStatus
-
+      // uic-api.beeplaying.com/uic/api/user/center/authStatus
 
       const { data, code, message } = await placeOrder(id, this.specNumber)
 
@@ -208,10 +207,10 @@ export default {
     checkprize () {
       const item = this.currentItem
       if (item.phyAwardsType) {
-        if([7].includes(item.phyAwardsType)){
+        if ([7].includes(item.phyAwardsType)) {
           this.$router.push('/schedule')
-        }else{
-          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'),'',false,false,'#/schedule')
+        } else {
+          parent.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/schedule')
         }
       }
     },
@@ -242,6 +241,13 @@ export default {
   }
 }
 </script>
+<style>
+.description-warp .details img {
+  width: 100% !important;
+  height: auto !important;
+}
+</style>
+
 <style lang="less" scoped>
 .details-warp {
   width: 100%;
@@ -255,18 +261,18 @@ export default {
   background-color: #0f1726;
   .details-content {
     padding: 0 0.3rem;
-    .luck-box{
+    .luck-box {
       width: 1.78rem;
-      height: .38rem;
-      line-height:.38rem;
+      height: 0.38rem;
+      line-height: 0.38rem;
       text-align: center;
       background: #213250;
-      border-radius: .08rem;
-      font-size:.22rem;
-      font-weight:500;
-      color:rgba(139,139,140,1);
+      border-radius: 0.08rem;
+      font-size: 0.22rem;
+      font-weight: 500;
+      color: rgba(139, 139, 140, 1);
       position: fixed;
-      top: .2rem;
+      top: 0.2rem;
       right: 0.3rem;
     }
   }
@@ -292,16 +298,16 @@ export default {
     position: relative;
     display: flex;
     align-items: center;
-    .buyone{
+    .buyone {
       display: inline-block;
       width: 1.66rem;
-      height: .28rem;
-      line-height:.28rem;
+      height: 0.28rem;
+      line-height: 0.28rem;
       text-align: center;
-      font-size:.2rem;
-      font-weight:bold;
-      color:rgba(25,38,61,1);
-      margin-left: .08rem;
+      font-size: 0.2rem;
+      font-weight: bold;
+      color: rgba(25, 38, 61, 1);
+      margin-left: 0.08rem;
       background: url("../images/buyone1.png");
       background-size: 100% 100%;
     }
@@ -418,11 +424,11 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
-    i{
+    i {
       font-style: normal;
-      font-size:.2rem;
-      font-weight:400;
-      color:rgba(255,189,137,1);
+      font-size: 0.2rem;
+      font-weight: 400;
+      color: rgba(255, 189, 137, 1);
     }
   }
   .save-button-on {
