@@ -840,7 +840,7 @@ export default {
     },
     getNewTask () {
       // this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
-      this.axios.post('//10.33.80.70:8081/task/api/newuser/task', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/newuser/task', {
         value: 'NewUserStairTask'
       }).then((res) => {
         if (res.data.data && res.data.data.isNew) {

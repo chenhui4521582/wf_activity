@@ -32,7 +32,7 @@ export default {
       type: Boolean,
       default: false
     },
-    buyone:{
+    buyone: {
       type: Boolean,
       default: false
     }
@@ -52,12 +52,12 @@ export default {
     },
     addClick () {
       if (this.disabled) { return }
-      if(this.buyone){
+      if (this.buyone) {
         this.$toast.show({
-          message:'该商品每人限购1次哟',
-          duration:2000
+          message: '该商品每人限购1次哟',
+          duration: 2000
         })
-      }else{
+      } else {
         this.inputValue++
       }
     },
