@@ -109,6 +109,28 @@
             <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
               <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+              <!-- 魅族渠道新手完成活动 下线时清删除 -->
+              <div class="complete-task" v-if="completeData.show">
+                  <div style="display: flex;align-items: center;">
+                    <div class="pic">
+                      <img src="./img/complete-icon.png" alt="">
+                    </div>
+                    <div class="item-text">
+                      <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                      <div class="percent-container">
+                        <div class="percent-box">
+                          <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
+                          <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="btn-box">
+                    <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
+                    <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+                  </p>
+              </div>
+              <!-- 魅族渠道新手完成活动 下线时清删除 -->
               <ul class="t-items">
                 <li v-for="(item, index) in currentGamesItems" :key="index">
                   <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
@@ -234,7 +256,8 @@ export default {
       isDailyReceivePop: false,
       receiveAwards: {},
       selectItem: {},
-      woolUserType: false
+      woolUserType: false,
+      completeData: {} //魅族渠道新手完成活动 下线时清删除
     }
   },
   mounted () {
@@ -255,6 +278,7 @@ export default {
     this.getTransInfo()
     this.getPhoneFragment()
     this.getHuafeiNum()
+    this.getCompleteData()
   },
   computed: {
     huafeiShow () {
@@ -307,6 +331,11 @@ export default {
     showNewUserTask () {
       let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+    },
+    //魅族渠道新手完成活动 下线时清删除
+    showCompleteTask() {
+      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
+      return isXmVersion ? false : (this.completeData && this.completeData.show || false)
     }
   },
   filters: {
@@ -843,6 +872,7 @@ export default {
             }
             // 踏青寻宝   活动特有  活动下线 删除
           }
+          this.getCompleteData()
         } else {
           this.$toast.show({
             message: res.data.message,
@@ -950,7 +980,24 @@ export default {
         parent.closeTaksPage()
         parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
       }
+    },
+    //魅族渠道新手完成活动 下线时清删除
+    getCompleteData() {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/new-user-jackpot/user-info').then(res => {
+        let {code, data} = res.data
+        if(code === 200) {
+          this.completeData = data
+        }
+      })
+    },
+    completeClick() {
+      if(this.completeData.userTaskFinishAll) {
+        parent.window.location.href = 'https://wap.beeplaying.com/xmWap/#/task'
+        return false
+      }
+      parent.closeTaksPage()
     }
+    //魅族渠道新手完成活动 下线时清删除
   }
 }
 </script>
