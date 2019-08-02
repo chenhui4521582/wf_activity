@@ -21,16 +21,16 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" v-if="showNewUserTask &&newTaskItems.taskList.length>0"></new-user-task>
-          <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion &&newTaskItems.taskList.length>0"></new-user-task>
+          <div v-if="showNewUserTask && !newTaskItems.newVersion &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
-              <img src="./img/tips.png" alt="">
+              <img src="./img/tips-old.png" alt="">
             </div>
             <div class="new-task-header">
               <div class="new-task-inner">
                 <h4 class="h-title h-new-title icon-tips">
                   <p class="h-subtitle">
-                    <img src="./img/title1.png" class="xr-icon">
+                    <img src="./img/title1-old.png" class="xr-icon">
                     <img src="./images/small-xs-tips.png" class="small-xs-tips">
                   </p>
                   <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
@@ -99,10 +99,10 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
-          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
-          <template v-if="!showNewUserTask">
-            <!-- 人人大恶魔勋章 -->
-            <renren-mowang v-if="channel==='100049'"></renren-mowang>
+          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="isShowOther"></fixed-entrance>
+          <!-- 人人大恶魔勋章 -->
+          <renren-mowang v-if="channel==='100049'"></renren-mowang>
+          <template v-if="isShowOther">
             <!-- 大师任务 -->
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
@@ -309,6 +309,23 @@ export default {
     showNewUserTask () {
       let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
       return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+    },
+    isShowOther () {
+      let isShow = false
+      switch (this.channel) {
+        case '100049':
+          if (this.newTaskItems && this.newTaskItems.newVersion) {
+            isShow = this.newTaskItems && this.newTaskItems.dayTaskVisibleFlag
+          } else {
+            isShow = this.newTaskItems && !this.newTaskItems.isNew
+          }
+          break
+
+        default:
+          isShow = this.newTaskItems && !this.newTaskItems.isNew
+          break
+      }
+      return isShow
     }
   },
   filters: {
@@ -330,7 +347,6 @@ export default {
     poplog,
     crushMasterTask: () => import('./component/crushMasterTask'),
     newUserTask: () => import('./component/newUserTask'),
-    newUserTaskOld: () => import('./component/newUserTaskOld'),
     renrenMowang: () => import('./component/renrenMowang'),
     masterPop: () => import('./component/dialog'),
     commonPop: () => import('./component/commonPop'),
@@ -637,12 +653,12 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-每日任务-去完成
       }
-      if(action==72){
-        await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
-          value:taskId
+      if (action == 72) {
+        await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess', {
+          value: taskId
         })
-        await GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
-        parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
+        await GLOBALS.marchSetsPoint('A_H5PT0142001564', { target_project_id: gameType, task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
+        parent.location.href = `https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
       }
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
@@ -683,13 +699,13 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-        if(action==72){
-          await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess',{
-            value:taskId
+        if (action == 72) {
+          await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess', {
+            value: taskId
           })
-          await GLOBALS.marchSetsPoint('A_H5PT0142001564',{target_project_id:gameType,task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
-          parent.location.href=`https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
-        }else{
+          await GLOBALS.marchSetsPoint('A_H5PT0142001564', { target_project_id: gameType, task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+          parent.location.href = `https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
+        } else {
           this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
             taskId: taskId
           }).then((res) => {
@@ -884,14 +900,14 @@ export default {
           this.currentGamesItems = res.data.data.filter((item) => {
             return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
           })
-          if(this.currentGamesItems.filter(item=>item.action==72).length){
-            GLOBALS.marchSetsPoint('A_H5PT0142001563',{target_project_id:this.getUrlParam('gametype'),task_id:2,task_name:'当前游戏每日任务列表',source_address:'当前游戏每日任务列表'})
+          if (this.currentGamesItems.filter(item => item.action == 72).length) {
+            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
           }
           this.otherGamesItems = res.data.data.filter((item) => {
             return (item.gameType != this.getUrlParam('gametype'))
           })
-          if( this.otherGamesItems.filter(item=>item.action==72).length){
-            GLOBALS.marchSetsPoint('A_H5PT0142001563',{target_project_id:this.getUrlParam('gametype'),task_id:2,task_name:'更多每日任务列表',source_address:'更多每日任务列表'})
+          if (this.otherGamesItems.filter(item => item.action == 72).length) {
+            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
           }
         }
       })

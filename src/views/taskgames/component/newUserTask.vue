@@ -74,8 +74,15 @@
         <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
       </ul>
     </div>
-    <!-- 人人大恶魔勋章 -->
-    <renren-mowang v-if="channel==='100049'"></renren-mowang>
+    <div class="open-daily" v-if="newTaskItems.dayTaskVisiblePopUp">
+      <div class="mask"></div>
+      <img class="shine" src="../img/dialog/shine.png" alt="">
+      <div class="content-box">
+        <img class="open-gift" src="../img/open-gift.gif" alt="">
+        <img class="open-text" src="../img/open-text.png" alt="">
+        <img class="open-btn" src="../img/open-btn.png" @click="getList" alt="">
+      </div>
+    </div>
   </section>
 </template>
 
@@ -83,7 +90,21 @@
 export default {
   name: '',
   components: {
-    renrenMowang: () => import('../component/renrenMowang')
+  },
+  filters: {
+    formatTime (time) {
+      let days = time / 1000 / 3600 / 24
+      let day = Math.floor(days)
+      let hours = Math.ceil((days - day) * 24)
+      return `仅剩${day}天${hours}小时`
+    },
+    filter (url) {
+      if (url && !url.includes('http')) {
+        return '//file.beeplaying.com' + url
+      } else {
+        return url
+      }
+    }
   },
   props: {
     newTaskItems: {
@@ -105,47 +126,15 @@ export default {
     },
     goFinish (item) {
       this.$emit('goFinish', item, 'newtask')
+    },
+    getList () {
+      this.$emit('getList')
     }
   }
 }
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-.h-title {
-  margin: 0.3rem 0;
-  display: flex;
-  align-items: center;
-  font-size: 0.28rem;
-  position: relative;
-
-  .xr-icon {
-    width: 2rem;
-    height: 0.344rem;
-  }
-
-  .small-xs-tips {
-    width: 0.78rem;
-    height: 0.21rem;
-  }
-
-  .text {
-    position: absolute;
-    right: 0;
-    font-weight: normal;
-    font-size: 0.18rem;
-    display: flex;
-    align-items: center;
-    opacity: 0.5;
-
-    img {
-      display: inline-block;
-      width: 0.2rem;
-      height: 0.2rem;
-      margin-right: 0.05rem;
-    }
-  }
-}
-
 .t-items {
   margin: 0 auto;
 
@@ -506,7 +495,7 @@ export default {
 
 .new-task-header {
   width: 100%;
-  height: 2.76rem;
+  height: 2.6rem;
   background: url(~../img/bg.png) no-repeat;
   background-size: 100% 100%;
   box-sizing: border-box;
@@ -571,14 +560,86 @@ export default {
   }
 }
 .new-user-task {
-  color: #fff;
   margin-top: 0.3rem;
   position: relative;
+
+  .percent-lq {
+    height: 0.12rem;
+
+    .percent-box {
+      height: 0.12rem;
+      border-radius: 0.06rem;
+
+      em {
+        background: #507bcc;
+      }
+    }
+  }
+
+  .h-title {
+    display: flex;
+    align-items: center;
+    font-size: 0.28rem;
+    position: relative;
+    margin: 0.32rem 0 0.14rem;
+
+    .xr-icon {
+      width: 1.54rem;
+      height: 0.36rem;
+    }
+    .small-xs-tips {
+      width: 0.8rem;
+      height: 0.2rem;
+    }
+
+    .text {
+      position: absolute;
+      right: 0;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+      font-size: 0.16rem;
+      color: rgba(255, 255, 255, 0.5);
+
+      img {
+        display: inline-block;
+        width: 0.2rem;
+        height: 0.2rem;
+        margin-right: 0.05rem;
+      }
+    }
+  }
 
   .t-items {
     .pic {
       width: 0.6rem;
       height: 0.6rem;
+    }
+
+    li {
+      margin-bottom: 0;
+      padding: 0 0.16rem;
+      height: auto;
+
+      .item-content {
+        padding: 0.16rem 0;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        position: relative;
+        width: 100%;
+
+        .btn-box {
+          right: 0;
+        }
+      }
+
+      &:not(:last-child) {
+        .item-content {
+          border-bottom: 0.02rem solid #242f41;
+        }
+      }
     }
   }
 
@@ -587,8 +648,8 @@ export default {
     position: absolute;
     right: 1.3rem;
     top: -0.1rem;
-    width: 1.31rem;
-    height: 0.4rem;
+    width: 1rem;
+    height: 0.36rem;
 
     img {
       width: 100%;
@@ -637,6 +698,56 @@ export default {
   }
 }
 
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  opacity: 0.6;
+  z-index: 2;
+}
+.shine {
+  position: fixed;
+  z-index: 3;
+  width: 80%;
+  top: 16%;
+  left: 50%;
+  margin-left: -40%;
+  animation: rotate 2s linear infinite;
+  opacity: 0.8;
+}
+.content-box {
+  position: fixed;
+  z-index: 4;
+  width: 50%;
+  height: 80%;
+  left: 50%;
+  margin-left: -25%;
+  top: 15%;
+  .open-gift {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    margin-left: -1.04rem;
+    width: 2.08rem;
+  }
+  .open-text {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-left: -1.72rem;
+    width: 3.44rem;
+  }
+  .open-btn {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    margin-left: -0.76rem;
+    width: 1.52rem;
+  }
+}
 @keyframes tips {
   0% {
     transform-origin: right bottom;
