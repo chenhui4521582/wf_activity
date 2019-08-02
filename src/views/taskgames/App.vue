@@ -969,7 +969,7 @@ export default {
     },
     completeClick() {
       if(this.completeData.userTaskFinishAll) {
-        window.location.href = 'https://wap.beeplaying.com/xmWap/#/task'
+        parent.window.location.href = 'https://wap.beeplaying.com/xmWap/#/task'
         return false
       }
       parent.closeTaksPage()
