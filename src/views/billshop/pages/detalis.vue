@@ -10,7 +10,7 @@
         </div>
         <div class="title-tet">
           <div class="item">{{currentItem.name}}
-            <div class="buyone" v-if="buyone([currentItem])">每人限购1次</div>
+            <div class="buyone" v-if="buyone(currentItem)">每人每日限购{{currentItem.limitPerPersonDay}}次</div>
           </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
@@ -37,7 +37,7 @@
             <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
             <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
             <div class="item-number-add">
-              <field v-model="specNumber" :disabled="fieldDisabled" :store-max="currentItem.allUsersTodayAvailableQuota" :buyone="buyone([currentItem])"></field>
+              <field v-model="specNumber" :store-max="currentItem.allUsersTodayAvailableQuota" :buyone="currentItem.limitPerPersonDay||0"></field>
             </div>
           </div>
         </div>
@@ -105,9 +105,6 @@ export default {
     }
   },
   computed: {
-    fieldDisabled () {
-      return this.currentItem.phyAwardsId === 232 || this.currentItem.phyAwardsId === 523
-    },
     bannerImg () {
       return this.currentList.length > 0 ? this.currentList[0].detailPicture : ''
     },
@@ -154,13 +151,8 @@ export default {
     }
   },
   methods: {
-    buyone (list) {
-      if (list.length > 1) {
-        return false
-      }
-      if (list.length === 1 && list[0].limitPerPersonDay === 1) {
-        return true
-      }
+    buyone (item) {
+      return item.limitPerPersonDay >= 1
     },
     // 切换规格
     changeSpec (index) {
@@ -249,6 +241,13 @@ export default {
   }
 }
 </script>
+<style>
+.description-warp .details img {
+  width: 100% !important;
+  height: auto !important;
+}
+</style>
+
 <style lang="less" scoped>
 .details-warp {
   width: 100%;
@@ -301,7 +300,7 @@ export default {
     align-items: center;
     .buyone {
       display: inline-block;
-      width: 1.23rem;
+      width: 1.66rem;
       height: 0.28rem;
       line-height: 0.28rem;
       text-align: center;
