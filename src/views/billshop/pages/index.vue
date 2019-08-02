@@ -19,7 +19,7 @@
       <scroll :data="rewardList[selectedIndex].items">
         <ul v-if="rewardList[selectedIndex].items">
           <!-- :class="{buyone:item.limitPerPersonDay==1,nosurplus:item.allUsersTodayAvailableQuota ==0,buyover:item.currentUserTodayAvailableQuota ==0}" -->
-          <li v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)" :class="{'buyone':buyone(item.productList),'tehui':item.productList[0].phyAwardsId === 232,'nosurplus':nosurplus(item.productList),'buyover':buyover(item.productList)}" :key="index">
+          <li v-for="(item,index) in rewardList[selectedIndex].items" @click="goDetail(item,$event)" :class="{'buyone':buyone(item.productList),'tehui':isTehui(item.productList[0].phyAwardsId),'nosurplus':nosurplus(item.productList),'buyover':buyover(item.productList)}" :key="index">
             <template v-if="item.productList.length>0">
               <div class="pic-box">
                 <img :src="item.productList[0].picture | filter">
@@ -62,6 +62,11 @@ export default {
     }
   },
   methods: {
+    isTehui (id) {
+      // let arr = [232, 523]
+      let arr = [232]
+      return arr.indexOf(id) > -1
+    },
     // 页面初始化获取列表
     async pageInit () {
       const { data, code } = await billList()
