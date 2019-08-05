@@ -256,110 +256,109 @@ export default {
     poplog
   },
   computed: {
-		isCjTaskAllComplete() {
-			return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
-				return item.taskStatus == 2
-			}).length == this.cjTaskItems.length)
-		},
-		isHideMenu() {
-			return this.hideBackArr.includes(this.curChannel)
-		},
-		isDayTaskRed() {
-			let newArr = []
-			if (this.dayTaskItems && this.cjTaskItems) {
-				newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
-			}
-			return newArr && newArr.filter((item) => {
-				return item.taskStatus == 0
-			}).length
-		},
-		isCjTaskRed() {
-			return this.cdkArr && this.cdkArr.filter((item) => {
-				return item.gameCdkeyRsp.remainNum * 100 > 0
-			}).length
-		},
-		motherTask() {
-			let list = this.newTaskItems && this.newTaskItems.taskList || []
-			let motherTask = list.filter(item => {
-				return item.subTask
-			})[0]
-			list = list.filter(item => {
-				return !item.subTask
-			})
-			let finishedTaskNum = list.filter(item => {
-				return item.taskStatus == 2
-			}).length
-			if (motherTask) {
-				motherTask.allTaskNum = list.length
-				motherTask.hasFinishedNum = finishedTaskNum
-				return motherTask
-			}
-			return ''
-		},
-		newUserTaskobj() {
-			let list = this.newTaskItems && this.newTaskItems.taskList || []
-			let taskObj = null
-			list = list.filter(item => { // 刷选出子任务
-				return !item.subTask
-			})
-			// 找到当前需要展示的任务，第一个taskStatus不为2的任务
-			for (let i = 0; i < list.length; i++) {
-				if (list[i].taskStatus != 2) {  // taskStatus: 0-带领取 1-未完成 2-已领取
-					taskObj = list[i]
-					break
-				}
-			}
-			return taskObj
-		},
-		// 显示新手任务
-		showNewUserTask() {
-			let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
-			return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
-		}
-	},
+    isCjTaskAllComplete () {
+      return this.cjTaskItems && (this.cjTaskItems.filter((item) => {
+        return item.taskStatus == 2
+      }).length == this.cjTaskItems.length)
+    },
+    isHideMenu () {
+      return this.hideBackArr.includes(this.curChannel)
+    },
+    isDayTaskRed () {
+      let newArr = []
+      if (this.dayTaskItems && this.cjTaskItems) {
+        newArr = newArr.concat(this.dayTaskItems).concat(this.cjTaskItems)
+      }
+      return newArr && newArr.filter((item) => {
+        return item.taskStatus == 0
+      }).length
+    },
+    isCjTaskRed () {
+      return this.cdkArr && this.cdkArr.filter((item) => {
+        return item.gameCdkeyRsp.remainNum * 100 > 0
+      }).length
+    },
+    motherTask () {
+      let list = this.newTaskItems && this.newTaskItems.taskList || []
+      let motherTask = list.filter(item => {
+        return item.subTask
+      })[0]
+      list = list.filter(item => {
+        return !item.subTask
+      })
+      let finishedTaskNum = list.filter(item => {
+        return item.taskStatus == 2
+      }).length
+      if (motherTask) {
+        motherTask.allTaskNum = list.length
+        motherTask.hasFinishedNum = finishedTaskNum
+        return motherTask
+      }
+      return ''
+    },
+    newUserTaskobj () {
+      let list = this.newTaskItems && this.newTaskItems.taskList || []
+      let taskObj = null
+      list = list.filter(item => { // 刷选出子任务
+        return !item.subTask
+      })
+      // 找到当前需要展示的任务，第一个taskStatus不为2的任务
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].taskStatus != 2) {  // taskStatus: 0-带领取 1-未完成 2-已领取
+          taskObj = list[i]
+          break
+        }
+      }
+      return taskObj
+    },
+    // 显示新手任务
+    showNewUserTask () {
+      return this.newTaskItems && this.newTaskItems.isNew || false
+    }
+  },
   methods: {
     receive (item, type, index) {
       this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }, {
-        headers: {
-          'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-        }
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.$toast.show({
-            message: '领取成功！',
-            duration: 1500
-          })
-          switch (type) {
-            case 'cjTask':
-              GLOBALS.marchSetsPoint('A_H5PT0121001154', {
-                project_id: this.cGameType,
-                position_id: index + 1,
-                target_project_id: item.gameType,
-                task_id: item.taskId,
-                task_name: item.taskName
-              }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
-              break
-            case 'dayTask':
-              GLOBALS.marchSetsPoint('A_H5PT0121001156', {
-                project_id: this.cGameType,
-                position_id: index + 1,
-                target_project_id: item.gameType,
-                task_id: item.taskId,
-                task_name: item.taskName
-              }) // H5平台-H5游戏内SDK-页面
-              break
-            default:
-              break
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
           }
-          item.taskStatus = 2
-          this.getPlatTaskByBatch()
-          this.getDayTask()
-        }
-      })
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.$toast.show({
+              message: '领取成功！',
+              duration: 1500
+            })
+            switch (type) {
+              case 'cjTask':
+                GLOBALS.marchSetsPoint('A_H5PT0121001154', {
+                  project_id: this.cGameType,
+                  position_id: index + 1,
+                  target_project_id: item.gameType,
+                  task_id: item.taskId,
+                  task_name: item.taskName
+                }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
+                break
+              case 'dayTask':
+                GLOBALS.marchSetsPoint('A_H5PT0121001156', {
+                  project_id: this.cGameType,
+                  position_id: index + 1,
+                  target_project_id: item.gameType,
+                  task_id: item.taskId,
+                  task_name: item.taskName
+                }) // H5平台-H5游戏内SDK-页面
+                break
+              default:
+                break
+            }
+            item.taskStatus = 2
+            this.getPlatTaskByBatch()
+            this.getDayTask()
+          }
+        })
     },
     goFinish ({ gameType, url, action, taskId, taskName }, type, index) {
       let actionsArr = [39, 35, 34, 32]
@@ -439,13 +438,13 @@ export default {
         from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-        headers: {
-          'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-        }
-      }).then((res) => {
-        this.cjTaskItems = res.data.data
-      })
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
+          }
+        }).then((res) => {
+          this.cjTaskItems = res.data.data
+        })
     },
     getDayTask () {
       this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
@@ -453,13 +452,13 @@ export default {
         from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-        headers: {
-          'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-        }
-      }).then((res) => {
-        this.dayTaskItems = res.data.data
-      })
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
+          }
+        }).then((res) => {
+          this.dayTaskItems = res.data.data
+        })
     },
     tabNav (idx) {
       this.curIndex = idx
@@ -495,15 +494,15 @@ export default {
       await GLOBALS.marchSetsPoint('A_H5PT0121001151', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-游戏大厅
 
       /** 返回小米平台 **/
-	  let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
-	  let XMCHANNEM = ['100051', '100051003', '100051005']
-	  let isxmChannel = XMCHANNEM.find(item => {
-		return item == APP_CHANNEL
-	  })
-      if(isxmChannel) {
-		top.location.href = 'https://wap.beeplaying.com/xmWap/?channel='+isxmChannel
-      }else {
-		top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+      let APP_CHANNEL = window.GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+      let XMCHANNEM = ['100051', '100051003', '100051005']
+      let isxmChannel = XMCHANNEM.find(item => {
+        return item == APP_CHANNEL
+      })
+      if (isxmChannel) {
+        top.location.href = 'https://wap.beeplaying.com/xmWap/?channel=' + isxmChannel
+      } else {
+        top.location.href = window.linkUrl.getBackUrl(this.curChannel)
       }
 
     },
@@ -524,19 +523,19 @@ export default {
       this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
       }, {
-        headers: {
-          'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-        }
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.$toast.show({
-            message: '领取成功',
-            duration: 1500
-          })
-          this.getCdkeyStatus()
-        }
-      })
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
+          }
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.$toast.show({
+              message: '领取成功',
+              duration: 1500
+            })
+            this.getCdkeyStatus()
+          }
+        })
     },
     handleTabUse () {
       this.isTabUse = !this.isTabUse
@@ -560,15 +559,15 @@ export default {
       this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/status', {
         value: this.curlink
       }, {
-        headers: {
-          'App-Channel': this.curChannel,
-          'Authorization': this.curToken
-        }
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.cdkArr = res.data.data
-        }
-      })
+          headers: {
+            'App-Channel': this.curChannel,
+            'Authorization': this.curToken
+          }
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.cdkArr = res.data.data
+          }
+        })
     },
     getNewTask () {
       this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask',
@@ -584,7 +583,7 @@ export default {
           if (res.data.code == 200) {
             this.newTaskItems = res.data.data
           }
-          
+
         })
     },
     checkTaskStatus (item, type, index) {

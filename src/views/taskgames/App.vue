@@ -331,8 +331,7 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
-      return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+      return this.newTaskItems && this.newTaskItems.isNew
     },
     isShowOther () {
       let isShow = false
