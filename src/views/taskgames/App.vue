@@ -21,7 +21,7 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion &&newTaskItems.taskList.length>0"></new-user-task>
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion &&newTaskItems.taskList.length>0"></new-user-task>
           <div v-if="showNewUserTask && !newTaskItems.newVersion &&newTaskItems.taskList.length>0" class="new-user-task">
             <div class="tips">
               <img src="./img/tips-old.png" alt="">
