@@ -336,18 +336,10 @@ export default {
     },
     isShowOther () {
       let isShow = false
-      switch (this.channel) {
-        case '100049':
-          if (this.newTaskItems && this.newTaskItems.newVersion) {
-            isShow = this.newTaskItems && this.newTaskItems.dayTaskVisibleFlag
-          } else {
-            isShow = this.newTaskItems && !this.newTaskItems.isNew
-          }
-          break
-
-        default:
-          isShow = this.newTaskItems && !this.newTaskItems.isNew
-          break
+      if (this.newTaskItems && this.newTaskItems.newVersion) {
+        isShow = this.newTaskItems && this.newTaskItems.dayTaskVisibleFlag
+      } else {
+        isShow = this.newTaskItems && !this.newTaskItems.isNew
       }
       return isShow
     }
