@@ -58,7 +58,7 @@
     </div>
     <!-- 提升弹框 -->
     <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize" @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber" />
-    <dialog-mask v-model="dialogShow" :status-code="statusCode" @on-checkprize="checkprize" />
+    <dialog-mask v-model="dialogShow" :status-code="statusCode" :awards-type="phyAwardsType" @on-checkprize="checkprize" />
   </div>
 </template>
 <script>
@@ -79,8 +79,8 @@ export default {
       dialogShow: false,
       statusCode: '',
       TIME: null,
-      phyAwardsId: this.$route.query['phyAwardsId'],
-      phyAwardsType: this.$route.query['phyAwardsType'],
+      phyAwardsId: parseInt(this.$route.query['phyAwardsId']),
+      phyAwardsType: parseInt(this.$route.query['phyAwardsType']),
       goodsName: this.$route.query['goodsName'],
       showOut: this.$route.query['showOut'],
       accountBalance: 0,
@@ -89,16 +89,17 @@ export default {
     }
   },
   async created () {
+    let arr = [232, 523]
     const { data: userInfo } = await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
     this.accountBalance = userInfo.code == 200 && (parseFloat(userInfo.data.hfSum / 10).toFixed(1) + '')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
     const { data, code, message } = await getGoodsDetail(this.phyAwardsType, this.goodsName, this.showOut)
     if (code === 200 && data && data.length) {
       this.currentList = data.filter(item => {
-        if (this.phyAwardsId == '232') {
-          return item.phyAwardsId === 232
+        if (arr.indexOf(this.phyAwardsId) > -1) {
+          return arr.indexOf(item.phyAwardsId) > -1
         } else {
-          return item.phyAwardsId !== 232
+          return arr.indexOf(item.phyAwardsId) < 0
         }
       })
       console.log('currentList', this.currentList)

@@ -63,8 +63,7 @@ export default {
   },
   methods: {
     isTehui (id) {
-      // let arr = [232, 523]
-      let arr = [232]
+      let arr = [232, 523]
       return arr.indexOf(id) > -1
     },
     // 页面初始化获取列表
