@@ -21,8 +21,8 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion &&newTaskItems.taskList.length>0"></new-user-task>
-          <div v-if="showNewUserTask && !newTaskItems.newVersion &&newTaskItems.taskList.length>0" class="new-user-task">
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
+          <div v-if="showNewUserTask && !newTaskItems.newVersion" class="new-user-task">
             <div class="tips">
               <img src="./img/tips-old.png" alt="">
             </div>
@@ -331,7 +331,7 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      return this.newTaskItems && this.newTaskItems.isNew
+      return this.newTaskItems && this.newTaskItems.isNew && this.newTaskItems.taskList.length > 0
     },
     isShowOther () {
       let isShow = false
