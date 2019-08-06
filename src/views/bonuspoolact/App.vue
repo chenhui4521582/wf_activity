@@ -1,573 +1,545 @@
 <template>
-  <div id="app" :class="{aoke:curChannel==100006&&isHasIframe}">
-    <!--回到顶部-->
-    <div class="rule" @click="showrule">规则</div>
+  <div id="app">
     <!--返回按钮-->
-    <div class="back" @click="back"></div>
-    <!--第一屏-->
-    <div class="section1" id="section1" :class="{noopen:detailData&&!detailData.activityIsOpen}">
-      <div class="time" v-if="detailData">活动时间：{{detailData.activityTimeline}}</div>
-      <div class="bonus">
-        <img :src="detailData.activityImage|filter" alt="" v-if="detailData">
-      </div>
-      <template v-if="detailData">
-        <!--活动未开启-->
-        <template v-if="!detailData.activityIsOpen">
-          <!--开始瓜分-->
-          <div class="btn showfingerPress" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
-          <div class="btn showfingerPress" v-else-if="detailData.activityCountdown==0">活动结束啦</div>
-          <div class="btn" v-else>{{countdown.time}}后准时开启</div>
-        </template>
-        <!--活动开启-->
-        <template v-else>
-          <!--未报名-->
-          <div class="btn" :class="{finger:showfinger}" v-if="detailData.userState==1" @click="appointmentBonus">立即报名瓜分奖池</div>
-          <!--已报名未瓜分-->
-          <div class="btn showfingerPress" v-if="detailData.userState==2">{{countdown.time}}开启奖池</div>
-          <!--开始瓜分-->
-          <div class="btn showfingerPress" @click="divideBonus" v-if="detailData.userState==3">立即瓜分奖池</div>
-        </template>
-      </template>
-      <!--<div class="tip" v-if="switches.tzo!=null">-->
-      <!--<span class="label" :class="{open:switches.tzo}">{{switches.tzo?'开':'关'}}</span><switches v-model="switches.tzo" class="notice-sw" theme="bulma" color="default" type-bold="true"></switches>-->
-      <!--<div class="txt">奖池开启提醒</div>-->
-      <!--</div>-->
-      <div class="info" v-if="detailData&&detailData.activityIsOpen">已有{{detailData.activityApplyCount}}人参与瓜分</div>
-    </div>
-    <!--瓜分记录-->
-    <div class="section2" id="section2" v-if="bonusListData.length">
-      <div class="container">
-        <!--红包记录-->
-        <bonus-record :data="bonusListData"></bonus-record>
-      </div>
-    </div>
-    <!--攻略-->
-    <div class="section3" id="section3" :class="{norecord:!showTask}">
-      <div class="container"></div>
-    </div>
-    <!--更多游戏活动-->
-    <div class="section6" id="section6" v-if="showTask">
-      <div class="package">
-        <div class="item" v-for="(item,index) in packageData" @click="gotopay(item)">
-          <img src="./images/bonus/gift1.png" alt="" class="pic" v-if="index==0">
-          <img src="./images/bonus/gift2.png" alt="" class="pic" v-if="index==1">
-          <img src="./images/bonus/gift3.png" alt="" class="pic" v-if="index==2">
-          <div class="text">
-            <span>{{item.content.split('+')[0]}}</span>
-            <span v-if="item.content.split('+')[1]">+{{item.content.split('+')[1]}}</span>
-          </div>
-          <div class="package_btn">¥{{item.price}}</div>
+    <div class="back" @click="back">返回</div>
+    <template v-if="detailData">
+      <!--回到顶部-->
+      <div class="rule" @click="showrule">规则</div>
+      <!--日期-->
+      <div class="date">{{detailData.timeline}}</div>
+      <div class="display" v-if="tabIndex">
+        <div class="item" @click="tabIndex=0">
+          <img src="./images/qianyuanbonus.png" alt="">
         </div>
-        <div class="btn" @click="morepackage">更多礼包推荐</div>
+        <div class="item">
+          <img src="./images/zhongjidajiang.png" alt="">
+        </div>
       </div>
-    </div>
+      <div class="display1" v-else>
+        <div class="item">
+          <img src="./images/qianyuanbonus1.png" alt="">
+        </div>
+        <div class="item">
+          <img src="./images/zhongjidajiang1.png" alt="" @click="tabIndex=1">
+        </div>
+      </div>
+      <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==3}" v-show="tabIndex==1">
+        <template v-if="detailData.ultimateState==1||detailData.ultimateState==3">
+          <img src="./images/yure_gif.png" alt="">
+          <div class="bonus_content">
+            <div class="price">{{detailData.ultimateAmount}}元</div>
+            <div class="text">
+              <span>奖</span>
+              <span>励</span>
+            </div>
+          </div>
+          <div class="info">连续报名5天即可瓜分</div>
+        </template>
+        <img src="./images/openprize.gif" alt="" v-else>
+      </div>
+      <div class="gif" v-show="tabIndex==0">
+        <img src="./images/qianyuanbonusopen.gif" alt="" v-if="detailData.normalState==5">
+        <img src="./images/qianyuanbonus.gif" alt="" v-else>
+      </div>
+      <!--瓜分记录入口-->
+      <div class="record" @click="showrecord" v-if="bonusListData.length"></div>
+      <!--正常奖池状态normalState 1=活动预热 2=用户未报名 3=用户已报名 4=报名截止 5=奖池开启 6=已结束 ,-->
+      <!--千元红包-->
+      <template v-if="tabIndex==0">
+        <div class="btn bonus_pre" v-if="detailData.normalState==1">
+          活动开启倒计时{{countdown.time}}
+        </div>
+        <div class="btn bonus_hot" @click="appointmentBonus" v-if="detailData.normalState==2">
+          马上报名瓜分红包
+        </div>
+        <div class="btn bonus_hot" v-if="detailData.normalState==3">
+          {{countdown.time}}后瓜分红包
+        </div>
+        <div class="btn bonus_pre pre" v-if="detailData.normalState==4">
+          <span>本场报名已截止<br>下场开启倒计时：{{countdown.time}}</span>
+        </div>
+        <div class="btn bonus_divide" @click="divideBonus(0)" v-if="detailData.normalState==5">
+          立即瓜分
+        </div>
+        <div class="btn bonus_end" v-if="detailData.normalState==6">
+          活动已结束
+        </div>
+      </template>
+      <!--终极大奖ultimateState (integer, optional): 终极奖池状态 1=未开启 2=开启 3=已结束-->
+      <template v-else>
+        <template v-if="detailData.ultimateState==1">
+          <div class="btn bonus_pre" v-if="detailData.normalState==1">
+            活动开启倒计时{{countdown.time}}
+          </div>
+          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="tabIndex=0">
+            <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
+          </div>
+        </template>
+        <div class="btn bonus_hot" v-if="detailData.ultimateState==2">
+          {{countdown.time}}后免费瓜分
+        </div>
+        <div class="btn bonus_divide" @click="divideBonus(1)" v-if="detailData.ultimateState==3">
+          立即瓜分
+        </div>
+        <div class="btn bonus_end" v-if="detailData.ultimateState==4">
+          活动已结束
+        </div>
+      </template>
+      <div class="info_txt" v-if="detailData.activityApplyNum">已有<i>{{detailData.activityApplyNum}}</i>人报名成功</div>
+    </template>
     <!--以下都是弹窗-->
     <!--规则-->
-    <bonus-success v-if="showrulepop" :count="0" @close="showrulepop=false" :dataStr="detailData&&(detailData.activityBeginDate+'-'+detailData.activityEndDate)||''"></bonus-success>
-    <!--绑定手机号-->
-    <bonus-success v-if="isOpen" :count="1" @close="isOpen=false" @closemobile="closemobile" @refresh="myDetails"></bonus-success>
+    <bonus-success v-if="flag" :count="flag" @close="flag=0"
+                   :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
+                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum">
+      <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
+    </bonus-success>
+
     <!--开启红包弹窗-->
     <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes"></bonus-opened>
   </div>
 </template>
 <script>
-import '../../common/js/window.js'
-import bonusSuccess from './components/bonusSuccess'
-import bonusOpened from './components/bonusOpened'
-import bonusRecord from './components/bonusRecord'
-import common from '../../common/js/utils'
-// import Switches from 'vue-switches';
-export default {
-  data () {
-    return {
-      curChannel: null,
-      curToken: null,
-      countdown: {// 红包榜外显倒计时，最后一天显示
-        time: ''
-      },
-      showrulepop: false,
-      // switches: {
-      //     tzo:null
-      // },
-      isOpen: false,
-      showmobilepop: false,
-      candivide: true,
-      isshowBonusOpened: false, // 是否显示开启红包弹窗
-      packageData: [], // 礼包数据
-      bonusListData: [], // 瓜分记录
-      detailData: null, // 活动信息
-      awards: null, // 瓜分奖品
-      showfinger: false,
-      showfingerPress: false
-    }
-  },
-  async mounted () {
-    this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
-    this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
-    await this.myDetails()
-    // document.querySelectorAll('#app .vue-switcher div')[0].style.backgroundColor='rgba(255,255,255,0.4)'
-    // document.querySelectorAll('#app .vue-switcher div')[0].style.width='100%'
-    // document.querySelectorAll('#app .vue-switcher div')[0].style.top=0
-    // document.querySelectorAll('#app .vue-switcher div')[0].style.left=0
-    // document.querySelectorAll('#app .vue-switcher div')[0].style.transform='scale(1.5)'
-    await GLOBALS.marchSetsPoint('A_H5PT0074001374')// H5平台-奖池瓜分页面加载
-    this.bonusListClick()
-    this.getPackage()
-  },
-  computed: {
-    countdownText () { // 倒计时文案 红包榜外显倒计时，最后一天显示
-      if (this.countdown.time) {
-        let hourText = this.countdown.time.split(':')[0]
-        let days = Math.floor(hourText / 24)
-        if (days == 0) {
-          return this.countdown.time
+  import '../../common/js/window.js'
+  import bonusSuccess from './components/bonusSuccess'
+  import bonusOpened from './components/bonusOpened'
+  import bonusRecord from './components/bonusRecord'
+
+  export default {
+    data() {
+      return {
+        curChannel: null,
+        curToken: null,
+        countdown: {// 红包榜外显倒计时，最后一天显示
+          time: ''
+        },
+        showrulepop: false,
+        isOpen: false,
+        showmobilepop: false,
+        candivide: true,
+        isshowBonusOpened: false, // 是否显示开启红包弹窗
+        packageData: [], // 礼包数据
+        bonusListData: [], // 瓜分记录
+        detailData: null, // 活动信息
+        awards: null, // 瓜分奖品
+        showfinger: false,
+        showfingerPress: false,
+        flag: 0,
+        tabIndex: 0,
+        countdownbonus: {// 终极大奖倒计时
+          time: ''
+        },
+      }
+    },
+    async mounted() {
+      this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
+      this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
+      await this.myDetails()
+      await this.bonusListClick()
+      await GLOBALS.marchSetsPoint('A_H5PT0074001374',{
+        source_address:this.getUrlParam('from')||''
+      })// H5平台-奖池瓜分页面加载
+    },
+    computed: {
+      countdownText() { // 倒计时文案 红包榜外显倒计时，最后一天显示
+        if (this.countdown.time) {
+          let hourText = this.countdown.time.split(':')[0]
+          let days = Math.floor(hourText / 24)
+          if (days == 0) {
+            return this.countdown.time
+          } else {
+            return ''
+          }
         } else {
           return ''
         }
-      } else {
-        return ''
+      },
+      isHasIframe() {
+        return window != window.top
       }
     },
-    showTask () {
-      return true
-    },
-    isHasIframe () {
-      return window != window.top
-    }
-  },
-  methods: {
-    getDateInfo (date) {
-      let dateObj = new Date(date)
-      let month = dateObj.getMonth() + 1
-      let day = dateObj.getDate()
-      return `${month}月${day}日`
-    },
-    showrule () {
-      this.showrulepop = true
-    },
-    // 获取地址栏问号后面的参数值
-    getUrlParam: function (ename) {
-      // var url = document.referrer;
-      var url = window.location.href
-      var Request = new Object()
-      if (url.indexOf('?') != -1) {
-        var str = url.split('?')[1]
-        var strs = str.split('&')
-        for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
+    methods: {
+      showrule() {
+        this.flag = 1
+      },
+      // 获取地址栏问号后面的参数值
+      getUrlParam: function (ename) {
+        // var url = document.referrer;
+        var url = window.location.href
+        var Request = new Object()
+        if (url.indexOf('?') != -1) {
+          var str = url.split('?')[1]
+          var strs = str.split('&')
+          for (var i = 0; i < strs.length; i++) {
+            Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
+          }
+        } else {
+          return ''
         }
-      } else {
-        return ''
-      }
-      return Request[ename]
-    },
-    back () {
-      top.location.href = window.linkUrl.getBackUrl(this.curChannel)
-    }, // 回到首页
-    getComputedStyle (ele, attr) {
-      return window.getComputedStyle(ele, null)[attr]
-    },
-    fetch (url, params) {
-      if (url.startsWith('/ops/api')) {
-        url = '//ops-api.beeplaying.com' + url
-      }
-      if (url.startsWith('/wap/api')) {
-        url = '//platform-api.beeplaying.com' + url
-      }
-      if (url.startsWith('/wap/api')) {
-        url = '//shop-api.beeplaying.com' + url
-      }
-      return this.axios.post(url, params, {})
-    }, // 请求封装方法
-    async bonusListClick () {
-      try {
-        const res = await this.fetch('/ops/api/jackpot/getWinningRecord', {
-          page: 1,
-          pageSize: 500
-        })
-        if (res.data.code == 200 && res.data.data) {
-          this.bonusListData = res.data.data || []
+        return Request[ename]
+      },
+      back() {
+        top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+      }, // 回到首页
+      getComputedStyle(ele, attr) {
+        return window.getComputedStyle(ele, null)[attr]
+      },
+      fetch(url, params) {
+        if (url.startsWith('/ops/api')) {
+          url = '//ops-api.beeplaying.com' + url
         }
-      } catch (e) {
+        if (url.startsWith('/wap/api')) {
+          url = '//platform-api.beeplaying.com' + url
+        }
+        if (url.startsWith('/wap/api')) {
+          url = '//shop-api.beeplaying.com' + url
+        }
+        return this.axios.post(url, params, {})
+      }, // 请求封装方法
+      async bonusListClick() {//红包记录
+        try {
+          const res = await this.fetch('/ops/api/jackpot/getWinningRecord', {
+            page: 1,
+            pageSize: 500
+          })
+          if (res.data.code == 200 && res.data.data) {
+            this.bonusListData = res.data.data || []
+          }
+        } catch (e) {
 
-      }
-    },
-    async myDetails () {
-      try {
-        const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
-        if (res.data.code == 200 && res.data.data) {
-          this.detailData = res.data.data
-          this.showfinger = res.data.data.userState == 1
-          // this.switches= {
-          //     tzo:this.detailData.userIsOpenSms
-          // }
-          !this.countdown.time && this.detailData.activityCountdown && GLOBALS.remainingTime(
-            this,
-            this.detailData.activityCountdown,
-            this.countdown
-          )
         }
-      } catch (e) {
+      },
+      async myDetails() {
+        try {
+          const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
+          if (res.data.code == 200 && res.data.data) {
+            this.detailData = res.data.data
+            //千元红包结束，终极大奖还有资格瓜分 默认选中终极大奖
+            if (this.detailData.normalState == 6 && this.detailData.ultimateState == 2) {
+              this.tabIndex = 1
+            }
+            !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
+              this,
+              this.detailData.countdown,
+              this.countdown
+            )
+          }
+        } catch (e) {
 
-      }
-    }, // 获取myDetails数据
-    // 礼包
-    async getPackage () { // 获取礼包数据
-      try {
-        const { data } = await this.axios.post('https://shop-api.beeplaying.com/shop/api/mall/leaguePacksList')
+        }
+      }, // 获取myDetails数据
+      async divideBonus(flag) { // 开始瓜分 0 红包瓜分 1 终极瓜分
+        GLOBALS.marchSetsPoint('A_H5PT0074001376')
+        let {data} = await this.fetch(flag?'/ops/api/jackpot/divideUltimate':'/ops/api/jackpot/divideUp', {isShowTotast: false})
         if (data.code == 200) {
-          this.packageData = data.data.leaguePacksList || []
-          console.log('this.packageData', data.data.leaguePacksList.length)
+          this.awards = data.data// 瓜分奖品
+          this.isshowBonusOpened = true
+        } else {
+          this.$toast.show({
+            message: data.message,
+            duration: 2000
+          })
         }
-      } catch (e) {
-
-      }
-    },
-    gotopay (val) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001379', { product_id: val.bizId })
-      localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-      if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') { // 好看、全民小视频
-        top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
-      } else {
-        top.location.href = 'https://wap.beeplaying.com/payment/#/payment'
-      }
-    },
-    morepackage () {
-      top.location.href = window.linkUrl.getBackUrl(this.curChannel, '', false, true, '&from=treasureCeremony')
-    },
-    async divideBonus () { // 开始瓜分
-      GLOBALS.marchSetsPoint('A_H5PT0074001376')
-      let { data } = await this.fetch('/ops/api/jackpot/divideUp', { isShowTotast: false })
-      if (data.code == 200) {
-        this.awards = data.data// 瓜分奖品
-        this.isshowBonusOpened = true
-      } else {
-        this.$toast.show({
-          message: data.message,
-          duration: 2000
-        })
-      }
-      this.myDetails()
-    },
-    async appointmentBonus () { // 报名
-      this.showfinger = false
-      this.showfingerPress = true
-      GLOBALS.marchSetsPoint('A_H5PT0074001375')
-      let { data } = await this.fetch('/ops/api/jackpot/userApply')
-      if (data.code == 200) {
-        this.$toast.show({
-          message: '报名成功',
-          duration: 2000
-        })
-      } else {
-        this.$toast.show({
-          message: data.message,
-          duration: 2000
-        })
-      }
-      this.myDetails()
-    },
-    closeBonusRes () {
-      this.isshowBonusOpened = false
-    },
-    closemobile () {
-      // this.switches.tzo=false
-      this.isOpen = false
-    }
-  },
-  components: {
-    bonusSuccess, bonusOpened, bonusRecord
-  },
-  watch: {
-    // "switches.tzo":function(open,o){
-    //     //n代表0开启1关闭,盈利榜奖励到账通知
-    //     if(o === null) return
-    //     if(open){
-    //         GLOBALS.marchSetsPoint('A_H5PT0074001377')//H5平台-奖池瓜分页面-开启消息提醒
-    //         if(!this.detailData.userIsBindPhone){
-    //             this.isOpen=true
-    //         }else{
-    //             this.fetch('/ops/api/jackpot/userOpenSms',{value:''})
-    //         }
-    //     }else{
-    //         GLOBALS.marchSetsPoint('A_H5PT0074001378')//H5平台-奖池瓜分页面-关闭消息提醒
-    //         this.fetch('/ops/api/jackpot/userCloseSms',{isShowToast:false})//用户关闭短信提醒
-    //     }
-    // },
-    'countdown.time': function (val) {
-      if (!val) {
         this.myDetails()
+      },
+      async appointmentBonus() { // 报名
+        GLOBALS.marchSetsPoint('A_H5PT0074001375')
+        let {data} = await this.fetch('/ops/api/jackpot/userApply', {isShowTotast: false})
+        if (data.code == 200) {
+          this.flag = 3
+        } else {
+          this.flag = 4
+        }
+        this.myDetails()
+      },
+      closeBonusRes() {
+        this.isshowBonusOpened = false
+      },
+      async showrecord() {
+        GLOBALS.marchSetsPoint('A_H5PT0074001592')// H5平台-奖池瓜分页面-点击瓜分记录
+        await this.bonusListClick()
+        this.flag = 2
+      }
+    },
+    components: {
+      bonusSuccess, bonusOpened, bonusRecord
+    },
+    watch: {
+      'countdown.time': function (val) {
+        if (!val) {
+          this.myDetails()
+        }
       }
     }
   }
-}
 
 </script>
 <style lang="less" scoped>
-@import "../../common/css/base.css";
-#app {
-  max-height: 2.383rem;
-  background: #3359f3;
-}
-.aoke {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow-y: scroll;
-}
-.rule {
-  font-size: 0.24rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 1);
-  text-align: center;
-  position: fixed;
-  top: 0.18rem;
-  right: 0.13rem;
-  width: 1.08rem;
-  height: 0.44rem;
-  line-height: 0.44rem;
-  background: rgba(47, 68, 235, 0.38);
-  border-radius: 0.22rem;
-  z-index: 10;
-}
-.back {
-  position: fixed;
-  top: 0.18rem;
-  left: 0.23rem;
-  width: 0.44rem;
-  height: 0.44rem;
-  background: url("./images/bonus/backhome.png");
-  background-size: 100% 100%;
-  z-index: 10;
-}
-.section1 {
-  position: relative;
-  width: 7.2rem;
-  height: 10.81rem;
-  background: url("./images/bonus/section1_bg.png");
-  background-size: 100% 100%;
-  &.noopen {
-    height: 9.81rem;
-    background: url("./images/bonus/section0_bg.png");
-    background-size: 100% 100%;
-  }
-  .time {
-    position: absolute;
-    top: 2.3rem;
-    left: 2.15rem;
-    font-size: 0.22rem;
-    color: #fff;
-  }
-  .bonus {
-    position: absolute;
-    top: 3.11rem;
-    left: 2.1rem;
-    width: 2.09rem;
-    height: 2.73rem;
-    img {
-      position: absolute;
-      bottom: -0.5rem;
-      width: 2.8rem;
-      height: 3.45rem;
-    }
-  }
-  .btn {
-    position: absolute;
-    top: 7.07rem;
-    left: 1.62rem;
-    width: 3.91rem;
-    height: 1.41rem;
-    padding-top: 0.25rem;
-    text-align: center;
-    font-size: 0.28rem;
-    font-weight: bold;
-    color: rgba(182, 89, 29, 1);
-    box-sizing: border-box;
-    background: url("./images/bonus/btn1.png");
-    background-size: 100% 100%;
-    &.finger {
-      animation: ychange 1s infinite;
-      &:before {
-        content: "";
-        position: absolute;
-        left: 2.9rem;
-        bottom: 0.6rem;
-        width: 1.11rem;
-        height: 0.9rem;
-        background: url("./images/bonus/finger.png");
-        background-size: 100% 100%;
-        animation: myPlay1 1s infinite;
-      }
-    }
-    &.showfingerPress {
-      padding-top: 0.4rem;
-      background: url("./images/bonus/btn1_press.png");
-      background-size: 100% 100%;
-    }
-  }
-  .info {
-    position: absolute;
-    bottom: 1.35rem;
-    left: 1.3rem;
-    right: 1.3rem;
-    font-size: 0.3rem;
-    font-weight: 400;
-    color: #6ae3fd;
-    text-align: center;
-  }
-  .tip {
-    position: absolute;
-    top: 5.4rem;
-    left: 0.2rem;
-    display: flex;
-    flex-direction: column;
-    .label {
-      position: absolute;
-      top: 6px;
-      right: 0.2rem;
-      z-index: 1;
-      // font-size: ;
-      font-weight: 400;
-      color: #0a1354;
-      &.open {
-        left: 0.2rem;
-      }
-    }
-    .txt {
-      margin-top: 0.2rem;
-      font-size: 0.18rem;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 1);
-    }
-  }
-}
+  @import "../../common/css/base.css";
 
-.section2 {
-  position: relative;
-  padding: 0 0.42rem 0.27rem 0.4rem;
-  top: -0.99rem;
-  z-index: 1;
-  background: #3359f3;
-  box-sizing: border-box;
-  .container {
-    width: 6.38rem;
-    height: 5.27rem;
-    background: url("./images/bonus/record.png");
+  #app {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: url("./images/bg.png");
     background-size: 100% 100%;
+    color: rgba(255, 255, 255, 1);
+    &:before {
+      content: '';
+      position: absolute;
+      top: -.2rem;
+      left: .13rem;
+      width: 7rem;
+      height: 10.76rem;
+      background: url("./images/decoration_bg.png") no-repeat;
+      background-size: 100% 100%;
+      z-index: 1;
+    }
   }
-}
-.section3 {
-  position: relative;
-  padding: 0 0.42rem 0.27rem 0.4rem;
-  top: -1.01rem;
-  z-index: 1;
-  background: #3359f3;
-  box-sizing: border-box;
-  .container {
-    width: 6.38rem;
-    height: 2.53rem;
-    background: url("./images/bonus/gonglue.png");
-    background-size: 100% 100%;
+
+  .rule {
+    font-size: 0.24rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    position: fixed;
+    top: 0.18rem;
+    right: 0;
+    width: .8rem;
+    height: .5rem;
+    line-height: .5rem;
+    background: rgba(183, 59, 208, 1);
+    border-radius: 0.25rem 0 0 .25rem;
+    z-index: 10;
   }
-}
-.section6 {
-  position: relative;
-  padding: 0 0.42rem 0.41rem 0.4rem;
-  top: -1.02rem;
-  width: 7.2rem;
-  background: #3359f3;
-  z-index: 1;
-  box-sizing: border-box;
-  .package {
-    width: 6.38rem;
-    height: 5.27rem;
-    background: url("./images/bonus/bonusplus.png");
-    background-size: 100% 100%;
+
+  .back {
+    position: fixed;
+    top: 0.18rem;
+    width: .8rem;
+    height: .5rem;
+    line-height: .5rem;
+    text-align: center;
+    background: rgba(72, 15, 153, 1);
+    border-radius: 0 .25rem 0.25rem 0;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    z-index: 10;
+  }
+
+  .date {
+    font-size: .3rem;
+    font-weight: bold;
+    position: absolute;
+    top: .38rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: .08rem;
+  }
+
+  .display {
+    position: absolute;
+    top: 2.5rem;
+    height: 1.33rem;
+    left: .54rem;
+    right: .54rem;
     display: flex;
-    justify-content: space-between;
-    padding: 1.13rem 0.28rem 0 0.23rem;
-    box-sizing: border-box;
-    position: relative;
+    justify-content: space-around;
     .item {
-      width: 1.8rem;
-      height: 2.48rem;
+      width: 3.12rem;
+      height: 1.33rem;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(51, 89, 243, 1);
-      border-radius: 0.1rem;
-      position: relative;
-      .pic {
+      z-index: 1;
+      img {
+        width: 1.33rem;
+        height: .38rem;
         position: absolute;
-        top: 0.14rem;
-        width: 1.04rem;
-        height: 1.15rem;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -40%);
+      }
+      &:nth-child(1) {
+        background: url("./images/tip_btn_blue.png");
+        background-size: 100% 100%;
+      }
+      &:nth-child(2) {
+        background: url("./images/tip_btn_red.png");
+        background-size: 100% 100%;
+      }
+    }
+  }
+
+  .display1 {
+    position: absolute;
+    top: 2.4rem;
+    height: 1.33rem;
+    left: .54rem;
+    right: .54rem;
+    display: flex;
+    justify-content: space-around;
+    .item {
+      width: 3.12rem;
+      height: 1.33rem;
+      position: relative;
+      z-index: 1;
+      img {
+        width: 1.33rem;
+        height: .38rem;
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -40%);
+      }
+      &:nth-child(1) {
+        background: url("./images/tip_btn_red.png");
+        background-size: 100% 100%;
+      }
+      &:nth-child(2) {
+        background: url("./images/tip_btn_blue.png");
+        background-size: 100% 100%;
+      }
+    }
+  }
+
+  .gif {
+    position: absolute;
+    top: 3.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    img {
+      idth: 5.32rem;
+      height: 6.2rem;
+    }
+    &.giftmove {
+      padding-top: .2rem;
+      box-sizing: border-box;
+      animation:giftmove 1s infinite;
+      img {
+        width: 4.41rem;
+        height: 5.84rem;
+      }
+    }
+    .bonus_content {
+      position: absolute;
+      top: 3.9rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      width: 100%;
+      .price {
+        font-size: .74rem;
+        font-weight: bold;
+        color: rgba(255, 206, 77, 1);
+        text-shadow: 0 .03rem .01rem rgba(112, 30, 22, 0.26);
       }
       .text {
-        position: absolute;
-        top: 1.33rem;
-        bottom: 0.68rem;
-        font-size: 0.2rem;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 1);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .package_btn {
-        position: absolute;
-        left: 0.44rem;
-        bottom: 0.17rem;
-        width: 0.96rem;
-        height: 0.39rem;
-        line-height: 0.39rem;
-        text-align: center;
-        background: rgba(87, 181, 255, 1);
-        border-radius: 0.2rem;
-        font-size: 0.24rem;
+        font-size: .34rem;
         font-weight: bold;
-        color: rgba(236, 244, 255, 1);
+        color: rgba(255, 206, 77, 1);
       }
-      overflow: hidden;
     }
-    .btn {
-      width: 6.01rem;
+    .info {
       position: absolute;
-      left: 0.18rem;
-      bottom: 0.35rem;
-      height: 1.16rem;
-      line-height: 1.16rem;
-      font-size: 0.36rem;
-      font-weight: bold;
+      top: 5rem;
+      font-size: .24rem;
+      font-weight: 400;
+      color: rgba(123, 10, 49, 1);
+      width: 100%;
       text-align: center;
-      color: rgba(168, 78, 11, 1);
-      background: url("./images/bonus/btn2.png");
+    }
+  }
+
+  .record {
+    position: absolute;
+    top: 9.24rem;
+    right: 0;
+    width: 1.6rem;
+    height: .62rem;
+    background: url("./images/record_icon.png");
+    background-size: 100% 100%;
+    z-index: 2;
+  }
+
+  .btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top:9.9rem;
+    width: 5.74rem;
+    height: 1.2rem;
+    background: url("./images/yufe_bmjiezhi_btn.png");
+    background-size: 100% 100%;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding-bottom: .3rem;
+    font-size: .36rem;
+    color: rgba(65, 28, 124, 1);
+    &.bonus_divide {
+      font-size: .42rem;
+      color: rgba(75, 20, 47, 1);
+      background: url("./images/guafen_btn.png");
       background-size: 100% 100%;
     }
+    &.bonus_hot {
+      font-size: .4rem;
+      color: rgba(168, 13, 9, 1);
+      background: url("./images/baoming_btn.png");
+      background-size: 100% 100%;
+    }
+    &.bonus_end {
+      font-size: .42rem;
+      color: rgba(72, 72, 72, 1);
+      background: url("./images/act_end_btn.png");
+      background-size: 100% 100%;
+    }
+    &.pre {
+      font-size: .3rem;
+      span {
+        line-height: .4rem;
+        i {
+          color: #FB484C;
+        }
+      }
+    }
   }
-}
-@keyframes myPlay1 {
-  0% {
-    transform: rotate(45deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
 
-@keyframes ychange {
-  0% {
-    background: url("./images/bonus/btn1.png");
-    background-size: 100% 100%;
+  .info_txt {
+    position: absolute;
+    top:11.1rem;
+    font-size: .3rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    width: 100%;
+    text-align: center;
+    i {
+      color: #FDCD00;
+    }
   }
-  100% {
-    background: url("./images/bonus/btn1_press.png");
-    background-size: 100% 100%;
+
+  @keyframes giftmove {
+    0% {
+      transform-origin: center;
+      transform: translateX(-50%) rotate(0deg);
+    }
+    40%{
+      transform-origin: center;
+      transform: translateX(-50%) rotate(-3deg);
+    }
+    60%{
+      transform-origin: center;
+      transform: translateX(-50%) rotate(0deg);
+    }
+    100% {
+      transform-origin: center;
+      transform: translateX(-50%) rotate(3deg);
+    }
   }
-}
 </style>
