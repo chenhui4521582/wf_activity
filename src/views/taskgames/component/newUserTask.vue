@@ -34,7 +34,7 @@
     </div>
     <div v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">
       <ul class="t-items">
-        <li class="not-daily" v-for="(item,index) in newTaskItems.taskList" :key="index">
+        <li class="not-daily" v-for="(item,index) in newUserTaskList" :key="index">
           <div class="item-content">
             <div :class="{'actived': item.taskStatus == 2}">
               <div class="pic">
@@ -118,6 +118,13 @@ export default {
     },
     channel: {
       default: null
+    }
+  },
+  computed: {
+    newUserTaskList () {
+      return this.newTaskItems.taskList.filter(element => {
+        return element.taskStatus === 0 || element.taskStatus === 1
+      })
     }
   },
   methods: {
