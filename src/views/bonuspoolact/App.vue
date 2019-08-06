@@ -414,7 +414,7 @@
     &.giftmove {
       padding-top: .2rem;
       box-sizing: border-box;
-      animation:giftmove 1s infinite;
+      animation:giftmove 2s infinite;
       img {
         width: 4.41rem;
         height: 5.84rem;
@@ -525,21 +525,20 @@
   }
 
   @keyframes giftmove {
-    0% {
-      transform-origin: center;
-      transform: translateX(-50%) rotate(0deg);
-    }
-    40%{
-      transform-origin: center;
+    10%{
       transform: translateX(-50%) rotate(-3deg);
     }
-    60%{
-      transform-origin: center;
-      transform: translateX(-50%) rotate(0deg);
+    30%{
+      transform:translateX(-50%) rotate(3deg);
     }
-    100% {
-      transform-origin: center;
-      transform: translateX(-50%) rotate(3deg);
+    50%{
+      transform:translateX(-50%) rotate(-3deg);
+    }
+    70%{
+      transform:translateX(-50%) rotate(3deg);
+    }
+    80%,100%{
+      transform:translateX(-50%) rotate(0deg);
     }
   }
 </style>
