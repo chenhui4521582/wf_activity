@@ -5,10 +5,12 @@
       <div class="bonus-success" v-if="count==1">
         <div class="desc">
           <p>1. 活动时间：{{dataStr}}</p>
-          <p>2. 参与方式：每天进入活动页面报名且当日付费任意金额即可获得瓜分机会。每天09：55截止当日报名。</p>
+          <p>2. 参与方式：每天进入活动页面报名且当日付费任意金额即可获得瓜分机会。每天09:55截止当日报名。</p>
           <p>3. 瓜分时间：次日{{timetxt}}点整准时开始瓜分。</p>
-          <p>4.奖品发放：现金奖励为话费券，进入活动页面领取奖励，奖励发放至我的资产。活动期间内所得的奖励，若用户在活动结束时仍未领取，则自动失效。</p>
-          <p>5. 如有其他疑问，请点击<i @click="concat" style="text-decoration: underline">咨询客服</i>。活动最终解释权归平台所有。</p>
+          <p>4. 终极大奖瓜分规则：连续报名5天即可开启,是免费瓜分的哟。</p>
+          <p>5. 终极大奖瓜分时间：{{dividetimetxt}}。</p>
+          <p>6.奖品发放：现金奖励为话费券,进入活动页面领取奖励,奖励发放至我的资产。活动期间内所得的奖励,若用户在活动结束时仍未领取,则自动失效。</p>
+          <p>7. 如有其他疑问，请点击<i @click="concat" style="text-decoration: underline">咨询客服</i>。活动最终解释权归平台所有。</p>
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
@@ -60,6 +62,10 @@
       num:{
         type: Number,
         default: 0
+      },
+      dividetimetxt: {
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -182,7 +188,7 @@
     }
     .desc {
       position: absolute;
-      top: 1.11rem;
+      top: 1rem;
       left: .2rem;
       right: .2rem;
       font-size: .22rem;
@@ -219,7 +225,8 @@
     }
     .close {
       position: absolute;
-      left: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
       bottom: -.8rem;
       width: .57rem;
       height: .57rem;

@@ -23,8 +23,8 @@
           <img src="./images/zhongjidajiang1.png" alt="" @click="tabIndex=1">
         </div>
       </div>
-      <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==3}" v-show="tabIndex==1">
-        <template v-if="detailData.ultimateState==1||detailData.ultimateState==3">
+      <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==4}" v-show="tabIndex==1">
+        <template v-if="detailData.ultimateState==1||detailData.ultimateState==4">
           <img src="./images/yure_gif.png" alt="">
           <div class="bonus_content">
             <div class="price">{{detailData.ultimateAmount}}元</div>
@@ -91,12 +91,12 @@
     <!--规则-->
     <bonus-success v-if="flag" :count="flag" @close="flag=0"
                    :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
-                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum">
+                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate">
       <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
     </bonus-success>
 
     <!--开启红包弹窗-->
-    <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes"></bonus-opened>
+    <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes" :normalState="detailData.normalState" :ultimateState="detailData.ultimateState"></bonus-opened>
   </div>
 </template>
 <script>
@@ -125,10 +125,7 @@
         showfinger: false,
         showfingerPress: false,
         flag: 0,
-        tabIndex: 0,
-        countdownbonus: {// 终极大奖倒计时
-          time: ''
-        },
+        tabIndex: 0
       }
     },
     async mounted() {
@@ -215,7 +212,7 @@
           if (res.data.code == 200 && res.data.data) {
             this.detailData = res.data.data
             //千元红包结束，终极大奖还有资格瓜分 默认选中终极大奖
-            if (this.detailData.normalState == 6 && this.detailData.ultimateState == 2) {
+            if (this.detailData.normalState == 6 && this.detailData.ultimateState == 3) {
               this.tabIndex = 1
             }
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
@@ -239,8 +236,9 @@
             message: data.message,
             duration: 2000
           })
+          this.myDetails()
         }
-        this.myDetails()
+
       },
       async appointmentBonus() { // 报名
         GLOBALS.marchSetsPoint('A_H5PT0074001375')
@@ -252,7 +250,8 @@
         }
         this.myDetails()
       },
-      closeBonusRes() {
+      async closeBonusRes() {
+        await this.myDetails()
         this.isshowBonusOpened = false
       },
       async showrecord() {
@@ -482,6 +481,7 @@
     padding-bottom: .3rem;
     font-size: .36rem;
     color: rgba(65, 28, 124, 1);
+    z-index: 1;
     &.bonus_divide {
       font-size: .42rem;
       color: rgba(75, 20, 47, 1);

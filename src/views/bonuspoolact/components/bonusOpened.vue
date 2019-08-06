@@ -5,9 +5,22 @@
       <div class="top-envo"></div>
       <div class="main-message">
         <div class="info">
-          <p class="btn" @click="closePop">马上报名</p>
-          <p class="desc">连续报名5天即可免费瓜分终极奖池哟，<br>
+          <p class="btn" @click="closePop">
+            <template v-if="ultimateState==1">
+            马上报名
+          </template>
+            <template v-else>
+              收入囊中
+            </template>
+          </p>
+          <p class="desc" v-if="normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>
             赶快报名下一场吧！
+          </p>
+          <p class="desc" v-if="normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>
+            明日10：00记得来瓜分哟！
+          </p>
+          <p class="desc" v-if="normalState!=5&&ultimateState==3">
+            愿好运常伴您左右
           </p>
         </div>
       </div>
@@ -21,7 +34,8 @@
         <div class="content-wrapper sadness" v-else>
           <div class="title">很遗憾</div>
           <img src="../images/sadness.png" alt="">
-          <p>大奖与你擦肩而过</p>
+          <p v-if="ultimateState==1">大奖与你擦肩而过</p>
+          <p v-else>差点就中奖啦</p>
         </div>
       </div>
       <div class="close" @click="closePop" v-if="!awards"></div>
@@ -36,6 +50,14 @@ export default {
     awards: {
       type: Object,
       default: null
+    },
+    normalState:{
+      type:Number,
+      type:0
+    },
+    ultimateState:{
+      type:Number,
+      type:0
     }
   },
   methods: {
