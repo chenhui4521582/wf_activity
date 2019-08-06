@@ -96,7 +96,7 @@
     </bonus-success>
 
     <!--开启红包弹窗-->
-    <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes" :normalState="detailData.normalState" :ultimateState="detailData.ultimateState"></bonus-opened>
+    <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes" :normalState="detailData.normalState" :ultimateState="detailData.ultimateState" :tabindex="tabIndex" :dividetimestr="detailData.ultimateDivideDate"></bonus-opened>
   </div>
 </template>
 <script>

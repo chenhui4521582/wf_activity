@@ -13,13 +13,13 @@
               收入囊中
             </template>
           </p>
-          <p class="desc" v-if="normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>
+          <p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>
             赶快报名下一场吧！
           </p>
-          <p class="desc" v-if="normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>
-            明日10：00记得来瓜分哟！
+          <p class="desc" v-if="tabindex==0&&normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>
+           {{dividetimestr}}记得来瓜分哟！
           </p>
-          <p class="desc" v-if="normalState!=5&&ultimateState==3">
+          <p class="desc" v-if="tabindex==1&&ultimateState==3">
             愿好运常伴您左右
           </p>
         </div>
@@ -58,6 +58,14 @@ export default {
     ultimateState:{
       type:Number,
       type:0
+    },
+    tabindex:{
+      type:Number,
+      type:0
+    },
+    dividetimestr:{
+      type:String,
+      type:''
     }
   },
   methods: {
