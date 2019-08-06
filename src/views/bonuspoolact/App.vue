@@ -277,12 +277,11 @@
   @import "../../common/css/base.css";
 
   #app {
-    position: fixed;
-    top: 0;
-    bottom: 0;
+    position: absolute;
+    height: 11.5rem;
     left: 0;
     right: 0;
-    background: url("./images/bg.png");
+    background: url("./images/bg.jpg");
     background-size: 100% 100%;
     color: rgba(255, 255, 255, 1);
     &:before {
