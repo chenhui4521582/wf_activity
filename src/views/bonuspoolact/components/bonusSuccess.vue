@@ -165,7 +165,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 5.1rem;
-    height: 5.58rem;
+    height: 6rem;
     background: url("../images/rule_bg.png");
     background-size: 100% 100%;
     z-index: 11;

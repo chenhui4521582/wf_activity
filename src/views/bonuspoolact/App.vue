@@ -372,7 +372,7 @@
 
   .display1 {
     position: absolute;
-    top: 2.4rem;
+    top: 2.5rem;
     height: 1.33rem;
     left: .54rem;
     right: .54rem;

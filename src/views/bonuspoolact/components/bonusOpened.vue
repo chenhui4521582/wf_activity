@@ -38,7 +38,7 @@
           <p v-else>差点就中奖啦</p>
         </div>
       </div>
-      <div class="close" @click="closePop" v-if="!awards"></div>
+      <div class="close" @click="closePop"></div>
     </div>
   </main>
 </template>
@@ -147,29 +147,6 @@ export default {
       line-height: 0.3rem;
     }
   }
-
-  @keyframes letterani {
-    0% {
-      margin-top: 1.5rem;
-    }
-    50% {
-      margin-top: 2rem;
-    }
-    100% {
-      margin-top: 1.5rem;
-    }
-  }
-  @keyframes opacitychange {
-    0% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.1;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
   .front-msg {
     background: url(../images/nei.png) no-repeat;
     background-size: 100% 100%;
@@ -219,26 +196,6 @@ export default {
       }
     }
   }
-
-  @keyframes front {
-    0% {
-      top: -5.5rem;
-      overflow: hidden;
-    }
-    50% {
-      top: -6.5rem;
-      overflow: hidden;
-    }
-    80% {
-      top: -5.5rem;
-      overflow: hidden;
-    }
-    100% {
-      top: -7rem;
-      overflow: visible;
-    }
-  }
-
   .top-envo {
     width: 5.3rem;
     height: 5.66rem;
@@ -271,35 +228,6 @@ export default {
       animation-delay: 0.5s;
     }
   }
-  @keyframes opacitychangecoin {
-    0% {
-      opacity: 0.1;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-  @keyframes top-envolope {
-    0% {
-      transform: scalez(0);
-    }
-    50% {
-      transform: scalez(1);
-      top: 0.6rem;
-      transform: rotateZ(0deg);
-      transform-origin: center center;
-      z-index: 6;
-    }
-    100% {
-      top: -3.8rem;
-      z-index: 2;
-      transform: scaley(0);
-      transform: rotatex(180deg);
-    }
-  }
   .close {
     position: relative;
     bottom: -0.3rem;
@@ -309,7 +237,76 @@ export default {
     background: url("../images/close.png") no-repeat center / 100% 100%;
   }
 }
-@keyframes dailyScale {
+@-webkit-keyframes front {
+  0% {
+    top: -5.5rem;
+    overflow: hidden;
+  }
+  50% {
+    top: -6.5rem;
+    overflow: hidden;
+  }
+  80% {
+    top: -5.5rem;
+    overflow: hidden;
+  }
+  100% {
+    top: -7rem;
+    overflow: visible;
+  }
+}
+@-webkit-keyframes opacitychangecoin {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes top-envolope {
+  0% {
+    transform: scalez(0);
+  }
+  50% {
+    transform: scalez(1);
+    top: 0.6rem;
+    transform: rotateZ(0deg);
+    transform-origin: center center;
+    z-index: 6;
+  }
+  100% {
+    top: -3.8rem;
+    z-index: 2;
+    transform: scaley(0);
+    transform: rotatex(180deg);
+  }
+}
+@-webkit-keyframes letterani {
+  0% {
+    margin-top: 1.5rem;
+  }
+  50% {
+    margin-top: 2rem;
+  }
+  100% {
+    margin-top: 1.5rem;
+  }
+}
+@-webkit-keyframes opacitychange {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes dailyScale {
   0% {
     transform: scale(0, 0);
   }
