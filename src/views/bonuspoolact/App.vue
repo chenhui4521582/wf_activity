@@ -212,7 +212,7 @@
           if (res.data.code == 200 && res.data.data) {
             this.detailData = res.data.data
             //千元红包结束，终极大奖还有资格瓜分 默认选中终极大奖
-            if (this.detailData.normalState == 6 && this.detailData.ultimateState == 3) {
+            if (this.detailData.normalState == 6 && (this.detailData.ultimateState == 3||this.detailData.ultimateState == 2)) {
               this.tabIndex = 1
             }
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
