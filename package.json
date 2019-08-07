@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
-    "better-scroll": "1.15.2",
+    "better-scroll": "0.4.0",
     "element-ui": "1.4.13",
     "fastclick": "1.0.6",
     "jquery": "2.2.4",
