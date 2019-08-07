@@ -10,7 +10,12 @@
             马上报名
           </template>
             <template v-else>
-              收入囊中
+              <template v-if="awards">
+                收入囊中
+              </template>
+              <template v-else>
+                继续逛逛
+              </template>
             </template>
           </p>
           <p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>
