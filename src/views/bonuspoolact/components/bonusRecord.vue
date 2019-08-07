@@ -124,7 +124,7 @@
         left: 0;
       }
       &:nth-child(2) {
-        left: 2.08rem;
+        left: 1.9rem;
       }
       &:nth-child(3) {
         right: 0;

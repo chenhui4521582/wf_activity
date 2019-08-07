@@ -6,7 +6,7 @@
         <div class="desc">
           <p>1. 活动时间：{{dataStr}}</p>
           <p>2. 参与方式：每天进入活动页面报名且当日付费任意金额即可获得瓜分机会。每天09:55截止当日报名。</p>
-          <p>3. 瓜分时间：次日{{timetxt}}点整准时开始瓜分。</p>
+          <p>3. 瓜分时间：每日{{timetxt}}点整准时开始瓜分。</p>
           <p>4. 终极大奖瓜分规则：连续报名5天即可开启,是免费瓜分的哟。</p>
           <p>5. 终极大奖瓜分时间：{{dividetimetxt}}。</p>
           <p>6.奖品发放：现金奖励为话费券,进入活动页面领取奖励,奖励发放至我的资产。活动期间内所得的奖励,若用户在活动结束时仍未领取,则自动失效。</p>
@@ -23,7 +23,7 @@
       <!--报名成功-->
       <div class="bonus-success baomingsuccess" v-if="count==3">
         <div class="desc">
-          次日{{timetxt}}点开奖，一定要准时来哟~连续报名5天还可免费瓜分终极奖池哦
+          每日{{timetxt}}点开奖，一定要准时来哟~连续报名5天还可免费瓜分终极奖池哦
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
@@ -165,7 +165,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 5.1rem;
-    height: 6rem;
+    height: 6.2rem;
     background: url("../images/rule_bg.png");
     background-size: 100% 100%;
     z-index: 11;
