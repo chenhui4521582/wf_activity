@@ -31,14 +31,15 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <div class="new-user-task" v-if="showNewUserTask">
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="curChannel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
+          <div class="new-user-task" v-else-if="showNewUserTask && !newTaskItems.newVersion">
             <div class="box">
               <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
                 <div class="tips">
-                  <img src="./img/tips.png" alt="">
+                  <img src="./img/tips-old.png" alt="">
                 </div>
                 <div class="text">
-                  <img class="img1" src="./img/title1.png" alt="">
+                  <img class="img1" src="./img/title1-old.png" alt="">
                   <img class="img2" src="./img/time-limit-bg.png" alt="">
                 </div>
                 <div class="time">
@@ -98,8 +99,8 @@
 
             </div>
           </div>
-          <div v-else>
-            <div v-if="cjTaskItems&&cjTaskItems.length&& !newTaskItems.isNew || dayTaskItems&&dayTaskItems.length">
+          <div v-if="isShowOther">
+            <div v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
               <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">成就任务</h4>
               <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
                 <li v-for="(item,index) in cjTaskItems">
@@ -159,7 +160,7 @@
                 </li>
               </ul>
             </div>
-            <div class="nodata-box" v-else>
+            <div class="nodata-box" v-else-if="!showNewUserTask">
               <img src="./images/nodata.png" class="nodata">
               <p>暂无数据~</p>
             </div>
@@ -253,7 +254,8 @@ export default {
     }
   },
   components: {
-    poplog
+    poplog,
+    newUserTask: () => import('./component/newUserTask')
   },
   computed: {
     isCjTaskAllComplete () {
@@ -313,7 +315,16 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      return this.newTaskItems && this.newTaskItems.isNew || false
+      return this.newTaskItems && this.newTaskItems.isNew && this.newTaskItems.taskList.length > 0
+    },
+    isShowOther () {
+      let isShow = false
+      if (this.newTaskItems && this.newTaskItems.newVersion) {
+        isShow = this.newTaskItems && this.newTaskItems.dayTaskVisibleFlag
+      } else {
+        isShow = this.newTaskItems && !this.newTaskItems.isNew
+      }
+      return isShow
     }
   },
   methods: {
@@ -570,7 +581,7 @@ export default {
         })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask',
+      this.axios.post('//platform-api.beeplaying.com/task/api/newuser/task',
         {
           value: 'NewUserStairTask'
         },
@@ -1144,7 +1155,7 @@ img {
   }
   .bg-lines {
     position: relative;
-    background: url(./img/bg.png) no-repeat;
+    background: url(./img/bg-old.png) no-repeat;
     background-size: 100% 100%;
     height: 3.18rem;
     padding: 0 0.21rem 0 0.24rem;
