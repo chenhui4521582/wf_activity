@@ -379,7 +379,7 @@ export default {
         return
       }
       // 跳转商城
-      if (gameType == 0 && actionsArr.includes(action)) {
+      if (gameType == 0 && actionsArr.includes(action) && !url) {
         parent.location.href = 'https://wap.beeplaying.com/payment/#/mall'
         return
       }
