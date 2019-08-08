@@ -888,7 +888,6 @@ export default {
       })
     },
     getNewTask () {
-      // this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
       this.axios.post('//platform-api.beeplaying.com/task/api/newuser/task', {
         value: 'NewUserStairTask'
       }).then((res) => {
