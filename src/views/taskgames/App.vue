@@ -621,7 +621,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if (this.woolUserType && type === 'dayTask') {
+        if ((this.woolUserType||item.action === 71) && type === 'dayTask') {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
