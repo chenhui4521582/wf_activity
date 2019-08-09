@@ -585,7 +585,7 @@ export default {
     checkTaskStatus (item, type, index) {
       switch (type) {
         case 'dayTask':
-          GLOBALS.marchSetsPoint('A_H5PT0061001408', {
+          GLOBALS.marchSetsPoint(item.flag&&item.flag=='ring2'?'A_H5PT0061001618':'A_H5PT0061001408', {
             position_id: index + 1,
             target_project_id: item.gameType,
             task_id: item.taskId,
@@ -651,7 +651,7 @@ export default {
         this.goFinishs(item, index, type)
       }
     },
-    async goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
+    async goFinishs ({ gameType, url, action, taskId, taskName,flag}, index, type) {
       if (type == 'crush_task' || type == 'mother_crush_task') {
         GLOBALS.marchSetsPoint('A_H5PT0061000537', {
           project_id: gameType,
@@ -660,7 +660,7 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-页面
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0061000542', {
+        GLOBALS.marchSetsPoint(flag&&flag=='ring2'?'A_H5PT0061001617':'A_H5PT0061000542', {
           position_id: index + 1,
           project_id: this.currentGameType,
           target_project_id: gameType,
@@ -830,12 +830,17 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
+      this.axios.post(item.flag&&item.flag=='ring2'?'//quoits-api.beeplaying.com/quoits/api/exchange':'//platform-api.beeplaying.com/task/api/usertask/finish', item.flag&&item.flag=='ring2'?{value:item.taskId}:{
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
         if (res.data.code == 200) {
           // 弹窗弹出
+          if(item.flag&&item.flag=='ring2'){
+            item.awardsImage=res.data.data.awardsImg
+            item.awardsNum=res.data.data.num
+            item.flag='ring2'
+          }
           this.awardItem = item
           this.getTransInfo()
           this.getPhoneFragment()
@@ -864,6 +869,11 @@ export default {
               item.taskStatus = 2
           }
           if (res.data.data && res.data.data.awardsName) {
+            if(item.flag&&item.flag=='ring2'){
+              res.data.data.awardsImage=res.data.data.awardsImg
+              res.data.data.awardsNum=res.data.data.num
+              res.data.data.flag='ring2'
+            }
             this.receiveAwards = res.data.data
             this.isDailyReceivePop = true
           } else {
@@ -905,27 +915,37 @@ export default {
         }
       })
     },
-    getDayTask () {
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
+    async getDayTask () {
+      let arrring2=[]
+      let {data:data}=await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.currentGamesItems = res.data.data.filter((item) => {
-            return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
-          })
-          if (this.currentGamesItems.filter(item => item.action == 72).length) {
-            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
-          }
-          this.otherGamesItems = res.data.data.filter((item) => {
-            return (item.gameType != this.getUrlParam('gametype'))
-          })
-          if (this.otherGamesItems.filter(item => item.action == 72).length) {
-            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+      })
+      if(data.code==200){
+        if(parent.location.href.includes('ring2')){
+          let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
+          if(dataA.code==200){
+            dataA.data.awardsList.map(item=>{
+              arrring2.push({
+                "taskId":item.amount,"taskName":item.description,"gameType":this.currentGameType,"taskDesc":item.description,"icon":item.icon,"taskOps":item.costNum,"finishNum":item.currNum,"taskStatus":item.costNum<=item.currNum?0:1,"taskLogId":item.amount,"cycle":0,"awardsType":0,"awardsName":item.awardsName,"url":null,"awardsImage":item.awardsImg,"taskDescShow":item.description,"awardsNum":0,"taskType":0,"subTask":"","preTask":null,"action":0,"sort":0,flag:'ring2'
+              })
+            })
           }
         }
-      })
+        this.currentGamesItems =[...arrring2,... data.data.filter((item) => {
+          return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
+        })]
+        if (this.currentGamesItems.filter(item => item.action == 72).length) {
+          GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
+        }
+        this.otherGamesItems = data.data.filter((item) => {
+          return (item.gameType != this.getUrlParam('gametype'))
+        })
+        if (this.otherGamesItems.filter(item => item.action == 72).length) {
+          GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+        }
+      }
     },
     getTransInfo () {
       this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo').then((res) => {
