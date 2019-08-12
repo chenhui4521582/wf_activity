@@ -161,7 +161,7 @@ window.GLOBALS = {
     formData.append('appName', 'wf_game')
     formData.append('json', JSON.stringify(defaultState))
     // 请求
-    return axios.post('https://log-center.jdd.com/am/log/v1/json', formData, { timeout: 500 })
+    return axios.post('https://log-center.beeplaying.com/am/log/v1/json', formData, { timeout: 500 })
   },
   getUrlParam: function (ename) {
     var url = window.location.href

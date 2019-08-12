@@ -91,6 +91,113 @@ body {
   }
 }
 
+.complete-task {
+  margin: 0 auto;
+  height: 0.9rem;
+  background: url('./img/complete-bg.png') no-repeat center / 100% 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 0.2rem;
+  border-radius: 0.04rem;
+
+  &.not-daily {
+    background: #141F33;
+  }
+
+  .actived {
+    opacity: 0.5;
+    filter: opacity(50);
+  }
+  .label {
+    background: #DD2C00;
+    width: 0.6rem;
+    font-size: 0.18rem;
+    position: absolute;
+    text-align: center;
+    padding: 0.03rem 0;
+    top: 0;
+    left: 0;
+    border-radius: 0 0 0.04rem 0;
+
+    &.active {
+      background: #2e3f5f;
+    }
+  }
+
+  .pic {
+    min-width: 0.6rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 12px;
+    float: left;
+    margin: 0 0.13rem 0 0.16rem;
+
+    img {
+      min-width: 0.6rem;
+      width: 0.6rem;
+      height: 0.6rem;
+    }
+  }
+
+  .item-text {
+    .title {
+      width: 112%;
+      font-size: 0.23rem;
+      margin-bottom: 0.1rem;
+      color: #efefef;
+    }
+  }
+
+  .percent-box {
+    margin-right: 0.1rem;
+
+    em {
+      max-width: 100% !important;
+    }
+  }
+
+  .item-award {
+    font-size: 0.2rem;
+    color: #FFD338;
+    padding-right: 0.1rem;
+
+    i {
+      display: flex;
+      align-items: center;
+      width: 1.76rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    img {
+      height: 0.24rem;
+      margin-right: 0.05rem;
+    }
+  }
+
+  .new-item-award {
+    display: flex;
+    align-items: center;
+
+    p {
+      height: 0.24rem;
+      width: 0.4rem;
+      text-align: center;
+
+      img {
+        height: 100%;
+      }
+    }
+
+    span {
+      font-size: 0.2rem;
+      color: #f1e3d7;
+      white-space: nowrap;
+    }
+  }
+}
 .t-items {
   margin: 0 auto;
 
@@ -296,6 +403,14 @@ body {
     &.btn-play {
       color: #fff;
       background: #538cff;
+    }
+    &.btn-play1 {
+      color: #B83B34;
+      background: #FFBD4A;
+    }
+    &.btn-play2 {
+      color: #A29595;
+      background: #82746A;
     }
 
     &.btn-receive {

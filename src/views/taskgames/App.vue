@@ -21,15 +21,16 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <div v-if="showNewUserTask &&newTaskItems.taskList.length>0" class="new-user-task">
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
+          <div v-if="showNewUserTask && !newTaskItems.newVersion" class="new-user-task">
             <div class="tips">
-              <img src="./img/tips.png" alt="">
+              <img src="./img/tips-old.png" alt="">
             </div>
             <div class="new-task-header">
               <div class="new-task-inner">
                 <h4 class="h-title h-new-title icon-tips">
                   <p class="h-subtitle">
-                    <img src="./img/title1.png" class="xr-icon">
+                    <img src="./img/title1-old.png" class="xr-icon">
                     <img src="./images/small-xs-tips.png" class="small-xs-tips">
                   </p>
                   <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
@@ -98,22 +99,44 @@
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
-
-          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="showNewUserTask"></fixed-entrance>
-          <template v-if="!showNewUserTask">
-            <!-- 人人大恶魔勋章 -->
-            <renren-mowang v-if="channel==='100049'"></renren-mowang>
+          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="isShowOther"></fixed-entrance>
+          <!-- 人人大恶魔勋章 -->
+          <renren-mowang v-if="channel==='100049'"></renren-mowang>
+          <template v-if="isShowOther">
             <!-- 大师任务 -->
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
             <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
               <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+              <!-- 魅族渠道新手完成活动 下线时清删除 -->
+              <div class="complete-task" v-if="completeData.show">
+                <div style="display: flex;align-items: center;">
+                  <div class="pic">
+                    <img src="./img/complete-icon.png" alt="">
+                  </div>
+                  <div class="item-text">
+                    <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                    <div class="percent-container">
+                      <div class="percent-box">
+                        <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
+                        <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="btn-box">
+                  <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
+                  <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+                </p>
+              </div>
+              <!-- 魅族渠道新手完成活动 下线时清删除 -->
               <ul class="t-items">
                 <li v-for="(item, index) in currentGamesItems" :key="index">
                   <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                     <div class="pic">
-                      <img :src="item.icon | filter" alt="">
+                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                     </div>
                     <div class="item-text">
                       <p class="title" v-html="item.taskDescShow"></p>
@@ -145,7 +168,8 @@
                 <li v-for="(item, index) in otherGamesItems" :key="index">
                   <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                     <div class="pic">
-                      <img :src="item.icon | filter" alt="">
+                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                     </div>
                     <div class="item-text">
                       <p class="title" v-html="item.taskDescShow"></p>
@@ -232,7 +256,8 @@ export default {
       isDailyReceivePop: false,
       receiveAwards: {},
       selectItem: {},
-      woolUserType: false
+      woolUserType: false,
+      completeData: {} // 魅族渠道新手完成活动 下线时清删除
     }
   },
   mounted () {
@@ -253,6 +278,7 @@ export default {
     this.getTransInfo()
     this.getPhoneFragment()
     this.getHuafeiNum()
+    this.getCompleteData()
   },
   computed: {
     huafeiShow () {
@@ -280,9 +306,11 @@ export default {
       let motherTask = list.filter(item => {
         return item.subTask
       })[0]
-      list = list.filter(item => {
-        return !item.subTask
-      })
+      if (!this.newTaskItems.newVersion) {
+        list = list.filter(item => {
+          return !item.subTask
+        })
+      }
       let finishedTaskNum = list.filter(item => {
         return item.taskStatus == 2
       }).length
@@ -303,8 +331,16 @@ export default {
     },
     // 显示新手任务
     showNewUserTask () {
-      let isXmVersion = localStorage.getItem('PLANT_VERSION') === 'xmWap'
-      return isXmVersion ? false : (this.newTaskItems && this.newTaskItems.isNew || false)
+      return this.newTaskItems && this.newTaskItems.isNew && this.newTaskItems.taskList.length > 0
+    },
+    isShowOther () {
+      let isShow = false
+      if (this.newTaskItems && this.newTaskItems.newVersion) {
+        isShow = this.newTaskItems && this.newTaskItems.dayTaskVisibleFlag
+      } else {
+        isShow = this.newTaskItems && !this.newTaskItems.isNew
+      }
+      return isShow
     }
   },
   filters: {
@@ -325,6 +361,7 @@ export default {
   components: {
     poplog,
     crushMasterTask: () => import('./component/crushMasterTask'),
+    newUserTask: () => import('./component/newUserTask'),
     renrenMowang: () => import('./component/renrenMowang'),
     masterPop: () => import('./component/dialog'),
     commonPop: () => import('./component/commonPop'),
@@ -614,7 +651,7 @@ export default {
         this.goFinishs(item, index, type)
       }
     },
-    goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
+    async goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
       if (type == 'crush_task' || type == 'mother_crush_task') {
         GLOBALS.marchSetsPoint('A_H5PT0061000537', {
           project_id: gameType,
@@ -630,6 +667,13 @@ export default {
           task_id: taskId,
           task_name: taskName
         }) // H5平台-游戏内SDK-每日任务-去完成
+      }
+      if (action == 72) {
+        await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess', {
+          value: taskId
+        })
+        await GLOBALS.marchSetsPoint('A_H5PT0142001564', { target_project_id: gameType, task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
+        parent.location.href = `https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
       }
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
@@ -652,7 +696,7 @@ export default {
     trimStr (str) {
       return str.replace(/(^\s*)|(\s*$)/g, '')
     },
-    goFinish ({ gameType, url, action, taskId, taskName }, type) {
+    async goFinish ({ gameType, url, action, taskId, taskName }, type) {
       let actionsArr = [39, 35, 34, 32]
       if (type === 'newtask') {
         GLOBALS.marchSetsPoint('A_H5PT0061000540', {
@@ -670,15 +714,23 @@ export default {
         }) // H5平台-游戏内SDK-更多每日任务-去完成
         // 此处人人和中青调用的接口
         // if (localStorage.getItem('APP_CHANNEL') == '100049') {
-        this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
-          taskId: taskId
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.quitConfig = res.data.data
-            this.isRRZQPop = true
-            return
-          }
-        })
+        if (action == 72) {
+          await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/adTaskProcess', {
+            value: taskId
+          })
+          await GLOBALS.marchSetsPoint('A_H5PT0142001564', { target_project_id: gameType, task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+          parent.location.href = `https://wap.beeplaying.com/activities/wfadver.html?adurl=${encodeURIComponent(url)}`
+        } else {
+          this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
+            taskId: taskId
+          }).then((res) => {
+            if (res.data.code == 200) {
+              this.quitConfig = res.data.data
+              this.isRRZQPop = true
+              return
+            }
+          })
+        }
         // }
       } else if (type == 'new_user_task_fixed_entrance') {
         this.axios.post('//platform-api.beeplaying.com/wap/api/newUser/quit/config', {
@@ -826,6 +878,7 @@ export default {
             }
             // 踏青寻宝   活动特有  活动下线 删除
           }
+          this.getCompleteData()
         } else {
           this.$toast.show({
             message: res.data.message,
@@ -835,7 +888,7 @@ export default {
       })
     },
     getNewTask () {
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platNewUserStairTask', {
+      this.axios.post('//platform-api.beeplaying.com/task/api/newuser/task', {
         value: 'NewUserStairTask'
       }).then((res) => {
         if (res.data.data && res.data.data.isNew) {
@@ -862,9 +915,15 @@ export default {
           this.currentGamesItems = res.data.data.filter((item) => {
             return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
           })
+          if (this.currentGamesItems.filter(item => item.action == 72).length) {
+            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
+          }
           this.otherGamesItems = res.data.data.filter((item) => {
             return (item.gameType != this.getUrlParam('gametype'))
           })
+          if (this.otherGamesItems.filter(item => item.action == 72).length) {
+            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+          }
         }
       })
     },
@@ -927,7 +986,24 @@ export default {
         parent.closeTaksPage()
         parent.GameEval('openweb', `${url}?channel=${this.channel}&token=${this.token}&gametype=${this.currentGameType}&isneedpayback=1&vt=${new Date().getTime()}`)
       }
+    },
+    // 魅族渠道新手完成活动 下线时清删除
+    getCompleteData () {
+      this.axios.post('//ops-api.beeplaying.com/ops/api/new-user-jackpot/user-info').then(res => {
+        let { code, data } = res.data
+        if (code === 200) {
+          this.completeData = data
+        }
+      })
+    },
+    completeClick () {
+      if (this.completeData.userTaskFinishAll) {
+        parent.window.location.href = 'https://wap.beeplaying.com/xmWap/#/task'
+        return false
+      }
+      parent.closeTaksPage()
     }
+    // 魅族渠道新手完成活动 下线时清删除
   }
 }
 </script>
