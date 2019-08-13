@@ -65,6 +65,7 @@ export default {
           this.$emit('gotoact', 3)
         }
       }
+      this.$emit('close')
     },
     async gotoact () {
       if (this.type == 2) {

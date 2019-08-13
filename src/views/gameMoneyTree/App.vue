@@ -45,7 +45,7 @@
                     <div class="envelopes">{{item.awards}}个</div>
                     <div class="btn btn-complete" v-if="item.status == 2">完成</div>
                     <div class="btn btn-success" v-if="item.status == 0" @click="gotoact(2)">领取</div>
-                    <div class="btn btn-default" v-else @click="closegameeggs(2,item)">去完成</div>
+                    <div class="btn btn-default" v-if="item.status == 1" @click="closegameeggs(2,item)">去完成</div>
                   </li>
                   <li class="hb-dot-box" v-else>
                     <span class="hb-dot hb-dot1"></span>
@@ -79,7 +79,7 @@
             </div>
             <div class="tips" v-if="actAndUserInfoData">
               <div>已购买礼包:{{actAndUserInfoData.buyPackageTime||0 }}次</div>
-              <div>累计锤子:{{actAndUserInfoData.receiveByCumulativeTask }}个</div>
+              <div>累计养料:{{actAndUserInfoData.receiveByCumulativeTask }}个</div>
             </div>
           </div>
         </div>
@@ -290,7 +290,7 @@ export default {
       if (code == 200) { // 活动开启
         this.show = true
         this.actAndUserInfoData = data
-        this.actAndUserInfoData.endTime = GLOBALS.formatDate(data.rankAwardsSendTime, 'll')
+        this.actAndUserInfoData.endTime = GLOBALS.formatDate(data.rankAwardsSendTime, 'll').split('年')[1]
         if (data.settleTime > 0) {
           GLOBALS.marchSetsPoint('A_H5PT0075001484', {
             from_project_id: this.currentGameType
