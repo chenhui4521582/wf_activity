@@ -281,7 +281,9 @@ export default {
         this.type = 2
         this.showAwardspop = true
       } else {
-        this.gotoact()
+        this.type = 3
+        this.showAwardspop = true
+        // this.gotoact()
       }
     },
     async getActivityAndUserInfo () {

@@ -12,6 +12,10 @@
           <div class="btn btn_more" @click="close(0)">获取更多养料</div>
           <div class="btn btn_see" @click="gotoact">去活动页看看</div>
         </template>
+        <template v-if="type==3">
+          <div class="btn btn_more" @click="gotoact">去摇奖</div>
+          <div class="btn btn_see" @click="close(0)">获取更多养料</div>
+        </template>
       </div>
       <div class="close" @click="close(1)"></div>
     </div>
@@ -51,10 +55,25 @@ export default {
           this.$emit('gotoact')
         }
       }
+      if (this.type == 3) {
+        if (flag) {
+          this.$emit('close')
+        } else {
+          await GLOBALS.marchSetsPoint('A_H5PT0018001671', {
+            from_project_id: this.gametype
+          })
+          this.$emit('gotoact')
+        }
+      }
     },
     async gotoact () {
       if (this.type == 2) {
         await GLOBALS.marchSetsPoint('A_H5PT0018001669', {
+          from_project_id: this.gametype
+        })
+      }
+      if (this.type == 3) {
+        await GLOBALS.marchSetsPoint('A_H5PT0018001672', {
           from_project_id: this.gametype
         })
       }
@@ -64,6 +83,11 @@ export default {
   mounted () {
     if (this.type == 2) {
       GLOBALS.marchSetsPoint('A_H5PT0018001667', {
+        from_project_id: this.gametype
+      })
+    }
+    if (this.type == 3) {
+      GLOBALS.marchSetsPoint('A_H5PT0018001670', {
         from_project_id: this.gametype
       })
     }
