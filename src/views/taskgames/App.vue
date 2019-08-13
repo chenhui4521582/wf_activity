@@ -925,7 +925,7 @@ export default {
         gameType: this.currentGameType
       })
       if(data.code==200){
-        if(!parent.location.href.includes('ring2')){
+        if(parent.location.href.includes('ring2')){
           let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
           if(dataA.code==200){
             dataA.data.awardsList.map(item=>{
