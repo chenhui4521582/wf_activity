@@ -156,7 +156,7 @@
                     <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
                     <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
                     <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
+                    <span v-if="woolUserType && item.taskStatus == 0&&!item.flag" class="in-game wool_user">看完广告获得奖励</span>
                   </p>
                 </li>
               </ul>
