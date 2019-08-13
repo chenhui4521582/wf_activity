@@ -107,60 +107,62 @@
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
             <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
-            <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
-              <h4 class="h-title h-first-title">当前游戏每日任务</h4>
-              <!-- 魅族渠道新手完成活动 下线时清删除 -->
-              <div class="complete-task" v-if="completeData.show">
-                <div style="display: flex;align-items: center;">
+          </template>
+          <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems&&(isShowOther||currentGamesItems[0].flag)">
+            <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+            <!-- 魅族渠道新手完成活动 下线时清删除 -->
+            <div class="complete-task" v-if="completeData.show">
+              <div style="display: flex;align-items: center;">
+                <div class="pic">
+                  <img src="./img/complete-icon.png" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                      <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
+                      <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
+                <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+              </p>
+            </div>
+            <!-- 魅族渠道新手完成活动 下线时清删除 -->
+            <ul class="t-items">
+              <li v-for="(item, index) in currentGamesItems" :key="index">
+                <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                   <div class="pic">
-                    <img src="./img/complete-icon.png" alt="">
+                    <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                    <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                   </div>
                   <div class="item-text">
-                    <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                    <p class="title" v-html="item.taskDescShow"></p>
                     <div class="percent-container">
                       <div class="percent-box">
-                        <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
-                        <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                      </div>
+                      <div class="new-item-award">
+                        <p><img :src="item.awardsImage | filter" alt=""></p>
+                        <span>{{item.awardsName}}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <p class="btn-box">
-                  <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
-                  <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+                  <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
+                  <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
+                  <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+                  <span v-if="woolUserType && item.taskStatus == 0&&!item.flag" class="in-game wool_user">看完广告获得奖励</span>
                 </p>
-              </div>
-              <!-- 魅族渠道新手完成活动 下线时清删除 -->
-              <ul class="t-items">
-                <li v-for="(item, index) in currentGamesItems" :key="index">
-                  <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
-                    <div class="pic">
-                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
-                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
-                    </div>
-                    <div class="item-text">
-                      <p class="title" v-html="item.taskDescShow"></p>
-                      <div class="percent-container">
-                        <div class="percent-box">
-                          <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                          <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
-                        </div>
-                        <div class="new-item-award">
-                          <p><img :src="item.awardsImage | filter" alt=""></p>
-                          <span>{{item.awardsName}}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
-                    <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-                    <span v-if="woolUserType && item.taskStatus == 0&&!item.flag" class="in-game wool_user">看完广告获得奖励</span>
-                  </p>
-                </li>
-              </ul>
-            </div>
+              </li>
+            </ul>
+          </div>
+          <template v-if="isShowOther">
             <div v-if="otherGamesItems">
               <!-- 其他任务 -->
               <h4 class="h-title h-third-title">更多每日任务</h4>
@@ -923,7 +925,7 @@ export default {
         gameType: this.currentGameType
       })
       if(data.code==200){
-        if(parent.location.href.includes('ring2')){
+        if(!parent.location.href.includes('ring2')){
           let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
           if(dataA.code==200){
             dataA.data.awardsList.map(item=>{
