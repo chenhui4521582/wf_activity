@@ -5,11 +5,9 @@
       <div class="rule" @click="showrule">规则</div>
       <div class="act_detail" @click="gotoact(1)">去活动详情</div>
       <div class="container" v-if="actAndUserInfoData">
-        <div class="time" v-if="isShowDay">剩余时间: {{countdown.time.replace('小时',':').replace('分',':').replace('秒','')}}</div>
-        <div class="time" v-else>截止时间: {{actAndUserInfoData.endTime}}</div>
-        <div>
-
-        </div>
+        <!-- <div class="time" v-if="isShowDay">剩余时间: {{countdown.time.replace('小时',':').replace('分',':').replace('秒','')}}</div> -->
+        <!-- <div class="time" v-else>截止时间: {{actAndUserInfoData.endTime}}</div> -->
+        <div class="time"></div>
         <div class="eggs" v-if="actAndUserInfoData">
           <div class="eggs_continer">
             <div class="item">
@@ -176,7 +174,7 @@ export default {
           }).sort((a, b) => {
             return a.bettingAmount - b.bettingAmount
           })[0]
-          let idArr = [...this.envelopsItem.map(c => c.sort)].indexOf(minUnfinished.sort)
+          let idArr = [...this.envelopsItem.map(c => c.order)].indexOf(minUnfinished.order)
           if (this.envelopsItem.length == 6) {
             if (idArr == -1) { // 在省略号里
               console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
@@ -185,14 +183,14 @@ export default {
               if (idArr == 0) {
                 return parseFloat((idArr + this.actAndUserInfoData.userBetting / (minUnfinished.bettingAmount)) * 100 / 12) + '%'
               } else {
-                return parseFloat((1 / 12 + (idArr - 1) / 6 + this.actAndUserInfoData.userBetting / (minUnfinished.bettingAmount) / 6) * 100) + '%'
+                return parseFloat((idArr - 1) / 6 + this.actAndUserInfoData.userBetting / (minUnfinished.bettingAmount) / 6 * 100) + '%'
               }
             }
           } else {
             if (idArr == 0) {
               return parseFloat((idArr + this.actAndUserInfoData.userBetting / (minUnfinished.bettingAmount)) * 100 / 12) + '%'
             } else {
-              return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + this.actAndUserInfoData.userBetting / (minUnfinished.bettingAmount) * 5 / 24) * 100) + '%'
+              return parseFloat(((idArr - 1) + this.actAndUserInfoData.userBetting / minUnfinished.bettingAmount) * 5 / 24 * 100) + '%'
             }
           }
         }
@@ -279,9 +277,9 @@ export default {
         from_project_id: this.currentGameType
       })
       if (!this.actAndUserInfoData.remanentFood) {
-        this.awardsname = 1;
-        this.type = 2;
-        this.showAwardspop = true;
+        this.awardsname = 1
+        this.type = 2
+        this.showAwardspop = true
       } else {
         this.gotoact()
       }
@@ -564,14 +562,13 @@ export default {
               display: flex;
             }
             .percent-box {
-              width: 5.86rem;
               height: 0.15rem;
               background: rgba(172, 222, 246, 1);
               border-radius: 0.08rem;
               position: absolute;
-              left: 0.3rem;
-              top: 1.01rem;
-              border-radius: 0.08rem;
+              left: 0.2rem;
+              right: 0.2rem;
+              top: 1rem;
               .percent-number {
                 /*width: 40%;*/
                 height: 0.15rem;

@@ -53,7 +53,7 @@ export default {
     currentGameType: {
       default: 0
     },
-    id:{
+    id: {
       default: 0
     }
   },
@@ -66,11 +66,11 @@ export default {
       unreadQuantity: 0,
       confirm: false,
       selectedActivity: {},
-      showegg:null,//是否显示砸金蛋
+      showegg: null // 是否显示砸金蛋
     }
   },
   methods: {
-    //切换tab
+    // 切换tab
     changeTab (item) {
       this.isActived = item.name
       GLOBALS.marchSetsPoint(item.eventId, { project_id: this.currentGameType }) // H5平台-游戏内SDK-活动TAB点击
@@ -134,9 +134,9 @@ export default {
         case 'feedback':
           break// 打开充值回馈
         case 'open_payTurntable':
-              parent&&parent.closeTaksPage()
-              let url5 = `https://wap.beeplaying.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url5)
+          parent && parent.closeTaksPage()
+          let url5 = `https://wap.beeplaying.com/payment/#/payTurntable?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url5)
           break
         case 'recharge':
           if (localStorage.getItem('ACCESS_TOKEN')) {
@@ -259,38 +259,38 @@ export default {
         case 'openGiantLeaf':
           parent.location.href = 'https://wap.beeplaying.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
-          case 'openGameTreasureGift': //打开夺宝礼包
-              parent&&parent.closeTaksPage()
-              let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url1)
-              break
-          case 'openGameHalloween': //打开超值礼包
-              parent&&parent.closeTaksPage()
-              let url2 = `https://wap.beeplaying.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url2)
-              break
-          case 'openGameMiniFeedBack': //打开葫芦娃
-              parent&&parent.closeTaksPage()
-              let url3 = `https://wap.beeplaying.com/payment/#/miniFeedBack?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url3)
-              break
-          case 'openGamePopGame': //打开盈利榜
-              parent&&parent.closeTaksPage()
-              let url4 = `https://wap.beeplaying.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-              parent && parent.GameEval('openweb',url4)
-              break
+        case 'openGameTreasureGift': // 打开夺宝礼包
+          parent && parent.closeTaksPage()
+          let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url1)
+          break
+        case 'openGameHalloween': // 打开超值礼包
+          parent && parent.closeTaksPage()
+          let url2 = `https://wap.beeplaying.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url2)
+          break
+        case 'openGameMiniFeedBack': // 打开葫芦娃
+          parent && parent.closeTaksPage()
+          let url3 = `https://wap.beeplaying.com/payment/#/miniFeedBack?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url3)
+          break
+        case 'openGamePopGame': // 打开盈利榜
+          parent && parent.closeTaksPage()
+          let url4 = `https://wap.beeplaying.com/jsWap/#/popGame?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url4)
+          break
 
         default:
           url.includes('//') && (parent.location.href = url)
           break
       }
     },
-    kickegg(){
-      GLOBALS.marchSetsPoint('A_H5PT0061001502',{
-        from_project_id:this.currentGameType,
+    kickegg () {
+      GLOBALS.marchSetsPoint('A_H5PT0061001502', {
+        from_project_id: this.currentGameType,
         task_name: this.showegg.url
       })
-      this.$emit('kickegg',this.showegg.url)
+      this.$emit('kickegg', this.showegg.url)
     }
   },
   computed: {
@@ -298,19 +298,19 @@ export default {
   created () {
     this.getDetail()
   },
-  mounted(){
-    this.axios.post('//ops-api.beeplaying.com/ops/api/activity/sdk-state',{
-      "value": this.currentGameType
-    }).then(res=>{
-      this.showegg=res.data.code==200&&res.data.data||null
-      if(this.showegg&&this.showegg.show){
-        GLOBALS.marchSetsPoint('A_H5PT0061001501',{
-          from_project_id:this.currentGameType
+  mounted () {
+    this.axios.post('//ops-api.beeplaying.com/ops/api/activity/sdk-state', {
+      'value': this.currentGameType
+    }).then(res => {
+      this.showegg = res.data.code == 200 && res.data.data || null
+      if (this.showegg && this.showegg.show) {
+        GLOBALS.marchSetsPoint('A_H5PT0061001501', {
+          from_project_id: this.currentGameType
         })
-        if(this.showegg.popup){
-          setTimeout(()=>{
-            this.$emit('kickegg',this.showegg.url)
-          },2000)
+        if (this.showegg.popup) {
+          setTimeout(() => {
+            this.$emit('kickegg', this.showegg.url)
+          }, 2000)
         }
       }
     })
@@ -321,12 +321,12 @@ export default {
 <style scoped lang="less">
 .sdk-tab-box {
   padding: 0.3rem 0.3rem 0;
-  .egg{
+  .egg {
     width: 1.04rem;
     height: 1.08rem;
     position: fixed;
     right: 0;
-    top: .8rem;
+    top: 0.8rem;
     z-index: 11;
   }
   .tabs {

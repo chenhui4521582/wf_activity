@@ -27,7 +27,7 @@ export default {
   props: {
     type: {
       type: Number,
-      default: 0//1.活动规则 2.砸金蛋还差养料 3.砸金蛋需要去活动页 4.砸金蛋结束
+      default: 0// 1.活动规则 2.砸金蛋还差养料 3.砸金蛋需要去活动页 4.砸金蛋结束
     },
     awardsname: {
       type: String,
@@ -42,14 +42,15 @@ export default {
   methods: {
     async close (flag) {
       if (this.type == 2) {
-        if (!flag) {
+        if (flag) {
+          this.$emit('close')
+        } else {
           await GLOBALS.marchSetsPoint('A_H5PT0018001668', {
             from_project_id: this.gametype
           })
+          this.$emit('gotoact')
         }
       }
-      this.$emit('close')
-      this.$emit('gotoact')
     },
     async gotoact () {
       if (this.type == 2) {
