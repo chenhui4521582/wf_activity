@@ -52,7 +52,7 @@ export default {
           await GLOBALS.marchSetsPoint('A_H5PT0018001668', {
             from_project_id: this.gametype
           })
-          this.$emit('gotoact')
+          this.$emit('gotoact', 3)
         }
       }
       if (this.type == 3) {
@@ -62,7 +62,7 @@ export default {
           await GLOBALS.marchSetsPoint('A_H5PT0018001671', {
             from_project_id: this.gametype
           })
-          this.$emit('gotoact')
+          this.$emit('gotoact', 3)
         }
       }
     },

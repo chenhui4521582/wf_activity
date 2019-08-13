@@ -283,7 +283,6 @@ export default {
       } else {
         this.type = 3
         this.showAwardspop = true
-        // this.gotoact()
       }
     },
     async getActivityAndUserInfo () {
