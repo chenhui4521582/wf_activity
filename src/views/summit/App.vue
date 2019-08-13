@@ -127,6 +127,7 @@
         if (params.buyFlag == 0 || this.isClicked) {
           return
         }
+        localStorage.setItem('originDeffer', window.location.href)
         localStorage.setItem('JDD_PARAM', JSON.stringify(params))
         if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') { // 好看、全民小视频
           top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
