@@ -166,7 +166,7 @@ export default {
         return
       }
       if (this.hbItems && this.envelopsItem) {
-        if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].status == 2) {
+        if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].status != 1) {
           return '100%'
         } else {
           let minUnfinished = this.hbItems.filter((item) => {
@@ -252,7 +252,7 @@ export default {
         from_project_id: this.currentGameType
       })
       this.type = 1
-      this.awardsname = `<p>1. 活动时间：${this.actAndUserInfoData.activityTime}</p><p>养料榜结算时间：${this.actAndUserInfoData.endTime}</p><p>2. 养料作用：</p><p>使用养料摘取果实，可获得若干的金叶、话费券、京东券、满减券；</p><p>活动结束后，活动结束后，将按累计获得的养料数（不管是否被消耗）排名，前30名有奖励。累计养料数一样的，按照时间先后顺序排序。</p><p>3. 养料获取途径：</p><p>参与活动免费摇一次铜果实；</p><p>消费达到指定额度领取养料</p><p>玩游戏，金叶消耗达到额度领取养料；套圈、物资争夺、斗地主不计入此活动；</p><p>购买活动礼包获得养料；</p><p>4. 注意事项：</p><p>养料数目相同时，榜单排名有先后，实际发放奖励以较高奖励为准。</p><p>活动期间，禁止作弊行为。如有任何疑问，可在游戏中心--“我的”--“帮助联系客服，或致电400-873-5311。</p>`
+      this.awardsname = `<p>1. 活动时间：${this.actAndUserInfoData.activityTime}</p><p>养料榜结算时间：${this.actAndUserInfoData.endTime}</p><p>2. 养料作用：</p><p>使用养料摘取果实，可获得若干的金叶、话费券、京东券、满减券；</p><p>活动结束后，将按累计获得的养料数（不管是否被消耗）排名，前30名有奖励。累计养料数一样的，按照时间先后顺序排序。</p><p>3. 养料获取途径：</p><p>参与活动免费摇一次铜果实；</p><p>消费达到指定额度领取养料</p><p>玩游戏，金叶消耗达到额度领取养料；套圈、物资争夺、斗地主不计入此活动；</p><p>购买活动礼包获得养料；</p><p>4. 注意事项：</p><p>养料数目相同时，榜单排名有先后，实际发放奖励以较高奖励为准。</p><p>活动期间，禁止作弊行为。如有任何疑问，可在游戏中心--“我的”--“帮助联系客服，或致电400-873-5311。</p>`
       this.showAwardspop = true
     },
     gotoact (flag = 0) { // 去活动详情

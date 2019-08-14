@@ -78,7 +78,7 @@ export default {
           from_project_id: this.gametype
         })
       }
-      this.$emit('gotoact', 3)
+      this.$emit('gotoact')
     }
   },
   mounted () {
