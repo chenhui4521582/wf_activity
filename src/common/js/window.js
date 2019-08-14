@@ -60,7 +60,7 @@ window.GLOBALS = {
     url = '../../../payment/#/mall'
     return url
   },
-  isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser']>0 : 1,
+  isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser'] > 0 : 1,
   loopTime (_this, obj) {
     var date = new Date()
     var hours = date.getHours()
@@ -206,6 +206,13 @@ window.GLOBALS = {
   },
   getJumpToGameUrl (url) {
     return util.jumpToGameUrl({ url: url })
+  },
+  // 格式化时间
+  formatDate (date, type) {
+    if (type == 'unix') {
+      return moment(date).unix() * 1000
+    }
+    return moment(date).format(type)
   }
 }
 
