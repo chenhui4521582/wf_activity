@@ -79,7 +79,7 @@
             </div>
             <div class="tips" v-if="actAndUserInfoData">
               <div>已购买礼包:{{actAndUserInfoData.buyPackageTime||0 }}次</div>
-              <div>累计养料:{{actAndUserInfoData.receiveByCumulativeTask }}个</div>
+              <div>累计养料:{{actAndUserInfoData.receiveByPackage }}个</div>
             </div>
           </div>
         </div>
