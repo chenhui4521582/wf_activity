@@ -1,91 +1,89 @@
 <template>
-  <div id="app" :class="{close:isclose}" v-if="show">
-    <template v-if="!isclose">
-      <div class="closeegg" @click="closegameeggs(1)"></div>
-      <div class="rule" @click="showrule">规则</div>
-      <div class="act_detail" @click="gotoact(1)">去活动详情</div>
-      <div class="container" v-if="actAndUserInfoData">
-        <!-- <div class="time" v-if="isShowDay">剩余时间: {{countdown.time.replace('小时',':').replace('分',':').replace('秒','')}}</div> -->
-        <!-- <div class="time" v-else>截止时间: {{actAndUserInfoData.endTime}}</div> -->
-        <div class="time"></div>
-        <div class="eggs" v-if="actAndUserInfoData">
-          <div class="eggs_continer">
-            <div class="item">
-              <div class="num">{{actAndUserInfoData.remanentFood}}</div>
-              <div class="txt">剩余养料</div>
-            </div>
-            <div class="item">
-              <div class="num" v-if="actAndUserInfoData.remanentFood<500">差{{500-actAndUserInfoData.remanentFood}}份养料 摇金果奖励</div>
-              <div class="num" v-else>可摇摇钱树</div>
-              <div class="arrow"></div>
-              <div class="btn" @click="kickeggs()">立即去摇奖励</div>
-            </div>
-            <img src="./images/gift-icon.png" alt="" class="item">
+  <div id="app" v-if="show">
+    <div class="closeegg" @click="closegameeggs(1)"></div>
+    <div class="rule" @click="showrule">规则</div>
+    <div class="act_detail" @click="gotoact(1)">去活动详情</div>
+    <div class="container" v-if="actAndUserInfoData">
+      <!-- <div class="time" v-if="isShowDay">剩余时间: {{countdown.time.replace('小时',':').replace('分',':').replace('秒','')}}</div> -->
+      <!-- <div class="time" v-else>截止时间: {{actAndUserInfoData.endTime}}</div> -->
+      <div class="time"></div>
+      <div class="eggs" v-if="actAndUserInfoData">
+        <div class="eggs_continer">
+          <div class="item">
+            <div class="num">{{actAndUserInfoData.remanentFood}}</div>
+            <div class="txt">剩余养料</div>
           </div>
+          <div class="item">
+            <div class="num" v-if="actAndUserInfoData.remanentFood<500">差{{500-actAndUserInfoData.remanentFood}}份养料 摇金果奖励</div>
+            <div class="num" v-else>可摇摇钱树</div>
+            <div class="arrow"></div>
+            <div class="btn" @click="kickeggs()">立即去摇奖励</div>
+          </div>
+          <img src="./images/gift-icon.png" alt="" class="item">
         </div>
-        <div class="games" v-if="actAndUserInfoData&&hbItems.length">
-          <div class="text">
-            <span class="dot"></span> <i>玩游戏领养料</i> 每支持1000金叶，可获得1份养料
-          </div>
-          <div class="games_container">
-            <div class="content">
-              <div class="hb-task-box">
-                <div class="percent-box">
-                  <div class="percent-number" :style="{width:wpercent}"></div>
-                </div>
-                <ul>
-                  <li v-for="(item,index) in envelopsItem" v-if="!item.dot">
-                    <h2>支持金叶</h2>
-                    <h4 v-if="envelopsItem.length<6">{{transUint(item.bettingAmount )}}</h4>
-                    <template v-else>
-                      <h4 v-if="index<envelopsItem.length-1">{{transUint(item.bettingAmount )}}</h4>
-                      <h4 v-else>终极档位</h4>
-                    </template>
-                    <div class="hb-line"></div>
-                    <div class="envelopes">{{item.awards}}个</div>
-                    <div class="btn btn-complete" v-if="item.status == 2">完成</div>
-                    <div class="btn btn-success" v-if="item.status == 0" @click="gotoact(2)">领取</div>
-                    <div class="btn btn-default" v-if="item.status == 1" @click="closegameeggs(2,item)">去完成</div>
-                  </li>
-                  <li class="hb-dot-box" v-else>
-                    <span class="hb-dot hb-dot1"></span>
-                    <span class="hb-dot"></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="tips" v-if="actAndUserInfoData">
-              <div>已支持金叶:{{transUint(actAndUserInfoData.userBetting )}}</div>
-              <div>累计养料:{{actAndUserInfoData.receiveByCumulativeBetting}}个</div>
-            </div>
-          </div>
+      </div>
+      <div class="games" v-if="actAndUserInfoData&&hbItems.length">
+        <div class="text">
+          <span class="dot"></span> <i>玩游戏领养料</i> 每支持1000金叶，可获得1份养料
         </div>
-        <div class="packages">
-          <div class="text">
-            <span class="dot"></span> <i>购买礼包得养料</i> 礼包可不限次购买，重复获取养料
-          </div>
-          <div class="games_container">
-            <div class="content">
-              <div class="item" v-for="(item,index) in packageData" @click="gotopay(item)">
-                <img src="./images/gift1.png" alt="" v-if="index==0">
-                <img src="./images/gift2.png" alt="" v-if="index==1">
-                <img src="./images/gift3.png" alt="" v-if="index==2">
-                <div class="info">
-                  {{item.content.split('+')[0]}}
-                  <template v-if="item.content.split('+')[1]"><br>+{{item.content.split('+')[1]}}</template>
-                </div>
-                <div class="btn">¥{{item.price}}</div>
+        <div class="games_container">
+          <div class="content">
+            <div class="hb-task-box">
+              <div class="percent-box">
+                <div class="percent-number" :style="{width:wpercent}"></div>
               </div>
+              <ul>
+                <li v-for="(item,index) in envelopsItem" v-if="!item.dot">
+                  <h2>支持金叶</h2>
+                  <h4 v-if="envelopsItem.length<6">{{transUint(item.bettingAmount )}}</h4>
+                  <template v-else>
+                    <h4 v-if="index<envelopsItem.length-1">{{transUint(item.bettingAmount )}}</h4>
+                    <h4 v-else>终极档位</h4>
+                  </template>
+                  <div class="hb-line"></div>
+                  <div class="envelopes">{{item.awards}}个</div>
+                  <div class="btn btn-complete" v-if="item.status == 2">完成</div>
+                  <div class="btn btn-success" v-if="item.status == 0" @click="gotoact(2)">领取</div>
+                  <div class="btn btn-default" v-if="item.status == 1" @click="closegameeggs(2,item)">去完成</div>
+                </li>
+                <li class="hb-dot-box" v-else>
+                  <span class="hb-dot hb-dot1"></span>
+                  <span class="hb-dot"></span>
+                </li>
+              </ul>
             </div>
-            <div class="tips" v-if="actAndUserInfoData">
-              <div>已购买礼包:{{actAndUserInfoData.buyPackageTime||0 }}次</div>
-              <div>累计养料:{{actAndUserInfoData.receiveByPackage }}个</div>
-            </div>
+          </div>
+          <div class="tips" v-if="actAndUserInfoData">
+            <div>已支持金叶:{{transUint(actAndUserInfoData.userBetting )}}</div>
+            <div>累计养料:{{actAndUserInfoData.receiveByCumulativeBetting}}个</div>
           </div>
         </div>
       </div>
-    </template>
-    <awards-pop v-if="showAwardspop||(isclose)" :type="type" :awardsname="awardsname" :gametype="currentGameType" @close="showAwardspop=false" @closeview="closegameeggs" @gotoact="gotoact"></awards-pop>
+      <div class="packages">
+        <div class="text">
+          <span class="dot"></span> <i>购买礼包得养料</i> 礼包可不限次购买，重复获取养料
+        </div>
+        <div class="games_container">
+          <div class="content">
+            <div class="item" v-for="(item,index) in packageData" @click="gotopay(item)">
+              <img src="./images/gift1.png" alt="" v-if="index==0">
+              <img src="./images/gift2.png" alt="" v-if="index==1">
+              <img src="./images/gift3.png" alt="" v-if="index==2">
+              <div class="info">
+                {{item.content.split('+')[0]}}
+                <template v-if="item.content.split('+')[1]"><br>+{{item.content.split('+')[1]}}</template>
+              </div>
+              <div class="btn">¥{{item.price}}</div>
+            </div>
+          </div>
+          <div class="tips" v-if="actAndUserInfoData">
+            <div>已购买礼包:{{actAndUserInfoData.buyPackageTime||0 }}次</div>
+            <div>累计养料:{{actAndUserInfoData.receiveByPackage }}个</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <awards-pop v-if="showAwardspop" :type="type" :awardsname="awardsname" :gametype="currentGameType" @close="showAwardspop=false" @closeview="closegameeggs" @gotoact="gotoact"></awards-pop>
   </div>
 </template>
 <script>
@@ -99,7 +97,7 @@ export default {
       hbItems: [],
       awardsname: '',
       showAwardspop: false,
-      type: 4,
+      type: 2,
       token: '',
       channel: '',
       currentGameType: '',
@@ -107,8 +105,7 @@ export default {
       countdown: {// 倒计时
         time: ''
       },
-      actAndUserInfoData: null,
-      isclose: false
+      actAndUserInfoData: null
     }
   },
   created () {
@@ -303,9 +300,6 @@ export default {
           )
           this.getBetProgress()
           this.getPackage()
-        } else {
-          this.isclose = true
-          this.type = 4
         }
       }
     },
@@ -344,14 +338,6 @@ export default {
   },
   components: {
     awardsPop
-  },
-  watch: {
-    'countdown.time': function (val) {
-      if (!val) {
-        this.isclose = true
-        this.type = 4
-      }
-    }
   }
 }
 
