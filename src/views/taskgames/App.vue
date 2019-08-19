@@ -107,60 +107,62 @@
             <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
             <!-- 王者任务 -->
             <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
-            <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems">
-              <h4 class="h-title h-first-title">当前游戏每日任务</h4>
-              <!-- 魅族渠道新手完成活动 下线时清删除 -->
-              <div class="complete-task" v-if="completeData.show">
-                <div style="display: flex;align-items: center;">
+          </template>
+          <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems&&(isShowOther||currentGamesItems[0].flag)">
+            <h4 class="h-title h-first-title">当前游戏每日任务</h4>
+            <!-- 魅族渠道新手完成活动 下线时清删除 -->
+            <div class="complete-task" v-if="completeData.show">
+              <div style="display: flex;align-items: center;">
+                <div class="pic">
+                  <img src="./img/complete-icon.png" alt="">
+                </div>
+                <div class="item-text">
+                  <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                  <div class="percent-container">
+                    <div class="percent-box">
+                      <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
+                      <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="btn-box">
+                <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
+                <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+              </p>
+            </div>
+            <!-- 魅族渠道新手完成活动 下线时清删除 -->
+            <ul class="t-items">
+              <li v-for="(item, index) in currentGamesItems" :key="index">
+                <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
                   <div class="pic">
-                    <img src="./img/complete-icon.png" alt="">
+                    <img :src="item.icon | filter" alt="" v-if="item.action!=72">
+                    <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
                   </div>
                   <div class="item-text">
-                    <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
+                    <p class="title" v-html="item.taskDescShow"></p>
                     <div class="percent-container">
                       <div class="percent-box">
-                        <div class="text">{{completeData.userTaskFinishNum}}/{{completeData.taskNum}}</div>
-                        <em :style="{width:completeData.userTaskFinishNum/completeData.taskNum * 100 + '%'}"></em>
+                        <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
+                        <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
+                      </div>
+                      <div class="new-item-award">
+                        <p><img :src="item.awardsImage | filter" alt=""></p>
+                        <span>{{item.awardsName}}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <p class="btn-box">
-                  <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
-                  <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+                  <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
+                  <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
+                  <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+                  <span v-if="woolUserType && item.taskStatus == 0&&!item.flag" class="in-game wool_user">看完广告获得奖励</span>
                 </p>
-              </div>
-              <!-- 魅族渠道新手完成活动 下线时清删除 -->
-              <ul class="t-items">
-                <li v-for="(item, index) in currentGamesItems" :key="index">
-                  <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
-                    <div class="pic">
-                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
-                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
-                    </div>
-                    <div class="item-text">
-                      <p class="title" v-html="item.taskDescShow"></p>
-                      <div class="percent-container">
-                        <div class="percent-box">
-                          <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
-                          <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
-                        </div>
-                        <div class="new-item-award">
-                          <p><img :src="item.awardsImage | filter" alt=""></p>
-                          <span>{{item.awardsName}}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
-                    <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
-                  </p>
-                </li>
-              </ul>
-            </div>
+              </li>
+            </ul>
+          </div>
+          <template v-if="isShowOther">
             <div v-if="otherGamesItems">
               <!-- 其他任务 -->
               <h4 class="h-title h-third-title">更多每日任务</h4>
@@ -585,7 +587,7 @@ export default {
     checkTaskStatus (item, type, index) {
       switch (type) {
         case 'dayTask':
-          GLOBALS.marchSetsPoint('A_H5PT0061001408', {
+          GLOBALS.marchSetsPoint(item.flag&&item.flag=='ring2'?'A_H5PT0061001618':'A_H5PT0061001408', {
             position_id: index + 1,
             target_project_id: item.gameType,
             task_id: item.taskId,
@@ -621,7 +623,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if (this.woolUserType && type === 'dayTask') {
+        if ((this.woolUserType||item.action === 71) && type === 'dayTask') {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
@@ -651,7 +653,7 @@ export default {
         this.goFinishs(item, index, type)
       }
     },
-    async goFinishs ({ gameType, url, action, taskId, taskName }, index, type) {
+    async goFinishs ({ gameType, url, action, taskId, taskName,flag}, index, type) {
       if (type == 'crush_task' || type == 'mother_crush_task') {
         GLOBALS.marchSetsPoint('A_H5PT0061000537', {
           project_id: gameType,
@@ -660,7 +662,7 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-页面
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0061000542', {
+        GLOBALS.marchSetsPoint(flag&&flag=='ring2'?'A_H5PT0061001617':'A_H5PT0061000542', {
           position_id: index + 1,
           project_id: this.currentGameType,
           target_project_id: gameType,
@@ -830,12 +832,17 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
+      this.axios.post(item.flag&&item.flag=='ring2'?'//quoits-api.beeplaying.com/quoits/api/exchange':'//platform-api.beeplaying.com/task/api/usertask/finish', item.flag&&item.flag=='ring2'?{value:item.taskId}:{
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
         if (res.data.code == 200) {
           // 弹窗弹出
+          if(item.flag&&item.flag=='ring2'){
+            item.awardsImage=res.data.data.awardsImg
+            item.awardsNum=res.data.data.num
+            item.flag='ring2'
+          }
           this.awardItem = item
           this.getTransInfo()
           this.getPhoneFragment()
@@ -864,6 +871,11 @@ export default {
               item.taskStatus = 2
           }
           if (res.data.data && res.data.data.awardsName) {
+            if(item.flag&&item.flag=='ring2'){
+              res.data.data.awardsImage=res.data.data.awardsImg
+              res.data.data.awardsNum=res.data.data.num
+              res.data.data.flag='ring2'
+            }
             this.receiveAwards = res.data.data
             this.isDailyReceivePop = true
           } else {
@@ -905,27 +917,37 @@ export default {
         }
       })
     },
-    getDayTask () {
-      this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
+    async getDayTask () {
+      let arrring2=[]
+      let {data:data}=await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.currentGamesItems = res.data.data.filter((item) => {
-            return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
-          })
-          if (this.currentGamesItems.filter(item => item.action == 72).length) {
-            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
-          }
-          this.otherGamesItems = res.data.data.filter((item) => {
-            return (item.gameType != this.getUrlParam('gametype'))
-          })
-          if (this.otherGamesItems.filter(item => item.action == 72).length) {
-            GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+      })
+      if(data.code==200){
+        if(parent.location.href.includes('ring2')){
+          let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
+          if(dataA.code==200){
+            dataA.data.awardsList.map(item=>{
+              arrring2.push({
+                "taskId":item.amount,"taskName":item.description,"gameType":this.currentGameType,"taskDesc":item.description,"icon":item.icon,"taskOps":item.costNum,"finishNum":item.currNum,"taskStatus":item.costNum<=item.currNum?0:1,"taskLogId":item.amount,"cycle":0,"awardsType":0,"awardsName":item.awardsName,"url":null,"awardsImage":item.awardsImg,"taskDescShow":item.description,"awardsNum":0,"taskType":0,"subTask":"","preTask":null,"action":0,"sort":0,flag:'ring2'
+              })
+            })
           }
         }
-      })
+        this.currentGamesItems =[...arrring2,... data.data.filter((item) => {
+          return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
+        })]
+        if (this.currentGamesItems.filter(item => item.action == 72).length) {
+          GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '当前游戏每日任务列表', source_address: '当前游戏每日任务列表' })
+        }
+        this.otherGamesItems = data.data.filter((item) => {
+          return (item.gameType != this.getUrlParam('gametype'))
+        })
+        if (this.otherGamesItems.filter(item => item.action == 72).length) {
+          GLOBALS.marchSetsPoint('A_H5PT0142001563', { target_project_id: this.getUrlParam('gametype'), task_id: 2, task_name: '更多每日任务列表', source_address: '更多每日任务列表' })
+        }
+      }
     },
     getTransInfo () {
       this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo').then((res) => {
