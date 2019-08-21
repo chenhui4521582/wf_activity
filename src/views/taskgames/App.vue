@@ -201,7 +201,8 @@
           <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
           <!-- 新版奖励弹窗 -->
-          <daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>
+          <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
+          <task-award-pop v-if="isDailyReceivePop"  :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
           <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
@@ -226,7 +227,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import poplog from './poplog'
+import poplog from './poplog1'
 export default {
   data () {
     return {
