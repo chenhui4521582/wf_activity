@@ -1,18 +1,17 @@
 <template>
-  <section id="app">
-    <section class="adventure">
-      <div class="gift">
-        <img src="./img/gift.png" alt="">
-      </div>
-      <p>
-        <span>更多奖励</span>可前往“<span>任务中心</span>”领取
-      </p>
-      <div class="btn" @click="goTask"></div>
-    </section>
+  <section id="app" class="adventure">
+    <div class="gift">
+      <img src="./img/gift.png" alt="">
+    </div>
+    <p>
+      <span>更多奖励</span>可前往“<span>任务中心</span>”领取
+    </p>
+    <div class="btn" @click="goTask"></div>
   </section>
 </template>
 
 <script>
+import utils from '../../common/js/utils'
 export default {
   name: 'adventure',
   components: {
@@ -23,12 +22,20 @@ export default {
 
     }
   },
-  mounted () {
-
+  computed: {
+    _channel () {
+      return utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL') || ''
+    },
+    _token () {
+      return utils.getUrlParam('token') || localStorage.getItem('ACCESS_TOKEN') || ''
+    },
+    _gametype () {
+      return utils.getUrlParam('gametype') || localStorage.getItem('wj_gameType') || 0
+    }
   },
   methods: {
     goTask () {
-      let url = `https://wap.beeplaying.com/activities/taskgames.html?channel=100006&token=d246c9377c8a40cc82f3b908f55011bd&gametype=12`
+      let url = `https://wap.beeplaying.com/activities/taskgames.html?channel=${this._channel}&token=${this._token}&gametype=${this._gametype}`
       parent.GameEval('closeweb')
       parent.GameEval('openweb', url)
     }
@@ -46,8 +53,7 @@ export default {
     left: 0;
     right: 0;
     margin: auto;
-    background: transparent;
-    font-size: 0.24rem;
+    font-size: 0.22rem;
     font-weight: 700;
     color: #fff;
   }
@@ -61,8 +67,7 @@ export default {
     left: 0;
     right: 0;
     margin: auto;
-    background: transparent;
-    font-size: 0.24rem;
+    font-size: 0.22rem;
     font-weight: 700;
     color: #fff;
     overflow: scroll;
@@ -72,10 +77,27 @@ export default {
   width: 5rem;
   height: 5.8rem;
   background: url("./img/bg.png") no-repeat center center / 100% 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -2.5rem;
-  margin-top: -2.9rem;
+  .gift {
+    width: 4.34rem;
+    height: 1.98rem;
+    margin: 2.18rem auto 0;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  p {
+    text-align: center;
+    font-weight: normal;
+    span {
+      font-weight: bolder;
+    }
+  }
+  .btn {
+    width: 2.78rem;
+    height: 0.74rem;
+    background: url("./img/btn.png") no-repeat center center / 100% 100%;
+    margin: 0.18rem auto;
+  }
 }
 </style>
