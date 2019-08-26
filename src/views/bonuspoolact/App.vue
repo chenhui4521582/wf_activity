@@ -20,7 +20,7 @@
           <img src="./images/qianyuanbonus1.png" alt="">
         </div>
         <div class="item">
-          <img src="./images/zhongjidajiang1.png" alt="" @click="tabIndex=1">
+          <img src="./images/zhongjidajiang1.png" alt="" @click="qianghongbaoclick(1)">
         </div>
       </div>
       <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==4}" v-show="tabIndex==1">
@@ -71,7 +71,7 @@
           <div class="btn bonus_pre" v-if="detailData.normalState==1">
             活动开启倒计时{{countdown.time}}
           </div>
-          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="tabIndex=0">
+          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0)">
             <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
           </div>
         </template>
@@ -156,6 +156,14 @@
       }
     },
     methods: {
+      qianghongbaoclick(value){
+        if(value){
+          GLOBALS.marchSetsPoint('A_H5PT0074001703')
+        }else{
+          GLOBALS.marchSetsPoint('A_H5PT0074001702')
+        }
+        this.tabIndex=value
+      },
       showrule() {
         this.flag = 1
       },
