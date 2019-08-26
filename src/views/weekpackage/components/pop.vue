@@ -70,7 +70,7 @@
         this.$emit('close')
       },
       async gotoshop(item){
-        localStorage.setItem('originDeffer', window.location.href)
+        localStorage.setItem('originDeffer', window.location.href+'?flag=1')
         GLOBALS.marchSetsPoint('A_H5PT0074001697', { recharge_rmb: item.price, product_id: item.bizId,product_name:item.name })
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频

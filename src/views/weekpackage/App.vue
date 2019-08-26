@@ -156,7 +156,7 @@
           if (res.data.code == 200 && res.data.data) {
             this.detailData = res.data.data
             this.awardsList=res.data.data.ratios
-            if(this.detailData.state==2&&isNeedTurn){
+            if((this.detailData.state==2||this.detailData.state==3)&&isNeedTurn){
               this.getFinalAwards(2)
             }
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
@@ -221,8 +221,13 @@
                   that.getFinalIndex = i
                 }
               }
-              lottery.operation(this.$refs.wheel, this.awardsList, that.getFinalIndex, function () {
-              },0)
+              setTimeout(()=>{
+                lottery.operation(this.$refs.wheel, this.awardsList, that.getFinalIndex, ()=>{
+                  if(this.getUrlParam('flag')&&this.getUrlParam('flag')==1){
+                    this.flag=2
+                  }
+                },0)
+              },100)
             }else {
               this.$toast.show({
                 message: params.message,
