@@ -200,7 +200,7 @@
           </template>
           <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
-          <!-- 新版奖励弹窗 -->
+          <!-- 新版奖励弹窗   -->
           <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
           <task-award-pop v-if="isDailyReceivePop"  :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
