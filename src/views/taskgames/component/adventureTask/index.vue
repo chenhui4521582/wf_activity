@@ -4,7 +4,7 @@
       <span>{{countTime}}后结束</span>
     </div>
     <ul class="master-task-list">
-      <li @click="checkTaskStatus()">
+      <li>
         <div class="description" :class="{opacitying:info.taskStatus == 2}">
           <div class="head-img">
             <img :src="info.taskImg | filter" alt="">
@@ -97,9 +97,8 @@ export default {
     goFinish () {
       GLOBALS.marchSetsPoint('A_H5PT0022001711', {
         project_id: this.currentGameType,
-        target_project_id: this.currentGameType,
-        task_id: info.taskId,
-        task_name: info.taskName
+        task_id: this.info.taskId,
+        task_name: this.info.taskName
       }) // H5平台-大户流失挽留(奇遇任务)-任务去完成点击
 
       parent.GameEval('closeweb')
@@ -111,9 +110,8 @@ export default {
     async receive () {
       GLOBALS.marchSetsPoint('A_H5PT0022001712', {
         project_id: this.currentGameType,
-        target_project_id: this.currentGameType,
-        task_id: info.taskId,
-        task_name: info.taskName
+        task_id: this.info.taskId,
+        task_name: this.info.taskName
       }) // H5平台-大户流失挽留(奇遇任务)-任务领取点击
       const { data, code } = await receive({ order: this.info.taskId })
       if (code === 200) {
@@ -142,7 +140,7 @@ div {
   box-sizing: border-box;
 }
 .master-task-list {
-  background: #0f1726;
+  background: #232432;
   padding: 4% 3%;
   margin-bottom: 0.1rem;
   > li {
