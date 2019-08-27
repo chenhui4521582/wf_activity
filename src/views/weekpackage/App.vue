@@ -353,7 +353,7 @@
         width: 6.52rem;
         height: 6.52rem;
         margin-left: -.3rem;
-        margin-top: -.3rem;
+        margin-top: -.25rem;
         background: url('./imgs/light1.png') no-repeat center center / 100% 100%;
         animation: changeBg 0.3s alternate  infinite ease,changeBg1 0.3s infinite ease
       }
