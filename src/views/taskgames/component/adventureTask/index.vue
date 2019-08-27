@@ -7,7 +7,7 @@
       <li @click="checkTaskStatus()">
         <div class="description" :class="{opacitying:info.taskStatus == 2}">
           <div class="head-img">
-            <img :src="info.icon | filter" alt="">
+            <img :src="info.taskImg | filter" alt="">
           </div>
           <div class="content">
             <p v-html="info.taskName"></p>
@@ -23,8 +23,8 @@
             </div>
           </div>
         </div>
-        <div class="btn" v-if="info.taskStatus == 0" @click="receive">领取</div>
-        <div class="btn play" v-if="info.taskStatus == 1" @click="goFinish">去完成</div>
+        <div class="btn" v-if="info.taskStatus == 1" @click="receive">领取</div>
+        <div class="btn play" v-if="info.taskStatus == 0" @click="goFinish">去完成</div>
       </li>
     </ul>
     <pop-log v-if="isPop" :awardItem="info" @close="closePopLog"></pop-log>
@@ -101,8 +101,11 @@ export default {
         task_id: info.taskId,
         task_name: info.taskName
       }) // H5平台-大户流失挽留(奇遇任务)-任务去完成点击
-      if (parent.closeTaksPage) {
-        parent.closeTaksPage()
+
+      parent.GameEval('closeweb')
+      if (this.info.url === 'shop') {
+        let url = window.SDK.getPaymentUrl()
+        parent.GameEval('openweb', url)
       }
     },
     async receive () {
