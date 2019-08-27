@@ -117,15 +117,7 @@ export default {
       this.selectedIndex = index
     },
     // 打开详情
-    async goDetail (data, e) {
-      await GLOBALS.marchSetsPoint('A_H5PT0035001264', {
-        awards_name: data.phyAwardsTypeName,
-        residual_phone: this.accountBalance,
-        product_id: data.productList[0].phyAwardsType
-      })
-      if (!e._constructed) {
-        return
-      }
+    goDetail (data) {
       localStorage.BILL_DETAILS = JSON.stringify(data.productList)
       let query = {
         ...this.$route.query,
