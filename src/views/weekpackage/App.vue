@@ -157,7 +157,7 @@
             this.detailData = res.data.data
             this.awardsList=res.data.data.ratios
             if((this.detailData.state==2||this.detailData.state==3)&&isNeedTurn){
-              this.getFinalAwards(2)
+              this.getFinalAwards(this.detailData.state)
             }
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
               this,
