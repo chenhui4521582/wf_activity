@@ -454,7 +454,7 @@
       bottom: 0;
       margin: auto;
       z-index: 2;
-
+      transition: all 3s;
       ul {
         position: absolute;
         left: 0;
