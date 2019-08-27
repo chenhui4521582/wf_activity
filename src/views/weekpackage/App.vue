@@ -329,6 +329,16 @@
         text-align: center;
       }
     }
+    .already-paid{
+      width: 6.52rem;
+      height: 6.52rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 3rem;
+      z-index: 2;
+      overflow: hidden;
+    }
     .turntable-bg {
       width: 5.96rem;
       height: 5.96rem;
@@ -336,10 +346,9 @@
       background-size: 100% 100%;
       position: absolute;
       left: 50%;
-      transform: translateX(-50%);
-      top: 3.32rem;
+      transform: translate(-50%,-50%);
+      top: 50%;
       z-index: 2;
-
       .turntable-light {
         width: 6.52rem;
         height: 6.52rem;
@@ -385,7 +394,7 @@
       width: 3.26rem;
       height: 3.46rem;
       z-index: 3;
-      top: 4.42rem;
+      top: 1.5rem;
       left: 50%;
       margin-left: -1.65rem;
 
@@ -439,10 +448,11 @@
       background: url(./imgs/pan.png) no-repeat;
       background-size: 100% 100%;
       position: absolute;
-      left: 50%;
-      top: 3.32rem;
-      transform: translateX(-50%) rotate(0deg);
-      transition: all 3s;
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
       z-index: 2;
 
       ul {

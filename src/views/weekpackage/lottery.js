@@ -11,7 +11,7 @@ export default {
     }
     var soBuom = 0;
     /*    旋转度数 = 上次度数+ 最小圈数 * 360 + 当前数字 * 60 +随机角度  = 最终旋转度数     */
-    wheel.style.transform = ' translateX(-50%) rotate(-' + ((lenCloc * sun + ran * 360 / PrizeSon.length) + soBuom) + 'deg)'
+    wheel.style.transform = 'rotate(-' + ((lenCloc * sun + ran * 360 / PrizeSon.length) + soBuom) + 'deg)'
     console.log((lenCloc * sun + ran * 360 / PrizeSon.length) + soBuom)
     setTimeout(function () {
       isStatr = false

@@ -130,8 +130,8 @@
     .desc {
       position: absolute;
       top: 3.16rem;
-      left: .2rem;
-      right: .2rem;
+      left: .6rem;
+      right: .6rem;
       font-size: .24rem;
       font-weight: 400;
       color: rgba(255, 225, 229, 1);
