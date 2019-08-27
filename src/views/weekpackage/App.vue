@@ -223,7 +223,7 @@
               }
               setTimeout(()=>{
                 lottery.operation(this.$refs.wheel, this.awardsList, that.getFinalIndex, ()=>{
-                  if(this.getUrlParam('flag')&&this.getUrlParam('flag')==1){
+                  if(status==3&&location.href.includes('?')){
                     this.flag=2
                   }
                 },0)
