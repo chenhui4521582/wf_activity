@@ -33,8 +33,12 @@ export default {
       return utils.getUrlParam('gametype') || localStorage.getItem('wj_gameType') || 0
     }
   },
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0019001709') // H5平台-大户流失挽留(奇遇任务)-弹窗加载完成
+  },
   methods: {
     goTask () {
+      GLOBALS.marchSetsPoint('A_H5PT0019001710') // H5平台-大户流失挽留(奇遇任务)弹窗-前往查看点击
       let url = `https://wap.beeplaying.com/activities/taskgames.html?channel=${this._channel}&token=${this._token}&gametype=${this._gametype}`
       parent.GameEval('closeweb')
       parent.GameEval('openweb', url)

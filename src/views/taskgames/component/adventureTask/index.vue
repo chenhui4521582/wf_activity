@@ -45,6 +45,12 @@ export default {
       isPop: false
     }
   },
+  props: {
+    currentGameType: {
+      type: Number,
+      default: null
+    }
+  },
   mounted () {
     this.init()
   },
@@ -89,12 +95,23 @@ export default {
       }, 1000)
     },
     goFinish () {
+      GLOBALS.marchSetsPoint('A_H5PT0022001711', {
+        project_id: this.currentGameType,
+        target_project_id: this.currentGameType,
+        task_id: info.taskId,
+        task_name: info.taskName
+      }) // H5平台-大户流失挽留(奇遇任务)-任务去完成点击
       if (parent.closeTaksPage) {
         parent.closeTaksPage()
       }
-
     },
     async receive () {
+      GLOBALS.marchSetsPoint('A_H5PT0022001712', {
+        project_id: this.currentGameType,
+        target_project_id: this.currentGameType,
+        task_id: info.taskId,
+        task_name: info.taskName
+      }) // H5平台-大户流失挽留(奇遇任务)-任务领取点击
       const { data, code } = await receive({ order: this.info.taskId })
       if (code === 200) {
         this.isPop = true

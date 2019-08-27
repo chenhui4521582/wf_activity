@@ -21,7 +21,7 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
-          <adventure-task></adventure-task>
+          <adventure-task :current-game-type="currentGameType"></adventure-task>
           <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
           <div v-if="showNewUserTask && !newTaskItems.newVersion" class="new-user-task">
             <div class="tips">
