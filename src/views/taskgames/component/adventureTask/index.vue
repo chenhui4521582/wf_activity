@@ -27,7 +27,7 @@
         <div class="btn play" v-if="info.taskStatus == 0" @click="goFinish">去完成</div>
       </li>
     </ul>
-    <pop-log v-if="isPop" :awardItem="info" @close="closePopLog"></pop-log>
+    <pop-log v-if="isPop" :awards="info" :is-daily="false" @closePop="closePopLog"></pop-log>
   </section>
 </template>
 
@@ -36,7 +36,7 @@ import { getWarningTask, receive } from './api'
 export default {
   name: '',
   components: {
-    popLog: () => import('../../poplog'),
+    popLog: () => import('../dailyTaskReceivePop'),
   },
   data () {
     return {
@@ -60,6 +60,8 @@ export default {
       if (code === 200) {
         this.info = data
         this.countDown(this.info.countdown)
+      } else {
+        this.info = null
       }
     },
     transUint (finishNum, taskOps) {
@@ -130,7 +132,8 @@ export default {
   position: relative;
   width: 100%;
   height: 0.9rem;
-  background: url(./img/title-bg.png) no-repeat center center / 100% 100%;
+  background: #232432 url(./img/title-bg.png) no-repeat center center / 100%
+    100%;
   font-size: 0.18rem;
   color: #363951;
   text-align: right;
@@ -156,7 +159,6 @@ div {
     margin: 0;
     &:last-child {
       border: none;
-      padding-top: 4%;
       padding-bottom: 0;
     }
     .description {
@@ -165,8 +167,8 @@ div {
       align-items: center;
       width: 80%;
       .head-img {
-        width: 0.6rem;
-        height: 0.6rem;
+        width: 0.7rem;
+        height: 0.7rem;
         border-radius: 6px;
         overflow: hidden;
         margin-right: 3%;
@@ -226,10 +228,10 @@ div {
       }
     }
     .btn {
-      color: #fff;
+      color: #2a3044;
       font-weight: bold;
       font-size: 0.2rem;
-      background: #ee6f0b;
+      background: url("./img/get_icon.png") no-repeat center / 100% 100%;
       padding: 2% 4%;
       border-radius: 4px;
       text-align: center;
@@ -238,7 +240,8 @@ div {
       word-break: keep-all;
       white-space: nowrap;
       &.play {
-        background: #1976d2;
+        background: #538cff;
+        color: #fff;
       }
       &.gray {
         background: #fff;
