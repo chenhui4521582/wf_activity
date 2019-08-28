@@ -35,6 +35,7 @@ export default {
   },
   mounted () {
     GLOBALS.marchSetsPoint('A_H5PT0019001709') // H5平台-大户流失挽留(奇遇任务)-弹窗加载完成
+    this.axios.post('//ops-api.beeplaying.com/ops/api/user/lose/warning/receive/0')
   },
   methods: {
     goTask () {
