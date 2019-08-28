@@ -102,8 +102,11 @@ export default {
         task_id: this.info.taskId,
         task_name: this.info.taskName
       }) // H5平台-大户流失挽留(奇遇任务)-任务去完成点击
-
-      parent.GameEval('closeweb')
+      try {
+        parent.closeTaksPage()
+      } catch (error) {
+        parent.GameEval('closeweb')
+      }
       if (this.info.url === 'shop') {
         let url = window.SDK.getPaymentUrl()
         parent.GameEval('openweb', url)
