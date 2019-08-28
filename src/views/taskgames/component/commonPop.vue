@@ -2,7 +2,7 @@
   <div class="pop-window">
     <div class="pop-mask" @touchmove.prevent></div>
     <div class="receive-pop" ref="receive-pop" :class="{'bigbg':title == '活动规则'}">
-      <p><i @click="close"></i>{{title}}</p>
+      <p class="close"><i @click="close"></i>{{title}}</p>
       <div class="slot" ref="slot" style="position: relative">
         <slot></slot>
       </div>
@@ -52,7 +52,9 @@ export default {
   mounted () {
     let top = this.title == '活动规则' ? 54 * 1.5 : 0
     this.$nextTick(() => {
-      this.$refs.slot.style.height = (this.$refs.besure.offsetTop - this.$refs['slot'].offsetTop + top + parseInt(this.getComputedStyle(this.$slots.default[0].elm, 'height'))) + 'px'
+      if(this.$refs.besure){
+        this.$refs.slot.style.height = (this.$refs.besure.offsetTop - this.$refs['slot'].offsetTop + top + parseInt(this.getComputedStyle(this.$slots.default[0].elm, 'height'))) + 'px'
+      }
     })
   }
 }
@@ -175,7 +177,7 @@ export default {
   &.bigbg {
     width: 87%;
   }
-  p:first-child {
+  p.close:first-child {
     height: 0.8rem;
     line-height: 0.8rem;
     background: #141f33;
@@ -197,26 +199,26 @@ export default {
       }
     }
   }
-  p:nth-of-type(2) {
-    padding: 0.7rem 0 1.1rem;
-    font-size: 0.24rem;
-    i {
-      color: #ffd338;
-    }
-  }
+  /*p:nth-of-type(2) {*/
+    /*padding: 0.7rem 0 1.1rem;*/
+    /*font-size: 0.24rem;*/
+    /*i {*/
+      /*color: #ffd338;*/
+    /*}*/
+  /*}*/
   div.besure {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
     margin: 0 auto 0.4rem;
-    width: 1.8rem;
     height: 0.6rem !important;
     line-height: 0.6rem;
     background: #ee6f0b;
     border-radius: 0.08rem;
-    font-size: 0.28rem;
+    font-size: 0.24rem;
     font-weight: bold;
+    padding: 0 .2rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 </style>

@@ -3,7 +3,7 @@
     <transition name="mask">
       <div class="modal-mask"></div>
     </transition>
-    <img src="./images/shine.png" alt="" class="shine">
+    <!--<img src="./images/shine.png" alt="" class="shine">-->
     <div class="modal-content">
       <div class="content">
         <div class="img">
