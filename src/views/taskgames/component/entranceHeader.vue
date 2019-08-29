@@ -12,7 +12,7 @@
       <img class="entrance-header-img" src="../images/cat_supply/kf.png">
       <div class="entrance-header-text">客服</div>
     </div>
-    <common-pop :title="title" @close="showOutPop=false" :btn-name="btnName" v-if="showOutPop" @besure="gaincatprize" :isShowBtn="!(catSurplusFlag==3||catSurplusFlag==4)">
+    <common-pop :title="title" :btn-name="btnName" v-if="showOutPop" @besure="gaincatprize" :isShowBtn="!(catSurplusFlag==3||catSurplusFlag==4)" @close="closeCatSupply">
       <div class="entrance-center" :class="{catFlag1:catSurplusFlag==1,catFlag34:catSurplusFlag==3||catSurplusFlag==4}">
         <div slot="text" class="text" :class="{catFlag1:catSurplusFlag==1,catFlag34:catSurplusFlag==3||catSurplusFlag==4}">
           <template v-if="catSurplusFlag==1">
@@ -36,11 +36,11 @@
         </div>
         <div class="cat_surplusinfo" v-if="catSurplusFlag==3||catSurplusFlag==4">
           <div class="line"></div>
-          <div class="desc">* 招财猫不同等级享不同权益,<span class="gobaoxian">去获取更多权益>></span></div>
+          <div class="desc" @click="gainrights(catSurplusFlag)">* 招财猫不同等级享不同权益,<span class="gobaoxian">去获取更多权益>></span></div>
         </div>
       </div>
     </common-pop>
-    <task-award-pop v-if="isDailyReceivePop" :awardsImage="`${require('../img/cat/cat_leaf.png')}`"  :awards="receiveAwards" @close="isDailyReceivePop=false"></task-award-pop>
+    <task-award-pop v-if="isDailyReceivePop" :awardsImage="`${require('../img/cat/cat_leaf.png')}`"  :awards="receiveAwards" info="升级招财猫权益，领更多红包" @close="isDailyReceivePopClose"></task-award-pop>
   </div>
 </template>
 <script>
@@ -76,6 +76,7 @@
         this.$emit('gotokf')
       },
       async handleCatBuJi(){//招财猫补给箱
+        GLOBALS.marchSetsPoint('A_H5PT0061001713')//H5平台-游戏内SDK-顶部补给箱按钮点击
         let {data:data}=await this.axios.post('http://10.33.80.62:8080/wf_petcat_api_war/petcat/api/privilege/receiveStatus')
         if(data.code==200||data.code==203){//203 表示用户没猫 状态对应 权益未开启
           if(data.code==200){
@@ -88,9 +89,11 @@
           if(this.catSurplusFlag){
             this.bgColor='black'
             if(this.catSurplusFlag==1){
+              GLOBALS.marchSetsPoint('A_H5PT0061001717')//H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
               this.title='权益被冻结'
               this.btnName='去招财猫解封权益'
             }else if(this.catSurplusFlag==2){
+              GLOBALS.marchSetsPoint('A_H5PT0061001714')//H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
               this.title='权益未开启'
               this.btnName='去招财猫开启权益'
             }else{
@@ -98,8 +101,10 @@
               this.title=`幸运补给箱`
               this.bgHeight=500
               if(this.catSurplusFlag==3){
+                GLOBALS.marchSetsPoint('A_H5PT0061001720')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
                 this.btnName='领取补给'
               }else{
+                GLOBALS.marchSetsPoint('A_H5PT0061001727')//H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
                 this.receiveAmount=this.catSupplyInfo.receiveAmount
                 this.btnName='今日已领'
               }
@@ -115,10 +120,13 @@
         if(catSurplusFlag==4) return
         this.showOutPop=false
         if(catSurplusFlag==1||catSurplusFlag==2){
+          GLOBALS.marchSetsPoint(catSurplusFlag==1?'A_H5PT0061001718':'A_H5PT0061001715')//去招财猫开启权益点击
           parent.location.href=``
         }else if(catSurplusFlag==3){
+          GLOBALS.marchSetsPoint('A_H5PT0061001721')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
           let {data:data}=await this.axios.post('http://10.33.80.62:8080/wf_petcat_api_war/petcat/api/privilege/receiveStatus',{receiveType:1})
           if(data.code==200){
+            GLOBALS.marchSetsPoint('A_H5PT0061001724')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗加载完成
             this.bgHeight=356
             this.title='领取补给成功'
             this.bgColor='red'
@@ -149,6 +157,22 @@
             return 2
           }
         }
+      },
+      isDailyReceivePopClose(flag){
+        if(flag){
+          GLOBALS.marchSetsPoint('A_H5PT0061001725')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-好的点击
+        }else{
+          GLOBALS.marchSetsPoint('A_H5PT0061001726')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-关闭点击
+        }
+      },
+      gainrights(catSurplusFlag){
+        GLOBALS.marchSetsPoint(catSurplusFlag==3?'A_H5PT0061001722':'A_H5PT0061001728')//去获取更多权益点击-领取补给点击
+        parent.location.href=``
+      },
+      closeCatSupply(){
+        let points=['A_H5PT0061001719','A_H5PT0061001716','A_H5PT0061001723','A_H5PT0061001729']
+        points[this.catSurplusFlag-1]&&GLOBALS.marchSetsPoint(points[this.catSurplusFlag-1])//弹窗-关闭点击
+        this.showOutPop=false
       }
     }
   }

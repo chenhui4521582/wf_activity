@@ -152,7 +152,8 @@ window.GLOBALS = {
             marketing_id: null,
             residual_jingdong: null,
             residual_phone: null,
-            entrance: localStorage.getItem('platSource') || 'plat'
+            entrance: localStorage.getItem('platSource') || 'plat',
+            from_project_id:this.getUrlParam('gametype')
           }, eventcontent)
         }
       ]
