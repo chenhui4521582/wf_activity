@@ -1,32 +1,67 @@
-body,h1,h2,h3,h4,h5,h6,p,ul,ol,form,div,a,span,i,em,input{
-    margin:0;
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+form,
+div,
+a,
+span,
+i,
+em,
+input {
+  margin: 0;
 }
-body{
-	font-size: .24rem;
-	line-height: 1;
-	font-family:"PingFangSC-Semibold";
+
+body {
+  font-size: .24rem;
+  line-height: 1;
+  font-family: "PingFangSC-Semibold";
 }
-*:not(input){
-    -webkit-user-select:none;
+
+*:not(input) {
+  -webkit-user-select: none;
 }
-button,input{
-	outline: none;
-	border: none;
-	cursor: pointer;
+
+button,
+input {
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
-a{
-	text-decoration: none;
-	outline: none;
+
+a {
+  text-decoration: none;
+  outline: none;
 }
-a:link,a:active,a:visited,a:hover{background: rgba(255,255,255,0);}
-img{
-	border: none;
+
+a:link,
+a:active,
+a:visited,
+a:hover {
+  background: rgba(255, 255, 255, 0);
 }
-ul,li{
-    padding-left:0;
-    list-style-type:none;
+
+img {
+  border: none;
 }
-i,em{font-style: normal;}
+
+ul,
+li {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+i,
+em {
+  font-style: normal;
+}
+
 ::-webkit-input-placeholder {
-　　color: #8c8c8c;
+  color: #8c8c8c;
 }
