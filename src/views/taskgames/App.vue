@@ -624,7 +624,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if ((this.woolUserType||item.action === 71) && type === 'dayTask') {
+        if ((this.woolUserType||item.action === 71) && type === 'dayTask'&&!item.flag) {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
@@ -926,7 +926,7 @@ export default {
         gameType: this.currentGameType
       })
       if(data.code==200){
-        if(parent.location.href.includes('ring2')){
+        if(!parent.location.href.includes('ring2')){
           let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
           if(dataA.code==200){
             dataA.data.awardsList.map(item=>{
