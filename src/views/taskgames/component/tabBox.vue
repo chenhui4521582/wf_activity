@@ -162,6 +162,14 @@ export default {
         case 'league_matches':
           break// 五大联赛接口
         case 'treasureCeremony':
+          parent && parent.closeTaksPage()
+          let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url1)
+          break
+        case 'treasureCeremony1908':
+          parent && parent.closeTaksPage()
+          let url6 = `https://wap.beeplaying.com/payment/#/treasure/gift1908?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+          parent && parent.GameEval('openweb', url6)
           break
         case 'platform':
           parent.location.href = 'https://wap.beeplaying.com/activities/platform.html?from=bdWap'
