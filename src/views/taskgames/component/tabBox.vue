@@ -267,16 +267,16 @@ export default {
         case 'openGiantLeaf':
           parent.location.href = 'https://wap.beeplaying.com/activities/giantLeaf.html?channel=' + localStorage.getItem('APP_CHANNEL') + '&time=' + (new Date().getTime())
           break
-        case 'openGameTreasureGift': // 打开夺宝礼包
-          parent && parent.closeTaksPage()
-          let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-          parent && parent.GameEval('openweb', url1)
-          break
-        case 'openGameTreasureGift1908': // 打开夺宝礼包
-          parent && parent.closeTaksPage()
-          let url6 = `https://wap.beeplaying.com/payment/#/treasure/gift1908?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
-          parent && parent.GameEval('openweb', url6)
-          break
+        // case 'openGameTreasureGift': // 打开夺宝礼包
+        //   parent && parent.closeTaksPage()
+        //   let url1 = `https://wap.beeplaying.com/payment/#/treasure/gift?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+        //   parent && parent.GameEval('openweb', url1)
+        //   break
+        // case 'openGameTreasureGift1908': // 打开夺宝礼包
+        //   parent && parent.closeTaksPage()
+        //   let url6 = `https://wap.beeplaying.com/payment/#/treasure/gift1908?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
+        //   parent && parent.GameEval('openweb', url6)
+        //   break
         case 'openGameHalloween': // 打开超值礼包
           parent && parent.closeTaksPage()
           let url2 = `https://wap.beeplaying.com/payment/#/halloween?channel=${localStorage.getItem('APP_CHANNEL')}&token=${localStorage.getItem('ACCESS_TOKEN')}`
