@@ -40,7 +40,7 @@
         </div>
       </div>
     </common-pop>
-    <task-award-pop v-if="isDailyReceivePop" :awardsImage="`${require('../img/cat/cat_leaf.png')}`"  :awards="receiveAwards" info="升级招财猫权益，领更多红包" @close="isDailyReceivePopClose"></task-award-pop>
+    <task-award-pop v-if="isDailyReceivePop" :awardsImage="`${require('../img/cat/cat_leaf.png')}`"  :awards="receiveAwards" info="升级招财猫权益，领更多红包" @close="isDailyReceivePopClose" :titleImage="`${require('../img/cat/supply_success.png')}`"></task-award-pop>
   </div>
 </template>
 <script>

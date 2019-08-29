@@ -5,6 +5,7 @@
     </transition>
     <!--<img src="./images/shine.png" alt="" class="shine">-->
     <div class="modal-content">
+      <img :src="titleImage" alt="" class="title">
       <div class="content">
         <div class="img">
           <img :src="awards.awardsImage|filter" alt="" v-if="!awardsImage">
@@ -41,6 +42,9 @@
       },
       awardsImage:{
         default:''
+      },
+      titleImage:{
+        default:`${require('./images/titlebg.png')}`
       }
     },
     methods: {
@@ -154,7 +158,14 @@
   .mask-enter {
     opacity: 0;
   }
-
+  .title{
+    height: .6rem;
+    position: absolute;
+    top:.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
   .mask-enter-active {
     transition: opacity 0.3s;
   }
