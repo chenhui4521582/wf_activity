@@ -27,7 +27,7 @@
         <div class="btn play" v-if="info.taskStatus == 0" @click="goFinish">去完成</div>
       </li>
     </ul>
-    <pop-log v-if="isPop" :awards="info" :is-daily="false" @closePop="closePopLog"></pop-log>
+    <task-award-pop v-if="isPop" :awards="info" @close="closePopLog"></task-award-pop>
   </section>
 </template>
 
@@ -35,9 +35,6 @@
 import { getWarningTask, receive } from './api'
 export default {
   name: '',
-  components: {
-    popLog: () => import('../dailyTaskReceivePop'),
-  },
   data () {
     return {
       info: null,
