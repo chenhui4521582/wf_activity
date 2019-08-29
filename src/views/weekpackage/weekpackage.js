@@ -14,8 +14,7 @@ Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 Vue.prototype.axios = axios;
-import CommonComponents from './component/overallcomconfig'
-Vue.use(CommonComponents)
+
 // 复制
 Vue.use(VueClipboard)
 Vue.filter('filter', function (url) {

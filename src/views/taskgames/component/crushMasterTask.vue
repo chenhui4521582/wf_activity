@@ -258,23 +258,24 @@ div{box-sizing: border-box}
             }
         }
         .btn{
-            color: #fff;
-            font-weight: bold;
-            font-size: .2rem;
-            background: #EE6F0B;
-            padding:2% 4%;
-            border-radius: 4px;
+            margin: 0 auto;
+            display: block;
+            width: 0.8rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            border-radius: 0.08rem;
             text-align: center;
-            box-sizing: border-box;
-            width: 20%;
-            word-break:keep-all;
-            white-space:nowrap;
+            font-size: 0.2rem;
+            color: #2a3044;
+            font-weight: bold;
+            background: url('../img/get_icon.png') no-repeat center / 100% 100%;
             &.play{
-                background: #1976D2;
+              color: #fff;
+              background: #538cff;
             }
             &.gray{
-                background: #fff;
-                color: #141F33;
+              background: #787F97;
+              color: #2A3044;
             }
             &.opacitying{opacity: .5;}
         }
