@@ -121,7 +121,7 @@
         this.showOutPop=false
         if(catSurplusFlag==1||catSurplusFlag==2){
           GLOBALS.marchSetsPoint(catSurplusFlag==1?'A_H5PT0061001718':'A_H5PT0061001715')//去招财猫开启权益点击
-          parent.location.href=``
+          parent.location.href=`https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}&catright=1`
         }else if(catSurplusFlag==3){
           GLOBALS.marchSetsPoint('A_H5PT0061001721')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
           let {data:data}=await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus',{receiveType:1})
@@ -167,7 +167,7 @@
       },
       gainrights(catSurplusFlag){
         GLOBALS.marchSetsPoint(catSurplusFlag==3?'A_H5PT0061001722':'A_H5PT0061001728')//去获取更多权益点击-领取补给点击
-        parent.location.href=``
+        parent.location.href=`https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}&catright=1`
       },
       closeCatSupply(){
         let points=['A_H5PT0061001719','A_H5PT0061001716','A_H5PT0061001723','A_H5PT0061001729']
