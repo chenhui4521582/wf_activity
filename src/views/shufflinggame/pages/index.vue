@@ -20,7 +20,7 @@
           <div class="r-item2">1500万金叶+50000京东卡</div>
         </div>
       </div>
-      <img src="../images/rank.png" class="rank" @click.stop="back">
+      <img src="../images/rank.png" class="rank" @click.stop="$router.push('/after')">
       <div class="index_info">翻出翻倍卡后,再翻出任意奖品,翻出奖励翻倍!</div>
       <div class="grade_btn header1">
         <div class="txt">用<i>888翻牌点</i>升级中级场</div>
@@ -29,7 +29,6 @@
       </div>
       <div class="reset header1"></div>
     </div>
-    <profit :is-full="false" />
     <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
     <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
   </div>

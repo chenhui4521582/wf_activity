@@ -1,93 +1,91 @@
 <template>
-  <div class="profit-container" :class="{full:isFull}">
-    <div v-if="!isLoading" class="profit-inner-container">
-      <div class="profit-tx-container">
-        <ul class="profit-icon">
-          <li v-for="(item,index) in topthreeData">
-            <div class="s-tx">
-              <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
-              <img v-if="!item.profilePhoto" :src="defaultImg | filter">
-            </div>
-            <span class="icon-number"></span>
-            <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.plantFoodNum}}个<em class="t-second">{{item.updateTime || ''}}</em></span>
-
-            <!-- <span class="s-text">第{{item.rank}}名</span> -->
-            <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
-            <!-- <div class="profit-award"></div> -->
-          </li>
-        </ul>
+  <div class="profit">
+    <div class="profit-container" :class="{full:false}">
+      <div v-if="!isLoading" class="profit-inner-container">
+        <div class="profit-tx-container">
+          <img src="../../../images/rank/top3.png" alt="" class="top3">
+          <ul class="profit-icon">
+            <li v-for="(item,index) in topthreeData">
+              <div class="s-tx">
+                <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
+                <img v-if="!item.profilePhoto" :src="defaultImg | filter">
+              </div>
+              <span class="icon-number">{{item.nickName}}</span>
+              <span class="s-text">{{item.plantFoodNum}}点</span>
+            </li>
+          </ul>
+        </div>
+        <div class="profit-items">
+          <div class="p-header">
+            <ul>
+              <li>
+                <h4>我的排名</h4>
+                <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
+              </li>
+              <li>
+                <h4>累计获得翻牌点</h4>
+                <span>{{myInfo.totalNum}}点</span>
+              </li>
+              <li>
+                <h4>当前奖励</h4>
+                <span>{{myInfo.currentAwards}}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-items p-items-header">
+            <ul class="p-item-title">
+              <li style="border:none">
+                <span>排名</span>
+                <span><em class="i-ellipsis">昵称</em></span>
+                <span><em class="i-ellipsis">累计翻牌点+时间</em></span>
+                <span><em class="i-ellipsis">奖励</em></span>
+              </li>
+            </ul>
+          </div>
+          <div class="p-items p-items-content">
+            <ul class="p-item-title">
+              <li v-for="(item,index) in behindThreeData">
+                <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
+                <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                <span><em class="i-ellipsis">{{item.plantFoodNum}}点<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+                <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+              </li>
+              <li v-if="isOpen" v-for="(item,index) in otherData">
+                <span><i class="icon-dot">{{item.rank}}</i></span>
+                <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                <span><em class="i-ellipsis">{{item.plantFoodNum}}点<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+                <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+              </li>
+              <li v-if="!isOpen">
+                <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
+              </li>
+              <li v-for="(item,index) in lastThreeData">
+                <span><i class="icon-dot">{{item.rank}}</i></span>
+                <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                <span><em class="i-ellipsis">{{item.plantFoodNum}}点<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+                <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="profit-footer">仅30名及以内有奖励</div>
       </div>
-      <div class="profit-items">
-        <div class="p-header">
-          <ul>
-            <li>
-              <h4>我的排名</h4>
-              <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
-            </li>
-            <li>
-              <h4>累计获得锤子</h4>
-              <span>{{myInfo.totalNum}}个</span>
-            </li>
-            <li>
-              <h4>当前奖励</h4>
-              <span>{{myInfo.currentAwards}}</span>
-            </li>
-          </ul>
-        </div>
-        <div class="p-items p-items-header">
-          <ul class="p-item-title">
-            <li style="border:none">
-              <span>排名</span>
-              <span><em class="i-ellipsis">昵称</em></span>
-              <span><em class="i-ellipsis">累计锤子</em></span>
-              <span><em class="i-ellipsis">奖励</em></span>
-            </li>
-          </ul>
-        </div>
-        <div class="p-items p-items-content">
-          <ul class="p-item-title">
-            <li v-for="(item,index) in behindThreeData">
-              <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-            <li v-if="isOpen" v-for="(item,index) in otherData">
-              <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-            <li v-if="!isOpen">
-              <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
-            </li>
-            <li v-for="(item,index) in lastThreeData">
-              <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="profit-footer">仅30名及以内有奖励</div>
-    </div>
-    <div class="loading-wrap" v-if="isLoading">
-      <div class="container">
-        <div class="spinner">
-          <div class="bar1"></div>
-          <div class="bar2"></div>
-          <div class="bar3"></div>
-          <div class="bar4"></div>
-          <div class="bar5"></div>
-          <div class="bar6"></div>
-          <div class="bar7"></div>
-          <div class="bar8"></div>
-          <div class="bar9"></div>
-          <div class="bar10"></div>
-          <div class="bar11"></div>
-          <div class="bar12"></div>
+      <div class="loading-wrap" v-if="isLoading">
+        <div class="container">
+          <div class="spinner">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+            <div class="bar6"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar9"></div>
+            <div class="bar10"></div>
+            <div class="bar11"></div>
+            <div class="bar12"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -123,6 +121,7 @@ export default {
     }
   },
   components: {
+    scroll:()=>import('../../../components/scroll')
   },
   mounted () {
     this.getRankList()
@@ -142,7 +141,78 @@ export default {
       this.isLoading = true
       const { code, data } = await rankList()
       if (code === 200) {
-        this.profitData = data
+        // this.profitData = data
+        this.profitData=[{
+          rank:1,
+          nickName:'刘德华',
+          plantFoodNum:88888888,
+          updateTime:'09/10/9:00',
+          awardsName:'500万金叶+1000京东卡'
+        },
+          {
+            rank:2,
+            nickName:'诛仙妹妹',
+            plantFoodNum:88888888,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:3,
+            nickName:'紫霞仙子',
+            plantFoodNum:88888888,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:4,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:5,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:6,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:7,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:8,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:9,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          },
+          {
+            rank:10,
+            nickName:'22222',
+            plantFoodNum:111,
+            updateTime:'09/10/9:00',
+            awardsName:'500万金叶+1000京东卡'
+          }
+        ]
         if (this.profitData.length > 6) {
           this.lastThreeData = this.profitData.slice(6)
         }

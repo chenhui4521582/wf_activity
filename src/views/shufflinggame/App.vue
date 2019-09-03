@@ -9,6 +9,10 @@
 import '../../common/js/window.js';
 export default {
     name: 'App',
+  mounted(){
+      localStorage.setItem('APP_CHANNEL','100039')
+    localStorage.setItem('ACCESS_TOKEN','30eb34c56ed64931b2db6b59a1e9efb8')
+  }
 }
 </script>
 

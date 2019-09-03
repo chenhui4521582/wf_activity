@@ -1,9 +1,7 @@
 <template>
   <section class="after">
-    <img src="./images/index/back.png" class="e-back" @click.stop="back">
-    <rule :rule-main="rulesInfo" :from="1"></rule>
+    <img src="../images/rank/back.png" class="e-back" @click.stop="back">
     <profit :is-full="true" @set-my-info="setMyInfo" :from="1"></profit>
-    <common-pop :is-show-pop="isShowPop" :my-rank="myInfo.myRank" :rank-size="myInfo.rankSize" :is-end="true" :awards-list="awardsList" @close-pop="closePop"></common-pop>
   </section>
 </template>
 
@@ -72,6 +70,7 @@ export default {
 }
 </script>
 <style scoped>
+  @import '../../../common/css/base.css';
 .after >>> .rule {
   z-index: 4 !important;
 }
@@ -87,7 +86,7 @@ export default {
   height: 100vh;
   overflow-x: hidden;
   position: relative;
-  background: #ffe6b3;
+  background: #46272E;
   padding: 0.26rem 0.1rem;
   box-sizing: border-box;
   .e-back {
@@ -96,7 +95,7 @@ export default {
     position: fixed;
     top: 0.26rem;
     left: 0.1rem;
-    z-index: 4;
+    z-index: 11;
   }
 }
 </style>
