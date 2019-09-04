@@ -19,7 +19,7 @@
         </div>
         <div class="present">
           <div v-if="!showEnd">
-            <div class="icon">赠</div>
+            <div class="icon">得</div>
             <span>{{present}}万金叶子</span>
           </div>
         </div>
