@@ -10,7 +10,7 @@ import utils from '../../common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000
 
-let channel = utils.getUrlParam('channel'),
+let channel = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL'),
   url_token = utils.getUrlParam('token'),
   everyDayLottery = utils.getUrlParam('everyDayLottery')
 
