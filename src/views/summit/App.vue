@@ -17,12 +17,12 @@
             <span>宝箱</span>
           </div>
         </div>
-        <div class="present">
+        <!-- <div class="present">
           <div v-if="!showEnd">
             <div class="icon">得</div>
             <span>{{present}}万金叶子</span>
           </div>
-        </div>
+        </div> -->
         <div class='btn'>
           <div class="buy img-config" v-for="item in box" :key="item.amount" @click="getpayWays(item)">
             <p class="price">￥{{item.price}}</p>
