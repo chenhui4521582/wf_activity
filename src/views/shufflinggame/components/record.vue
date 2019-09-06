@@ -2,11 +2,11 @@
   <div class="pop-window">
     <div class="pop-mask" @touchmove.prevent></div>
     <transition name="scalc">
-      <div class="bonus-record" v-if="show" :class="{empty:list.length}">
+      <div class="bonus-record" v-if="show" :class="{empty:!list.length}">
         <div class="title">获取养料详情</div>
         <div class="title">时间</div>
-        <div class="content" :class="{empty:list.length}">
-          <scroll :data="list" v-if="!list.length">
+        <div class="content" :class="{empty:!list.length}">
+          <scroll :data="list" v-if="list.length">
             <ul>
               <!--activityName: "参与“加赠红包，超值回馈”获得4个红包"-->
               <!--amount: 4-->

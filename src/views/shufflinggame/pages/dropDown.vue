@@ -13,7 +13,7 @@
             </div>
           </div>
           <!-- 获取锤子组件 -->
-          <getHammer :rules-explain="rulesExplain" v-if="curIndex == 0" />
+          <getHammer :pUserInfo="data" v-if="curIndex == 0" @getUserInfo="getUserInfo"/>
 
           <!-- 排行榜 -->
           <profit v-if="curIndex == 1" :is-full="false" />
@@ -82,6 +82,9 @@ export default {
       this.isDropDown = false
       GLOBALS.marchSetsPoint('A_H5PT0156001775')//H5平台-翻牌活动-底部弹窗-点击收起点击
       this.init()
+    },
+    getUserInfo(){
+      this.$emit('getUserInfo')
     }
   }
 }

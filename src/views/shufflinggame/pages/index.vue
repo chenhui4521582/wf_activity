@@ -41,11 +41,11 @@
     <!--翻牌区域-->
     <card :level="level" :isReset="isReset" @reset="isReset=false" :cardData="styleItemsArr"  v-if="userData&&styleItemsArr.length" @refreshUserInfo="getUserInfo" @refreshCardInfo="getBetProgress" @getawards="getcardawards" :isBeginAnimate="isBeginAnimate"></card>
     <!--获得更多翻牌点-->
-    <drop-down ref="dropDown" :data="userData" v-if="userData" ></drop-down>
+    <drop-down ref="dropDown" :data="userData" v-if="userData" @getUserInfo="getUserInfo"></drop-down>
     <!--翻牌点记录-->
     <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false"></record>
     <!--通用弹窗1-10场景-->
-    <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="$refs.dropDown.handleTab(0)" @resetcard="resetClick" :carddata="cardawardsdata" @card="isReset=true"></com-pop>
+    <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="$refs.dropDown.handleTab(0)" @sureCard="sureCard" :carddata="cardawardsdata" @card="isReset=true"></com-pop>
   </div>
 </template>
 <script type="text/javascript">
@@ -58,7 +58,7 @@ export default {
       level:1,
       isReset:false,
       isshowrecord:false,
-      flag:0,//1.首次赠送 2.恭喜升级 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置提醒弹窗 8.抱歉不能升级 9.是否升级中级场 10.是否升级高级场
+      flag:0,//1.首次赠送 2.恭喜升级 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置-翻倍卡-提醒弹窗 8.抱歉不能升级 9.是否升级中级场 10.是否升级高级场 11 升级-翻倍卡-提醒弹窗
       userData:null,
       cardawardsdata:[],
       isBeginAnimate:false,//牌是否要有开场动画
@@ -78,6 +78,25 @@ export default {
     next()
   },
   methods: {
+    async sureCard(flag){//flag1 有翻倍卡-确定重置 flag2 有翻倍卡-确定升级
+      if(flag==1){//确定重置
+        let {code,data,message}=await gameResetProgress()
+        if(code==200){
+          this.isReset=true
+        }else{
+          this.$toast.show({
+            message:message,
+            duration:2000
+          })
+        }
+      }else{//确定升级
+        if(this.level==1){
+          this.flag=9
+        }else{
+          this.flag=10
+        }
+      }
+    },
     rankClick(flag){
       GLOBALS.marchSetsPoint(flag?'A_H5PT0156001771':'1767')//H5平台-翻牌活动-中间区域-排行榜按钮点击
       this.$router.push('/after')
@@ -121,10 +140,14 @@ export default {
       if(this.userData.nextStageConsumeNum>this.userData.remanentNum){
         this.flag=8//不够升级
       }else{
-        if(this.level==1){
-          this.flag=9
+        if(this.userData.haveDoubleCard){//拥有翻倍卡
+          this.flag=11
         }else{
-          this.flag=10
+          if(this.level==1){
+            this.flag=9
+          }else{
+            this.flag=10
+          }
         }
       }
     },

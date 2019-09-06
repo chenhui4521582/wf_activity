@@ -8,7 +8,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import utils from '../../common/js/utils'
 // axios 配置
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 10000//
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {

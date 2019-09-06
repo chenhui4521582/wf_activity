@@ -41,13 +41,12 @@
     data() {
       return {
         leaguePacksListArr: [],
-        pUserInfo: {}
       }
     },
     props: {
-      rulesExplain: {
-        type: String,
-        default: ''
+      pUserInfo: {
+        type: Object,
+        default: null
       }
     },
     computed: {
@@ -60,7 +59,6 @@
     },
     mounted() {
       this.getShowLeaguePacksList()
-      this.getUserInfo()
     },
     filters: {
       filterPrice: function (value) {
@@ -89,10 +87,7 @@
         }
       },
       async getUserInfo() {
-        const {code, data} = await userInfo()
-        if (code === 200) {
-          this.pUserInfo = data
-        }
+        this.$emit('getUserInfo')
       },
       isGoBDPayment() {
         return window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap'

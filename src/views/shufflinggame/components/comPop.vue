@@ -21,7 +21,7 @@
               <template v-else-if="from==6">
                 继续翻牌
               </template>
-              <template v-else-if="from==7">
+              <template v-else-if="from==7||from==11">
                 放弃翻倍卡
               </template>
               <template v-else-if="from==8">
@@ -31,11 +31,11 @@
                 我要升级
               </template>
             </div>
-            <div :class="getClassName('btn btn-pink')" v-if="[3,7,8,9,10].includes(from)" @click="btnpinkclick">
+            <div :class="getClassName('btn btn-pink')" v-if="[3,7,8,9,10,11].includes(from)" @click="btnpinkclick">
               <template v-if="from==3">
                 去玩游戏得翻牌点
               </template>
-              <template v-else-if="from==7">
+              <template v-else-if="from==7||from==11">
                 继续翻牌
               </template>
               <template v-else-if="from==8">
@@ -54,8 +54,8 @@
               </template>
             </div>
             <template v-if="from==2">
-              <img src="../images/pop/gradation/level2.png" alt="" v-if="level==1" class="gradationimg">
-              <img src="../images/pop/gradation/level3.png" alt="" v-if="level==2" class="gradationimg">
+              <img src="../images/pop/gradation/level2.png" alt="" v-if="level==2" class="gradationimg">
+              <img src="../images/pop/gradation/level3.png" alt="" v-if="level==3" class="gradationimg">
             </template>
             <div :class="getClassName('product-img')" v-if="[4,5,6].includes(from)">
               <div class="item" v-for="item in carddata">
@@ -150,9 +150,9 @@
           GLOBALS.marchSetsPoint('A_H5PT0156001786')//H5平台-翻牌活动-弹窗反馈-翻倍开出奖励弹窗-继续翻牌
         } else if (this.from == 6) {//继续翻牌
           GLOBALS.marchSetsPoint('A_H5PT0156001784')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗-继续翻牌
-        } else if (this.from == 7) {//放弃翻倍卡
+        } else if (this.from == 7||this.from == 11) {//放弃翻倍卡
           GLOBALS.marchSetsPoint('A_H5PT0156001790')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-放弃翻倍卡点击
-          this.$emit('resetcard')
+          this.$emit('sureCard',this.from==7?1:2)//true 重置 false 升级场次
         } else if (this.from == 8) {//去充值得翻牌点
           this.$emit('package')
         }else if (this.from == 9) {//我要升级
@@ -166,7 +166,7 @@
         if (this.from == 3) {//去玩游戏得牌点
           GLOBALS.marchSetsPoint('A_H5PT0156001797')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
           location.href = window.linkUrl.getBackUrl(this.curChannel)
-        } else if (this.from == 7) {//继续翻牌
+        } else if (this.from == 7||this.from ==11) {//继续翻牌
           GLOBALS.marchSetsPoint('A_H5PT0156001791')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-继续翻牌点击
         } else if (this.from == 8) {//去玩游戏得牌点
           location.href = window.linkUrl.getBackUrl(this.curChannel)
@@ -190,7 +190,7 @@
         GLOBALS.marchSetsPoint('A_H5PT0156001785')//H5平台-翻牌活动-弹窗反馈-翻倍开出奖励弹窗加载完成
       } else if (this.from == 6) {//获得翻倍卡
         GLOBALS.marchSetsPoint('A_H5PT0156001783')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗加载完成
-      } else if (this.from == 7) {//重置弹窗
+      } else if (this.from == 7||this.from == 11) {//重置弹窗
         GLOBALS.marchSetsPoint('A_H5PT0156001789')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗加载完成
       } else if (this.from == 8) {//抱歉不能升级
         //GLOBALS.marchSetsPoint('A_H5PT0156001776')
@@ -207,7 +207,7 @@
   .rule {
     position: fixed;
     top: 0;
-    &.flag1, &.flag7, &.flag9, &.flag10 {
+    &.flag1, &.flag7,&.flag11, &.flag9, &.flag10 {
       top: 1.64rem;
     }
     left: 50%;
@@ -215,7 +215,7 @@
     &.flag1 {
       margin-left: -2.69rem;
     }
-    &.flag7, &.flag9, &.flag10 {
+    &.flag7,&.flag11, &.flag9, &.flag10{
       margin-left: -2.46rem;
     }
     .pop-mask {
@@ -295,11 +295,18 @@
           background: url("../images/pop/pop3.png") no-repeat center center /
         100% 100%;
         }
-        &.flag7 {
+        &.flag7{
           padding: 2.9rem 0.2rem 0;
           width: 4.93rem;
           height: 5.61rem;
           background: url("../images/pop/reset/bg.png") no-repeat center center /
+        100% 100%;
+        }
+        &.flag11 {
+          padding: 2.9rem 0.2rem 0;
+          width: 4.93rem;
+          height: 5.61rem;
+          background: url("../images/pop/gradation/bg1.png") no-repeat center center /
         100% 100%;
         }
         &.flag8 {
@@ -376,7 +383,7 @@
             background: url("../images/pop/btn_yellow.png");
             background-size: 100% 100%;
             bottom: 1.9rem;
-            &.flag3, &.flag7, &.flag8, &.flag9, &.flag8, &.flag10 {
+            &.flag3, &.flag7,&.flag11, &.flag8, &.flag9, &.flag8, &.flag10 {
               bottom: 3rem;
             }
             &.flag6, &.flag5 {
