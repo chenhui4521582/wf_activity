@@ -15,7 +15,7 @@
           <div class="hb-line"></div>
           <div class="envelopes">{{item.awards}}点</div>
           <div class="btn btn-complete" v-if="item.status == 2">完成</div>
-          <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(2)">领取</div>
+          <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(item)">领取</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
         </li>
         <li class="hb-dot-box" v-else>
@@ -49,48 +49,50 @@ export default {
     this.getGameProgress()
   },
   computed: {
-    envelopsItem () {
+    envelopsItem() {
       if (!this.hbItems) {
         return []
       }
+
       // 获取最大值
-      let maxItem = this.hbItems && this.hbItems.length && this.hbItems.sort((a, b) => {
+      let maxItem = this.hbItems&&this.hbItems.length&&this.hbItems.sort((a, b) => {
         return a.amount - b.amount
       })[this.hbItems.length - 1]
 
       // 删除数组最后一位
-      const data = this.hbItems.slice()
+      const data=this.hbItems.slice()
       data.pop()
 
       let nArr = data.filter((item) => {
-        return item.status == 0
+        return item.status != 2
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let tArr = data.filter((item) => {
-        return item.status != 0
+        return item.status == 2
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let result = []
-      if (nArr.length >= 4) {
-        if (tArr.length) {
-          result = [tArr[tArr.length - 1], ...nArr.splice(0, 3)]
-        } else {
-          result = nArr.splice(0, 4)
-        }
+      if (nArr.length > 4) {
+        result = nArr.splice(0, 4)
         // result.push(nArr.pop())
         // 个数大于5个的时候加个dot
-        result.splice(4, 0, { dot: true })
+        result.splice(4, 0, {dot: true})
+        result.push(maxItem)
+        return result
+      } else if (nArr.length == 4) {
+        result = nArr.splice(0, 4)
         result.push(maxItem)
         return result
       } else {
         result = [...this.getList(nArr, tArr), maxItem]
         return result
       }
-    },
-    wpercent () {
-      if (!this.hbItems || this.hbItems.length == 0) {
+
+    },//this.detailData.gameBetting
+    wpercent() {
+      if (!this.hbItems||this.hbItems.length==0) {
         return
       }
       if (this.hbItems && this.envelopsItem) {
@@ -104,34 +106,35 @@ export default {
           })[0]
           let idArr = [...this.envelopsItem.map(c => c.sort)].indexOf(minUnfinished.sort)
           if (this.envelopsItem.length == 6) {
-            if (idArr == -1) { // 在省略号里
+            if (idArr == -1) {//在省略号里
               console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
               return parseFloat(5 * 100 / 6).toFixed(2) + '%'
             } else {
               if (idArr == 0) {
                 return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
               } else {
-                return parseFloat((idArr - 1) / 6 + this.detailData.gameBetting / (minUnfinished.amount) / 6 * 100) + '%'
+                return parseFloat((1 / 12 + (idArr - 1) / 6 + this.detailData.gameBetting / (minUnfinished.amount) / 6) * 100) + '%'
               }
             }
           } else {
             if (idArr == 0) {
               return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
             } else {
-              return parseFloat(((idArr - 1) + this.detailData.gameBetting / minUnfinished.amount) * 5 / 24 * 100) + '%'
+              return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + this.detailData.gameBetting / (minUnfinished.amount) * 5 / 24) * 100) + '%'
             }
           }
         }
       } else {
         return 0
       }
+
     },
   },
   methods: {
-    async gotoact (flag = 0) { // 去完成
+    async gotoact (item) { // 去完成
       GLOBALS.marchSetsPoint('A_H5PT0156001778')//H5平台-翻牌活动-底部弹窗-领取点击
 
-      gameReceive().then((res) => {
+      gameReceive({value:item.sort}).then((res) => {
         if (res.code == 200) {
           this.$toast.show({
             message:'领取成功',

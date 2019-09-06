@@ -2,11 +2,11 @@
   <div class="pop-window">
     <div class="pop-mask" @touchmove.prevent></div>
     <transition name="scalc">
-      <div class="bonus-record" v-if="show">
+      <div class="bonus-record" v-if="show" :class="{empty:list.length}">
         <div class="title">获取养料详情</div>
         <div class="title">时间</div>
-        <div class="content">
-          <scroll :data="list">
+        <div class="content" :class="{empty:list.length}">
+          <scroll :data="list" v-if="!list.length">
             <ul>
               <!--activityName: "参与“加赠红包，超值回馈”获得4个红包"-->
               <!--amount: 4-->
@@ -17,6 +17,12 @@
               </li>
             </ul>
           </scroll>
+          <template v-else>
+            <div>
+              <img src="../images/pop/record/empty.png" alt="" style="width: 1rem;height: 1rem">
+              <div style="font-size: .24rem;color:#a04337;text-align: center;margin-top: .2rem;">无记录</div>
+            </div>
+          </template>
         </div>
         <div class="btn" @click="close(1)">获取更多翻牌点</div>
         <div class="info">
@@ -125,6 +131,11 @@
       font-weight: bold;
       overflow: hidden;
       bottom: 2.03rem;
+      &.empty{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       ul{
         display: flex;
         flex-direction: column;
@@ -151,7 +162,7 @@
       font-weight:bold;
       color:rgba(194,38,13,1);
     }
-    &:before{
+    &:not(.empty):before{
       content: '';
       position: absolute;
       left: 3.5rem;

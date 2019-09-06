@@ -11,7 +11,7 @@
   export default {
     name: 'App',
     mounted() {
-      localStorage.setItem('ACCESS_TOKEN','d255405936874702a35118b2a93453b6')
+      // localStorage.setItem('ACCESS_TOKEN','d255405936874702a35118b2a93453b6')
     }
   }
 </script>

@@ -87,8 +87,8 @@ export const userRanking = async () => {
  * @return {Object} data
  */
 
-export const gameReceive = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-receive')
+export const gameReceive = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-receive',params)
   return data
 }
 /**

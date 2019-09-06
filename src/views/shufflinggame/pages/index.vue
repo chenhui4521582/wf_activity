@@ -18,8 +18,8 @@
           <div class="r-item1">记录</div>
         </div>
         <div class="top_containeritem">
-          <div class="r-item1">累计获得翻牌点：</div>
-          <div class="r-item2">{{userData&&userData.totalNum||0}}</div>
+          <div class="r-item1">剩余翻牌点：</div>
+          <div class="r-item2">{{userData&&userData.remanentNum||0}}</div>
         </div>
         <div class="top_containeritem" @click.stop="rankClick(0)">
           <div class="r-item1">下级奖励：</div>
