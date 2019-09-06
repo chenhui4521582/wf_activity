@@ -124,7 +124,7 @@
           parent.location.href=`https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}&catright=1`
         }else if(catSurplusFlag==3){
           GLOBALS.marchSetsPoint('A_H5PT0061001721')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
-          let {data:data}=await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus',{receiveType:1})
+          let {data:data}=await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receive',{receiveType:1})
           if(data.code==200){
             GLOBALS.marchSetsPoint('A_H5PT0061001724')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗加载完成
             this.bgHeight=356
