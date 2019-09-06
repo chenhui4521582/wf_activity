@@ -52,7 +52,7 @@ export default {
   mounted () {
     let top = this.title == '活动规则' ? 54 * 1.5 : 0
     this.$nextTick(() => {
-      if(this.$refs.besure){
+      if (this.$refs.besure) {
         this.$refs.slot.style.height = (this.$refs.besure.offsetTop - this.$refs['slot'].offsetTop + top + parseInt(this.getComputedStyle(this.$slots.default[0].elm, 'height'))) + 'px'
       }
     })
@@ -200,11 +200,11 @@ export default {
     }
   }
   /*p:nth-of-type(2) {*/
-    /*padding: 0.7rem 0 1.1rem;*/
-    /*font-size: 0.24rem;*/
-    /*i {*/
-      /*color: #ffd338;*/
-    /*}*/
+  /*padding: 0.7rem 0 1.1rem;*/
+  /*font-size: 0.24rem;*/
+  /*i {*/
+  /*color: #ffd338;*/
+  /*}*/
   /*}*/
   div.besure {
     position: absolute;
@@ -216,7 +216,7 @@ export default {
     border-radius: 0.08rem;
     font-size: 0.24rem;
     font-weight: bold;
-    padding: 0 .2rem;
+    padding: 0 0.2rem;
     left: 50%;
     transform: translateX(-50%);
   }
