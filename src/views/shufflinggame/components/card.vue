@@ -172,6 +172,7 @@
       },
       cardData: {
         handler(val) {
+          this.canClick = true
           this.currentCardIndex = val.filter(item => item.status).map(item => item.sort - 1)
         },
         immediate: true
