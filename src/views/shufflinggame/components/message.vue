@@ -36,29 +36,11 @@
         }, 1000)
       },
       async getNoticeList() {
-        // const { code, data } = await lamp()
-        // if (code === 200) {
-        this.lamp = [{
-          nickname: '111eee', awardsName: '1111'
-        }, {
-          nickname: '111322', awardsName: '1111'
-        }, {
-          nickname: '333', awardsName: '4444'
-        }, {
-          nickname: '111', awardsName: '1111'
-        }, {
-          nickname: '111322', awardsName: '1111'
-        }, {
-          nickname: '333', awardsName: '4444'
-        }, {
-          nickname: '111', awardsName: '1111'
-        }, {
-          nickname: '111322', awardsName: '1111'
-        }, {
-          nickname: '333', awardsName: '4444'
-        }]
+        const { code, data } = await noticeList()
+        if (code === 200) {
+          this.lamp=data
         this.getNoticeList1()
-        // }
+        }
       },
       init() {
         this.getNoticeList()
@@ -156,7 +138,7 @@
     height: 1.72rem;
     overflow: hidden;
     position: absolute;
-    top: 8.61rem;
+    top: 8rem;
     left: .06rem;
     z-index: 2;
     .c-horn-text {
@@ -201,6 +183,7 @@
             text-overflow: ellipsis;
             display: -webkit-box;
             white-space: nowrap;
+            line-height: .2rem;
             i {
               color: #FFAF72;
             }

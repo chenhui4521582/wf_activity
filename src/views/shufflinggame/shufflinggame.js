@@ -20,6 +20,12 @@ Vue.filter('filter', function (url) {
     return url
   }
 })
+Vue.filter('filterPrice', function (value) {
+  if (value) {
+    return value > 10000 ? value / 10000 + '万' : value
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

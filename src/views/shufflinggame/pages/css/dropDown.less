@@ -8,7 +8,7 @@
   display: flex;
   padding: 0.2rem 0.2rem 0.16rem;
   box-sizing: border-box;
-
+  z-index: 2;
   .tab {
     flex: 1;
     display: flex;
@@ -49,27 +49,6 @@
         color: #fff;
       }
     }
-
-    &.get-hammer {
-      .hammer_icon {
-        background-image: url('../images/index/hammer-haved.png');
-      }
-
-      .btn {
-        background: #FD542A;
-      }
-    }
-
-    &.profit {
-      .hammer_icon {
-        background-image: url('../images/index/hammer.png');
-      }
-
-      .btn {
-        background: #408CFF;
-      }
-    }
-
   }
 }
 
@@ -89,7 +68,7 @@
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 2;
 }
 
 .drop-down-content {

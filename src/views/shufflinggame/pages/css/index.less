@@ -8,17 +8,17 @@
   position: relative;
 
   &.header1 {
-    background: url(../../images/level1/bg.png) center top;
+    background: url(../../images/level1/bg.jpg) center top;
     background-size: 100% 100%;
   }
 
   &.header2 {
-    background: url(../../images/level2/bg.png) center top;
+    background: url(../../images/level2/bg.jpg) center top;
     background-size: 100% 100%;
   }
 
   &.header3 {
-    background: url(../../images/level3/bg.png) center top;
+    background: url(../../images/level3/bg.jpg) center top;
     background-size: 100% 100%;
   }
 
@@ -63,7 +63,7 @@
       &:nth-child(1):after, &:nth-child(2):after {
         content: '';
         position: absolute;
-        top: .1rem;
+        top: .06rem;
         right: .06rem;
         width: 1px;
         height: .29rem;
@@ -86,6 +86,10 @@
       .r-item2 {
         font-weight: 400;
         color:rgba(255,164,119,1);
+        overflow: hidden; /*超出部分隐藏*/
+        white-space: nowrap; /*不换行*/
+        text-overflow: ellipsis; /*超出部分文字以...显示*/
+        max-width: 3rem;
       }
     }
   }
@@ -95,7 +99,7 @@
     position: fixed;
     left: 0.04rem;
     top: 1.75rem;
-    z-index: 1;
+    z-index: 2;
   }
   .rank {
     width: 0.88rem;
@@ -103,11 +107,11 @@
     position: fixed;
     right: 0.04rem;
     top: 1.78rem;
-    z-index: 1;
+    z-index: 2;
   }
   .index_info{
     position: fixed;
-    top:9.11rem;
+    top:8.7rem;
     left: 1.81rem;
     text-align: center;
     font-size:.18rem;
@@ -119,8 +123,7 @@
     height: 0.66rem;
     position: fixed;
     right: 0.33rem;
-    top: 9.56rem;
-    z-index: 1;
+    top: 9rem;
     background: url("../../images/level1/reset.png");
     background-size: 100% 100%;
     &:not(.header1){
@@ -143,9 +146,8 @@
     width: 3.53rem;
     height: 0.68rem;
     position: fixed;
-    top: 9.54rem;
+    top: 9rem;
     left: 1.85rem;
-    z-index: 1;
     background: url("../../images/level1/btn.png");
     background-size: 100% 100%;
     &.header2{
@@ -168,42 +170,6 @@
       i{
         color: #FFDC51;
       }
-    }
-  }
-  .btn-wrp {
-    .btn-hit {
-      display: block;
-      width: 3rem;
-      height: 0.8rem;
-      line-height: 0.8rem;
-      text-align: center;
-      position: fixed;
-      bottom: 1.7rem;
-      left: 50%;
-      margin-left: -1.5rem;
-      background: url(../images/index/btn-hit.png) no-repeat center center / 100% 100%;
-      font-size: 0.38rem;
-      font-weight: 800;
-      color: rgba(152, 62, 36, 1);
-
-      &.disabled {
-        background: url(../images/index/btn-hit-disabled.png) no-repeat center center / 100% 100%;
-        color: #fff;
-      }
-    }
-
-    .bit-hit-all {
-      display: block;
-      width: 1.1rem;
-      height: 1.1rem;
-      text-align: center;
-      position: fixed;
-      bottom: 1.58rem;
-      right: 0.3rem;
-      background: url(../images/index/bit-hit-all.png) no-repeat center center / 100% 100%;
-      font-size: 0.38rem;
-      font-weight: 800;
-      color: rgba(152, 62, 36, 1);
     }
   }
 }

@@ -1,300 +1,200 @@
 <template>
-  <div class="eggs-container header1" @click.prevent="isEggsInfoShow=false">
+  <div class="eggs-container" :class="{header1:level==1,header2:level==2,header3:level==3}">
+    <!--返回-->
     <img src="../images/back.png" class="e-back" @click.stop="back">
-    <rule :rule-main="rulesInfo"></rule>
-    <package :rule-main="rulesInfo"></package>
-    <gonglue :rule-main="rulesInfo"></gonglue>
+    <!--规则-->
+    <rule></rule>
+    <!--礼包-->
+    <package></package>
+    <!--攻略-->
+    <gonglue></gonglue>
+    <!--走马灯-->
     <message ref="message"></message>
     <div class="btn">
+      <!--头部的信息-累计翻牌点、下级奖励-->
       <div class="top_container">
-        <div class="top_containeritem">
+        <div class="top_containeritem" @click="showrecord">
           <div class="r-item1">翻牌点</div>
           <div class="r-item1">记录</div>
         </div>
         <div class="top_containeritem">
           <div class="r-item1">累计获得翻牌点：</div>
-          <div class="r-item2">888888</div>
+          <div class="r-item2">{{userData&&userData.totalNum||0}}</div>
         </div>
-        <div class="top_containeritem">
+        <div class="top_containeritem" @click.stop="rankClick(0)">
           <div class="r-item1">下级奖励：</div>
-          <div class="r-item2">1500万金叶+50000京东卡</div>
+          <div class="r-item2">{{userData&&userData.nextAwards||''}}</div>
         </div>
       </div>
-      <img src="../images/rank.png" class="rank" @click.stop="$router.push('/after')">
+      <!--排行榜-->
+      <img src="../images/rank.png" class="rank" @click.stop="rankClick(1)">
+      <!--文案-->
       <div class="index_info">翻出翻倍卡后,再翻出任意奖品,翻出奖励翻倍!</div>
-      <div class="grade_btn header1">
-        <div class="txt">用<i>888翻牌点</i>升级中级场</div>
-        <!--<div class="txt">用<i>888翻牌点</i>升级高级场</div>-->
-        <!--<div class="txt">当前最高场</div>-->
+      <!--升级场次按钮-->
+      <div class="grade_btn" :class="{header1:level==1,header2:level==2,header3:level==3}" v-if="userData">
+        <div class="txt" v-if="level<3" @click="gameUpgradeStageClick">用<i>{{userData.nextStageConsumeNum}}翻牌点</i>升级中级场</div>
+        <div class="txt" v-else>当前最高场</div>
       </div>
-      <div class="reset header1"></div>
+      <!--重置-->
+      <div class="reset" :class="{header1:level==1,header2:level==2,header3:level==3}" @click="resetClick"></div>
     </div>
-    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
-    <common-pop :pop-type="popType" :have-gif="haveGif" :is-show-pop="isShowPop" :awards-list="awardsList" @close-pop="closePop" @keep-hit="keepHit" @get-more="getHammer"></common-pop>
+    <!--翻牌区域-->
+    <card :level="level" :isReset="isReset" @reset="isReset=false" :cardData="styleItemsArr"  v-if="userData&&styleItemsArr.length" @refreshUserInfo="getUserInfo" @refreshCardInfo="getBetProgress" @getawards="getcardawards" :isBeginAnimate="isBeginAnimate"></card>
+    <!--获得更多翻牌点-->
+    <drop-down ref="dropDown" :data="userData" v-if="userData" ></drop-down>
+    <!--翻牌点记录-->
+    <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false"></record>
+    <!--通用弹窗1-10场景-->
+    <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="$refs.dropDown.handleTab(0)" @resetcard="resetClick" :carddata="cardawardsdata" @card="isReset=true"></com-pop>
   </div>
 </template>
 <script type="text/javascript">
-import { betProgress, betAwards, betSingle, betBatch, userIncrement, activityInfo, activityGuide } from '../utils/api'
+import { betProgress,userInfo,gameUpgradeStage,gameResetProgress} from '../utils/api'
 export default {
   name: 'index',
   data () {
     return {
-      isEggsInfoShow: false,
       styleItemsArr: [],
-      activedLev: 1,
-      currentLev: 0,
-      currentIndex: null,
-      currentItem: {},
-      eggStyle: [[3, 0.56], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
-      allEggsInfo: [],
-      eggsInfoList: [],
-      awardsList: [],
-      popType: 0,
-      isShowPop: false,
-      isNewUserShow: false,
-      endTime: '',
-      countTime: null,
-      rulesInfo: '',
-      rulesExplain: '',
-      haveGif: false,
-      isHitted: false
+      level:1,
+      isReset:false,
+      isshowrecord:false,
+      flag:0,//1.首次赠送 2.恭喜升级 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置提醒弹窗 8.抱歉不能升级 9.是否升级中级场 10.是否升级高级场
+      userData:null,
+      cardawardsdata:[],
+      isBeginAnimate:false,//牌是否要有开场动画
     }
   },
   components: {
     rule: () => import('../components/rule'),
-    commonPop: () => import('../components/commonPop'),
-    smallEgg: () => import('../components/smallEgg'),
-    myAwards: () => import('../components/myAwards'),
     message: () => import('../components/message'),
     dropDown: () => import('./dropDown'),
     package: () => import('../components/package'),
     gonglue: () => import('../components/gonglue'),
-    profit: () => import('./component/profit')
+    card: () => import('../components/card'),
+    record: () => import('../components/record'),
+    comPop:() => import('../components/comPop'),
   },
   async beforeRouteEnter (to, from, next) {
-    // const { code, data } = await activityInfo()
-    // if (code === 200) {
-    //   if (data.open) {
-    //     next(vm => {
-    //       vm.rulesInfo = data.rulesInfo
-    //       vm.rulesExplain = data.rulesExplain
-    //       vm.endTime = data.endTime
-    //       vm.countDown(data.countdown)
-    //     })
-    //   } else if (data.countdown) {
-    //     next({ path: '/before' })
-    //   } else {
-    //     // next({ path: '/after' })
-    //     next()
-    //   }
-    // } else {
-    //   next()
-    // }
     next()
   },
   methods: {
-    setBigEgg () {
-      this.clickEgg(this.styleItemsArr.length - 1)
+    rankClick(flag){
+      GLOBALS.marchSetsPoint(flag?'A_H5PT0156001771':'1767')//H5平台-翻牌活动-中间区域-排行榜按钮点击
+      this.$router.push('/after')
     },
-    showDefaultEggs () {
-      for (let index = 0; index < this.styleItemsArr.length; index++) {
-        if (this.styleItemsArr[index].status === 0) {
-          this.clickEgg(index)
-          this.activedLev = this.styleItemsArr[index].awardsLev
-          return
+    //恭喜开出和牌点数不足弹窗
+    getcardawards(arr){
+      if(arr){
+        this.cardawardsdata=arr
+        if(arr.length==2){
+          this.flag=6
+        }else{
+          if(arr[0].doubleState){
+            this.flag=5
+          }else{
+            this.flag=4
+          }
+        }
+      }else{
+        this.flag=3
+      }
+    },
+    //重置按钮点击
+    async resetClick(){
+      GLOBALS.marchSetsPoint('A_H5PT0156001773')//H5平台-翻牌活动-中间区域-重置按钮点击
+      if(this.userData.haveDoubleCard){//拥有翻倍卡
+        this.flag=7
+      }else{
+        let {code,data,message}=await gameResetProgress()
+        if(code==200){
+          this.isReset=true
+        }else{
+          this.$toast.show({
+            message:message,
+            duration:2000
+          })
         }
       }
     },
+    //升级按钮点击
+    async gameUpgradeStageClick(){
+      if(this.userData.nextStageConsumeNum>this.userData.remanentNum){
+        this.flag=8//不够升级
+      }else{
+        if(this.level==1){
+          this.flag=9
+        }else{
+          this.flag=10
+        }
+      }
+    },
+    //确定升级
+    async sureGrade(){
+      let {code,data,message}=await gameUpgradeStage()
+      if(code==200){
+        this.flag=2
+        //活动信息
+        this.getUserInfo()
+        //获取翻牌数据
+        this.getBetProgress()
+      }else{
+        this.$toast.show({
+          message:message,
+          duration:2000
+        })
+      }
+    },
+    //活动信息
+    async getUserInfo(){
+      let {code,data}=await userInfo()
+      if(code==200){
+        this.userData=data
+        this.level=data.stage
+        if(data.firstLoad){//首次进入免增1翻牌点
+          this.flag=1
+        }
+      }
+    },
+    //关闭通用弹窗
+    closecomPop(flag){
+      this.flag=0
+      //活动信息
+      this.getUserInfo()
+      //获取翻牌数据
+      this.getBetProgress()
+    },
+    //展示翻牌点记录
+    showrecord(){
+      GLOBALS.marchSetsPoint('A_H5PT0156001766')//H5平台-翻牌活动-顶部区域-翻牌点记录点击
+      this.isshowrecord=true
+    },
+    //点击返回
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0075001458')   // H5平台-砸金蛋-点击返回
+      GLOBALS.marchSetsPoint('A_H5PT0156001768')   //点击返回
       history.back(-1)
     },
-    getLiClass (index) {
-      return `e-item${index + 1}`
-    },
-    async goHit () {
-      if (this.isHitted) {
-        return
-      }
-      this.isHitted = true
-      GLOBALS.marchSetsPoint('A_H5PT0075001462')   // H5平台-砸金蛋-点击消耗锤子砸彩蛋
-      const { code, data, message } = await betSingle({ value: this.currentItem.sort })
-      this.isHitted = false
-      if (code === 200) {
-        this.awardsList = data
-        this.haveGif = true
-        setTimeout(() => {
-          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
-          this.isShowPop = true
-          this.isEggsInfoShow = false
-          this.popType = 0
-          this.$refs.dropDown.init()
-          this.$refs.message.init()
-          setTimeout(() => {
-            this.haveGif = false
-          }, 500)
-        }, 1500)
-      } else if (code === 101) {
-        this.$toast.show({
-          message,
-          duration: 3000
-        })
-      } else if (code === 102) {
-        this.awardsList = [{
-          awardsType: 'hammer'
-        }]
-        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
-        this.isShowPop = true
-        this.isEggsInfoShow = false
-        this.popType = 3
-      }
-    },
-    async goHitAll () {
-      if (this.isHitted) {
-        return
-      }
-      this.isHitted = true
-      GLOBALS.marchSetsPoint('A_H5PT0075001463')   // H5平台-砸金蛋-点击同色全砸
-      this.currentIndex = null
-      this.currentLev = this.activedLev
-      const { code, data, message } = await betBatch({ value: this.activedLev })
-      this.isHitted = false
-      if (code === 200) {
-        this.awardsList = data
-        this.haveGif = true
-        setTimeout(() => {
-          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
-          this.isShowPop = true
-          this.isEggsInfoShow = false
-          this.popType = 1
-          this.$refs.dropDown.init()
-          this.$refs.message.init()
-          setTimeout(() => {
-            this.haveGif = false
-          }, 500)
-        }, 1500)
-      } else if (code === 101) {
-        this.$toast.show({
-          message,
-          duration: 3000
-        })
-      } else if (code === 102) {
-        this.awardsList = [{
-          awardsType: 'hammer'
-        }]
-        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
-        this.isShowPop = true
-        this.isEggsInfoShow = false
-        this.popType = 3
-      }
-    },
-    async getHammer () {
-      await this.closePop()
-      this.isNewUserShow = false
-      this.isEggsInfoShow = false
-      this.$refs.dropDown.handleTab(0)
-    },
-    clickEgg (index, isClick = false, isEggsInfoShow = true) {
-      let item = this.styleItemsArr[index]
-      if (item.status) return
-      if (isClick) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001460')   // H5平台-砸金蛋-点击任意蛋
-      }
-      this.currentLev = 0
-      this.currentIndex = index
-      this.currentItem = item
-      this.isEggsInfoShow = isEggsInfoShow
-      this.eggsInfoList = this.allEggsInfo.filter(element => {
-        return element.awardsLev === item.awardsLev
-      })
-    },
-    async getBetAwards () {
-      const { code, data } = await betAwards()
-      if (code === 200) {
-        this.allEggsInfo = data
-      }
-    },
+    //获取翻牌数据
     async getBetProgress () {
       const { code, data } = await betProgress()
       if (code === 200) {
         this.styleItemsArr = data
-        this.showDefaultEggs()
-      }
-    },
-    async getActivityGuide () {
-      const { code, data } = await activityGuide()
-      if (code === 200 && data) {
-        this.isNewUserShow = true
-        this.setBigEgg()
-      }
-      if (this.currentIndex === 0 && !data) {
-        this.$toast.show({
-          message: '新蛋生成',
-          duration: 3000
-        })
-      }
-      this.getUserIncrement()
-    },
-    async getUserIncrement () {
-      const { code, data } = await userIncrement()
-      if (code === 200 && data) {
-        this.awardsList = [{
-          awardsType: 'hammer',
-          awardsName: '新增' + data + '个锤子'
-        }]
-        this.popType = 2
-        if (!this.isNewUserShow) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001454')   // H5平台-砸金蛋-展现恭喜新增锤子弹窗
-          this.isShowPop = true
-          this.isEggsInfoShow = false
+        if(location.href.includes('from=')){//从入口进入动效条件无免增1翻牌点且牌中无成功翻开的数据
+          this.isBeginAnimate=this.flag!=1&&data.filter(item=>item.status).length==0
         }
       }
-    },
-    async closePop () {
-      this.isShowPop = false
-      await this.getBetProgress()
-    },
-    async keepHit () {
-      await this.closePop()
-      if (this.popType === 1) {
-        await this.goHitAll()
-        return
-      }
-      await this.goHit()
-    },
-    countDown (item) {
-      if (!item) return false
-      let date = item / 1000
-      this.timer = setInterval(() => {
-        date = date - 1
-        if (date <= 0) {
-          date = 0
-          clearInterval(this.timer)
-        }
-        let day = Math.floor(date / 86400)
-        let hour = Math.floor(parseInt(date / 60 / 60) % 24)
-        let minute = Math.floor(parseInt(date / 60) % 60)
-        let second = Math.floor(date % 60)
-        // let countDay = day >= 10 ? day : '0' + day
-        let countDay = day >= 10 ? day : '0' + day
-        let countHour = hour >= 10 ? hour : '0' + hour
-        let countMinute = minute >= 10 ? minute : '0' + minute
-        let countSecond = second >= 10 ? second : '0' + second
-        if (day >= 2) {
-          this.countTime = 0
-        } else if (day > 0) {
-          this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
-        } else {
-          this.countTime = `${countHour}:${countMinute}:${countSecond}`
-        }
-      }, 1000)
     }
   },
   async mounted () {
-    await this.getBetAwards()
+    location.href.includes('from=')&&GLOBALS.marchSetsPoint('P_H5PT0156',{
+      source_address:GLOBALS.getUrlParam('from')||''
+    })//H5平台-翻牌活动-页面加载完成
+    //活动信息
+    await this.getUserInfo()
+    //获取翻牌数据
     await this.getBetProgress()
-    await this.getActivityGuide()
-    GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
+    //活动地址：shufflinggame.html?from=index
+    history.pushState({}, '', location.href.split(/\?|\&/)[0])//shufflinggame.html
+    // GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
   }
 }
 </script>

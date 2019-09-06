@@ -1,18 +1,19 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?2:1}">
+  <section class="rule" :style="{zIndex:isShowPop?2:2}">
     <img src="../images/rule.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
           <div class="main">
-            <div class="text"><i></i><span>用户通过投注和充值可以获得翻牌点,使用翻牌点翻牌可以获得对应奖励。</span></div>
-            <div class="text"><i></i><span>每次翻盘所需要翻盘点不一致,例:第一次翻盘需要20翻牌点,第二次翻盘需要40点,第三次需要80点。</span></div>
-            <div class="text"><i></i><span>翻盘奖励可翻出话费,京东卡,金叶,翻倍卡等。</span></div>
-            <div class="text"><i></i><span>用户翻出翻倍卡后,下次翻出奖品按照翻倍卡倍数进行翻倍。</span></div>
-            <div class="text"><i></i><span>每次翻牌共有9张牌,用户可翻完全部9张卡后重置,或者选择提前重置9张牌。</span></div>
-            <div class="text"><i></i><span>活动场次分为初级场,中级场,高级场,用户可使用固定翻牌点升级场地,升级后不可退级。</span></div>
-            <div class="text"><i></i><span>每次翻牌有20%几率翻出翻倍卡,与奖品同时获得。</span></div>
+            <div class="text1" style="text-align: center">活动时间：9月12日10:00 -9月18日23:59:59</div>
+            <div class="text"><i></i><span>翻牌以及升级场次需要消耗一定的翻牌点,翻牌点可以通过游戏累计支持以及充值礼包获得</span></div>
+            <div class="text"><i></i><span>玩家升级场次后,无法退回至原场次。例:玩家消耗翻牌点从初级场升级至中级场,则无法退回初级场</span></div>
+            <div class="text"><i></i><span>单场次翻牌次数越多,所需要的翻牌点也越多</span></div>
+            <div class="text"><i></i><span>初级场消耗的翻牌点最少,中级场其次,高级场最多</span></div>
+            <div class="text"><i></i><span>翻牌获得的奖励中,高级场奖励最丰厚,中级场其次,初级场最少</span></div>
+            <div class="text"><i></i><span>用户可以在翻牌中途选择重置翻牌进度,开始新一轮翻牌</span></div>
+            <div class="text"><i></i><span>当任意场次,玩家翻完所有的牌面,会重新洗牌开始新一轮的翻牌,每轮消耗的翻牌点不变</span></div>
           </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
@@ -42,11 +43,7 @@ export default {
   methods: {
     showPop () {
       this.isShowPop = true
-      if (this.from) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
-      }
+      GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
     }
   }
 };

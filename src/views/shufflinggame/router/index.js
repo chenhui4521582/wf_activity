@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 const index = resolve => require(['../pages/index.vue'], resolve)
-const before = resolve => require(['../pages/before.vue'], resolve)
 const after = resolve => require(['../pages/after.vue'], resolve)
-
+const sdk = resolve => require(['../pages/sdk.vue'], resolve)
 Vue.use(Router)
 
 export default new Router({
@@ -14,14 +13,14 @@ export default new Router({
       component: index
     },
     {
-      path: '/before',
-      name: 'before',
-      component: before
-    },
-    {
       path: '/after',
       name: 'after',
       component: after
+    },
+    {
+      path: '/sdk',
+      name: 'sdk',
+      component: sdk
     }
   ]
 })

@@ -13,8 +13,9 @@
             <h4 v-else>终极档位</h4>
           </template>
           <div class="hb-line"></div>
-          <div class="envelopes">{{item.awards}}个</div>
-          <div class="btn btn-complete" v-if="item.status == 1">完成</div>
+          <div class="envelopes">{{item.awards}}点</div>
+          <div class="btn btn-complete" v-if="item.status == 2">完成</div>
+          <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(2)">领取</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
         </li>
         <li class="hb-dot-box" v-else>
@@ -30,7 +31,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import { gameProgress } from '../../../../../utils/api'
+import { gameProgress,gameReceive} from '../../../../../utils/api'
 export default {
   data () {
     return {
@@ -56,16 +57,18 @@ export default {
       let maxItem = this.hbItems && this.hbItems.length && this.hbItems.sort((a, b) => {
         return a.amount - b.amount
       })[this.hbItems.length - 1]
+
       // 删除数组最后一位
       const data = this.hbItems.slice()
       data.pop()
+
       let nArr = data.filter((item) => {
-        return item.status != 1
+        return item.status == 0
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let tArr = data.filter((item) => {
-        return item.status == 1
+        return item.status != 0
       }).sort((a, b) => {
         return a.amount - b.amount
       })
@@ -108,24 +111,37 @@ export default {
               if (idArr == 0) {
                 return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
               } else {
-                return parseFloat((1 / 12 + (idArr - 1) / 6 + this.detailData.gameBetting / (minUnfinished.amount) / 6) * 100) + '%'
+                return parseFloat((idArr - 1) / 6 + this.detailData.gameBetting / (minUnfinished.amount) / 6 * 100) + '%'
               }
             }
           } else {
             if (idArr == 0) {
               return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
             } else {
-              return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + this.detailData.gameBetting / (minUnfinished.amount) * 5 / 24) * 100) + '%'
+              return parseFloat(((idArr - 1) + this.detailData.gameBetting / minUnfinished.amount) * 5 / 24 * 100) + '%'
             }
           }
         }
       } else {
         return 0
       }
-    }
-
+    },
   },
   methods: {
+    async gotoact (flag = 0) { // 去完成
+      GLOBALS.marchSetsPoint('A_H5PT0156001778')//H5平台-翻牌活动-底部弹窗-领取点击
+
+      gameReceive().then((res) => {
+        if (res.code == 200) {
+          this.$toast.show({
+            message:'领取成功',
+            duration:2000
+          })
+          this.getGameProgress()
+          this.$emit('refresh')
+        }
+      })
+    },
     // 获取红包任务列表
     getGameProgress () {
       gameProgress().then((res) => {
@@ -145,7 +161,7 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0075001468')   // H5平台-砸金蛋-获取锤子大浮层-点击任意去完成
+      GLOBALS.marchSetsPoint('A_H5PT0156001777')   // H5平台-翻牌活动-底部弹窗-去完成点击
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }

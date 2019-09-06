@@ -41,6 +41,10 @@ export default {
     rulesExplain: {
       type: String,
       default: ''
+    },
+    data:{
+      type: Object,
+      default: null
     }
   },
   components: {
@@ -60,11 +64,7 @@ export default {
       this.handleTab(idx)
     },
     outHandleTab (idx) {
-      if (idx) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001465')   // H5平台-砸金蛋-点击有奖排行榜
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001464')   // H5平台-砸金蛋-点击获取锤子
-      }
+      GLOBALS.marchSetsPoint('A_H5PT0156001774')//H5平台-翻牌活动-中间区域-获得更多翻牌点点击
       this.handleTab(idx)
     },
     handleTab (idx) {
@@ -72,21 +72,16 @@ export default {
       this.curIndex = idx
     },
     async init () {
-      const { code, data } = await userInfo()
-      if (code === 200) {
-        this.remanentNum = data.remanentNum
-        this.totalNum = data.totalNum
-      }
+      // const { code, data } = await userInfo()
+      // if (code === 200) {
+        this.remanentNum = this.data.remanentNum
+        this.totalNum = this.data.totalNum
+      // }
     },
     close () {
       this.isDropDown = false
-      if (this.curIndex) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001472')   // H5平台-砸金蛋-有奖排行榜大浮层-点击收起
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001469')   // H5平台-砸金蛋-获取锤子大浮层-点击收起
-      }
+      GLOBALS.marchSetsPoint('A_H5PT0156001775')//H5平台-翻牌活动-底部弹窗-点击收起点击
       this.init()
-      this.$emit('show-eggs-info')
     }
   }
 }

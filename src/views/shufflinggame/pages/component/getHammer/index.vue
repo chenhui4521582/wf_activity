@@ -23,12 +23,12 @@
     <span class="info">活动期间在游戏中累计支持金叶子达到一定值即可获得翻牌点</span>
     <div class="g-package">
       <div class="g-package-container g2">
-        <hit-percent :detail-data="pUserInfo"></hit-percent>
+        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo"></hit-percent>
       </div>
       <div class="g-package-info">
         <ul>
           <li>已支持金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
-          <li>累计翻牌点：{{pUserInfo.gameReturnNum }}点</li>
+          <li>获得翻牌点：{{pUserInfo.gameReturnNum }}点</li>
         </ul>
       </div>
     </div>
@@ -59,7 +59,7 @@
       hitPercent: () => import('./component/hitPercent/hitPercent.vue')
     },
     mounted() {
-      // this.getShowLeaguePacksList()
+      this.getShowLeaguePacksList()
       this.getUserInfo()
     },
     filters: {
@@ -74,7 +74,7 @@
     methods: {
       gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0075001467', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-砸金蛋-获取翻牌点大浮层-点击任意礼包
+        GLOBALS.marchSetsPoint('A_H5PT0156001776', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-翻牌活动-底部弹窗-礼包点击
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
           location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
@@ -184,6 +184,7 @@
         top: 1.38rem;
         left: 50%;
         transform: translateX(-50%);
+        width: 100%;
       }
       .btn-price {
         display: block;

@@ -1,5 +1,5 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?2:1}">
+  <section class="rule" :style="{zIndex:isShowPop?2:2}">
     <img src="../images/package.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
@@ -7,16 +7,8 @@
         <div class="wrap">
           <div class="main">
             <div class="packages">
-              <div class="item">
-                <div class="txt">28.8万金叶+15份养料</div>
-                <div class="btn"></div>
-              </div>
-              <div class="item">
-                <div class="txt">88.8万金叶+70份养料</div>
-                <div class="btn"></div>
-              </div>
-              <div class="item">
-                <div class="txt">188.8万金叶+180份养料</div>
+              <div class="item" v-for="(item,index) in leaguePacksListArr" @click="gotopay(item)">
+                <div class="txt">{{item.content.split('+')[0]}}+{{item.content.split('+')[1]}}</div>
                 <div class="btn"></div>
               </div>
             </div>
@@ -30,11 +22,13 @@
 </template>
 
 <script>
+  import {showLeaguePacksList} from '../utils/api'
   export default {
     name: "rule",
     data () {
       return {
-        isShowPop: false
+        isShowPop: false,
+        leaguePacksListArr: [],
       };
     },
     props: {
@@ -48,14 +42,28 @@
       }
     },
     methods: {
-      showPop () {
-        this.isShowPop = true
-        if (this.from) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
+      async getShowLeaguePacksList() {
+        const {code, data} = await showLeaguePacksList()
+        if (code === 200) {
+          GLOBALS.marchSetsPoint('A_H5PT0156001787')//H5平台-翻牌活动-弹窗反馈-翻牌礼包弹窗加载完成
+          this.leaguePacksListArr = data.leaguePacksList
         }
-      }
+      },
+      showPop () {
+        this.getShowLeaguePacksList()
+        this.isShowPop = true
+        GLOBALS.marchSetsPoint('A_H5PT0156001770')//H5平台-翻牌活动-中间区域-礼包按钮点击
+      },
+      gotopay(item) {
+        localStorage.setItem('originDeffer', window.location.href)
+        GLOBALS.marchSetsPoint('A_H5PT0156001788', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-翻牌活动-弹窗反馈-翻牌礼包弹窗-礼包点击
+        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+        if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
+          location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
+        } else {
+          location.href = 'https://wap.beeplaying.com/payment/#/payment'
+        }
+      },
     }
   };
 </script>

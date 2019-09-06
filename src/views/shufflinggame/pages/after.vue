@@ -6,29 +6,13 @@
 </template>
 
 <script>
-import { activityInfo } from '../utils/api'
 export default {
   name: 'after',
   components: {
-    rule: () => import('../components/rule'),
-    commonPop: () => import('../components/commonPop'),
     profit: () => import('./component/profit')
   },
   async beforeRouteEnter (to, from, next) {
-    const { code, data } = await activityInfo()
-    if (code === 200) {
-      if (data.open) {
-        next({ path: '/' })
-      } else if (data.countdown) {
-        next({ path: '/before' })
-      } else {
-        next(vm => {
-          vm.rulesInfo = data.rulesInfo
-        })
-      }
-    } else {
-      next()
-    }
+    next()
   },
   data () {
     return {
@@ -40,8 +24,8 @@ export default {
   },
   methods: {
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0075001481')   // H5平台-砸金蛋-活动已结束-点击返回
-      history.back(-1)
+      GLOBALS.marchSetsPoint('A_H5PT0156001779')   // 排行榜返回
+      this.$router.push('/')
     },
     async closePop () {
       this.isShowPop = false

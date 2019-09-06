@@ -1,41 +1,21 @@
 import $axios from '../http'
-
-/**
- * @description 活动信息
- * @return {Object} data
- */
-export const activityInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-info')
-  return data
-}
-
 /**
  * @description 投注奖励
  * @return {Object} data
  */
 
 export const betAwards = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-awards')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-awards')
   return data
 }
 /**
  * @description 单次投注
  * @param {Number} value sort
- * @return {Object} data
+0000000000000000000000000000 * @return {Object} data
  */
 
 export const betSingle = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-single', params)
-  return data
-}
-/**
- * @description 批量投注
- * @param {Number} value awardsLev
- * @return {Object} data
- */
-
-export const betBatch = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-batch', params)
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet', params)
   return data
 }
 /**
@@ -44,7 +24,7 @@ export const betBatch = async (params) => {
  */
 
 export const betProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-progress')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress')
   return data
 }
 /**
@@ -53,16 +33,7 @@ export const betProgress = async () => {
  */
 
 export const gameProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/game-progress')
-  return data
-}
-/**
- * @description 我的奖品
- * @return {Object} data
- */
-
-export const myAwards = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/my-awards')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-progress')
   return data
 }
 /**
@@ -71,7 +42,7 @@ export const myAwards = async () => {
  */
 
 export const noticeList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/notice-list')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/notice-list')
   return data
 }
 /**
@@ -80,15 +51,7 @@ export const noticeList = async () => {
  */
 
 export const rankList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/rank-list')
-  return data
-}
-/**
- * @description 用户新增锤子数
- * @return {Object} data
- */
-export const userIncrement = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-increment')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/rank-list')
   return data
 }
 /**
@@ -97,7 +60,7 @@ export const userIncrement = async () => {
  */
 
 export const userInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-info')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-info')
   return data
 }
 
@@ -107,7 +70,7 @@ export const userInfo = async () => {
  */
 
 export const showLeaguePacksList = async () => {
-  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/20190711')
+  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/opencard')
   return data
 }
 /**
@@ -116,15 +79,45 @@ export const showLeaguePacksList = async () => {
  */
 
 export const userRanking = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-ranking')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-info')
   return data
 }
 /**
- * @description 获取用户是否需要新手引导
+ * @description 领取礼包
  * @return {Object} data
  */
 
-export const activityGuide = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-guide')
+export const gameReceive = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-receive')
   return data
 }
+/**
+ * @description 领取记录
+ * @return {Object} data
+ */
+
+export const gameReceiveRecord = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-receive-record')
+  return data
+}
+
+/**
+ * @description 升级场次
+ * @return {Object} data
+ */
+
+export const gameUpgradeStage = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/upgrade-stage')
+  return data
+}
+
+/**
+ * @description 升级场次
+ * @return {Object} data
+ */
+
+export const gameResetProgress = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress-reset')
+  return data
+}
+
