@@ -164,6 +164,7 @@
         }else{
           GLOBALS.marchSetsPoint('A_H5PT0061001726')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-关闭点击
         }
+        this.isDailyReceivePop=false
       },
       gainrights(catSurplusFlag){
         GLOBALS.marchSetsPoint(catSurplusFlag==3?'A_H5PT0061001722':'A_H5PT0061001728')//去获取更多权益点击-领取补给点击
