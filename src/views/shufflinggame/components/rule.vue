@@ -1,5 +1,5 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?2:2}">
+  <section class="rule" :style="{zIndex:isShowPop?3:2}">
     <img src="../images/rule.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
@@ -81,7 +81,7 @@ export default {
         100% 100%;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 1.06rem 0.2rem 0;
+      padding: .9rem 0.2rem 0;
       .main {
         font-size: 0.2rem;
         font-weight: bold;

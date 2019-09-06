@@ -1,5 +1,5 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?2:2}">
+  <section class="rule2" :style="{zIndex:isShowPop?3:2}">
     <img src="../images/package.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
@@ -69,7 +69,7 @@
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-  .rule {
+  .rule2 {
     position: fixed;
     top: .64rem;
     left: 50%;
