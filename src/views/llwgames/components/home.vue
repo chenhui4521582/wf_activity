@@ -117,7 +117,12 @@
 				curIndex: 1,
                 channel: localStorage.getItem('APP_CHANNEL')
 			}
-		},
+    },
+    mounted(){
+      if(!localStorage.getItem('ACCESS_TOKEN')){
+        this.goLoginPage();
+      }
+    },
 		methods: {
 			tabGames(index) {
 				this.curIndex = index
