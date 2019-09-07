@@ -1,7 +1,9 @@
 <template>
   <div class="grid" :class="{cannotclick:!(canClick&&isCanHit)}">
     <div class="projects">
-      <div :class="classNames(item,index)" v-for="(item,index) in cardData" @click="clickCard(item,index)">
+      <div class="project"
+           :class="{currentCardIndex:currentCardIndexArr.includes(item.sort-1),ani4:index==4,controls:index==4&&!showcontrolcss,show:index==4&&showcontrolcss,ani0:index==0&&classNamesArr[0],ani1:index==1&&classNamesArr[1],ani2:index==2&&classNamesArr[2],ani3:index==3&&classNamesArr[3],ani5:index==5&&classNamesArr[4],ani6:index==6&&classNamesArr[5],ani7:index==7&&classNamesArr[6],ani8:index==8&&classNamesArr[7]}"
+           v-for="(item,index) in cardData" @click="clickCard(item,index)">
         <template v-if="!(index==4&&!showcontrolcss)">
           <div class="mask" :class="{level1:level==1,level2:level==2,level3:level==3}">
             <div class="back" :class="{level1:level==1,level2:level==2,level3:level==3}">
@@ -59,25 +61,25 @@
         showcontrolcss: true,
         cardsClicked: [],
         canClick: false,
-        currentCardIndex: [],
+        currentCardIndexArr: [],
         classNamesArr: [],
-        isCanHit:true
+        isCanHit: true
       }
     },
     methods: {
-      classNames(item, index) {
-        let arr = ['project']
-        if (index == 4) {
-          arr.push("ani4")
-          arr.push(!this.showcontrolcss ? "controls" : 'show')
-        } else {
-          this.classNamesArr[index > 4 ? index - 1 : index] && arr.push(this.classNamesArr[index > 4 ? index - 1 : index])
-        }
-        if (this.currentCardIndex.includes(index)) {
-          arr.push('currentCardIndex')
-        }
-        return arr.join(' ')
-      },
+      // classNames(item, index) {
+      //   let arr = ['project']
+      //   if (index == 4) {
+      //     arr.push("ani4")
+      //     arr.push(!this.showcontrolcss ? "controls" : 'show')
+      //   } else {
+      //     this.classNamesArr[index > 4 ? index - 1 : index] && arr.push(this.classNamesArr[index > 4 ? index - 1 : index])
+      //   }
+      //   if (this.currentCardIndexArr.includes(index)) {
+      //     arr.push('currentCardIndex')
+      //   }
+      //   return arr.join(' ')
+      // },
       addMove() {
         $('.project').each((index, item) => {
           if (index != 4) {
@@ -92,7 +94,7 @@
           if (index != 4) {
             setTimeout(() => {
               this.classNamesArr.pop();
-            }, 100 * (index > 4 ? index - 1 : index));
+            }, (index > 4 ? index - 1 : index) * 100);
           }
         })
       },
@@ -106,35 +108,32 @@
         }
       },
       reset() {
-        this.canClick = false
+        // this.canClick = false
         this.showcontrolcss = false
-        this.currentCardIndex = []
+        // this.currentCardIndexArr = []
         this.subMove();
       },
       clickCard(item, index) {
-        if (this.canClick&&this.isCanHit) {
+        if (this.canClick && this.isCanHit) {
           if (!item.status) {//未翻
             this.goHit(item, index)
           }
         }
       },
       async goHit(item, index) {
-        this.isCanHit=false
+        this.isCanHit = false
         const {code, data, message} = await betSingle({value: item.sort})
         if (code === 200) {
-          this.cardData.splice(index, 1, data[0])
-          this.currentCardIndex.push(index)
+          this.cardData.splice(index, 1, Object.assign(data[0], {consumeNum: item.consumeNum, status: 1}))
           setTimeout(() => {
             this.$emit('getawards', data)
-            this.$emit('refreshCardInfo')
-            this.$emit('refreshUserInfo')
           }, 1000)
-          this.isCanHit=true
+          this.isCanHit = true
         } else if (code == 102) {
-          this.isCanHit=true
+          this.isCanHit = true
           this.$emit('getawards', null)
         } else {
-          this.isCanHit=true
+          this.isCanHit = true
           this.$toast.show({
             message,
             duration: 3000
@@ -145,7 +144,9 @@
     mounted() {
       this.classNamesArr = ['ani0', 'ani1', 'ani2', 'ani3', 'ani5', 'ani6', 'ani7', 'ani8']
       $('.project').get(7).addEventListener("transitionstart", () => {
-        this.canClick = false
+        if (this.classNamesArr.length < 8) {
+          this.canClick = false
+        }
       })
       $('.project').get(0).addEventListener("transitionend", () => {
         if (!this.showcontrolcss) {
@@ -154,7 +155,7 @@
         }
       })
       $('.project').get(8).addEventListener("transitionend", () => {
-        if(this.classNamesArr.length==8){
+        if (this.classNamesArr.length == 8) {
           this.canClick = true
         }
       })
@@ -162,7 +163,7 @@
     watch: {
       isReset(val) {
         if (val) {
-          this.canClick&&this.isCanHit&&this.reset()
+          this.canClick && this.isCanHit && this.reset()
         }
       },
       showcontrolcss(val) {
@@ -173,19 +174,21 @@
       cardData: {
         handler(val) {
           this.canClick = true
-          this.currentCardIndex = val.filter(item => item.status).map(item => item.sort - 1)
+          setTimeout(() => {
+            this.currentCardIndexArr = val.filter(item => item.status).map(item => item.sort - 1)
+          })
         },
         immediate: true
       },
-      isBeginAnimate:{
+      isBeginAnimate: {
         handler(val) {
-          if(val){
+          if (val) {
             setTimeout(() => {
               this.showcontrolcss = false
               this.subMove();
             }, 100)
-          }else{
-            this.canClick=true
+          } else {
+            this.canClick = true
           }
         },
         immediate: true
@@ -221,7 +224,7 @@
     //width: 1170*0.01rem;
     margin: 0 auto;
     position: relative;
-    &.cannotclick{
+    &.cannotclick {
       height: 100%;
       z-index: 1;
     }
@@ -414,12 +417,12 @@
     text-align: center;
   }
 
-  .project, .project .back, .project .front, .socials a, .transform_holder .back, .transform_holder .front, .transform_holder .transform {
-    -webkit-transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
-    -moz-transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
-    -o-transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
-    -ms-transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
-    transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
+  .project, .project .back, .project .front {
+    -webkit-transition: all .5s cubic-bezier(0.68, -.55, .265, 1.55);
+    -moz-transition: all .5s cubic-bezier(0.68, -.55, .265, 1.55);
+    -o-transition: all .5s cubic-bezier(0.68, -.55, .265, 1.55);
+    -ms-transition: all .5s cubic-bezier(0.68, -.55, .265, 1.55);
+    transition: all .5s cubic-bezier(0.68, -.55, .265, 1.55);
   }
 
   .project {

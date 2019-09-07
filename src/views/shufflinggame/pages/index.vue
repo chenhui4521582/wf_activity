@@ -82,7 +82,10 @@ export default {
       if(flag==1){//确定重置
         let {code,data,message}=await gameResetProgress()
         if(code==200){
-          this.isReset=true
+          await this.getBetProgress()
+          setTimeout(()=>{
+            this.isReset=true
+          },1000)
         }else{
           this.$toast.show({
             message:message,
@@ -126,7 +129,10 @@ export default {
       }else{
         let {code,data,message}=await gameResetProgress()
         if(code==200){
-          this.isReset=true
+          await this.getBetProgress()
+          setTimeout(()=>{
+            this.isReset=true
+          },1000)
         }else{
           this.$toast.show({
             message:message,
@@ -179,12 +185,12 @@ export default {
       }
     },
     //关闭通用弹窗
-    closecomPop(flag){
-      this.flag=0
+    async closecomPop(flag){
       //活动信息
-      this.getUserInfo()
-      //获取翻牌数据
-      this.getBetProgress()
+      await this.getUserInfo()
+      // //获取翻牌数据
+      // await this.getBetProgress()
+      this.flag=0
     },
     //展示翻牌点记录
     showrecord(){
