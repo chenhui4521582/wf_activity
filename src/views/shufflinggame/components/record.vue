@@ -62,6 +62,7 @@
 
         }else{
           GLOBALS.marchSetsPoint('A_H5PT0156001800')//H5平台-翻牌活动-弹窗反馈-翻牌点记录弹窗-获取更多翻牌点点击
+          this.$emit('package')
         }
         this.$emit('close')
       }

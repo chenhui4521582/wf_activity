@@ -43,7 +43,7 @@
     <!--获得更多翻牌点-->
     <drop-down ref="dropDown" :data="userData" v-if="userData" @getUserInfo="getUserInfo"></drop-down>
     <!--翻牌点记录-->
-    <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false"></record>
+    <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false" @package="$refs.dropDown.handleTab(0)"></record>
     <!--通用弹窗1-10场景-->
     <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="$refs.dropDown.handleTab(0)" @sureCard="sureCard" :carddata="cardawardsdata" @card="isReset=true"></com-pop>
   </div>
