@@ -117,6 +117,7 @@ export default {
             this.flag=4
           }
         }
+        this.getBetProgress()
       }else{
         this.flag=3
       }
