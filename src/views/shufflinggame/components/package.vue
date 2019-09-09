@@ -41,6 +41,11 @@
         default: 0
       }
     },
+    computed: {
+      channel() {
+        return localStorage.getItem('APP_CHANNEL') || ''
+      }
+    },
     methods: {
       async getShowLeaguePacksList() {
         const {code, data} = await showLeaguePacksList()

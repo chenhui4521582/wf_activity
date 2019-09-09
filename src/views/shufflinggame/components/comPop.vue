@@ -171,12 +171,12 @@
       btnpinkclick() {
         if (this.from == 3) {//去玩游戏得牌点
           GLOBALS.marchSetsPoint('A_H5PT0156001797')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
-          location.href = window.linkUrl.getBackUrl(this.curChannel)
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
         } else if (this.from == 7||this.from ==11) {//继续翻牌
           this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001791')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-继续翻牌点击
         } else if (this.from == 8) {//去玩游戏得牌点
-          location.href = window.linkUrl.getBackUrl(this.curChannel)
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
         }else if (this.from == 9) {//我再想想
           this.$emit('close', 0)
         }else if (this.from == 10) {//我再想想

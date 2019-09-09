@@ -200,7 +200,7 @@ export default {
     //点击返回
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0156001768')   //点击返回
-      history.back(-1)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     //获取翻牌数据
     async getBetProgress () {
