@@ -127,8 +127,8 @@
           this.cardData.splice(index, 1, Object.assign(data[0], {consumeNum: item.consumeNum, status: 1}))
           setTimeout(() => {
             this.$emit('getawards', data)
+            this.isCanHit = true
           }, 1000)
-          this.isCanHit = true
         } else if (code == 102) {
           this.isCanHit = true
           this.$emit('getawards', null)
