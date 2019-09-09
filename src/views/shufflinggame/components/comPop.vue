@@ -138,42 +138,49 @@
         }
       },
       btnyellowclick() {
-        this.$emit('close', 0)
         if (this.from == 2) {//立即去翻牌
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001799')//H5平台-翻牌活动-弹窗反馈-翻牌场次升级弹窗-立即去翻牌点击
         } else if (this.from == 3) {//去充值得翻牌点
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001796')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去充值得翻牌点点击
           this.$emit('package')
         } else if (this.from == 4) {//继续翻牌
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001782')//H5平台-翻牌活动-弹窗反馈-正常奖励弹窗-继续翻牌
         } else if (this.from == 5) {//继续翻牌
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001786')//H5平台-翻牌活动-弹窗反馈-翻倍开出奖励弹窗-继续翻牌
         } else if (this.from == 6) {//继续翻牌
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001784')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗-继续翻牌
         } else if (this.from == 7||this.from == 11) {//放弃翻倍卡
           GLOBALS.marchSetsPoint('A_H5PT0156001790')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-放弃翻倍卡点击
           this.$emit('sureCard',this.from==7?1:2)//true 重置 false 升级场次
         } else if (this.from == 8) {//去充值得翻牌点
+          this.$emit('close', 0)
           this.$emit('package')
         }else if (this.from == 9) {//我要升级
+          this.$emit('close', 0)
           this.$emit('sureGrade')
         }else{//我要升级
+          this.$emit('close', 0)
           this.$emit('sureGrade')
         }
       },
       btnpinkclick() {
-        this.$emit('close', 0)
         if (this.from == 3) {//去玩游戏得牌点
           GLOBALS.marchSetsPoint('A_H5PT0156001797')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
           location.href = window.linkUrl.getBackUrl(this.curChannel)
         } else if (this.from == 7||this.from ==11) {//继续翻牌
+          this.$emit('close', 0)
           GLOBALS.marchSetsPoint('A_H5PT0156001791')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-继续翻牌点击
         } else if (this.from == 8) {//去玩游戏得牌点
           location.href = window.linkUrl.getBackUrl(this.curChannel)
         }else if (this.from == 9) {//我再想想
-
+          this.$emit('close', 0)
         }else if (this.from == 10) {//我再想想
-
+          this.$emit('close', 0)
         }
       }
     },
