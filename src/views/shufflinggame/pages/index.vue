@@ -5,7 +5,7 @@
     <!--规则-->
     <rule></rule>
     <!--礼包-->
-    <package></package>
+    <package v-if="!isEnd"></package>
     <!--攻略-->
     <gonglue></gonglue>
     <!--走马灯-->
@@ -41,7 +41,7 @@
     <!--翻牌区域-->
     <card :level="level" :isReset="isReset" @reset="isReset=false" :cardData="styleItemsArr"  v-if="userData&&styleItemsArr.length" @refreshUserInfo="getUserInfo" @refreshCardInfo="getBetProgress" @getawards="getcardawards" :isBeginAnimate="isBeginAnimate"></card>
     <!--获得更多翻牌点-->
-    <drop-down ref="dropDown" :data="userData" v-if="userData" @getUserInfo="getUserInfo"></drop-down>
+    <drop-down ref="dropDown" :data="userData" v-if="!isEnd&&userData" @getUserInfo="getUserInfo"></drop-down>
     <!--翻牌点记录-->
     <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false" @package="$refs.dropDown.handleTab(0)"></record>
     <!--通用弹窗1-10场景-->
@@ -62,6 +62,10 @@ export default {
       userData:null,
       cardawardsdata:[],
       isBeginAnimate:false,//牌是否要有开场动画
+      isEnd:false,
+      countdown: {// 倒计时
+        time: ''
+      },
     }
   },
   components: {
@@ -78,6 +82,17 @@ export default {
     next()
   },
   methods: {
+    async getActInfo(){
+      let {code,data}=(await this.axios.post('http://ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
+      if(code==200){
+        this.isEnd=data.state!=1
+        !this.countdown.time && data.countdown && GLOBALS.remainingTime(
+          this,
+          data.countdown,
+          this.countdown
+        )
+      }
+    },
     async sureCard(flag){//flag1 有翻倍卡-确定重置 flag2 有翻倍卡-确定升级
       if(flag==1){//确定重置
         let {code,data,message}=await gameResetProgress()
@@ -219,6 +234,7 @@ export default {
     location.href.includes('from=')&&GLOBALS.marchSetsPoint('P_H5PT0156',{
       source_address:GLOBALS.getUrlParam('from')||''
     })//H5平台-翻牌活动-页面加载完成
+    await this.getActInfo()
     //活动信息
     await this.getUserInfo()
     //获取翻牌数据
@@ -226,6 +242,13 @@ export default {
     //活动地址：shufflinggame.html?from=index
     history.pushState({}, '', location.href.split(/\?|\&/)[0])//shufflinggame.html
     // GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
+  },
+  watch: {
+    'countdown.time': function (val) {
+      if (!val) {
+        this.getActInfo()
+      }
+    }
   }
 }
 </script>
