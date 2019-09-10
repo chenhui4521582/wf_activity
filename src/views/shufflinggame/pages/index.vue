@@ -101,7 +101,7 @@ export default {
       }
     },
     rankClick(flag){
-      GLOBALS.marchSetsPoint(flag?'A_H5PT0156001771':'1767')//H5平台-翻牌活动-中间区域-排行榜按钮点击
+      GLOBALS.marchSetsPoint(flag?'A_H5PT0156001771':'A_H5PT0156001767')//H5平台-翻牌活动-中间区域-排行榜按钮点击
       this.$router.push('/after')
     },
     //恭喜开出和牌点数不足弹窗
