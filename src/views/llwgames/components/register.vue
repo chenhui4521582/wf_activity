@@ -27,7 +27,7 @@
    		<!--</div>-->
    		<a href="javascript:" class="btn-register" @click="submit">注册</a>
    		<div class="statement2" v-if=" channel == '700003' "><div class="statement1">苏ICP备17060724号-1</div>@2017苏州玩蜂软件科技有限公司</div>
-		<div class="statement2" v-if="host=='beeplay123'"><div class="statement1">苏ICP备17060724号</div>©2017-2018 玩蜂科技（苏州）科技有限公司</div>        
+		<div class="statement2" v-if="host=='beeplay123'"><div class="statement1">苏ICP备17060724号-3<br/><a target="_blank" href="http://www.beian.miit.gov.cn/">增值电信业务经营许可证：苏B2-20190263</a><br/><a target="_blank" href="http://www.beian.miit.gov.cn/">苏网文 (2019) 1414-046号</a></div>©2017-2018 玩蜂科技（苏州）科技有限公司</div>        
 		<div class="statement2" v-else><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
 	</div>
 </template>
@@ -412,7 +412,7 @@
 .statement2 {
     width: 100%;
     position: fixed;
-    bottom: .0/2rem;
+    bottom: 1rem;
     left: 0 !important;
     height: 2/2rem;
     font-size: .4/2rem;

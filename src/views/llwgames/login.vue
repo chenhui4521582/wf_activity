@@ -47,7 +47,7 @@
           </div>
           
           <div class="statement2" v-if="host=='beeplay123'">
-            <div class="statement1">苏ICP备17060724号</div>©2017-2018 玩蜂科技（苏州）科技有限公司
+            <div class="statement1">苏ICP备17060724号-3<br/><a target="_blank" href="http://www.beian.miit.gov.cn/">增值电信业务经营许可证：苏B2-20190263</a><br/><a target="_blank" href="http://www.beian.miit.gov.cn/">苏网文 (2019) 1414-046号</a></div>©2017-2018 玩蜂科技（苏州）科技有限公司
           </div>
           <div class="statement2" v-else>
             <div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司
@@ -624,7 +624,7 @@ a {
   .statement1 {
     width: 100%;
     position: absolute;
-    bottom: 0.5/2rem;
+    bottom: 1rem;
     height: 2/2rem;
     font-size: 0.4/2rem;
     font-family: PingFangSC-Regular;
@@ -632,6 +632,7 @@ a {
     text-align: center;
     transform: translateX(0%) !important;
     margin-bottom: 0.15/2rem;
+    line-height: 0.3rem;
   }
   .statement2 {
     width: 100%;
@@ -644,6 +645,7 @@ a {
     color: #666;
     text-align: center;
     transform: translateX(0%) !important;
+    line-height: 0.3rem;
   }
 }
 
