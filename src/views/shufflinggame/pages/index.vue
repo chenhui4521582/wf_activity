@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     async getActInfo(){
-      let {code,data}=(await this.axios.post('http://ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
+      let {code,data}=(await this.axios.post('//ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
       if(code==200){
         this.isEnd=data.state!=1
         !this.countdown.time && data.countdown && GLOBALS.remainingTime(
