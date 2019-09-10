@@ -156,10 +156,10 @@
           GLOBALS.marchSetsPoint('A_H5PT0156001784')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗-继续翻牌
         } else if (this.from == 7||this.from == 11) {//放弃翻倍卡
           GLOBALS.marchSetsPoint('A_H5PT0156001790')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-放弃翻倍卡点击
+          this.$emit('sureCard',this.from==7?1:2)//true 重置 false 升级场次
           if(this.from == 7){
             this.$emit('close', 0)
           }
-          this.$emit('sureCard',this.from==7?1:2)//true 重置 false 升级场次
         } else if (this.from == 8) {//去充值得翻牌点
           this.$emit('close', 0)
           this.$emit('package')

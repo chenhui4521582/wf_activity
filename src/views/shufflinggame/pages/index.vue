@@ -83,6 +83,7 @@ export default {
         let {code,data,message}=await gameResetProgress()
         if(code==200){
           await this.getBetProgress()
+          await this.getUserInfo()
           setTimeout(()=>{
             this.isReset=true
           },1000)
