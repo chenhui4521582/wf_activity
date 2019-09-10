@@ -27,7 +27,8 @@
    		<!--</div>-->
    		<a href="javascript:" class="btn-register" @click="submit">注册</a>
    		<div class="statement2" v-if=" channel == '700003' "><div class="statement1">苏ICP备17060724号-1</div>@2017苏州玩蜂软件科技有限公司</div>
-        <div class="statement2" v-else><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
+		<div class="statement2" v-if="host=='beeplay123'"><div class="statement1">苏ICP备17060724号</div>©2017-2018 玩蜂科技（苏州）科技有限公司</div>        
+		<div class="statement2" v-else><div class="statement1">蜀ICP备17017217号-1</div>@2018成都 六六五网络科技有限公司</div>
 	</div>
 </template>
 <script type="text/javascript">
@@ -60,6 +61,11 @@
 		components: {
 			headers,
             inputText
+		},
+		computed: {
+			host(){
+                return utils.getUrlParamObj('host')
+            }
 		},
 		methods: {
 			back() {
