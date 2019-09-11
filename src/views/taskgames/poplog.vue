@@ -26,7 +26,7 @@
         <div class="content" v-if="!(newTaskItems&&newTaskItems.popUp)">
           <img class="title" src="./img/dialog/congratulations-text.png" alt="">
           <div class="icon">
-            <img class="hb-icon" :src="awardItem.awardsImage" alt="">
+            <img class="hb-icon" :src="awardItem.awardsImage|filter" alt="">
           </div>
           <p class="num">{{awardItem.awardsName}}</p>
 

@@ -1,15 +1,10 @@
 <template>
   <div class="cut-and-add">
-    <template v-if="disabled">
-      <span style="font-size: 0.2rem;color: #ffffff;margin-right:0.3rem;display:inline-block;">{{inputValue}}</span>
-    </template>
-    <template v-else>
-      <div class="button-cut base-button" @click="cutClick">-</div>
-      <div class="input-warp">
-        <input type="number" @input="handleInput" v-model.number="inputValue">
-      </div>
-      <div class="button-add base-button" @click="addClick">+</div>
-    </template>
+    <div class="button-cut base-button" @click="cutClick">-</div>
+    <div class="input-warp">
+      <input type="number" @input="handleInput" v-model.number="inputValue">
+    </div>
+    <div class="button-add base-button" @click="addClick">+</div>
   </div>
 </template>
 <script>
@@ -28,11 +23,7 @@ export default {
       type: Number,
       default: 0
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    buyone:{
+    buyone: {
       type: Boolean,
       default: false
     }
@@ -51,13 +42,12 @@ export default {
       this.inputValue--
     },
     addClick () {
-      if (this.disabled) { return }
-      if(this.buyone){
+      if (this.buyone && this.inputValue == this.buyone) {
         this.$toast.show({
-          message:'该商品每人限购1次哟',
-          duration:2000
+          message: `该商品每人限购${this.buyone}次哟`,
+          duration: 2000
         })
-      }else{
+      } else {
         this.inputValue++
       }
     },

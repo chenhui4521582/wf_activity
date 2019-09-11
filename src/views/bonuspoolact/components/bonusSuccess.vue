@@ -120,11 +120,19 @@
         }
       },
       concat() {
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/problem?tab=contact_personal')
+        if(window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL'))=='xmWap'){
+          location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+        }else{
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/problem?tab=contact_personal')
+        }
       },
       async gotoshop(){
         await GLOBALS.marchSetsPoint('A_H5PT0074001593')
-        location.href = 'https://wap.beeplaying.com/payment/#/mall'
+        if(window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL'))=='xmWap'){
+          location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
+        }else{
+          location.href = 'https://wap.beeplaying.com/payment/#/mall'
+        }
       }
     },
     mounted() {

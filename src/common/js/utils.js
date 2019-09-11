@@ -133,6 +133,9 @@ export default {
     if (item && item.url.indexOf('?fixedEntry') != -1) {
       return this.trimStr(url.replace('?fixedEntry', '')) + '?channel=' + channel + '&opentoken=' + token
     }
+    if (item && item.url.indexOf('#/?') != -1) {
+      return item.url + '&channel=' + channel
+    }
     return item.url +
       '?channel=' +
       channel

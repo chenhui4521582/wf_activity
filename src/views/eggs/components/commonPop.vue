@@ -27,7 +27,7 @@
               </li>
             </ul>
             <p v-if="myRank&&myRank<=rankSize">恭喜您排名{{myRank}}，获得以上奖品</p>
-            <p v-if="myRank>rankSize||!myRank">恭喜您排名{{myRank?myRank:'1000+'}}，<br>{{rankSize}}名以外不能领取奖励</p>
+            <p v-if="myRank>rankSize||!myRank">您排名{{myRank?myRank:'1000+'}}，<br>{{rankSize}}名以外不能领取奖励</p>
           </div>
           <div class="hit-egg-btn" @click="closePop">好的</div>
         </div>
