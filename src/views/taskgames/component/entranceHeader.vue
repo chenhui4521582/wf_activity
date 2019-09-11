@@ -42,14 +42,14 @@
 </template>
 <script>
 export default {
-  name: "entranceHeader",
+  name: 'entranceHeader',
   data () {
     return {
       url: '',
-      catSurplusFlag: 0,//1 权益被冻结 2权益未开启 3 要求领取补给 4 补给已领 5 补给领取成功
+      catSurplusFlag: 0, // 1 权益被冻结 2权益未开启 3 要求领取补给 4 补给已领 5 补给领取成功
       title: '温馨提示',
-      bgHeight: 316,//catSurplusFlag(1、2 弹窗高度316 3、4 弹窗高度528 5 弹窗高度356)
-      bgColor: '',//catSurplusFlag(5 弹窗背景红色)
+      bgHeight: 316, // catSurplusFlag(1、2 弹窗高度316 3、4 弹窗高度528 5 弹窗高度356)
+      bgColor: '', // catSurplusFlag(5 弹窗背景红色)
       award: {},
       gainleafamount: 0,
       showOutPop: false,
@@ -64,23 +64,23 @@ export default {
       type: Boolean,
       default: false
     },
-    userInfo:{
-      type:Object,
-      default:{}
+    userInfo: {
+      type: Object,
+      default: {}
     }
   },
   components: {
     commonPop: () => import('./commonPop'),
-    catSaveBox: () => import('./catService/catSaveBox.vue'),
+    catSaveBox: () => import('./catService/catSaveBox.vue')
   },
   methods: {
     async gotokf () {
       this.$emit('gotokf')
     },
-    async handleCatBuJi () {//招财猫补给箱
-      GLOBALS.marchSetsPoint('A_H5PT0061001713')//H5平台-游戏内SDK-顶部补给箱按钮点击
-      let { data: data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
-      if (data.code == 200 || data.code == 203) {//203 表示用户没猫 状态对应 权益未开启
+    async handleCatBuJi () { // 招财猫补给箱
+      GLOBALS.marchSetsPoint('A_H5PT0061001713')// H5平台-游戏内SDK-顶部补给箱按钮点击
+      let { data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
+      if (data.code == 200 || data.code == 203) { // 203 表示用户没猫 状态对应 权益未开启
         if (data.code == 200) {
           this.catSupplyInfo = data.data.receiveStatusInfos.filter(item => item.type == 1)
           this.catSurplusFlag = this.getCatSurplusFlag(this.catSupplyInfo)
@@ -91,11 +91,11 @@ export default {
         if (this.catSurplusFlag) {
           this.bgColor = 'black'
           if (this.catSurplusFlag == 1) {
-            GLOBALS.marchSetsPoint('A_H5PT0061001717')//H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
+            GLOBALS.marchSetsPoint('A_H5PT0061001717')// H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
             this.title = '权益被冻结'
             this.btnName = '去招财猫解封权益'
           } else if (this.catSurplusFlag == 2) {
-            GLOBALS.marchSetsPoint('A_H5PT0061001714')//H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
+            GLOBALS.marchSetsPoint('A_H5PT0061001714')// H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
             this.title = '权益未开启'
             this.btnName = '去招财猫开启权益'
           } else {
@@ -103,10 +103,10 @@ export default {
             this.title = `幸运补给箱`
             this.bgHeight = 500
             if (this.catSurplusFlag == 3) {
-              GLOBALS.marchSetsPoint('A_H5PT0061001720')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
+              GLOBALS.marchSetsPoint('A_H5PT0061001720')// H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
               this.btnName = '领取补给'
             } else {
-              GLOBALS.marchSetsPoint('A_H5PT0061001727')//H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
+              GLOBALS.marchSetsPoint('A_H5PT0061001727')// H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
               this.receiveAmount = this.catSupplyInfo.receiveAmount
               this.btnName = '今日已领'
             }
@@ -117,18 +117,18 @@ export default {
 
       }
     },
-    async gaincatprize () {//招财猫领取补给
+    async gaincatprize () { // 招财猫领取补给
       let catSurplusFlag = this.catSurplusFlag
       if (catSurplusFlag == 4) return
       this.showOutPop = false
       if (catSurplusFlag == 1 || catSurplusFlag == 2) {
-        GLOBALS.marchSetsPoint(catSurplusFlag == 1 ? 'A_H5PT0061001718' : 'A_H5PT0061001715')//去招财猫开启权益点击
+        GLOBALS.marchSetsPoint(catSurplusFlag == 1 ? 'A_H5PT0061001718' : 'A_H5PT0061001715')// 去招财猫开启权益点击
         parent.location.href = `https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}&catright=1`
       } else if (catSurplusFlag == 3) {
-        GLOBALS.marchSetsPoint('A_H5PT0061001721')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
-        let { data: data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus', { receiveType: 1 })
+        GLOBALS.marchSetsPoint('A_H5PT0061001721')// H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
+        let { data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receive', { receiveType: 1 })
         if (data.code == 200) {
-          GLOBALS.marchSetsPoint('A_H5PT0061001724')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗加载完成
+          GLOBALS.marchSetsPoint('A_H5PT0061001724')// H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗加载完成
           this.bgHeight = 356
           this.title = '领取补给成功'
           this.bgColor = 'red'
@@ -140,7 +140,7 @@ export default {
       }
     },
     getCatSurplusFlag (catSupplyInfo) {
-      //1 权益被冻结 2权益未开启 3 要求领取补给 4 补给已领 5 补给领取成功
+      // 1 权益被冻结 2权益未开启 3 要求领取补给 4 补给已领 5 补给领取成功
       if (!catSupplyInfo.length) {
         return 0
       } else {
@@ -162,21 +162,22 @@ export default {
     },
     isDailyReceivePopClose (flag) {
       if (flag) {
-        GLOBALS.marchSetsPoint('A_H5PT0061001725')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-好的点击
+        GLOBALS.marchSetsPoint('A_H5PT0061001725')// H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-好的点击
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0061001726')//H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-关闭点击
+        GLOBALS.marchSetsPoint('A_H5PT0061001726')// H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗-关闭点击
       }
+      this.isDailyReceivePop = false
     },
     gainrights (catSurplusFlag) {
-      GLOBALS.marchSetsPoint(catSurplusFlag == 3 ? 'A_H5PT0061001722' : 'A_H5PT0061001728')//去获取更多权益点击-领取补给点击
+      GLOBALS.marchSetsPoint(catSurplusFlag == 3 ? 'A_H5PT0061001722' : 'A_H5PT0061001728')// 去获取更多权益点击-领取补给点击
       parent.location.href = `https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}&catright=1`
     },
     closeCatSupply () {
       let points = ['A_H5PT0061001719', 'A_H5PT0061001716', 'A_H5PT0061001723', 'A_H5PT0061001729']
-      points[this.catSurplusFlag - 1] && GLOBALS.marchSetsPoint(points[this.catSurplusFlag - 1])//弹窗-关闭点击
+      points[this.catSurplusFlag - 1] && GLOBALS.marchSetsPoint(points[this.catSurplusFlag - 1])// 弹窗-关闭点击
       this.showOutPop = false
     },
-    getUserInfo(){
+    getUserInfo () {
       this.$emit('getUserInfo')
     }
   }
