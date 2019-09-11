@@ -1,6 +1,6 @@
 <template>
   <div class="entrance-header">
-    <cat-save-box></cat-save-box>
+    <cat-save-box :userInfo="userInfo" @getUserInfo="getUserInfo"></cat-save-box>
     <div class="entrance-header-item" @click="handleCatBuJi">
       <img class="entrance-header-img" src="../images/cat_supply/supplybox.png">
       <div class="entrance-header-text">补给箱</div>
@@ -63,6 +63,10 @@ export default {
     showtip: {
       type: Boolean,
       default: false
+    },
+    userInfo:{
+      type:Object,
+      default:{}
     }
   },
   components: {
@@ -171,6 +175,9 @@ export default {
       let points = ['A_H5PT0061001719', 'A_H5PT0061001716', 'A_H5PT0061001723', 'A_H5PT0061001729']
       points[this.catSurplusFlag - 1] && GLOBALS.marchSetsPoint(points[this.catSurplusFlag - 1])//弹窗-关闭点击
       this.showOutPop = false
+    },
+    getUserInfo(){
+      this.$emit('getUserInfo')
     }
   }
 }

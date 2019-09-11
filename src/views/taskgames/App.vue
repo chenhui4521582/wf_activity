@@ -7,11 +7,11 @@
           <i :class="{'huafeifont':!huafeiShow}" v-html="huafeiShow ? '(满'+100+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
         </li>
         <!--<p class="figure" v-if="!huafeiShow">-->
-          <!--<img src="./images/fighur.png" class="touch">-->
-          <!--快去领！-->
+        <!--<img src="./images/fighur.png" class="touch">-->
+        <!--快去领！-->
         <!--</p>-->
       </ul>
-      <entrance-header @gotokf="kfclick"></entrance-header>
+      <entrance-header @gotokf="kfclick" @getUserInfo="getTransInfo" :userInfo="userInfo"></entrance-header>
     </div>
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
@@ -200,7 +200,7 @@
           </poplog>
           <!-- 新版奖励弹窗   -->
           <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
-          <task-award-pop v-if="isDailyReceivePop"  :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
+          <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
           <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
@@ -372,7 +372,7 @@ export default {
     dailyTaskReceivePop: () => import('./component/dailyTaskReceivePop'),
     sdkTabBox: () => import('./component/tabBox'),
     fixedEntrance: () => import('./component/fixedEntrance'),
-    entranceHeader:()=>import('./component/entranceHeader')
+    entranceHeader: () => import('./component/entranceHeader')
   },
   methods: {
     initParentAd () {
@@ -587,7 +587,7 @@ export default {
     checkTaskStatus (item, type, index) {
       switch (type) {
         case 'dayTask':
-          GLOBALS.marchSetsPoint(item.flag&&item.flag=='ring2'?'A_H5PT0061001618':'A_H5PT0061001408', {
+          GLOBALS.marchSetsPoint(item.flag && item.flag == 'ring2' ? 'A_H5PT0061001618' : 'A_H5PT0061001408', {
             position_id: index + 1,
             target_project_id: item.gameType,
             task_id: item.taskId,
@@ -623,7 +623,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if ((this.woolUserType||item.action === 71) && type === 'dayTask') {
+        if ((this.woolUserType || item.action === 71) && type === 'dayTask') {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
@@ -653,7 +653,7 @@ export default {
         this.goFinishs(item, index, type)
       }
     },
-    async goFinishs ({ gameType, url, action, taskId, taskName,flag}, index, type) {
+    async goFinishs ({ gameType, url, action, taskId, taskName, flag }, index, type) {
       if (type == 'crush_task' || type == 'mother_crush_task') {
         GLOBALS.marchSetsPoint('A_H5PT0061000537', {
           project_id: gameType,
@@ -662,7 +662,7 @@ export default {
           task_name: taskName
         }) // H5平台-游戏内SDK-页面
       } else {
-        GLOBALS.marchSetsPoint(flag&&flag=='ring2'?'A_H5PT0061001617':'A_H5PT0061000542', {
+        GLOBALS.marchSetsPoint(flag && flag == 'ring2' ? 'A_H5PT0061001617' : 'A_H5PT0061000542', {
           position_id: index + 1,
           project_id: this.currentGameType,
           target_project_id: gameType,
@@ -832,16 +832,16 @@ export default {
       // }
       // return false
       this.showMedalAnimate = false
-      this.axios.post(item.flag&&item.flag=='ring2'?'//quoits-api.beeplaying.com/quoits/api/exchange':'//platform-api.beeplaying.com/task/api/usertask/finish', item.flag&&item.flag=='ring2'?{value:item.taskId}:{
+      this.axios.post(item.flag && item.flag == 'ring2' ? '//quoits-api.beeplaying.com/quoits/api/exchange' : '//platform-api.beeplaying.com/task/api/usertask/finish', item.flag && item.flag == 'ring2' ? { value: item.taskId } : {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }).then((res) => {
         if (res.data.code == 200) {
           // 弹窗弹出
-          if(item.flag&&item.flag=='ring2'){
-            item.awardsImage=res.data.data.awardsImg
-            item.awardsNum=res.data.data.num
-            item.flag='ring2'
+          if (item.flag && item.flag == 'ring2') {
+            item.awardsImage = res.data.data.awardsImg
+            item.awardsNum = res.data.data.num
+            item.flag = 'ring2'
           }
           this.awardItem = item
           this.getTransInfo()
@@ -871,10 +871,10 @@ export default {
               item.taskStatus = 2
           }
           if (res.data.data && res.data.data.awardsName) {
-            if(item.flag&&item.flag=='ring2'){
-              res.data.data.awardsImage=res.data.data.awardsImg
-              res.data.data.awardsNum=res.data.data.num
-              res.data.data.flag='ring2'
+            if (item.flag && item.flag == 'ring2') {
+              res.data.data.awardsImage = res.data.data.awardsImg
+              res.data.data.awardsNum = res.data.data.num
+              res.data.data.flag = 'ring2'
             }
             this.receiveAwards = res.data.data
             this.isDailyReceivePop = true
@@ -918,24 +918,24 @@ export default {
       })
     },
     async getDayTask () {
-      let arrring2=[]
-      let {data:data}=await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
+      let arrring2 = []
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
       })
-      if(data.code==200){
-        if(parent.location.href.includes('ring2')){
-          let {data:dataA}=await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
-          if(dataA.code==200){
-            dataA.data.awardsList.map(item=>{
+      if (data.code == 200) {
+        if (parent.location.href.includes('ring2')) {
+          let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
+          if (dataA.code == 200) {
+            dataA.data.awardsList.map(item => {
               arrring2.push({
-                "taskId":item.amount,"taskName":item.description,"gameType":this.currentGameType,"taskDesc":item.description,"icon":item.icon,"taskOps":item.costNum,"finishNum":item.currNum,"taskStatus":item.costNum<=item.currNum?0:1,"taskLogId":item.amount,"cycle":0,"awardsType":0,"awardsName":item.awardsName,"url":null,"awardsImage":item.awardsImg,"taskDescShow":item.description,"awardsNum":0,"taskType":0,"subTask":"","preTask":null,"action":0,"sort":0,flag:'ring2'
+                'taskId': item.amount, 'taskName': item.description, 'gameType': this.currentGameType, 'taskDesc': item.description, 'icon': item.icon, 'taskOps': item.costNum, 'finishNum': item.currNum, 'taskStatus': item.costNum <= item.currNum ? 0 : 1, 'taskLogId': item.amount, 'cycle': 0, 'awardsType': 0, 'awardsName': item.awardsName, 'url': null, 'awardsImage': item.awardsImg, 'taskDescShow': item.description, 'awardsNum': 0, 'taskType': 0, 'subTask': '', 'preTask': null, 'action': 0, 'sort': 0, flag: 'ring2'
               })
             })
           }
         }
-        this.currentGamesItems =[...arrring2,... data.data.filter((item) => {
+        this.currentGamesItems = [...arrring2, ...data.data.filter((item) => {
           return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
         })]
         if (this.currentGamesItems.filter(item => item.action == 72).length) {

@@ -3,13 +3,16 @@
     <div class="pop-mask-new" @touchmove.prevent></div>
     <div class="receive-pop" ref="receive-pop">
       <p><i @click="close"></i>{{title}}</p>
-      <div class="slot" ref="slot" style="position: relative;font-size:0.2rem;line-height:0.3rem;">
-        <slot></slot>
+      <div style="position: relative;font-size:0.2rem;line-height:0.3rem;">
+        <slot name="text"></slot>
       </div>
-      <div class="btn-wrap" v-if="isShowBtn">
-        <div v-if="cancelBtn" class="btn cancelBtn" @click="onCancel" v-html="cancelBtn" ref="cancelBtn"></div>
-        <div class="btn besure" :class="{actived:!count}" @click="besure" v-html="!count?btnName:beforeBtnName" ref="besure"></div>
-      </div>
+      <slot name="btn">
+        <div class="btn-wrap" v-if="isShowBtn">
+          <div v-if="cancelBtn" class="btn cancelBtn" @click="onCancel" v-html="cancelBtn" ref="cancelBtn"></div>
+          <div class="btn besure" :class="{actived:!count}" @click="besure" v-html="!count?btnName:beforeBtnName" ref="besure"></div>
+        </div>
+      </slot>
+      <slot name="other"></slot>
     </div>
   </div>
 </template>
