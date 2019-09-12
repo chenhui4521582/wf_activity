@@ -8,6 +8,7 @@
           <div class="main">
             <scroll :data="data">
               <div class="gonglue-container">
+                <img src="../images/pop/gonglue/txt.png" alt="" class="buzhou1">
                 <img src="../images/pop/gonglue/buzhou.png" alt="" class="buzhou">
                 <div class="bonus">
                   <div class="item" v-for="item in data">
@@ -125,6 +126,11 @@
           top: 2.72rem;
           width: 4.5rem;
           .gonglue-container{
+            .buzhou1{
+              width: 4.32rem;
+              height:.95rem;
+              margin-bottom: .2rem;
+            }
             .buzhou{
               width: 4.5rem;
               height:2.92rem;
