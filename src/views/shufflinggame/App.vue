@@ -28,6 +28,6 @@
     height: 100%;
     margin: 0;
     overflow: hidden;
-    background-color: transparent;
+    background-color: #26202d;
   }
 </style>
