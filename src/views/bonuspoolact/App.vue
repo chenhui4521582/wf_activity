@@ -92,7 +92,7 @@
     <!--规则-->
     <bonus-success v-if="flag" :count="flag" @close="flag=0"
                    :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
-                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData">
+                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData" :appointmentday="appointmentday">
       <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
     </bonus-success>
 
@@ -128,7 +128,8 @@
         flag: 0,
         tabIndex: 0,
         makeupData:null,
-        makeupPackageData:null
+        makeupPackageData:null,
+        appointmentday:0
       }
     },
     async mounted() {
@@ -278,6 +279,7 @@
         }
         let {data} = await this.fetch('/ops/api/jackpot/userApply', {isShowTotast: false})
         if (data.code == 200) {
+          this.appointmentday=data.data
           this.flag = 3
         } else {
           this.flag = 4

@@ -26,7 +26,13 @@
       <!--报名成功-->
       <div class="bonus-success baomingsuccess" v-if="count==3">
         <div class="desc">
-          每日{{timetxt}}点开奖,一定要准时来哟~连续报名5天还可免费瓜分终极奖池哦
+          每日{{timetxt}}点开奖,一定要准时来哟~
+          <template v-if="appointmentday<=3">
+            连续报名3天还能瓜分终极大奖！
+          </template>
+          <template v-else>
+            连续报名5天终极大奖必中哟！
+          </template>
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
@@ -99,9 +105,13 @@
         type: String,
         default: ''
       },
-      makeupPackageData:{
-        type:Object,
-        default:null
+      makeupPackageData: {
+        type: Object,
+        default: null
+      },
+      appointmentday: {
+        type: Number,
+        default: 0
       }
     },
     computed: {
@@ -109,8 +119,8 @@
         let reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
         return this.telPhone && reg.test(this.telPhone)
       },
-      transitionname(){
-        return this.count==6||this.count==7?'slide':''
+      transitionname() {
+        return this.count == 6 || this.count == 7 ? 'slide' : ''
       }
     },
     methods: {
@@ -181,9 +191,9 @@
         this.$emit('close')
         history.go(-1)
       },
-      gotopay (item) {
+      gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
+        GLOBALS.marchSetsPoint('A_H5PT0075001467', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
           location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
