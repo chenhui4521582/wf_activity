@@ -32,7 +32,7 @@
       <div class="index_info">翻出翻倍卡后,再翻出任意奖品,翻出奖励翻倍!</div>
       <!--升级场次按钮-->
       <div class="grade_btn" :class="{header1:level==1,header2:level==2,header3:level==3}" v-if="userData">
-        <div class="txt" v-if="level<3" @click="gameUpgradeStageClick">用<i>{{userData.nextStageConsumeNum}}翻牌点</i>升级中级场</div>
+        <div class="txt" v-if="level<3" @click="gameUpgradeStageClick">用<i>{{userData.nextStageConsumeNum}}翻牌点</i>升级{{level==1?'中级场':'高级场'}}</div>
         <div class="txt" v-else>当前最高场</div>
       </div>
       <!--重置-->
