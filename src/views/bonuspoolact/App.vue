@@ -49,7 +49,7 @@
         <div class="btn bonus_pre" v-if="detailData.normalState==1">
           活动开启倒计时{{countdown.time}}
         </div>
-        <div class="btn bonus_hot" @click="appointmentBonus" v-if="detailData.normalState==2">
+        <div class="btn bonus_hot" @click="appointmentBonus(false)" v-if="detailData.normalState==2">
           马上报名瓜分红包
         </div>
         <div class="btn bonus_hot" v-if="detailData.normalState==3">
@@ -86,12 +86,13 @@
         </div>
       </template>
       <div class="info_txt" v-if="detailData.activityApplyNum">已有<i>{{detailData.activityApplyNum}}</i>人报名成功</div>
+      <div class="buqian_icon" @click="buqianclick" v-if="makeupData&&makeupData.show"></div>
     </template>
     <!--以下都是弹窗-->
     <!--规则-->
     <bonus-success v-if="flag" :count="flag" @close="flag=0"
                    :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
-                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate">
+                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData">
       <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
     </bonus-success>
 
@@ -125,7 +126,9 @@
         showfinger: false,
         showfingerPress: false,
         flag: 0,
-        tabIndex: 0
+        tabIndex: 0,
+        makeupData:null,
+        makeupPackageData:null
       }
     },
     async mounted() {
@@ -156,6 +159,19 @@
       }
     },
     methods: {
+      async buqianclick(){
+        let {code,data}=(await this.fetch(`/shop/api/mall/showLeaguePacksList/${this.makeupData.batchId}`)).data
+        console.log(code)
+        if(code==200){
+          if(this.makeupData.type==1){
+            this.makeupPackageData=data.leaguePacksList[0]
+            this.flag=6
+          }else{
+            this.makeupPackageData=data.leaguePacksList[1]
+            this.flag=7
+          }
+        }
+      },
       qianghongbaoclick(value){
         if(value){
           GLOBALS.marchSetsPoint('A_H5PT0074001703')
@@ -184,7 +200,12 @@
         return Request[ename]
       },
       back() {
-        top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+        if(this.detailData&&this.detailData.normalState==2&&!localStorage.getItem('clickflag')){
+          localStorage.setItem('clickflag','1')
+          this.flag=5
+        }else{
+          top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+        }
       }, // 回到首页
       getComputedStyle(ele, attr) {
         return window.getComputedStyle(ele, null)[attr]
@@ -196,7 +217,7 @@
         if (url.startsWith('/wap/api')) {
           url = '//platform-api.beeplaying.com' + url
         }
-        if (url.startsWith('/wap/api')) {
+        if (url.startsWith('/shop/api')) {
           url = '//shop-api.beeplaying.com' + url
         }
         return this.axios.post(url, params, {})
@@ -228,6 +249,7 @@
               this.detailData.countdown,
               this.countdown
             )
+            this.makaup()
           }
         } catch (e) {
 
@@ -248,8 +270,12 @@
         }
 
       },
-      async appointmentBonus() { // 报名
-        GLOBALS.marchSetsPoint('A_H5PT0074001375')
+      async appointmentBonus(isfrompop) { // 报名
+        if(!isfrompop){
+          GLOBALS.marchSetsPoint('A_H5PT0074001375')
+        }else{
+
+        }
         let {data} = await this.fetch('/ops/api/jackpot/userApply', {isShowTotast: false})
         if (data.code == 200) {
           this.flag = 3
@@ -266,6 +292,17 @@
         GLOBALS.marchSetsPoint('A_H5PT0074001592')// H5平台-奖池瓜分页面-点击瓜分记录
         await this.bonusListClick()
         this.flag = 2
+      },
+      async makaup(){
+        try {
+          const res = await this.fetch('/ops/api/jackpot/make-up')
+          if (res.data.code == 200 && res.data.data) {
+            // this.makeupData = res.data.data
+            this.makeupData ={"show":true,"type":2,"batchId":'jackpotMakeUp'}
+          }
+        } catch (e) {
+
+        }
       }
     },
     components: {
@@ -434,6 +471,7 @@
       align-items: flex-end;
       justify-content: center;
       width: 100%;
+      animation: scale 2s infinite;
       .price {
         font-size: .74rem;
         font-weight: bold;
@@ -530,22 +568,39 @@
       color: #FDCD00;
     }
   }
-
-  @keyframes giftmove {
-    10%{
-      transform: translateX(-50%) rotate(-3deg);
+  .buqian_icon{
+    width:1.18rem;
+    height: 1.28rem;
+    background: url("./images/new2/buqian_icon.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top:4rem;
+    right: 0;
+    z-index: 1;
+  }
+  /*@keyframes giftmove {*/
+    /*10%{*/
+      /*transform: translateX(-50%) rotate(-3deg);*/
+    /*}*/
+    /*30%{*/
+      /*transform:translateX(-50%) rotate(3deg);*/
+    /*}*/
+    /*50%{*/
+      /*transform:translateX(-50%) rotate(-3deg);*/
+    /*}*/
+    /*70%{*/
+      /*transform:translateX(-50%) rotate(3deg);*/
+    /*}*/
+    /*80%,100%{*/
+      /*transform:translateX(-50%) rotate(0deg);*/
+    /*}*/
+  /*}*/
+  @keyframes scale {
+    0% {
+      transform: scale(1);
     }
-    30%{
-      transform:translateX(-50%) rotate(3deg);
-    }
-    50%{
-      transform:translateX(-50%) rotate(-3deg);
-    }
-    70%{
-      transform:translateX(-50%) rotate(3deg);
-    }
-    80%,100%{
-      transform:translateX(-50%) rotate(0deg);
+    100% {
+      transform: scale(1.2);
     }
   }
 </style>
