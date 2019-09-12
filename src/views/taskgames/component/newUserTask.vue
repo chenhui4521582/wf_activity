@@ -719,7 +719,7 @@ export default {
   position: fixed;
   z-index: 3;
   width: 80%;
-  top: 16%;
+  top: 1rem;
   left: 50%;
   margin-left: -40%;
   animation: rotate 2s linear infinite;
@@ -729,27 +729,27 @@ export default {
   position: fixed;
   z-index: 4;
   width: 50%;
-  height: 80%;
+  height: auto;
   left: 50%;
   margin-left: -25%;
-  top: 15%;
+  top: 0.7rem;
   .open-gift {
     position: absolute;
-    top: 18%;
+    top: 1.5rem;
     left: 50%;
     margin-left: -1.04rem;
     width: 2.08rem;
   }
   .open-text {
     position: absolute;
-    top: 40%;
+    top: 3.5rem;
     left: 50%;
     margin-left: -1.72rem;
     width: 3.44rem;
   }
   .open-btn {
     position: absolute;
-    top: 52%;
+    top: 4.6rem;
     left: 50%;
     margin-left: -0.76rem;
     width: 1.52rem;
