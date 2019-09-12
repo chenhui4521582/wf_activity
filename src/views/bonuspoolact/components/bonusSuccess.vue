@@ -19,14 +19,14 @@
           <slot></slot>
         </div>
         <div class="bottom">
-          仅展示{{recorddate}}场次瓜分记录
+          仅展示{{timeline}}场次瓜分记录
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
       <!--报名成功-->
       <div class="bonus-success baomingsuccess" v-if="count==3">
         <div class="desc">
-          每日{{timetxt}}点开奖,一定要准时来哟~
+          每日{{timetxt}}点开奖,一定要准时来哟~<br>
           <template v-if="appointmentday<=3">
             连续报名3天还能瓜分终极大奖！
           </template>
@@ -39,7 +39,7 @@
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
         <div class="desc">
-          您将是第 <i>{{num+1}}</i>位报名成功的用户
+          您将是第 <i>{{num+1}}</i>位报名成功的用户<br>
           报名成功后可瓜分千元话费奖励
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
@@ -101,10 +101,6 @@
         type: String,
         default: ''
       },
-      recorddate: {
-        type: String,
-        default: ''
-      },
       makeupPackageData: {
         type: Object,
         default: null
@@ -112,6 +108,10 @@
       appointmentday: {
         type: Number,
         default: 0
+      },
+      timeline:{
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -163,6 +163,12 @@
       },
       close(flag) {
         if (flag) {
+          if(this.flag==5){
+            GLOBALS.marchSetsPoint('A_H5PT0074001817')
+          }
+          if(this.flag==6||this.flag==7){
+            GLOBALS.marchSetsPoint('A_H5PT0074001814')
+          }
           this.$emit('close')
         } else {
           this.$emit('closemobile')
@@ -184,6 +190,7 @@
         }
       },
       appointmentBonus() {//去报名
+        GLOBALS.marchSetsPoint('A_H5PT0074001816')
         this.$emit('close')
         this.$emit('appointmentBonus', true)
       },
@@ -193,7 +200,7 @@
       },
       gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0075001467', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
+        GLOBALS.marchSetsPoint('A_H5PT0074001813', {recharge_rmb: item.price, product_id: item.bizId})   // HH5平台-奖池瓜分页面-补签卡弹窗-购买点击
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
           location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
@@ -459,12 +466,12 @@
   .slide-enter,
   .slide-leave-to {
     transform-origin: right bottom;
-    transform: scale(0);
+    transform:translateY(-60%) scale(0);
   }
 
   .slide-enter-to,
   .slide-leave {
-    transform: scale(2);
+    transform:translateY(60%) scale(2);
   }
 
   .slide-enter-active,

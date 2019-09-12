@@ -92,12 +92,12 @@
     <!--规则-->
     <bonus-success v-if="flag" :count="flag" @close="flag=0"
                    :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
-                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData" :appointmentday="appointmentday">
+                   :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData" :appointmentday="appointmentday" :timeline="timeline">
       <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
     </bonus-success>
 
     <!--开启红包弹窗-->
-    <bonus-opened v-if="isshowBonusOpened" :awards="awards" @closePop="closeBonusRes" :normalState="detailData.normalState" :ultimateState="detailData.ultimateState" :tabindex="tabIndex" :dividetimestr="detailData.ultimateDivideDate"></bonus-opened>
+    <bonus-opened v-if="isshowBonusOpened" :awardsData="awards" @closePop="closeBonusRes" :normalState="detailData.normalState" :ultimateState="detailData.ultimateState" :tabindex="tabIndex" :dividetimestr="detailData.ultimateDivideDate"></bonus-opened>
   </div>
 </template>
 <script>
@@ -129,7 +129,8 @@
         tabIndex: 0,
         makeupData:null,
         makeupPackageData:null,
-        appointmentday:0
+        appointmentday:0,
+        timeline:''
       }
     },
     async mounted() {
@@ -161,15 +162,17 @@
     },
     methods: {
       async buqianclick(){
+        GLOBALS.marchSetsPoint('A_H5PT0074001812')
         let {code,data}=(await this.fetch(`/shop/api/mall/showLeaguePacksList/${this.makeupData.batchId}`)).data
-        console.log(code)
         if(code==200){
           if(this.makeupData.type==1){
             this.makeupPackageData=data.leaguePacksList[0]
             this.flag=6
+            GLOBALS.marchSetsPoint('A_H5PT0074001811')
           }else{
             this.makeupPackageData=data.leaguePacksList[1]
             this.flag=7
+            GLOBALS.marchSetsPoint('A_H5PT0074001811')
           }
         }
       },
@@ -202,6 +205,7 @@
       },
       back() {
         if(this.detailData&&this.detailData.normalState==2&&!localStorage.getItem('clickflag')){
+          GLOBALS.marchSetsPoint('A_H5PT0074001815')
           localStorage.setItem('clickflag','1')
           this.flag=5
         }else{
@@ -230,7 +234,8 @@
             pageSize: 500
           })
           if (res.data.code == 200 && res.data.data) {
-            this.bonusListData = res.data.data || []
+            this.bonusListData = res.data.data.records || []
+            this.timeline=res.data.data.timeline
           }
         } catch (e) {
 
@@ -286,8 +291,14 @@
         }
         this.myDetails()
       },
-      async closeBonusRes() {
+      async closeBonusRes(eventType) {
         await this.myDetails()
+        if(eventType==1){
+          this.tabIndex=1
+        }
+        if(eventType==2){
+          this.tabIndex=0
+        }
         this.isshowBonusOpened = false
       },
       async showrecord() {
@@ -299,8 +310,8 @@
         try {
           const res = await this.fetch('/ops/api/jackpot/make-up')
           if (res.data.code == 200 && res.data.data) {
-            // this.makeupData = res.data.data
-            this.makeupData ={"show":true,"type":2,"batchId":'jackpotMakeUp'}
+            this.makeupData = res.data.data
+            // this.makeupData ={"show":true,"type":2,"batchId":'jackpotMakeUp'}
           }
         } catch (e) {
 

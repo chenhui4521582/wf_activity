@@ -6,27 +6,29 @@
       <div class="main-message">
         <div class="info">
           <p class="btn" @click="closePop">
-            <template v-if="ultimateState==1">
-              马上报名
-            </template>
-            <template v-else>
-              <template v-if="awards">
-                收入囊中
-              </template>
-              <template v-else>
-                继续逛逛
-              </template>
-            </template>
+            <!--<template v-if="ultimateState==1">-->
+              <!--马上报名-->
+            <!--</template>-->
+            <!--<template v-else>-->
+              <!--<template v-if="awards">-->
+                <!--收入囊中-->
+              <!--</template>-->
+              <!--<template v-else>-->
+                <!--继续逛逛-->
+              <!--</template>-->
+            <!--</template>-->
+            {{awardsData&&awardsData.button}}
           </p>
-          <p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>
-            赶快报名下一场吧！
-          </p>
-          <p class="desc" v-if="tabindex==0&&normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>
-            {{dividetimestr}}记得来瓜分哟！
-          </p>
-          <p class="desc" v-if="tabindex==1&&ultimateState==3">
-            愿好运常伴您左右
-          </p>
+          <!--<p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>-->
+            <!--赶快报名下一场吧！-->
+          <!--</p>-->
+          <!--<p class="desc" v-if="tabindex==0&&normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>-->
+            <!--{{dividetimestr}}记得来瓜分哟！-->
+          <!--</p>-->
+          <!--<p class="desc" v-if="tabindex==1&&ultimateState==3">-->
+            <!--愿好运常伴您左右-->
+          <!--</p>-->
+          <p class="desc" v-html="awardsData&&awardsData.content"></p>
         </div>
       </div>
       <div class="front-msg">
@@ -52,7 +54,7 @@
   export default {
     name: 'dailyTaskReceivePop',
     props: {
-      awards: {
+      awardsData: {
         type: Object,
         default: null
       },
@@ -73,10 +75,14 @@
         type: ''
       }
     },
+    computed:{
+      awards(){
+        return this.awardsData.awardsInfo
+      }
+    },
     methods: {
       closePop() {
-        console.log('closeBonusRes')
-        this.$emit('closePop')
+        this.$emit('closePop',this.awardsData.eventType)
       },
       getPrizeName(awards) {
         return (parseFloat(awards.awardsName) * awards.awardsNum) + awards.awardsName.match(/[\u4e00-\u9fa5]/g).join("")
