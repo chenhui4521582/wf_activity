@@ -82,6 +82,7 @@
           if(data.code==200){
             this.catSupplyInfo=data.data.receiveStatusInfos.filter(item=>item.type==1)
             this.catSurplusFlag=this.getCatSurplusFlag(this.catSupplyInfo)
+            console.log(this.catSurplusFlag)
             // this.catSurplusFlag=3 测试代码
           }else{
             this.catSurplusFlag=2
@@ -145,7 +146,7 @@
           let data=catSupplyInfo[0]
           if(data.isExist){
             if(data.frozenStatus){
-              return 2
+              return 1
             }else{
               if(data.receiveStatus){
                 return 4
