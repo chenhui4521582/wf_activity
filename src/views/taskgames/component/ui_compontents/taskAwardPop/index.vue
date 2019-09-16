@@ -46,8 +46,8 @@ export default {
   methods: {
     // 关闭弹框
     close (flag) {
-      this.$emit('close', !!flag)//true 关闭按钮
-    },
+      this.$emit('close', !!flag)// true 关闭按钮
+    }
   }
 }
 </script>
@@ -83,7 +83,7 @@ export default {
   left: 50%;
   z-index: 10;
   width: 130%;
-  animation: rotate 2s linear infinite;
+  animation: rotateWithPosition 2s linear infinite;
 }
 .content {
   height: 1.92 * 0.9rem;
@@ -164,7 +164,7 @@ export default {
   transition: opacity 0.3s;
 }
 
-@keyframes rotate {
+@keyframes rotateWithPosition {
   0% {
     transform: translate(-50%, -50%) rotate(0);
   }
