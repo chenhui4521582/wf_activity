@@ -89,7 +89,7 @@
           localStorage.setItem('bujireddot', '1')
         }
         GLOBALS.marchSetsPoint('A_H5PT0061001713')// H5平台-游戏内SDK-顶部补给箱按钮点击
-        let { data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
+        let { data } = await this.axios.post('//petcat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
         if (data.code == 200 || data.code == 203) { // 203 表示用户没猫 状态对应 权益未开启
           if (data.code == 200) {
             this.catSupplyInfo = data.data.receiveStatusInfos.filter(item => item.type == 1)
