@@ -84,38 +84,49 @@
       async gotokf() {
         this.$emit('gotokf')
       },
-      async handleCatBuJi() {//招财猫补给箱
+      async handleCatBuJi () { // 招财猫补给箱
         if (this.bujireddot) {
           localStorage.setItem('bujireddot', '1')
         }
-        GLOBALS.marchSetsPoint('A_H5PT0061001713')//H5平台-游戏内SDK-顶部补给箱按钮点击
-        if (this.catSurplusFlag) {
-          this.bgColor = 'black'
-          if (this.catSurplusFlag == 1) {
-            this.bujireddot = false
-            GLOBALS.marchSetsPoint('A_H5PT0061001717')//H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
-            this.title = '权益被冻结'
-            this.btnName = '去招财猫解封权益'
-          } else if (this.catSurplusFlag == 2) {
-            this.bujireddot = false
-            GLOBALS.marchSetsPoint('A_H5PT0061001714')//H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
-            this.title = '权益未开启'
-            this.btnName = '去招财猫开启权益'
+        GLOBALS.marchSetsPoint('A_H5PT0061001713')// H5平台-游戏内SDK-顶部补给箱按钮点击
+        let { data } = await this.axios.post('//cat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
+        if (data.code == 200 || data.code == 203) { // 203 表示用户没猫 状态对应 权益未开启
+          if (data.code == 200) {
+            this.catSupplyInfo = data.data.receiveStatusInfos.filter(item => item.type == 1)
+            this.catSurplusFlag = this.getCatSurplusFlag(this.catSupplyInfo)
+            // this.catSurplusFlag=3 测试代码
           } else {
-            // this.title=`幸运补给箱Lv.${catSupplyInfo[0].level}`
-            this.title = `幸运补给箱`
-            this.bgHeight = 500
-            if (this.catSurplusFlag == 3) {
-              GLOBALS.marchSetsPoint('A_H5PT0061001720')//H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
-              this.btnName = '领取补给'
-            } else {
-              this.bujireddot = false
-              GLOBALS.marchSetsPoint('A_H5PT0061001727')//H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
-              this.receiveAmount = this.catSupplyInfo.receiveAmount
-              this.btnName = '今日已领'
-            }
+            this.catSurplusFlag = 2
           }
-          this.showOutPop = true
+          if (this.catSurplusFlag) {
+            this.bgColor = 'black'
+            if (this.catSurplusFlag == 1) {
+              this.bujireddot = false
+              GLOBALS.marchSetsPoint('A_H5PT0061001717')// H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
+              this.title = '权益被冻结'
+              this.btnName = '去招财猫解封权益'
+            } else if (this.catSurplusFlag == 2) {
+              this.bujireddot = false
+              GLOBALS.marchSetsPoint('A_H5PT0061001714')// H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
+              this.title = '权益未开启'
+              this.btnName = '去招财猫开启权益'
+            } else {
+              // this.title=`幸运补给箱Lv.${catSupplyInfo[0].level}`
+              this.title = `幸运补给箱`
+              this.bgHeight = 500
+              if (this.catSurplusFlag == 3) {
+                GLOBALS.marchSetsPoint('A_H5PT0061001720')// H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
+                this.btnName = '领取补给'
+              } else {
+                this.bujireddot = false
+                GLOBALS.marchSetsPoint('A_H5PT0061001727')// H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
+                this.receiveAmount = this.catSupplyInfo.receiveAmount
+                this.btnName = '今日已领'
+              }
+            }
+            this.showOutPop = true
+          }
+        } else {
         }
       },
       async gaincatprize() {//招财猫领取补给
