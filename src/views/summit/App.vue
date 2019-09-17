@@ -26,7 +26,7 @@
         <div class='btn'>
           <div class="buy img-config" v-for="item in box" :key="item.amount" @click="getpayWays(item)">
             <p class="price">￥{{item.price}}</p>
-            <p class="num">（{{item.amount/10000}}w金叶子）</p>
+            <p class="num">购买{{item.amount/1000000}}个宝箱<br>+{{item.amount/10000}}w金叶子</p>
           </div>
         </div>
         <div class='sum' v-on:click="gocharts">
@@ -266,11 +266,11 @@ export default {
           color: #346c0d;
         }
         .price {
-          font-size: 0.64rem;
+          font-size: 0.5rem;
           top: 0.08rem;
         }
         .num {
-          top: 0.7rem;
+          bottom: 0.1rem;
         }
       }
     }
