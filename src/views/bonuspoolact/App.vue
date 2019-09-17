@@ -86,7 +86,7 @@
         </div>
       </template>
       <div class="info_txt" v-if="detailData.activityApplyNum">已有<i>{{detailData.activityApplyNum}}</i>人报名成功</div>
-      <div class="buqian_icon" @click="buqianclick" v-if="makeupData&&makeupData.show"></div>
+      <div class="buqian_icon" @click="buqianclick(true)" v-if="makeupData&&makeupData.show"></div>
     </template>
     <!--以下都是弹窗-->
     <!--规则-->
@@ -126,7 +126,7 @@
         showfinger: false,
         showfingerPress: false,
         flag: 0,
-        tabIndex: 0,
+        tabIndex: 1,
         makeupData:null,
         makeupPackageData:null,
         appointmentday:0,
@@ -161,8 +161,8 @@
       }
     },
     methods: {
-      async buqianclick(){
-        GLOBALS.marchSetsPoint('A_H5PT0074001812')
+      async buqianclick(flag){
+        flag&&GLOBALS.marchSetsPoint('A_H5PT0074001812')
         let {code,data}=(await this.fetch(`/shop/api/mall/showLeaguePacksList/${this.makeupData.batchId}`)).data
         if(code==200){
           if(this.makeupData.type==1){
@@ -311,7 +311,9 @@
           const res = await this.fetch('/ops/api/jackpot/make-up')
           if (res.data.code == 200 && res.data.data) {
             this.makeupData = res.data.data
-            // this.makeupData ={"show":true,"type":2,"batchId":'jackpotMakeUp'}
+            if(this.makeupData.show&&this.makeupData.popup){//自动弹出
+              this.buqianclick(false)
+            }
           }
         } catch (e) {
 
