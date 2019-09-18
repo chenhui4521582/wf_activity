@@ -250,8 +250,14 @@
             // if (this.detailData.normalState == 6 && (this.detailData.ultimateState == 3||this.detailData.ultimateState == 2)) {
             //   this.tabIndex = 1
             // }tabIndex
-            if(this.detailData.ultimateState == 3||this.detailData.normalState == 2){
+            if(this.detailData.ultimateState==3){
               this.tabIndex = 1
+            }else{
+              if([2,3,4,5].includes(this.detailData.normalState)&&this.detailData.userApplyTime){
+                this.tabIndex = 0
+              }else{
+                this.tabIndex = 1
+              }
             }
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
               this,
