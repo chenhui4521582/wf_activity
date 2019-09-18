@@ -1,14 +1,4 @@
 html {
-  font-size: 620%;
-
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-  * {
-      box-sizing: border-box;
-      font-size: .16rem /* 16/100 */;
-  }
 }
 body,div,ul,li {
   padding: 0;
@@ -17,33 +7,34 @@ body,div,ul,li {
 .container
 {
   position: relative;
-  height: 9.2rem;
+  height: 19.88rem;
   background: url('../images/bg.png') no-repeat;
   background-size:cover;
-  padding-bottom:0.7rem;
+  padding-bottom:0.7*2rem;
   width:100%;
+  box-sizing: border-box;
   .back{
     position: absolute;
-    top:.29rem;
-    left:.1rem;
-    width: .22rem;
-    height: .22rem;
+    top:.29*2rem;
+    left:.1*2rem;
+    width: .22*2rem;
+    height: .22*2rem;
     background: url('../images/back.png') no-repeat;
     background-size:100% 100%;
   }
   .header{
-    margin-top: 0.3rem;
+    margin-top: 0.3*2rem;
     width:100%;
   }
 
   .list_cards{
    display: flex;
    list-style-type:none;
-   margin:0 0.1rem;
+   margin:0 0.1*2rem;
 
     li {
       flex: 1;
-      margin: 0.2rem 0.05rem;
+      margin: 0.2*2rem 0.05*2rem;
       img{
         width:100%;
       }
@@ -52,65 +43,68 @@ body,div,ul,li {
 
   .status {
     color:#fff;
-    margin-top: 0.1rem;
     font-weight: bold;
-    font-size: 0.22rem;
+    font-size: 0.22*2rem;
     text-align: center;
   }
 
   .btn_submit
   {
-    width: 2.3rem;
-    margin: 0.5rem auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2rem;
+    width: 2.3*2rem;
+    height: .53*2rem;
     display: block;
+    margin: auto;
   }
 
   .rules
   {
-    margin-top:0.7rem;
     width: 100%;
-
+    position: absolute;
+    top: 4.5rem;
     .title
     {
-      width: 1.5rem;
-      background: url('../images/bg_rule.png') 0 0.1rem no-repeat;
+      width: 1.5*2rem;
+      background: url('../images/bg_rule.png') 0 0.1*2rem no-repeat;
       background-size:contain;
       color: #fff;
-      font-size: 0.15rem;
+      font-size: 0.15*2rem;
       text-align: center;
       vertical-align: top;
-      margin:0.1rem auto;
+      margin: 0 auto .44rem;
     }
 
     .rules_wrapper
     {
       margin:0 auto;
-      width: 3.3rem;
+      width: 3.3*2rem;
       background: rgba(255,255,255,0.1);
-      border-radius: 0.1rem;
+      border-radius: 0.1*2rem;
       color:#fff;
 
       ul{
-        padding:0.15rem;
+        padding:0.15*2rem;
         list-style:none;
         li{
-          margin-bottom:0.12rem;
+          margin-bottom:0.12*2rem;
 
           &::before {
             vertical-align: top;
-            width: 0.1rem;
-            height: 0.1rem;
-            margin-top: 0.07rem;
-            margin-right: 0.1rem;
+            width: 0.1*2rem;
+            height: 0.1*2rem;
+            margin-right: 0.1*2rem;
             content: '';
             display: inline-block;
             background: url('../images/ico_dot.png') no-repeat;
             background-size:contain;
           }
           div {
-            font-size:0.14rem;
+            font-size:0.14*2rem;
             display: inline-block;
-            width:2.7rem;
+            width:2.7*2rem;
           }
         }
       }
