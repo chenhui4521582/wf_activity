@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
+        <div class="back" @click="back"></div>
         <img class="header" src="./images/header.png" />
         <ul class="list_cards">
           <li v-for='i in 3'>
@@ -10,7 +11,7 @@
         <div class='status'>{{status_str}}</div>
 
         <img class="btn_submit" src='./images/bg_btn.png' />
-        
+
         <div class="rules">
           <div class="title">活动规则</div>
           <div class="rules_wrapper">
@@ -34,17 +35,19 @@
       }
     },
     components: {
-      
+
     },
-    
+
     methods: {
-      
+      back(){
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      }
     },
     async mounted () {
-      
+
     },
     watch: {
-      
+
     }
   }
 </script>
