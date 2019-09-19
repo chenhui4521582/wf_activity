@@ -754,8 +754,8 @@ export default {
         })
       }
       setTimeout(() => {
-        // 跳转平台 并且弹出转盘
-        if (url && url.indexOf('openturntable') > -1) {
+        // 跳转平台 并且弹出转盘 || 一元夺宝
+        if (url && (url.indexOf('openturntable') > -1 || url.indexOf('openOneLottery') > -1)) {
           parent.location.href = url
           return false
         }
