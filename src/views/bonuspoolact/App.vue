@@ -209,7 +209,8 @@
           localStorage.setItem('clickflag','1')
           this.flag=5
         }else{
-          top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+          // top.location.href = window.linkUrl.getBackUrl(this.curChannel)
+          history.back(-1)
         }
       }, // 回到首页
       getComputedStyle(ele, attr) {
