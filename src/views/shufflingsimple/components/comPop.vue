@@ -6,54 +6,8 @@
         <div :class="getClassName('wrap')" @click="close(from)">
           <template v-if="from!=1">
             <div :class="getClassName('btn btn-yellow')" @click="btnyellowclick">
-              <template v-if="from==2">
-                立即去翻牌
-              </template>
-              <template v-else-if="from==3">
-                去充值得翻牌点
-              </template>
-              <template v-else-if="from==4">
-                继续翻牌
-              </template>
-              <template v-else-if="from==5">
-                继续翻牌
-              </template>
-              <template v-else-if="from==6">
-                继续翻牌
-              </template>
-              <template v-else-if="from==7||from==11">
-                放弃翻倍卡
-              </template>
-              <template v-else-if="from==8">
-                去充值得翻牌点
-              </template>
-              <template v-else>
-                我要升级
-              </template>
             </div>
-            <div :class="getClassName('btn btn-pink')" v-if="[3,7,8,9,10,11].includes(from)" @click="btnpinkclick">
-              <template v-if="from==3">
-                去玩游戏得翻牌点
-              </template>
-              <template v-else-if="from==7||from==11">
-                继续翻牌
-              </template>
-              <template v-else-if="from==8">
-                去玩游戏得翻牌点
-              </template>
-              <template v-else>
-                我再想想
-              </template>
-            </div>
-            <div class="info1" v-if="from==5||from==6">
-              <template v-if="from==5">
-                翻倍卡生效，奖励翻倍
-              </template>
-              <template v-else>
-                继续翻出奖品则奖励X2
-              </template>
-            </div>
-            <div :class="getClassName('product-img')" v-if="[4,5,6].includes(from)">
+            <div :class="getClassName('product-img')">
               <!--<div class="item" v-for="item in carddata">-->
                 <!--<img src="../images/jd.png" alt="" v-if="item.awardsType=='jdk'">-->
                 <!--<img src="../images/huafei.png" alt="" v-if="item.awardsType=='hfq'">-->
@@ -62,9 +16,15 @@
                 <!--<img src="../images/card.png" alt="" v-if="item.awardsType=='fbk'">-->
                 <!--<span>{{item.awardsName}}</span>-->
               <!--</div>-->
+              <div class="item">
+                <img src="./images/pop/fee.png" alt="">
+                <!--<img src="./images/pop/leaf.png" alt="">-->
+                <span>33333</span>
+              </div>
             </div>
             <div class="info">
-              获得翻倍卡后，下次奖励翻倍
+              <!--很遗憾，<br>您与大奖擦肩而过~-->
+              恭喜您中奖啦！
             </div>
           </template>
         </div>
@@ -209,18 +169,7 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .rule {
     position: fixed;
-    top: 0;
-    &.flag1, &.flag7,&.flag11, &.flag9, &.flag10 {
-      top: 1.64rem;
-    }
-    left: 50%;
-    margin-left: -2.81rem;
-    &.flag1 {
-      margin-left: -2.69rem;
-    }
-    &.flag7,&.flag11, &.flag9, &.flag10{
-      margin-left: -2.46rem;
-    }
+    top: 2.27rem;
     .pop-mask {
       position: fixed;
       left: 0;
@@ -273,54 +222,50 @@
         }
         .product-img {
           position: absolute;
-          top: 3.4rem;
-          left: 0;
-          right: 0;
+          top: 2.7rem;
+          left: 2rem;
+          right: 2.15rem;
           text-align: center;
           font-size: .18rem;
           font-weight: 400;
           color: #3f1207;
           line-height: .3rem;
-          height: 1.9rem;
+          height: 2.6rem;
           display: flex;
-          justify-content: center;
-          &.flag6 {
-            justify-content: space-between;
-          }
-          padding-left: .85rem;
-          padding-right: .8rem;
+          justify-content: space-between;
+          align-items: center;
           .item {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            width: 1.85rem;
+            justify-content:space-between;
+            width: 100%;
+            height: 2.6rem;
             align-items: center;
             img {
-              width: 1.17rem;
-              height: 1.24rem;
+              height: 1.6rem;
             }
             span {
-              font-size: .26rem;
+              width: 1.81rem;
+              height: .48rem;
+              line-height:.48rem;
+              font-size: .32rem;
               font-weight: 400;
-              color: rgba(244, 131, 73, 1);
+              color:rgba(255,251,172,1);
+              background: url("./images/pop/txtname.png");
+              background-size: 100% 100%;
+              overflow: hidden;
             }
           }
         }
         .btn {
-          width: 3.28rem;
-          height: .87rem;
+          width: 4.9rem;
+          height: 1.06rem;
           left: 50%;
           transform: translateX(-50%);
           &.btn-yellow {
             background: url("./images/pop/btn.png");
             background-size: 100% 100%;
-            bottom: 1.9rem;
-            &.flag3, &.flag7,&.flag11, &.flag8, &.flag9, &.flag8, &.flag10 {
-              bottom: 3rem;
-            }
-            &.flag6, &.flag5 {
-              bottom: 1.6rem;
-            }
+            top: 6.43rem;
           }
           position: absolute;
           line-height: .7rem;
@@ -339,17 +284,19 @@
         }
         .info {
           position: absolute;
-          bottom: 1.4rem;
-          left: 0;
-          right: 0;
+          bottom: 2rem;
+          left: 2rem;
+          right: 2.15rem;
           text-align: center;
-          font-size: .18rem;
+          font-size: .28rem;
           font-weight: 400;
-          color: #3f1207;
-          line-height: .3rem;
-          i {
-            color: #CF5E20;
-          }
+          color: #ffffff;
+          height: .8rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          line-height: .4rem;
         }
         .info1 {
           position: absolute;
