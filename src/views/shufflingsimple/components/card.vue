@@ -1,13 +1,14 @@
 <template>
   <div class="grid">
-    {{showgif}}
     <div class="projects">
       <template v-if="!showgif">
-        <div class="project" :class="{currentCardIndex:currentCardIndexArr.includes(index),ani1:index==1,controls:index==1&&!showcontrolcss,show:index==1&&showcontrolcss,ani0:index==0&&classNamesArr[0],ani2:index==2&&classNamesArr[1]}" v-for="(item,index) in cardData" @click="clickCard(item,index)">
+        <div class="project"
+             :class="{currentCardIndex:currentCardIndexArr.includes(index),ani1:index==1,controls:index==1&&!showcontrolcss,show:index==1&&showcontrolcss,ani0:index==0&&classNamesArr[0],ani2:index==2&&classNamesArr[1]}"
+             v-for="(item,index) in cardData" @click="clickCard(item,index)">
           <template v-if="!(index==1&&!showcontrolcss)">
             <div class="mask">
               <div class="back">
-                <img :src="item.awardsImage|filter" alt="" >
+                <img :src="item.awardsImage|filter" alt="">
                 <span>{{item.awardsName}}</span>
               </div>
               <div class="front">
@@ -29,11 +30,12 @@
         </div>
       </template>
     </div>
-    <com-pop></com-pop>
+    <com-pop v-if="showAward" :carddata="awardData" @close="closeAward"></com-pop>
   </div>
 </template>
 <script>
   import comPop from './comPop'
+
   export default {
     name: 'app',
     props: {
@@ -52,6 +54,10 @@
       isBeginAnimate: {
         type: Boolean,
         default: false
+      },
+      currentCardIndexArr: {
+        type: Array,
+        default: []
       }
     },
     data() {
@@ -59,10 +65,11 @@
         showcontrolcss: true,
         cardsClicked: [],
         canClick: false,
-        currentCardIndexArr: [],
-        classNamesArr: ['ani0','ani2'],
+        classNamesArr: ['ani0', 'ani2'],
         isCanHit: true,
-        showgif:false
+        showgif: false,
+        showAward: false,
+        awardData: null
       }
     },
     methods: {
@@ -100,29 +107,37 @@
         this.subMove();
       },
       clickCard(item, index) {
-        if (this.canClick && this.isCanHit) {
-          if (!item.status) {//未翻
+        if (this.canClick && this.isCanHit&&this.isBeginAnimate) {
+          if (!this.currentCardIndexArr.includes(index)) {//未翻
             this.goHit(item, index)
           }
         }
       },
       async goHit(item, index) {
-        console.log('000')
         this.isCanHit = false
         const {code, data, message} = (await this.axios.post('//ops-api.beeplaying.com/ops/api/fanpai/receive')).data
+        // const {code,data,meaasge}={"code":200,"data":{"awardsName":"金叶子*100","awardsImage":"/cdn/wheel/leafs.png","awardsNum":100,"grandPrixFlag":false,"unOpenAwardsList":[{"awardsName":"100金叶子","awardsImage":"/group1/M00/3E/A9/CmcEHF2CH92ARQ-IAAEFd6cBn_c596.png"},{"awardsName":"10元话费","awardsImage":"/group1/M00/3E/A9/CmcEHF2CH_GAfCBJAAEgy0nWavY082.png"}]},"message":null}
         if (code === 200) {
-          if(index==0){
-            this.cardData=[{awardsImage:data.awardsImage, awardsName: data.awardsName},...data.unOpenAwardsList]
-          }else if(index==2){
-            this.cardData=[...data.unOpenAwardsList,{awardsImage:data.awardsImage, awardsName: data.awardsName}]
-          }else{
-            this.cardData=[data.unOpenAwardsList[0],{awardsImage:data.awardsImage, awardsName: data.awardsName},data.unOpenAwardsList,data.unOpenAwardsList[1]]
+          this.awardData = data
+          GLOBALS.marchSetsPoint('A_H5PT0019001823',{
+            position_id:index,
+            awards_name:data.awardsName
+          })
+          if (index == 0) {
+            this.cardData = [{awardsImage: data.awardsImage, awardsName: data.awardsName}, ...data.unOpenAwardsList]
+          } else if (index == 2) {
+            this.cardData = [...data.unOpenAwardsList, {awardsImage: data.awardsImage, awardsName: data.awardsName}]
+          } else {
+            this.cardData = [data.unOpenAwardsList[0], {
+              awardsImage: data.awardsImage,
+              awardsName: data.awardsName
+            }, data.unOpenAwardsList[1]]
           }
-          this.currentCardIndexArr=[index]
+          this.currentCardIndexArr = [index]
           setTimeout(() => {
-            this.$emit('getawards', data)
+            this.showAward = true
             this.isCanHit = false
-          }, 1000)
+          }, 500)
         } else if (code == 102) {
           this.isCanHit = true
           this.$emit('getawards', null)
@@ -134,13 +149,17 @@
           })
         }
       },
+      closeAward(){
+        this.showAward=false;
+        this.currentCardIndexArr=[0,1,2]
+        this.$emit('close', 0)
+      }
     },
-    components:{
+    components: {
       comPop
     },
     mounted() {
       this.classNamesArr = ['ani0', 'ani2']
-      this.isBeginAnimate&&(this.currentCardIndexArr=[0,1,2])
       $('.project').get(0).addEventListener("transitionstart", () => {
         if (this.classNamesArr.length < 2) {
           this.canClick = false
@@ -162,9 +181,6 @@
       cardData: {
         handler(val) {
           this.canClick = true
-          // setTimeout(() => {
-          //   this.currentCardIndexArr = val.filter(item => item.status).map(item => item.sort - 1)
-          // })
         },
         immediate: true
       },
@@ -172,11 +188,13 @@
         handler(val) {
           if (val) {
             setTimeout(() => {
-              this.currentCardIndexArr=[]
-              this.showgif=true
+              this.currentCardIndexArr = []
+            }, 1000)
+            setTimeout(() => {
+              this.showgif = true
             }, 1500)
             setTimeout(() => {
-              this.showgif=false
+              this.showgif = false
             }, 3000)
           } else {
             this.canClick = true
@@ -190,6 +208,7 @@
 
 <style lang="less" scoped>
   @import '../../../common/css/base.css';
+
   #projects, #projects .grid {
   }
 
@@ -214,7 +233,7 @@
     //width: 1170*0.01rem;
     margin: 0 auto;
     position: absolute;
-    top:5.5rem;
+    top: 5.5rem;
     left: 0;
     right: 0;
     margin: auto;
@@ -230,7 +249,7 @@
 
   div.projects {
     width: 6.45rem;
-    position:absolute;
+    position: absolute;
     left: 0;
     right: 0;
     margin: auto;
@@ -292,6 +311,7 @@
     right: 0;
     top: 0;
   }
+
   .project .front {
     position: relative;
     background: url('./images/hide_card.png') no-repeat;

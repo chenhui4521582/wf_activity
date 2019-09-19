@@ -4,13 +4,13 @@
       <div class="back" @click="back"></div>
       <img class="header" src="./images/header.png"/>
       <!--:isBeginAnimate="infoData.openFlag && !infoData.todayReceivedFlag"-->
-      <card :isBeginAnimate="infoData&&infoData.openFlag && !infoData.todayReceivedFlag" :cardData="infoData&&infoData.awardsList" v-if="infoData"></card>
+      <card :isBeginAnimate="infoData&&infoData.openFlag && !infoData.todayReceivedFlag" :cardData="infoData&&infoData.awardsList" :currentCardIndexArr="infoData&&infoData.openFlag && !infoData.todayReceivedFlag?[0,1,2]:[]" v-if="infoData" ></card>
       <div style="position: absolute;top: 9.2rem;left: 0;right: 0;">
         <div class='status'>{{status_str}}</div>
         <!-- 跑马灯 -->
         <horn-list :noticeList="infoData.horseRaceLampList"
                    v-if="infoData&&infoData.horseRaceLampList&&infoData.horseRaceLampList.length"/>
-        <img class="btn_submit" src='./images/bg_btn.png' v-if="infoData&&infoData.todayReceivedFlag"/>
+        <img class="btn_submit" src='./images/bg_btn.png' v-if="infoData&&infoData.todayReceivedFlag" @click="clickTomorrow"/>
         <div class="btn_submit" v-else></div>
         <div class="rules">
           <div class="title">活动规则</div>
@@ -51,17 +51,21 @@
 
     methods: {
       back() {
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+        history.back(-1)
       },
       async getActInfo() {
         let {code, data} = (await this.axios.post('//ops-api.beeplaying.com/ops/api/fanpai/info')).data
         if (code == 200) {
+          GLOBALS.marchSetsPoint('A_H5PT0019001822')
           this.infoData = data;
           if (this.infoData.openFlag && this.infoData.todayReceivedFlag) {
             this.status_str = '今天的翻牌机会已用完'
           }
         }
       },
+      clickTomorrow(){
+        GLOBALS.marchSetsPoint('A_H5PT0019001824')
+      }
     },
     created(){
       this.getActInfo()

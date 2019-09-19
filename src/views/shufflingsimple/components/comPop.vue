@@ -1,5 +1,5 @@
 <template>
-  <section :class="getClassName('rule')" :style="{zIndex:isShowPop?2:2}">
+  <section :class="getClassName('rule')">
     <div class="pop-mask" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop">
@@ -8,24 +8,19 @@
             <div :class="getClassName('btn btn-yellow')" @click="btnyellowclick">
             </div>
             <div :class="getClassName('product-img')">
-              <!--<div class="item" v-for="item in carddata">-->
-                <!--<img src="../images/jd.png" alt="" v-if="item.awardsType=='jdk'">-->
-                <!--<img src="../images/huafei.png" alt="" v-if="item.awardsType=='hfq'">-->
-                <!--<img src="../images/fish.png" alt="" v-if="item.awardsType=='yg'">-->
-                <!--<img src="../images/leaf.png" alt="" v-if="item.awardsType=='jyz'">-->
-                <!--<img src="../images/card.png" alt="" v-if="item.awardsType=='fbk'">-->
-                <!--<span>{{item.awardsName}}</span>-->
-              <!--</div>-->
               <div class="item">
-                <img src="./images/pop/fee.png" alt="">
-                <!--<img src="./images/pop/leaf.png" alt="">-->
-                <span>33333</span>
+                <img :src="carddata.awardsImage|filter" alt="" v-if="carddata">
+                <span>{{carddata&&carddata.awardsName}}</span>
               </div>
             </div>
-            <div class="info">
-              <!--很遗憾，<br>您与大奖擦肩而过~-->
-              恭喜您中奖啦！
-            </div>
+            <template v-if="carddata">
+              <div class="info" v-if="carddata.grandPrixFlag">
+                恭喜您中奖啦！
+              </div>
+              <div class="info" v-else>
+                很遗憾，<br>您与大奖擦肩而过~
+              </div>
+            </template>
           </template>
         </div>
         <div class="close-icon" @click="close(0)"></div>
@@ -43,45 +38,14 @@
       };
     },
     props: {
-      ruleMain: {
-        type: String,
-        default: ""
-      },
-      from: {
-        type: Number,
-        default: 0
-      },
-      level: {
-        type: Number,
-        default: 0
-      },
-      carddata:{
-        type: Array,
-        default: []
+      carddata: {
+        type: Object,
+        default: null
       }
     },
     methods: {
-      showPop() {
-        this.isShowPop = true
-        if (this.from) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
-        }
-      },
       close(flag) {
-        if(flag==0){
-          this.$emit('close', flag)
-          if(this.from==1){
-            GLOBALS.marchSetsPoint('A_H5PT0156001794')//H5平台-翻牌活动-弹窗反馈-首次进入页面恭喜获得翻牌点弹窗-关闭点击
-            this.$emit('card')
-          }
-        }
-        if(flag==1){
-          GLOBALS.marchSetsPoint('A_H5PT0156001793')//H5平台-翻牌活动-弹窗反馈-首次进入页面恭喜获得翻牌点弹窗-去翻大奖点击
-          this.$emit('close', flag)
-          this.$emit('card')
-        }
+        this.$emit('close', flag)
       },
       getClassName(name) {
         if (this.from) {
@@ -91,77 +55,10 @@
         }
       },
       btnyellowclick() {
-        if (this.from == 2) {//立即去翻牌
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001799')//H5平台-翻牌活动-弹窗反馈-翻牌场次升级弹窗-立即去翻牌点击
-        } else if (this.from == 3) {//去充值得翻牌点
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001796')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去充值得翻牌点点击
-          this.$emit('package')
-        } else if (this.from == 4) {//继续翻牌
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001782')//H5平台-翻牌活动-弹窗反馈-正常奖励弹窗-继续翻牌
-        } else if (this.from == 5) {//继续翻牌
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001786')//H5平台-翻牌活动-弹窗反馈-翻倍开出奖励弹窗-继续翻牌
-        } else if (this.from == 6) {//继续翻牌
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001784')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗-继续翻牌
-        } else if (this.from == 7||this.from == 11) {//放弃翻倍卡
-          GLOBALS.marchSetsPoint('A_H5PT0156001790')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-放弃翻倍卡点击
-          this.$emit('sureCard',this.from==7?1:2)//true 重置 false 升级场次
-          if(this.from == 7){
-            this.$emit('close', 0)
-          }
-        } else if (this.from == 8) {//去充值得翻牌点
-          this.$emit('close', 0)
-          this.$emit('package')
-        }else if (this.from == 9) {//我要升级
-          this.$emit('close', 0)
-          this.$emit('sureGrade')
-        }else{//我要升级
-          this.$emit('close', 0)
-          this.$emit('sureGrade')
-        }
-      },
-      btnpinkclick() {
-        if (this.from == 3) {//去玩游戏得牌点
-          GLOBALS.marchSetsPoint('A_H5PT0156001797')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
-          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
-        } else if (this.from == 7||this.from ==11) {//继续翻牌
-          this.$emit('close', 0)
-          GLOBALS.marchSetsPoint('A_H5PT0156001791')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗-继续翻牌点击
-        } else if (this.from == 8) {//去玩游戏得牌点
-          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
-        }else if (this.from == 9) {//我再想想
-          this.$emit('close', 0)
-        }else if (this.from == 10) {//我再想想
-          this.$emit('close', 0)
-        }
+        this.$emit('close', 0)
       }
     },
-    mounted(){
-      if (this.from == 1) {//首次赠送
-        GLOBALS.marchSetsPoint('A_H5PT0156001792')//H5平台-翻牌活动-弹窗反馈-首次进入页面恭喜获得翻牌点弹窗加载完成
-      } else if (this.from == 2) {//恭喜升级
-        GLOBALS.marchSetsPoint('A_H5PT0156001798')//H5平台-翻牌活动-弹窗反馈-翻牌场次升级弹窗加载完成
-      } else if (this.from == 3) {//翻倍点不足
-        GLOBALS.marchSetsPoint('A_H5PT0156001795')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗加载完成
-      } else if (this.from == 4) {//正常奖励
-        GLOBALS.marchSetsPoint('A_H5PT0156001781')//H5平台-翻牌活动-弹窗反馈-正常奖励弹窗加载完成
-      } else if (this.from == 5) {//翻倍开出
-        GLOBALS.marchSetsPoint('A_H5PT0156001785')//H5平台-翻牌活动-弹窗反馈-翻倍开出奖励弹窗加载完成
-      } else if (this.from == 6) {//获得翻倍卡
-        GLOBALS.marchSetsPoint('A_H5PT0156001783')//H5平台-翻牌活动-弹窗反馈-获得翻倍卡弹窗加载完成
-      } else if (this.from == 7||this.from == 11) {//重置弹窗
-        GLOBALS.marchSetsPoint('A_H5PT0156001789')//H5平台-翻牌活动-弹窗反馈-重置提醒弹窗加载完成
-      } else if (this.from == 8) {//抱歉不能升级
-        //GLOBALS.marchSetsPoint('A_H5PT0156001776')
-      }else if (this.from == 9) {//是否升级中级场
-        // GLOBALS.marchSetsPoint('A_H5PT0156001789')
-      }else{//是否升级高级场
-        // GLOBALS.marchSetsPoint('A_H5PT0156001789')
-      }
+    mounted() {
     }
   };
 </script>
@@ -170,6 +67,7 @@
   .rule {
     position: fixed;
     top: 2.27rem;
+    z-index: 2;
     .pop-mask {
       position: fixed;
       left: 0;
@@ -208,7 +106,7 @@
         }
         padding: 2.9rem 0.2rem 0;
         width: 7.2rem;
-        height:8.26rem;
+        height: 8.26rem;
         background: url("./images/pop/bg.png") no-repeat center center /
         100% 100%;
         .gradationimg {
@@ -237,7 +135,7 @@
           .item {
             display: flex;
             flex-direction: column;
-            justify-content:space-between;
+            justify-content: space-between;
             width: 100%;
             height: 2.6rem;
             align-items: center;
@@ -247,10 +145,10 @@
             span {
               width: 1.81rem;
               height: .48rem;
-              line-height:.48rem;
+              line-height: .48rem;
               font-size: .32rem;
               font-weight: 400;
-              color:rgba(255,251,172,1);
+              color: rgba(255, 251, 172, 1);
               background: url("./images/pop/txtname.png");
               background-size: 100% 100%;
               overflow: hidden;
