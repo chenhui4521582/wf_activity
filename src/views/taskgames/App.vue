@@ -759,6 +759,10 @@ export default {
           parent.location.href = url
           return false
         }
+        if (url === 'openOneLottery') {
+          this.backIndexPage(false, `#/?channel=${this.channel}&from=openOneLottery`)
+          return
+        }
         if (url === 'luckdraw') {
           this.backIndexPage(false, `#/luckdraw?channel=${this.channel}`)
           return
