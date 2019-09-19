@@ -203,7 +203,7 @@
           </poplog>
           <!-- 新版奖励弹窗   -->
           <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
-          <task-award-pop v-if="isDailyReceivePop"  :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
+          <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
           <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
@@ -424,11 +424,12 @@ export default {
       this.isRRZQPop = false
     },
     async jumpMine () {
-      if (this.channel.indexOf(100051) > -1) {
-        return false
-      }
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
-      parent.location.href = this.jumpToPlat() + '#/personal'
+      let _url = '#/personal'
+      if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
+        _url = '#/my'
+      }
+      parent.location.href = this.jumpToPlat() + _url
     },
     async getHuafeiNum () {
       let { data } = await this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/getMinHFConvertAmount')
@@ -436,10 +437,13 @@ export default {
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
-      localStorage.setItem('originGameProblem', true)
       localStorage.setItem('originGame', parent.location.href)
 
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
+      let _url = '#/problem?tab=contact_personal'
+      if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
+        _url = '#/my/customerService'
+      }
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', false, _url)
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
       let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTask', { value: val })
@@ -626,7 +630,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if ((this.woolUserType||item.action === 71) && type === 'dayTask'&&!item.flag) {
+        if ((this.woolUserType || item.action === 71) && type === 'dayTask' && !item.flag) {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
@@ -754,6 +758,10 @@ export default {
         if (url && url.indexOf('openturntable') > -1) {
           parent.location.href = url
           return false
+        }
+        if (url === 'openOneLottery') {
+          this.backIndexPage(false, `#/?channel=${this.channel}&from=openOneLottery`)
+          return
         }
         if (url === 'luckdraw') {
           this.backIndexPage(false, `#/luckdraw?channel=${this.channel}`)
@@ -922,7 +930,7 @@ export default {
     },
     async getDayTask () {
       let arrring2 = []
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
         value: 'dayTask',
         from: 'sdk',
         gameType: this.currentGameType
@@ -933,7 +941,7 @@ export default {
           if (dataA.code == 200) {
             dataA.data.awardsList.map(item => {
               arrring2.push({
-                "taskId": item.amount, "taskName": item.description, "gameType": this.currentGameType, "taskDesc": item.description, "icon": item.icon, "taskOps": item.costNum, "finishNum": item.currNum, "taskStatus": item.costNum <= item.currNum ? 0 : 1, "taskLogId": item.amount, "cycle": 0, "awardsType": 0, "awardsName": item.awardsName, "url": null, "awardsImage": item.awardsImg, "taskDescShow": item.description, "awardsNum": 0, "taskType": 0, "subTask": "", "preTask": null, "action": 0, "sort": 0, flag: 'ring2'
+                'taskId': item.amount, 'taskName': item.description, 'gameType': this.currentGameType, 'taskDesc': item.description, 'icon': item.icon, 'taskOps': item.costNum, 'finishNum': item.currNum, 'taskStatus': item.costNum <= item.currNum ? 0 : 1, 'taskLogId': item.amount, 'cycle': 0, 'awardsType': 0, 'awardsName': item.awardsName, 'url': null, 'awardsImage': item.awardsImg, 'taskDescShow': item.description, 'awardsNum': 0, 'taskType': 0, 'subTask': '', 'preTask': null, 'action': 0, 'sort': 0, flag: 'ring2'
               })
             })
           }
@@ -980,9 +988,6 @@ export default {
       // }
     },
     kfclick () {
-      if (this.channel.indexOf(100051) > -1) {
-        return false
-      }
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
     },

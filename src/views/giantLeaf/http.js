@@ -52,62 +52,62 @@ axios.interceptors.response.use(
     if (res && res.code && res.code != 200) {
       switch (res.code) {
         case 400:
-          Vue.prototype.$toast.show({
-            message: '请求处理失败',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '请求处理失败',
+          //   duration: 1500
+          // })
           break
-        // case 401:
-        //     Vue.prototype.$toast.show({
-        //         message: '未授权，请登录！',
-        //         duration: 1500
-        //     });
-        //     break;
+        case 401:
+          //     Vue.prototype.$toast.show({
+          //         message: '未授权，请登录！',
+          //         duration: 1500
+          //     });
+          break
         case 404:
-          Vue.prototype.$toast.show({
-            message: '请求地址出错！',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '请求地址出错！',
+          //   duration: 1500
+          // })
           break
         case 408:
-          Vue.prototype.$toast.show({
-            message: '请求超时',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '请求超时',
+          //   duration: 1500
+          // })
           break
         case 500:
-          Vue.prototype.$toast.show({
-            message: '服务器内部错误',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '服务器内部错误',
+          //   duration: 1500
+          // })
           break
 
         case 501:
-          Vue.prototype.$toast.show({
-            message: '服务未实现',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '服务未实现',
+          //   duration: 1500
+          // })
           break
 
         case 502:
-          Vue.prototype.$toast.show({
-            message: '网关错误',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '网关错误',
+          //   duration: 1500
+          // })
           break
 
         case 503:
-          Vue.prototype.$toast.show({
-            message: '服务不可用',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '服务不可用',
+          //   duration: 1500
+          // })
           break
 
         case 504:
-          Vue.prototype.$toast.show({
-            message: '网关超时',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '网关超时',
+          //   duration: 1500
+          // })
           break
         case 122, 128:
           break
@@ -133,10 +133,10 @@ axios.interceptors.response.use(
     } else {
       error = JSON.stringify(error)
       if (error.indexOf('timeout') != -1) {
-        Vue.prototype.$toast.show({
-          message: '请求超时',
-          duration: 1500
-        })
+        // Vue.prototype.$toast.show({
+        //   message: '请求超时',
+        //   duration: 1500
+        // })
         return
       }
     }

@@ -113,7 +113,7 @@
     z-index: 11;
     left: 0;
     right: 0;
-    height: 4rem;
+    height: 4.5rem;
 
     .title {
       font-size: .24rem;

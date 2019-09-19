@@ -10,6 +10,9 @@ function resolve (dir) {
 
 module.exports = {
   entry: utils.entries(),
+  cache: {
+    type: "filesystem"
+  },
   output: {
     path: path.resolve(__dirname, 'static'),
     // filename: '[name].js',

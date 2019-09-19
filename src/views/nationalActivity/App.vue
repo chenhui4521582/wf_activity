@@ -148,7 +148,7 @@ export default {
                 AppCall.getProductData(function(productParams) {
                     productParams = JSON.parse(productParams);
                     if(productParams) {
-                        localStorage.setItem('APP_CHANNEL',productParams.appChannel);
+                        localStorage.setItem('APP_CHANNEL',productParams.appChannel || localStorage.getItem('APP_CHANNEL'));
                         localStorage.setItem('APP_VERSION',productParams.appVersion);
                         // 300001
                         _this._appChannel =String(productParams.appChannel);

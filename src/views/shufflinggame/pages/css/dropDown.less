@@ -1,0 +1,111 @@
+.bottom-wrap {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  height: .9rem;
+  background: url('../../images/bottom.png') center center / 100% 100%;
+  display: flex;
+  padding: 0.2rem 0.2rem 0.16rem;
+  box-sizing: border-box;
+  z-index: 2;
+  .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 0.28rem;
+    font-weight: bold;
+    color: #B05201;
+
+    .hammer_icon {
+      margin-left: 0.24rem;
+      width: 0.7rem;
+      height: 0.88rem;
+      background: center center / 100% 100%;
+    }
+
+    .right {
+      flex: 1;
+      text-align: center;
+
+      .main-text {
+        line-height: 0.44rem;
+
+        span {
+          color: #FF280E;
+        }
+      }
+
+      .btn {
+        margin-top: 0.12rem;
+        font-size: 0.24rem;
+        margin: 0 auto;
+        padding: 0 0.24rem;
+        width: min-content;
+        white-space: nowrap;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        border-radius: 0.22rem;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.drop-down {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.drop-down-content {
+  width: 100%;
+  position: fixed;
+  height: 9.24rem;
+  left: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  -webkit-user-select: none;
+  border-radius: 0.4rem 0.4rem 0 0;
+  font-size: 0.2rem;
+  z-index: 12;
+
+  .d-tab {
+    border-radius: 0.4rem 0.4rem 0 0;
+    overflow-y: hidden;
+    background: url("../../images/bottom/bg0.png");
+    background-size: 100% 100%;
+    width: 100%;
+    height: 0.78rem;
+    /*position: fixed;*/
+    position: relative;
+    z-index: 15;
+    -webkit-transform: translateZ(0);
+  }
+}
+
+.icon-back {
+  width:2.15rem;
+  height: 0.33rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0rem;
+  margin: auto;
+  z-index: 10;
+}
