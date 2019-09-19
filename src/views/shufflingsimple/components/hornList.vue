@@ -48,18 +48,22 @@ export default {
           liNodes = this.$refs.hornLi
         nodes.innerHTML = hornUl.innerHTML
 
-        let offsetWidth = window.getComputedStyle(hornUl, null)['width']
+        let offsetWidth = 0
+
+        liNodes && liNodes.map((item, index) => {
+          offsetWidth += item.offsetWidth
+        })
 
         // 设置UL宽度
         this.hornStyles.width = `${offsetWidth}px`
         this.copyStyles.width = `${offsetWidth}px`
-        this.copyStyles.left = `${offsetWidth}px` //设置拷贝ul初始位置
+        this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
         let x = 0
         let fun = () => {
           this.hornStyles.left = x + 'px'
-          this.copyStyles.left = x + parseInt(offsetWidth) + 'px'
+          this.copyStyles.left = (x + parseInt(offsetWidth)) + 'px'
           x--
-          if (x + parseInt(offsetWidth) == 0) {
+          if ((x + parseInt(offsetWidth)) == 0) {
             x = 0
           }
         }

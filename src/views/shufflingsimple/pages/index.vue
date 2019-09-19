@@ -3,7 +3,8 @@
     <div class="container">
       <div class="back" @click="back"></div>
       <img class="header" src="./images/header.png"/>
-      <card :isBeginAnimate="infoData.openFlag && !infoData.todayReceivedFlag"></card>
+      <!--:isBeginAnimate="infoData.openFlag && !infoData.todayReceivedFlag"-->
+      <card :isBeginAnimate="infoData&&infoData.openFlag && !infoData.todayReceivedFlag" :cardData="infoData&&infoData.awardsList" v-if="infoData"></card>
       <div style="position: absolute;top: 9.2rem;left: 0;right: 0;">
         <div class='status'>{{status_str}}</div>
         <!-- 跑马灯 -->
@@ -56,14 +57,13 @@
         let {code, data} = (await this.axios.post('//ops-api.beeplaying.com/ops/api/fanpai/info')).data
         if (code == 200) {
           this.infoData = data;
-          this.infoData.horseRaceLampList = ['33333', '4444', '555555555']//
           if (this.infoData.openFlag && this.infoData.todayReceivedFlag) {
             this.status_str = '今天的翻牌机会已用完'
           }
         }
       },
     },
-    async mounted() {
+    created(){
       this.getActInfo()
     },
     watch: {}

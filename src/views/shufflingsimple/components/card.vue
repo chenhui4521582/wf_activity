@@ -1,39 +1,39 @@
 <template>
-  <div class="grid" :class="{cannotclick:!(canClick&&isCanHit)}">
+  <div class="grid">
+    {{showgif}}
     <div class="projects">
-      <div class="project"
-           :class="{currentCardIndex:currentCardIndexArr.includes(index),ani1:index==1,controls:index==1&&!showcontrolcss,show:index==1&&showcontrolcss,ani0:index==0&&classNamesArr[0],ani2:index==2&&classNamesArr[1]}"
-           v-for="(item,index) in cardData" @click="clickCard(item,index)">
-        <template v-if="!(index==1&&!showcontrolcss)">
-          <div class="mask">
-            <div class="back">
-              <!--<template v-if="item.status&&item.awardsType">-->
-                <!--&lt;!&ndash;<img src="../images/jd.png" alt="" v-if="item.awardsType=='jdk'">&ndash;&gt;-->
-                <!--&lt;!&ndash;<img src="../images/huafei.png" alt="" v-if="item.awardsType=='hfq'">&ndash;&gt;-->
-                <!--&lt;!&ndash;<img src="../images/fish.png" alt="" v-if="item.awardsType=='yg'">&ndash;&gt;-->
-                <!--&lt;!&ndash;<img src="../images/leaf.png" alt="" v-if="item.awardsType=='jyz'">&ndash;&gt;-->
-                <!--&lt;!&ndash;<img src="../images/card.png" alt="" v-if="item.awardsType=='fbk'">&ndash;&gt;-->
-              <!--</template>-->
-              <!--<span v-if="item.status&&item.awardsName">{{item.awardsName}}</span>-->
+      <template v-if="!showgif">
+        <div class="project" :class="{currentCardIndex:currentCardIndexArr.includes(index),ani1:index==1,controls:index==1&&!showcontrolcss,show:index==1&&showcontrolcss,ani0:index==0&&classNamesArr[0],ani2:index==2&&classNamesArr[1]}" v-for="(item,index) in cardData" @click="clickCard(item,index)">
+          <template v-if="!(index==1&&!showcontrolcss)">
+            <div class="mask">
+              <div class="back">
+                <img :src="item.awardsImage|filter" alt="" >
+                <span>{{item.awardsName}}</span>
+              </div>
+              <div class="front">
+              </div>
             </div>
-            <div class="front">
+          </template>
+          <template v-else>
+            <span class="bottom"></span>
+            <span class="bottom"></span>
+            <span class="bottom"></span>
+            <div class="mask">
             </div>
-          </div>
-        </template>
-        <template v-else>
-          <span class="bottom"></span>
-          <span class="bottom"></span>
-          <span class="bottom"></span>
-          <div class="mask">
-          </div>
-        </template>
-      </div>
+          </template>
+        </div>
+      </template>
+      <template v-else>
+        <div class="gif">
+          <img src="./images/card.gif" alt="" style="width: 6.45rem;height: 3.22rem;">
+        </div>
+      </template>
     </div>
+    <com-pop></com-pop>
   </div>
 </template>
 <script>
-  import {betSingle} from '../utils/api'
-
+  import comPop from './comPop'
   export default {
     name: 'app',
     props: {
@@ -47,11 +47,11 @@
       },
       cardData: {
         type: Array,
-        default: [1,2,3]
+        default: []
       },
       isBeginAnimate: {
         type: Boolean,
-        default: true
+        default: false
       }
     },
     data() {
@@ -60,8 +60,9 @@
         cardsClicked: [],
         canClick: false,
         currentCardIndexArr: [],
-        classNamesArr: [],
-        isCanHit: true
+        classNamesArr: ['ani0','ani2'],
+        isCanHit: true,
+        showgif:false
       }
     },
     methods: {
@@ -108,12 +109,19 @@
       async goHit(item, index) {
         console.log('000')
         this.isCanHit = false
-        const {code, data, message} = await betSingle({value: item.sort})
+        const {code, data, message} = (await this.axios.post('//ops-api.beeplaying.com/ops/api/fanpai/receive')).data
         if (code === 200) {
-          this.cardData.splice(index, 1, Object.assign(data[0], {consumeNum: item.consumeNum, status: 1}))
+          if(index==0){
+            this.cardData=[{awardsImage:data.awardsImage, awardsName: data.awardsName},...data.unOpenAwardsList]
+          }else if(index==2){
+            this.cardData=[...data.unOpenAwardsList,{awardsImage:data.awardsImage, awardsName: data.awardsName}]
+          }else{
+            this.cardData=[data.unOpenAwardsList[0],{awardsImage:data.awardsImage, awardsName: data.awardsName},data.unOpenAwardsList,data.unOpenAwardsList[1]]
+          }
+          this.currentCardIndexArr=[index]
           setTimeout(() => {
             this.$emit('getawards', data)
-            this.isCanHit = true
+            this.isCanHit = false
           }, 1000)
         } else if (code == 102) {
           this.isCanHit = true
@@ -126,6 +134,9 @@
           })
         }
       },
+    },
+    components:{
+      comPop
     },
     mounted() {
       this.classNamesArr = ['ani0', 'ani2']
@@ -161,9 +172,12 @@
         handler(val) {
           if (val) {
             setTimeout(() => {
-              this.showcontrolcss = false
-              this.subMove();
-            }, 100)
+              this.currentCardIndexArr=[]
+              this.showgif=true
+            }, 1500)
+            setTimeout(() => {
+              this.showgif=false
+            }, 3000)
           } else {
             this.canClick = true
           }
@@ -199,7 +213,11 @@
   .grid {
     //width: 1170*0.01rem;
     margin: 0 auto;
-    position: relative;
+    position: absolute;
+    top:5.5rem;
+    left: 0;
+    right: 0;
+    margin: auto;
     &.cannotclick {
       height: 322*0.01rem;
       z-index: 1;
@@ -211,12 +229,11 @@
   }
 
   div.projects {
-    float: left;
     width: 6.45rem;
-    position: relative;
-    left: 50%;
-    top: .21rem;
-    transform: translateX(-50%);
+    position:absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
   }
 
   div.projects .controls {
@@ -304,21 +321,22 @@
     background-size: 100% 100%;
     img {
       position: absolute;
-      top: .5rem;
-      width: .84rem;
-      height: .88rem;
-      left: .4rem;
+      top: .7rem;
+      height: 1.3rem;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
     span {
       position: absolute;
-      top: 1.5rem;
-      width: 1.18rem;
-      height: .4rem;
+      top: 2.2rem;
+      width: 1.25rem;
+      height: .36rem;
       font-size: .2rem;
       font-weight: 400;
       color: #fffcd6;
-      left: .24rem;
-      line-height: .48rem;
+      left: .4rem;
+      line-height: .4rem;
       text-align: center;
       overflow: hidden; /*超出部分隐藏*/
       white-space: nowrap; /*不换行*/
