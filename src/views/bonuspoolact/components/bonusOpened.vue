@@ -19,7 +19,7 @@
             <!--</template>-->
             {{awardsData&&awardsData.button}}
           </p>
-          <!--<p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">连续报名5天即可免费瓜分终极奖池哟，<br>-->
+          <!--<p class="desc" v-if="tabindex==0&&normalState==5&&ultimateState==1">任意报名5天即可免费瓜分终极奖池哟，<br>-->
             <!--赶快报名下一场吧！-->
           <!--</p>-->
           <!--<p class="desc" v-if="tabindex==0&&normalState==5&&(ultimateState==2||ultimateState==3)">您已获得瓜分终极大奖权利，<br>-->

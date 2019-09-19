@@ -33,7 +33,7 @@
               <span>励</span>
             </div>
           </div>
-          <div class="info">连续报名5天即可瓜分</div>
+          <div class="info">任意报名5天即可瓜分</div>
         </template>
         <img src="./images/openprize.gif" alt="" v-else>
       </div>

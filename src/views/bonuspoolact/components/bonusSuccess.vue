@@ -8,7 +8,7 @@
           <p>2. 参与方式：每天进入活动页面报名且当日付费任意金额。每场开始前5分钟截止当场报名。</p>
           <p>3. 每场瓜分时间：{{timetxt}}点整。</p>
           <p>4. 终极大奖瓜分时间：{{dividetimetxt}}。</p>
-          <p>5. 终极大奖瓜分规则：活动期间报名3天即可拥有瓜分机会,连续参与天数越多,瓜分中奖率更高。连续参与5天以上必中奖哟。</p>
+          <p>5. 终极大奖瓜分规则：活动期间报名3天即可拥有瓜分机会,参与天数越多,瓜分中奖率更高。参与5天以上必中奖哟。</p>
           <p>6. 奖品发放：红包奖励可能为话费券或优惠券或未中奖。进入活动页面领取后的奖励将直接发放至我的资产。活动期间内所得的奖励,若用户在活动结束时仍未领取,则自动失效。</p>
           <p>7. 如有其他疑问,请点击<i @click="concat" style="text-decoration: underline">咨询客服</i>。活动最终解释权归平台所有。</p>
         </div>
@@ -28,10 +28,10 @@
         <div class="desc">
           每日{{timetxt}}点开奖,一定要准时来哟~<br>
           <template v-if="appointmentday<=3">
-            连续报名3天还能瓜分终极大奖！
+            任意报名3天还能瓜分终极大奖！
           </template>
           <template v-else>
-            连续报名5天终极大奖必中哟！
+            任意报名5天终极大奖必中哟！
           </template>
         </div>
         <div class="close" @click="close(1)"></div>
@@ -56,14 +56,14 @@
       <!--报名挽留-->
       <div class="bonus-success zhongji_guafen" v-if="count==6||count==7">
         <div class="desc">
-          <p class="info1" v-if="count==6">连续报名3天即有机会参与瓜分</p>
+          <p class="info1" v-if="count==6">任意报名3天即有机会参与瓜分</p>
           <div class="buqian_leaf">
             <span>{{makeupPackageData&&makeupPackageData.amount}}金叶子</span>
           </div>
           <p class="info2" v-if="count==6">补签卡可补1天未报名场次</p>
           <p class="info2" v-else>
-            已连续报名4天,购买补签卡<br>
-            可补1天未报名场次,连续报名5天<br>
+            已任意报名4天,购买补签卡<br>
+            可补1天未报名场次,任意报名5天<br>
             拥有终极大奖必中机会！
           </p>
           <div class="btn" @click="gotopay(makeupPackageData)">{{makeupPackageData&&makeupPackageData.price}}元</div>
