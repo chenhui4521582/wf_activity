@@ -11,8 +11,6 @@
   export default {
     name: 'App',
     mounted() {
-      localStorage.setItem('APP_CHANNEL','100039')
-      localStorage.setItem('ACCESS_TOKEN','1b489dff339d48d9bcdb994a549668e7')
     }
   }
 </script>
