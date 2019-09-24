@@ -48,7 +48,7 @@
       <!--报名挽留-->
       <div class="bonus-success unbaomingsuccess wanliu" v-if="count==5">
         <div class="desc">
-          报名成功<br>就能瓜分千元红包奖励呢！<br>真的要走了吗？
+          报名成功<br>有机会瓜分千元红包奖励呢！<br>真的要走了吗？
           <div class="btn" @click="appointmentBonus">去报名</div>
         </div>
         <div class="close" @click="goback"></div>
