@@ -12,8 +12,8 @@ import { activityInfo } from '../utils/api'
 export default {
   name: 'after',
   components: {
-    rule: () => import('../components/rule'),
-    commonPop: () => import('../components/commonPop'),
+    rule: () => import('./component/rule'),
+    commonPop: () => import('./component/commonPop'),
     profit: () => import('./component/profit')
   },
   async beforeRouteEnter (to, from, next) {

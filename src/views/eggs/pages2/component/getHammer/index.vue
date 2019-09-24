@@ -1,7 +1,7 @@
 <template>
   <div class="get-hammer">
-    <h4 class="s-title"><em></em>购买礼包得锤子</h4>
-    <span class="info">礼包可不限次购买，重复获取锤子</span>
+    <h4 class="s-title"><em></em>购买礼包得钥匙</h4>
+    <span class="info">礼包可不限次购买，重复获取钥匙</span>
     <div class="g-package">
       <div class="g-package-container g1">
         <ul>
@@ -14,11 +14,11 @@
       <div class="g-package-info">
         <ul>
           <li>已购买礼包：{{pUserInfo.rechargeTime}}次</li>
-          <li>累计锤子：{{pUserInfo.rechargeReturnNum}}个</li>
+          <li>累计钥匙：{{pUserInfo.rechargeReturnNum}}把</li>
         </ul>
       </div>
     </div>
-    <h4 class="s-title"><em></em>玩游戏得锤子</h4>
+    <h4 class="s-title"><em></em>玩游戏得钥匙</h4>
     <span class="info">{{rulesExplain}}</span>
     <div class="g-package">
       <div class="g-package-container g2">
@@ -27,8 +27,13 @@
       <div class="g-package-info">
         <ul>
           <li>已支持金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
-          <li>累计锤子：{{pUserInfo.gameReturnNum }}个</li>
+          <li>累计钥匙：{{pUserInfo.gameReturnNum }}把</li>
         </ul>
+      </div>
+    </div>
+    <div class="gamelist" style="display: flex">
+      <div class="item" v-for="item in gamelist" @click="gotogame(item)" style="width: 2.2rem">
+        <img :src="item.images" alt="" style="width: 100%">
       </div>
     </div>
   </div>
@@ -39,7 +44,17 @@ export default {
   data () {
     return {
       leaguePacksListArr: [],
-      pUserInfo: {}
+      pUserInfo: {},
+      gamelist:[{
+        images:`${require('./images/tangguo.png')}`,
+        url:'/crush'
+      },{
+        images:`${require('./images/zhuoqiu.png')}`,
+        url:'/billiards'
+      },{
+        images:`${require('./images/sanguo.png')}`,
+        url:'/kingdom2'
+      }]
     }
   },
   props: {
@@ -72,7 +87,7 @@ export default {
   methods: {
     gotopay (item) {
       localStorage.setItem('originDeffer', window.location.href)
-      GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
+      GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取钥匙大浮层-点击任意礼包
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
         location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
@@ -94,6 +109,9 @@ export default {
     },
     isGoBDPayment () {
       return window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap'
+    },
+    gotogame(item){
+      GLOBALS.jumpOutsideGame(item.url)
     }
   }
 }
@@ -133,7 +151,7 @@ export default {
 .g-package {
   width: 100%;
   background: #fec041;
-  margin-bottom: 0.49rem;
+  margin-bottom: 0.26rem;
   .g-package-container {
     background: #fffaf1;
     margin-top: 0.19rem;

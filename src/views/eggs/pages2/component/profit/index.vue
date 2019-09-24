@@ -14,7 +14,7 @@
             </div>
             <span class="icon-number"></span>
             <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.plantFoodNum}}个<em class="t-second">{{item.updateTime || ''}}</em></span>
+            <span class="hammer-number">{{item.plantFoodNum}}把<em class="t-second">{{item.updateTime || ''}}</em></span>
 
             <!-- <span class="s-text">第{{item.rank}}名</span> -->
             <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
@@ -30,8 +30,8 @@
               <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
             <li>
-              <h4>累计获得锤子</h4>
-              <span>{{myInfo.totalNum}}个</span>
+              <h4>累计获得钥匙</h4>
+              <span>{{myInfo.totalNum}}把</span>
             </li>
             <li>
               <h4>当前奖励</h4>
@@ -44,7 +44,7 @@
             <li style="border:none">
               <span>排名</span>
               <span><em class="i-ellipsis">昵称</em></span>
-              <span><em class="i-ellipsis">累计锤子</em></span>
+              <span><em class="i-ellipsis">累计钥匙</em></span>
               <span><em class="i-ellipsis">奖励</em></span>
             </li>
           </ul>
@@ -54,13 +54,13 @@
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}把<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}把<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
@@ -69,7 +69,7 @@
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.plantFoodNum}}把<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>

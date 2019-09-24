@@ -10,7 +10,7 @@
     </div>
     <div class="header2">
       <div class="eggs-info" :class="{show:isEggsInfoShow}">
-        <h4>可能砸出</h4>
+        <h4>可能开出</h4>
         <ul>
           <li v-for="(item,index) in eggsInfoList" :key="index">{{item.awardsName}}</li>
         </ul>
@@ -27,8 +27,8 @@
     </div>
     <div class="btn-wrp">
       <my-awards></my-awards>
-      <a href="javascript:" v-if="currentItem.awardsLev === activedLev" class="btn-hit" @click.stop="goHit">立即砸蛋</a>
-      <a href="javascript:" v-else class="btn-hit disabled">请按序砸蛋</a>
+      <a href="javascript:" v-if="currentItem.awardsLev === activedLev" class="btn-hit" @click.stop="goHit">消耗钥匙开宝箱</a>
+      <a href="javascript:" v-else class="btn-hit disabled">请按序开宝箱</a>
       <a href="javascript:" class="bit-hit-all" @click.stop="goHitAll"></a>
     </div>
     <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
@@ -48,7 +48,7 @@ export default {
       currentLev: 0,
       currentIndex: null,
       currentItem: {},
-      eggStyle: [[3, 0.56], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
+      eggStyle: [[3, 1.2], [4.4 , 1.5], [5.8, 1.9], [4.26, 2.7], [2.7, 2.4], [.6, 2.8], [1.9, 3.5], [3, 4.4], [4.3, 4.24], [5.6, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
       allEggsInfo: [],
       eggsInfoList: [],
       awardsList: [],
@@ -64,12 +64,12 @@ export default {
     }
   },
   components: {
-    rule: () => import('../components/rule'),
-    commonPop: () => import('../components/commonPop'),
-    newUserPage: () => import('../components/newUserPage'),
-    smallEgg: () => import('../components/smallEgg'),
-    myAwards: () => import('../components/myAwards'),
-    message: () => import('../components/message'),
+    rule: () => import('./component/rule'),
+    commonPop: () => import('./component/commonPop'),
+    newUserPage: () => import('./component/newUserPage'),
+    smallEgg: () => import('./component/smallEgg'),
+    myAwards: () => import('./component/myAwards'),
+    message: () => import('./component/message'),
     dropDown: () => import('./dropDown')
   },
   async beforeRouteEnter (to, from, next) {
@@ -116,14 +116,14 @@ export default {
         return
       }
       this.isHitted = true
-      GLOBALS.marchSetsPoint('A_H5PT0075001462')   // H5平台-砸金蛋-点击消耗锤子砸彩蛋
+      GLOBALS.marchSetsPoint('A_H5PT0075001462')   // H5平台-砸金蛋-点击消耗钥匙开宝箱
       const { code, data, message } = await betSingle({ value: this.currentItem.sort })
       this.isHitted = false
       if (code === 200) {
         this.awardsList = data
         this.haveGif = true
         setTimeout(() => {
-          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
+          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现开箱成功弹窗
           this.isShowPop = true
           this.isEggsInfoShow = false
           this.popType = 0
@@ -142,7 +142,7 @@ export default {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
-        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
+        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现开箱失败弹窗
         this.isShowPop = true
         this.isEggsInfoShow = false
         this.popType = 3
@@ -162,7 +162,7 @@ export default {
         this.awardsList = data
         this.haveGif = true
         setTimeout(() => {
-          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现砸蛋成功弹窗
+          GLOBALS.marchSetsPoint('A_H5PT0075001473')   // H5平台-砸金蛋-展现开箱成功弹窗
           this.isShowPop = true
           this.isEggsInfoShow = false
           this.popType = 1
@@ -181,7 +181,7 @@ export default {
         this.awardsList = [{
           awardsType: 'hammer'
         }]
-        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现砸蛋失败弹窗
+        GLOBALS.marchSetsPoint('A_H5PT0075001477')   // H5平台-砸金蛋-展现开箱失败弹窗
         this.isShowPop = true
         this.isEggsInfoShow = false
         this.popType = 3
@@ -227,10 +227,10 @@ export default {
         this.setBigEgg()
       }
       if (this.currentIndex === 0 && !data) {
-        this.$toast.show({
-          message: '新蛋生成',
-          duration: 3000
-        })
+        // this.$toast.show({
+        //   message: '新蛋生成',
+        //   duration: 3000
+        // })
       }
       this.getUserIncrement()
     },
@@ -239,11 +239,11 @@ export default {
       if (code === 200 && data) {
         this.awardsList = [{
           awardsType: 'hammer',
-          awardsName: '新增' + data + '个锤子'
+          awardsName: '新增' + data + '把钥匙'
         }]
         this.popType = 2
         if (!this.isNewUserShow) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001454')   // H5平台-砸金蛋-展现恭喜新增锤子弹窗
+          GLOBALS.marchSetsPoint('A_H5PT0075001454')   // H5平台-砸金蛋-展现恭喜新增钥匙弹窗
           this.isShowPop = true
           this.isEggsInfoShow = false
         }

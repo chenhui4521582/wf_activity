@@ -13,7 +13,7 @@
             <h4 v-else>终极档位</h4>
           </template>
           <div class="hb-line"></div>
-          <div class="envelopes">{{item.awards}}个</div>
+          <div class="envelopes">{{item.awards}}把</div>
           <div class="btn btn-complete" v-if="item.status == 1">完成</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
         </li>
@@ -145,7 +145,7 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0075001468')   // H5平台-砸金蛋-获取锤子大浮层-点击任意去完成
+      GLOBALS.marchSetsPoint('A_H5PT0075001468')   // H5平台-砸金蛋-获取钥匙大浮层-点击任意去完成
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }
