@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="tab profit" @click="outHandleTab(1)">
-        <div class="hammer_icon"></div>
+        <div class="hammer_icon" style="width: .69rem;"></div>
         <div class="right">
           <div class="main-text">累计钥匙<span>{{totalNum}}</span></div>
           <div class="btn">有奖排行榜</div>

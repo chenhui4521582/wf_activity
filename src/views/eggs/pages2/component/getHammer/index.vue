@@ -152,9 +152,11 @@ export default {
   width: 100%;
   background: #fec041;
   margin-bottom: 0.26rem;
+  border-radius:.15rem;
   .g-package-container {
     background: #fffaf1;
     margin-top: 0.19rem;
+    border-radius:.15rem .15rem 0 0;
     &.g1 {
       height: 2.94rem;
     }

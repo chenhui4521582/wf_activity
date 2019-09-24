@@ -58,10 +58,10 @@ export default {
   }
   &.opend {
     .small-egg {
-      width: 1.06rem;
+      width: 1.52rem;
     }
     .s-text {
-      bottom: 0.06rem;
+      bottom: 0.2rem;
       background: #ffe361;
       color: #884300;
     }
@@ -103,11 +103,11 @@ export default {
       }
       .s-text {
         padding: 0 0.2rem;
-        height: 0.49rem;
-        line-height: 0.49rem;
+        height: 0.36rem;
+        line-height: 0.4rem;
         border-radius: 0.24rem;
-        font-size: 0.32rem;
-        bottom: 1rem;
+        font-size: 0.24rem;
+        bottom: .6rem;
       }
     }
   }
@@ -120,7 +120,7 @@ export default {
     min-width: 0.42rem;
     padding: 0 0.1rem;
     height: 0.3rem;
-    line-height: 0.3rem;
+    line-height: 0.35rem;
     background: #f8b918;
     border-radius: 0.15rem;
     font-size: 0.2rem;

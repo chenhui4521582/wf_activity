@@ -82,7 +82,7 @@ export default {
         100% 100%;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 2rem 0.1rem 0;
+      padding: 2rem 0.2rem 0;
       .main {
         font-size: 0.24rem;
         letter-spacing: 0.02rem;
