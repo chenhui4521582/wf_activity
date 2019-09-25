@@ -38,9 +38,9 @@
       </div>
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
-        <div class="desc">
+        <div class="desc" style="font-size: .28rem">
           您将是第 <i>{{num+1}}</i>位报名成功的用户<br>
-          报名成功后可瓜分千元话费奖励
+          报名成功就有机会瓜分千元话费奖励
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
         <div class="close" @click="close(1)"></div>
@@ -48,7 +48,7 @@
       <!--报名挽留-->
       <div class="bonus-success unbaomingsuccess wanliu" v-if="count==5">
         <div class="desc">
-          报名成功<br>就能瓜分千元红包奖励呢！<br>真的要走了吗？
+          报名成功<br>有机会瓜分千元红包奖励呢！<br>真的要走了吗？
           <div class="btn" @click="appointmentBonus">去报名</div>
         </div>
         <div class="close" @click="goback"></div>
