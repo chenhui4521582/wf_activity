@@ -4,7 +4,7 @@
       <ul :class="{'anim':isMove}">
         <li v-for="item in lamp">
           <div>
-            <p>{{item.nickname}}获得</p>
+            <p>恭喜{{item.nickname}}开出</p>
             <p>{{item.awardsName}}</p>
           </div>
         </li>
