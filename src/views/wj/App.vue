@@ -206,7 +206,7 @@
         </div>
       </div>
     </div>
-    <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
+    <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="isDailyReceivePop=false"></task-award-pop>
   </div>
 </template>
 <script>
@@ -236,7 +236,8 @@ export default {
       newUserTaskFinish: false,
       isPopLog: false,
       masterTask: false,
-      isDailyReceivePop:false
+      isDailyReceivePop:false,
+      receiveAwards:null
     }
   },
   mounted () {
@@ -346,6 +347,7 @@ export default {
             //   duration: 1500
             // })
             this.receiveAwards=item;
+            this.isDailyReceivePop=true;
             switch (type) {
               case 'cjTask':
                 GLOBALS.marchSetsPoint('A_H5PT0121001154', {
@@ -548,6 +550,7 @@ export default {
             //   duration: 1500
             // })
             this.receiveAwards=item;
+            this.isDailyReceivePop=true;
             this.getCdkeyStatus()
           }
         })
