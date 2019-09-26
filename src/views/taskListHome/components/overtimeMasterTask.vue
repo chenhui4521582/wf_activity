@@ -70,7 +70,7 @@ export default {
       }, 1000)
     },
     goOvertimeDetail () {
-      WapCall.openGame('/activities/overtimeTask.html')
+      WapCall.openGame('/activities/overtimeTask.html', '&gametype=' + this.gameType)
     }
   }
 }
