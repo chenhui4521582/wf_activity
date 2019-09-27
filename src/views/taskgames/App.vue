@@ -19,6 +19,7 @@
     <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
       <div>
         <div class="t-content" v-if="!isTfStatus">
+          <adventure-task :current-game-type="currentGameType"></adventure-task>
           <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
           <div v-if="showNewUserTask && !newTaskItems.newVersion" class="new-user-task">
             <div class="tips">
@@ -361,6 +362,7 @@ export default {
   },
   components: {
     poplog,
+    adventureTask: () => import('./component/adventureTask'),
     crushMasterTask: () => import('./component/crushMasterTask'),
     newUserTask: () => import('./component/newUserTask'),
     renrenMowang: () => import('./component/renrenMowang'),
@@ -421,11 +423,12 @@ export default {
       this.isRRZQPop = false
     },
     async jumpMine () {
-      if (this.channel.indexOf(100051) > -1) {
-        return false
-      }
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
-      parent.location.href = this.jumpToPlat() + '#/personal'
+      let _url = '#/personal'
+      if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
+        _url = '#/my'
+      }
+      parent.location.href = this.jumpToPlat() + _url
     },
     async getHuafeiNum () {
       let { data } = await this.axios.post('//trans-api.beeplaying.com/trans/api/fragment/getMinHFConvertAmount')
@@ -433,10 +436,13 @@ export default {
     },
     async gotokf () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000536', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服前往-确定
-      localStorage.setItem('originGameProblem', true)
       localStorage.setItem('originGame', parent.location.href)
 
-      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', true, '&tab=contact_personal')
+      let _url = '#/problem?tab=contact_personal'
+      if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
+        _url = '#/my/customerService'
+      }
+      parent.location.href = window.linkUrl.getBackUrl(this.channel, '', '', false, _url)
     },
     async getCrushTask (finishindex, type, val, newuserfinish) {
       let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTask', { value: val })
@@ -623,7 +629,7 @@ export default {
       }
       if (item.taskStatus == 0) {
         localStorage.removeItem('ADSDATA')
-        if ((this.woolUserType || item.action === 71) && type === 'dayTask') {
+        if ((this.woolUserType || item.action === 71) && type === 'dayTask' && !item.flag) {
           this.selectItem = { item, type, index }
           if (item.action === 71) {
             localStorage.removeItem('ENTRANCE')
@@ -751,6 +757,10 @@ export default {
         if (url && url.indexOf('openturntable') > -1) {
           parent.location.href = url
           return false
+        }
+        if (url === 'openOneLottery') {
+          this.backIndexPage(false, `#/?channel=${this.channel}&from=openOneLottery`)
+          return
         }
         if (url === 'luckdraw') {
           this.backIndexPage(false, `#/luckdraw?channel=${this.channel}`)
@@ -977,9 +987,6 @@ export default {
       // }
     },
     kfclick () {
-      if (this.channel.indexOf(100051) > -1) {
-        return false
-      }
       GLOBALS.marchSetsPoint('A_H5PT0061000535', { project_id: this.currentGameType }) // H5平台-游戏内SDK-客服按钮
       this.showzspop = true
     },

@@ -7,7 +7,7 @@
         <p v-if="awards.awardsNum>1">{{getPrizeName(awards)}}</p>
         <p v-else>{{awards.awardsName}}</p>
         <p class="btn" @click="closePop(1)">朕收下啦</p>
-        <p class="text">完成每日任务,领更多红包</p>
+        <p class="text" v-if="isDaily">完成每日任务,领更多红包</p>
       </div>
       <div class="close" @click="closePop(0)"></div>
     </div>
@@ -21,11 +21,15 @@ export default {
     awards: {
       type: Object,
       default: {}
+    },
+    isDaily: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
     closePop (flag) {
-      if(flag&&this.awards&&this.awards.flag&&this.awards.flag=='ring2'){
+      if (flag && this.awards && this.awards.flag && this.awards.flag == 'ring2') {
         GLOBALS.marchSetsPoint('A_H5PT0061001619')
       }
       this.$emit('closePop')

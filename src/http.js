@@ -10,16 +10,16 @@ import utils from './common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000
 
-let channel = utils.getUrlParam('channel')||localStorage.getItem('APP_CHANNEL'),
-  url_token = utils.getUrlParam('token')||localStorage.getItem('ACCESS_TOKEN'),
-  everyDayLottery = utils.getUrlParam('everyDayLottery')
+let channel = utils.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
+let urlToken = utils.getUrlParam('token') || localStorage.getItem('ACCESS_TOKEN')
+let everyDayLottery = utils.getUrlParam('everyDayLottery')
 
-localStorage.setItem('ACCESS_TOKEN', url_token)
+localStorage.setItem('ACCESS_TOKEN', urlToken)
 localStorage.setItem('APP_CHANNEL', channel)
-if (localStorage.getItem('APP_CHANNEL') == '100022') {
+if (localStorage.getItem('APP_CHANNEL') === '100022') {
   localStorage.setItem('APP_VERSION', '1.0.0')
 } else {
-  if (everyDayLottery == 1) {
+  if (everyDayLottery === '1') {
     localStorage.setItem('APP_VERSION', '1.0.0')
   } else {
     localStorage.setItem('APP_VERSION', '1.0.0')
@@ -53,7 +53,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(
   response => {
     var res = JSON.parse(response.request.response)
-    if (res && res.code && res.code != 200) {
+    if (res && res.code && res.code !== 200) {
       switch (res.code) {
         case 400:
           Vue.prototype.$toast.show({
@@ -113,20 +113,21 @@ axios.interceptors.response.use(
             duration: 1500
           })
           break
-        case 122, 128:
+        case 122:
+        case 128:
           break
         default:
           var result = response.config && response.config.data
           if (result) {
             result = JSON.parse(result)
-            if (result && result.isShowToast == 'false') {
+            if (result && result.isShowToast === 'false') {
               break
             }
           }
-          Vue.prototype.$toast.show({
-            message: res.message,
-            duration: 1500
-          })
+        // Vue.prototype.$toast.show({
+        //   message: res.message,
+        //   duration: 1500
+        // })
       }
     }
     return response

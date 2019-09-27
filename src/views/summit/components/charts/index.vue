@@ -31,7 +31,7 @@
                 您已购买宝箱 {{userObj&&userObj.amount||0}} 个
             </div>
             <div class="tips">
-                活动期间购买宝箱≥{{userObj&&userObj.minGoodsNum}}个即可上榜！
+              活动期间购买宝箱≥{{userObj&&userObj.minGoodsNum}}个且排名前{{userObj&&userObj.topNum}}即可上榜获得额外金叶子宝箱奖励!
             </div>
         </div>
         <div class='foot img-config'>
@@ -126,8 +126,11 @@ export default {
       .tips{
         color: #6C3510;
         height: 0.76rem;
-        line-height: 0.76rem;
         text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: .3rem;
       }
       .buy{
         border-bottom: 1px solid #F8924C;

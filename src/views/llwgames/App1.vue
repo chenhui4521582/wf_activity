@@ -17,7 +17,11 @@
             </div>
         </div>
         <!-- <button class="qq" @click="onQQLogin1"></button> -->
-        <div class="qqlogin">
+        <div class="qqlogin" v-if="host=='beeplay123'">
+            <p>苏ICP备17060724号-3<br/><a target="_blank" href="http://www.beian.miit.gov.cn/">增值电信业务经营许可证：苏B2-20190263</a><br/><a target="_blank" href="http://www.beian.miit.gov.cn/">苏网文 (2019) 1414-046号</a></p>
+            <p>©2017-2018 玩蜂科技（苏州）科技有限公司</p>
+        </div>
+        <div class="qqlogin" v-else>
             <p>蜀ICP备17017217号-1</p>
             <p>@2018成都 六六五网络科技有限公司</p>
         </div>
@@ -205,6 +209,9 @@
             },
         },
         computed: {
+            host(){
+                return utils.getUrlParamObj('host')
+            },
             channel(){
                 return utils.getUrlParamObj('channel')||localStorage.getItem('APP_CHANNEL')
             },
