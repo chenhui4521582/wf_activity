@@ -270,7 +270,7 @@ export default {
       this.clickType = 2
     },
     goCat () {
-      WapCall.openGame('/cat/')
+      parent.location.href = '//wap.beeplaying.com/petcat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
     },
     allIn () {
       if (this.saveBoxStatus === 4) {
