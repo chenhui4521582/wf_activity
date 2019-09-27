@@ -278,7 +278,7 @@ export default {
     },
     allIn () {
       if (this.saveBoxStatus === 4) {
-        this.leafNumber = this.moreNumber
+        this.leafNumber = this.moreNumber > this.userInfo.amount ? this.userInfo.amount : this.moreNumber
       } else if (this.saveBoxStatus === 5) {
         this.leafNumber = this.saveBoxInfo.balance
       }
