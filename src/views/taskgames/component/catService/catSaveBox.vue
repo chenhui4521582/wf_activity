@@ -228,6 +228,10 @@ export default {
       const { data, code } = res.data
       if (code === 200) {
         this.saveBoxInfo = data
+      } else {
+        this.saveBoxInfo = {
+          isOpen: 0
+        }
       }
     },
     closeCat () {
