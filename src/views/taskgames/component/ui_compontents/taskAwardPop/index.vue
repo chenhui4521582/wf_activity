@@ -32,31 +32,19 @@ export default {
   props: {
     awards: {
       type: Object,
-      default: {}
+      default: () => { }
     },
     btnName: {
       default: '朕收下啦'
     },
-    props: {
-      awards: {
-        type: Object,
-        default: {}
-      },
-      btnName: {
-        default: '朕收下啦'
-      },
-      info: {
-        default: '完成每日任务，领更多红包'
-      },
-      awardsImage: {
-        default: ''
-      },
-      titleImage: {
-        default: `${require('./images/titlebg.png')}`
-      }
+    info: {
+      default: '完成每日任务，领更多红包'
     },
     awardsImage: {
       default: ''
+    },
+    titleImage: {
+      default: `${require('./images/titlebg.png')}`
     }
   },
   methods: {
@@ -148,17 +136,6 @@ export default {
     font-weight: 500;
     color: rgba(255, 239, 224, 1);
   }
-  .title {
-    height: 0.6rem;
-    position: absolute;
-    top: 0.5rem;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-  }
-  .mask-enter-active {
-    transition: opacity 0.3s;
-  }
 }
 
 .close {
@@ -178,19 +155,23 @@ export default {
 .mask-enter {
   opacity: 0;
 }
-
+.title {
+  height: 0.6rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
 .mask-enter-active {
   transition: opacity 0.3s;
 }
-
 .mask-leave-to {
   opacity: 0;
 }
-
 .mask-leave-active {
   transition: opacity 0.3s;
 }
-
 @keyframes rotateWithPosition {
   0% {
     transform: translate(-50%, -50%) rotate(0);
@@ -200,5 +181,3 @@ export default {
   }
 }
 </style>
-
-
