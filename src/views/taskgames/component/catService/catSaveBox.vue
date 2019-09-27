@@ -274,7 +274,7 @@ export default {
       this.clickType = 2
     },
     goCat () {
-      parent.location.href = '//wap.beeplaying.com/petcat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
+      parent.location.href = '//wap.beeplaying.com/cat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
     },
     allIn () {
       if (this.saveBoxStatus === 4) {
