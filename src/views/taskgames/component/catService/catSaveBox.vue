@@ -31,7 +31,7 @@
           <div class="input-wrap">
             <input v-model.number="leafNumber" type="tel" placeholder="请输入要存入的金叶子数">
             <span v-if="errorString">{{errorString}}</span>
-            <div>还可继续存入{{moreNumber}} <a href="javascript:;" @click="allIn()">全部存入</a> </div>
+            <div>还可继续存入{{moreNumber>userInfo.amount?userInfo.amount:moreNumber}} <a href="javascript:;" @click="allIn()">全部存入</a> </div>
           </div>
         </template>
         <template v-if="saveBoxStatus===5">
