@@ -285,6 +285,12 @@ export default {
     },
     async updateBankNumber (changeNum) {
       if (!changeNum) {
+        if (this.saveBoxStatus === 3) {
+          this.$toast.show({
+            message: '没有可取金叶',
+            duration: 3000
+          });
+        }
         return
       }
       const res = await this.axios.post('//trans-api.beeplaying.com/trans/api/bank/update', { changeNum })
@@ -308,7 +314,10 @@ export default {
           break
 
         default:
-          this.$Toast('交易失败，请稍后重试')
+          this.$toast.show({
+            message: '交易失败，请稍后重试',
+            duration: 3000
+          });
           break
       }
     }
