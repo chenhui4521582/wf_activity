@@ -440,11 +440,11 @@ export default {
   &.reddot:before {
     content: "";
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 0rem;
+    top: 0.04rem;
     width: 0.1rem;
     height: 0.1rem;
-    // border: 1px solid #fff;
+    border: 0.02rem solid #fff;
     border-radius: 50%;
     background: #e8382b;
   }
