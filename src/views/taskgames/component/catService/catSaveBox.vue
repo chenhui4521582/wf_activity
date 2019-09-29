@@ -195,7 +195,7 @@ export default {
         case 5:
           return '取出金叶子'
         default:
-          return `金叶子保险箱Lv.${this.saveBoxInfo.bankLv}`
+          return `金叶子保险箱V.${this.saveBoxInfo.bankLv}`
       }
     },
     endTitle () {
@@ -206,14 +206,6 @@ export default {
           return '取出成功'
       }
       return ''
-    },
-    btnName () {
-      switch (this.saveBoxStatus) {
-        case 0:
-          return '去招财猫开启权益'
-        default:
-          return ''
-      }
     }
   },
   methods: {
@@ -289,7 +281,7 @@ export default {
           this.$toast.show({
             message: '没有可取金叶',
             duration: 3000
-          });
+          })
         }
         return
       }
@@ -317,7 +309,7 @@ export default {
           this.$toast.show({
             message: '交易失败，请稍后重试',
             duration: 3000
-          });
+          })
           break
       }
     }
