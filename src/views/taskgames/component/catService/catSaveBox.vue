@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="entrance-header-item" @click="handleCatSaveBox">
+    <div class="entrance-header-item" :class="{reddot: isShowRed}" @click="handleCatSaveBox">
       <img class="entrance-header-img" src="../../images/cat_supply/biaoxianbox.png">
       <div class="entrance-header-text">保险箱</div>
     </div>
@@ -49,7 +49,7 @@
         </template>
         <template v-if="saveBoxStatus === 0 || saveBoxStatus === 2 || saveBoxStatus === 3">
           <div v-if="saveBoxStatus === 3" class="btn besure actived long" @click="besure(31)">全部取出</div>
-          <div class="btn besure actived-1 long" @click="besure(saveBoxStatus)">去招财猫解封权益</div>
+          <div class="btn besure actived-1 long" @click="besure(saveBoxStatus)">去招财猫{{saveBoxStatus?'解封':'开启'}}权益</div>
         </template>
         <template v-if="saveBoxStatus === 4">
           <div class="btn besure middle" :class="{actived:leafNumber}" @click="besure(saveBoxStatus)">存入</div>
@@ -64,11 +64,11 @@
           * 金叶存入保险箱之后，<em>相应金叶数将会被减去，且不可被消耗。</em>取出之后，可正常消耗。
         </div>
         <div class="desc">
-          * 提升招财猫等级，可提高保险箱容量，<span class="gobaoxian" @click="goCat()">去提升保险箱容量></span>
+          * 提升招财猫等级，可提高保险箱容量，<span class="gobaoxian" @click="besure()">去提升保险箱容量></span>
         </div>
       </div>
     </common-pop>
-    <common-pop class="pop-second" v-if="showEndPop" :title="endTitle" @close="closeEndPop">
+    <common-pop class="pop-second" v-if="showEndPop" :title="endTitle" @close="closeEndPop(0)">
       <div slot="text" class="text">
         <template v-if="endPopType === 4">
           <div>剩余的金叶子数量将减去{{leafNumber}}</div>
@@ -81,7 +81,7 @@
         </template>
       </div>
       <div class="btn-wrap" slot="btn">
-        <div class="btn besure actived long" @click="showEndPop = false">好的</div>
+        <div class="btn besure actived long" @click="closeEndPop(1)">好的</div>
       </div>
     </common-pop>
   </section>
@@ -107,7 +107,8 @@ export default {
       errorString: null,
       timer: '',
       showEndPop: false,
-      endPopType: 4
+      endPopType: 4,
+      isShowRed: false
     }
   },
   watch: {
@@ -148,6 +149,26 @@ export default {
         }, 2000)
       } else {
         clearTimeout(this.timer)
+      }
+    },
+    saveBoxStatus (val) {
+      if (this.showOutPop) {
+        switch (val) {
+          case 2:
+            GLOBALS.marchSetsPoint('A_H5PT0061001841') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-权益被冻结弹窗加载完成
+            break
+          case 3:
+            GLOBALS.marchSetsPoint('A_H5PT0061001851') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-权益被冻结弹窗加载完成
+            break
+          case 4:
+            GLOBALS.marchSetsPoint('A_H5PT0061001844') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗加载完成
+            break
+          case 5:
+            GLOBALS.marchSetsPoint('A_H5PT0061001855') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗加载完成
+            break
+          default:
+            break
+        }
       }
     }
   },
@@ -202,6 +223,7 @@ export default {
       switch (this.endPopType) {
         case 4:
           return '存入成功'
+        case 3:
         case 5:
           return '取出成功'
       }
@@ -210,10 +232,26 @@ export default {
   },
   methods: {
     async handleCatSaveBox () { // 招财猫保险箱
+      try {
+        GLOBALS.marchSetsPoint('A_H5PT0061001862') // H5平台-游戏内SDK-顶部保险箱按钮点击
+      } catch (error) {
+
+      }
       await this.init()
       this.clickType = 0
       this.leafNumber = null
       this.showOutPop = true
+      this.$nextTick(() => {
+        if (this.saveBoxStatus) {
+          GLOBALS.marchSetsPoint('A_H5PT0061001836') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗加载完成
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0061001833') // H5平台-游戏内SDK-保险箱点击触发-权益未开启弹窗加载完成
+        }
+        if (!localStorage.getItem('hadShowCatSaveBoxDot')) {
+          localStorage.setItem('hadShowCatSaveBoxDot', true)
+          this.isShowRed = false
+        }
+      })
     },
     async init () {
       const res = await this.axios.post('//trans-api.beeplaying.com/trans/api/bank/status')
@@ -228,42 +266,99 @@ export default {
     },
     closeCat () {
       this.showOutPop = false
+      switch (this.saveBoxStatus) {
+        case 0:
+          GLOBALS.marchSetsPoint('A_H5PT0061001835') // H5平台-游戏内SDK-保险箱点击触发-权益未开启弹窗-关闭点击
+          break
+        case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0061001840') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-关闭点击
+          break
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0061001843') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-权益被冻结弹窗-关闭点击
+          break
+        case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0061001854') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-权益被冻结弹窗-关闭点击
+          break
+        case 4:
+          GLOBALS.marchSetsPoint('A_H5PT0061001848') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-关闭点击
+          break
+        case 5:
+          GLOBALS.marchSetsPoint('A_H5PT0061001859') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-关闭点击
+          break
+        default:
+          break
+      }
     },
-    closeEndPop () {
+    closeEndPop (val) {
+      switch (this.saveBoxStatus) {
+        case 4:
+          if (val) {
+            GLOBALS.marchSetsPoint('A_H5PT0061001849') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-存入成功点击好的
+          } else {
+            GLOBALS.marchSetsPoint('A_H5PT0061001850') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-存入成功点击关闭
+          }
+          break
+
+        case 5:
+          if (val) {
+            GLOBALS.marchSetsPoint('A_H5PT0061001860') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-取出成功点击好的
+          } else {
+            GLOBALS.marchSetsPoint('A_H5PT0061001861') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-取出成功点击关闭
+          }
+          break
+        default:
+          break
+      }
       this.showEndPop = false
     },
     besure (val) {
       switch (val) {
         case 0:
+          GLOBALS.marchSetsPoint('A_H5PT0061001834') // H5平台-游戏内SDK-保险箱点击触发-权益未开启弹窗-去招财猫开启权益点击
           this.goCat()
           break
         case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0061001842') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-权益被冻结弹窗-去招财猫解封权益点击
           this.goCat()
           break
         case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0061001853') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-权益被冻结弹窗-去招财猫解封权益点击
           this.goCat()
           break
         case 31:
           this.updateBankNumber(-this.saveBoxInfo.balance)
+          GLOBALS.marchSetsPoint('A_H5PT0061001852') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-权益被冻结弹窗-全部取出点击
           break
         case 4:
           this.updateBankNumber(this.leafNumber)
+          GLOBALS.marchSetsPoint('A_H5PT0061001846') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-存入按钮点击
           break
         case 5:
           this.updateBankNumber(-this.leafNumber)
+          GLOBALS.marchSetsPoint('A_H5PT0061001857') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-取出按钮点击
           break
 
         default:
+          if (this.saveBoxStatus === 4) {
+            GLOBALS.marchSetsPoint('A_H5PT0061001847') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-去提升保险箱容量点击
+          } else if (this.saveBoxStatus === 5) {
+            GLOBALS.marchSetsPoint('A_H5PT0061001858') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-去提升保险箱容量点击
+          } else {
+            GLOBALS.marchSetsPoint('A_H5PT0061001839') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-去提升保险箱容量点击
+          }
+          this.goCat()
           break
       }
     },
     saveLeaf () {
       this.leafNumber = null
       this.clickType = 1
+      GLOBALS.marchSetsPoint('A_H5PT0061001837') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入点击
     },
     getOutLeaf () {
       this.leafNumber = null
       this.clickType = 2
+      GLOBALS.marchSetsPoint('A_H5PT0061001838') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出点击
     },
     goCat () {
       parent.location.href = '//wap.beeplaying.com/cat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
@@ -271,8 +366,10 @@ export default {
     allIn () {
       if (this.saveBoxStatus === 4) {
         this.leafNumber = this.moreNumber > this.userInfo.amount ? this.userInfo.amount : this.moreNumber
+        GLOBALS.marchSetsPoint('A_H5PT0061001845') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-存入触发-存入输入弹窗-全部存入点击
       } else if (this.saveBoxStatus === 5) {
         this.leafNumber = this.saveBoxInfo.balance
+        GLOBALS.marchSetsPoint('A_H5PT0061001856') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出触发-取出输入弹窗-全部取出点击
       }
     },
     async updateBankNumber (changeNum) {
@@ -313,6 +410,11 @@ export default {
           break
       }
     }
+  },
+  mounted () {
+    if (!localStorage.getItem('hadShowCatSaveBoxDot')) {
+      this.isShowRed = true
+    }
   }
 }
 </script>
@@ -327,12 +429,24 @@ export default {
   justify-content: space-around;
   align-items: center;
   height: 0.6rem;
+  position: relative;
   .entrance-header-img {
     width: 0.4rem;
     height: 0.4rem;
   }
   &:nth-child(3) {
     color: rgba(88, 114, 163, 1);
+  }
+  &.reddot:before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0.1rem;
+    height: 0.1rem;
+    // border: 1px solid #fff;
+    border-radius: 50%;
+    background: #e8382b;
   }
 }
 .text {
