@@ -106,7 +106,7 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0075001458')   // H5平台-砸金蛋-点击返回
-      history.back(-1)
+      location.href = window.linkUrl.getBackUrl(this.curChannel)
     },
     getLiClass (index) {
       return `e-item${index + 1}`
