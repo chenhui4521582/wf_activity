@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const index = resolve => require(['../pages/index.vue'], resolve)
-const before = resolve => require(['../pages/before.vue'], resolve)
-const after = resolve => require(['../pages/after.vue'], resolve)
+const v=GLOBALS.getUrlParam('v').split('#/')[0]||1
+const index = resolve => require([`../pages${v==1?'':v}/index.vue`], resolve)
+const before = resolve => require([`../pages${v==1?'':v}/before.vue`], resolve)
+const after = resolve => require([`../pages${v==1?'':v}/after.vue`], resolve)
 
 Vue.use(Router)
 
