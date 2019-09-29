@@ -190,7 +190,7 @@ export default {
                 max-height: 1.66rem;
                 background-color: transparent;
                 background-size: 100% 100%;
-                background-image: url("../images/common/end-empty.png");
+                background-image: url("../images/common/hammer.png");
               }
             }
             &.length-2 {
