@@ -61,7 +61,13 @@
     </section>
     <section class="rule-wrapper">
       <h4>活动规则</h4>
-      <section class="rule"></section>
+      <section class="rule">
+        <p>1. 活动时间：开启活动后，倒计时48小时； </p>
+        <p>2. 参与活动的玩家必须在规定的时间内（48小时）完成所有《王者弹珠》大师任务，方可领取300元加奖；</p>
+        <p>3. 具体活动时间以活动页面倒计时为准；</p>
+        <p>4. 该活动奖励仅针对《王者弹珠》一款游戏的大师任务开启；</p>
+        <p>5. 该活动奖励仅可领取1次。</p>
+      </section>
     </section>
     <section class="bottom-wrapper">
       · 玩蜂科技出品 ·
@@ -116,7 +122,6 @@ export default {
       let info = {}
       try {
         info = this.parentTaskInfo.list[this.parentTaskInfo.currentRank - 1]
-
       } catch (error) {
 
       }
@@ -188,7 +193,7 @@ export default {
       //   task_id: item.taskId,
       //   task_name: item.taskName
       // })
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType', { value: this.masterList[this._gametype] })
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType', { value: this.masterList[this._gametype] })
       location.href = `//wap.beeplaying.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
     },
     goGame () {
@@ -505,6 +510,11 @@ export default {
       height: 4.86rem;
       padding: 0.6rem;
       .bgWithFull("./img/rule-bg.png");
+      font-size: 0.26rem;
+      font-weight: 400;
+      color: #74798e;
+      line-height: 0.4rem;
+      letter-spacing: 1;
     }
   }
   .bottom-wrapper {
