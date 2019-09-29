@@ -86,10 +86,18 @@ export default {
   },
   methods: {
     gotopay (item) {
+      // localStorage.setItem('payment', JSON.stringify(item))
       localStorage.setItem('originDeffer', window.location.href)
       GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取钥匙大浮层-点击任意礼包
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-      if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap'||(window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001')) { // 好看、全民小视频
+      // if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap'){
+      //   location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist'
+      // } else if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
+      //   location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
+      // } else {
+      //   location.href = 'https://wap.beeplaying.com/payment/#/payment'
+      // }
+      if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
         location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
       } else {
         location.href = 'https://wap.beeplaying.com/payment/#/payment'
