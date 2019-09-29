@@ -43,7 +43,7 @@ export default {
   methods: {
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0075001481')   // H5平台-砸金蛋-活动已结束-点击返回
-      history.back(-1)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     async closePop () {
       this.isShowPop = false
