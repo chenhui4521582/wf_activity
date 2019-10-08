@@ -135,6 +135,18 @@ export default {
 
       }
       return info
+    },
+    receiveAll () {
+      let msg = ''
+      if (this.parentTaskInfo.totalTask - this.parentTaskInfo.hasFinishedTask <= 0) {
+        msg = '奖励已发放'
+      } else {
+        msg = '还有任务未完成'
+      }
+      this.$toast.show({
+        message: msg,
+        duration: 3000
+      })
     }
   },
   mounted () {
