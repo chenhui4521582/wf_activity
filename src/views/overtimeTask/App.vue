@@ -139,9 +139,9 @@ export default {
     receiveAll () {
       let msg = ''
       if (this.parentTaskInfo.totalTask - this.parentTaskInfo.hasFinishedTask <= 0) {
-        msg = '奖励已发放'
+        msg = '奖励已发放 请注意查收'
       } else {
-        msg = '还有任务未完成'
+        msg = '暂未完成所有任务'
       }
       this.$toast.show({
         message: msg,
