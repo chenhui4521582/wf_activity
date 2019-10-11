@@ -8,26 +8,19 @@ import axios from 'axios'
 import Vue from 'vue'
 import utils from '../../common/js/utils'
 // axios 配置
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 5000
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-  if (!config.headers.Authorization) {
-    config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
-  }
-
-  if (!config.headers['App-Channel']) {
-    config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
-  }
-
-  // config.headers.Authorization = 'fbae4d71382b42a0b83858d561bc60db'
-  // config.headers['App-Channel'] = '100039'
-  localStorage.setItem('APP_VERSION', '1.0.0')
+  config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
+  config.headers['App-Channel'] = localStorage.getItem('APP_CHANNEL') && /\d+/.exec(localStorage.getItem('APP_CHANNEL')) && /\d+/.exec(localStorage.getItem('APP_CHANNEL'))[0]
+  config.headers['App-Version'] = '1.0.0'
   return config
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error)
+  // return '';
 })
 
 // 添加响应拦截器
@@ -52,37 +45,12 @@ axios.interceptors.response.use(
             duration: 1500
           })
           break
-        case 401:
-          let uid = localStorage.getItem('user_Info') && JSON.parse(localStorage.getItem('user_Info')) && JSON.parse(localStorage.getItem('user_Info')).userId || ''
-          if (uid) {
-            axios.post(`//uic-api.beeplaying.com/uic/api/user/center/validateLimit/${uid}`).then(res => {
-              localStorage.removeItem('ACCESS_TOKEN')
-              if (res.data.code == 200 && res.data.data) { // 游客模式
-                if (window.linkUrl.getYKChannel(localStorage.getItem('APP_CHANNEL'))) {
-                  window.location.href = 'https://wap.beeplaying.com/loginPages/bdLoginPromp.html?bdto=freezeAssetsIn'
-                } else {
-                  window.location.href = `https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=${localStorage.getItem('APP_CHANNEL')}&from=plat&flag=assetLimitation`
-                }
-              } else {
-                Vue.prototype.$toast.show({
-                  message: '未授权，请登录！',
-                  duration: 1500
-                })
-              }
-            }).catch(e => {
-              localStorage.removeItem('ACCESS_TOKEN')
-              Vue.prototype.$toast.show({
-                message: '未授权，请登录！',
-                duration: 1500
-              })
-            })
-          } else {
-            Vue.prototype.$toast.show({
-              message: '未授权，请登录！',
-              duration: 1500
-            })
-          }
-          break
+        // case 401:
+        //     Vue.prototype.$toast.show({
+        //         message: '未授权，请登录！',
+        //         duration: 1500
+        //     });
+        //     break;
         case 404:
           Vue.prototype.$toast.show({
             message: '请求地址出错！',
@@ -131,15 +99,20 @@ axios.interceptors.response.use(
           break
         case 122, 128:
           break
-        default:
-          var result = response.config && response.config.data
-          if (result) {
-            result = JSON.parse(result)
-            if (result && result.isShowToast == 'false') {
-              break
-            }
-          }
-
+        // default:
+        //   var result = response.config && response.config.data
+        //   console.log('result', response.config)
+        //   if (result && (result == '{"isShowTotast":false}') || result == '{isShowTotast:"false"}' || result == '{"isShowTotast":"false"}' || result == '{isShowTotast:false}') {
+        //     result = JSON.parse(result)
+        //     if (result && !JSON.parse(result.isShowTotast)) {
+        //       break
+        //     }
+        //   }
+        //
+        //   Vue.prototype.$toast.show({
+        //     message: res.message,
+        //     duration: 1500
+        //   })
       }
     }
     return response
@@ -152,14 +125,14 @@ axios.interceptors.response.use(
     if (error && error.response) {
 
     } else {
-      error = JSON.stringify(error)
-      if (error.indexOf('timeout') != -1) {
-        // Vue.prototype.$toast.show({
-        //   message: '请求超时',
-        //   duration: 1500
-        // })
-        return
-      }
+      // error = JSON.stringify(error)
+      // if (error.indexOf('timeout') != -1) {
+      //   Vue.prototype.$toast.show({
+      //     message: '请求超时',
+      //     duration: 1500
+      //   })
+      //   return
+      // }
     }
     return Promise.reject(error)
     // return '';

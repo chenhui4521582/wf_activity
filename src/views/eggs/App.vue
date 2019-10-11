@@ -8,7 +8,7 @@
 /* eslint-disable */
 import '../../common/js/window.js';
 export default {
-    name: 'App',
+    name: 'App'
 }
 </script>
 

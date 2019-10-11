@@ -1,0 +1,115 @@
+html {
+}
+body,div,ul,li {
+  padding: 0;
+  margin: 0;
+}
+.container
+{
+  position: relative;
+  height: 19.88rem;
+  background: url('../images/bg.png') no-repeat;
+  background-size: 100% 100%;
+  padding-bottom:0.7*2rem;
+  width:100%;
+  box-sizing: border-box;
+  .back{
+    position: absolute;
+    top:.29*2rem;
+    left:.1*2rem;
+    width: .22*2rem;
+    height: .22*2rem;
+    background: url('../images/back.png') no-repeat;
+    background-size:100% 100%;
+    z-index: 1;
+  }
+  .header{
+    width: 100%;
+    position: absolute;
+    top: .6rem;
+  }
+
+  .list_cards{
+   display: flex;
+   list-style-type:none;
+   margin:0 0.1*2rem;
+
+    li {
+      flex: 1;
+      margin: 0.2*2rem 0.05*2rem;
+      img{
+        width:100%;
+      }
+    }
+  }
+
+  .status {
+    color:#fff;
+    font-weight: bold;
+    font-size: 0.22*2rem;
+    text-align: center;
+  }
+
+  .btn_submit
+  {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2rem;
+    width: 2.3*2rem;
+    height: .53*2rem;
+    display: block;
+    margin: auto;
+  }
+
+  .rules
+  {
+    width: 100%;
+    position: absolute;
+    top: 4.5rem;
+    .title
+    {
+      width: 1.5*2rem;
+      background: url('../images/bg_rule.png') 0 0.1*2rem no-repeat;
+      background-size:contain;
+      color: #fff;
+      font-size: 0.15*2rem;
+      text-align: center;
+      vertical-align: top;
+      margin: 0 auto .44rem;
+    }
+
+    .rules_wrapper
+    {
+      margin:0 auto;
+      width: 3.3*2rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 0.1*2rem;
+      color:#fff;
+
+      ul{
+        padding:0.15*2rem;
+        list-style:none;
+        li{
+          margin-bottom:0.12*2rem;
+
+          &::before {
+            vertical-align: top;
+            width: 0.1*2rem;
+            height: 0.1*2rem;
+            margin-right: 0.1*2rem;
+            content: '';
+            display: inline-block;
+            background: url('../images/ico_dot.png') no-repeat;
+            background-size:contain;
+          }
+          div {
+            font-size:0.14*2rem;
+            display: inline-block;
+            width:2.7*2rem;
+          }
+        }
+      }
+    }
+  }
+}
