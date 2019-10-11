@@ -47,8 +47,8 @@
               </div>
             </div>
             <div class="btn-wrap">
-              <a href="javascript:" class="btn receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
-              <a href="javascript:" class="btn success" v-if="item.taskStatus == 1" @click="goTask(item)">去完成</a>
+              <a href="javascript:" class="btn receive" v-if="item.taskStatus == 0" @click="goTask()">领取</a>
+              <a href="javascript:" class="btn success" v-if="item.taskStatus == 1" @click="goGame(1)">去完成</a>
               <a href="javascript:" class="btn gray" v-if="item.taskStatus == 2">已领取</a>
             </div>
           </section>
@@ -137,6 +137,7 @@ export default {
       return info
     },
     receiveAll () {
+      GLOBALS.marchSetsPoint('A_H5PT0198002013')        // H5平台-大师任务加奖活动页面-底部领取奖励按钮点击
       let msg = ''
       if (this.parentTaskInfo.totalTask - this.parentTaskInfo.hasFinishedTask <= 0) {
         msg = '奖励已发放 请注意查收'
@@ -160,6 +161,7 @@ export default {
         this.info = data
         this.countDown(data.countdown)
         this.getAchievementTaskOfHall()
+        GLOBALS.marchSetsPoint('P_H5PT0198')        // H5平台-大师任务加奖活动-页面加载完成
       }
     },
     async getAchievementTaskOfHall () {
@@ -208,13 +210,19 @@ export default {
       let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType', { value: this.masterList[this._gametype] })
       location.href = `//wap.beeplaying.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
     },
-    goGame () {
+    goGame (type) {
+      if (type) {
+        GLOBALS.marchSetsPoint('A_H5PT0198002014')        // H5平台-大师任务加奖活动页面-右边去完成点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0198002012')        // H5平台-大师任务加奖活动页面-底部立即去完成按钮点击
+      }
       let str = this.masterList[this._gametype].split('-')[0]
       WapCall.openGame(str.replace(str[0], str[0].toUpperCase()))
     },
     goTask () {
+      GLOBALS.marchSetsPoint('A_H5PT0198002014')        // H5平台-大师任务加奖活动页面-右边去完成点击
       let url = `${window.linkUrl.getBackUrl(this._channel, null, false, false, '#/taskview')}`
-      parent.location.href = url
+      location.href = url
     }
   }
 }
