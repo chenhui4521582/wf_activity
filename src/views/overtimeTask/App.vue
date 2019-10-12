@@ -274,7 +274,7 @@ export default {
     box-sizing: border-box;
     position: relative;
     .award-name {
-      font-size: 0.26rem;
+      font-size: 0.22rem;
       font-weight: 500;
       color: #0f1626;
       line-height: 32px;
