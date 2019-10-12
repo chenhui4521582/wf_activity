@@ -217,7 +217,7 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0198002012')        // H5平台-大师任务加奖活动页面-底部立即去完成按钮点击
       }
       let str = this.masterList[this._gametype].split('-')[0]
-      WapCall.openGame(str.replace(str[0], str[0].toUpperCase()))
+      WapCall.openGame('/' + str.replace(str[0], str[0].toUpperCase()))
     },
     goTask () {
       GLOBALS.marchSetsPoint('A_H5PT0198002014')        // H5平台-大师任务加奖活动页面-右边去完成点击
