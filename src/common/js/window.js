@@ -223,8 +223,12 @@ window.GLOBALS = {
 
 // 与游戏对接方法
 window.WapCall = {
-  openGame (url, params) {
-    location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
+  openGame (url, SDK, params) {
+    if (SDK) {
+      parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
+    } else {
+      location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
+    }
   }
 
 }
