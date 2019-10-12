@@ -82,7 +82,7 @@ export default {
     height: 0.46rem;
     background: url("../img/crushMasterTask/overtime-bg.png") no-repeat center /
       100% 100%;
-    line-height: 0.56rem;
+    line-height: 0.58rem;
     padding: 0 0.38rem 0 0.52rem;
     display: flex;
     justify-content: space-between;
