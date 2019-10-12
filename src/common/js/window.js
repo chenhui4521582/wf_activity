@@ -60,6 +60,11 @@ window.GLOBALS = {
     url = '../../../payment/#/mall'
     return url
   },
+  get channel () {
+    let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel').split('#')[0] : localStorage.getItem('APP_CHANNEL')
+    localStorage.setItem('APP_CHANNEL', _channel)
+    return _channel
+  },
   isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser'] > 0 : 1,
   loopTime (_this, obj) {
     var date = new Date()
@@ -218,8 +223,8 @@ window.GLOBALS = {
 
 // 与游戏对接方法
 window.WapCall = {
-  openGame (url) {
-    location.href = url + '?channel=' + localStorage.getItem('APP_CHANNEL')
+  openGame (url, params) {
+    location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
   }
 
 }
