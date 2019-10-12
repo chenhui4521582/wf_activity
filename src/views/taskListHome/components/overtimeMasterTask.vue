@@ -81,7 +81,7 @@ export default {
   .overtime {
     height: 0.58rem;
     background: url("../images/overtime-bg.png") no-repeat center / 100% 100%;
-    line-height: 0.76rem;
+    line-height: 0.78rem;
     padding: 0 0.48rem 0 0.64rem;
     display: flex;
     justify-content: space-between;
