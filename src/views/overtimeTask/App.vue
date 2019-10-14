@@ -28,7 +28,7 @@
           </div>
         </div>
       </section>
-      <ul class="sub-task">
+      <ul class="sub-task" v-if="subTasks.length">
         <li v-for="(item,index) in subTasks" :key="index">
           <section class="list-wrap" :style="{backgroundImage:'url('+bgImg+')'}">
             <div class="img-wrap">
@@ -130,24 +130,13 @@ export default {
     subTasks () {
       let info = []
       try {
-        info = info.concat(this.currentTask.subListA, this.currentTask.subListB)
+        if (this.currentTask.subListA.length || this.currentTask.subListB.length) {
+          info = info.concat(this.currentTask.subListA, this.currentTask.subListB)
+        }
       } catch (error) {
 
       }
       return info
-    },
-    receiveAll () {
-      GLOBALS.marchSetsPoint('A_H5PT0198002013')        // H5平台-大师任务加奖活动页面-底部领取奖励按钮点击
-      let msg = ''
-      if (this.parentTaskInfo.totalTask - this.parentTaskInfo.hasFinishedTask <= 0) {
-        msg = '奖励已发放 请注意查收'
-      } else {
-        msg = '暂未完成所有任务'
-      }
-      this.$toast.show({
-        message: msg,
-        duration: 3000
-      })
     }
   },
   mounted () {
@@ -223,11 +212,23 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0198002014')        // H5平台-大师任务加奖活动页面-右边去完成点击
       let url = `${window.linkUrl.getBackUrl(this._channel, null, false, false, '#/taskview')}`
       location.href = url
+    },
+    receiveAll () {
+      GLOBALS.marchSetsPoint('A_H5PT0198002013')        // H5平台-大师任务加奖活动页面-底部领取奖励按钮点击
+      let msg = ''
+      if (this.parentTaskInfo.totalTask - this.parentTaskInfo.hasFinishedTask <= 0) {
+        msg = '奖励已发放 请注意查收'
+      } else {
+        msg = '暂未完成所有任务'
+      }
+      this.$toast.show({
+        message: msg
+      })
     }
   }
 }
 </script>
-<style  lang="less">
+<style lang="less">
 @import "../../common/css/base.css";
 .bgWithFull(@url) {
   background: url(@url) no-repeat center center / 100% 100%;
@@ -563,6 +564,12 @@ export default {
       background-color: #8489a7;
       margin-left: 0.08rem;
     }
+  }
+}
+
+.alertBox {
+  .box {
+    white-space: nowrap;
   }
 }
 </style>
