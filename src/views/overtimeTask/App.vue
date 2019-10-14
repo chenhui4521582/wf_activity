@@ -147,9 +147,19 @@ export default {
       const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/achievement-task/info')
       const { data, code } = res.data
       if (code === 200) {
-        this.info = data
-        this.countDown(data.countdown)
-        this.getAchievementTaskOfHall()
+        if (data.countdown) {
+          this.info = data
+          this.countDown(data.countdown)
+          this.getAchievementTaskOfHall()
+        } else {
+          this.$toast.show({
+            message: '不在活动有效期'
+          })
+          this.timer = setTimeout(() => {
+            clearTimeout(this.timer)
+            location.href = SDK.getBackUrl()
+          }, 3000)
+        }
         GLOBALS.marchSetsPoint('P_H5PT0198')        // H5平台-大师任务加奖活动-页面加载完成
       }
     },
