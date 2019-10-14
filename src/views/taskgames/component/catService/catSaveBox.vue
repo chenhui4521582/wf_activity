@@ -4,7 +4,7 @@
       <img class="entrance-header-img" src="../../images/cat_supply/biaoxianbox.png">
       <div class="entrance-header-text">保险箱</div>
     </div>
-    <common-pop :title="title" v-if="showOutPop" @close="showOutPop = false">
+    <common-pop :title="title" v-if="showOutPop" @close="closeCat()">
       <div slot="text" class="text" :class="{catFlag1:saveBoxStatus===1}">
         <template v-if="saveBoxStatus === 0">
           <div>保险箱为招财猫Lv.30权益：</div>
