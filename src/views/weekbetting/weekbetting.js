@@ -24,8 +24,6 @@ Vue.filter('filter', function (url) {
     }
 });
 /* eslint-disable no-new */
-localStorage.setItem('APP_CHANNEL','100039')
-localStorage.setItem('ACCESS_TOKEN','cae948941e7041d981a2d1b235c96699')
 new Vue({
   el: '#app',
   axios,
