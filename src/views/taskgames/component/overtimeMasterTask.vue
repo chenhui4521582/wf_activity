@@ -1,5 +1,5 @@
 <template>
-  <section class="overtime-wrapper" v-if="gameType===achievementTaskInfo.gameType" @click="goOvertimeDetail">
+  <section class="overtime-wrapper" v-if="gameType===achievementTaskInfo.gameType&&countdownTime" @click="goOvertimeDetail">
     <div class="overtime">
       <span>
         {{countdownTime}}

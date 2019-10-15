@@ -67,6 +67,7 @@
         <p>3. 具体活动时间以活动页面倒计时为准；</p>
         <p>4. 该活动奖励仅针对《王者弹珠》一款游戏的大师任务开启；</p>
         <p>5. 该活动奖励仅可领取1次。</p>
+        <p>6. 特殊情况：若未在48小时内完成任务，停留在活动页中通过跳转及返回完成任务，不予以计算奖励。</p>
       </section>
     </section>
     <section class="bottom-wrapper">
@@ -151,14 +152,6 @@ export default {
           this.info = data
           this.countDown(data.countdown)
           this.getAchievementTaskOfHall()
-        } else {
-          this.$toast.show({
-            message: '不在活动有效期'
-          })
-          this.timer = setTimeout(() => {
-            clearTimeout(this.timer)
-            location.href = SDK.getBackUrl()
-          }, 3000)
         }
         GLOBALS.marchSetsPoint('P_H5PT0198')        // H5平台-大师任务加奖活动-页面加载完成
       }
