@@ -216,7 +216,7 @@ export default {
         case 5:
           return '取出金叶子'
         default:
-          return `金叶子保险箱V.${this.saveBoxInfo.bankLv}`
+          return `金叶子保险箱V${this.saveBoxInfo.bankLv}`
       }
     },
     endTitle () {
