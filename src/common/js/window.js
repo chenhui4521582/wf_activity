@@ -60,6 +60,11 @@ window.GLOBALS = {
     url = '../../../payment/#/mall'
     return url
   },
+  get channel () {
+    let _channel = this.getUrlParam('channel') ? this.getUrlParam('channel').split('#')[0] : localStorage.getItem('APP_CHANNEL')
+    localStorage.setItem('APP_CHANNEL', _channel)
+    return _channel
+  },
   isWhiteUser: localStorage['isWhiteUser'] ? localStorage['isWhiteUser'] > 0 : 1,
   loopTime (_this, obj) {
     var date = new Date()
@@ -153,7 +158,7 @@ window.GLOBALS = {
             residual_jingdong: null,
             residual_phone: null,
             entrance: localStorage.getItem('platSource') || 'plat',
-            from_project_id: this.getUrlParam('gametype')
+            from_project_id: this.getUrlParam('gametype') || this.getUrlParam('gameType')
           }, eventcontent)
         }
       ]
@@ -219,10 +224,13 @@ window.GLOBALS = {
 
 // 与游戏对接方法
 window.WapCall = {
-  openGame (url) {
-    location.href = '//wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
+  openGame (url, SDK, params) {
+    if (SDK) {
+      parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
+    } else {
+      location.href = 'https://wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + (params || '')
+    }
   }
-
 }
 window.createFun = function (name, cb) {
   window[name] = cb
