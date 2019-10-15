@@ -1,7 +1,7 @@
 <template>
   <div class="entrance-header">
     <cat-save-box :userInfo="userInfo" @getUserInfo="getUserInfo"></cat-save-box>
-    <div class="entrance-header-item" @click="handleCatBuJi">
+    <div class="entrance-header-item" :class="{reddot: bujireddot}" @click="handleCatBuJi">
       <img class="entrance-header-img" src="../images/cat_supply/supplybox.png">
       <div class="entrance-header-text">补给箱</div>
     </div>
@@ -33,7 +33,8 @@
         </div>
         <div class="cat_surplusinfo" v-if="catSurplusFlag==3||catSurplusFlag==4">
           <div class="line"></div>
-          <div class="desc" @click="gainrights(catSurplusFlag)">* 招财猫不同等级享不同权益,<span class="gobaoxian">去获取更多权益>></span></div>
+          <div class="desc" @click="gainrights(catSurplusFlag)">* 招财猫不同等级享不同权益,<span class="gobaoxian">去获取更多权益>></span>
+          </div>
         </div>
       </div>
     </common-pop>
@@ -56,7 +57,8 @@ export default {
       isDailyReceivePop: false,
       receiveAwards: {},
       receiveAmount: 0,
-      catSupplyInfo: []
+      catSupplyInfo: [],
+      bujireddot: false
     }
   },
   props: {
@@ -78,6 +80,9 @@ export default {
       this.$emit('gotokf')
     },
     async handleCatBuJi () { // 招财猫补给箱
+      if (this.bujireddot) {
+        localStorage.setItem('bujireddot', '1')
+      }
       GLOBALS.marchSetsPoint('A_H5PT0061001713')// H5平台-游戏内SDK-顶部补给箱按钮点击
       let { data } = await this.axios.post('//petcat-api.beeplaying.com/petcat/api/privilege/receiveStatus')
       if (data.code == 200 || data.code == 203) { // 203 表示用户没猫 状态对应 权益未开启
@@ -91,10 +96,12 @@ export default {
         if (this.catSurplusFlag) {
           this.bgColor = 'black'
           if (this.catSurplusFlag == 1) {
+            this.bujireddot = false
             GLOBALS.marchSetsPoint('A_H5PT0061001717')// H5平台-游戏内SDK-补给箱点击触发-权益被冻结弹窗加载完成
             this.title = '权益被冻结'
             this.btnName = '去招财猫解封权益'
           } else if (this.catSurplusFlag == 2) {
+            this.bujireddot = false
             GLOBALS.marchSetsPoint('A_H5PT0061001714')// H5平台-游戏内SDK-补给箱点击触发-权益未开启弹窗加载完成
             this.title = '权益未开启'
             this.btnName = '去招财猫开启权益'
@@ -106,6 +113,7 @@ export default {
               GLOBALS.marchSetsPoint('A_H5PT0061001720')// H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗加载完成
               this.btnName = '领取补给'
             } else {
+              this.bujireddot = false
               GLOBALS.marchSetsPoint('A_H5PT0061001727')// H5平台-游戏内SDK-补给箱点击触发-奖励已领取弹窗加载完成
               this.receiveAmount = this.catSupplyInfo.receiveAmount
               this.btnName = '今日已领'
@@ -114,7 +122,6 @@ export default {
           this.showOutPop = true
         }
       } else {
-
       }
     },
     async gaincatprize () { // 招财猫领取补给
@@ -128,6 +135,7 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0061001721')// H5平台-游戏内SDK-补给箱点击触发-奖励待领取弹窗-领取补给点击
         let { data } = await this.axios.post('//petcat-api.beeplaying.com/petcat/api/privilege/receive', { receiveType: 1 })
         if (data.code == 200) {
+          this.bujireddot = false
           GLOBALS.marchSetsPoint('A_H5PT0061001724')// H5平台-游戏内SDK-补给箱点击触发-奖励领取成功弹窗加载完成
           this.bgHeight = 356
           this.title = '领取补给成功'
@@ -147,7 +155,7 @@ export default {
         let data = catSupplyInfo[0]
         if (data.isExist) {
           if (data.frozenStatus) {
-            return 2
+            return 1
           } else {
             if (data.receiveStatus) {
               return 4
@@ -180,6 +188,40 @@ export default {
     getUserInfo () {
       this.$emit('getUserInfo')
     }
+  },
+  async mounted () {
+    this.bujireddot = !localStorage.getItem('bujireddot')// 如果有值表示已点过
+    let { data } = await this.axios.post('//petcat-api.beeplaying.com/petcat/api/privilege/receiveStatus', { isShowTotast: false })
+    if (data.code == 200 || data.code == 203) { // 203 表示用户没猫 状态对应 权益未开启
+      if (data.code == 200) {
+        this.catSupplyInfo = data.data.receiveStatusInfos.filter(item => item.type == 1)
+        this.catSurplusFlag = this.getCatSurplusFlag(this.catSupplyInfo)
+      } else {
+        this.catSurplusFlag = 2
+      }
+      if (this.catSurplusFlag) {
+        this.bgColor = 'black'
+        if (this.catSurplusFlag == 1) {
+          this.title = '权益被冻结'
+          this.btnName = '去招财猫解封权益'
+        } else if (this.catSurplusFlag == 2) {
+          this.title = '权益未开启'
+          this.btnName = '去招财猫开启权益'
+        } else {
+          this.title = `幸运补给箱`
+          this.bgHeight = 500
+          if (this.catSurplusFlag == 3) {
+            this.bujireddot = true
+            this.btnName = '领取补给'
+          } else {
+            this.receiveAmount = this.catSupplyInfo.receiveAmount
+            this.btnName = '今日已领'
+          }
+        }
+      }
+    } else {
+
+    }
   }
 }
 </script>
@@ -201,6 +243,7 @@ export default {
     justify-content: space-around;
     align-items: center;
     height: 0.6rem;
+    position: relative;
     .entrance-header-img {
       width: 0.4rem;
       height: 0.4rem;
@@ -208,8 +251,20 @@ export default {
     &:nth-child(3) {
       color: rgba(88, 114, 163, 1);
     }
+    &.reddot:before {
+      content: "";
+      position: absolute;
+      right: 0rem;
+      top: 0.04rem;
+      width: 0.1rem;
+      height: 0.1rem;
+      border: 0.02rem solid #fff;
+      border-radius: 50%;
+      background: #e8382b;
+    }
   }
 }
+
 .entrance-center {
   &:not(.catFlag34) {
     height: 70%;
@@ -274,7 +329,7 @@ export default {
       width: 4.38rem;
       height: 1px;
       background: rgba(255, 255, 255, 0.2);
-      margin: 0 auto.18rem;
+      margin: 0 auto 0.18rem;
     }
     .gobaoxian {
       color: #e39b25;
