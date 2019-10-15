@@ -309,6 +309,7 @@ export default {
         default:
           break
       }
+      this.clickType = 0
       this.showEndPop = false
     },
     besure (val) {
@@ -388,7 +389,6 @@ export default {
         case 200:
           this.showEndPop = true
           this.endPopType = this.saveBoxStatus
-          this.clickType = 0
           this.$emit('getUserInfo')
           this.init()
           break
