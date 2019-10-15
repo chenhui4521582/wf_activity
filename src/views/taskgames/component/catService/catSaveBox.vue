@@ -362,7 +362,7 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0061001838') // H5平台-游戏内SDK-保险箱点击触发-权益已开启-金叶保险箱弹窗-取出点击
     },
     goCat () {
-      parent.location.href = '//wap.beeplaying.com/petcat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
+      parent.location.href = '//wap.beeplaying.com/petcat/?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime()) + '&catright=1'
     },
     allIn () {
       if (this.saveBoxStatus === 4) {
