@@ -152,7 +152,8 @@ window.GLOBALS = {
             marketing_id: null,
             residual_jingdong: null,
             residual_phone: null,
-            entrance: localStorage.getItem('platSource') || 'plat'
+            entrance: localStorage.getItem('platSource') || 'plat',
+            from_project_id: this.getUrlParam('gametype')
           }, eventcontent)
         }
       ]
@@ -219,7 +220,7 @@ window.GLOBALS = {
 // 与游戏对接方法
 window.WapCall = {
   openGame (url) {
-    location.href = url + '?channel=' + localStorage.getItem('APP_CHANNEL')
+    location.href = '//wap.beeplaying.com' + url + '?channel=' + GLOBALS.channel + '&time=' + (new Date().getTime())
   }
 
 }
