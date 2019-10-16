@@ -8,22 +8,22 @@
       <!--日期-->
       <div class="date">{{detailData.timeline}}</div>
       <div class="display" v-if="tabIndex">
-        <div class="item" @click="tabIndex=0">
+        <div class="item" @click="qianghongbaoclick(0)">
           <img src="./images/qianyuanbonus.png" alt="">
         </div>
-        <div class="item">
+        <div class="item" @click="qianghongbaoclick(1)">
           <img src="./images/zhongjidajiang.png" alt="">
         </div>
       </div>
       <div class="display1" v-else>
         <div class="item">
-          <img src="./images/qianyuanbonus1.png" alt="">
+          <img src="./images/qianyuanbonus1.png" alt="" @click="qianghongbaoclick(0)">
         </div>
         <div class="item">
           <img src="./images/zhongjidajiang1.png" alt="" @click="qianghongbaoclick(1)">
         </div>
       </div>
-      <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==4}" v-show="tabIndex==1">
+      <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==4}" v-show="tabIndex==1" @click="zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
         <template v-if="detailData.ultimateState==1||detailData.ultimateState==4">
           <img src="./images/yure_gif.png" alt="">
           <div class="bonus_content">
@@ -37,7 +37,7 @@
         </template>
         <img src="./images/openprize.gif" alt="" v-else>
       </div>
-      <div class="gif" v-show="tabIndex==0">
+      <div class="gif" v-show="tabIndex==0" @click="qianyuanbonusImgClick(detailData.normalState)">
         <img src="./images/qianyuanbonusopen.gif" alt="" v-if="detailData.normalState==5">
         <img src="./images/qianyuanbonus.gif" alt="" v-else>
       </div>
@@ -71,7 +71,7 @@
           <div class="btn bonus_pre" v-if="detailData.normalState==1">
             活动开启倒计时{{countdown.time}}
           </div>
-          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0)">
+          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0,false)">
             <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
           </div>
         </template>
@@ -176,11 +176,11 @@
           }
         }
       },
-      qianghongbaoclick(value){
+      qianghongbaoclick(value,isTab=true){
         if(value){
-          GLOBALS.marchSetsPoint('A_H5PT0074001703')
-        }else{
           GLOBALS.marchSetsPoint('A_H5PT0074001702')
+        }else{
+          GLOBALS.marchSetsPoint(isTab?'A_H5PT0074002015':'A_H5PT0074001703')
         }
         this.tabIndex=value
       },
@@ -328,6 +328,21 @@
         } catch (e) {
 
         }
+      },
+      qianyuanbonusImgClick(state){
+        if(state==2){
+          this.appointmentBonus(false)
+        }else if(state==5){
+          this.divideBonus(0)
+        }
+      },
+      zhongjidajiangImgClick(normalState,state){
+        if([2,3,4,5].includes(normalState)){
+          this.qianghongbaoclick(0)
+        }
+        if(state==3){
+          this.divideBonus(1)
+        }
       }
     },
     components: {
@@ -421,7 +436,7 @@
       position: relative;
       z-index: 1;
       img {
-        width: 1.33rem;
+        /*width: 1.33rem;*/
         height: .38rem;
         position: absolute;
         left: 50%;
@@ -453,7 +468,7 @@
       position: relative;
       z-index: 1;
       img {
-        width: 1.33rem;
+        /*width: 1.33rem;*/
         height: .38rem;
         position: absolute;
         left: 50%;
@@ -476,6 +491,7 @@
     top: 3.6rem;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1;
     img {
       idth: 5.32rem;
       height: 6.2rem;
