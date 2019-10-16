@@ -491,6 +491,7 @@
     top: 3.6rem;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1;
     img {
       idth: 5.32rem;
       height: 6.2rem;
