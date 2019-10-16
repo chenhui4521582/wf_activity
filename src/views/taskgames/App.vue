@@ -4,7 +4,7 @@
       <ul>
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
         <li class="hf-fragment" v-if="telFragment" @click="jumpMine">{{telFragment&&telFragment[0].price}}
-          <i :class="{'huafeifont':!huafeiShow}" v-html="huafeiShow ? '(满'+100+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
+          <i :class="{'huafeifont':!huafeiShow}" v-html="huafeiShow ? '(满'+huafeiNum+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
         </li>
         <!--<p class="figure" v-if="!huafeiShow">-->
         <!--<img src="./images/fighur.png" class="touch">-->
