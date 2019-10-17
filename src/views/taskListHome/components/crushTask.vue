@@ -1,5 +1,6 @@
 <template>
   <div class="crush-task">
+    <overtime-master-task :game-type="gameType"></overtime-master-task>
     <div class="task-title" @click="showCurDetails()">
       <img :src="item.bgIcon | filter" class="bg-task" :class="{'radius': !item.selected}">
       <p class="left-part">
@@ -25,10 +26,8 @@
     <div v-if="item.selected">
       <div v-if="item.hasFinishedTask != item.totalTask">
         <ul class="task-list" v-if="item.currentParentTask.parentTask.taskStatus == 1">
-          <li v-for="(item1,index) in item.showSubMasterList" 
-          :key="index"
-          @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
-            <div class="description" >
+          <li v-for="(item1,index) in item.showSubMasterList" :key="index" @click="checkTaskStatus(item1 ,item.batchId, item.currentParentTask)">
+            <div class="description">
               <div class="head-img">
                 <img :src="item1.icon | filter " alt="">
               </div>
@@ -68,6 +67,7 @@
   </div>
 </template>
 <script>
+import overtimeMasterTask from './overtimeMasterTask'
 export default {
   props: {
     item: Object,
@@ -77,11 +77,12 @@ export default {
   name: 'crushTask',
   computed: {
     gameType () {
-      if(this.item.showSubMasterList[0]){
+      if (this.item.showSubMasterList[0]) {
         return this.item.showSubMasterList[0].gameType
       }
     }
   },
+  components: { overtimeMasterTask },
   methods: {
     async showCurDetails () {
       if (this.item.selected) {
