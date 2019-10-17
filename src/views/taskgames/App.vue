@@ -4,16 +4,14 @@
       <ul>
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
         <li class="hf-fragment" v-if="telFragment" @click="jumpMine">{{telFragment&&telFragment[0].price}}
-          <i :class="{'huafeifont':!huafeiShow}">{{huafeiShow ? '（满'+huafeiNum+'可领）':'点击领取'}}</i>
+          <i :class="{'huafeifont':!huafeiShow}" v-html="huafeiShow ? '(满'+huafeiNum+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
         </li>
-        <p class="figure" v-if="!huafeiShow">
-          <img src="./images/fighur.png" class="touch">
-          快去领！
-        </p>
-        <p class="figure1" style="display: inline-block;position: absolute;right:.2rem;top: 0.15rem;" @click="kfclick">
-          <img src="./images/kf.png" style="width: .52rem;height: .52rem">
-        </p>
+        <!--<p class="figure" v-if="!huafeiShow">-->
+        <!--<img src="./images/fighur.png" class="touch">-->
+        <!--快去领！-->
+        <!--</p>-->
       </ul>
+      <entrance-header @gotokf="kfclick" @getUserInfo="getTransInfo" :userInfo="userInfo"></entrance-header>
     </div>
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
@@ -375,7 +373,8 @@ export default {
     sdkRecommend: () => import('./component/recommend'),
     dailyTaskReceivePop: () => import('./component/dailyTaskReceivePop'),
     sdkTabBox: () => import('./component/tabBox'),
-    fixedEntrance: () => import('./component/fixedEntrance')
+    fixedEntrance: () => import('./component/fixedEntrance'),
+    entranceHeader: () => import('./component/entranceHeader')
   },
   methods: {
     initParentAd () {

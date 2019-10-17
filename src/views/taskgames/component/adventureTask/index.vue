@@ -44,7 +44,7 @@ export default {
   },
   props: {
     currentGameType: {
-      type: Number,
+      type: [Number, String],
       default: null
     }
   },

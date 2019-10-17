@@ -119,6 +119,7 @@ axios.interceptors.response.use(
           break
         case 122:
         case 101:
+        case 203:
           break
         default:
           var result = response.config && response.config.data
