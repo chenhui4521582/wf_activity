@@ -1,36 +1,32 @@
 <template>
-    <div id="app">222
-        <div class="turn-wrap">
-            <!-- <loading v-show="showPage"></loading> -->
-
-            <recharge v-if="isBuy"></recharge>
-            <turntable v-else></turntable>
-        </div>
+  <div id="app" class="turn-wrap">
+    <div class="top">
+      <span>限时福利 </span>剩余<em>6</em>天<em>23</em>小时<em>45</em>分
     </div>
+  </div>
 </template>
 <script>
-import utils from '../../common/js/utils.js'
-import AppCall from '../../common/js/AppCall.js';
-import API from '../../api';
 export default {
-     name : 'app',
-    data(){
-        return{
-            isBuy : false
-
-        }
-    },
-    components:{
-        'recharge' : () => import('./components/recharge.vue'),
-        'turntable' : () => import('./components/turntable.vue'),
-    },
-    mounted(){
-        
-        this.isBuy = utils.getUrlParam('isBuy') == 1 ? true : false
-    },
+  name: 'app',
+  data () {
+    return {
+    }
+  },
+  components: {
+    'rule': () => import('./components/rule.vue'),
+    'turnpop': () => import('./components/turnpop')
+  },
+  mounted () {
+  }
 }
 </script>
-<style lang="less" scoped>
-
-@import './index.less';
+<style lang="less">
+.bg-paved(@url) {
+  background: url(@url) no-repeat center / 100% 100%;
+}
+.turn-wrap {
+  .top {
+    background: ;
+  }
+}
 </style>
