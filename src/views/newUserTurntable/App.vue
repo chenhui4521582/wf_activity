@@ -10,6 +10,7 @@ export default {
   name: 'app',
   data () {
     return {
+
     }
   },
   components: {
@@ -21,12 +22,39 @@ export default {
 }
 </script>
 <style lang="less">
-.bg-paved(@url) {
-  background: url(@url) no-repeat center / 100% 100%;
+@import "../../common/css/base.css";
+.bgWithFull(@url) {
+  background: url(@url) no-repeat center center / 100% 100%;
 }
 .turn-wrap {
+  min-height: 100vh;
+  background: url("./img/bg.png") no-repeat center ~"-0.6rem" / 100%;
+
   .top {
-    background: ;
+    height: 0.6rem;
+    color: #fff;
+    display: flex;
+    font-size: 0.28rem;
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+    justify-content: center;
+    font-weight: 500;
+    .bgWithFull("./img/top-bg.png");
+    span {
+      font-size: 0.32rem;
+      font-weight: 800;
+    }
+    em {
+      display: inline-block;
+      height: 0.36rem;
+      font-size: 0.32rem;
+      background: #fff;
+      color: #000;
+      font-weight: 800;
+      padding: 0 0.08rem;
+      border-radius: 0.04rem;
+    }
   }
 }
 </style>
