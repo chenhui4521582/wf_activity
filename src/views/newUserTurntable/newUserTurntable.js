@@ -4,6 +4,7 @@ import Vue from 'vue'
 import axios from '../../http'
 import App from './App'
 import Toast from '../../plugins/toast'
+import '@/common/js/window.js'
 Vue.use(Toast)
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
