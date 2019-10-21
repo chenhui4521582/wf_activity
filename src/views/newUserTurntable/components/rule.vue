@@ -18,7 +18,7 @@
         <p>
           5.在法律允许的范围内最终解释权归玩蜂所有。
         </p>
-        <div class="btn" @click="close()">我知道了</div>
+        <div class="btn" @click="close(1)">我知道了</div>
       </div>
       <div class="close" @click="close()"></div>
     </div>
@@ -37,10 +37,15 @@ export default {
     }
   },
   mounted () {
-
+    GLOBALS.marchSetsPoint('A_H5PT0200002049') // H5平台-新手转盘活动页-玩法说明弹窗加载完成
   },
   methods: {
-    close () {
+    close (type) {
+      if (type) {
+        GLOBALS.marchSetsPoint('A_H5PT0200002050') // H5平台-新手转盘活动页-玩法说明弹窗-我知道了点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0200002051') // H5平台-新手转盘活动页-玩法说明弹窗-关闭点击
+      }
       this.$emit('on-close')
     }
   }

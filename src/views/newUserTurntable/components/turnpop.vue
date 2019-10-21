@@ -3,7 +3,10 @@
     <div class="pop-mask"></div>
     <div class="turnpop-wrap">
       <div class="turnpop-content success" v-if="popType">
-        <span>¥</span><em>0.1</em>
+        <p>
+          <span>¥</span><em>{{awardsInfo.price|priceFilter}}</em>
+        </p>
+        <div class="btn" @click="close(true)">再抽一次</div>
       </div>
       <div class="turnpop-content error" v-else>
         <p>
@@ -34,14 +37,20 @@ export default {
     popType: {
       type: Boolean,
       default: false
+    },
+    awardsInfo: {
+      type: Object,
+      default: () => { }
     }
   },
-  mounted () {
-
+  filters: {
+    priceFilter (val) {
+      return (val / 10).toFixed(1)
+    }
   },
   methods: {
-    close () {
-      this.$emit('on-close')
+    close (type) {
+      this.$emit('on-close', type)
     }
   }
 }
@@ -76,14 +85,16 @@ export default {
       line-height: 0.36rem;
       &.success {
         .bgWithFull("../img/success-bg.png");
-        padding: 4.06rem 1.38rem 0;
         color: #fff;
-        span {
-          font-size: 0.4rem;
-          margin-right: 0.2rem;
-        }
-        em {
-          font-size: 0.8rem;
+        p {
+          padding: 4.06rem 1.38rem 0;
+          span {
+            font-size: 0.4rem;
+            margin-right: 0.2rem;
+          }
+          em {
+            font-size: 0.8rem;
+          }
         }
       }
       &.error {
@@ -98,9 +109,6 @@ export default {
         p:last-child {
           font-size: 0.3rem;
         }
-        .btn {
-          margin: 0.9rem auto 0;
-        }
       }
       .btn {
         width: 2.8rem;
@@ -108,6 +116,7 @@ export default {
         line-height: 0.7rem;
         text-align: center;
         color: #fff;
+        margin: 0.9rem auto 0;
         .bgWithFull("../img/btn-bg.png");
       }
     }

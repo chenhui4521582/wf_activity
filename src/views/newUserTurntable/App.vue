@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 <template>
   <div id="app" class="turn-wrap" v-if="info.openFlag">
     <div class="top">
@@ -8,8 +9,12 @@
       <div class="btn right" @click="goMy()">我的奖品</div>
     </div>
     <div class="main">
-      <div class="list-wrapper">
-        <ul class="awards-list"></ul>
+      <div class="list-wrap">
+        <div class="awards-list" ref="wheel">
+          <ul>
+            <li v-for="(item,index) in 8" :key="index" :style="rotate[index]">{{index}}</li>
+          </ul>
+        </div>
         <div class="pointer" @click="betting()"><span>({{info.wheelTimes}}次)</span></div>
       </div>
     </div>
@@ -39,15 +44,15 @@
               </div>
             </div>
             <div class="btn-wrap">
-              <div class="btn undone" v-if="item.taskStatus===1">去完成</div>
-              <div class="btn done" v-else>已完成</div>
+              <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成</div>
+              <div class="btn done" v-else @click="goGame(item)">已完成</div>
             </div>
           </li>
         </ul>
       </div>
     </div>
     <rule v-if="isRuleShow" @on-close="closeRule()"></rule>
-    <turnpop v-if="isTurnpopShow" :pop-type="popType" :awards-info="awardsInfo" @on-close="closeTurnPop()"></turnpop>
+    <turnpop v-if="isTurnpopShow" :pop-type="popType" :awards-info="awardsInfo" @on-close="closeTurnPop"></turnpop>
   </div>
 </template>
 <script>
@@ -62,7 +67,12 @@ export default {
       isRuleShow: false,
       isTurnpopShow: false,
       popType: false,
-      awardsInfo: {}
+      awardsInfo: { price: 1 },
+      options: {
+        currentIndex: 0, //当前圈数
+        turn: 9, // 最少圈数
+        isStart: false // 是否开始旋转
+      }
     }
   },
   components: {
@@ -74,6 +84,17 @@ export default {
     this.init()
     this.getNoticeList()
     this.getTaskInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0200') // H5平台-新手转盘活动-页面加载完成
+  },
+  computed: {
+    rotate () {
+      let rotateArr = []
+      let d = 360 / 8
+      for (let i = 0; i < 8; i++) {
+        rotateArr.push('transform: rotate(' + (d * i) + 'deg)')
+      }
+      return rotateArr
+    }
   },
   methods: {
     async init () {
@@ -81,7 +102,7 @@ export default {
       const { data } = res.data
       if (data) {
         this.info = data
-        this.countDown(data.countDown)
+        this.countDown(data.countdown)
       }
     },
     async getNoticeList () {
@@ -99,12 +120,14 @@ export default {
       }
     },
     async betting () {
+      GLOBALS.marchSetsPoint('A_H5PT0200002040') // H5平台-新手转盘活动页-抽奖按钮点击
       if (this.info.wheelTimes) {
-        const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting')
+        const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting', { value: 31 })
         const { data } = res.data
         if (data) {
           this.awardsInfo = data
-          this.popType = true
+          this.operation()
+          return
         }
       } else {
         this.popType = false
@@ -139,18 +162,65 @@ export default {
     },
     goMy () {
       WapCall.openGame('/xmWap/#/my/prize')
+      GLOBALS.marchSetsPoint('A_H5PT0200002039') // H5平台-新手转盘活动页-我的奖品点击
     },
     showRule () {
       this.isRuleShow = true
+      GLOBALS.marchSetsPoint('A_H5PT0200002038') // H5平台-新手转盘活动页-玩法说明点击
     },
     closeRule () {
       this.isRuleShow = false
     },
     showTurnPop () {
       this.isTurnpopShow = true
+      if (this.popType) {
+        GLOBALS.marchSetsPoint('A_H5PT0200002043') // H5平台-新手转盘活动页-获得奖品提示弹窗加载完成
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0200002046') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗加载完成
+      }
     },
-    closeTurnPop () {
+    closeTurnPop (type) {
+      if (type) {
+        this.betting()
+        GLOBALS.marchSetsPoint('A_H5PT0200002044') // H5平台-新手转盘活动页-获得奖品提示弹窗-再抽一次点击
+      } else if (this.popType) {
+        GLOBALS.marchSetsPoint('A_H5PT0200002045') // H5平台-新手转盘活动页-获得奖品提示弹窗-关闭点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0200002048') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-关闭点击
+      }
+      GLOBALS.marchSetsPoint('A_H5PT0200002047') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-获得更多抽奖机会点击
       this.isTurnpopShow = false
+    },
+    operation () {
+      if (this.options.isStart) {
+        return false
+      } else {
+        this.options.isStart = true // 锁 专拍没有执行完的时候 不可以再次点击 ;
+        this.options.currentIndex++
+        let sun = this.options.turn * 360
+        let array = [1, 4, 7]
+        let ran = array[Math.floor(Math.random() * 3)]
+        let soBuom = Math.ceil(Math.random() * (360 / 20))
+        /*    旋转度数 = 上次度数+ 最小圈数 * 360 + 当前数字 * 60 +随机角度  = 最终旋转度数     */
+        this.$refs.wheel.style.transform = 'rotate(-' + ((this.options.currentIndex * sun + ran * 360 / 8) + soBuom) + 'deg)'
+        setTimeout(() => {
+          this.options.isStart = false
+          this.popType = true
+          this.showTurnPop()
+        }, 3200)
+      }
+    },
+    goGame ({ url, taskId, taskName, taskStatus }) {
+      let params = {
+        task_id: taskId,
+        task_name: taskName
+      }
+      if (taskStatus === 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0200002041', params) // H5平台-新手转盘活动页-去完成任务点击(跳转不同游戏)
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0200002042', params) // H5平台-新手转盘活动页-已完成任务点击(跳转不同游戏)
+      }
+      WapCall.openGame(url)
     }
   }
 }
@@ -236,13 +306,29 @@ export default {
     height: 5.2rem;
     .bgWithFull("./img/light1.png");
     animation: changeBg 0.3s infinite ease;
-    .list-wrapper {
+    .list-wrap {
       padding: 0.2rem;
       box-sizing: border-box;
       height: 100%;
       .awards-list {
         height: 100%;
         .bgWithFull("./img/awards.png");
+        position: relative;
+        transition: all 3s;
+        ul {
+          width: inherit;
+          height: inherit;
+        }
+
+        li {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          color: transparent;
+          text-align: center;
+        }
       }
       .pointer {
         height: 2rem;
@@ -253,6 +339,7 @@ export default {
         margin-top: -1.1rem;
         margin-left: -0.92rem;
         .bgWithFull("./img/pointer.png");
+        animation: scale 1s infinite ease;
         span {
           color: #fff;
           font-size: 0.28rem;
@@ -300,7 +387,6 @@ export default {
             height: 0.8rem;
             width: 0.8rem;
             border-radius: 0.08rem;
-            border: 1px solid;
             img {
               width: 100%;
               height: 100%;
@@ -399,6 +485,18 @@ export default {
 
     100% {
       .bgWithFull("./img/light2.png");
+    }
+  }
+
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 }
