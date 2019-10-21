@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 <template>
-  <div id="app" class="turn-wrap" v-if="info.openFlag">
+  <div id="app" ref="app" class="turn-wrap" v-if="info.openFlag">
     <div class="top">
       <span>限时福利 </span>剩余<em>{{countTime.day}}</em>天<em>{{countTime.hour}}</em>小时<em>{{countTime.minute}}</em>分
     </div>
@@ -180,16 +180,24 @@ export default {
       }
     },
     closeTurnPop (type) {
-      if (type) {
-        this.betting()
-        GLOBALS.marchSetsPoint('A_H5PT0200002044') // H5平台-新手转盘活动页-获得奖品提示弹窗-再抽一次点击
-      } else if (this.popType) {
-        GLOBALS.marchSetsPoint('A_H5PT0200002045') // H5平台-新手转盘活动页-获得奖品提示弹窗-关闭点击
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0200002048') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-关闭点击
-      }
-      GLOBALS.marchSetsPoint('A_H5PT0200002047') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-获得更多抽奖机会点击
       this.isTurnpopShow = false
+      if (this.popType) {
+        if (type) {
+          this.betting()
+          GLOBALS.marchSetsPoint('A_H5PT0200002044') // H5平台-新手转盘活动页-获得奖品提示弹窗-再抽一次点击
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0200002045') // H5平台-新手转盘活动页-获得奖品提示弹窗-关闭点击
+        }
+      } else {
+        if (type) {
+          this.$nextTick(() => {
+            window.scrollTo(0, this.$refs.app.scrollHeight)
+          })
+          GLOBALS.marchSetsPoint('A_H5PT0200002047') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-获得更多抽奖机会点击
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0200002048') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗-关闭点击
+        }
+      }
     },
     operation () {
       if (this.options.isStart) {
@@ -200,13 +208,14 @@ export default {
         let sun = this.options.turn * 360
         let array = [1, 4, 7]
         let ran = array[Math.floor(Math.random() * 3)]
-        let soBuom = Math.ceil(Math.random() * (360 / 20))
+        let soBuom = Math.ceil(Math.random() * (360 / 30))
         /*    旋转度数 = 上次度数+ 最小圈数 * 360 + 当前数字 * 60 +随机角度  = 最终旋转度数     */
         this.$refs.wheel.style.transform = 'rotate(-' + ((this.options.currentIndex * sun + ran * 360 / 8) + soBuom) + 'deg)'
         setTimeout(() => {
           this.options.isStart = false
           this.popType = true
           this.showTurnPop()
+          this.init()
         }, 3200)
       }
     },
@@ -232,9 +241,9 @@ export default {
 }
 .turn-wrap {
   min-height: 100vh;
-  background: url("./img/bg.png") no-repeat center ~"-1.2rem" / 100%;
+  background: #b52fe1 url("./img/bg.png") no-repeat center ~"-1.2rem" / 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0 0 0.2rem;
   .top {
     height: 0.6rem;

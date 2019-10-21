@@ -4,7 +4,7 @@
     <div class="turnpop-wrap">
       <div class="turnpop-content success" v-if="popType">
         <p>
-          <span>¥</span><em>{{awardsInfo.price|priceFilter}}</em>
+          <span>¥</span><em>{{awardsInfo.awardsAmount|priceFilter}}</em>
         </p>
         <div class="btn" @click="close(true)">再抽一次</div>
       </div>
@@ -15,7 +15,7 @@
         <p>
           您的抽奖机会已用完
         </p>
-        <div class="btn" @click="close()">获得更多抽奖机会</div>
+        <div class="btn" @click="close(true)">获得更多抽奖机会</div>
       </div>
       <div class="close" @click="close()"></div>
     </div>
@@ -45,7 +45,7 @@ export default {
   },
   filters: {
     priceFilter (val) {
-      return (val / 10).toFixed(1)
+      return (val / 10).toFixed(1) || 0
     }
   },
   methods: {
