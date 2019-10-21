@@ -1,6 +1,6 @@
 .profit-container {
   text-align: center;
-  padding: 0.9rem 0.25rem 0;
+  padding: 0.6rem .17rem 0;
   width: 100%;
   height: calc(100%);
   position: absolute;
@@ -15,8 +15,9 @@
   }
 
   .p-time {
-    font-size: 0.24rem;
-    color: rgba(33, 107, 13, 1);
+    font-size: 0.2rem;
+    font-weight: 400;
+    color:rgba(196,94,19,1);
     margin-bottom: 0.15rem;
   }
 
@@ -231,15 +232,13 @@
   }
 
   .profit-items {
-    width: 100%;
-    background: #FEC041;
-    padding: 0 0.08rem 0.08rem;
-    box-sizing: border-box;
-
     .p-header {
-      height: 0.7rem;
+      width: 6.86rem;
+      height: 1.26rem;
       line-height: 0.3rem;
-
+      background: url("../../images/package/profit/myrank.png");
+      background-size: 100% 100%;
+      margin-bottom: .11rem;
       ul {
         height: 0.7rem;
         line-height: 0.3rem;
@@ -250,42 +249,12 @@
       }
 
       li {
+        flex: 1;
         white-space: nowrap;
-        font-size: 0.2rem;
-
-        span {
-          font-size: 0.24rem;
-        }
-
-        &:nth-child(1) {
-          width: 1.4rem;
-        }
-
-        &:nth-child(2) {
-          width: 2rem;
-          border-left: 0.02rem #944D00 solid;
-          border-right: 0.02rem #944D00 solid;
-        }
-
-        &:nth-child(2) {
-          font-size: 0.2rem;
-        }
-
-        &:nth-child(3) {
-          flex: 1;
-        }
-      }
-
-      h4 {
-        font-size: 0.2rem;
-        color: #944D00;
-        margin-bottom: 0.05rem;
-      }
-
-      span {
-        font-size: 0.24rem;
-        color: #F33F00;
+        font-size: 0.3rem;
+        padding-top: 1rem;
         font-weight: bold;
+        color: rgba(155,66,1,1);
       }
     }
 
@@ -295,15 +264,20 @@
 
       &.p-items-content {
         position: relative;
-        height: auto;
+        height: 4.7rem;
         overflow-y: hidden;
         font-size: 0.2rem;
         color: #dc8d00;
-
-        ul {
-          padding: 0 0.2rem;
+        background: url("../../images/package/profit/ranklist.png");
+        background-size: 100% 100%;
+        .p-container{
+          position: absolute;
+          top:.8rem;
+          left: .2rem;
+          right: .2rem;
+          bottom: .5rem;
+          overflow: hidden;
         }
-
         .i-font-style {
           font-style: normal;
           color: #EBAF44;
@@ -333,19 +307,19 @@
       }
 
       li {
-        height: 0.68rem;
+        height: 0.5rem;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         padding: 0.05rem 0;
-
+        box-sizing: border-box;
         &:not(:last-child) {
-          border-bottom: 0.01rem solid #FEC041;
+          border-bottom: 0.01rem dashed rgba(204,118,56,1);
         }
 
         span {
           display: inline-block;
-          height: 0.68rem;
+          height: 0.36rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -364,26 +338,14 @@
           }
 
           &:nth-child(1) {
-            width: 14.75%;
-            flex: 0 0 14.75%;
+            flex: 0 0 13%;
           }
-
-
-
           &:nth-child(2) {
-            width: 21.68%;
-            flex: 0 0 21.68%;
+            flex: 0 0 30%;
           }
-
-
-
           &:nth-child(3) {
-            width: 27.41%;
-            flex: 0 0 27.41%;
+            flex: 0 0 30%;
           }
-
-
-
           &:nth-child(4) {
             flex: 1;
             line-height: 0.34rem;
@@ -424,25 +386,19 @@
   }
 
   .profit-footer {
-    height: 0.89rem;
-    line-height: 0.89rem;
-    font-size: 0.3rem;
-    color: #F78102;
-    font-weight: 400;
+    margin-top: .12rem;
+    font-size: 0.2rem;
+    font-weight:400;
+    color:rgba(196,94,19,1);
   }
 
   .btn-check-profit {
     display: block;
-    width: 2.64rem;
-    height: 0.46rem;
-    line-height: 0.46rem;
-    text-align: left;
-    text-indent: 0.19rem;
-    font-size: 0.24rem;
-    color: #8A3606;
+    width: 2.12rem;
+    height: 0.36rem;
     background: url(../../images/package/profit/btn-check-profit.png) no-repeat;
     background-size: 100% 100%;
-    margin: 0.12rem auto;
+    margin: auto;
   }
 
   &.full {

@@ -1,81 +1,57 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
-      <img src="../../images/package/profit/title.png" class="title">
       <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
       <h4 v-if="!isFull&&countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
       <h4 v-if="!isFull&&countTime===0" class="p-time">发榜时间 ：{{endTime}}</h4>
-      <div class="profit-tx-container">
-        <ul class="profit-icon">
-          <li v-for="(item,index) in topthreeData">
-            <div class="s-tx">
-              <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
-              <img v-if="!item.profilePhoto" :src="defaultImg | filter">
-            </div>
-            <span class="icon-number"></span>
-            <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.plantFoodNum}}个<em class="t-second">{{item.updateTime || ''}}</em></span>
-
-            <!-- <span class="s-text">第{{item.rank}}名</span> -->
-            <!-- <div class="profit-award">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</div> -->
-            <!-- <div class="profit-award"></div> -->
-          </li>
-        </ul>
-      </div>
       <div class="profit-items">
         <div class="p-header">
           <ul>
             <li>
-              <h4>我的排名</h4>
               <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
             <li>
-              <h4>累计获得锤子</h4>
               <span>{{myInfo.totalNum}}个</span>
             </li>
             <li>
-              <h4>当前奖励</h4>
               <span>{{myInfo.currentAwards}}</span>
             </li>
           </ul>
         </div>
-        <div class="p-items p-items-header">
-          <ul class="p-item-title">
-            <li style="border:none">
-              <span>排名</span>
-              <span><em class="i-ellipsis">昵称</em></span>
-              <span><em class="i-ellipsis">累计锤子</em></span>
-              <span><em class="i-ellipsis">奖励</em></span>
-            </li>
-          </ul>
-        </div>
+        <div class="p-time" style="margin-bottom: .08rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
         <div class="p-items p-items-content">
-          <ul class="p-item-title">
-            <li v-for="(item,index) in behindThreeData">
-              <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-            <li v-if="isOpen" v-for="(item,index) in otherData">
-              <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-            <li v-if="!isOpen">
-              <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
-            </li>
-            <li v-for="(item,index) in lastThreeData">
-              <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.plantFoodNum}}个<br /><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
-              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
-            </li>
-          </ul>
+          <div class="p-container">
+            <!--<scroll :data="behindThreeData" :beforeScroll="true" :listenScroll="true" :probeType="3" ref="scroll">-->
+              <ul class="p-item-title">
+                <li v-for="(item,index) in behindThreeData">
+                  <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
+                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                </li>
+                <li v-if="isOpen" v-for="(item,index) in otherData">
+                  <span><i class="icon-dot">{{item.rank}}</i></span>
+                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                </li>
+                <li v-if="!isOpen">
+                  <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit"></a>
+                </li>
+                <li v-for="(item,index) in lastThreeData">
+                  <span><i class="icon-dot">{{item.rank}}</i></span>
+                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                </li>
+              </ul>
+            <!--</scroll>-->
+          </div>
         </div>
       </div>
-      <div class="profit-footer">仅30名及以内有奖励</div>
+      <div class="profit-footer">仅50名及以内有奖励</div>
+      <rule from="1"></rule>
+      <rule from="2"></rule>
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
@@ -98,6 +74,7 @@
   </div>
 </template>
 <script type="text/javascript">
+  import rule from '../../../components/rule'
 import { rankList, activityInfo, userRanking } from '../../../utils/api'
 export default {
   data () {
@@ -127,6 +104,8 @@ export default {
     }
   },
   components: {
+    scroll:()=>import('../scroll'),
+    rule:()=>import('../../../components/rule'),
   },
   mounted () {
     this.getRankList()
@@ -136,6 +115,8 @@ export default {
   methods: {
     closeOpenProfit () {
       this.isOpen = true
+      this.$refs.scroll.scrollTo(0, 0)//滑到顶部
+      this.$refs.scroll && this.$refs.scroll.refresh();
       if (this.from) {
         GLOBALS.marchSetsPoint('A_H5PT0075001483')   // H5平台-砸金蛋-活动已结束-点击展开完整榜单
       } else {

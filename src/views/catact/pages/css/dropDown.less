@@ -2,8 +2,8 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  width: 100vw;
-  height: 1.26rem;
+  width: 100%;
+  height: 1.24rem;
   background: url('../images/index/bottom-bg.png') center center / 100% 100%;
   display: flex;
   padding: 0.2rem 0.2rem 0.16rem;
@@ -27,13 +27,13 @@
     .right {
       flex: 1;
       text-align: center;
-
+      img {
+        width: 2rem;
+        height: .08rem;
+      }
       .main-text {
         line-height: 0.44rem;
-
-        span {
-          color: #FF280E;
-        }
+        color: #FF280E;
       }
 
       .btn {
@@ -46,30 +46,9 @@
         height: 0.44rem;
         line-height: 0.44rem;
         border-radius: 0.22rem;
-        color: #fff;
+        color: #C45E13;
       }
     }
-
-    &.get-hammer {
-      .hammer_icon {
-        background-image: url('../images/index/hammer-haved.png');
-      }
-
-      .btn {
-        background: #FD542A;
-      }
-    }
-
-    &.profit {
-      .hammer_icon {
-        background-image: url('../images/index/hammer.png');
-      }
-
-      .btn {
-        background: #408CFF;
-      }
-    }
-
   }
 }
 
@@ -94,9 +73,10 @@
 
 .drop-down-content {
   width: 100%;
-  height: 90%;
+  height: 8.73rem;
   max-height: 90%;
-  background: #FFE6B3;
+  background: url("../images/package/profit/bg.png");
+  background-size: 100% 100%;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -106,37 +86,32 @@
   border-radius: 0.4rem 0.4rem 0 0;
   font-size: 0.2rem;
   z-index: 12;
-
+  padding-top: .11rem;
+  box-sizing: border-box;
   .d-tab {
     border-radius: 0.4rem 0.4rem 0 0;
     overflow-y: hidden;
-    background: #E2812A;
     width: 100%;
-    height: 0.84rem;
-    /*position: fixed;*/
+    height: 0.75rem;
     position: relative;
     z-index: 15;
     -webkit-transform: translateZ(0);
-
-
     ul {
+      height: 0.75rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      border-radius: 0.4rem 0.4rem 0 0;
+      justify-content: space-between;
     }
-
     li {
-      flex: 1;
-      height: 0.84rem;
-      line-height: 0.84rem;
       text-align: center;
-      font-size: 0.36rem;
-      color: #FFE6B3;
-
-      &.active {
-        background: #FFE6B3;
-        color: #E2812A;
+      font-size: 0.3rem;
+      color: #FA2D35;
+      font-weight: bold;
+      &:nth-child(2) {
+        font-size: 0.2rem;
+        color: rgba(196, 94, 19, 1);
+        font-weight: 400;
       }
     }
   }
@@ -145,8 +120,8 @@
 .icon-back {
   width: 0.8rem;
   height: 0.8rem;
-  position: fixed;
+  position: absolute;
   right: 0.16rem;
-  bottom: 0.46rem;
-  z-index: 10;
+  top: 0.11rem;
+  z-index: 100;
 }

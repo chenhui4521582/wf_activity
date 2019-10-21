@@ -8,7 +8,11 @@
 /* eslint-disable */
 import '../../common/js/window.js';
 export default {
-    name: 'App'
+    name: 'App',
+  mounted(){
+    localStorage.setItem('APP_CHANNEL','100039')
+      localStorage.setItem('ACCESS_TOKEN','c9ec24e3b28449fbbc7d41302c223634')
+  }
 }
 </script>
 

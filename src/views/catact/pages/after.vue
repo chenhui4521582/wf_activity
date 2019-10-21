@@ -76,8 +76,8 @@ export default {
   z-index: 4 !important;
 }
 .after >>> .rule img {
-  top: 1.3rem;
-  left: 0.1rem;
+  top: .28rem;
+  right: 0;
 }
 </style>
 
@@ -91,11 +91,11 @@ export default {
   padding: 0.26rem 0.1rem;
   box-sizing: border-box;
   .e-back {
-    width: 0.88rem;
-    height: 0.88rem;
+    width: 0.78rem;
+    height: 0.5rem;
     position: fixed;
-    top: 0.26rem;
-    left: 0.1rem;
+    top: 0.28rem;
+    left: 0rem;
     z-index: 4;
   }
 }
