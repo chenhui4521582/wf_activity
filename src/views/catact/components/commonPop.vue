@@ -20,8 +20,12 @@
         <div class="close-icon" @click="closePop"></div>
       </div>
       <div class="pop" v-if="isShowPop && isEnd">
-        <div class="wrap end-wrap">
+        <div class="wrap end-wrap" :class="{type1:true}">
           <div class="main">
+            <p>
+              您在此次活动排行榜中排名第1，<br>
+              请收下您的奖励
+            </p>
             <ul class="awards-list" :class="`length-${awardsList.length}`">
               <li :class="item.awardsType" v-for="(item,index) in awardsList" :key="index">
                 <span>{{item.awardsName}}</span>
@@ -32,7 +36,7 @@
           </div>
           <div class="hit-egg-btn" @click="closePop">好的</div>
         </div>
-        <div class="close-icon" @click="closePop"></div>
+        <div class="close-icon" :class="{type1:true}" @click="closePop"></div>
       </div>
     </transition>
   </section>
@@ -171,8 +175,28 @@ export default {
       box-sizing: border-box;
       padding: 3rem 0.26rem 0;
       &.end-wrap {
-        height: 6.6rem;
-        background-image: url("../pages/images/common/end-bg.png");
+        &.type1{
+          padding: 2.8rem 0.26rem 0;
+          width: 6rem;
+          height: 7rem;
+          background-image: url("../pages/images/pop/awards/bg_rank.png");
+        }
+        &.type2{
+          padding: 1.2rem 0.26rem 0;
+          width: 5.58rem;
+          height: 5.66rem;
+          background-image: url("../pages/images/pop/awards/bg_rank_loss.png");
+        }
+        &.type3{
+          width: 5.96rem;
+          height:10.16rem;
+          background-image: url("../pages/images/pop/awards/bg_rank_extra.png");
+        }
+        &.type4{
+          width: 5.96rem;
+          height:7rem;
+          background-image: url("../pages/images/pop/awards/bg_rank_extra.png");
+        }
         .main {
           .awards-list {
             min-height: 2rem;
@@ -270,6 +294,15 @@ export default {
       position: absolute;
       top: 2.6rem;
       right: .3rem;
+      &.type1,&.type4{
+        top: 2.3rem;
+      }
+      &.type2{
+        background: url("../pages/images/pop/awards/loss_lose.png") no-repeat center
+          center / 100% 100%;
+        top: .77rem;
+        right: 0;
+      }
     }
   }
   .scalc-enter-active {
