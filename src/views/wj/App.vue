@@ -206,6 +206,7 @@
         </div>
       </div>
     </div>
+    <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="isDailyReceivePop=false"></task-award-pop>
   </div>
 </template>
 <script>
@@ -234,7 +235,9 @@ export default {
       isNewTask: null,
       newUserTaskFinish: false,
       isPopLog: false,
-      masterTask: false
+      masterTask: false,
+      isDailyReceivePop:false,
+      receiveAwards:null
     }
   },
   mounted () {
@@ -339,10 +342,12 @@ export default {
           }
         }).then((res) => {
           if (res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功！',
-              duration: 1500
-            })
+            // this.$toast.show({
+            //   message: '领取成功！',
+            //   duration: 1500
+            // })
+            this.receiveAwards=res.data.data;
+            this.isDailyReceivePop=true;
             switch (type) {
               case 'cjTask':
                 GLOBALS.marchSetsPoint('A_H5PT0121001154', {
@@ -540,10 +545,12 @@ export default {
           }
         }).then((res) => {
           if (res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功',
-              duration: 1500
-            })
+            // this.$toast.show({
+            //   message: '领取成功',
+            //   duration: 1500
+            // })
+            this.receiveAwards=item;
+            this.isDailyReceivePop=true;
             this.getCdkeyStatus()
           }
         })
