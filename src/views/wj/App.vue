@@ -346,7 +346,7 @@ export default {
             //   message: '领取成功！',
             //   duration: 1500
             // })
-            this.receiveAwards=item;
+            this.receiveAwards=res.data.data;
             this.isDailyReceivePop=true;
             switch (type) {
               case 'cjTask':
