@@ -4,7 +4,7 @@
       <div class="container">
         <img src="./images/back.png" class="e-back" @click.stop="back">
         <div class="rule-icon" @click="showrule">规则</div>
-        <rule ref="rule" :ruleMain="myInfo.startTime+'~'+myInfo.enddTime" v-if="myInfo&&myInfo.openFlag"></rule>
+        <rule ref="rule" :ruleMain="myInfo.activityStartTime+'~'+myInfo.activityEndTime" v-if="myInfo&&myInfo.openFlag"></rule>
         <div class="text">
           <div class="item">每日任务大升级</div>
           <div class="item">海量话费任性送</div>
