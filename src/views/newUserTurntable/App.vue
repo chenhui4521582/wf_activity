@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 <template>
   <div id="app" ref="app" class="turn-wrap" v-if="info.openFlag">
     <div class="top">
-      <span>限时福利 </span>剩余<em>{{countTime.day}}</em>天<em>{{countTime.hour}}</em>小时<em>{{countTime.minute}}</em>分
+      <span>限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
     </div>
     <div class="top-btn-wrap">
       <div class="btn left" @click="showRule()">玩法说明</div>
@@ -56,6 +55,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 export default {
   name: 'app',
   data () {
@@ -69,7 +69,7 @@ export default {
       popType: false,
       awardsInfo: { price: 1 },
       options: {
-        currentIndex: 0, //当前圈数
+        currentIndex: 0, // 当前圈数
         turn: 9, // 最少圈数
         isStart: false // 是否开始旋转
       }
@@ -151,12 +151,10 @@ export default {
         let day = _day
         let hour = _hour >= 10 ? _hour : '0' + _hour
         let minute = _minute >= 10 ? _minute : '0' + _minute
-        if (day > 0) {
-          this.countTime = {
-            day,
-            hour,
-            minute
-          }
+        this.countTime = {
+          day,
+          hour,
+          minute
         }
       }, 1000)
     },
@@ -282,7 +280,7 @@ export default {
     justify-content: space-between;
     .btn {
       height: 0.5rem;
-      line-height: 0.5rem;
+      line-height: 0.54rem;
       background: #cc2f1f;
       position: relative;
       &.left {
