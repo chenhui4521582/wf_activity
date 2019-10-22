@@ -1,5 +1,5 @@
 <template>
-  <section class="commonPop" @touchmove.prevent :class="{type4:isEnd&&myInfo.state==2}">
+  <section class="commonPop" @touchmove.prevent :class="{type4:isEnd&&myInfo.state==2,type1:isEnd&&myInfo.state==1,type2:isEnd&&myInfo.state==0,type3:isEnd&&myInfo.state==3}">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent>
     </div>
     <transition name="scalc">
@@ -41,7 +41,7 @@
                 <li><img src="../pages/images/pop/awards/maobi.png" alt="" class="maobi"></li>
                 <li><span>{{myInfo.rankInfo.currentAwards}}</span></li>
               </ul>
-              <p v-if="myInfo.state==3">
+              <p v-if="myInfo.state==3" style="margin-top: .14rem">
                 您连续5天完成所有每日任务，<br>
                 请收下额外奖励
               </p>
@@ -151,6 +151,9 @@ export default {
   &.type4{
     margin-left: -3.3rem;
   }
+  &.type2{
+    top: 3rem;
+  }
   .pop-mask {
     position: fixed;
     left: 0;
@@ -257,7 +260,7 @@ export default {
             img{
               width: 40%;
               &.maobi{
-                width: 2.8rem;
+                width: 2.4rem;
               }
               &.leaf{
                 width: 30%;

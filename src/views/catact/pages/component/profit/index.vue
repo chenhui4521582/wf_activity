@@ -10,7 +10,7 @@
         <div class="p-header">
           <ul>
             <li>
-              <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
+              <span>{{myInfo.myRank?myInfo.myRank:'未上榜'}}</span>
             </li>
             <li>
               <span>{{myInfo.totalDriedFish}}g</span>

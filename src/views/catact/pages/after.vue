@@ -85,12 +85,12 @@ export default {
   height: 100vh;
   overflow-x: hidden;
   position: relative;
-  /*background: #ffe6b3;*/
+  background: #fff8e8;
   padding: 0.26rem 0.1rem;
   box-sizing: border-box;
-  border-radius: .4rem .4rem 0 0;
+  /*border-radius: .4rem .4rem 0 0;
   background: linear-gradient(0deg,rgba(255,255,255,1),rgba(255,248,232,1));
-  box-shadow: 0*0.01rem 10*0.01rem 8*0.01rem 0*0.01rem rgba(20,131,86,0.8), 0*0.01rem 6*0.01rem 2*0.01rem 0*0.01rem rgba(255,245,225,1), 0*0.01rem -6*0.01rem 2*0.01rem 0*0.01rem rgba(187,221,207,1);
+  box-shadow: 0*0.01rem 10*0.01rem 8*0.01rem 0*0.01rem rgba(20,131,86,0.8), 0*0.01rem 6*0.01rem 2*0.01rem 0*0.01rem rgba(255,245,225,1), 0*0.01rem -6*0.01rem 2*0.01rem 0*0.01rem rgba(187,221,207,1);*/
   .e-back {
     width: 0.78rem;
     height: 0.5rem;
