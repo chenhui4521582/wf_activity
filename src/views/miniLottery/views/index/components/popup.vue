@@ -1,5 +1,5 @@
 <template>
-  <div class="popup">
+  <div class="popup" v-if="value">
     <div class="mask"></div>
     <div class="container">
       <!-- 规则 -->
@@ -10,19 +10,32 @@
           2.达到开奖条件后，系统随机抽取一个号 码作为幸运码，持有幸运码的用户，获得 当期奖品。 <br>
           3.在夺宝期间，消耗夺宝卡投注，每次投 注获得一个夺宝码；每个用户每期可投注 次数有上限，达到开奖条件后，系统随机 抽取一个号码作为幸运码，持有幸运码的 用户，获得当期奖品。
         </div>
-        <div class="confirm">确  定</div>
+        <div class="confirm" @click="hide">确  定</div>
       </div>
       <!-- 中奖纪录 -->
-      <div class="log" v-if="popupStatus == 2">
+      <div class="log" v-if="popupStatus == 2 && showList">
         <div class="title"></div>
         <div class="list">
+          <div class="list-nav">
+            <div class="item">期数</div>
+            <div class="item">幸运儿</div>
+            <div class="item">夺宝奖品</div>
+          </div>
           <ul>
-            <li></li>
+            <li v-for="(item, index) in list" :key="index">
+              <div class="item">{{item.periodId}}</div>
+              <div class="item">
+                {{item.nickName}}
+              </div>
+              <div class="item">
+                {{item.title}}
+              </div>
+            </li>
           </ul>
         </div>
-        <div class="confirm">去夺宝</div>
+        <div class="confirm" @click="hide">去夺宝</div>
       </div>
-      <div class="close"></div>
+      <div class="close" @click="hide"></div>
     </div>
   </div>
 </template>
@@ -32,6 +45,24 @@ export default {
   props: {
     popupStatus: {
       default: 1
+    },
+    value: {
+      type: Boolean,
+      default: false
+    },
+    list: {
+      type: Array,
+      default: ()=> ([])
+    }
+  },
+  computed: {
+    showList() {
+      return this.list.length
+    }
+  },
+  methods: {
+    hide() {
+      this.$emit('input', false)
     }
   }
 }
@@ -71,11 +102,27 @@ export default {
           background: url(../img/rule-title.png) no-repeat center center / 1.76rem 100%;
         }
         .center {
+          -webkit-overflow-scrolling: touch;
+          overflow: scroll;
+          margin: 0 auto;
           width: 3.95rem;
           height: 3.33rem;
           font-size: .22rem;
           color: #FFFFFF;
           line-height: .33rem;
+        }
+        .confirm {
+          position: absolute;
+          z-index: 3;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: .9rem;
+          line-height: .9rem;
+          text-align: center;
+          font-size: .24rem;
+          font-weight: bold;
+          color: #F0303D;
         }
       }
       .log{
@@ -88,6 +135,69 @@ export default {
           width: 100%;
           height: .38rem;
           background: url(../img/log-title.png) no-repeat center center / 1.76rem 100%;
+        }
+        .list {
+          padding: 0 .35rem;
+          .list-nav {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: .2rem;
+            border-bottom: 1px solid #fff;
+            .item {
+              font-size: .22rem;
+              color: #fff;
+              font-weight: bold;
+              &:first-child {
+                width: .78rem;
+              }
+              &:nth-child(2) {
+                flex: 1;
+                text-indent: .37rem;
+              }
+              &:last-child {
+                width: 1.2rem;
+              }
+            }
+          }
+          ul {
+            height: 4.1rem;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+            li {
+              display: flex;
+              justify-content: space-between;
+              justify-items: center;
+              padding: .18rem 0;
+              .item {
+                font-size: .22rem;
+                color: #fff;
+                line-height: .4rem;
+                &:first-child {
+                  width: .78rem;
+                }
+                &:nth-child(2) {
+                  flex: 1;
+                }
+                &:last-child {
+                  width: 1.2rem;
+                }
+              }
+            }
+
+          }
+        }
+        .confirm {
+          position: absolute;
+          z-index: 3;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: .9rem;
+          line-height: .9rem;
+          text-align: center;
+          font-size: .24rem;
+          font-weight: bold;
+          color: #F0303D;
         }
       }
       .close {
