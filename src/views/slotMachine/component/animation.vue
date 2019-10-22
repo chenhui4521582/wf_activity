@@ -32,7 +32,13 @@
         </div>
       </div>
     </div>
-    <div class="need-pay">解锁{{userInfo.nextStage | unit}}数字: <span>累计充值 {{userInfo.nextStageRecharge}} 元</span></div>
+    <div class="need-pay" v-if="userInfo.nextStage == 0">
+      今日已达到最高奖励
+    </div>
+    <div class="need-pay" v-else>
+        解锁{{userInfo.nextStage | unit}}数字: 
+        <span>累计充值 {{userInfo.nextStageRecharge}} 元</span>
+    </div>
     <div class="recharge">
       <div class="text">
         当前累充：{{userInfo.recharge}}元
