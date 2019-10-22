@@ -85,7 +85,7 @@ export default {
   height: 100vh;
   overflow-x: hidden;
   position: relative;
-  background: #fff8e8;
+  background: #fffbf3;
   padding: 0.26rem 0.1rem;
   box-sizing: border-box;
   /*border-radius: .4rem .4rem 0 0;
