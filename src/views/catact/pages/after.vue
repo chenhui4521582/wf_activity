@@ -1,14 +1,14 @@
 <template>
   <section class="after">
     <img src="./images/index/back.png" class="e-back" @click.stop="back">
-    <rule :rule-main="rulesInfo" :from="1"></rule>
-    <profit :is-full="true" @set-my-info="setMyInfo" :from="1"></profit>
-    <common-pop :is-show-pop="isShowPop" :my-rank="myInfo.myRank" :rank-size="myInfo.rankSize" :is-end="true" :awards-list="awardsList" @close-pop="closePop"></common-pop>
+    <rule :rule-main="rulesInfo"></rule>
+    <profit :is-full="true" :from="1" ref="profit"></profit>
+    <common-pop :is-show-pop="isShowPop" :my-info="myInfo" :is-end="true" @close-pop="closePop" @closePopend="$refs.profit.isOpen=true"></common-pop>
   </section>
 </template>
 
 <script>
-import { activityInfo } from '../utils/api'
+import { activityInfo,receivePopupAwards} from '../utils/api'
 export default {
   name: 'after',
   components: {
@@ -19,13 +19,13 @@ export default {
   async beforeRouteEnter (to, from, next) {
     const { code, data } = await activityInfo()
     if (code === 200) {
-      if (data.open) {
+      if (data.state==1) {
         next({ path: '/' })
       } else if (data.countdown) {
-        next({ path: '/before' })
+        next({ path: '/' })
       } else {
         next(vm => {
-          vm.rulesInfo = data.rulesInfo
+          vm.rulesInfo = vm.getActTime(data)
         })
       }
     } else {
@@ -42,32 +42,30 @@ export default {
   },
   methods: {
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0075001481')   // H5平台-砸金蛋-活动已结束-点击返回
-      history.back(-1)
+      GLOBALS.marchSetsPoint('A_H5PT0201002053')   //H5平台-撸猫活动-返回按钮点击(跳转平台首页)
+      location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     async closePop () {
       this.isShowPop = false
     },
-    setMyInfo (data) {
-      this.myInfo = data
-      this.isShowPop = true
-      if (this.myInfo && this.myInfo.myRank && this.myInfo.myRank <= this.myInfo.rankSize) {
-        this.awardsList = [{
-          awardsType: 'jyz',
-          awardsName: this.myInfo.jyzAmount ? (this.myInfo.jyzAmount >= 10000 ? this.myInfo.jyzAmount / 10000 + '万' : this.myInfo.jyzAmount) : 0
-        }, {
-          awardsType: 'jdk',
-          awardsName: this.myInfo.jdkAmount ? (this.myInfo.jdkAmount >= 10000 ? this.myInfo.jdkAmount / 10000 + '万元' : this.myInfo.jdkAmount + '元') : 0 + '元'
-        }]
-      } else {
-        this.awardsList = [{
-          awardsType: 'end-empty'
-        }]
+    async getPopupAwards () {
+      let {code,data}=await receivePopupAwards()
+      if(code==200&&data.flag==0){
+        this.myInfo = data
+        this.isShowPop = true
       }
-    }
+    },
+    getActTime(activityInfoData){
+      if(activityInfoData){
+        return `${activityInfoData.beginDate.split('-').splice(1).join('.')}-${activityInfoData.endDate.split('-').splice(1).join('.')}`
+      }else{
+        return ''
+      }
+    },
   },
   mounted () {
-    GLOBALS.marchSetsPoint('A_H5PT0075001480')   // H5平台-砸金蛋-活动已结束-页面
+    GLOBALS.marchSetsPoint('A_H5PT0201002074')   //H5平台-撸猫活动-排行榜发榜页加载完成
+    this.getPopupAwards()
   }
 }
 </script>
@@ -87,9 +85,12 @@ export default {
   height: 100vh;
   overflow-x: hidden;
   position: relative;
-  background: #ffe6b3;
+  /*background: #ffe6b3;*/
   padding: 0.26rem 0.1rem;
   box-sizing: border-box;
+  border-radius: .4rem .4rem 0 0;
+  background: linear-gradient(0deg,rgba(255,255,255,1),rgba(255,248,232,1));
+  box-shadow: 0*0.01rem 10*0.01rem 8*0.01rem 0*0.01rem rgba(20,131,86,0.8), 0*0.01rem 6*0.01rem 2*0.01rem 0*0.01rem rgba(255,245,225,1), 0*0.01rem -6*0.01rem 2*0.01rem 0*0.01rem rgba(187,221,207,1);
   .e-back {
     width: 0.78rem;
     height: 0.5rem;

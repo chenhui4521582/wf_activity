@@ -1,6 +1,6 @@
 .profit-container {
   text-align: center;
-  padding: 0.6rem .17rem 0;
+  padding: 0.5rem .17rem 0;
   width: 100%;
   height: calc(100%);
   position: absolute;
@@ -20,217 +20,6 @@
     color:rgba(196,94,19,1);
     margin-bottom: 0.15rem;
   }
-
-  .profit-tx-container {
-    width: 100%;
-    height: 5.24rem;
-    background: url(../../images/package/profit/profit-tx-bg.png) no-repeat center bottom;
-    background-size: 100% 2.69rem;
-    position: relative;
-  }
-
-  .profit-icon {
-    li {
-      position: absolute;
-      line-height: 0;
-
-      .icon-number {
-        display: block;
-        width: 0.52rem;
-        height: 0.52rem;
-        position: relative;
-        bottom: 0.3rem;
-        margin: 0 auto;
-        z-index: 3;
-      }
-
-      .s-tx {
-        width: 1.46rem;
-        height: 1.62rem;
-        position: relative;
-        margin: 0 auto;
-
-        &:after {
-          content: '';
-          width: 1.46rem;
-          height: 1.62rem;
-          background: url(../../images/package/profit/icon-tx2.png) no-repeat;
-          background-size: 100% 100%;
-          position: absolute;
-          left: 0;
-          top: 0;
-          z-index: 2;
-        }
-
-
-        img {
-          width: 1.34rem;
-          height: 1.34rem;
-          border-radius: 50%;
-          position: relative;
-          top: 0.26rem;
-          z-index: 1;
-          border: none;
-        }
-      }
-
-      .t-second {
-        display: block;
-        font-size: 0.24rem;
-        color: #DF5507;
-        position: relative;
-        top: 0.2rem;
-        font-style: normal;
-      }
-
-      .profit-award {
-        width: 1.72rem;
-        height: 0.95rem;
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.24rem;
-        color: #8E3D0D;
-      }
-
-      .hammer-number {
-        display: block;
-        position: relative;
-        white-space: nowrap;
-        font-size: 0.3rem;
-        font-weight: 800;
-        color: #fff;
-      }
-
-      &:nth-child(1) {
-        top: 0.03rem;
-        left: 50%;
-        margin-left: -0.9rem;
-
-        .s-tx {
-          width: 1.8rem;
-          height: 2.04rem;
-          position: relative;
-
-          &:after {
-            content: '';
-            width: 1.77rem;
-            height: 2.04rem;
-            background: url(../../images/package/profit/icon-tx2.png) no-repeat;
-            background-size: 100% 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 2;
-          }
-
-          img {
-            width: 1.58rem;
-            height: 1.58rem;
-            top: 0.36rem;
-          }
-        }
-
-        .icon-number {
-          background: url(../../images/package/profit/icon-one.png) no-repeat;
-          background-size: 100% 100%;
-        }
-
-        .profit-award {
-          width: 2.25rem;
-          height: 1.03rem;
-          left: -0.30rem;
-          bottom: -2.68rem;
-        }
-
-        .t-second {
-          top: 0.35rem;
-        }
-
-        .hammer-number {
-          font-size: 0.36rem;
-          bottom: -0.6rem;
-        }
-
-        .t-second {
-          font-size: 0.24rem;
-          position: relative;
-          color: #DF5507;
-        }
-
-        .s-text {
-          width: 1.8rem;
-        }
-      }
-
-      &:nth-child(2) {
-        left: 0.2rem;
-        top: 0.74rem;
-
-        .icon-number {
-          background: url(../../images/package/profit/icon-two.png) no-repeat;
-          background-size: 100% 100%;
-        }
-
-        .profit-award {
-          left: -0.36rem;
-          bottom: -2.46rem;
-        }
-
-        .hammer-number {
-          bottom: -0.7rem;
-        }
-
-        .t-second {
-          font-size: 0.18rem;
-          position: relative;
-        }
-      }
-
-      &:nth-child(3) {
-        right: 0.2rem;
-        top: 0.8rem;
-
-        .icon-number {
-          background: url(../../images/package/profit/icon-three.png) no-repeat;
-          background-size: 100% 100%;
-        }
-
-        .profit-award {
-          left: 0.09rem;
-          bottom: -2.46rem;
-        }
-
-        .hammer-number {
-          bottom: -0.9rem;
-        }
-
-        .t-second {
-          font-size: 0.18rem;
-          position: relative;
-          color: #AF460A;
-        }
-      }
-
-      .s-text {
-        width: 1.6rem;
-        overflow: hidden;
-        display: block;
-        position: absolute;
-        height: 0.4rem;
-        bottom: 0.06rem;
-        line-height: 0.4rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 0.32rem;
-        font-weight: bold;
-        color: rgba(223, 85, 7, 1);
-      }
-    }
-
-  }
-
   .profit-items {
     .p-header {
       width: 6.86rem;
@@ -238,7 +27,7 @@
       line-height: 0.3rem;
       background: url("../../images/package/profit/myrank.png");
       background-size: 100% 100%;
-      margin-bottom: .11rem;
+      margin: auto;
       ul {
         height: 0.7rem;
         line-height: 0.3rem;
@@ -270,13 +59,23 @@
         color: #dc8d00;
         background: url("../../images/package/profit/ranklist.png");
         background-size: 100% 100%;
+        &.isfull{
+          margin: auto;
+          width: 6.86rem;
+          height: 8.5rem;
+          background: url("../../images/package/profit/ranklist1.png");
+          background-size: 100% 100%;
+        }
         .p-container{
           position: absolute;
           top:.8rem;
           left: .2rem;
           right: .2rem;
-          bottom: .5rem;
-          overflow: hidden;
+          height: 3.5rem;
+          &.isfull{
+            height: 7rem;
+          }
+          overflow-y: scroll;
         }
         .i-font-style {
           font-style: normal;
@@ -326,7 +125,7 @@
           position: relative;
 
           em.i-ellipsis {
-            display: block;
+            display: flex;
             font-style: normal;
             overflow: hidden;
             /*超出部分隐藏*/
@@ -335,6 +134,8 @@
             text-overflow: ellipsis;
             /*超出部分文字以...显示*/
             padding: 0 0.02rem;
+            height: 100%;
+            align-items: center;
           }
 
           &:nth-child(1) {
@@ -366,18 +167,21 @@
           font-size: 0.24rem;
           color: #dc8d00;
 
-          &.icon-dot4 {
-            background: #fddc64;
+          &.icon-dot1 {
+            background: url("../../images/package/profit/icon-one.png");
+            background-size: 100% 100%;
             color: #fff;
           }
 
-          &.icon-dot5 {
-            background: #fec041;
+          &.icon-dot2 {
+            background: url("../../images/package/profit/icon-two.png");
+            background-size: 100% 100%;
             color: #fff;
           }
 
-          &.icon-dot6 {
-            background: #dc8d00;
+          &.icon-dot3 {
+            background: url("../../images/package/profit/icon-three.png");
+            background-size: 100% 100%;
             color: #fff;
           }
         }

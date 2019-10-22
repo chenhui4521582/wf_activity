@@ -1,9 +1,11 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
-      <h4 v-if="isFull" class="p-time">活动结束，已发榜</h4>
-      <h4 v-if="!isFull&&countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
-      <h4 v-if="!isFull&&countTime===0" class="p-time">发榜时间 ：{{endTime}}</h4>
+      <h4 v-if="isFull" class="p-time" style="font-size:.3rem;font-weight:bold;color:rgba(155,66,1,1);margin-bottom: .32rem">活动已发榜</h4>
+      <template v-if="!isFull">
+        <h4 v-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
+        <h4 v-else class="p-time">发榜时间 ：{{endTime}}</h4>
+      </template>
       <div class="profit-items">
         <div class="p-header">
           <ul>
@@ -11,29 +13,28 @@
               <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
             <li>
-              <span>{{myInfo.totalNum}}个</span>
+              <span>{{myInfo.totalDriedFish}}g</span>
             </li>
             <li>
               <span>{{myInfo.currentAwards}}</span>
             </li>
           </ul>
         </div>
-        <div class="p-time" style="margin-bottom: .08rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
-        <div class="p-items p-items-content">
-          <div class="p-container">
-            <!--<scroll :data="behindThreeData" :beforeScroll="true" :listenScroll="true" :probeType="3" ref="scroll">-->
+        <div class="p-time" style="margin-bottom: .08rem;margin-top: 0.11rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
+        <div class="p-items p-items-content" :class="{isfull:isFull}">
+          <div class="p-container" :class="{isfull:isFull}">
               <ul class="p-item-title">
                 <li v-for="(item,index) in behindThreeData">
-                  <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
+                  <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank>3?item.rank:''}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
                 </li>
                 <li v-if="isOpen" v-for="(item,index) in otherData">
                   <span><i class="icon-dot">{{item.rank}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
                 </li>
                 <li v-if="!isOpen">
                   <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit"></a>
@@ -41,17 +42,18 @@
                 <li v-for="(item,index) in lastThreeData">
                   <span><i class="icon-dot">{{item.rank}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.plantFoodNum}}个</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}</em></span>
+                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
+                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
                 </li>
               </ul>
-            <!--</scroll>-->
           </div>
         </div>
       </div>
       <div class="profit-footer">仅50名及以内有奖励</div>
-      <rule from="1"></rule>
-      <rule from="2"></rule>
+      <template v-if="!isFull">
+        <rule from="1"></rule>
+        <rule from="2"></rule>
+      </template>
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
@@ -104,19 +106,15 @@ export default {
     }
   },
   components: {
-    scroll:()=>import('../scroll'),
     rule:()=>import('../../../components/rule'),
   },
   mounted () {
     this.getRankList()
     this.getActivityInfo()
-    this.getUserRanking()
   },
   methods: {
     closeOpenProfit () {
       this.isOpen = true
-      this.$refs.scroll.scrollTo(0, 0)//滑到顶部
-      this.$refs.scroll && this.$refs.scroll.refresh();
       if (this.from) {
         GLOBALS.marchSetsPoint('A_H5PT0075001483')   // H5平台-砸金蛋-活动已结束-点击展开完整榜单
       } else {
@@ -127,25 +125,35 @@ export default {
       this.isLoading = true
       const { code, data } = await rankList()
       if (code === 200) {
-        this.profitData = data
-        if (this.profitData.length > 6) {
-          this.lastThreeData = this.profitData.slice(6)
+        if(!data.countdown.includes('-')){
+          this.countDown(data.countdown)
         }
-        if (this.profitData.length > 9) {
+        this.myInfo=data.userInfo
+        this.profitData = data.rankList
+        if(!this.isFull){
+          if (this.profitData.length > 3) {
+            this.lastThreeData = this.profitData.slice(3)
+          }
+          if (this.profitData.length > 6) {
+            this.isOpen = false
+            this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
+            this.otherData = this.profitData.slice(3, this.profitData.length - 3)
+          }
+          this.topthreeData = this.profitData.slice(0, 3)
+          this.behindThreeData = this.profitData.slice(0, 3)
+        }else{
           this.isOpen = false
-          this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
-          this.otherData = this.profitData.slice(6, this.profitData.length - 3)
+          this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
+          this.behindThreeData = this.profitData.slice(0, 7)
+          this.otherData = this.profitData.slice(7, this.profitData.length - 6)
         }
-        this.topthreeData = this.profitData.slice(0, 3)
-        this.behindThreeData = this.profitData.slice(3, 6)
         this.isLoading = false
       }
     },
     async getActivityInfo () {
       const { code, data } = await activityInfo()
       if (code === 200) {
-        this.endTime = data.endTime
-        this.countDown(data.countdown)
+        this.endTime = data.endDate
       }
     },
     async getUserRanking () {

@@ -49,9 +49,6 @@
     components: {
       profit: () => import('./component/profit')
     },
-    mounted () {
-      this.init()
-    },
     methods: {
       innerHandleTab (idx) {
         if (idx) {
@@ -62,33 +59,16 @@
         this.handleTab(idx)
       },
       outHandleTab (idx) {
-        if (idx) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001465')   // H5平台-砸金蛋-点击有奖排行榜
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0075001464')   // H5平台-砸金蛋-点击获取锤子
-        }
+        GLOBALS.marchSetsPoint('A_H5PT0201002065')//H5平台-撸猫活动-排行榜展开点击(集鱼干赢猫币)
         this.handleTab(idx)
       },
       handleTab (idx) {
         this.isDropDown = true
         this.curIndex = idx
       },
-      async init () {
-        const { code, data } = await userInfo()
-        if (code === 200) {
-          this.remanentNum = data.remanentNum
-          this.totalNum = data.totalNum
-        }
-      },
       close () {
         this.isDropDown = false
-        if (this.curIndex) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001472')   // H5平台-砸金蛋-有奖排行榜大浮层-点击收起
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0075001469')   // H5平台-砸金蛋-获取锤子大浮层-点击收起
-        }
-        this.init()
-        this.$emit('show-eggs-info')
+        GLOBALS.marchSetsPoint('A_H5PT0201002066')//H5平台-撸猫活动-排行榜展开点击(集鱼干赢猫币)
       }
     }
   }

@@ -8,16 +8,14 @@
           <div class="wrap">
             <div class="main">
               <div class="title">活动规则</div>
-              <div class="time">活动时间：10月25日至10月29日</div>
+              <div class="time">活动时间：{{ruleMain.replace(/\./g,'月').replace('-','日-')}}日</div>
               <div class="title1">每日任务活动：</div>
-              <p>1、活动期间每天会有3个每日任务，完成后可领取奖励(仅限 当日领取)；</p>
-              <p>2、任务设有任务引导，点击可查看具体的完成方式，帮助你 迅速的了解猫并完成相应任务；</p>
-              <p>3、若连续5天每天都完成所有每日任务，则可获得额外奖励， 额外奖励需手动领取，如未领取，活动结束后系统会发至 个人账户上。</p>
+              <p>1、活动期间每天会有3个每日任务，完成后可领取奖励(仅限当日领取)；</p>
+              <p>2、任务设有任务引导，点击可查看具体的完成方式，帮助你迅速地了解猫并完成相应任务；</p>
+              <p>3、若连续5天每天都完成所有每日任务，则可获得额外金叶奖励，额外奖励需手动领取，如未领取，活动结束后系统会发至个人账户。</p>
               <div class="title1">集鱼干排行活动：</div>
-              <p>1、活动期间每天会有3个每日任务，完成后可领取奖励(仅限 当日领取)； 2 任务设有任务引导，点击可查看具体的完成方式，帮助你 迅速的了解猫并完成相应任务；</p>
-              <p>2、任务设有任务引导，点击可查看具体的完成方式，帮助你 迅速的了解猫并完成相应任务；</p>
-              <p>3、若连续5天每天都完成所有每日任务，则可获得额外奖励， 额外奖励需手动领取，如未领取，活动结束后系统会发至 个人账户上；</p>
-              <p>4、玩家通过游戏消耗金叶可自动获取鱼干，每消耗1000金 叶可获得1g鱼干。可获得鱼干的游戏限以下： 糖果萌消消、欢乐竞技台球、捕鱼游戏、王者弹珠、三国 大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法)。</p>
+              <p>1、玩家通过游戏消耗金叶可自动获取鱼干，每消耗1000金叶可获得1g鱼干。可获得鱼干的游戏限以下：糖果萌消消、欢乐竞技台球、捕鱼游戏、王者弹珠、三国大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法除外)、斗地主和麻将(仅算桌费)。好感度、特权及商城商品可提供鱼干加成，加速鱼干的获取；</p>
+              <p>2、活动期间内仅通过游戏获得的鱼干会被计入排行中(老玩家首次进入招财猫转换所得鱼干、活动中获得的鱼干不计入排行)。活动结束后会根据用户5天累计的鱼干获取量排名发放奖励。奖励会在活动结束后自动发放至个人账户，活动结束后三天内，用户可通过活动入口进入查看结果。</p>
             </div>
           </div>
           <div class="close-icon" @click="isShowPop = false"></div>
@@ -32,12 +30,14 @@
           <div class="wrap">
             <div class="main">
               <div class="title">榜首攻略</div>
-              <div class="title1">1 什么是鱼干？如何获取</div>
-              <p>鱼干是招财猫道具，在游戏中每消耗1000金叶可自动获得1鱼干，可获得鱼干的游戏限以下：糖果萌消消、欢乐竞技 台球、捕鱼游戏、王者弹珠、三国大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法除外)、斗地主和麻将的桌费；</p>
-              <div class="title1">2.如何快速获取鱼干登上榜单呢？</div>
-              <p>在登上榜单的道路上，当然是有捷径可循的。 首先，你可以把获得的鱼干进行喂养提升招财猫等级，升到相应的等级后可以开启特权，当你获得鱼干加成的特权后，你就可以慢慢走向“人生巅峰"了;当然除了鱼干加成，还有各式各样的特权，给你与众不同的游戏体验<i  @click="gotocat">(戳此查看招财猫特权详情)</i>。其次，你可以持续与猫互动，保持良好的好感度，好感度可以带来鱼干加成，好感度越高鱼干加成的量也越大。<i @click="gotocat">(戳此查看好感度规则)</i>。再者，如果你有钞能力，可以购买商城道具，道具附带鱼干加成的效果，剁手一时爽，一直剁一直爽<i  @click="gotocat">(戳此查看猫商城道具)</i>。</p>
-              <div class="title1">3.猫币有什么用？</div>
-              <p>猫币是招财猫奖励道具，可以在猫领奖页兑换高额话费券、京东卡和游戏金叶子，大奖拿到手软！</p>
+              <div class="title1">鱼干如何获取？</div>
+              <p>游戏中每消耗1000金叶可自动获得1g鱼干，可获得鱼干的游戏限以下：糖果萌消消、欢乐竞技台球、捕鱼游戏、王者弹珠、三国大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法除外)、斗地主和麻将（仅算桌费)。</p>
+              <div class="title1">如何快速获取鱼干登上榜单？</div>
+              <p>1、升猫等级解锁特权，10级可获得鱼干加成特权，继续提升猫等级还可使特权权益扩大，永久性加快鱼干获取<i  @click="gotocat">(戳此查看招财猫特权详情)</i>；</p>
+              <p>2、持续与猫互动保持好感度，好感度越高，获得的鱼干加成比例也越高<i @click="gotocat">(戳此查看招财猫好感度)</i>；</p>
+              <p>3、商城道具附带鱼干加成效果，道具有期限，有效期内可提供高额的鱼干加成<i  @click="gotocat">(戳此查看猫商城道具)</i>。</p>
+              <div class="title1">猫币有什么用？</div>
+              <p>猫币可在招财猫领奖页兑换高额话费券、京东卡和游戏金叶子。</p>
             </div>
           </div>
           <div class="close-icon" @click="isShowPop = false"></div>
@@ -53,7 +53,7 @@
             <div class="main">
               <div class="title1">以下游戏可获取鱼干哦，快快冲榜吧</div>
               <div class="gamelist">
-                <img :src="require(`../pages/images/pop/games/${index}.png`)" alt="" v-for="(item,index) in 4" class="game">
+                <img :src="require(`../pages/images/pop/games/${index}.png`)" alt="" v-for="(item,index) in games" class="game" @click="gotogame(item)">
               </div>
               <div class="gogames" @click="gotoindex">更多游戏></div>
             </div>
@@ -70,7 +70,17 @@ export default {
   name: "rule",
   data () {
     return {
-      isShowPop: false
+      isShowPop: false,
+      games:[{
+        id:12,
+        url:'/crush'
+      },{
+        id:21,url:'/Marbles'
+      },{
+        id:10,url:'/fish'
+      },{
+        id:2,url:'/billiards'
+      }]
     };
   },
   props: {
@@ -85,18 +95,29 @@ export default {
   },
   methods: {
     showPop () {
-      this.isShowPop = true
       if (this.from) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
+        //2067:H5平台-撸猫活动-排行榜页面-我要上榜首按钮点击
+        //2068:H5平台-撸猫活动-排行榜页面-立即冲榜按钮点击
+        GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002067':'A_H5PT0201002068')
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
+        GLOBALS.marchSetsPoint('A_H5PT0201002054')   //H5平台-撸猫活动-规则按钮点击
       }
+      this.isShowPop = true
+      //2069:H5平台-撸猫活动-排行榜页面-榜首攻略弹窗加载完成
+      //2071:H5平台-撸猫活动-排行榜页面-立即冲榜弹窗加载完成
+      this.from&&GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002069':'A_H5PT0201002071')
     },
     gotocat(){
+      GLOBALS.marchSetsPoint('A_H5PT0201002070')//H5平台-撸猫活动-排行榜页面-榜首攻略弹窗-蓝色跳转内容点击(跳转招财猫)
       location.href= `https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}`
     },
     gotoindex(){
+      GLOBALS.marchSetsPoint('A_H5PT0201002073')//H5平台-撸猫活动-排行榜页面-立即冲榜弹窗-更多游戏点击(跳转平台首页)
       location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
+    },
+    gotogame({url,id}){
+      GLOBALS.marchSetsPoint('A_H5PT0201002072',{target_project_id:id})//H5平台-撸猫活动-排行榜页面-立即冲榜弹窗-具体游戏点击
+      GLOBALS.jumpOutsideGame(url)
     }
   }
 };

@@ -5,7 +5,7 @@ import $axios from '../http'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-info')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/activityInfo')
   return data
 }
 
@@ -80,7 +80,7 @@ export const noticeList = async () => {
  */
 
 export const rankList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/rank-list')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/rankList')
   return data
 }
 /**
@@ -91,16 +91,6 @@ export const userIncrement = async () => {
   const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-increment')
   return data
 }
-/**
- * @description 用户信息
- * @return {Object} data
- */
-
-export const userInfo = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/user-info')
-  return data
-}
-
 /**
  * @description 礼包
  * @return {Object} data
@@ -126,5 +116,34 @@ export const userRanking = async () => {
 
 export const activityGuide = async () => {
   const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/activity-guide')
+  return data
+}
+/**
+ * @description 获取任务奖励
+ * @return {Object} data
+ */
+
+export const receiveAwards = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/receiveAwards',params)
+  return data
+}
+
+/**
+ * @description 获取额外奖励
+ * @return {Object} data
+ */
+
+export const receiveExtAwards = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/receiveExtAwards')
+  return data
+}
+
+/**
+ * @description 获取额外奖励
+ * @return {Object} data
+ */
+
+export const receivePopupAwards = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/popup')
   return data
 }
