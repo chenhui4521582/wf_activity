@@ -45,7 +45,7 @@
       {{userInfo.beginDate}}-{{userInfo.endDate}}
     </div>
     <div @click.stop="startClick" class="start-btn"></div>
-    <popup v-model="showPopup" :status="status" :AwardsList="AwardsList" :AwardsNumber="AwardsNumber"></popup>
+    <popup v-model="showPopup" :status="status" :AwardsList="AwardsList" :AwardsNumber="AwardsNumber" :userInfo="userInfo"></popup>
   </div>
 </template>
 <script>

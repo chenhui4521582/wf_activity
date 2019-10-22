@@ -3,9 +3,8 @@
     <div class="mask"></div>
     <div class="container">
       <div class="no-time" v-if="status == 1">
-        <div class="btn" @click="goPay"></div>
+        <div class="btn" @click="goPay" v-if="userInfo.nextStage != 0"></div>
       </div>
-
       <div class="awards" v-if="status == 2 && AwardsList.length">
         <ul>
           <template v-for="(item, index) in AwardsList">
@@ -40,6 +39,10 @@ export default {
     },
     AwardsNumber: {
       default: ""
+    },
+    userInfo: {
+      type: Object,
+      default: () =>({})
     }
   },
   filters: {
