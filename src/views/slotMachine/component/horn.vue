@@ -22,7 +22,8 @@ export default {
     defaultOptions: {
       loop: true,
       autoplay: 3000,
-      direction: 'vertical'
+      direction: 'vertical',
+      height: 60
     }
   }),
   components: {
