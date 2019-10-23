@@ -174,7 +174,9 @@ export default {
     showTurnPop () {
       this.isTurnpopShow = true
       if (this.popType) {
-        GLOBALS.marchSetsPoint('A_H5PT0200002043') // H5平台-新手转盘活动页-获得奖品提示弹窗加载完成
+        GLOBALS.marchSetsPoint('A_H5PT0200002043', {
+          task_name: this.awardsInfo.awardsName
+        }) // H5平台-新手转盘活动页-获得奖品提示弹窗加载完成
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0200002046') // H5平台-新手转盘活动页-抽奖机会不足提示弹窗加载完成
       }
