@@ -12,7 +12,7 @@
       <div class="list-wrap">
         <div class="awards-list" ref="wheel">
           <ul>
-            <li v-for="(item,index) in 8" :key="index" :style="rotate[index]">{{index}}</li>
+            <li v-for="(item,index) in 8" :key="index" :style="rotate[index]"></li>
           </ul>
         </div>
         <div class="pointer" @click="betting()"><span>({{info.wheelTimes}}次)</span></div>
