@@ -4,13 +4,13 @@
     <div class="wrapper">
       <div class="title">活动规则</div>
       <div class="content">
-        1. 活动时间：{{userInfo.beginDate}}-{{userInfo.endDate}}<br>
-        2. 活动奖励分为“个”“十”“百”“千”“万”“十万”“百万”7个数位，最高为“百万”位 <br>
+        1. 活动时间：{{userInfo.beginDate}}至{{userInfo.endDate}}<br>
+        2. 活动奖励分为 个、十、百、千、万、十万、百万、7个数位，最高为“百万”位 <br>
         3. 玩家达成指定条件可以解锁下一数位的摇奖机会，每个数位可以随机摇出1-9任意一个数字 <br>
         4. 活动期间内，玩家每天可以根据摇到的数位及对应的数字来获得金叶奖励 <br>
         5. 当日最高奖励为“百万”位，玩家摇完“百万”位的数字后，则当天活动达到最高 <br>
         6. 奖励发放：用户在次日登录后，奖励会自动发放到账。如果活动期间内用户次日未登陆，则顺延。
-        <p>7. 注意：如果玩家在{{userInfo.endDate}}日活动结束后24小时内都未登陆，则视为放弃奖励。  </p>
+        <p>7. 注意：如果玩家在{{userInfo.endDate}}活动结束后24小时内都未登陆，则视为放弃奖励。  </p>
       </div>
       <div class="close" @click="hide"></div>
     </div>
