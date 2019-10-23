@@ -69,15 +69,18 @@ export default {
     /** 打开规则 **/
     openRule() {
       this.showRule = true
+      GLOBALS.marchSetsPoint('A_H5PT0203002128')
     },
     /** 返回 **/
     back() {
       history.back(-1)
+      GLOBALS.marchSetsPoint('A_H5PT0203002127')
     }
   },
   mounted () {
     this._getUserInfo()
     this._getHornList()
+    GLOBALS.marchSetsPoint('A_H5PT0203002126')
   }
 }
 </script>

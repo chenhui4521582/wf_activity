@@ -34,6 +34,9 @@
       hide() {
         this.$emit('input', false)
       }
+    },
+    mounted() {
+      GLOBALS.marchSetsPoint('A_H5PT0203002129')
     }
     
   }

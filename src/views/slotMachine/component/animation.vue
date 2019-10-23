@@ -78,7 +78,7 @@ export default {
       itemHeight: '',// 奖品元素高度
       AwardsList: [],
       showPopup: false,
-      status: 2,
+      status: 0,
       AwardsNumber: 90000
     }
   },
@@ -140,10 +140,14 @@ export default {
           this.status = 2
           this.AwardsNumber = data
           this.runGame(this.animationArray(data))
+          GLOBALS.marchSetsPoint('A_H5PT0203002131')
+          GLOBALS.marchSetsPoint('A_H5PT0203002133')
         }else {
           this.status = 1
           this.showPopup = true
-          this.disClick = false;
+          this.disClick = false
+          GLOBALS.marchSetsPoint('A_H5PT0203002132')
+          GLOBALS.marchSetsPoint('A_H5PT0203002134')
         }
       })
     },
@@ -178,6 +182,7 @@ export default {
     /** 去支付 **/
     goPay() {
       let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      GLOBALS.marchSetsPoint('A_H5PT0203002130')
       if(['100039001','100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
         window.location.href = `https://wap.beeplaying.com/xmWap/#/payment/?channel=${APP_CHANNEL}`
       }else {
