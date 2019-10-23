@@ -38,8 +38,8 @@
       </div>
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
-        <div class="desc" style="font-size: .28rem">
-          您将是第 <i>{{num+1}}</i>位报名成功的用户<br>
+        <div class="desc" style="font-size: .26rem">
+          您将是第<i>{{num+1}}</i>位报名成功的用户<br>
           报名成功就有机会瓜分千元话费奖励
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
