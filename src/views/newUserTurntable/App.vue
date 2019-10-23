@@ -1,7 +1,8 @@
 <template>
   <div id="app" ref="app" class="turn-wrap" v-if="info.openFlag">
     <div class="top">
-      <span>限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
+      <p class="back" @click="back"><span>返回</span></p>
+      <span>&nbsp;&nbsp;限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
     </div>
     <div class="top-btn-wrap">
       <div class="btn left" @click="showRule()">玩法说明</div>
@@ -159,7 +160,7 @@ export default {
       }, 1000)
     },
     goMy () {
-      WapCall.openGame('/xmWap/#/my/prize')
+      WapCall.openGame('/xmWap/#/my/')
       GLOBALS.marchSetsPoint('A_H5PT0200002039') // H5平台-新手转盘活动页-我的奖品点击
     },
     showRule () {
@@ -228,6 +229,13 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0200002042', params) // H5平台-新手转盘活动页-已完成任务点击(跳转不同游戏)
       }
       WapCall.openGame(url)
+    },
+    back () {
+      let url = SDK.getBackUrl()
+      if (url) {
+        url = url.split('?')[0]
+        WapCall.openGame(url)
+      }
     }
   }
 }
@@ -256,6 +264,7 @@ export default {
     font-weight: 500;
     padding: 0.12rem 0;
     box-sizing: border-box;
+    position: relative;
     .bgWithFull("./img/top-bg.png");
     span {
       font-size: 0.32rem;
@@ -268,6 +277,31 @@ export default {
       font-weight: 800;
       padding: 0 0.08rem;
       border-radius: 0.04rem;
+    }
+    .back {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 0.6rem;
+      line-height: 0.6rem;
+      width: 1.12rem;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      background: #cc2f1f;
+      border-radius: 0 0.3rem 0.3rem 0;
+      span {
+        font-size: 0.24rem;
+      }
+      &::before {
+        content: "";
+        display: block;
+        width: 0.14rem;
+        height: 0.24rem;
+        margin-right: 0.08rem;
+        margin-left: 0.2rem;
+        .bgWithFull("./img/back.png");
+      }
     }
   }
   .top-btn-wrap {
