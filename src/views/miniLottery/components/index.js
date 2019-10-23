@@ -1,10 +1,14 @@
 import Header from './header'
+import Modal from './modal'
+import Button from './button'
 import Filters from './Filters'
 import Toast from '../../../plugins/toast';
 import VueClipboard from 'vue-clipboard2'
 // 自定义全局组件
 const components = [
-  Header
+  Header,
+  Modal,
+  Button
 ]
 
 const install = function(Vue) {
