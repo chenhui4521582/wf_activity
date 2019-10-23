@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import Services from "../../services/services"
 import _get from 'lodash.get'
 import Popup from './components/popup'
 import UserInfo from './components/userInfo'
@@ -33,6 +34,7 @@ export default {
   data: ()=> ({
     showPopup: false,
     popupStatus: 0,
+    userInfo: {},
     historyList: [
       {
         periodId: 1,
@@ -65,11 +67,6 @@ export default {
         title: '200元话费'
       }
     ],
-    userInfo: {
-      leaf: 9999,
-      phone: 9999,
-      cardLottery: 999
-    },
     list: [
       {
         "countDown": 4000,
@@ -115,17 +112,46 @@ export default {
   },
   computed: {},
   methods: {
+    /** 规则按钮点击 **/
     ruleClick() {
       this.showPopup = true
       this.popupStatus = 1
     },
+    /** 历史记录按钮点击 **/
     logClick() {
       this.showPopup = true
       this.popupStatus = 2
     },
+    /** 返回按钮点击 **/
     backClick() {
       window.location.history(-1)
+    },
+    /** 获取用户信息 **/
+    _getUserInfo() {
+      Services.getUserInfo().then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.userInfo = data
+        }
+      })
+    },
+    /** 获取全部场次列表 **/
+    _getLotteryList() {
+      Services.getLotteryList().then(res=> {
+        console.log(res)
+      })
+    },
+    /** 获取之前场次列表 **/
+    _getHistoryList() {
+      Services.getHistoryList().then(res=> {
+        console.log(res)
+      })
     }
+  },
+  mounted() {
+    this._getUserInfo()
+    this._getLotteryList()
+    this._getHistoryList()
   }
 }
 </script>

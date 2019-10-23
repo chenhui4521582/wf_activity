@@ -41,7 +41,7 @@ export default {
   name: 'list',
   props: {
     list: {
-      type: Object,
+      type: Array,
       default: () =>({})
     }
   },

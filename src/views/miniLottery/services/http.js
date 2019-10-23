@@ -6,7 +6,7 @@
 import axios from 'axios'
 // import router from './router'
 import Vue from 'vue'
-import utils from '../../common/js/utils'
+import utils from '@/common/js/utils'
 // axios 配置
 axios.defaults.timeout = 5000
 

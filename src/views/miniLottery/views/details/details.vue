@@ -1,10 +1,10 @@
 <template>
   <div class="details">
-    <user-info :userInfo="userInfo"/>
-    <goods-msg />
-    <current-lottery />
-    <provUser />
-    <BuyBtn />
+    <user-info :userInfo="userInfo" />
+    <goods-msg :lotteryStatus="lotteryStatus" />
+    <current-lottery :lotteryStatus="lotteryStatus"/>
+    <provUser :lotteryStatus="lotteryStatus"/>
+    <BuyBtn :lotteryStatus="lotteryStatus"/>
   </div>
 </template>
 <script>
@@ -28,6 +28,18 @@ export default {
     CurrentLottery,
     ProvUser,
     BuyBtn
+  },
+  computed: {
+    lotteryStatus() {
+      /** 
+       * 场次状态
+       * 1：
+       * 2：
+       * 3：
+       * 4：
+      **/
+      return 1
+    }
   }
 }
 </script>
