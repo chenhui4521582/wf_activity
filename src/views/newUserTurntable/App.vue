@@ -85,8 +85,7 @@ export default {
     this.init()
     this.getNoticeList()
     this.getTaskInfo()
-    let p_url = document.referrer || ''
-    GLOBALS.marchSetsPoint('P_H5PT0200', { source_address: p_url }) // H5平台-新手转盘活动-页面加载完成
+    GLOBALS.marchSetsPoint('P_H5PT0200', { source_address: this.sourceAddress }) // H5平台-新手转盘活动-页面加载完成
   },
   computed: {
     rotate () {
@@ -96,6 +95,9 @@ export default {
         rotateArr.push('transform: rotate(' + (d * i) + 'deg)')
       }
       return rotateArr
+    },
+    sourceAddress () {
+      return GLOBALS.getUrlParam('from')
     }
   },
   methods: {
