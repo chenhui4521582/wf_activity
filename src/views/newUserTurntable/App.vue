@@ -102,11 +102,8 @@ export default {
   },
   methods: {
     async init () {
-      // const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
-      // const { data } = res.data
-      const data = {
-        openFlag: true
-      }
+      const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
+      const { data } = res.data
       if (data) {
         this.info = data
         this.countDown(data.countdown)
