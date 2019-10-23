@@ -102,8 +102,11 @@ export default {
   },
   methods: {
     async init () {
-      const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
-      const { data } = res.data
+      // const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
+      // const { data } = res.data
+      const data = {
+        openFlag: true
+      }
       if (data) {
         this.info = data
         this.countDown(data.countdown)
@@ -240,6 +243,33 @@ export default {
       if (url) {
         url = url.split('?')[0]
         WapCall.openGame(url)
+      }
+    },
+    move (e) {
+      e.preventDefault()
+    },
+    scrollNoMove () {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener("touchmove", this.move, { passive: false });
+    },
+    scrollMove () {
+      document.body.style.overflow = null;
+      document.removeEventListener("touchmove", this.move, { passive: false });
+    }
+  },
+  watch: {
+    isRuleShow (val) {
+      if (val) {
+        this.scrollNoMove()
+      } else {
+        this.scrollMove()
+      }
+    },
+    isTurnpopShow (val) {
+      if (val) {
+        this.scrollNoMove()
+      } else {
+        this.scrollMove()
       }
     }
   }
