@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="need-pay" v-if="userInfo.nextStage == 0">
-      今日已达到最高奖励
+      恭喜你已经解锁所有数字
     </div>
     <div class="need-pay" v-else>
         解锁{{userInfo.nextStage | unit}}数字: 
