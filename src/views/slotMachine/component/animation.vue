@@ -134,6 +134,14 @@ export default {
     startClick() {
       if(this.disClick) return
       this.disClick = true;
+      if(this.userInfo.upTimes == 0) {
+        this.status = 1
+        this.showPopup = true
+        this.disClick = false
+        GLOBALS.marchSetsPoint('A_H5PT0203002132')
+        GLOBALS.marchSetsPoint('A_H5PT0203002134')
+        return false
+      }
       Services.runAnimation().then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code === 200 && data) {
