@@ -3,7 +3,7 @@ export default [
     name: 'filter',
     method: url => {
       if (url && !url.includes('://') && !url.includes('data:image')) {
-        return process.env.VUE_APP_FILE_HOST + url
+        return '//file.beeplaying.com' + url
       } else {
         return url
       }

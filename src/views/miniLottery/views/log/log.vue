@@ -5,7 +5,7 @@
         夺宝记录
         <div class="line" v-if="currentIndex == 1"></div>
       </div>
-      <div class="item" :class="{'current': currentIndex == 2}" @click="handleClick(1)">
+      <div class="item" :class="{'current': currentIndex == 2}" @click="handleClick(2)">
         往期幸运儿
         <div class="line" v-if="currentIndex == 2"></div>
       </div>
@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     handleClick(index) {
+      console.log(index)
       this.currentIndex = index
     },
     init() {

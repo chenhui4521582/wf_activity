@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <ul v-if="showList">
-      <template v-for="(item, index) in list">
+      <template v-for="(item, index) in allList">
         <li :key="index" :class="{'hot':index == 0}" v-if="index == 0">
           <div class="img">
             <img :src="item.picture | filter" alt="">
@@ -10,25 +10,25 @@
             <div class="title">{{item.title}}</div>
             <div class="desc">三网直充 / 3~5个工作日到帐</div>
             <div class="edit">
-              已抢2630次，至少开奖60次
+              已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
             </div>
             <div class="count-down">
-              夺宝剩余 
-              26时20分32秒
+              夺宝剩余 <br>
+              {{item.countDown}}
             </div>
             <div class="btn">立即夺宝</div>
           </div>
         </li>
         <li :key="index" class="item" v-else>
           <div class="count-down">
-            夺宝剩余 26时20分32秒
+            夺宝剩余 {{item.countDown}}
           </div>
           <div class="img">
             <img :src="item.picture | filter" alt="">
           </div>
           <div class="title">{{item.title}}</div>
           <div class="edit">
-            已抢2630次，至少开奖60次
+            已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
           </div>
           <div class="btn">立即夺宝</div>
         </li>
@@ -45,9 +45,44 @@ export default {
       default: () =>({})
     }
   },
+  data: ()=> ({
+    allList: []
+  }),
   computed: {
     showList() {
       return this.list.length
+    }
+  },
+  methods: {
+    allCountDown() {
+      this.allList.map((item, index) => {
+        if (!item.endCountDown) return false
+        let date = item.endCountDown / 1000
+        this.timer = []
+        this.timer[index] = setInterval(() => {
+          date = date - 1
+          if (date <= 0) {
+            date = 0
+            clearInterval(this.timer[index])
+            this.$emit('refershList')
+          }
+          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+          let minute = Math.floor(parseInt(date / 60) % 60)
+          let second = Math.floor(date % 60)
+          let countHour = hour >= 10 ? hour : '0' + hour
+          let countMinute = minute >= 10 ? minute : '0' + minute
+          let countSecond = second >= 10 ? second : '0' + second
+          this.$set(this.allList[index], 'countDown', `${countHour}时${countMinute}分${countSecond}秒`)
+        }, 1000)
+      })
+    }
+  },
+  watch: {
+    list(value) {
+      if(value) {
+        this.allList = value
+        this.allCountDown()
+      }
     }
   }
 }

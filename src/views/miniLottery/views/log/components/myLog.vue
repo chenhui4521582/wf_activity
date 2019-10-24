@@ -2,7 +2,7 @@
   <div class="my-log">
     <div class="title">
       <div class="item">夺宝名称</div>
-      <div class="item">幸运儿信息</div>
+      <div class="item">夺宝时间</div>
       <div class="item">夺宝结果</div>
     </div>
     <ul>
@@ -13,8 +13,7 @@
           <p>参与58次</p> 
         </div>
         <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
+          <p>2019-05-30 10:02:03</p>
         </div>
       </li>
       <li>
@@ -91,10 +90,10 @@ export default {
       font-size: .24rem;
       color: #000;
       &:nth-child(1) {
-        width: 1.7rem;
+        width: 33.33%;
       }
       &:nth-child(2) {
-        width: 2.5rem;
+        width: 33.33%;
       }
       &:nth-child(3) {
         flex: 1;
@@ -103,21 +102,35 @@ export default {
   }
   ul {
     height: calc(100% - .96rem);
+    padding-bottom: .2rem;
+    background: #FFFAD4;
+    border-radius: 0 0 .16rem  .16rem;
     li {
       height: .9rem;
-      line-height: .9rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      &:nth-child(odd) {
+        background: #FFFFFF;
+      }
+      &:nth-child(even) {
+        background: #FFFDEF;
+      }
       .item {
         text-align: center;
         font-size: .24rem;
         color: #000;
         &:nth-child(1) {
-          width: 1.7rem;
+          width: 33.33%;
         }
         &:nth-child(2) {
-          width: 2.5rem;
+          width: 33.33%;
         }
         &:nth-child(3) {
           flex: 1;
+        }
+        p {
+          line-height: .35rem;
         }
       }
     }

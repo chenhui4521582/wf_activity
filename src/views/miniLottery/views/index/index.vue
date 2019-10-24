@@ -34,76 +34,12 @@ export default {
   data: ()=> ({
     showPopup: false,
     popupStatus: 0,
+    /** 用户信息 **/
     userInfo: {},
-    historyList: [
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      },
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      },
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      },
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      },
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      },
-      {
-        periodId: 1,
-        nickName: 'chenhui',
-        title: '200元话费'
-      }
-    ],
-    list: [
-      {
-        "countDown": 4000,
-        "limitTotalAmount": 10,
-        "participantsNumber": 0,
-        "periodId": 1,
-        "picture": require('./img/item-icon.png'),
-        "smallTreasureId": 1,
-        "title": "200元话费充值"
-      },
-      {
-        "countDown": 4000,
-        "limitTotalAmount": 10,
-        "participantsNumber": 0,
-        "periodId": 2,
-        "picture": require('./img/item-icon1.png'),
-        "smallTreasureId": 2,
-        "title": "100元话费充值"
-      },     
-      {
-        "countDown": 4000,
-        "limitTotalAmount": 10,
-        "participantsNumber": 0,
-        "periodId": 3,
-        "picture": require('./img/item-icon2.png'),
-        "smallTreasureId": 3,
-        "title": "50元话费充值"
-      },     {
-        "countDown": 4000,
-        "limitTotalAmount": 10,
-        "participantsNumber": 0,
-        "periodId": 4,
-        "picture": require('./img/item-icon3.png'),
-        "smallTreasureId": 4,
-        "title": "30元话费充值"
-      }
-    ]
+    /** 历史中奖列表 **/
+    historyList: [],
+    /** 夺宝列表 **/
+    list: []
   }),
   components: {
     Popup,
@@ -138,13 +74,15 @@ export default {
     /** 获取全部场次列表 **/
     _getLotteryList() {
       Services.getLotteryList().then(res=> {
-        console.log(res)
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.list = _get(res, 'data.data.list', [])
+        }
       })
     },
     /** 获取之前场次列表 **/
     _getHistoryList() {
       Services.getHistoryList().then(res=> {
-        console.log(res)
       })
     }
   },
