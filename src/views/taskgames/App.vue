@@ -955,16 +955,6 @@ export default {
         gameType: this.currentGameType
       })
       if (data.code == 200) {
-        if (parent.location.href.includes('ring2')) {
-          let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
-          if (dataA.code == 200) {
-            dataA.data.awardsList.map(item => {
-              arrring2.push({
-                'taskId': item.amount, 'taskName': item.description, 'gameType': this.currentGameType, 'taskDesc': item.description, 'icon': item.icon, 'taskOps': item.costNum, 'finishNum': item.currNum, 'taskStatus': item.costNum <= item.currNum ? 0 : 1, 'taskLogId': item.amount, 'cycle': 0, 'awardsType': 0, 'awardsName': item.awardsName, 'url': null, 'awardsImage': item.awardsImg, 'taskDescShow': item.description, 'awardsNum': 0, 'taskType': 0, 'subTask': '', 'preTask': null, 'action': 0, 'sort': 0, flag: 'ring2'
-              })
-            })
-          }
-        }
         this.currentGamesItems = [...arrring2, ...data.data.filter((item) => {
           return (item.gameType == this.getUrlParam('gametype') && item.taskStatus != 2)
         })]
