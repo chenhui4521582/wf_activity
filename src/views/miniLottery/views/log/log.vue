@@ -34,13 +34,16 @@ export default {
       this.currentIndex = index
     },
     init() {
-      let from = this.$router.query.from
-      if(from == 'hitsory') {
+      let from = this.$route.query.from
+      if(from == 'historylog') {
         this.currentIndex = 2
       }else {
         this.currentIndex = 1
       }
     }
+  },
+  mounted() {
+    this.init()
   }
 }
 </script>

@@ -3,18 +3,18 @@
     <div class="userInfo">
       <div class="leaf">
         <img src="../img/leaf-icon.png" alt="">
-        {{userInfo.leaf}}
+        {{userInfo.leafs}}
       </div>
       <div class="phone">
         <img src="../img/phone-icon.png" alt="">
-        {{userInfo.phone}}
+        {{userInfo.phoneScrap}}
       </div>
       <div class="lottery">
         <img src="../img/lottery-card.png" alt="">
-        {{userInfo.lotteryCard}}
+        {{userInfo.cardAccount}}
       </div>
     </div>
-    <div class="my-log">
+    <div class="my-log" @click="goLog">
       我的夺宝记录
       <span class="iconfont icon-next"></span>
     </div>
@@ -29,6 +29,16 @@ export default {
       default: ()=> ({})
     }
   },
+  methods: {
+    goLog() {
+      this.$router.push({
+        name: 'log', 
+        query: {
+          from: 'mylog'
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

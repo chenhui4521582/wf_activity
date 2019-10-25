@@ -6,67 +6,50 @@
       <div class="item">夺宝结果</div>
     </div>
     <ul>
-      <li>
-        <div class="item">第40期</div>
+      <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
+        <div class="item">第{{item.periodId}}期</div>
         <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
+          <p>{{item.nickName}}</p>
+          <p>参与{{item.bettingCount}}次</p> 
         </div>
         <div class="item">
-          <p>2019-05-30 10:02:03</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
+          <p>{{item.endTime | formatTime('m-d h:f')}}结束</p>
+          <p>幸运码：{{item.code}}</p>
         </div>
       </li>
     </ul>
   </div>
 </template>
 <script>
+import Services from '../../../services/services'
+import _get from 'lodash.get'
 export default {
   name: 'myLog',
-  
+  data: () => ({
+    list: []
+  }),
+  methods: {
+    _getHistoryList() {
+      Services.getHistoryList().then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.list = _get(res, 'data.data.historyList', [])
+        }
+      })
+    },
+    goDetail(item) {
+      this.$router.push({
+        name: 'details',
+        query: {
+          periodId: item.periodId,
+          smallTreasureId: item.smallTreasureId
+        }
+      })
+    }
+  },
+  mounted() {
+    this._getHistoryList()
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -130,7 +113,7 @@ export default {
           flex: 1;
         }
         p {
-          line-height: .35rem;
+          line-height: .3rem;
         }
       }
     }

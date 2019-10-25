@@ -13,9 +13,9 @@
         <div class="confirm" @click="hide">确  定</div>
       </div>
       <!-- 中奖纪录 -->
-      <div class="log" v-if="popupStatus == 2 && showList">
+      <div class="log" v-if="popupStatus == 2">
         <div class="title"></div>
-        <div class="list">
+        <div class="list" v-if="showList">
           <div class="list-nav">
             <div class="item">期数</div>
             <div class="item">幸运儿</div>
@@ -32,6 +32,9 @@
               </div>
             </li>
           </ul>
+        </div>
+        <div class="no-list" v-else>
+          暂无数据
         </div>
         <div class="confirm" @click="hide">去夺宝</div>
       </div>
@@ -185,6 +188,11 @@ export default {
             }
 
           }
+        }
+        .no-list {
+          padding-top: 2rem;
+          color: #fff;
+          text-align: center;
         }
         .confirm {
           position: absolute;

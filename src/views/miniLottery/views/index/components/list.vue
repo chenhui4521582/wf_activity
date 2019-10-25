@@ -2,7 +2,7 @@
   <div class="list">
     <ul v-if="showList">
       <template v-for="(item, index) in allList">
-        <li :key="index" :class="{'hot':index == 0}" v-if="index == 0">
+        <li v-if="index == 0" :key="index" :class="{'hot':index == 0}" @click="goDetail(item)">
           <div class="img">
             <img :src="item.picture | filter" alt="">
           </div>
@@ -12,16 +12,24 @@
             <div class="edit">
               已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
             </div>
-            <div class="count-down">
+            <div class="count-down" v-if="item.underway">
               夺宝剩余 <br>
               {{item.countDown}}
             </div>
-            <div class="btn">立即夺宝</div>
+            <div class="count-down no" v-if="!item.underway">
+              {{item.countDown}}
+              <br>
+               后即将开始
+            </div>
+            <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
           </div>
         </li>
-        <li :key="index" class="item" v-else>
-          <div class="count-down">
+        <li v-else :key="index" class="item" @click="goDetail(item)">
+          <div class="count-down" v-if="item.underway">
             夺宝剩余 {{item.countDown}}
+          </div>
+          <div class="count-down no" v-if="!item.underway">
+            {{item.countDown}} 后即将开始
           </div>
           <div class="img">
             <img :src="item.picture | filter" alt="">
@@ -30,7 +38,7 @@
           <div class="edit">
             已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
           </div>
-          <div class="btn">立即夺宝</div>
+          <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
         </li>
       </template>
     </ul>
@@ -64,18 +72,39 @@ export default {
           if (date <= 0) {
             date = 0
             clearInterval(this.timer[index])
-            this.$emit('refershList')
+            this.$emit('refreshList')
           }
+          let day = Math.floor(date / 86400)
           let hour = Math.floor(parseInt(date / 60 / 60) % 24)
           let minute = Math.floor(parseInt(date / 60) % 60)
           let second = Math.floor(date % 60)
           let countHour = hour >= 10 ? hour : '0' + hour
           let countMinute = minute >= 10 ? minute : '0' + minute
           let countSecond = second >= 10 ? second : '0' + second
-          this.$set(this.allList[index], 'countDown', `${countHour}时${countMinute}分${countSecond}秒`)
+          if (day > 0) {
+            this.$set(this.allList[index], 'countDown', `${day}天${countHour}时${countMinute}分${countSecond}秒`)
+          } else {
+            this.$set(this.allList[index], 'countDown', `${countHour}时${countMinute}分${countSecond}秒`)
+          }
         }, 1000)
       })
+    },
+    goDetail(item) {
+      this.$router.push({
+        name: 'details',
+        query: {
+          periodId: item.periodId,
+          smallTreasureId: item.smallTreasureId
+        }
+      })
     }
+  },
+  beforeDestroy() {
+    this.timer.map(item => {
+      clearInterval(item)
+    })
+    this.timer = null
+    console.log(this.timer)
   },
   watch: {
     list(value) {
@@ -141,9 +170,14 @@ export default {
           }
           .count-down {
             width: 1.96rem;
+            height: .3rem;
             line-height: .3rem;
             font-size: .22rem;
             color: #FF4141;
+            white-space: nowrap;
+            &.no {
+              color: #FF7800;
+            }
           }
           .btn {
             position: absolute;
@@ -158,6 +192,9 @@ export default {
             border-radius: .16rem;
             font-size: .24rem;
             color: #fff;
+            &.no {
+              background: #C0C0C0;
+            }
           }
         }
       }
@@ -172,6 +209,10 @@ export default {
           font-size: .22rem;
           color: #FF4141;
           text-align: center;
+          white-space: nowrap;
+          &.no {
+            color: #FF7800;
+          }
         }
         .img {
           margin: 0 auto .21rem;
@@ -209,6 +250,9 @@ export default {
           border-radius: .16rem;
           font-size: .24rem;
           color: #fff;
+          &.no {
+            background: #C0C0C0;
+          }
         }
       }
     }

@@ -96,20 +96,6 @@ axios.interceptors.response.use(
             duration: 1500
           })
           break
-        case 122, 128, 101:
-          break
-        default:
-          var result = response.config && response.config.data
-          if (result) {
-            result = JSON.parse(result)
-            if (result && result.isShowToast == 'false') {
-              break
-            }
-          }
-          Vue.prototype.$toast.show({
-            message: res.message,
-            duration: 1500
-          })
       }
     }
     return response

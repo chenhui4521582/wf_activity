@@ -6,67 +6,63 @@
       <div class="item">夺宝结果</div>
     </div>
     <ul>
-      <li>
-        <div class="item">第40期</div>
+      <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
+        <div class="item">第{{item.periodId}}期</div>
         <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
+          {{item.lotteryTime | formatTime}}
         </div>
         <div class="item">
-          <p>2019-05-30 10:02:03</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
-        </div>
-      </li>
-      <li>
-        <div class="item">第40期</div>
-        <div class="item">
-          <p>彭于晏12336**87</p>
-          <p>参与58次</p> 
-        </div>
-        <div class="item">
-          <p>09-26 21:45结束</p>
-          <p>幸运码：123004567</p>
+          <div class="pass" v-if="item.status!=0 && item.ifReturn">
+            <p>流拍</p>
+            <p>夺宝卡已退回</p>
+          </div>
+          <div class="yes" v-if="item.status!=0 && !item.ifReturn && item.ifWin">
+            中奖
+          </div>
+          <div class="no" v-if="item.status!=0 && !item.ifReturn && !item.ifWin">
+            <p>未中奖</p>
+            <p>点击查看幸运码</p>
+          </div>
+          <div class="not-over" v-if="item.status==0">
+            <p>未开奖</p>
+            <p>等待开奖</p>
+          </div>
         </div>
       </li>
     </ul>
   </div>
 </template>
 <script>
+import Services from '../../../services/services'
+import _get from 'lodash.get'
 export default {
   name: 'myLog',
-  
+  data: () => ({
+    list: []
+  }),
+  methods: {
+    _getList() {
+      Services.getMyLotteryLog().then(res=> {
+        console.log(res)
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.list = _get(res, 'data.data.list', [])
+        }
+      })
+    },
+    goDetail(item) {
+      this.$router.push({
+        name: 'details',
+        query: {
+          periodId: item.periodId,
+          smallTreasureId: item.smallTreasureId
+        }
+      })
+    }
+  },
+  mounted() {
+    this._getList()
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -125,12 +121,33 @@ export default {
         }
         &:nth-child(2) {
           width: 33.33%;
+          line-height: .28rem;
         }
         &:nth-child(3) {
           flex: 1;
         }
+        .pass {
+          color: #BBBBBB;
+        }
+        .yes {
+          color: #FF4141;
+        }
+        .no {
+          p {
+            &:last-child{
+              color: #5186CA;
+            }
+          }
+        }
+        .not-over {
+          p {
+            &:last-child{
+              color: #FF7800;
+            }
+          }
+        }
         p {
-          line-height: .35rem;
+          line-height: .3rem;
         }
       }
     }

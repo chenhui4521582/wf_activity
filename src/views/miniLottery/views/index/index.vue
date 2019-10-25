@@ -18,7 +18,7 @@
         </div>
       </div>
       <user-info :userInfo="userInfo"/>
-      <list :list="list" />
+      <list :list="list" @refreshList="_getLotteryList"/>
     </div>
     <popup v-model="showPopup" :popupStatus="popupStatus" :list="historyList"/>
   </div>
@@ -96,6 +96,7 @@ export default {
 <style lang="less" scoped>
 .index {
   position: relative;
+  background: #e0384a;
   .bg {
     position: absolute;
     z-index: 1;

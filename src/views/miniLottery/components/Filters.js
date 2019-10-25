@@ -63,6 +63,8 @@ export default [
         return `${y}.${m}.${d}`
       } else if (type === 'm.d') {
         return `${m}.${d}`
+      } else if (type === 'm-d h:f') {
+        return `${m}-${d} ${h}:${minute}`
       } else {
         return `${y}-${m}-${d} ${h}:${minute}:${second}`
       }
