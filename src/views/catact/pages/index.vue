@@ -1,7 +1,7 @@
 <template>
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
     <img src="./images/index/back.png" class="e-back" @click.stop="back">
-    <rule :rule-main="rulesInfo"></rule>
+    <rule :rule-main="rulesInfo" from="0"></rule>
     <div class="header1">
       <h4 class="e-time">价值<i>2000元大奖</i>等你抢</h4>
       <h4 class="e-time e-time-act" v-if="activityInfoData">活动时间：{{getActTime(activityInfoData)}}</h4>
@@ -40,7 +40,7 @@
         </div>
         <div class="task-container">
           <div class="title">
-            <div class="item">连续5天完成所有每日任务，还可额外领取{{activityInfoData.extAwardInfo.awardsNum}}{{activityInfoData.extAwardInfo.awardsName}}</div>
+            <div class="item">{{getActTime(activityInfoData)}}连续5天完成所有每日任务，还可额外领取{{activityInfoData.extAwardInfo.awardsNum}}{{activityInfoData.extAwardInfo.awardsName}}</div>
             <div class="item">每日任务列表</div>
           </div>
           <div class="task_list">

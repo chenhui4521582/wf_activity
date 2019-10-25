@@ -23,6 +23,7 @@
         <div class="p-time" style="margin-bottom: .08rem;margin-top: 0.11rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
         <div class="p-items p-items-content" :class="{isfull:isFull}">
           <div class="p-container" :class="{isfull:isFull}">
+            <scroll :data="behindThreeData" ref="scroll">
               <ul class="p-item-title">
                 <li v-for="(item,index) in behindThreeData">
                   <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank>3?item.rank:''}}</i></span>
@@ -46,14 +47,11 @@
                   <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
                 </li>
               </ul>
+            </scroll>
           </div>
         </div>
       </div>
       <div class="profit-footer">仅50名及以内有奖励</div>
-      <template v-if="!isFull">
-        <rule from="1"></rule>
-        <rule from="2"></rule>
-      </template>
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
@@ -107,6 +105,7 @@ export default {
   },
   components: {
     rule:()=>import('../../../components/rule'),
+    scroll:()=>import('../../../components/scroll')
   },
   mounted () {
     this.getRankList()
@@ -115,11 +114,8 @@ export default {
   methods: {
     closeOpenProfit () {
       this.isOpen = true
-      if (this.from) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001483')   // H5平台-砸金蛋-活动已结束-点击展开完整榜单
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001471')   // H5平台-砸金蛋-有奖排行榜大浮层-点击展开完整榜单
-      }
+      this.$refs.scroll.scrollTo(0, 0)// 滑到顶部
+      this.$refs.scroll && this.$refs.scroll.refresh()
     },
     async getRankList () {
       this.isLoading = true

@@ -1,5 +1,5 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?101:1}" :class="{pop2:from==2}">
+  <section class="rule" :style="{zIndex:isShowPop?101:(from>0?100:1)}" :class="{pop2:from==2}">
     <template v-if="from==0">
       <img src="../pages/images/rule/icon.png" alt="" @click="showPop" class="ruleicon">
       <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>

@@ -16,6 +16,8 @@
           <!-- 右下角图标 -->
           <img src="./images/package/profit/icon-back.png" class="icon-back" @click.stop="close">
         </div>
+        <rule from="1"></rule>
+        <rule from="2"></rule>
       </div>
     </transition>
     <div class="bottom-wrap" v-if="!isDropDown">
@@ -30,7 +32,6 @@
   </div>
 </template>
 <script type="text/javascript">
-  import { userInfo } from '../utils/api'
   export default {
     data () {
       return {
@@ -47,15 +48,11 @@
       }
     },
     components: {
-      profit: () => import('./component/profit')
+      profit: () => import('./component/profit'),
+      rule:()=>import('../components/rule')
     },
     methods: {
       innerHandleTab (idx) {
-        if (idx) {
-          GLOBALS.marchSetsPoint('A_H5PT0075001466')   // H5平台-砸金蛋-获取锤子大浮层-点击有奖排行榜
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0075001470')   // H5平台-砸金蛋-有奖排行榜大浮层-点击获取锤子
-        }
         this.handleTab(idx)
       },
       outHandleTab (idx) {
