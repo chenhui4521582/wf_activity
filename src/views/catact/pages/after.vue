@@ -1,7 +1,9 @@
 <template>
   <section class="after">
     <img src="./images/index/back.png" class="e-back" @click.stop="back">
-    <rule :rule-main="rulesInfo"></rule>
+    <template v-if="rulesInfo">
+      <rule :rule-main="rulesInfo"></rule>
+    </template>
     <profit :is-full="true" :from="1" ref="profit"></profit>
     <common-pop :is-show-pop="isShowPop" :my-info="myInfo" :is-end="true" @close-pop="closePop" @closePopend="$refs.profit.isOpen=true"></common-pop>
   </section>
@@ -56,7 +58,7 @@ export default {
       }
     },
     getActTime(activityInfoData){
-      if(activityInfoData){
+      if(activityInfoData&&activityInfoData.beginDate&&activityInfoData.endDate){
         return `${activityInfoData.beginDate.split('-').splice(1).join('.')}-${activityInfoData.endDate.split('-').splice(1).join('.')}`
       }else{
         return ''
