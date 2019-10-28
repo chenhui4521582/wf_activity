@@ -28,7 +28,7 @@ import Services from "../../services/services"
 import _get from 'lodash.get'
 import Popup from './components/popup'
 import UserInfo from './components/userInfo'
-import List from './components/List'
+import List from './components/list'
 export default {
   name: 'index',
   data: ()=> ({
