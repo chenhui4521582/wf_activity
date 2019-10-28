@@ -103,7 +103,7 @@ export default {
     goMiniLottery() {
       let CHANNEL = localStorage.getItem('APP_CHANNEL') || 100070
       let TOKEN = localStorage.getItem('ACCESS_TOKEN') || 100070
-      window.location.href = `https://wap.beeplaying.com/activities/miniLottery/#/?channel=${CHANNEL}&token=${TOKEN}`
+      window.location.href = `https://wap.beeplaying.com/activities/miniLottery.html#/?channel=${CHANNEL}&token=${TOKEN}`
     }
   },
 }
