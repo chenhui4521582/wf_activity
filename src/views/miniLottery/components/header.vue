@@ -38,7 +38,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: #F7F7F7;
   .return-img {
     position: absolute;
     top: 0;

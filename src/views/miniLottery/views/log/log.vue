@@ -1,5 +1,6 @@
 <template>
   <div class="log">
+    <Header title="夺宝明细"/>
     <div class="nav">
       <div class="item" :class="{'current': currentIndex == 1}" @click="handleClick(1)">
         夺宝记录
@@ -49,8 +50,10 @@ export default {
 </script>
 <style lang="less" scoped>
 .log{
+  padding-top: .9rem;
   min-height: 100vh;
   background: #F7F7F7;
+  box-sizing: border-box;
   .nav {
     height: .96rem;
     display: flex;

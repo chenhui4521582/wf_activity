@@ -267,9 +267,9 @@ export default {
     .btn {
       margin: 0 .1rem;
       padding: 0 .1rem;
-      height: .28rem;
+      height: .3rem;
       text-align: center;
-      line-height: .28rem;
+      line-height: .3rem;
       text-align: center;
       font-size: .2rem;
       color: #fff;

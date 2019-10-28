@@ -1,5 +1,6 @@
 <template>
   <div class="details">
+    <Header title="夺宝详情"/>
     <user-info :userInfo="userInfo" :details="details"/>
     <goods-msg :details="details" :isAwards="isAwards" @refresh="_getDetails"/>
     <current-lottery :details="details" :isAwards="isAwards"/>

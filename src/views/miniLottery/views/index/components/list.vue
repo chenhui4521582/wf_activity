@@ -145,7 +145,7 @@ export default {
           position: relative;
           height: 1.78rem;
           width: 2.22rem;
-          border-right: 1px solid #7F603B;
+          border-right: 1px solid #e8e2e2;
           img {
             vertical-align: top;
             margin-top: .13rem;
@@ -222,7 +222,7 @@ export default {
           margin: 0 auto .21rem;
           padding: .22rem 0 .19rem;
           width: 2.45rem;
-          border-bottom: 1px solid #7F603B;
+          border-bottom: 1px solid #e8e2e2;
           text-align: center;
           img {
             vertical-align: top;

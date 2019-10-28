@@ -118,7 +118,7 @@ export default {
           margin: .38rem 0 .25rem;
           width: 100%;
           height: .38rem;
-          background: url(../img/rule-title.png) no-repeat center center / 1.76rem 100%;
+          background: url(../img/rule-title.png) no-repeat center center / 1.38rem .38rem;
         }
         .center {
           -webkit-overflow-scrolling: touch;
@@ -182,6 +182,7 @@ export default {
           ul {
             height: 4.1rem;
             overflow-y: scroll;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             li {
               display: flex;

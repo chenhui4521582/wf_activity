@@ -369,12 +369,12 @@ export default {
     height: 2.22rem;
     background: #FFF2F2;
     img {
-      margin-bottom: .13rem;
       width: .39rem;
       height: .42rem;
       animation: rotate infinite 2s;
     }
     p {
+      margin-top: .2rem;
       font-size: .24rem;
       color: #000000;
     }

@@ -57,7 +57,7 @@ export default {
 .history-log {
   position: absolute;
   left: 0;
-  top: .96rem;
+  top: 1.86rem;
   right: 0;
   bottom: .96rem;
   padding: 0 .24rem;
@@ -85,10 +85,11 @@ export default {
     }
   }
   ul {
-    height: calc(100% - .96rem);
+    height: calc(100% - 1.86rem);
     padding-bottom: .2rem;
     background: #FFFAD4;
     border-radius: 0 0 .16rem  .16rem;
+    overflow-y: scroll;
     li {
       height: .9rem;
       display: flex;
