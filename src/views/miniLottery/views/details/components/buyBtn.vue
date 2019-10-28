@@ -79,7 +79,7 @@ export default {
       this.inputValue = this.inputValue-1
     },
     addClick() {
-      if(this.inputValue >= 60) {
+      if(this.inputValue >= this.max) {
         return false
       }
       this.inputValue = this.inputValue+1
