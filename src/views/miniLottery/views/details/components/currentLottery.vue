@@ -70,6 +70,10 @@ export default {
     },
     openModal() {
       this.showModal = true
+      GLOBALS.marchSetsPoint('A_H5PT0202002085', {
+        task_id: this.details.currentPeriodStatus,
+        task_name: this.details.currentPeriodStatus
+      })
     },
   }
 }

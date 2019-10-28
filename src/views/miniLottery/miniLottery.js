@@ -8,6 +8,7 @@ import router from './router/index'
 import App from './App'
 import fastclick from 'fastclick'
 import Components from './components/index'
+import '@/common/js/window'
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 /** 全局公共组件 **/

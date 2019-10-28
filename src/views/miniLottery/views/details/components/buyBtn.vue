@@ -26,7 +26,6 @@
       </div>
     </Modal>
   </div>
-  
   <div class="lottery-btn" v-else-if="status == 1" @click="getAward">领取奖品</div>  
   <div class="pass-btn" v-else-if="status == 2" @click="next">前往新一期夺宝</div>
 </template>
@@ -50,6 +49,7 @@ export default {
     bettingCodes: [],
     modal: {
       show: false,
+      status: 0,
       title: '温馨提示',
       saveText: '知道了',
       message: ''
@@ -90,12 +90,16 @@ export default {
     hide() {
       let {status} = this.modal
       if(status == 1) {
-      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-      if(['100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
-        parent.location.href = `https://wap.beeplaying.com/xmWap/#/mall?channel=${localStorage.getItem('APP_CHANNEL')}`
-      }else {
-        parent.location.href = `https://wap.beeplaying.com/activities/billshop.html#/?from=bdWap&channel=${localStorage.getItem('APP_CHANNEL')}`
-      }
+        let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+        if(['100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
+          parent.location.href = `https://wap.beeplaying.com/xmWap/#/mall?channel=${localStorage.getItem('APP_CHANNEL')}`
+        }else {
+          parent.location.href = `https://wap.beeplaying.com/activities/billshop.html#/?from=bdWap&channel=${localStorage.getItem('APP_CHANNEL')}`
+        }
+        GLOBALS.marchSetsPoint('A_H5PT0202002100', {
+          task_id: this.details.currentPeriodStatus,
+          task_name: this.details.currentPeriodStatus
+        })
       } else {
         this.modal.show = false
       }
@@ -115,14 +119,45 @@ export default {
         if(code == 200) {
           this.modal = {
             show: true,
+            status: 0,
             message: `您的${data.length}次夺宝次数参与成功`,
             title: '温馨提示',
             saveText: '知道了'
           }
           this.$emit('refresh')
-        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0202002087', {
+            task_id: this.details.currentPeriodStatus,
+            task_name: this.details.currentPeriodStatus
+          })
+        } else if (code == 105) {
+            this.modal = {
+            show: true,
+            status: 0,
+            message: '本期夺宝参与次数已达到上限\n把机会让给其他人吧',
+            title: '温馨提示',
+            saveText: '知道了'
+          }
+          GLOBALS.marchSetsPoint('A_H5PT0202002096', {
+            task_id: this.details.currentPeriodStatus,
+            task_name: this.details.currentPeriodStatus
+          })
+        } else if (code == 106) {
           this.modal = {
             show: true,
+            status: 1,
+            message: '您的夺宝卡不足',
+            title: '温馨提示',
+            saveText: '去兑换夺宝卡'
+          }
+          GLOBALS.marchSetsPoint('A_H5PT0202002099', {
+            task_id: this.details.currentPeriodStatus,
+            task_name: this.details.currentPeriodStatus
+          })
+        }
+        else {
+          this.modal = {
+            show: true,
+            status: 0,
             message: message,
             title: '温馨提示',
             saveText: '知道了'
@@ -133,16 +168,43 @@ export default {
       })
     },
     getAward() {
-
+      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      window.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}`
+      GLOBALS.marchSetsPoint('A_H5PT0202002095', {
+        task_id: this.details.currentPeriodStatus,
+        task_name: this.details.currentPeriodStatus
+      })
     },
     next() {
-      this.$router.push({
-        name: 'details',
-        query: {
-          periodId: 1,
-          smallTreasureId: 2
+      let {nextPeriodId, nextSmallTreasureId} = this.details
+      let status = _get(this.details, 'currentPeriodStatus')
+      let isme = _get(this.details, 'lastPeriodInfo.winnerIsCurrentUser', false)
+      if(nextPeriodId && nextSmallTreasureId) {
+        this.$router.push({
+          name: 'details',
+          query: {
+            periodId: nextPeriodId,
+            smallTreasureId: nextSmallTreasureId
+          }
+        })
+        if(status == 1 && !isme) {
+          GLOBALS.marchSetsPoint('A_H5PT0202002093', {
+            task_id: this.details.currentPeriodStatus,
+            task_name: this.details.currentPeriodStatus
+          })
         }
-      })
+        if(status == 2) {
+          GLOBALS.marchSetsPoint('A_H5PT0202002094', {
+            task_id: this.details.currentPeriodStatus,
+            task_name: this.details.currentPeriodStatus
+          })
+        }
+        window.location.reload()
+      }else {
+        this.$router.push({
+          name: 'index'
+        })
+      }
     }
   }
 }

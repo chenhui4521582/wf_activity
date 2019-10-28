@@ -1,7 +1,7 @@
 <template>
   <div class="details">
-    <user-info :userInfo="userInfo"/>
-    <goods-msg :details="details" :isAwards="isAwards" @sendAward="sendAward"/>
+    <user-info :userInfo="userInfo" :details="details"/>
+    <goods-msg :details="details" :isAwards="isAwards" @refresh="_getDetails"/>
     <current-lottery :details="details" :isAwards="isAwards"/>
     <prov-user :details="details" :isAwards="isAwards"/>
     <goods-desc :details="details"/>
@@ -51,13 +51,23 @@ export default {
           let countDown = _get(res, 'data.data.countDown')
           if(status == 0 && countDown < 0) {
             this.isAwards = true
+            data.countDown = 0
+            if(this.timer) {
+              clearTimeout(this.timer)
+            }
+            this.timer = setTimeout(()=> {
+              this._getDetails()
+            }, 3000)
+          }else {
+            this.isAwards = false
           }
           this.details = data
+          GLOBALS.marchSetsPoint('A_H5PT0202002083', {
+            task_id: data.currentPeriodStatus,
+            task_name: data.currentPeriodStatus
+          })
         }
       })
-    },
-    sendAward() {
-      this.isAwards = true
     },
     init() {
       this._getUserInfo()
@@ -66,13 +76,17 @@ export default {
   },
   mounted() {
     this.init()
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
   }
 }
 </script>
 <style lang="less" scoped>
   .details{
+    box-sizing: border-box;
     min-height: 100vh;
-    padding: 0 .24rem;
+    padding: 0 .24rem .9rem;
     background: #F7F7F7;
   }
 </style>

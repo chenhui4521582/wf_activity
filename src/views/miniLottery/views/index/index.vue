@@ -52,14 +52,17 @@ export default {
     ruleClick() {
       this.showPopup = true
       this.popupStatus = 1
+      GLOBALS.marchSetsPoint('A_H5PT0202002076')
     },
     /** 历史记录按钮点击 **/
     logClick() {
       this.showPopup = true
       this.popupStatus = 2
+      GLOBALS.marchSetsPoint('A_H5PT0202002077')
     },
     /** 返回按钮点击 **/
     backClick() {
+      GLOBALS.marchSetsPoint('A_H5PT0202002075')
       window.location.history(-1)
     },
     /** 获取用户信息 **/
@@ -83,6 +86,10 @@ export default {
     /** 获取之前场次列表 **/
     _getHistoryList() {
       Services.getHistoryList().then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.historyList = _get(res, 'data.data.historyList', [])
+        }
       })
     }
   },
@@ -90,6 +97,7 @@ export default {
     this._getUserInfo()
     this._getLotteryList()
     this._getHistoryList()
+    GLOBALS.marchSetsPoint('P_H5PT0202')
   }
 }
 </script>

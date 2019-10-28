@@ -27,6 +27,10 @@ export default {
     userInfo: {
       type: Object,
       default: ()=> ({})
+    },
+    details: {
+      type: Object,
+      default: ()=> ({})
     }
   },
   methods: {
@@ -36,6 +40,10 @@ export default {
         query: {
           from: 'mylog'
         }
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0202002084', {
+        task_id: this.details.currentPeriodStatus,
+        task_name: this.details.currentPeriodStatus
       })
     }
   }

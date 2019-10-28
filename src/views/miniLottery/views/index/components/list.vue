@@ -97,6 +97,10 @@ export default {
           smallTreasureId: item.smallTreasureId
         }
       })
+      GLOBALS.marchSetsPoint('A_H5PT0202002082', {
+        task_id: item.smallTreasureId,
+        task_name: item.title
+      })
     }
   },
   beforeDestroy() {

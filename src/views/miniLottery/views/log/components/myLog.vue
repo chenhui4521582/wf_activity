@@ -62,6 +62,7 @@ export default {
   },
   mounted() {
     this._getList()
+    GLOBALS.marchSetsPoint('A_H5PT0202002097')
   }
 }
 </script>

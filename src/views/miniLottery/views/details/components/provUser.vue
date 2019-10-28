@@ -1,23 +1,23 @@
 <template>
   <div class="lottery-status">
     <!-- 夺宝正在进行中 或者 没开始 -->
-    <div class="lottery-run" v-if="!isAwards && (status == 0 || status == 3)">
-      <div class="title">
-        <span>上期幸运儿</span>
-        <span class="prov-btn" @click="goLog">往期揭晓</span>
-      </div>
-      <div class="user">
-        <div class="avatar">
-          <img src="../img/avatar.png" alt="">
+    <div class="lottery-run" v-if="lastUserInfo && !isAwards && (status == 0 || status == 3)">
+        <div class="title">
+          <span>上期幸运儿</span>
+          <span class="prov-btn" @click="goLog">往期揭晓</span>
         </div>
-        <div class="text">
-          <div class="name">获奖者：彭于晏16236****32</div>
-          <div class="ip">IP:100.23.***.***.11（广东 广州）</div>
-          <div class="people">参与次数：26人次</div>
-          <div class="time">开奖时间：2018/09/26 17:30:24</div>
-          <div class="award-num">幸运号码：100045942</div>
+        <div class="user">
+          <div class="avatar">
+            <img src="../img/avatar.png" alt="">
+          </div>
+          <div class="text" >
+            <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
+            <div class="ip">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+            <div class="people">参与次数：{{1}}人次</div>
+            <div class="time">开奖时间：{{lastUserInfo.endTime | formatTime}}</div>
+            <div class="award-num">幸运号码：{{code}}</div>
+          </div>
         </div>
-      </div>
     </div>
     <!-- 夺宝结束 -->
     <div class="lottery-end" v-if="!isAwards && status == 1">
@@ -40,11 +40,11 @@
           <img src="../img/avatar.png" alt="">
         </div>
         <div class="text">
-          <div class="name">获奖者：彭于晏16236****32</div>
-          <div class="ip">IP:100.23.***.***.11（广东 广州）</div>
-          <div class="people">参与次数：26人次</div>
-          <div class="time">开奖时间：2018/09/26 17:30:24</div>
-          <div class="award-num">幸运号码：100045942</div>
+          <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
+          <div class="ip">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+          <div class="people">参与次数：{{lastUserInfo.bettingCount}}次</div>
+          <div class="time">开奖时间：{{lastUserInfo.endTime | formatTime}}</div>
+          <div class="award-num">幸运号码：{{code}}</div>
         </div>
       </div>
       <div class="buy" :class="{'no-buy': !bettingCodesLength}">
@@ -138,8 +138,8 @@ export default {
     code() {
       return _get(this.details, 'lastPeriodInfo.lastWinningCode', '')
     },
-    lastPeriodInfo() {
-      return _get(this.details, 'lastPeriodInfo', {})
+    lastUserInfo() {
+      return _get(this.details, 'lastPeriodInfo.lastWinnerInfo', false)
     }
   },
   methods: {
@@ -155,6 +155,10 @@ export default {
         query: {
           from: 'historylog'
         }
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0202002086', {
+        task_id: this.details.currentPeriodStatus,
+        task_name: this.details.currentPeriodStatus
       })
     }
   }

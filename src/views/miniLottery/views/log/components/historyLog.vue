@@ -49,6 +49,7 @@ export default {
   },
   mounted() {
     this._getHistoryList()
+    GLOBALS.marchSetsPoint('A_H5PT0202002098')
   }
 }
 </script>

@@ -66,6 +66,22 @@ export default {
   methods: {
     hide() {
       this.$emit('input', false)
+      if(this.popupStatus == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0202002079')
+      }
+      if(this.popupStatus == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0202002081')
+      }
+    }
+  },
+  watch: {
+    value(newValue) {
+      if(newValue && this.popupStatus == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0202002078')
+      }
+      if(newValue && this.popupStatus == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0202002080')
+      }
     }
   }
 }
@@ -150,15 +166,16 @@ export default {
               font-size: .22rem;
               color: #fff;
               font-weight: bold;
+              white-space: nowrap;
               &:first-child {
                 width: .78rem;
               }
               &:nth-child(2) {
+                text-align: center;
                 flex: 1;
-                text-indent: .37rem;
               }
               &:last-child {
-                width: 1.2rem;
+                width: 1.4rem;
               }
             }
           }
@@ -171,6 +188,7 @@ export default {
               justify-content: space-between;
               justify-items: center;
               padding: .18rem 0;
+              white-space: nowrap;
               .item {
                 font-size: .22rem;
                 color: #fff;
@@ -180,9 +198,10 @@ export default {
                 }
                 &:nth-child(2) {
                   flex: 1;
+                  text-align: center;
                 }
                 &:last-child {
-                  width: 1.2rem;
+                  width: 1.4rem;
                 }
               }
             }

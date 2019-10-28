@@ -1,9 +1,9 @@
 <template>
   <div class="good-msg">
     <div class="goods">
-      <div class="lottery-id">第44期</div>
+      <div class="lottery-id">第{{details.periodId}}期</div>
       <!-- 状态：0 进行中，1结束，2流拍, 3 未开始-->
-      <div class="lottery-status" v-if="status == 0">
+      <div class="lottery-status" v-if="status == 0 && !isAwards">
         夺宝进行中<span class="ani_dot">...</span>
       </div>
       <div class="lottery-no" v-else-if="status == 3">
@@ -91,7 +91,7 @@ export default {
         if (date <= 0) {
           date = 0
           clearInterval(this.timer)
-          this.sendAward()
+          this.refresh()
         }
         let day = Math.floor(date / 86400)
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
@@ -107,9 +107,9 @@ export default {
         }
       }, 1000)
     },
-    sendAward() {
+    refresh() {
       if(this.status == 0) {
-        this.$emit('sendAward')
+        this.$emit('refresh')
       }
     },
     openRule() {
@@ -118,9 +118,6 @@ export default {
     hideRule() {
       this.ruleModal = false
     }
-  },
-  mounted() {
-    
   },
   watch: {
     details: {
@@ -148,9 +145,7 @@ export default {
       position: absolute;
       top: .18rem;
       left: .18rem;
-      width: .8rem;
-      height: .3rem;
-      line-height: .3rem;
+      padding: .05rem .1rem;
       font-size: .2rem;
       color: #FFFFFF;
       background: #BBBBBB;
