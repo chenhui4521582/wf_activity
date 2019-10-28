@@ -169,7 +169,12 @@ export default {
     },
     getAward() {
       let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-      window.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}`
+      let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+      if(['100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
+        parent.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
+      }else {
+        parent.location.href = `https://wap.beeplaying.com/bdWap/#/schedule?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
+      }
       GLOBALS.marchSetsPoint('A_H5PT0202002095', {
         task_id: this.details.currentPeriodStatus,
         task_name: this.details.currentPeriodStatus

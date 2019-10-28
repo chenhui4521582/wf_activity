@@ -74,7 +74,7 @@ export default {
         task_id: this.details.currentPeriodStatus,
         task_name: this.details.currentPeriodStatus
       })
-    },
+    }
   }
 }
 </script>

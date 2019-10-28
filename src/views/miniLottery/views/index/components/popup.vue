@@ -181,7 +181,7 @@ export default {
           }
           ul {
             height: 4.1rem;
-            overflow: scroll;
+            overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             li {
               display: flex;
