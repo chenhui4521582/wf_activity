@@ -25,7 +25,7 @@
     <!-- 进行中才有倒计时 -->
     <div class="count-down" v-if="!isAwards && status == 0">
       <span class="icon"></span>
-      <span>夺宝剩余 {{countdownTime}}</span>
+      <span>开奖剩余时间 {{countdownTime}}</span>
     </div>  
     <!-- 未开始倒计时 -->
     <div class="count-down no" v-if="!isAwards && status == 3">
