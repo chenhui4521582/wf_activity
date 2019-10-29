@@ -63,7 +63,7 @@ export default {
     /** 返回按钮点击 **/
     backClick() {
       GLOBALS.marchSetsPoint('A_H5PT0202002075')
-      window.location.history(-1)
+      window.history.go(-1)
     },
     /** 获取用户信息 **/
     _getUserInfo() {

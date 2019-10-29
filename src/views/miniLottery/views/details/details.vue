@@ -67,12 +67,11 @@ export default {
     refresh() {
       this.isAwards = true
     },
-
     init() {
       this._getUserInfo()
       this._getDetails()
       if(this.timer) {
-        clearTimeout(this.timer)
+        clearInterval(this.timer)
       }
       this.timer = setInterval(()=> {
         this._getDetails()
@@ -83,7 +82,7 @@ export default {
     this.init()
   },
   beforeDestroy() {
-    clearTimeout(this.timer)
+    clearInterval(this.timer)
   }
 }
 </script>
