@@ -136,7 +136,7 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   span {
-    flex: .333;
+    width: 33.3%;
     font-size: .24rem;
     color: #888888;
     line-height: .4rem;
