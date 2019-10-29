@@ -14,10 +14,10 @@
             </div>
             <div class="count-down" v-if="item.underway">
               夺宝剩余 <br>
-              {{item.countDown}}
+              {{item.countDownTime}}
             </div>
             <div class="count-down no" v-if="!item.underway">
-              {{item.countDown}}
+              {{item.countDownTime}}
               <br>
                后即将开始
             </div>
@@ -26,10 +26,10 @@
         </li>
         <li v-else :key="index" class="item" @click="goDetail(item)">
           <div class="count-down" v-if="item.underway">
-            夺宝剩余 {{item.countDown}}
+            夺宝剩余 {{item.countDownTime}}
           </div>
           <div class="count-down no" v-if="!item.underway">
-            {{item.countDown}} 后即将开始
+            {{item.countDownTime}} 后即将开始
           </div>
           <div class="img">
             <img :src="item.picture | filter" alt="">
@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import { clearInterval } from 'timers'
 export default {
   name: 'list',
   props: {
@@ -54,7 +55,8 @@ export default {
     }
   },
   data: ()=> ({
-    allList: []
+    allList: [],
+    timers: []
   }),
   computed: {
     showList() {
@@ -64,15 +66,14 @@ export default {
   methods: {
     allCountDown() {
       this.allList.map((item, index) => {
-        if (!item.endCountDown) return false
+        if (item.endCountDown <= 0) return false
         let date = item.endCountDown / 1000
-        this.timer = []
-        this.timer[index] = setInterval(() => {
+        this.timers[index] = window.setInterval(() => {
           date = date - 1
           if (date <= 0) {
             date = 0
-            clearInterval(this.timer[index])
-            this.$emit('refreshList')
+            window.clearInterval(this.timers[index])
+            this.clearTimeoutFn()
           }
           let day = Math.floor(date / 86400)
           let hour = Math.floor(parseInt(date / 60 / 60) % 24)
@@ -81,10 +82,11 @@ export default {
           let countHour = hour >= 10 ? hour : '0' + hour
           let countMinute = minute >= 10 ? minute : '0' + minute
           let countSecond = second >= 10 ? second : '0' + second
+          this.$set(this.allList[index], 'countDownTime', '00时00分00秒')  
           if (day > 0) {
-            this.$set(this.allList[index], 'countDown', `${day}天${countHour}时${countMinute}分${countSecond}秒`)
+            this.allList[index].countDownTime = `${day}天${countHour}时${countMinute}分${countSecond}秒`
           } else {
-            this.$set(this.allList[index], 'countDown', `${countHour}时${countMinute}分${countSecond}秒`)
+            this.allList[index].countDownTime = `${countHour}时${countMinute}分${countSecond}秒`
           }
         }, 1000)
       })
@@ -101,19 +103,23 @@ export default {
         task_id: item.smallTreasureId,
         task_name: item.title
       })
+    },
+    clearTimeoutFn() {
+      this.timers && this.timers.map((item, index) => {
+        window.clearInterval(this.timers[index])
+        this.timers[index] = null
+      })
+      this.$emit('refreshList')
     }
   },
   beforeDestroy() {
-    this.timer.map(item => {
-      clearInterval(item)
-    })
-    this.timer = null
-    console.log(this.timer)
+    this.clearTimeoutFn()
   },
   watch: {
     list(value) {
       if(value) {
-        this.allList = value
+        this.allList = JSON.stringify(value)
+        this.allList = JSON.parse(this.allList)
         this.allCountDown()
       }
     }

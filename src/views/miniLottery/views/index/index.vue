@@ -76,6 +76,7 @@ export default {
     },
     /** 获取全部场次列表 **/
     _getLotteryList() {
+
       Services.getLotteryList().then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code === 200) {

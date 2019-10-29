@@ -1,22 +1,26 @@
 <template>
   <div class="lottery-status">
     <!-- 夺宝正在进行中 或者 没开始 -->
-    <div class="lottery-run" v-if="lastUserInfo && !isAwards && (status == 0 || status == 3)">
+    <div class="lottery-run" v-if="(lastTreasurePassed || lastUserInfo) && !isAwards && (status == 0 || status == 3)">
         <div class="title">
           <span>上期幸运儿</span>
           <span class="prov-btn" @click="goLog">往期揭晓</span>
         </div>
-        <div class="user">
+        <div class="user" v-if="lastUserInfo">
           <div class="avatar">
-            <img src="../img/avatar.png" alt="">
+            <img :src="lastUserInfo.head_img | filter" alt="">
           </div>
-          <div class="text" >
+          <div class="text">
             <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
             <div class="ip">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
-            <div class="people">参与次数：{{1}}人次</div>
+            <div class="people">参与次数：{{lastUserInfo.bettingCount}}人次</div>
             <div class="time">开奖时间：{{lastUserInfo.endTime | formatTime}}</div>
             <div class="award-num">幸运号码：{{code}}</div>
           </div>
+        </div>
+        <div class="pass" v-if="lastTreasurePassed">
+          <p>上期流拍</p>
+          <p>夺宝卡已经退回账户</p>
         </div>
     </div>
     <!-- 夺宝结束 -->
@@ -37,7 +41,7 @@
       <!-- 我没有中奖 -->
       <div class="no-me" v-else>
         <div class="avatar">
-          <img src="../img/avatar.png" alt="">
+          <img :src="lastUserInfo.head_img | filter" alt="">
         </div>
         <div class="text">
           <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
@@ -140,6 +144,9 @@ export default {
     },
     lastUserInfo() {
       return _get(this.details, 'lastPeriodInfo.lastWinnerInfo', false)
+    },
+    lastTreasurePassed() {
+      return _get(this.details, 'lastPeriodInfo.lastTreasurePassed', false)
     }
   },
   methods: {
@@ -208,6 +215,20 @@ export default {
       .award-num {
         color: #FF7800;
       }
+    }
+  }
+  .pass {
+    padding: .2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background: #FFFDEF;
+    font-size: .24rem;
+    color: #888;
+    height: 2.1rem;
+    p {
+      margin-bottom: .15rem;
     }
   }
 }

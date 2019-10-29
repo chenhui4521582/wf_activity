@@ -87,7 +87,7 @@ export default {
   .details{
     box-sizing: border-box;
     min-height: 100vh;
-    padding: 0 .24rem .9rem;
+    padding: .9rem .24rem 1.1rem;
     background: #F7F7F7;
   }
 </style>
