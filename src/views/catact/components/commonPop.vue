@@ -154,6 +154,9 @@ export default {
   &.type2{
     top: 3rem;
   }
+  &.type3{
+    top: 0;
+  }
   .pop-mask {
     position: fixed;
     left: 0;

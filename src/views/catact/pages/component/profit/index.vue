@@ -144,8 +144,8 @@
           } else {
             this.isOpen = false
             this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
-            this.behindThreeData = this.profitData.slice(0, 7)
-            this.otherData = this.profitData.slice(7, this.profitData.length - 6)
+            this.behindThreeData = this.profitData.slice(0, 6)
+            this.otherData = this.profitData.slice(6, this.profitData.length - 6)
           }
           this.isLoading = false
         }
