@@ -1,54 +1,67 @@
 <template>
   <div id="app" ref="app" class="turn-wrap" v-if="info.openFlag">
+    <p class="back" @click="back"></p>
     <div class="top">
-      <p class="back" @click="back"><span>返回</span></p>
-      <span>&nbsp;&nbsp;限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
+      <span>&nbsp;&nbsp;限时福利&nbsp;</span>剩余{{countTime.day}}天{{countTime.hour}}小时{{countTime.minute}}分
     </div>
     <div class="top-btn-wrap">
       <div class="btn left" @click="showRule()">玩法说明</div>
       <div class="btn right" @click="goMy()">我的奖品</div>
     </div>
-    <div class="main">
-      <div class="list-wrap">
-        <div class="awards-list" ref="wheel">
-          <ul>
-            <li v-for="(item,index) in 8" :key="index" :style="rotate[index]"></li>
-          </ul>
+    <div class="bottom-wrap">
+      <p class="times">
+        {{info.wheelTimes||0}}次抽奖机会
+      </p>
+      <div class="main">
+        <div class="notice-wrap">
+          <!-- 跑马灯 -->
+          <horn-list :notice-list="noticeList" v-if="noticeList.length" />
         </div>
-        <div class="pointer" @click="betting()"><span>({{info.wheelTimes}}次)</span></div>
+        <div class="list-wrap">
+          <div class="claw"></div>
+          <div class="awards-list" ref="wheel">
+            <ul class="top-list">
+              <li v-for="(item,index) in list1" :style="{left:2.28*(3-item)+1.88+'rem',display:(3-item)< -3?'none':'block'}">
+                <img :src="require('./img/award-'+index+'.png')" alt="">
+              </li>
+            </ul>
+            <ul class="bottom-list">
+              <li v-for="(item,index) in list" :style="{right:1.88*(3-item)+'rem',display:(3-item)< -3?'none':'block'}">
+                <img :src="require('./img/award-'+index+'.png')" alt="">
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="notice-wrap">
-      <!-- 跑马灯 -->
-      <horn-list :notice-list="noticeList" v-if="noticeList.length" />
-    </div>
-    <div class="task-wrap">
-      <div class="task-content">
-        <h4>完成每日任务 获得抽奖机会</h4>
-        <ul class="task-list">
-          <li class="list-item" v-for="(item,index) of taskList">
-            <div class="icon-wrap">
-              <img :src="item.icon|filter" alt="">
-            </div>
-            <div class="content-wrap">
-              <div class="name">{{item.taskName}}</div>
-              <div class="other">
-                <div class="percent-wrap">
-                  <div class="percent" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
-                  <div class="text-percent">{{item.finishNum}}/{{item.taskOps}}</div>
-                </div>
-                <div class="awards">
-                  <div class="icon"><img :src="item.awardsImage|filter" alt=""></div>
-                  <p>x{{item.awardsNum}}</p>
+      <div class="pointer" @click="betting()"></div>
+      <div class="task-wrap">
+        <div class="task-content">
+          <h4>完成每日任务 获得抽奖机会</h4>
+          <ul class="task-list">
+            <li class="list-item" v-for="(item,index) of taskList">
+              <div class="icon-wrap">
+                <img :src="item.icon|filter" alt="">
+              </div>
+              <div class="content-wrap">
+                <div class="name">{{item.taskName}}</div>
+                <div class="other">
+                  <div class="percent-wrap">
+                    <div class="percent" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                    <div class="text-percent">{{item.finishNum}}/{{item.taskOps}}</div>
+                  </div>
+                  <div class="awards">
+                    <div class="icon"><img :src="item.awardsImage|filter" alt=""></div>
+                    <p>x{{item.awardsNum}}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="btn-wrap">
-              <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成</div>
-              <div class="btn done" v-else @click="goGame(item)">已完成</div>
-            </div>
-          </li>
-        </ul>
+              <div class="btn-wrap">
+                <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成</div>
+                <div class="btn done" v-else @click="goGame(item)">已完成</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <rule v-if="isRuleShow" @on-close="closeRule()"></rule>
@@ -68,10 +81,12 @@ export default {
       isRuleShow: false,
       isTurnpopShow: false,
       popType: false,
-      awardsInfo: { price: 1 },
+      awardsInfo: {},
+      list: [],
+      list1: [],
+      timer: null,
       options: {
         currentIndex: 0, // 当前圈数
-        turn: 9, // 最少圈数
         isStart: false // 是否开始旋转
       }
     }
@@ -88,25 +103,25 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0200', { source_address: this.sourceAddress }) // H5平台-新手转盘活动-页面加载完成
   },
   computed: {
-    rotate () {
-      let rotateArr = []
-      let d = 360 / 8
-      for (let i = 0; i < 8; i++) {
-        rotateArr.push('transform: rotate(' + (d * i) + 'deg)')
-      }
-      return rotateArr
-    },
     sourceAddress () {
       return GLOBALS.getUrlParam('from')
     }
   },
   methods: {
     async init () {
+      let arr = [0, 1, 2, 3, 4, 5, 6, 7]
       const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
       const { data } = res.data
       if (data) {
         this.info = data
         this.countDown(data.countdown)
+        this.list = JSON.parse(JSON.stringify(arr))
+        this.list1 = JSON.parse(JSON.stringify(arr))
+        this.timer = setInterval(() => {
+          this.list.push(this.list.shift())
+          this.list1.push(this.list1.shift())
+          console.log(this.list)
+        }, 500)
       }
     },
     async getNoticeList () {
@@ -124,19 +139,19 @@ export default {
       }
     },
     async betting () {
-      GLOBALS.marchSetsPoint('A_H5PT0200002040') // H5平台-新手转盘活动页-抽奖按钮点击
-      if (this.info.wheelTimes) {
-        const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting', { value: 31 })
-        const { data } = res.data
-        if (data) {
-          this.awardsInfo = data
-          this.operation()
-          return
-        }
-      } else {
-        this.popType = false
-      }
-      this.showTurnPop()
+      // GLOBALS.marchSetsPoint('A_H5PT0200002040') // H5平台-新手转盘活动页-抽奖按钮点击
+      // if (this.info.wheelTimes) {
+      //   const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting', { value: 31 })
+      //   const { data } = res.data
+      //   if (data) {
+      //     this.awardsInfo = data
+      this.operation()
+      //     return
+      //   }
+      // } else {
+      // this.popType = false
+      // }
+      // this.showTurnPop()
     },
     // 特惠倒计时
     countDown (info) {
@@ -209,12 +224,7 @@ export default {
       } else {
         this.options.isStart = true // 锁 专拍没有执行完的时候 不可以再次点击 ;
         this.options.currentIndex++
-        let sun = this.options.turn * 360
-        let array = [1, 4, 7]
-        let ran = array[Math.floor(Math.random() * 3)]
-        let soBuom = Math.ceil(Math.random() * (360 / 30))
-        /*    旋转度数 = 上次度数+ 最小圈数 * 360 + 当前数字 * 60 +随机角度  = 最终旋转度数     */
-        this.$refs.wheel.style.transform = 'rotate(-' + ((this.options.currentIndex * sun + ran * 360 / 8) + soBuom) + 'deg)'
+
         setTimeout(() => {
           this.options.isStart = false
           this.popType = true
@@ -246,12 +256,12 @@ export default {
       e.preventDefault()
     },
     scrollNoMove () {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener("touchmove", this.move, { passive: false });
+      document.body.style.overflow = 'hidden'
+      document.addEventListener('touchmove', this.move, { passive: false })
     },
     scrollMove () {
-      document.body.style.overflow = null;
-      document.removeEventListener("touchmove", this.move, { passive: false });
+      document.body.style.overflow = null
+      document.removeEventListener('touchmove', this.move, { passive: false })
     }
   },
   watch: {
@@ -279,162 +289,138 @@ export default {
 }
 .turn-wrap {
   min-height: 100vh;
-  background: #b52fe1 url("./img/bg.png") no-repeat center ~"-1.2rem" / 100%;
+  background: #340967 url("./img/bg.png") no-repeat center ~"-1.24rem" / 100% auto;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding: 0 0 0.2rem;
+  position: relative;
   .top {
-    height: 0.6rem;
-    line-height: 0.36rem;
-    color: #fff;
-    display: flex;
-    font-size: 0.28rem;
-    align-self: center;
-    align-content: center;
-    justify-content: center;
-    justify-content: center;
-    font-weight: 500;
-    padding: 0.12rem 0;
-    box-sizing: border-box;
-    position: relative;
-    .bgWithFull("./img/top-bg.png");
-    span {
-      font-size: 0.32rem;
-      font-weight: 800;
-    }
-    em {
-      font-size: 0.32rem;
-      background: #fff;
-      color: #000;
-      font-weight: 800;
-      padding: 0 0.08rem;
-      border-radius: 0.04rem;
-    }
-    .back {
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 0.6rem;
-      line-height: 0.6rem;
-      width: 1.12rem;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      background: #cc2f1f;
-      border-radius: 0 0.3rem 0.3rem 0;
-      span {
-        font-size: 0.24rem;
-      }
-      &::before {
-        content: "";
-        display: block;
-        width: 0.14rem;
-        height: 0.24rem;
-        margin-right: 0.08rem;
-        margin-left: 0.2rem;
-        .bgWithFull("./img/back.png");
-      }
-    }
-  }
-  .top-btn-wrap {
-    margin-top: 0.24rem;
-    display: flex;
+    width: 5.14rem;
+    height: 2.38rem;
     color: #fff;
     font-size: 0.24rem;
+    font-weight: 500;
+    position: relative;
+    margin: 0.28rem 0.94rem 0 1.1rem;
+    box-sizing: border-box;
+    padding: 1.18rem 0 0 0.78rem;
+    .bgWithFull("./img/top-title.png");
+  }
+  .back {
+    position: absolute;
+    left: 0.24rem;
+    top: 0.24rem;
+    height: 0.34rem;
+    width: 0.2rem;
+    .bgWithFull("./img/back.png");
+  }
+  .top-btn-wrap {
+    position: absolute;
+    width: 100%;
+    top: 0.88rem;
+    display: flex;
+    color: #fff;
+    font-size: 0.2rem;
     font-weight: bold;
     align-items: center;
     justify-content: space-between;
     .btn {
-      height: 0.5rem;
-      line-height: 0.54rem;
-      background: #cc2f1f;
+      height: 0.36rem;
+      line-height: 0.38rem;
+      background: #4e53d9;
       position: relative;
+      width: 1.05rem;
+      text-align: center;
       &.left {
-        width: 1.42rem;
-        text-align: center;
-        border-radius: 0 0.3rem 0.3rem 0;
+        border-radius: 0 0.18rem 0.18rem 0;
       }
       &.right {
-        width: 1.6rem;
-        border-radius: 0.3rem 0 0 0.3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &::before {
-          content: "";
-          display: block;
-          width: 0.24rem;
-          height: 0.26rem;
-          font-size: 0;
-          margin: -0.02rem 0.04rem 0;
-          .bgWithFull("./img/awards-icon.png");
-        }
+        border-radius: 0.18rem 0 0 0.18rem;
       }
+    }
+  }
+  .bottom-wrap {
+    margin-top: -0.88rem;
+    padding: 1.68rem 0 0.2rem;
+    background: url("./img/main-bg.png") no-repeat center top / 100% auto;
+    .times {
+      color: #fcff0f;
+      font-size: 0.26rem;
+      text-align: center;
+      margin-bottom: 0.02rem;
     }
   }
   .main {
     position: relative;
-    margin: 1.72rem auto 0;
-    width: 5.2rem;
-    height: 5.2rem;
+    width: 6.62rem;
+    height: 4.8rem;
+    margin: auto;
     .bgWithFull("./img/light1.png");
     animation: changeBg 0.3s infinite ease;
+    .notice-wrap {
+      width: 4rem;
+      height: 0.38rem;
+      line-height: 0.38rem;
+      padding-top: 0.12rem;
+      padding-left: 0.4rem;
+      margin: auto;
+      font-size: 0.22rem;
+    }
     .list-wrap {
-      padding: 0.2rem;
       box-sizing: border-box;
-      height: 100%;
-      .awards-list {
-        height: 100%;
-        .bgWithFull("./img/awards.png");
-        position: relative;
-        transition: all 3s;
-        ul {
-          width: inherit;
-          height: inherit;
-        }
+      width: 5.44rem;
+      height: 4.9rem;
+      margin: auto;
 
-        li {
-          position: absolute;
-          left: 0;
-          top: 0;
+      .awards-list {
+        overflow: hidden;
+        .top-list {
+          margin-top: 2.14rem;
+          position: relative;
           width: 100%;
-          height: 100%;
-          color: transparent;
-          text-align: center;
+          height: 1.4rem;
+          li {
+            position: absolute;
+            height: 1.38rem;
+            width: 1.28rem;
+            text-align: center;
+            opacity: 0.8;
+            transition: all 0.5s linear;
+            img {
+              width: auto;
+              height: 100%;
+            }
+          }
         }
-      }
-      .pointer {
-        height: 2rem;
-        width: 1.84rem;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-top: -1.1rem;
-        margin-left: -0.92rem;
-        .bgWithFull("./img/pointer.png");
-        animation: scale 1s infinite ease;
-        span {
-          color: #fff;
-          font-size: 0.28rem;
-          font-weight: 400;
-          position: absolute;
-          bottom: 0.4rem;
-          left: 50%;
-          transform: translateX(-50%);
+        .bottom-list {
+          margin-top: -1.1rem;
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          height: 2.2rem;
+          li {
+            position: absolute;
+            height: 2.2rem;
+            width: 1.68rem;
+            text-align: center;
+            transition: all 0.5s linear;
+            img {
+              width: auto;
+              height: 100%;
+            }
+          }
         }
       }
     }
   }
-  .notice-wrap {
-    width: 4rem;
-    height: 0.38rem;
-    line-height: 0.38rem;
-    padding: 0.48rem 0 0 0.4rem;
-    margin: auto;
+  .pointer {
+    height: 1.86rem;
+    width: 4.24rem;
+    margin: 1rem auto 0;
+    .bgWithFull("./img/start-btn.png");
   }
   .task-wrap {
     width: 6.8rem;
-    margin: 0.5rem auto 0;
+    margin: 0.22rem auto 0;
     .task-content {
       background: url("./img/wcrw-bj02.png") repeat-y center top / 100%;
       margin: -1px 0;
@@ -558,18 +544,6 @@ export default {
 
     100% {
       .bgWithFull("./img/light2.png");
-    }
-  }
-
-  @keyframes scale {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(0.9);
-    }
-    100% {
-      transform: scale(1);
     }
   }
 }

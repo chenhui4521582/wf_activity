@@ -3,11 +3,12 @@
     <div class="pop-mask"></div>
     <div class="rule-wrap">
       <div class="rule-content">
+        <h1>玩法说明</h1>
         <p>
           1.活动开放时间：新用户注册1-7天内；
         </p>
         <p>
-          2.活动期间，新用户每日有1次免费转盘抽奖机会；
+          2.活动期间，新用户每日有1次免费抓娃娃的机会；
         </p>
         <p>
           3.免费抽奖机会用完后，用户可通过完成页面下方的每日任务，获得更多抽奖机会；
@@ -18,7 +19,7 @@
         <p>
           5.在法律允许的范围内最终解释权归玩蜂所有。
         </p>
-        <div class="btn" @click="close(1)">我知道了</div>
+        <div class="btn" @click="close(1)"></div>
       </div>
       <div class="close" @click="close()"></div>
     </div>
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -72,30 +74,38 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     .rule-content {
-      width: 5.2rem;
-      height: 8.3rem;
-      padding: 3.22rem 0.44rem 0;
+      width: 5.8rem;
+      height: 7.06rem;
+      padding: 2rem 0.5rem 0;
       box-sizing: border-box;
       font-size: 0.24rem;
       font-weight: 500;
-      color: #666666;
       line-height: 0.36rem;
-      .bgWithFull("../img/rule-bg.png");
+      color: #936855;
+      h1 {
+        color: #ff5900;
+        font-size: 0.45rem;
+        text-align: center;
+        margin-bottom: 0.3rem;
+      }
+      .bgWithFull("../img/pop-bg.png");
       .btn {
-        width: 2.8rem;
-        height: 0.7rem;
-        line-height: 0.7rem;
+        width: 3.86rem;
+        height: 1rem;
+        line-height: 1rem;
         text-align: center;
         color: #fff;
-        margin: 0.18rem auto 0;
-        .bgWithFull("../img/btn-bg.png");
+        margin: 0 auto;
+        .bgWithFull("../img/btn-3.png");
       }
     }
     .close {
-      width: 0.7rem;
-      height: 0.7rem;
+      width: 0.78rem;
+      height: 0.78rem;
       .bgWithFull("../img/close.png");
-      margin: 0.3rem auto 0;
+      position: absolute;
+      right: 0;
+      top: 1.6rem;
     }
   }
 }

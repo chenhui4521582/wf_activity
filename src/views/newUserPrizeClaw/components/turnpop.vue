@@ -3,19 +3,18 @@
     <div class="pop-mask"></div>
     <div class="turnpop-wrap">
       <div class="turnpop-content success" v-if="popType">
+        <h1>恭喜获得</h1>
         <p>
           <span>¥</span><em>{{awardsInfo.awardsAmount|priceFilter}}</em>
         </p>
-        <div class="btn" @click="close(true)">再抽一次</div>
+        <div class="btn btn-1" @click="close(true)"></div>
       </div>
       <div class="turnpop-content error" v-else>
+        <h1>温馨提示</h1>
         <p>
-          非常遗憾
+          很遗憾，您的抽奖机会已用完
         </p>
-        <p>
-          您的抽奖机会已用完
-        </p>
-        <div class="btn" @click="close(true)">获得更多抽奖机会</div>
+        <div class="btn btn-2" @click="close(true)"></div>
       </div>
       <div class="close" @click="close()"></div>
     </div>
@@ -23,6 +22,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -76,21 +76,36 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     .turnpop-content {
-      width: 5.2rem;
-      height: 7.2rem;
+      width: 5.8rem;
+      height: 7.06rem;
+      padding: 2rem 0.6rem 0;
       box-sizing: border-box;
       font-size: 0.24rem;
       font-weight: 500;
-      color: #666666;
       line-height: 0.36rem;
+      color: #936855;
+      h1 {
+        color: #ff5900;
+        font-size: 0.45rem;
+        text-align: center;
+        margin-bottom: 0.38rem;
+      }
+      .bgWithFull("../img/pop-bg.png");
       &.success {
-        .bgWithFull("../img/success-bg.png");
-        color: #fff;
         p {
-          padding: 4.06rem 1.38rem 0;
+          color: #fff;
+          margin: 0.92rem auto 0.72rem;
+          width: 3rem;
+          height: 1.28rem;
+          line-height: 1.26rem;
+          .bgWithFull("../img/money-bg.png");
+          box-sizing: border-box;
+          display: flex;
+          align-items: baseline;
           span {
             font-size: 0.4rem;
-            margin-right: 0.2rem;
+            margin: 0 0.1rem 0 0.2rem;
+            font-weight: normal;
           }
           em {
             font-size: 0.8rem;
@@ -98,33 +113,34 @@ export default {
         }
       }
       &.error {
-        padding: 3.96rem 0.44rem 0;
         text-align: center;
-        .bgWithFull("../img/error-bg.png");
-        color: #fdfdeb;
-        line-height: 0.48rem;
-        p:first-child {
-          font-size: 0.36rem;
-        }
-        p:last-child {
+        p {
+          margin-top: 1.38rem;
+          margin-bottom: 1.24rem;
           font-size: 0.3rem;
         }
       }
       .btn {
-        width: 2.8rem;
-        height: 0.7rem;
-        line-height: 0.7rem;
+        width: 3.86rem;
+        height: 1rem;
+        line-height: 1rem;
         text-align: center;
-        color: #fff;
-        margin: 0.9rem auto 0;
-        .bgWithFull("../img/btn-bg.png");
+        margin: 0 auto;
+        &.btn-1 {
+          .bgWithFull("../img/btn-1.png");
+        }
+        &.btn-2 {
+          .bgWithFull("../img/btn-2.png");
+        }
       }
     }
     .close {
-      width: 0.7rem;
-      height: 0.7rem;
+      width: 0.78rem;
+      height: 0.78rem;
       .bgWithFull("../img/close.png");
-      margin: 0.3rem auto 0;
+      position: absolute;
+      right: 0;
+      top: 1.6rem;
     }
   }
 }
