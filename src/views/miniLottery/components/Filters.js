@@ -69,5 +69,13 @@ export default [
         return `${y}-${m}-${d} ${h}:${minute}:${second}`
       }
     }
+  },
+  {
+    name: 'amountComputen',
+    method: (val)=> {
+      if(!val){return 0}
+      return val > 10000?(val/10000).toFixed(2) +'万' :val
+    }
   }
+  
 ]

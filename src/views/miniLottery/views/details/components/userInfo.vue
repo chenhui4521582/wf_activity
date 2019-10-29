@@ -3,15 +3,15 @@
     <div class="userInfo">
       <div class="leaf">
         <img src="../img/leaf-icon.png" alt="">
-        {{userInfo.leafs}}
+        {{userInfo.leafs | amountComputen}}
       </div>
       <div class="phone">
         <img src="../img/phone-icon.png" alt="">
-        {{userInfo.phoneScrap / 10}}
+        {{userInfo.phoneScrap / 10 | amountComputen}}
       </div>
       <div class="lottery">
         <img src="../img/lottery-card.png" alt="">
-        {{userInfo.cardAccount}}
+        {{userInfo.cardAccount | amountComputen}}
       </div>
     </div>
     <div class="my-log" @click="goLog">

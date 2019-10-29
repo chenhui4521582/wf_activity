@@ -1,13 +1,13 @@
 <template>
   <div class="user-info">
     <div class="leaf">
-      {{userInfo.leafs}}
+      {{userInfo.leafs | amountComputen}}
     </div>
     <div class="phone">
-      {{userInfo.phoneScrap / 10}}
+      {{userInfo.phoneScrap / 10 | amountComputen}}
     </div>
     <div class="card-lottery">
-      {{userInfo.cardAccount}}
+      {{userInfo.cardAccount  | amountComputen}}
     </div>
   </div>
 </template>
