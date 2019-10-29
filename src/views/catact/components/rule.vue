@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     showPop () {
-      if (this.from) {
+      if (this.from>0) {
         //2067:H5平台-撸猫活动-排行榜页面-我要上榜首按钮点击
         //2068:H5平台-撸猫活动-排行榜页面-立即冲榜按钮点击
         GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002067':'A_H5PT0201002068')
@@ -105,7 +105,7 @@ export default {
       this.isShowPop = true
       //2069:H5平台-撸猫活动-排行榜页面-榜首攻略弹窗加载完成
       //2071:H5平台-撸猫活动-排行榜页面-立即冲榜弹窗加载完成
-      this.from&&GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002069':'A_H5PT0201002071')
+      this.from>0&&GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002069':'A_H5PT0201002071')
     },
     gotocat(){
       GLOBALS.marchSetsPoint('A_H5PT0201002070')//H5平台-撸猫活动-排行榜页面-榜首攻略弹窗-蓝色跳转内容点击(跳转招财猫)
