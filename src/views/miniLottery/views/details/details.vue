@@ -2,7 +2,7 @@
   <div class="details">
     <Header title="夺宝详情"/>
     <user-info :userInfo="userInfo" :details="details"/>
-    <goods-msg :details="details" :isAwards="isAwards" @refresh="_getDetails"/>
+    <goods-msg :details="details" :isAwards="isAwards" @refresh="refresh"/>
     <current-lottery :details="details" :isAwards="isAwards"/>
     <prov-user :details="details" :isAwards="isAwards"/>
     <goods-desc :details="details"/>
@@ -53,12 +53,6 @@ export default {
           if(status == 0 && countDown < 0) {
             this.isAwards = true
             data.countDown = 0
-            if(this.timer) {
-              clearTimeout(this.timer)
-            }
-            this.timer = setTimeout(()=> {
-              this._getDetails()
-            }, 3000)
           }else {
             this.isAwards = false
           }
@@ -70,9 +64,19 @@ export default {
         }
       })
     },
+    refresh() {
+      this.isAwards = true
+    },
+
     init() {
       this._getUserInfo()
       this._getDetails()
+      if(this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setInterval(()=> {
+        this._getDetails()
+      }, 3000)
     }
   },
   mounted() {

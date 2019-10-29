@@ -4,7 +4,7 @@
       {{userInfo.leafs}}
     </div>
     <div class="phone">
-      {{userInfo.phoneScrap}}
+      {{userInfo.phoneScrap / 10}}
     </div>
     <div class="card-lottery">
       {{userInfo.cardAccount}}

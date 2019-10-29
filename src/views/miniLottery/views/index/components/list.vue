@@ -36,7 +36,7 @@
           </div>
           <div class="title">{{item.title}}</div>
           <div class="edit">
-            已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
+            已抢{{item.participantsNumber || 0}}次
           </div>
           <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
         </li>
@@ -66,6 +66,7 @@ export default {
   methods: {
     allCountDown() {
       this.allList.map((item, index) => {
+        this.$set(this.allList[index], 'countDownTime', '00时00分00秒')  
         if (item.endCountDown <= 0) return false
         let date = item.endCountDown / 1000
         this.timers[index] = window.setInterval(() => {
@@ -82,7 +83,6 @@ export default {
           let countHour = hour >= 10 ? hour : '0' + hour
           let countMinute = minute >= 10 ? minute : '0' + minute
           let countSecond = second >= 10 ? second : '0' + second
-          this.$set(this.allList[index], 'countDownTime', '00时00分00秒')  
           if (day > 0) {
             this.allList[index].countDownTime = `${day}天${countHour}时${countMinute}分${countSecond}秒`
           } else {
@@ -109,7 +109,9 @@ export default {
         window.clearInterval(this.timers[index])
         this.timers[index] = null
       })
-      this.$emit('refreshList')
+      setTimeout(()=> {
+        this.$emit('refreshList')
+      }, 1000)
     }
   },
   beforeDestroy() {
@@ -134,10 +136,8 @@ export default {
   padding: .4rem;
   ul {
     overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     li {
+      float: left;
       background: #FEF3E8;
       border-radius: .16rem;
       margin-bottom: .21rem;

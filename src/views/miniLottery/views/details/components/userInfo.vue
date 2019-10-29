@@ -7,7 +7,7 @@
       </div>
       <div class="phone">
         <img src="../img/phone-icon.png" alt="">
-        {{userInfo.phoneScrap}}
+        {{userInfo.phoneScrap / 10}}
       </div>
       <div class="lottery">
         <img src="../img/lottery-card.png" alt="">
