@@ -77,5 +77,4 @@ export default [
       return val > 10000?(val/10000).toFixed(2) +'万' :val
     }
   }
-  
 ]

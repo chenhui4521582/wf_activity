@@ -208,6 +208,8 @@ export default {
                 font-size: .22rem;
                 color: #fff;
                 line-height: .4rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 &:first-child {
                   width: .78rem;
                 }
