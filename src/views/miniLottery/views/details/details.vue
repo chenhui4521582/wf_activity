@@ -56,6 +56,9 @@ export default {
           }else {
             this.isAwards = false
           }
+          if(status == 1 || status == 2) {
+            clearInterval(this.timer)
+          }
           this.details = data
           GLOBALS.marchSetsPoint('A_H5PT0202002083', {
             task_id: data.currentPeriodStatus,

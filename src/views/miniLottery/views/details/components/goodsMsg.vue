@@ -87,9 +87,11 @@ export default {
       if (!date) return false
       date = date / 1000
       this.timer = setInterval(() => {
+        this.lock = true
         date = date - 1
         if (date <= 0) {
           date = 0
+          this.lock= false
           clearInterval(this.timer)
           this.refresh()
         }
@@ -123,7 +125,9 @@ export default {
     details: {
       handler(value) {
         if(value.countDown) {
-          this.countDown(value.countDown)
+          if(!this.lock) {
+            this.countDown(value.countDown)
+          }
         }
       },
       deep: true,

@@ -24,9 +24,7 @@
       :closeButtonShow=false 
       @on-save="hide"
     >
-      <div class="message">
-        {{modal.message}}
-      </div>
+      <div class="message" v-html="modal.message"></div>
     </Modal>
   </div>
   <div class="lottery-btn" v-else-if="status == 1" @click="getAward">领取奖品</div>  
@@ -128,6 +126,7 @@ export default {
             saveText: '知道了'
           }
           this.$emit('refresh')
+          this.inputValue = 1
           GLOBALS.marchSetsPoint('A_H5PT0202002087', {
             task_id: this.details.currentPeriodStatus,
             task_name: this.details.currentPeriodStatus
@@ -136,7 +135,7 @@ export default {
             this.modal = {
             show: true,
             status: 0,
-            message: '本期夺宝参与次数已达到上限\n把机会让给其他人吧',
+            message: '本期夺宝参与次数已达到上限<br>把机会让给其他人吧',
             title: '温馨提示',
             saveText: '知道了'
           }

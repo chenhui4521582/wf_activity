@@ -72,7 +72,16 @@ export default {
       if(this.popupStatus == 2) {
         GLOBALS.marchSetsPoint('A_H5PT0202002081')
       }
+    },
+    ScrollNoMove () {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('touchmove', this.move, { passive: false });
+    },
+    ScrollMove () {
+      document.body.style.overflow = null;
+      document.removeEventListener('touchmove', this.move, { passive: false });
     }
+    
   },
   watch: {
     value(newValue) {
@@ -81,6 +90,11 @@ export default {
       }
       if(newValue && this.popupStatus == 2) {
         GLOBALS.marchSetsPoint('A_H5PT0202002080')
+      }
+      if(newValue) {
+        this.ScrollNoMove()
+      }else {
+        this.ScrollMove()
       }
     }
   }

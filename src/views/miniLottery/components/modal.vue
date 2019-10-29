@@ -82,6 +82,11 @@ export default {
   watch: {
     value (val) {
       this.show = val
+      if(val) {
+        this.ScrollNoMove()
+      }else {
+        this.ScrollMove()
+      }
     }
   },
   methods: {
@@ -97,6 +102,14 @@ export default {
     // 确认按钮
     save () {
       this.$emit('on-save')
+    },
+    ScrollNoMove () {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('touchmove', this.move, { passive: false });
+    },
+    ScrollMove () {
+      document.body.style.overflow = null;
+      document.removeEventListener('touchmove', this.move, { passive: false });
     }
   }
 }
