@@ -10,10 +10,10 @@
             <div class="title">{{item.title}}</div>
             <div class="desc">三网直充 / 3~5个工作日到帐</div>
             <div class="edit">
-              已抢{{item.participantsNumber || 0}}次，至少开奖 {{item.limitTotalAmount || 0}} 次
+              已抢{{item.participantsNumber || 0}}次
             </div>
             <div class="count-down" v-if="item.underway">
-              夺宝剩余 <br>
+              开奖剩余时间 <br>
               {{item.countDownTime}}
             </div>
             <div class="count-down no" v-if="!item.underway">
@@ -26,7 +26,7 @@
         </li>
         <li v-else :key="index" class="item" @click="goDetail(item)">
           <div class="count-down" v-if="item.underway">
-            夺宝剩余 {{item.countDownTime}}
+            开奖剩余时间 {{item.countDownTime}}
           </div>
           <div class="count-down no" v-if="!item.underway">
             {{item.countDownTime}} 后即将开始

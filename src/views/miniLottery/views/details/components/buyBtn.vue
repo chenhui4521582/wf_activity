@@ -12,7 +12,10 @@
         次
       </div>
     </div>
-    <div class="buy" @click="submit" v-if="status == 0">去夺宝</div>
+    <div class="buy" @click="submit" v-if="status == 0">
+      <P><span>{{details.cardAmount * inputValue}}  </span>夺宝卡</P>
+      <P>去夺宝</P>
+    </div>
     <div class="buy disable" v-if="status == 3">去夺宝</div>
     <Modal v-model="modal.show" 
       :title="modal.title"  
@@ -192,6 +195,7 @@ export default {
             smallTreasureId: nextSmallTreasureId
           }
         })
+        window.location.reload()
         if(status == 1 && !isme) {
           GLOBALS.marchSetsPoint('A_H5PT0202002093', {
             task_id: this.details.currentPeriodStatus,
@@ -204,7 +208,6 @@ export default {
             task_name: this.details.currentPeriodStatus
           })
         }
-        window.location.reload()
       }else {
         this.$router.push({
           name: 'index'
@@ -290,6 +293,16 @@ export default {
     text-align: center;
     &.disable {
       opacity:0.4;
+    }
+    p {
+      height: .3rem;
+      line-height: .3rem;
+      span {
+        color: #F7FF00;
+      }
+      &:first-child {
+        margin-top: .15rem;
+      }
     }
   }
 }

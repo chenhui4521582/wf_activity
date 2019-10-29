@@ -14,12 +14,12 @@ let channel = utils.getUrlParam('channel') ? utils.getUrlParam('channel') : loca
   token = utils.getUrlParam('token') ? utils.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN'),
   version = localStorage.getItem('APP_VERSION')
 
-if (localStorage.getItem('APP_CHANNEL') == '100001') {
-  localStorage.setItem('APP_VERSION', '1.0.0')
-} else {
-  localStorage.setItem('APP_VERSION', '1.0.0')
+if(token) {
+  localStorage.setItem('ACCESS_TOKEN', token)
 }
-
+if(channel) {
+  localStorage.setItem('APP_CHANNEL', channel)
+}
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
@@ -53,12 +53,6 @@ axios.interceptors.response.use(
         case 404:
           Vue.prototype.$toast.show({
             message: '请求地址出错！',
-            duration: 1500
-          })
-          break
-        case 408:
-          Vue.prototype.$toast.show({
-            message: '请求超时',
             duration: 1500
           })
           break
@@ -109,13 +103,6 @@ axios.interceptors.response.use(
 
     } else {
       error = JSON.stringify(error)
-      if (error.indexOf('timeout') != -1) {
-        Vue.prototype.$toast.show({
-          message: '请求超时',
-          duration: 1500
-        })
-        return
-      }
     }
     return Promise.reject(error)
     // return '';
