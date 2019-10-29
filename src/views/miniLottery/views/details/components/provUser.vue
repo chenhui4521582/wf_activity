@@ -8,7 +8,8 @@
         </div>
         <div class="user" v-if="lastUserInfo">
           <div class="avatar">
-            <img :src="lastUserInfo.head_img | filter" alt="">
+            <img v-if="lastUserInfo.head_img" :src="lastUserInfo.head_img | filter" alt="">
+            <img v-else src="https://file.beeplaying.com/cdn/common/images/common/img_photo.png" alt="">
           </div>
           <div class="text">
             <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
@@ -31,8 +32,9 @@
       </div>
       <!-- 中奖 -->
       <div class="me" v-if="isMe">
-         <div class="avatar">
-          <img src="../img/avatar.png" alt="">
+        <div class="avatar">
+            <img v-if="lastUserInfo.head_img" :src="lastUserInfo.head_img | filter" alt="">
+            <img v-else src="https://file.beeplaying.com/cdn/common/images/common/img_photo.png" alt="">
         </div>
         <p>恭喜你成为本期幸运儿</p>
         <p>幸运号码：{{code}}</p>
@@ -41,7 +43,8 @@
       <!-- 我没有中奖 -->
       <div class="no-me" v-else>
         <div class="avatar">
-          <img :src="lastUserInfo.head_img | filter" alt="">
+            <img v-if="lastUserInfo.head_img" :src="lastUserInfo.head_img | filter" alt="">
+            <img v-else src="https://file.beeplaying.com/cdn/common/images/common/img_photo.png" alt="">
         </div>
         <div class="text">
           <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
