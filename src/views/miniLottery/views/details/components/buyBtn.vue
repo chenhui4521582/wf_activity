@@ -194,7 +194,7 @@ export default {
             smallTreasureId: nextSmallTreasureId
           }
         })
-        window.location.reload()
+        this.$emit('refresh')
         if(status == 1 && !isme) {
           GLOBALS.marchSetsPoint('A_H5PT0202002093', {
             task_id: this.details.currentPeriodStatus,
