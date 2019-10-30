@@ -3,7 +3,7 @@
     <div class="title" v-if="status == 0">
       <span>本期夺宝</span>
       <span class="min-buy">
-        至少开奖<i>{{details.limitTotalAmount || 0}}</i>次
+        至少<i>{{details.limitTotalAmount || 0}}</i>人次报名开奖
       </span>
     </div>
     <div class="title no" v-if="status == 3">

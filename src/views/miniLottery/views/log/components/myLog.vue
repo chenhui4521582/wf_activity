@@ -7,7 +7,7 @@
     </div>
     <ul>
       <li v-for="(item, index) in list" :key="index" @click="goDetail(item)">
-        <div class="item">第{{item.periodId}}期</div>
+        <div class="item">{{item.title}}</div>
         <div class="item">
           {{item.lotteryTime | formatTime}}
         </div>
