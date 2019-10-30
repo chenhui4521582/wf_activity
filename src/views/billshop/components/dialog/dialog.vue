@@ -18,7 +18,11 @@
         <div v-if="statusCode===200" class="content-text">换取成功<br />快去领取吧</div>
         <div v-if="statusCode===107" class="content-text"> 完成新手任务后才可以领取，<br />快去完成新手任务吧</div>
       </div>
-      <div class="dialog-button">
+      <div class="dialog-button" v-if="statusCode===200 && awardsType==46">
+        <div class="return base-button" @click="dialogShow=false">返回</div>
+        <div class="save base-button" @click="goMiniLottery">去领取</div>
+      </div>
+      <div class="dialog-button" v-else>
         <div class="return base-button" @click="dialogShow=false">返回</div>
         <div class="save base-button" v-if="statusCode===102 || statusCode===200 && awardsType===1" @click="earnMoney">去赚话费</div>
         <div class="save base-button" v-if="statusCode===200 && awardsType!==1" @click="checkprize">去领取</div>
@@ -95,6 +99,12 @@ export default {
       })
       this.$emit('on-checkprize')
     },
+    //去小额夺宝
+    goMiniLottery() {
+      let CHANNEL = localStorage.getItem('APP_CHANNEL') || 100070
+      let TOKEN = localStorage.getItem('ACCESS_TOKEN') || 100070
+      window.location.href = `https://wap.beeplaying.com/activities/miniLottery.html#/?channel=${CHANNEL}&token=${TOKEN}`
+    }
   },
 }
 </script>

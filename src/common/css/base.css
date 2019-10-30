@@ -21,7 +21,7 @@ input {
 body {
   font-size: .24rem;
   line-height: 1;
-  font-family: "PingFangSC-Semibold";
+  font-family: "PingFangSC-Regular, sans-serif";
 }
 
 *:not(input) {
