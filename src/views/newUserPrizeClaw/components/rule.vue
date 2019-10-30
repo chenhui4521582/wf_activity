@@ -66,16 +66,18 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.55);
+  z-index: 9;
 }
 .rule {
   .rule-wrap {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%);
+    z-index: 9;
     .rule-content {
       width: 5.8rem;
-      height: 7.06rem;
+      height: 7.86rem;
       padding: 2rem 0.5rem 0;
       box-sizing: border-box;
       font-size: 0.24rem;
@@ -86,16 +88,16 @@ export default {
         color: #ff5900;
         font-size: 0.45rem;
         text-align: center;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.38rem;
       }
-      .bgWithFull("../img/pop-bg.png");
+      .bgWithFull("../img/rule-bg.png");
       .btn {
         width: 3.86rem;
         height: 1rem;
         line-height: 1rem;
         text-align: center;
         color: #fff;
-        margin: 0 auto;
+        margin: 0.5rem auto 0;
         .bgWithFull("../img/btn-3.png");
       }
     }

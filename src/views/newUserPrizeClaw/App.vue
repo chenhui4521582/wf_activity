@@ -18,22 +18,23 @@
           <horn-list :notice-list="noticeList" v-if="noticeList.length" />
         </div>
         <div class="list-wrap">
-          <div class="claw"></div>
-          <div class="awards-list" ref="wheel">
+          <div class="claw" :class="{down:step===2,up:step===1}">
+          </div>
+          <div class="awards-list">
             <ul class="top-list">
               <li v-for="(item,index) in list1" :style="{left:2.28*(3-item)+1.88+'rem',display:(3-item)< -3?'none':'block'}">
                 <img :src="require('./img/award-'+index+'.png')" alt="">
               </li>
             </ul>
-            <ul class="bottom-list">
+            <ul class="bottom-list" v-if="!isTurnpopShow" ref="con">
               <li v-for="(item,index) in list" :style="{right:1.88*(3-item)+'rem',display:(3-item)< -3?'none':'block'}">
-                <img :src="require('./img/award-'+index+'.png')" alt="">
+                <img :src="require('./img/award-'+imgList[index]+'.png')" alt="">
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="pointer" @click="betting()"></div>
+      <div class="pointer" :class="{down:step===2}" @click.stop="betting()"></div>
       <div class="task-wrap">
         <div class="task-content">
           <h4>完成每日任务 获得抽奖机会</h4>
@@ -82,13 +83,14 @@ export default {
       isTurnpopShow: false,
       popType: false,
       awardsInfo: {},
-      list: [],
-      list1: [],
-      timer: null,
-      options: {
-        currentIndex: 0, // 当前圈数
-        isStart: false // 是否开始旋转
-      }
+      list: [0, 1, 2, 3, 4, 5, 6, 7],
+      list1: [0, 1, 2, 3, 4, 5, 6, 7],
+      imgList: [],
+      countDoneTimer: null,
+      clawTimer: null,
+      otherTime: null,
+      currentIndex: 0,
+      step: 0
     }
   },
   components: {
@@ -109,18 +111,17 @@ export default {
   },
   methods: {
     async init () {
-      let arr = [0, 1, 2, 3, 4, 5, 6, 7]
       const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/wheel/newUser/info')
       const { data } = res.data
+      this.step = 0
+      this.$set(this, 'imgList', [0, 1, 2, 3, 4, 5, 6, 7])
       if (data) {
         this.info = data
         this.countDown(data.countdown)
-        this.list = JSON.parse(JSON.stringify(arr))
-        this.list1 = JSON.parse(JSON.stringify(arr))
-        this.timer = setInterval(() => {
+        this.clawTimer = setInterval(() => {
           this.list.push(this.list.shift())
           this.list1.push(this.list1.shift())
-          console.log(this.list)
+          this.currentIndex = this.list.indexOf(3)
         }, 500)
       }
     },
@@ -139,29 +140,29 @@ export default {
       }
     },
     async betting () {
-      // GLOBALS.marchSetsPoint('A_H5PT0200002040') // H5平台-新手转盘活动页-抽奖按钮点击
-      // if (this.info.wheelTimes) {
-      //   const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting', { value: 31 })
-      //   const { data } = res.data
-      //   if (data) {
-      //     this.awardsInfo = data
-      this.operation()
-      //     return
-      //   }
-      // } else {
-      // this.popType = false
-      // }
-      // this.showTurnPop()
+      GLOBALS.marchSetsPoint('A_H5PT0200002040') // H5平台-新手转盘活动页-抽奖按钮点击
+      if (this.info.wheelTimes) {
+        const res = await this.axios.post('//ops-api.beeplaying.com/ops/api/richwheel/commonBetting', { value: 31 })
+        const { data } = res.data
+        if (data) {
+          this.awardsInfo = data
+          this.operation()
+          return
+        }
+      } else {
+        this.popType = false
+      }
+      this.showTurnPop()
     },
     // 特惠倒计时
     countDown (info) {
       if (!info) return false
       let date = info / 1000
-      this.timer = setInterval(() => {
+      this.countDoneTimer = setInterval(() => {
         date = date - 1
         if (date <= 0) {
           date = 0
-          clearInterval(this.timer)
+          clearInterval(this.countDoneTimer)
           this.$router.replace('/')
         }
         let _day = Math.floor(date / 86400)
@@ -191,6 +192,8 @@ export default {
     showTurnPop () {
       this.isTurnpopShow = true
       if (this.popType) {
+        this.$set(this, 'imgList', [])
+        this.init()
         GLOBALS.marchSetsPoint('A_H5PT0200002043', {
           task_name: this.awardsInfo.awardsName
         }) // H5平台-新手转盘活动页-获得奖品提示弹窗加载完成
@@ -219,18 +222,26 @@ export default {
       }
     },
     operation () {
-      if (this.options.isStart) {
+      if (this.step) {
         return false
       } else {
-        this.options.isStart = true // 锁 专拍没有执行完的时候 不可以再次点击 ;
-        this.options.currentIndex++
-
-        setTimeout(() => {
-          this.options.isStart = false
-          this.popType = true
-          this.showTurnPop()
-          this.init()
-        }, 3200)
+        this.step = 2
+        let actIndex = this.currentIndex > 4 ? (this.currentIndex + 2) % 7 : this.currentIndex + 3
+        this.$set(this.imgList, actIndex, 0)
+        this.otherTime = setTimeout(() => {
+          clearInterval(this.clawTimer)
+          clearTimeout(this.otherTime)
+          this.otherTime = setTimeout(() => {
+            clearTimeout(this.otherTime)
+            this.step = 1
+            this.$refs.con.childNodes[this.currentIndex < 1 ? 7 : this.currentIndex - 1].style.top = '-1.5rem'
+            this.otherTime = setTimeout(() => {
+              clearTimeout(this.otherTime)
+              this.popType = true
+              this.showTurnPop()
+            }, 600)
+          }, 500)
+        }, 2000)
       }
     },
     goGame ({ url, taskId, taskName, taskStatus }) {
@@ -370,7 +381,59 @@ export default {
       width: 5.44rem;
       height: 4.9rem;
       margin: auto;
-
+      .claw {
+        position: absolute;
+        top: 0.94rem;
+        left: 50%;
+        margin-left: -0.56rem;
+        z-index: 3;
+        font-size: 0;
+        &::before {
+          content: "";
+          display: block;
+          width: 0.12rem;
+          height: 0.22rem;
+          margin: auto;
+          transition: all 0.5s linear;
+          font-size: 0;
+          background: url("./img/stick.png") no-repeat center bottom / 100% auto;
+        }
+        &:after {
+          content: "";
+          display: block;
+          width: 1.12rem;
+          height: 1.12rem;
+          margin: -0.04rem auto 0;
+          font-size: 0;
+          .bgWithFull("./img/claw.png");
+        }
+        &.down {
+          margin-left: -0.6rem;
+          &::before {
+            transition: all 2.2s linear;
+            height: 1.5rem;
+          }
+          &::after {
+            .bgWithFull("./img/claw2.png");
+            width: 1.2rem;
+            height: 1.16rem;
+            margin: auto;
+          }
+        }
+        &.up {
+          margin-left: -0.6rem;
+          &::before {
+            transition: all 0.5s linear;
+            height: 0.22rem;
+          }
+          &::after {
+            .bgWithFull("./img/claw2.png");
+            width: 1.2rem;
+            height: 1.16rem;
+            margin: auto;
+          }
+        }
+      }
       .awards-list {
         overflow: hidden;
         .top-list {
@@ -399,6 +462,7 @@ export default {
           height: 2.2rem;
           li {
             position: absolute;
+            top: 0;
             height: 2.2rem;
             width: 1.68rem;
             text-align: center;
@@ -417,6 +481,9 @@ export default {
     width: 4.24rem;
     margin: 1rem auto 0;
     .bgWithFull("./img/start-btn.png");
+    &.down {
+      .bgWithFull("./img/start-btn2.png");
+    }
   }
   .task-wrap {
     width: 6.8rem;

@@ -68,13 +68,15 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.55);
+  z-index: 9;
 }
 .turnpop {
   .turnpop-wrap {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%);
+    z-index: 9;
     .turnpop-content {
       width: 5.8rem;
       height: 7.06rem;
