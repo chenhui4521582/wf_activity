@@ -4,7 +4,7 @@
       我要参与
       <div class="button-cut base-button" @click.stop="cutClick">-</div>
       <div class="input-warp">
-        <input type="number" v-model.number="inputValue">
+        <p>{{inputValue}}</p>
       </div>
       <div class="button-add base-button" @click.stop="addClick">+</div>
       <div class="max-num">
@@ -250,7 +250,7 @@ export default {
       border-radius: .08rem;
       overflow: hidden;
       margin: 0 .1rem;
-      input {
+      p {
         display: block;
         width: 100%;
         height: .3rem;
