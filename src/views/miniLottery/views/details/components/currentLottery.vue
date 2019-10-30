@@ -7,9 +7,9 @@
       </span>
     </div>
     <div class="title no" v-if="status == 3">
-      <span class="name">本期夺宝<i>暂未开始</i></span>
+      <span class="name">本期夺宝<i>即将开始</i></span>
       <span class="min-buy">
-        至少开奖<i>{{details.limitTotalAmount || 0}}</i>次
+        至少<i>{{details.limitTotalAmount || 0}}</i>人次报名开奖
       </span>
     </div>
     
