@@ -13,7 +13,8 @@
           </div>
           <div class="text">
             <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
-            <div class="ip">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+            <div class="ip" v-if="lastUserInfo.ip && lastUserInfo.city">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+            <div class="ip" v-else>未知IP</div>
             <div class="people">参与次数：{{lastUserInfo.bettingCount}}人次</div>
             <div class="time">开奖时间：{{lastUserInfo.endTime | formatTime}}</div>
             <div class="award-num">幸运号码：{{code}}</div>
@@ -48,7 +49,8 @@
         </div>
         <div class="text">
           <div class="name">获奖者：{{lastUserInfo.nickName}}</div>
-          <div class="ip">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+          <div class="ip" v-if="lastUserInfo.ip && lastUserInfo.city">IP：{{lastUserInfo.ip}} {{lastUserInfo.city}}</div>
+          <div class="ip" v-else>未知IP</div>
           <div class="people">参与次数：{{lastUserInfo.bettingCount}}次</div>
           <div class="time">开奖时间：{{lastUserInfo.endTime | formatTime}}</div>
           <div class="award-num">幸运号码：{{code}}</div>
