@@ -13,9 +13,8 @@
               已抢{{item.participantsNumber || 0}}次
             </div>
             <div class="count-down" v-if="item.underway">
-              <!-- 开奖剩余时间 <br>
-              {{item.countDownTime}} -->
-              开奖中
+              开奖剩余时间 <br>
+              {{item.countDownTime}}
             </div>
             <div class="count-down no" v-if="!item.underway">
               {{item.countDownTime}}
@@ -27,8 +26,7 @@
         </li>
         <li v-else :key="index" class="item" @click="goDetail(item)">
           <div class="count-down" v-if="item.underway">
-            <!-- 开奖剩余时间 {{item.countDownTime}} -->
-            开奖中
+            开奖剩余时间 {{item.countDownTime}}
           </div>
           <div class="count-down no" v-if="!item.underway">
             {{item.countDownTime}} 后即将开始
