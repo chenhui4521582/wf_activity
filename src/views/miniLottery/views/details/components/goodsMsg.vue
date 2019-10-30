@@ -110,7 +110,7 @@ export default {
       }, 1000)
     },
     refresh() {
-      if(this.status == 0) {
+      if(this.status == 0 && this.details.countDown<=0) {
         this.$emit('refresh')
       }
     },
