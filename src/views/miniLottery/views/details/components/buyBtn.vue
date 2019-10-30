@@ -8,7 +8,7 @@
       </div>
       <div class="button-add base-button" @click.stop="addClick">+</div>
       <div class="max-num">
-        <div class="btn" @click="buyMax">最大</div>
+        <div class="btn" @click.stop="buyMax">最大</div>
         次
       </div>
     </div>
@@ -242,6 +242,9 @@ export default {
         line-height: .27rem;
         margin-left: .1rem;
       }
+      &.button-add {
+        margin-right: .3rem
+      }
     }
     .input-warp {
       width: .6rem;
@@ -267,7 +270,7 @@ export default {
     display: flex;
     align-items: center;
     .btn {
-      margin: 0 .1rem;
+      margin: 0 .1rem 0 0;
       padding: 0 .1rem;
       height: .3rem;
       text-align: center;
