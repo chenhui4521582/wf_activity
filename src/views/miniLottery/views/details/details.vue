@@ -65,10 +65,10 @@ export default {
             clearInterval(this.timer)
           }
           this.details = data
-          // GLOBALS.marchSetsPoint('A_H5PT0202002083', {
-          //   task_id: data.currentPeriodStatus,
-          //   task_name: data.currentPeriodStatus
-          // })
+          GLOBALS.marchSetsPoint('A_H5PT0202002083', {
+            task_id: data.currentPeriodStatus,
+            task_name: data.currentPeriodStatus
+          })
         }
       })
     },
