@@ -91,8 +91,8 @@ export default {
     hide() {
       let {status} = this.modal
       if(status == 1) {
-        let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-        if(['100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
+        let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
+        if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL)) {
           parent.location.href = `https://wap.beeplaying.com/xmWap/#/mall?channel=${localStorage.getItem('APP_CHANNEL')}`
         }else {
           parent.location.href = `https://wap.beeplaying.com/activities/billshop.html#/?from=bdWap&channel=${localStorage.getItem('APP_CHANNEL')}`
@@ -170,9 +170,9 @@ export default {
       })
     },
     getAward() {
-      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
       let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      if(['100069','100070','100073','100075','100080'].includes(APP_CHANNEL)) {
+      if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL)) {
         parent.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
       }else {
         parent.location.href = `https://wap.beeplaying.com/bdWap/#/schedule?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
