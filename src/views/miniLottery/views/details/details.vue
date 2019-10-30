@@ -6,7 +6,7 @@
     <current-lottery :details="details" :isAwards="isAwards"/>
     <prov-user :details="details" :isAwards="isAwards"/>
     <goods-desc :details="details"/>
-    <buy-btn :details="details" :isAwards="isAwards" @refresh="_getDetails"/>
+    <buy-btn :details="details" :isAwards="isAwards" @refresh="buttonRefresh"/>
   </div>
 </template>
 <script>
@@ -50,10 +50,15 @@ export default {
         if(code === 200) {
           let status = _get(res, 'data.data.currentPeriodStatus')
           let countDown = _get(res, 'data.data.countDown')
-          if(status == 0 && countDown < 0) {
-            this.isAwards = true
-            data.countDown = 0
+          if(status == 0 || status == 3) {
+            if(this.timer) {
+              clearInterval(this.timer)
+            }
+            this.timer = setInterval(()=> {
+              this._getDetails()
+            }, 3000)
           }else {
+            data.countDown = 0
             this.isAwards = false
           }
           if(status == 1 || status == 2) {
@@ -67,18 +72,17 @@ export default {
         }
       })
     },
+    buttonRefresh() {
+      this._getDetails()
+      this._getUserInfo()
+    },
     refresh() {
       this.isAwards = true
     },
     init() {
       this._getUserInfo()
       this._getDetails()
-      if(this.timer) {
-        clearInterval(this.timer)
-      }
-      this.timer = setInterval(()=> {
-        this._getDetails()
-      }, 3000)
+
     }
   },
   mounted() {
