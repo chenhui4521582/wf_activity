@@ -5,12 +5,13 @@
     <!--规则-->
     <rule></rule>
     <!--翻牌点记录-->
-    <record @package="$refs.dropDown.handleTab(0)"></record>
+    <record></record>
+    <richrecord ref="richrecord"></richrecord>
     <img src="../images/title.png" alt="" class="header-title">
     <h4 class="e-time">活动时间：2019年10月24日-10月31日</h4>
     <div class="container">
       <div class="container_top">
-        <div class="container_top_all"></div>
+        <div class="container_top_all" @click="$refs.richrecord.showPop()"></div>
         <div class="container_top_content">
           <div class="container_top_item" v-for="(item,index) in currentItemRiches">
             <div class="item">
@@ -186,6 +187,7 @@ export default {
     gonglue: () => import('../components/gonglue'),
     card: () => import('../components/card'),
     record: () => import('../components/record'),
+    richrecord: () => import('../components/richrecord'),
     comPop:() => import('../components/comPop'),
     swiper,
     swiperSlide,

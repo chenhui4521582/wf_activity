@@ -1,23 +1,25 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?3:2}">
+  <section class="rule" :style="{zIndex:isShowPop?11:2}">
     <img src="../images/record.png" alt="" @click="showPop">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
+          <div class="title1">我的福袋记录</div>
           <div class="main">
-            <div class="bonus-record" v-if="!list.length">
-              <div class="title">昵称</div>
-              <div class="title">获取时间</div>
-              <div class="title">奖励详情</div>
+            <div class="bonus-record" v-if="list.length">
+              <div class="title">序号</div>
+              <div class="title">福袋</div>
+              <div class="title">奖励</div>
+              <div class="title">获奖时间</div>
               <div class="content">
                 <scroll :data="list" @scrolltouchend="scrolltouchend" ref="scroll" :beforeScroll="true" :listenScroll="true" :probeType="3">
                   <ul>
-                    <li v-for="item in list">
-                      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 2rem">{{item.receiveRemark||''}}
-                      </div>
-                      <div style="width: 3rem;text-align: center;">{{item.receiveDate||''}}</div>
-                      <div style="width: 2rem;text-align: center;">{{item.receiveNum||''}}</div>
+                    <li v-for="(item,index) in list">
+                      <div style="width: .6rem">{{index+1}}</div>
+                      <div style="margin-left: .2rem;width: 1rem;margin-right: .1rem">金龙福袋</div>
+                      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 2rem;">2000元京东卡</div>
+                      <div style="width: 2rem;text-align: center;">{{item.receiveDate||''}}</div>
                     </li>
                   </ul>
                 </scroll>
@@ -79,7 +81,7 @@
     position: fixed;
     top: 1.64rem;
     left: 50%;
-    margin-left: -2.46rem;
+    margin-left: -2.9rem;
     img {
       width: 0.48rem;
       height: 1.23rem;
@@ -102,17 +104,27 @@
       position: relative;
       z-index: 10;
       .wrap {
-        width: 4.92rem;
-        height: 5.62rem;
-        background: url("../images/pop/rule/bg.png") no-repeat center center /
-        100% 100%;
+        width: 5.8rem;
+        height: 6.66rem;
+        background:rgba(210,34,111,1);
+        border-radius:.32rem;
         margin: 0 auto;
         box-sizing: border-box;
-        padding: .9rem 0.2rem 0;
+        .title1{
+          height: .97rem;
+          line-height: .97rem;
+          text-align: center;
+          background:rgba(166,8,77,1);
+          border-radius:.32rem .32rem 0 0;
+          font-size:.36rem;
+          font-weight:400;
+          color:rgba(255,255,255,1);
+        }
         .main {
           font-size: 0.2rem;
           font-weight: bold;
           color:rgba(236,110,71,1);
+          padding: .2rem 0.2rem 0;
           .text{
             display: flex;
             i{
@@ -137,29 +149,32 @@
             height: 4.5rem;
 
             .title {
-              font-size: .24rem;
+              font-size: .22rem;
               font-weight: 400;
               color: rgba(236, 244, 255, 1);
               position: absolute;
               &:nth-child(1) {
-                left: 0;
+                left: .2rem;
               }
               &:nth-child(2) {
-                left: 1.9rem;
+                left: 1rem;
               }
               &:nth-child(3) {
-                right: 0;
+                left: 2.5rem;
+              }
+              &:nth-child(4) {
+                right: .5rem;
               }
             }
             .content {
               position: absolute;
-              height: 4rem;
+              height: 5rem;
               top: .34rem;
               left: 0rem;
               right: 0;
               font-size: .18rem;
               font-weight: 400;
-              color: rgba(255, 227, 166, 1);
+              color: #fff;
               overflow: hidden;
               ul {
                 margin-top: .1rem;
@@ -168,8 +183,17 @@
                 li {
                   display: flex;
                   justify-content: space-between;
-                  margin-bottom: .2rem;
-                  line-height: .2rem;
+                  height: .53rem;
+                  border-bottom: 1px solid rgba(255,255,255,0.38);
+                  box-sizing: border-box;
+                  &:nth-child(1){
+                    border-top: 1px solid rgba(255,255,255,0.38);
+                  }
+                  div{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
                 }
               }
             }

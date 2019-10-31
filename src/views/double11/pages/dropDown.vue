@@ -14,9 +14,6 @@
           </div>
           <!-- 获取锤子组件 -->
           <getHammer :pUserInfo="data" v-if="curIndex == 0" @getUserInfo="getUserInfo"/>
-
-          <!-- 排行榜 -->
-          <profit v-if="curIndex == 1" :is-full="false" />
         </div>
       </div>
     </transition>

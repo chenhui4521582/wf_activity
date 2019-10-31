@@ -180,7 +180,7 @@ export default {
   .percent-box {
     width: 5.86rem;
     height: 0.15rem;
-    background:rgba(255,171,129,1);
+    background:rgba(93,96,254,1);
     border-radius: 0.05rem;
     position: absolute;
     left: 0.3rem;
@@ -191,18 +191,8 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
-      background:rgba(220,50,42,1);
+      background:rgba(229,11,93,1);
       border-radius: 0.08rem;
-      &:after {
-        content: "";
-        width: 0.33rem;
-        height: 0.37rem;
-        /*background: url(./images/icon-hit.png) no-repeat;*/
-        background-size: 100% 100%;
-        position: absolute;
-        right: -0.01rem;
-        top: -0.2rem;
-      }
     }
   }
   li {
@@ -236,13 +226,15 @@ export default {
                 border-radius: 1px;*/
       &:after {
         content: "";
-        width: 0.33rem;
-        height: 0.37rem;
+        width: 0.56rem;
+        height: 0.35rem;
         background: url(../../../../../images/bottom/icon.png) no-repeat;
         background-size: 100% 100%;
         position: absolute;
         left: -0.18rem;
         top: 0;
+        bottom: 0;
+        margin: auto;
         z-index: 2;
       }
     }

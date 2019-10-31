@@ -1,7 +1,22 @@
 <template>
   <div class="get-hammer">
-    <div class="s-title"><em></em>购买礼包得翻牌点</div>
-    <span class="info">礼包可不限次购买，重复获取翻牌点</span>
+    <h4 class="s-title"><em></em>玩游戏,领福袋券</h4>
+    <div class="g-package">
+      <div class="g-package-container g2">
+        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo"></hit-percent>
+      </div>
+      <div class="g-package-info">
+        <ul>
+          <li>已支持金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
+          <li>累计福袋券：{{pUserInfo.gameReturnNum }}张</li>
+        </ul>
+      </div>
+    </div>
+    <div class="s-title"><em></em>做每日任务，送福袋券</div>
+    <div class="g-package">
+
+    </div>
+    <div class="s-title"><em></em>购买礼包得福袋券</div>
     <div class="g-package">
       <div class="g-package-container g1">
         <ul>
@@ -16,19 +31,6 @@
         <ul>
           <li>已购买礼包：{{pUserInfo.rechargeTime}}次</li>
           <li>累计翻牌点：{{pUserInfo.rechargeReturnNum}}点</li>
-        </ul>
-      </div>
-    </div>
-    <h4 class="s-title"><em></em>玩游戏获得翻牌点</h4>
-    <span class="info">活动期间在游戏中累计支持金叶子达到一定值即可获得翻牌点</span>
-    <div class="g-package">
-      <div class="g-package-container g2">
-        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo"></hit-percent>
-      </div>
-      <div class="g-package-info">
-        <ul>
-          <li>已支持金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
-          <li>获得翻牌点：{{pUserInfo.gameReturnNum }}点</li>
         </ul>
       </div>
     </div>
@@ -106,11 +108,10 @@
     top: .76rem;
     bottom: 0;
     overflow-y: scroll;
-    background: url("../../../images/bottom/bg1.png");
-    background-size: 100% 1.03rem;
+    background:rgba(93,96,254,1);
     .s-title {
       font-size: 0.24rem;
-      color: #5D2B19;
+      color:rgba(238,238,255,1);
       display: flex;
       align-items: center;
       margin-bottom: 0.12rem;
@@ -121,7 +122,7 @@
         width: 0.12rem;
         height: 0.12rem;
         border-radius: 50%;
-        background:rgba(93,43,25,1);
+        background:rgba(238,238,255,1);
         margin-right: 0.05rem;
       }
     }
