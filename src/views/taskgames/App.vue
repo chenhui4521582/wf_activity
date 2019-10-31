@@ -802,7 +802,11 @@ export default {
         // // parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
         if (url === 'prizesurvey') {
-          parent.location.href = 'https://wap.beeplaying.com/publicWap/personalCenter.html#/survey'
+          if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap'){
+            parent.location.href = 'https://wap.beeplaying.com/xmWap#/personalCenter/survey'
+          }else{
+            parent.location.href = 'https://wap.beeplaying.com/publicWap/personalCenter.html#/survey'
+          }
           return
         }
         url && (parent.location.href = GLOBALS.getJumpToGameUrl(url))
