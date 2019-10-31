@@ -9,7 +9,7 @@
       <div class="btn right" @click="goMy()">我的奖品</div>
     </div>
     <div class="bottom-wrap">
-      <p class="times">
+      <p class="times" style="opacity:0">
         {{info.wheelTimes||0}}次抽奖机会
       </p>
       <div class="main">
@@ -35,6 +35,9 @@
         </div>
       </div>
       <div class="pointer" :class="{down:step===2}" @click.stop="betting()"></div>
+      <p class="times">
+        {{info.wheelTimes||0}}次抽奖机会
+      </p>
       <div class="task-wrap">
         <div class="task-content">
           <h4>完成每日任务 获得抽奖机会</h4>
@@ -330,7 +333,7 @@ export default {
   .top-btn-wrap {
     position: absolute;
     width: 100%;
-    top: 0.88rem;
+    top: 1.4rem;
     display: flex;
     color: #fff;
     font-size: 0.2rem;
@@ -450,7 +453,7 @@ export default {
             width: 1.28rem;
             text-align: center;
             opacity: 0.8;
-            transition: all 0.5s linear;
+            transition: all 0.49s linear;
             img {
               width: auto;
               height: 100%;
@@ -469,7 +472,7 @@ export default {
             height: 2.2rem;
             width: 1.68rem;
             text-align: center;
-            transition: all 0.5s linear;
+            transition: all 0.49s linear;
             img {
               width: auto;
               height: 100%;
