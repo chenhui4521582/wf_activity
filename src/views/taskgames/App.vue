@@ -102,8 +102,8 @@
           <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
           <template v-if="isShowOther">
-            <div class="wrap">
-              <cost-down v-if="!MasterCostDown" :type="2" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
+            <div class="wrap" v-if="!MasterCostDown">
+              <cost-down :type="2" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
               <!-- 大师任务 -->
               <crush-master-task v-if="showCrushMasterTask " :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
               <!-- 王者任务 -->

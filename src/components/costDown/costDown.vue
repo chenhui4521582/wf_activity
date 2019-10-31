@@ -20,7 +20,8 @@
       @close="hideRule"
     >
       <div class="text">
-        成就任务即将在<span>{{countdownTime}}</span>进行维护，届时成就任务将不可见，请即使领取奖励。未领取奖励将在维护完成后才能领取。
+        成就任务即将在<span>{{countdownTime}}</span>进行维护，届时成就任务将不可见，请及时领取奖励。<br>
+        未领取奖励将在维护完成后才能领取。
       </div>
     </commonPopNew>
   </div>
@@ -128,6 +129,7 @@ export default {
   }
 
   .text {
+    text-align: left;
     padding: .3rem;
     font-size: .24rem;
     color: #FFFFFF;
