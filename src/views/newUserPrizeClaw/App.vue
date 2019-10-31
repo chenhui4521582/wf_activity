@@ -232,9 +232,12 @@ export default {
           clearInterval(this.clawTimer)
           clearTimeout(this.otherTime)
           this.otherTime = setTimeout(() => {
+            let _cIndex = this.currentIndex < 1 ? 7 : this.currentIndex - 1
             clearTimeout(this.otherTime)
             this.step = 1
-            this.$refs.con.childNodes[this.currentIndex < 1 ? 7 : this.currentIndex - 1].style.top = '-1.5rem'
+            if (this.list[_cIndex] === 2) {
+              this.$refs.con.childNodes[_cIndex].style.top = '-1.5rem'
+            }
             this.otherTime = setTimeout(() => {
               clearTimeout(this.otherTime)
               this.popType = true
