@@ -8,7 +8,8 @@
     </div>
     <!-- tab -->
     <task-tab v-model="tabSelected" :is-show-red-point="isShowRedPoint" />
-    <div class="task-wrap">
+    <div class="task-wrap" v-if="!MasterCostDown">
+      <cost-down v-if="!MasterCostDown" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
       <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
         <template v-if="tabSelected===0">
           <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
@@ -38,8 +39,6 @@
 
 <script>
 import { setTimeout } from 'timers';
-const taskTab = () => import("./components/taskTab.vue")
-const kingMask = () => import("./components/kingMask.vue")
 export default {
   name: 'app',
   data () {
@@ -59,8 +58,9 @@ export default {
       masterTaskNameList: ['fish-achievement', 'crush-achievement', 'bill-achievement'],
       curChannel: localStorage.getItem('APP_CHANNEL'),
       tabSelected: localStorage.getItem('TAB_TASK_INDEX') ? 1 : 0,
-      maskShow: false
-
+      maskShow: false,
+      countdown: 5000,
+      MasterCostDown: false
     }
   },
   mounted () {
@@ -71,8 +71,9 @@ export default {
     crushTask: () => import('./components/crushTask'),
     kingTask: () => import('./components/kingTask'),
     kingNoLock: () => import('./components/kingNoLock'),
-    taskTab,
-    kingMask
+    taskTab: () => import("./components/taskTab.vue"),
+    kingMask: () => import("./components/kingMask.vue"),
+    costDown: () => import("@/components/costDown/costDown")
   },
   computed: {
     getChannel () {
@@ -356,6 +357,9 @@ export default {
     // 显示王者未解锁状态
     showKingTaskNoLock (item) {
       return item.achievementType == 2 && item.lock
+    },
+    hideMasterTask() {
+      this.MasterCostDown = true
     }
   }
 }

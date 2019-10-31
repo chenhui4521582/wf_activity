@@ -102,10 +102,13 @@
           <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
           <template v-if="isShowOther">
-            <!-- 大师任务 -->
-            <crush-master-task v-if="showCrushMasterTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
-            <!-- 王者任务 -->
-            <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+            <div class="wrap">
+              <cost-down v-if="!MasterCostDown" :type="2" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
+              <!-- 大师任务 -->
+              <crush-master-task v-if="showCrushMasterTask " :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+              <!-- 王者任务 -->
+              <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+            </div>
           </template>
           <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems&&(isShowOther||currentGamesItems[0].flag)">
             <h4 class="h-title h-first-title">当前游戏每日任务</h4>
@@ -261,7 +264,9 @@ export default {
       selectItem: {},
       woolUserType: false,
       completeData: {}, // 魅族渠道新手完成活动 下线时清删除
-      showWeekBetting:false
+      showWeekBetting:false,
+      countdown: 5000,
+      MasterCostDown: false
     }
   },
   mounted () {
@@ -327,11 +332,11 @@ export default {
     },
     // 显示大师任务
     showCrushMasterTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
+      return !this.MasterCostDown && this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示王者任务
     showKingTask () {
-      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
+      return !this.MasterCostDown && this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示新手任务
     showNewUserTask () {
@@ -376,7 +381,8 @@ export default {
     dailyTaskReceivePop: () => import('./component/dailyTaskReceivePop'),
     sdkTabBox: () => import('./component/tabBox'),
     fixedEntrance: () => import('./component/fixedEntrance'),
-    entranceHeader: () => import('./component/entranceHeader')
+    entranceHeader: () => import('./component/entranceHeader'),
+    costDown: () => import('@/components/costDown/costDown'),
   },
   methods: {
     initParentAd () {
@@ -1053,6 +1059,9 @@ export default {
     // 魅族渠道新手完成活动 下线时清删除
     gotoweekbetting(){
       parent.location.href='//wap.beeplaying.com/activities/weekbetting.html?vt='+new Date().getTime()
+    },
+    hideMasterTask() {
+      this.MasterCostDown = true
     }
   }
 }
@@ -1060,6 +1069,9 @@ export default {
 <style lang="less" scoped>
 @import "../../common/css/base.css";
 @import "./index";
+.wrap {
+  position: relative;
+}
 .rr-zq-mask {
   width: 100%;
   height: 100%;
