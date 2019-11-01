@@ -150,7 +150,7 @@
       bottom: -.9rem;
       width: .57rem;
       height: .57rem;
-      background: url("../images/close.png");
+      background: url("../pages/images/common/close.png");
       background-size: 100% 100%;
       font-size: .37rem;
       font-weight: bold;
