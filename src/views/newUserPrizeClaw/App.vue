@@ -333,7 +333,7 @@ export default {
   .top-btn-wrap {
     position: absolute;
     width: 100%;
-    top: 1.4rem;
+    top: 1rem;
     display: flex;
     color: #fff;
     font-size: 0.24rem;
