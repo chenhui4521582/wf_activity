@@ -15,7 +15,7 @@
                     <div class="left">
                       {{getfudaiName(item.level)}}<br><i>({{item.useNum}}/{{item.totalNum}})</i></div>
                     <div class="right" :class="{ltfour:item.itemList.length<=4}">
-                      <div class="right_item" v-for="(itemr,indexr) in item.itemList">{{itemr.awardsName}}(剩余{{itemr.totalNum-item.useNum}}张)</div>
+                      <div class="right_item" v-for="(itemr,indexr) in item.itemList">{{itemr.awardsName}}(剩余{{itemr.totalNum-itemr.useNum}}张)</div>
                     </div>
                   </div>
                 </div>
