@@ -8,7 +8,7 @@
           <div class="title">活动规则</div>
           <div class="main">
             <div class="text"><span>1. 活动从{{ruleMain}}</span></div>
-            <div class="text"><span>2. 活动期间内,玩家可以通过以下途径获得福袋券,福袋券可用于福袋开启: 游戏内金叶消耗 购买活动礼包 完成一定数量的每日任务（每日限一次）</span></div>
+            <div class="text"><span>2. 活动期间内,玩家可以通过以下途径获得福袋券,福袋券可用于福袋开启: 游戏内金叶消耗(斗地主、麻将、跑得快、枪火英雄、套圈不计入)、购买活动礼包、完成一定数量的每日任务(每日限一次)</span></div>
             <div class="text"><span>3. 每次开启福袋都需要消耗2张抽奖券,每次开启福袋都有机会获得任意福袋中的奖励</span></div>
             <div class="text"><span>4. 每种福袋内奖励数量固定,抽到奖品会从列表中扣除数量,当一个奖品数量降到0后,不会再被抽中</span></div>
             <div class="text"><span>5. 当用户开完全部福袋奖励后,则完成此次活动</span></div>
