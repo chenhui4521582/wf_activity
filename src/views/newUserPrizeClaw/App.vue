@@ -336,22 +336,22 @@ export default {
     top: 1.4rem;
     display: flex;
     color: #fff;
-    font-size: 0.2rem;
+    font-size: 0.24rem;
     font-weight: bold;
     align-items: center;
     justify-content: space-between;
     .btn {
-      height: 0.36rem;
-      line-height: 0.38rem;
+      height: 0.5rem;
+      line-height: 0.54rem;
       background: #4e53d9;
       position: relative;
-      width: 1.05rem;
+      width: 1.42rem;
       text-align: center;
       &.left {
-        border-radius: 0 0.18rem 0.18rem 0;
+        border-radius: 0 0.3rem 0.3rem 0;
       }
       &.right {
-        border-radius: 0.18rem 0 0 0.18rem;
+        border-radius: 0.3rem 0 0 0.3rem;
       }
     }
   }
