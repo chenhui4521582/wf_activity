@@ -13,7 +13,7 @@
             <h4 v-else>终极档位</h4>
           </template>
           <div class="hb-line"></div>
-          <div class="envelopes">{{item.awards}}点</div>
+          <div class="envelopes">{{item.awards}}张</div>
           <div class="btn btn-complete" v-if="item.status == 2">完成</div>
           <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(item)">领取</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
@@ -36,13 +36,8 @@ export default {
   data () {
     return {
       hbItems: null,
-      hbTestData: []
-    }
-  },
-  props: {
-    detailData: {
-      type: Object,
-      default: {}
+      hbTestData: [],
+      detailData:null
     }
   },
   mounted () {
@@ -90,7 +85,7 @@ export default {
         return result
       }
 
-    },//this.detailData.gameBetting
+    },//this.detailData.totalBetting
     wpercent() {
       if (!this.hbItems||this.hbItems.length==0) {
         return
@@ -111,16 +106,16 @@ export default {
               return parseFloat(5 * 100 / 6).toFixed(2) + '%'
             } else {
               if (idArr == 0) {
-                return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
+                return parseFloat((idArr + this.detailData.totalBetting / (minUnfinished.amount)) * 100 / 12) + '%'
               } else {
-                return parseFloat((1 / 12 + (idArr - 1) / 6 + this.detailData.gameBetting / (minUnfinished.amount) / 6) * 100) + '%'
+                return parseFloat((1 / 12 + (idArr - 1) / 6 + this.detailData.totalBetting / (minUnfinished.amount) / 6) * 100) + '%'
               }
             }
           } else {
             if (idArr == 0) {
-              return parseFloat((idArr + this.detailData.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
+              return parseFloat((idArr + this.detailData.totalBetting / (minUnfinished.amount)) * 100 / 12) + '%'
             } else {
-              return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + this.detailData.gameBetting / (minUnfinished.amount) * 5 / 24) * 100) + '%'
+              return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + this.detailData.totalBetting / (minUnfinished.amount) * 5 / 24) * 100) + '%'
             }
           }
         }
@@ -131,8 +126,11 @@ export default {
     },
   },
   methods: {
-    async gotoact (item) { // 去完成
-      GLOBALS.marchSetsPoint('A_H5PT0156001778')//H5平台-翻牌活动-底部弹窗-领取点击
+    async gotoact (item) { // 领取
+      GLOBALS.marchSetsPoint('A_H5PT0209002207',{
+        task_name:`支持金叶：${item.amount}`,
+        task_id:item.sort
+      })//H5平台-双十一超值福袋活动-玩游戏领福袋-奖励领取按钮点击
 
       gameReceive({value:item.sort}).then((res) => {
         if (res.code == 200) {
@@ -149,7 +147,9 @@ export default {
     getGameProgress () {
       gameProgress().then((res) => {
         if (res.code == 200) {
-          this.hbItems = res.data
+          this.detailData=res.data
+          this.hbItems = res.data.progressList
+          this.$emit('detailData',this.detailData)
           // 下面是测试数据
           // this.hbItems = this.hbTestData
         }
@@ -164,7 +164,10 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0156001777')   // H5平台-翻牌活动-底部弹窗-去完成点击
+      GLOBALS.marchSetsPoint('A_H5PT0209002208',{
+        task_name:`支持金叶：${item.amount}`,
+        task_id:item.sort
+      })//H5平台-双十一超值福袋活动-玩游戏领福袋-奖励去完成按钮点击
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }
@@ -203,7 +206,7 @@ export default {
     h2 {
       font-size: 0.2rem;
       font-weight: 500;
-      color:rgba(181,106,79,1);
+      color:rgba(56,8,177,1);
       padding-top: 0.28rem;
     }
     h4 {
@@ -213,7 +216,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color:rgba(181,106,79,1);
+      color:rgba(56,8,177,1);
     }
     &:last-child h4 {
       max-width: 1.2rem;
@@ -250,7 +253,7 @@ export default {
         display: inline-block;
         width: 0.06rem;
         height: 0.06rem;
-        background: #A15B42;
+        background:rgba(56,8,177,1);
         border-radius: 50%;
         &:nth-child(2) {
           margin: 0 0.04rem;
@@ -263,7 +266,8 @@ export default {
     .envelopes {
       width: 0.59rem;
       height: 0.25rem;
-      color:rgba(220,50,42,1);
+      font-weight:500;
+      color:rgba(93,96,254,1);
       text-align: center;
       white-space: nowrap;
     }
@@ -288,7 +292,7 @@ export default {
       }
       &.btn-complete {
         font-size: 0.24rem;
-        color:rgba(192,112,2,1);
+        color:rgba(229,11,93,1);
       }
     }
   }

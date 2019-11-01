@@ -13,13 +13,26 @@
               <div class="title">奖励</div>
               <div class="title">获奖时间</div>
               <div class="content">
-                <scroll :data="list" @scrolltouchend="scrolltouchend" ref="scroll" :beforeScroll="true" :listenScroll="true" :probeType="3">
+                <scroll :data="list"  ref="scroll" :beforeScroll="true" :listenScroll="true" :probeType="3">
                   <ul>
                     <li v-for="(item,index) in list">
                       <div style="width: .6rem">{{index+1}}</div>
-                      <div style="margin-left: .2rem;width: 1rem;margin-right: .1rem">金龙福袋</div>
-                      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 2rem;">2000元京东卡</div>
-                      <div style="width: 2rem;text-align: center;">{{item.receiveDate||''}}</div>
+                      <div style="margin-left: .2rem;width: 1rem;margin-right: .1rem">
+                        <template v-if="item.level==1">
+                          福禄福袋
+                        </template>
+                        <template v-else-if="item.level==2">
+                          紫云福袋
+                        </template>
+                        <template v-else-if="item.level==3">
+                          金龙福袋
+                        </template>
+                        <template v-else>
+                          神运福袋
+                        </template>
+                      </div>
+                      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 2rem;">{{item.awardsName}}</div>
+                      <div style="width: 2rem;text-align: center;">{{item.createTime||''}}</div>
                     </li>
                   </ul>
                 </scroll>
@@ -50,29 +63,17 @@
       scroll
     },
     methods: {
-      besure(){
-        GLOBALS.buriedPoint('1207003021','春节红包-红包记录-关闭')
-        this.$emit('close')
-      },
-      close(flag){
-        if(!flag){//关闭按钮
-
-        }else{
-          GLOBALS.marchSetsPoint('A_H5PT0156001800')//H5平台-翻牌活动-弹窗反馈-翻牌点记录弹窗-获取更多翻牌点点击
-          this.$emit('package')
+      async showPop () {
+        GLOBALS.marchSetsPoint('A_H5PT0209002200')//记录按钮点击
+        let {code,data}=await gameReceiveRecord()
+        if(code==200){
+          this.list=data
+          this.isShowPop = true
+          GLOBALS.marchSetsPoint('A_H5PT0209002201')//记录加载完成
         }
-        this.$emit('close')
-      },
-      showPop () {
-        this.isShowPop = true
-        GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
       }
     },
     async mounted(){
-      let {code,data}=await gameReceiveRecord()
-      if(code==200){
-        this.list=data
-      }
     }
   }
 </script>

@@ -8,13 +8,14 @@
           <div class="title1">福袋全览</div>
           <div class="main">
             <div class="content">
-              <scroll :data="list" @scrolltouchend="scrolltouchend" ref="scroll" :beforeScroll="true"
+              <scroll :data="list"  ref="scroll" :beforeScroll="true"
                       :listenScroll="true" :probeType="3">
                 <div class="list">
                   <div class="item" v-for="(item,index) in list">
-                    <div class="left">神运福袋<br><i>({{item.info}})</i></div>
-                    <div class="right" :class="{ltfour:item.list.length<=4}">
-                      <div class="right_item" v-for="(itemr,indexr) in item.list">{{itemr}}</div>
+                    <div class="left">
+                      {{getfudaiName(item.level)}}<br><i>({{item.useNum}}/{{item.totalNum}})</i></div>
+                    <div class="right" :class="{ltfour:item.itemList.length<=4}">
+                      <div class="right_item" v-for="(itemr,indexr) in item.itemList">{{itemr.awardsName}}(剩余{{itemr.totalNum-item.useNum}}张)</div>
                     </div>
                   </div>
                 </div>
@@ -32,29 +33,14 @@
   import {gameReceiveRecord} from '../utils/api'
 
   export default {
+    props:{
+      list:{
+        type:Array,
+        default:()=>[]
+      }
+    },
     data() {
       return {
-        list: [{
-          level: 1,
-          info: '2/30',
-          list: ["100元话费券(还剩1张）", "200元京东券(还剩1张）", "500元京东券（还剩1张）", "1000元京东券(还剩1张）"]
-        },
-          {
-            level: 2,
-            info: '2/30',
-            list: ["30000金叶子(还剩1张）", "30元京东卡(还剩1张）", "100g鱼干(还剩1张）", "500元京东券(还剩1张）", "30000金叶子(还剩1张）", "30元京东卡(还剩1张）", "100g鱼干(还剩1张）"]
-          },
-          {
-            level: 3,
-            info: '2/30',
-            list: ["5元话费券(还剩1张）", "5000金叶子(还剩1张）", "8元话费券(还剩1张）", "8888金叶子(还剩1张）", "8元京东券(还剩1张）", "10元话费券(还剩1张）", "50g鱼干(还剩1张）", "15元京东券(还剩1张）", "30元话费券(还剩1张）"]
-          },
-          {
-            level: 4,
-            info: '2/30',
-            list: ["5元话费券(还剩1张）", "5000金叶子(还剩1张）", "8元话费券(还剩1张）", "8888金叶子(还剩1张）", "8元京东券(还剩1张）", "10元话费券(还剩1张）", "50g鱼干(还剩1张）", "15元京东券(还剩1张）", "30元话费券(还剩1张）", "15元京东券(还剩1张）", "30元话费券(还剩1张）"]
-          }
-        ],
         isShowPop: false
       }
     },
@@ -62,36 +48,27 @@
       scroll
     },
     methods: {
-      besure() {
-        GLOBALS.buriedPoint('1207003021', '春节红包-红包记录-关闭')
-        this.$emit('close')
-      },
-      close(flag) {
-        if (!flag) {//关闭按钮
-
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0156001800')//H5平台-翻牌活动-弹窗反馈-翻牌点记录弹窗-获取更多翻牌点点击
-          this.$emit('package')
-        }
-        this.$emit('close')
-      },
       showPop() {
         this.isShowPop = true
-        GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
+      },
+      getfudaiName(level){
+        if(level==1){
+          return '福禄福袋'
+        }else if(level==2){
+          return '紫云福袋'
+        }else if(level==3){
+          return '金龙福袋'
+        }else{
+          return '神运福袋'
+        }
       }
-    },
-    async mounted() {
-      // let {code,data}=await gameReceiveRecord()
-      // if(code==200){
-      //   this.list=data
-      // }
     }
   }
 </script>
 <style rel="stylesheet/less" lang="less" scoped>
   .rule {
     position: fixed;
-    top: 1.64rem;
+    top: 1.3rem;
     left: 50%;
     margin-left: -2.9rem;
     img {
@@ -154,7 +131,8 @@
                   text-align: center;
                   font-weight: bold;
                   background: #FF7F32;
-                  padding: 0 .2rem;
+                  padding: 0 .22rem;
+                  text-align: center;
                   box-sizing: border-box;
                   display: flex;
                   flex-direction: column;
@@ -163,8 +141,8 @@
                   border-radius: .2rem 0 0 .2rem;
                   i{
                     font-weight: 400;
-                    margin-top: .1rem;
                     font-size: .18rem;
+                    margin-top: .1rem;
                   }
                 }
                 .right{

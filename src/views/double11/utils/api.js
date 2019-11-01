@@ -15,7 +15,7 @@ export const betAwards = async () => {
  */
 
 export const betSingle = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet', params)
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/bet', params)
   return data
 }
 /**
@@ -33,7 +33,7 @@ export const betProgress = async () => {
  */
 
 export const gameProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-progress')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/game-progress')
   return data
 }
 /**
@@ -70,7 +70,19 @@ export const userInfo = async () => {
  */
 
 export const showLeaguePacksList = async () => {
-  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/opencard')
+  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/showLeaguePacksList/luckybag')
+  return data
+}
+export const taskProgressInfo = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/task-progress')
+  return data
+}
+export const taskReceive = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/task-receive')
+  return data
+}
+export const userIncrement = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/user-increment')
   return data
 }
 /**
@@ -88,7 +100,7 @@ export const userRanking = async () => {
  */
 
 export const gameReceive = async (params) => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/game-receive',params)
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/game-receive',params)
   return data
 }
 /**
@@ -97,7 +109,7 @@ export const gameReceive = async (params) => {
  */
 
 export const gameReceiveRecord = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-receive-record')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/user-play-record')
   return data
 }
 

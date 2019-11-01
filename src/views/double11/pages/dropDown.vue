@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="pop-mask" v-if="isDropDown" @touchmove.prevent></div>
@@ -24,84 +23,77 @@
   </div>
 </template>
 <script type="text/javascript">
-import { userInfo } from '../utils/api'
-export default {
-  data () {
-    return {
-      curIndex: 0,
-      isDropDown: false,
-      remanentNum: 0,
-      totalNum: 0
-    }
-  },
-  props: {
-    rulesExplain: {
-      type: String,
-      default: ''
-    },
-    data:{
-      type: Object,
-      default: null
-    }
-  },
-  components: {
-    getHammer: () => import('./component/getHammer'),
-    profit: () => import('./component/profit')
-  },
-  mounted () {
-    this.init()
-  },
-  methods: {
-    innerHandleTab (idx) {
-      if (idx) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001466')   // H5平台-砸金蛋-获取锤子大浮层-点击有奖排行榜
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001470')   // H5平台-砸金蛋-有奖排行榜大浮层-点击获取锤子
+  import {userInfo} from '../utils/api'
+
+  export default {
+    data() {
+      return {
+        curIndex: 0,
+        isDropDown: false,
+        remanentNum: 0,
+        totalNum: 0
       }
-      this.handleTab(idx)
     },
-    outHandleTab (idx) {
-      GLOBALS.marchSetsPoint('A_H5PT0156001774')//H5平台-翻牌活动-中间区域-获得更多翻牌点点击
-      this.handleTab(idx)
+    props: {
+      rulesExplain: {
+        type: String,
+        default: ''
+      },
+      data: {
+        type: Object,
+        default: null
+      }
     },
-    handleTab (idx) {
-      this.isDropDown = true
-      this.curIndex = idx
+    components: {
+      getHammer: () => import('./component/getHammer')
     },
-    async init () {
-      // const { code, data } = await userInfo()
-      // if (code === 200) {
-        this.remanentNum = this.data.remanentNum
-        this.totalNum = this.data.totalNum
-      // }
-    },
-    close () {
-      this.isDropDown = false
-      GLOBALS.marchSetsPoint('A_H5PT0156001775')//H5平台-翻牌活动-底部弹窗-点击收起点击
+    mounted() {
       this.init()
     },
-    getUserInfo(){
-      this.$emit('getUserInfo')
+    methods: {
+      outHandleTab(idx) {
+        GLOBALS.marchSetsPoint('A_H5PT0209002206')//获得更多点击
+        this.handleTab(idx)
+      },
+      handleTab(idx) {
+        this.isDropDown = true
+        this.curIndex = idx
+      },
+      async init() {
+        this.remanentNum = this.data.remanentNum
+        this.totalNum = this.data.totalNum
+      },
+      close() {
+        this.isDropDown = false
+        this.init()
+      },
+      getUserInfo() {
+        this.$emit('getUserInfo')
+      }
     }
   }
-}
 </script>
 <style lang="less" scoped>
-@import "./css/dropDown.less";
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.5s;
-}
-.fade-enter {
-  transform: translateY(100%);
-}
-.fade-enter-to {
-  transform: translateY(0);
-}
-.fade-leave {
-  transform: translateY(0);
-}
-.fade-leave-to {
-  transform: translateY(100%);
-}
+  @import "./css/dropDown.less";
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all 0.5s;
+  }
+
+  .fade-enter {
+    transform: translateY(100%);
+  }
+
+  .fade-enter-to {
+    transform: translateY(0);
+  }
+
+  .fade-leave {
+    transform: translateY(0);
+  }
+
+  .fade-leave-to {
+    transform: translateY(100%);
+  }
 </style>

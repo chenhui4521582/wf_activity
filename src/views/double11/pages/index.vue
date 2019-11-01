@@ -2,170 +2,96 @@
   <div class="eggs-container">
     <!--返回-->
     <img src="../images/back.png" class="e-back" @click.stop="back">
-    <!--规则-->
-    <rule></rule>
-    <!--翻牌点记录-->
-    <record></record>
-    <richrecord ref="richrecord"></richrecord>
-    <img src="../images/title.png" alt="" class="header-title">
-    <h4 class="e-time">活动时间：2019年10月24日-10月31日</h4>
-    <div class="container">
-      <div class="container_top">
-        <div class="container_top_all" @click="$refs.richrecord.showPop()"></div>
-        <div class="container_top_content">
-          <div class="container_top_item" v-for="(item,index) in currentItemRiches">
-            <div class="item">
-              <div class="pic" :class="{level2:level==2,level3:level==3,level4:level==4}">
-                <img :src="item.awardImage" alt="">
+    <template v-if="actInfoData&&actInfoData.state==1">
+      <!--规则-->
+      <rule :ruleMain="actInfoData.timeline"></rule>
+      <!--记录-->
+      <record></record>
+      <richrecord ref="richrecord" :list="actInfoData.awardsPoolList"></richrecord>
+      <img src="../images/title.png" alt="" class="header-title">
+      <h4 class="e-time">活动时间：{{actInfoData.timeline}}</h4>
+      <div class="container">
+        <div class="container_top">
+          <div class="container_top_all" @click="prizeAll"></div>
+          <div class="container_top_content">
+            <div class="container_top_item" v-for="(item,index) in currentItemRiches">
+              <div class="item">
+                <div class="pic" :class="{level2:level==2,level3:level==3,level4:level==4}">
+                  <img :src="`${require(`../images/demoimg/${item.awardsType}.png`)}`" alt="">
+                </div>
+                <div class="txt">{{item.awardsName}}</div>
               </div>
-              <div class="txt">{{item.awardName}}</div>
+              <div class="item">剩余{{item.totalNum-item.useNum}}张</div>
             </div>
-            <div class="item">剩余1个</div>
           </div>
         </div>
-      </div>
-      <div class="container_bottom">
-        <swiper :options="swiperOption" class="swiper-no-swiping" ref="mySwiper" v-if="list.length">
-          <swiper-slide v-for="(item,index) in list" :key="index">
-            <img :src="`${require(`../images/rich_pic${index+1}.png`)}`" alt="">
-          </swiper-slide>
-          <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-        <div class="swiper-button-prev" slot="button-prev" @click="prevClick"></div>
-        <div class="swiper-button-next" slot="button-next" @click="nextClick"></div>
-      </div>
-    </div>
-    <div class="bottombtn">
-      <div class="item">
-        <div class="btn_item">
-          <i>随机开启1次</i>(消耗2张福袋券）
-        </div>
-        <div class="btn_item">
-          <i>随机开启10次</i>(消耗20张福袋券）
+        <div class="container_bottom">
+          <swiper :options="swiperOption" class="swiper-no-swiping" ref="mySwiper" v-if="actInfoData.awardsPoolList.length">
+            <swiper-slide v-for="(item,index) in actInfoData.awardsPoolList" :key="index">
+              <img :src="`${require(`../images/rich_pic${index+1}.png`)}`" alt="">
+            </swiper-slide>
+          </swiper>
+          <div class="swiper-button-prev" slot="button-prev" @click="prevClick"></div>
+          <div class="swiper-button-next" slot="button-next" @click="nextClick"></div>
         </div>
       </div>
-      <div class="item">当前剩余福袋券：40张</div>
-    </div>
-    <!--获得更多翻牌点-->
-    <drop-down ref="dropDown" :data="userData" @getUserInfo="getUserInfo"></drop-down>
+      <div class="bottombtn">
+        <div class="item" @click.stop.prevent="gotoprize(0)">
+          <div class="btn_item">
+            <i>随机开启1次</i>(消耗2张福袋券）
+          </div>
+          <div class="btn_item" @click.stop.prevent="gotoprize(1)">
+            <i>随机开启10次</i>(消耗20张福袋券）
+          </div>
+        </div>
+        <div class="item">当前剩余福袋券：{{actInfoData.remanentNum}}张</div>
+      </div>
+      <!--获得更多-->
+      <drop-down ref="dropDown" :data="actInfoData" @getUserInfo="getActInfo"></drop-down>
+    </template>
+    <comPop :flag="flag" :have-gif="haveGif" :ticketNum="ticketNum" ref="comPop" :list="prizeData" @close="flag=0"></comPop>
   </div>
 </template>
 <script type="text/javascript">
 import 'vue-awesome-swiper/node_modules/swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import { betProgress,userInfo,gameUpgradeStage,gameResetProgress} from '../utils/api'
+import { betSingle,userIncrement} from '../utils/api'
 export default {
   name: 'index',
   data () {
     return {
-      styleItemsArr: [],
       level:1,
-      isReset:false,
-      isshowrecord:false,
-      flag:0,//1.首次赠送 2.恭喜升级 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置-翻倍卡-提醒弹窗 8.抱歉不能升级 9.是否升级中级场 10.是否升级高级场 11 升级-翻倍卡-提醒弹窗
-      userData:null,
-      cardawardsdata:[],
-      isBeginAnimate:false,//牌是否要有开场动画
+      flag:0,//1.福袋券不足 2.购买成功 3.十连抽 4.单抽
       isEnd:false,
       countdown: {// 倒计时
         time: ''
       },
-      list:[{
-        level:1,
-        list:[{
-          awardName:'2000京东卡',
-          awardImage:`${require('../images/demoimg/jd.png')}`
-        },
-          {
-            awardName:'2000话费券',
-            awardImage:`${require('../images/demoimg/bill.png')}`
-          },
-          {
-            awardName:'2000鱼干',
-            awardImage:`${require('../images/demoimg/fish.png')}`
-          },
-          {
-            awardName:'2000金叶子',
-            awardImage:`${require('../images/demoimg/leaf.png')}`
-          }]
-      },{
-        level:2,
-        list:[{
-          awardName:'3000京东卡',
-          awardImage:`${require('../images/demoimg/jd.png')}`
-        },
-          {
-            awardName:'3000话费券',
-            awardImage:`${require('../images/demoimg/bill.png')}`
-          },
-          {
-            awardName:'3000鱼干',
-            awardImage:`${require('../images/demoimg/fish.png')}`
-          },
-          {
-            awardName:'3000金叶子',
-            awardImage:`${require('../images/demoimg/leaf.png')}`
-          }]
-      },{
-        level:3,
-        list:[{
-          awardName:'4000京东卡',
-          awardImage:`${require('../images/demoimg/jd.png')}`
-        },
-          {
-            awardName:'4000话费券',
-            awardImage:`${require('../images/demoimg/bill.png')}`
-          },
-          {
-            awardName:'4000鱼干',
-            awardImage:`${require('../images/demoimg/fish.png')}`
-          },
-          {
-            awardName:'4000金叶子',
-            awardImage:`${require('../images/demoimg/leaf.png')}`
-          }]
-      },{
-        level:4,
-        list:[{
-          awardName:'5000京东卡',
-          awardImage:`${require('../images/demoimg/jd.png')}`
-        },
-          {
-            awardName:'5000话费券',
-            awardImage:`${require('../images/demoimg/bill.png')}`
-          },
-          {
-            awardName:'5000鱼干',
-            awardImage:`${require('../images/demoimg/fish.png')}`
-          },
-          {
-            awardName:'5000金叶子',
-            awardImage:`${require('../images/demoimg/leaf.png')}`
-          }]
-      }],
       options: {
         // autoplay:true,
         slidesPerView: 'auto',
-        spaceBetween: 30,
+        spaceBetween: 0,
         loop: true,
-        loopFillGroupWithBlank: true,
-        // pagination: {
-        //   el: '.swiper-pagination',
-        //   clickable: false
-        // },
+        loopFillGroupWithBlank: false,
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         },
         centeredSlides: true
       },
-      timer:null
+      timer:null,
+      actInfoData:null,
+      ticketNum:0,
+      prizeData:[],
+      haveGif:false
     }
   },
   computed:{
     currentItemRiches(){
-      let item=this.list.filter(item=>item.level==this.level)[0]
-      return item&&item.list||[]
+      if(this.actInfoData){
+        let item=this.actInfoData.awardsPoolList.filter(item=>item.level==this.level)[0]
+        return (item&&item.itemList||[]).slice(0,4)
+      }
+      return []
     },
     fontsize(){
       return parseFloat(localStorage.getItem('fontsize')||'100')
@@ -175,17 +101,13 @@ export default {
     },
     swiperOption() {
       return Object.assign(this.options, {
-        spaceBetween: 0.1 * this.fontsize
+        spaceBetween: 0 * this.fontsize
       })
     },
   },
   components: {
     rule: () => import('../components/rule'),
-    message: () => import('../components/message'),
     dropDown: () => import('./dropDown'),
-    package: () => import('../components/package'),
-    gonglue: () => import('../components/gonglue'),
-    card: () => import('../components/card'),
     record: () => import('../components/record'),
     richrecord: () => import('../components/richrecord'),
     comPop:() => import('../components/comPop'),
@@ -197,7 +119,7 @@ export default {
   },
   methods: {
     async getActInfo(){
-      let {code,data}=(await this.axios.post('//ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
+      let {code,data}=(await this.axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/activity-info')).data
       if(code==200){
         this.isEnd=data.state!=1
         !this.countdown.time && data.countdown && GLOBALS.remainingTime(
@@ -205,146 +127,15 @@ export default {
           data.countdown,
           this.countdown
         )
+        this.actInfoData=data
       }
-    },
-    async sureCard(flag){//flag1 有翻倍卡-确定重置 flag2 有翻倍卡-确定升级
-      if(flag==1){//确定重置
-        let {code,data,message}=await gameResetProgress()
-        if(code==200){
-          await this.getBetProgress()
-          await this.getUserInfo()
-          setTimeout(()=>{
-            this.isReset=true
-          },1000)
-        }else{
-          this.$toast.show({
-            message:message,
-            duration:2000
-          })
-        }
-      }else{//确定升级
-        if(this.level==1){
-          this.flag=9
-        }else{
-          this.flag=10
-        }
-      }
-    },
-    rankClick(flag){
-      GLOBALS.marchSetsPoint(flag?'A_H5PT0156001771':'A_H5PT0156001767')//H5平台-翻牌活动-中间区域-排行榜按钮点击
-      this.$router.push('/after')
-    },
-    //恭喜开出和牌点数不足弹窗
-    getcardawards(arr){
-      if(arr){
-        this.cardawardsdata=arr
-        if(arr.length==2){
-          this.flag=6
-        }else{
-          if(arr[0].doubleState){
-            this.flag=5
-          }else{
-            this.flag=4
-          }
-        }
-        this.getBetProgress()
-      }else{
-        this.flag=3
-      }
-    },
-    //重置按钮点击
-    async resetClick(){
-      GLOBALS.marchSetsPoint('A_H5PT0156001773')//H5平台-翻牌活动-中间区域-重置按钮点击
-      if(this.userData.haveDoubleCard){//拥有翻倍卡
-        this.flag=7
-      }else{
-        let {code,data,message}=await gameResetProgress()
-        if(code==200){
-          await this.getBetProgress()
-          setTimeout(()=>{
-            this.isReset=true
-          },1000)
-        }else{
-          this.$toast.show({
-            message:message,
-            duration:2000
-          })
-        }
-      }
-    },
-    //升级按钮点击
-    // async gameUpgradeStageClick(){
-    //   if(this.userData.nextStageConsumeNum>this.userData.remanentNum){
-    //     this.flag=8//不够升级
-    //   }else{
-    //     if(this.userData.haveDoubleCard){//拥有翻倍卡
-    //       this.flag=11
-    //     }else{
-    //       if(this.level==1){
-    //         this.flag=9
-    //       }else{
-    //         this.flag=10
-    //       }
-    //     }
-    //   }
-    // },
-    //确定升级
-    async sureGrade(){
-      let {code,data,message}=await gameUpgradeStage()
-      if(code==200){
-        this.flag=2
-        //活动信息
-        this.getUserInfo()
-        //获取翻牌数据
-        this.getBetProgress()
-      }else{
-        this.$toast.show({
-          message:message,
-          duration:2000
-        })
-      }
-    },
-    //活动信息
-    async getUserInfo(){
-      let {code,data}=await userInfo()
-      if(code==200){
-        this.userData=data
-        // this.level=data.stage
-        if(data.firstLoad){//首次进入免增1翻牌点
-          this.flag=1
-        }
-      }
-    },
-    //关闭通用弹窗
-    async closecomPop(flag){
-      //活动信息
-      await this.getUserInfo()
-      // //获取翻牌数据
-      // await this.getBetProgress()
-      this.flag=0
-    },
-    //展示翻牌点记录
-    showrecord(){
-      GLOBALS.marchSetsPoint('A_H5PT0156001766')//H5平台-翻牌活动-顶部区域-翻牌点记录点击
-      this.isshowrecord=true
     },
     //点击返回
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0156001768')   //点击返回
-      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
-    },
-    //获取翻牌数据
-    async getBetProgress () {
-      const { code, data } = await betProgress()
-      if (code === 200) {
-        this.styleItemsArr = data
-        if(location.href.includes('from=')){//从入口进入动效条件无免增1翻牌点且牌中无成功翻开的数据
-          this.isBeginAnimate=this.flag!=1&&data.filter(item=>item.status).length==0
-        }
-      }
+      // location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      history.back(-1)
     },
     async prevClick(){
-      await GLOBALS.marchSetsPoint('A_LOADINGH50112000779',{net:'net',entrance:this.platSource,plat_version:1})//H5平台-中间页-左箭头点击
       if(this.level==1){
         this.level=4
       }else{
@@ -352,26 +143,64 @@ export default {
       }
     },
     async nextClick(){
-      await GLOBALS.marchSetsPoint('A_LOADINGH50112000778',{net:'net',entrance:this.platSource,plat_version:1})//H5平台-中间页-右箭头点击
-      if(this.level==4){
-        this.level=1
+      setTimeout(()=>{
+        if(this.level==4){
+          this.level=1
+        }else{
+          this.level=this.level+1
+        }
+      })
+    },
+    async gotoprize(flag){
+      GLOBALS.marchSetsPoint(flag?'A_H5PT0209002204':'A_H5PT0209002203')//H5平台-双十一超值福袋活动-随机开启1次点击 H5平台-双十一超值福袋活动-随机开启10次点击
+      if((flag&&this.actInfoData.remanentNum<20)||(!flag&&this.actInfoData.remanentNum<2)){
+        GLOBALS.marchSetsPoint('A_H5PT0209002215')//H5平台-双十一超值福袋活动-福袋券不足-引导购买页面加载完成
+        this.flag=1
+        this.$refs.comPop.showPop()
       }else{
-        this.level=this.level+1
+        this.haveGif = true
+        try{
+          let {data,code}=await betSingle({value:flag?10:1})
+          if(code==200){
+            this.prizeData=data
+            if(flag){//多抽
+              this.flag=3
+            }else{//单抽
+              this.flag=4
+            }
+            GLOBALS.marchSetsPoint('A_H5PT0209002212')//H5平台-双十一超值福袋活动-福袋抽取页面加载完成
+            setTimeout(()=>{
+              this.haveGif = false
+              this.$refs.comPop.showPop()
+              this.getActInfo()
+            },1600)
+          }
+        }catch (e) {
+          this.haveGif = false
+        }
       }
+    },
+    async getuserIncrement(){
+      let {data,code}=await userIncrement()
+      if(code==200&&data){
+        this.ticketNum=data
+        this.flag=2
+      }
+    },
+    prizeAll(){
+      GLOBALS.marchSetsPoint('A_H5PT0209002205')//全览按钮点击
+      this.$refs.richrecord.showPop()
     }
   },
   async mounted () {
-    location.href.includes('from=')&&GLOBALS.marchSetsPoint('P_H5PT0156',{
+    location.href.includes('from=')&&GLOBALS.marchSetsPoint('P_H5PT0209',{
       source_address:GLOBALS.getUrlParam('from')||''
-    })//H5平台-翻牌活动-页面加载完成
+    })//页面加载完成
     await this.getActInfo()
     //活动信息
-    await this.getUserInfo()
-    //获取翻牌数据
-    await this.getBetProgress()
+    await this.getuserIncrement()
     //活动地址：shufflinggame.html?from=index
-    history.pushState({}, '', location.href.split(/\?|\&/)[0])//shufflinggame.html
-    // GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
+    history.pushState({}, '', location.href.split(/\?|\&/)[0])
     document.querySelectorAll('.swiper-wrapper')[0]&&(document.querySelectorAll('.swiper-wrapper')[0].style["align-items"]='center')
   },
   watch: {
@@ -429,15 +258,15 @@ export default {
               align-items: center;
               justify-content: center;
               border-radius:.1rem .1rem 0 0;
-              background:rgba(233,81,180,1);
+              background:rgba(86,89,222,1);
               &.level2{
-                background:rgba(86,89,222,1);
-              }
-              &.level3{
                 background:rgba(175,185,214,1);
               }
-              &.level4{
+              &.level3{
                 background:rgba(225,176,35,1);
+              }
+              &.level4{
+                background:rgba(233,81,180,1);
               }
               img{
                 width: .78rem;
@@ -504,8 +333,8 @@ export default {
       }
 
       .swiper-slide-next, .swiper-slide-prev {
-        width: 4.67*0.5rem  !important;
-        height: 5.47*0.5rem !important;
+        /*width: 50%  !important;*/
+        height: 50% !important;
         opacity: 0.55  !important;
         top: .6rem !important;
       }
@@ -551,8 +380,9 @@ export default {
   }
   .bottombtn{
     position: absolute;
-    top:9.06rem;
+    top:9rem;
     width: 100%;
+    padding-bottom: .5rem;
     .item:nth-child(1){
       display: flex;
       justify-content: center;
@@ -585,7 +415,7 @@ export default {
       }
     }
     .item:nth-child(2){
-      margin-top: .18rem;
+      margin-top: .1rem;
       font-size:.24rem;
       font-weight:400;
       color:rgba(255,255,255,1);
