@@ -4,7 +4,6 @@ import "babel-polyfill";
 import Vue from 'vue'
 import axios from './http'
 import App from './App'
-import router from './router'
 import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
 
@@ -30,7 +29,6 @@ Vue.filter('filterPrice', function (value) {
 new Vue({
   el: '#app',
   axios,
-  router,
   template: '<App/>',
   components: { App }
 })

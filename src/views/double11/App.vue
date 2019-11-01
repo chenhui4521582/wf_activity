@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <index></index>
   </div>
 </template>
 
@@ -9,6 +9,9 @@
   import '../../common/js/window.js';
 
   export default {
-    name: 'App'
+    name: 'App',
+    components:{
+      index:()=>import('./pages/index')
+    }
   }
 </script>

@@ -114,9 +114,6 @@ export default {
     swiper,
     swiperSlide,
   },
-  async beforeRouteEnter (to, from, next) {
-    next()
-  },
   methods: {
     async getActInfo(){
       let {code,data}=(await this.axios.post('//ops-api.beeplaying.com/ops/api/lucky-bag/activity-info')).data
@@ -199,8 +196,7 @@ export default {
     await this.getActInfo()
     //活动信息
     await this.getuserIncrement()
-    //活动地址：shufflinggame.html?from=index
-    history.pushState({}, '', location.href.split(/\?|\&/)[0])
+    //活动地址：double11.html?from=index
     document.querySelectorAll('.swiper-wrapper')[0]&&(document.querySelectorAll('.swiper-wrapper')[0].style["align-items"]='center')
   },
   watch: {
