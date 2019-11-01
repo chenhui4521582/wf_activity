@@ -121,6 +121,7 @@ export default {
       localStorage.BILL_DETAILS = JSON.stringify(data.productList)
       let query = {
         ...this.$route.query,
+        source: 'billshop',
         accountBalance: this.accountBalance,
         phyAwardsType: data.productList[0].phyAwardsType,
         phyAwardsId: data.productList[0].phyAwardsId,
