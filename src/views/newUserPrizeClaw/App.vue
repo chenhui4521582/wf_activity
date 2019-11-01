@@ -495,7 +495,7 @@ export default {
     width: 6.8rem;
     margin: 0.22rem auto 0;
     .task-content {
-      background: url("./img/wcrw-bj02.png") repeat-y center top / 100%;
+      background: #faebf9 url("./img/wcrw-bj02.png") repeat center top / 100%;
       margin: -1px 0;
       padding-top: 0.32rem;
       h4 {
