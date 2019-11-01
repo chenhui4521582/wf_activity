@@ -102,12 +102,14 @@
           <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
           <template v-if="isShowOther">
-            <div class="wrap" v-if="!MasterCostDown">
-              <cost-down :type="2" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
-              <!-- 大师任务 -->
-              <crush-master-task v-if="showCrushMasterTask " :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
-              <!-- 王者任务 -->
-              <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+            <div class="wrap" >
+              <cost-down :type="2" @masterTaskStatus="masterTaskStatus"></cost-down>
+              <div class="wrapper" v-if="MasterCostDown">
+                <!-- 大师任务 -->
+                <crush-master-task v-if="showCrushMasterTask " :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+                <!-- 王者任务 -->
+                <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+              </div>
             </div>
           </template>
           <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems&&(isShowOther||currentGamesItems[0].flag)">
@@ -332,11 +334,11 @@ export default {
     },
     // 显示大师任务
     showCrushMasterTask () {
-      return !this.MasterCostDown && this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
+      return this.crushTaskList && this.crushTaskList.achievementType == 1 && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示王者任务
     showKingTask () {
-      return !this.MasterCostDown && this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
+      return this.crushTaskList && this.crushTaskList.achievementType == 2 && !this.crushTaskList.lock && (this.crushTaskList.hasFinishedTask < this.crushTaskList.totalTask || this.currentMedalIndex == 3) && this.newTaskItems && !this.newTaskItems.isNew && GLOBALS.isWhiteUser
     },
     // 显示新手任务
     showNewUserTask () {
@@ -1060,8 +1062,8 @@ export default {
     gotoweekbetting(){
       parent.location.href='//wap.beeplaying.com/activities/weekbetting.html?vt='+new Date().getTime()
     },
-    hideMasterTask() {
-      this.MasterCostDown = true
+    masterTaskStatus(status) {
+      this.MasterCostDown = status
     }
   }
 }

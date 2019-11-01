@@ -1,5 +1,5 @@
 <template>
-  <div class="cost-down">
+  <div class="cost-down" v-if="showFlag">
     <div class="task" v-if="type==2">
       <span class="count-down">
         维护倒计时&nbsp;{{countdownTime}}&nbsp;
@@ -27,11 +27,14 @@
   </div>
 </template>
 <script>
+import _get from 'lodash.get'
 import commonPopNew from '@/components/commonPopNew/commonPopNew'
 export default {
   name: 'costDown',
-  props: ['countDownNum', 'type'],
+  props: ['type'],
   data: ()=> ({
+    showFlag: false,
+    countDownNum: '',
     countdownTime: '',
     showRule: false
   }),
@@ -39,6 +42,29 @@ export default {
     commonPopNew
   },
   methods: {
+    _getCostDown() {
+      let url = '//platform-api.beeplaying.com/task/api/achievement/hide'
+      this.axios.post(url).then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code === 200) {
+          this.countDownNum = _get(res, 'data.data.countdown') 
+          let showFlag = _get(res, 'data.data.showFlag')
+          if(!showFlag) {
+            if(this.countDownNum > 0) {
+              this.countDown(this.countDownNum)
+              this.$emit('masterTaskStatus', true)
+              this.showFlag = true
+            }else {
+              this.$emit('masterTaskStatus', false)
+              this.showFlag = false
+            }
+          }else {
+            this.showFlag = false
+            this.$emit('masterTaskStatus', true)
+          }
+        }
+      })
+    },
     countDown(data) {
       if (!data) return false
       let date = data / 1000
@@ -47,7 +73,8 @@ export default {
         if (date <= 0) {
           date = 0
           clearInterval(this.timer)
-          this.$emit('hideMasterTask')
+          this.$emit('masterTaskStatus', false)
+          this.showFlag = false
         }
         let day = Math.floor(date / 86400)
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
@@ -72,12 +99,7 @@ export default {
     }
   },
   mounted() {
-    this.countDownNum && this.countDown(this.countDownNum)
-  },
-  watch: {
-    countDownNum(value) {
-      value && this.countDown(value)
-    }
+    this._getCostDown()
   }
 }
 </script>

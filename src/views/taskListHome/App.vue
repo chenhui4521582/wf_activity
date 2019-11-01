@@ -8,28 +8,30 @@
     </div>
     <!-- tab -->
     <task-tab v-model="tabSelected" :is-show-red-point="isShowRedPoint" />
-    <div class="task-wrap" v-if="!MasterCostDown">
-      <cost-down v-if="!MasterCostDown" :countDownNum="countdown" @hideMasterTask="hideMasterTask"></cost-down>
-      <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
-        <template v-if="tabSelected===0">
-          <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
-        <template v-if="tabSelected===1">
-          <kingTask v-if="showKingTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-          <div @click="changeKingLock(item)">
-            <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
-          </div>
-        </template>
+    <div class="task-wrap">
+      <cost-down @masterTaskStatus="masterTaskStatus"></cost-down>
+      <div class="wrap" v-if="MasterCostDown">
+        <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
+          <template v-if="tabSelected===0">
+            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
+          <template v-if="tabSelected===1">
+            <kingTask v-if="showKingTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <div @click="changeKingLock(item)">
+              <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
+            </div>
+          </template>
 
-      </div>
-      <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
-        <template v-if="tabSelected===0">
-          <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
-        <template v-if="tabSelected===1">
-          <kingTask v-if="showKingTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
+        </div>
+        <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
+          <template v-if="tabSelected===0">
+            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
+          <template v-if="tabSelected===1">
+            <kingTask v-if="showKingTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
 
+        </div>
       </div>
     </div>
     <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
@@ -59,7 +61,6 @@ export default {
       curChannel: localStorage.getItem('APP_CHANNEL'),
       tabSelected: localStorage.getItem('TAB_TASK_INDEX') ? 1 : 0,
       maskShow: false,
-      countdown: 5000,
       MasterCostDown: false
     }
   },
@@ -358,8 +359,8 @@ export default {
     showKingTaskNoLock (item) {
       return item.achievementType == 2 && item.lock
     },
-    hideMasterTask() {
-      this.MasterCostDown = true
+    masterTaskStatus(status) {
+      this.MasterCostDown = status
     }
   }
 }
