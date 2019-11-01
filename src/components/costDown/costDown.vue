@@ -2,13 +2,13 @@
   <div class="cost-down" v-if="showFlag">
     <div class="task" v-if="type==2">
       <span class="count-down">
-        维护倒计时&nbsp;{{countdownTime}}&nbsp;
+        维护倒计时{{countdownTime}}
       </span>
       <span class="rule-icon" @click="openRule"></span>
     </div>
     <div class="task-home" v-else>
       <span class="count-down">
-        维护倒计时&nbsp;{{countdownTime}}&nbsp;
+        维护倒计时{{countdownTime}}
       </span>
       <span class="rule-icon" @click="openRule"></span>
     </div>
@@ -20,7 +20,7 @@
       @close="hideRule"
     >
       <div class="text">
-        成就任务即将在<span>{{countdownTime}}</span>进行维护，届时成就任务将不可见，请及时领取奖励。<br>
+        成就任务即将在<span>{{countdownTime}}</span>之后进行维护，届时成就任务将不可见，请及时领取奖励。<br>
         未领取奖励将在维护完成后才能领取。
       </div>
     </commonPopNew>
@@ -119,7 +119,9 @@ export default {
     background:rgba(163,58,77,1);
     border-radius:0 0 0 .20rem;
     .count-down{
-      font-size: .22px;
+      margin-right: .1rem;
+      white-space: nowrap;
+      font-size: .22rem;
       color: #FEDFAC;
       line-height: 1;
     }
@@ -139,7 +141,9 @@ export default {
     background:#A33A4D;
     border-radius: .04rem;
     .count-down{
-      font-size: .22px;
+      margin-right: .1rem;
+      white-space: nowrap;
+      font-size: .22rem;
       color: #FEDFAC;
       line-height: 1;
     }
