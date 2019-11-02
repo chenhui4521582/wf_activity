@@ -39,8 +39,8 @@
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
         <div class="desc" style="font-size: .26rem">
-          您将是第<i>{{num+1}}</i>位报名成功的用户<br>
-          报名成功就有机会瓜分千元话费奖励
+          付费任意金额即可报名成功<br/>
+          每天{{timetxt}}瓜分千元红包
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
         <div class="close" @click="close(1)"></div>

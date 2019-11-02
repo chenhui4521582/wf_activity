@@ -349,6 +349,9 @@
       },
       zhongjidajiangImgClick(normalState,state){
         if([2,3,4,5].includes(normalState)){
+          if(normalState==2){
+            this.appointmentBonus(false)
+          }
           this.qianghongbaoclick(0)
         }
         if(state==3){
