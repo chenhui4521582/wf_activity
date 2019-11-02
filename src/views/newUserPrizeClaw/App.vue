@@ -228,24 +228,28 @@ export default {
       if (this.step) {
         return false
       } else {
+        let _this = this
         this.step = 2
         let actIndex = this.currentIndex > 4 ? (this.currentIndex + 2) % 7 : this.currentIndex + 3
         this.$set(this.imgList, actIndex, 0)
         this.otherTime = setTimeout(() => {
-          clearInterval(this.clawTimer)
-          clearTimeout(this.otherTime)
-          this.otherTime = setTimeout(() => {
-            let _cIndex = this.currentIndex < 1 ? 7 : this.currentIndex - 1
-            clearTimeout(this.otherTime)
-            this.step = 1
-            if (this.list[_cIndex] === 2) {
-              this.$refs.con.childNodes[_cIndex].style.top = '-1.5rem'
+          clearInterval(_this.clawTimer)
+          clearTimeout(_this.otherTime)
+          _this.otherTime = setTimeout(() => {
+            clearTimeout(_this.otherTime)
+            let _cIndex = _this.currentIndex < 1 ? 7 : _this.currentIndex - 1
+            _this.step = 1
+            if (_this.list[_cIndex] === 2) {
+              if (!_this.$refs.con.childNodes[_cIndex].childNodes[0].src.includes('award-0')) {
+                _this.$refs.con.childNodes[_cIndex].childNodes[0].src = require('./img/award-0.png')
+              }
+              _this.$refs.con.childNodes[_cIndex].style.top = '-1.5rem'
             }
-            this.otherTime = setTimeout(() => {
-              clearTimeout(this.otherTime)
-              this.popType = true
-              this.showTurnPop()
-            }, 600)
+            _this.otherTime = setTimeout(() => {
+              clearTimeout(_this.otherTime)
+              _this.popType = true
+              _this.showTurnPop()
+            }, 500)
           }, 500)
         }, 2000)
       }
