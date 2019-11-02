@@ -336,6 +336,15 @@ export default {
         height: 50% !important;
         opacity: 0.55  !important;
         top: .6rem !important;
+        &.swiper-slide-next{
+          justify-content: flex-start !important;
+        }
+        &.swiper-slide-prev {
+          justify-content: flex-end !important;
+        }
+        img{
+          width: 50% !important;
+        }
       }
       .swiper-button-prev, .swiper-button-next {
         position: absolute !important;
