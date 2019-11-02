@@ -33,7 +33,7 @@
               <span>励</span>
             </div>
           </div>
-          <div class="info">任意报名5天即可瓜分</div>
+          <!-- <div class="info">任意报名3天即可瓜分</div> -->
         </template>
         <img src="./images/openprize.gif" alt="" v-else>
       </div>
@@ -52,7 +52,7 @@
         <div class="btn bonus_hot" @click="appointmentBonus(false)" v-if="detailData.normalState==2">
           马上报名瓜分红包
         </div>
-        <div class="btn bonus_hot" v-if="detailData.normalState==3">
+        <div class="btn bonus_hot" @click="showToast('今晚22:00来瓜分吧~')" v-if="detailData.normalState==3">
           {{countdown.time}}后瓜分红包
         </div>
         <div class="btn bonus_pre pre" v-if="detailData.normalState==4">
@@ -93,7 +93,7 @@
     <bonus-success v-if="flag" :count="flag" @close="flag=0"
                    :dataStr="detailData&&(detailData.beginDate+'-'+detailData.endDate)||''"
                    :timetxt="detailData.divideTime" :num="detailData.activityApplyNum" :dividetimetxt="detailData.ultimateDivideDate" @appointmentBonus="appointmentBonus" :makeupPackageData="makeupPackageData" :appointmentday="appointmentday" :timeline="timeline">
-      <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
+    <bonus-record :data="bonusListData" v-if="flag==2"></bonus-record>
     </bonus-success>
 
     <!--开启红包弹窗-->
@@ -137,6 +137,11 @@
       this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
       this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
       await this.myDetails()
+
+      //后端告知是否弹框
+      if(this.detailData.applyPopup){
+        this.flag = 3;
+      }      
       await this.bonusListClick()
       await GLOBALS.marchSetsPoint('A_H5PT0074001374',{
         source_address:this.getUrlParam('from')||''
@@ -286,6 +291,12 @@
         }
 
       },
+      showToast(message){
+         this.$toast.show({
+            message,
+            duration: 1500
+          })
+      },
       async appointmentBonus(isfrompop) { // 报名
         if(!isfrompop){
           GLOBALS.marchSetsPoint('A_H5PT0074001375')
@@ -366,7 +377,7 @@
     height: 11.5rem;
     left: 0;
     right: 0;
-    background: url("./images/bg.jpg");
+    background: url("./images/bg.png");
     background-size: 100% 100%;
     color: rgba(255, 255, 255, 1);
     &:before {
