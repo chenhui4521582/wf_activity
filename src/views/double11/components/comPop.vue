@@ -10,12 +10,12 @@
             <template v-if="flag==1">
               <p>福袋券不足</p>
               <p>快去买个福袋礼包补充下</p>
-              <div class="buy_btn" @click="close(this.flag)">买个福袋礼包</div>
+              <div class="buy_btn" @click="close(flag)">买个福袋礼包</div>
             </template>
             <template v-if="flag==2">
               <p>恭喜你购买礼包成功</p>
               <p>送你<i style="color:#FFCF2F">{{ticketNum}}张</i>福袋券</p>
-              <div class="buy_btn" @click="close(this.flag)">去开启福袋</div>
+              <div class="buy_btn" @click="close(flag)">去开启福袋</div>
             </template>
             <div class="content" v-if="flag==3">
               <scroll :data="list"  ref="scroll" :beforeScroll="true"
@@ -75,6 +75,7 @@
     methods: {
       close(flag) {//1.福袋券不足 2.购买成功 3.十连抽 4.单抽
         if(flag==1){
+          this.$emit('package')
           GLOBALS.marchSetsPoint('A_H5PT0209002216')//H5平台-双十一超值福袋活动-福袋券不足-引导购买页面-购买按钮点击
         }
         if(flag==2){

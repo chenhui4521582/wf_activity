@@ -49,7 +49,7 @@
       <!--获得更多-->
       <drop-down ref="dropDown" :data="actInfoData" @getUserInfo="getActInfo"></drop-down>
     </template>
-    <comPop :flag="flag" :have-gif="haveGif" :ticketNum="ticketNum" ref="comPop" :list="prizeData" @close="flag=0"></comPop>
+    <comPop :flag="flag" :have-gif="haveGif" :ticketNum="ticketNum" ref="comPop" :list="prizeData" @close="flag=0" @package="openDropDown"></comPop>
   </div>
 </template>
 <script type="text/javascript">
@@ -187,6 +187,9 @@ export default {
     prizeAll(){
       GLOBALS.marchSetsPoint('A_H5PT0209002205')//全览按钮点击
       this.$refs.richrecord.showPop()
+    },
+    openDropDown(){
+      this.$refs.dropDown.outHandleTab(0)
     }
   },
   async mounted () {

@@ -78,7 +78,7 @@
         localStorage.setItem('originDeffer', window.location.href)
         GLOBALS.marchSetsPoint(index?'A_H5PT0209002211':'A_H5PT0209002210', {recharge_rmb: item.price, product_id: item.bizId}) //礼包点击
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-        if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
+        if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap'||(window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001')) { // 好看、全民小视频
           location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
         } else {
           location.href = 'https://wap.beeplaying.com/payment/#/payment'
@@ -115,7 +115,12 @@
         }
       },
       gotocomplete() {
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+        if(window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
+          location.href = 'https://wap.beeplaying.com/xmWap/#/task'
+        }else{
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', '', true, '#/taskview')
+        }
+        // location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
       },
       detailData(val) {
         this.pUserInfo = val
