@@ -157,7 +157,7 @@ export default {
       }else{
         this.haveGif = true
         try{
-          let {data,code}=await betSingle({value:flag?10:1})
+          let {data,code,message}=await betSingle({value:flag?10:1})
           if(code==200){
             this.prizeData=data
             if(flag){//多抽
@@ -171,6 +171,12 @@ export default {
               this.$refs.comPop.showPop()
               this.getActInfo()
             },1600)
+          }else{
+            this.haveGif = false
+            this.$toast.show({
+              message: message,
+              duration: 1500
+            })
           }
         }catch (e) {
           this.haveGif = false
