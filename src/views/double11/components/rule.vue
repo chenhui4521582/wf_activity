@@ -11,7 +11,7 @@
             <div class="text"><span>2. 活动期间内,玩家可以通过以下途径获得福袋券,福袋券可用于福袋开启: 游戏内金叶消耗(斗地主、麻将、跑得快、枪火英雄、套圈不计入)、购买活动礼包、完成一定数量的每日任务(每日限一次)</span></div>
             <div class="text"><span>3. 每次开启福袋都需要消耗2张福袋券,每次开启福袋都有机会获得任意福袋中的奖励</span></div>
             <div class="text"><span>4. 每种福袋内奖励数量固定,抽到奖品会从列表中扣除数量,当一个奖品数量降到0后,不会再被抽中</span></div>
-            <div class="text"><span>5. 当用户开完全部福袋奖励后,则完成此次活动</span></div>
+            <div class="text"><span>5. 活动期间,当所有福袋内奖励被抽取完(库存为0),玩家将无法再获得奖励,额外的福袋券将在活动结束后清零。活动期间请注意自己的福袋券余额,不要浪费哟!</span></div>
             <div class="text"><span>6. 本次活动奖励为单人奖励,不予其他玩家共享库存</span></div>
           </div>
         </div>
@@ -53,7 +53,7 @@ export default {
   position: fixed;
   top: 1.64rem;
   left: 50%;
-  margin-left: -2.9rem;
+  margin-left: -3rem;
   img {
     width: 0.48rem;
     height: 1.23rem;
@@ -74,8 +74,8 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
-      width: 5.8rem;
-      height: 6.6rem;
+      width: 6rem;
+      height: 7.5rem;
       background:rgba(93,96,254,1);
       border-radius:.32rem;
       margin: 0 auto;

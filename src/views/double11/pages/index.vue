@@ -133,20 +133,22 @@ export default {
       history.back(-1)
     },
     async prevClick(){
-      if(this.level==1){
-        this.level=4
-      }else{
-        this.level=this.level-1
+      if(!this.timer){
+        this.timer = window.setTimeout(()=>{
+          this.level=parseInt(document.querySelectorAll('.swiper-slide.swiper-slide-active')[0].getAttribute('data-swiper-slide-index'))+1
+          window.clearTimeout(this.timer)
+          this.timer=null
+        },300)
       }
     },
     async nextClick(){
-      setTimeout(()=>{
-        if(this.level==4){
-          this.level=1
-        }else{
-          this.level=this.level+1
-        }
-      })
+      if(!this.timer){
+        this.timer = window.setTimeout(()=>{
+          this.level=parseInt(document.querySelectorAll('.swiper-slide.swiper-slide-active')[0].getAttribute('data-swiper-slide-index'))+1
+          window.clearTimeout(this.timer)
+          this.timer=null
+        },300)
+      }
     },
     async gotoprize(flag){
       GLOBALS.marchSetsPoint(flag?'A_H5PT0209002204':'A_H5PT0209002203')//H5平台-双十一超值福袋活动-随机开启1次点击 H5平台-双十一超值福袋活动-随机开启10次点击
