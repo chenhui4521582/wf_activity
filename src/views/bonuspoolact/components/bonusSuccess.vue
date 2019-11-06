@@ -26,9 +26,9 @@
       <!--报名成功-->
       <div class="bonus-success baomingsuccess" v-if="count==3">
         <div class="desc">
-          每日{{timetxt}}点开奖,一定要准时来哟~<br>
+          每天{{timetxt}}:00准时开奖哟~<br>
           <template v-if="appointmentday<=3">
-            任意报名3天还能瓜分终极大奖！
+            任意报名3天即有机会瓜分终极大奖!
           </template>
           <template v-else>
             任意报名5天终极大奖必中哟！
