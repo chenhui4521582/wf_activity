@@ -24,7 +24,7 @@ export default {
       default: 0
     },
     buyone: {
-      type: Boolean,
+      type: [Boolean, Number],
       default: false
     }
   },

@@ -9,26 +9,29 @@
     <!-- tab -->
     <task-tab v-model="tabSelected" :is-show-red-point="isShowRedPoint" />
     <div class="task-wrap">
-      <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
-        <template v-if="tabSelected===0">
-          <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
-        <template v-if="tabSelected===1">
-          <kingTask v-if="showKingTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-          <div @click="changeKingLock(item)">
-            <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
-          </div>
-        </template>
+      <cost-down @masterTaskStatus="masterTaskStatus"></cost-down>
+      <div class="wrap" v-if="MasterCostDown">
+        <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
+          <template v-if="tabSelected===0">
+            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
+          <template v-if="tabSelected===1">
+            <kingTask v-if="showKingTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <div @click="changeKingLock(item)">
+              <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
+            </div>
+          </template>
 
-      </div>
-      <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
-        <template v-if="tabSelected===0">
-          <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
-        <template v-if="tabSelected===1">
-          <kingTask v-if="showKingTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
-        </template>
+        </div>
+        <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
+          <template v-if="tabSelected===0">
+            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
+          <template v-if="tabSelected===1">
+            <kingTask v-if="showKingTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+          </template>
 
+        </div>
       </div>
     </div>
     <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
@@ -38,8 +41,6 @@
 
 <script>
 import { setTimeout } from 'timers';
-const taskTab = () => import("./components/taskTab.vue")
-const kingMask = () => import("./components/kingMask.vue")
 export default {
   name: 'app',
   data () {
@@ -59,8 +60,8 @@ export default {
       masterTaskNameList: ['fish-achievement', 'crush-achievement', 'bill-achievement'],
       curChannel: localStorage.getItem('APP_CHANNEL'),
       tabSelected: localStorage.getItem('TAB_TASK_INDEX') ? 1 : 0,
-      maskShow: false
-
+      maskShow: false,
+      MasterCostDown: false
     }
   },
   mounted () {
@@ -71,8 +72,9 @@ export default {
     crushTask: () => import('./components/crushTask'),
     kingTask: () => import('./components/kingTask'),
     kingNoLock: () => import('./components/kingNoLock'),
-    taskTab,
-    kingMask
+    taskTab: () => import("./components/taskTab.vue"),
+    kingMask: () => import("./components/kingMask.vue"),
+    costDown: () => import("@/components/costDown/costDown")
   },
   computed: {
     getChannel () {
@@ -356,6 +358,9 @@ export default {
     // 显示王者未解锁状态
     showKingTaskNoLock (item) {
       return item.achievementType == 2 && item.lock
+    },
+    masterTaskStatus(status) {
+      this.MasterCostDown = status
     }
   }
 }

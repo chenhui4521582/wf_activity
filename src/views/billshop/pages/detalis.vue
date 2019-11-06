@@ -102,7 +102,12 @@ export default {
           return arr.indexOf(item.phyAwardsId) < 0
         }
       })
-      console.log('currentList', this.currentList)
+      GLOBALS.marchSetsPoint('A_H5PT0035002217', {
+        product_id: this.currentItem.phyAwardsId,
+        awards_name: this.currentItem.name,
+        task_id: this.currentItem.specs,
+        source_address: getUrlParam('source')
+      })
     }
   },
   computed: {

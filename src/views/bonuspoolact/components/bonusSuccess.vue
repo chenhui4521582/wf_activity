@@ -26,9 +26,9 @@
       <!--报名成功-->
       <div class="bonus-success baomingsuccess" v-if="count==3">
         <div class="desc">
-          每日{{timetxt}}点开奖,一定要准时来哟~<br>
+          每天{{timetxt}}:00准时开奖哟~<br>
           <template v-if="appointmentday<=3">
-            任意报名3天还能瓜分终极大奖！
+            任意报名3天即有机会瓜分终极大奖!
           </template>
           <template v-else>
             任意报名5天终极大奖必中哟！
@@ -39,8 +39,8 @@
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
         <div class="desc" style="font-size: .26rem">
-          您将是第<i>{{num+1}}</i>位报名成功的用户<br>
-          报名成功就有机会瓜分千元话费奖励
+          付费任意金额即可报名成功<br/>
+          每天{{timetxt}}:00瓜分千元红包
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
         <div class="close" @click="close(1)"></div>
