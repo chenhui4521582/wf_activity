@@ -1,16 +1,16 @@
 <template>
   <div class="cost-down" v-if="showFlag">
-    <div class="task" v-if="type==2">
+    <div class="task" v-if="type==2" @click="openRule">
       <span class="count-down">
         维护倒计时{{countdownTime}}
       </span>
-      <span class="rule-icon" @click="openRule"></span>
+      <span class="rule-icon" ></span>
     </div>
-    <div class="task-home" v-else>
+    <div class="task-home" v-else @click="openRule">
       <span class="count-down">
         维护倒计时{{countdownTime}}
       </span>
-      <span class="rule-icon" @click="openRule"></span>
+      <span class="rule-icon" ></span>
     </div>
     <commonPopNew
       v-if="showRule"
@@ -42,6 +42,20 @@ export default {
     commonPopNew
   },
   methods: {
+    getUrlParam(ename) {
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
+        }
+      } else {
+        return ''
+      }
+      return Request[ename]
+    },
     _getCostDown() {
       let url = '//platform-api.beeplaying.com/task/api/achievement/hide'
       this.axios.post(url).then(res=> {
@@ -54,6 +68,13 @@ export default {
               this.countDown(this.countDownNum)
               this.$emit('masterTaskStatus', true)
               this.showFlag = true
+              if(this.type == 2) {
+                GLOBALS.marchSetsPoint('A_H5PT0061002220', {
+                  from_project_id: this.getUrlParam('gametype')
+                })
+              }else {
+                GLOBALS.marchSetsPoint('A_H5PT0033002223')
+              }
             }else {
               this.$emit('masterTaskStatus', false)
               this.showFlag = false
@@ -93,6 +114,13 @@ export default {
     },
     openRule() {
       this.showRule = true
+      if(this.type == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0061002219', {
+          from_project_id: this.getUrlParam('gametype')
+        })
+      }else {
+        GLOBALS.marchSetsPoint('A_H5PT0033002224')
+      }
     },
     hideRule() {
       this.showRule = false
