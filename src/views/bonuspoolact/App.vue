@@ -72,7 +72,7 @@
           <div class="btn bonus_pre" v-if="detailData.normalState==1">
             活动开启倒计时{{countdown.time}}
           </div>
-          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0,false);zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
+          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(undefind,false);zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
             <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
           </div>
         </template>
@@ -188,8 +188,9 @@
         }else{
           GLOBALS.marchSetsPoint(isTab?'A_H5PT0074002015':'A_H5PT0074001703')
         }
-
-        this.tabIndex=value
+        if(value!=undefined){
+          this.tabIndex=value
+        }
       },
       showrule() {
         this.flag = 1
@@ -354,8 +355,12 @@
         if([2,3,4,5].includes(normalState)){
           if(normalState==2){
             this.appointmentBonus(false)
+            this.qianghongbaoclick()
           }
-          this.qianghongbaoclick(0)
+          else
+          {
+            this.qianghongbaoclick(0)
+          }
         }
         if(state==3){
           this.divideBonus(1)
