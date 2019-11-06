@@ -49,10 +49,11 @@
         <div class="btn bonus_pre" v-if="detailData.normalState==1">
           活动开启倒计时{{countdown.time}}
         </div>
-        <div class="btn bonus_hot" @click="appointmentBonus(false)" v-if="detailData.normalState==2">
+        <div class="btn bonus_hot" @click="appointmentBonus(false,tabIndex)" v-if="detailData.normalState==2">
           马上报名瓜分红包
         </div>
-        <div class="btn bonus_hot" @click="showToast('今晚22:00来瓜分吧~')" v-if="detailData.normalState==3">
+        <div class="btn bonus_hot bonus_signed" @click="showToast('今晚22:00来瓜分吧~')" v-if="detailData.normalState==3">
+          本场已报名<br/>
           {{countdown.time}}后瓜分红包
         </div>
         <div class="btn bonus_pre pre" v-if="detailData.normalState==4">
@@ -71,7 +72,7 @@
           <div class="btn bonus_pre" v-if="detailData.normalState==1">
             活动开启倒计时{{countdown.time}}
           </div>
-          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0,false)">
+          <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)" @click="qianghongbaoclick(0,false);zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
             <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
           </div>
         </template>
@@ -187,6 +188,7 @@
         }else{
           GLOBALS.marchSetsPoint(isTab?'A_H5PT0074002015':'A_H5PT0074001703')
         }
+
         this.tabIndex=value
       },
       showrule() {
@@ -247,7 +249,7 @@
 
         }
       },
-      async myDetails() {
+      async myDetails(tabIndex) {
         try {
           const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
           if (res.data.code == 200 && res.data.data) {
@@ -256,15 +258,18 @@
             // if (this.detailData.normalState == 6 && (this.detailData.ultimateState == 3||this.detailData.ultimateState == 2)) {
             //   this.tabIndex = 1
             // }tabIndex
-            if(this.detailData.ultimateState==3){
+            if(!(tabIndex==0)){
+              if(this.detailData.ultimateState==3){
               this.tabIndex = 1
-            }else{
-              if([2,3,4,5].includes(this.detailData.normalState)&&this.detailData.userApplyTime){
-                this.tabIndex = 0
               }else{
-                this.tabIndex = 1
+                if([2,3,4,5].includes(this.detailData.normalState)&&this.detailData.userApplyTime){
+                  this.tabIndex = 0
+                }else{
+                  this.tabIndex = 1
+                }
               }
             }
+            
             !this.countdown.time && this.detailData.countdown && GLOBALS.remainingTime(
               this,
               this.detailData.countdown,
@@ -297,11 +302,9 @@
             duration: 1500
           })
       },
-      async appointmentBonus(isfrompop) { // 报名
+      async appointmentBonus(isfrompop,tabIndex) { // 报名
         if(!isfrompop){
           GLOBALS.marchSetsPoint('A_H5PT0074001375')
-        }else{
-
         }
         let {data} = await this.fetch('/ops/api/jackpot/userApply', {isShowTotast: false})
         if (data.code == 200) {
@@ -310,7 +313,7 @@
         } else {
           this.flag = 4
         }
-        this.myDetails()
+        this.myDetails(tabIndex)
       },
       async closeBonusRes(eventType) {
         await this.myDetails()
@@ -342,7 +345,7 @@
       },
       qianyuanbonusImgClick(state){
         if(state==2){
-          this.appointmentBonus(false)
+          this.appointmentBonus(false,this.tabIndex)
         }else if(state==5){
           this.divideBonus(0)
         }
@@ -521,7 +524,7 @@
     }
     .bonus_content {
       position: absolute;
-      top: 3.9rem;
+      top: 4.1rem;
       display: flex;
       align-items: flex-end;
       justify-content: center;
@@ -590,6 +593,11 @@
     }
     &.bonus_hot {
       font-size: .4rem;
+      &.bonus_signed
+      {
+        font-size: .3rem;
+        line-height: 0.35rem;
+      }
       color: rgba(168, 13, 9, 1);
       background: url("./images/baoming_btn.png");
       background-size: 100% 100%;
