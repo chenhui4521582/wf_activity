@@ -9,7 +9,7 @@
 </template>
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+import 'vue-awesome-swiper/node_modules/swiper/dist/css/swiper.css'
 export default {
   name: 'horn',
   props: {
