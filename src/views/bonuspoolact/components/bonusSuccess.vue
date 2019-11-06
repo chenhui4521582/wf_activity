@@ -40,7 +40,7 @@
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
         <div class="desc" style="font-size: .26rem">
           付费任意金额即可报名成功<br/>
-          每天{{timetxt}}瓜分千元红包
+          每天{{timetxt}}:00瓜分千元红包
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
         <div class="close" @click="close(1)"></div>
