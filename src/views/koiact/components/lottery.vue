@@ -116,9 +116,6 @@
         this.axios.post('//ops-api.beeplaying.com/ops/api/koi/starLottery').then((response) => {
           if (response.data.code == 200) {
             this.$emit('refresh')
-            if (this.starnum>=2) {
-              this.starnum = this.starnum - 2;
-            }
           // response.data.data={awardName: "20元话费券", awardImg: "/group1/M00/41/4A/CmcEHV3D_CyAEMBmAABYfxYadGA426.png", awardId: 731}
             this.awardResult =response.data.data;
             for (var i = 0; i < this.awardList.length; i++) {

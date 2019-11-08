@@ -5,7 +5,7 @@
       <img class="bg" src="../pages/images/pop/lottery_prize.png" alt="">
       <div class="content">
         <div class="img">
-          <img :src="lotteryParmas && lotteryParmas.awardImg|filter">
+          <img :src="lotteryParmas && lotteryParmas.awardImg|filter" :class="{bonus:lotteryParmas &&lotteryParmas.awardName.includes('话费')}">
           <p style="font-size: .5rem;font-weight:bold; color:rgba(254,90,1,1);">{{lotteryParmas &&lotteryParmas.awardName}}</p>
           <p class="tips">答应我，明天再来转盘领奖哦~</p>
         </div>
@@ -88,23 +88,6 @@
         display: block;
         margin: 0 auto;
       }
-      .icon {
-        width: 1.6rem;
-        height: 1.6rem;
-        margin: 0 auto;
-        background: #FFD66D;
-        border: 1px solid #fff;
-        border-radius: 5px;
-        margin-top: 10%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-          width: 70%;
-          display: block;
-          margin: 0 auto;
-        }
-      }
       /*.img {*/
         /*margin: .35rem auto 1rem;*/
         /*!*width: 1.48rem;*!*/
@@ -134,6 +117,12 @@
         padding-top: 1rem;
         box-sizing: border-box;
         margin: auto;
+        img{
+          width: 40%;
+          &.bonus{
+            width: 20%;
+          }
+        }
       }
 
       .num {
