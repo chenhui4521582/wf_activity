@@ -2,57 +2,51 @@
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
       <h4 v-if="isFull" class="p-time"
-          style="font-size:.3rem;font-weight:bold;color:rgba(155,66,1,1);margin-bottom: .32rem">活动已发榜</h4>
-      <template v-if="!isFull">
-        <h4 v-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
-        <h4 v-else class="p-time">发榜时间 ：{{endTime}}</h4>
-      </template>
+          style="font-size:.3rem;font-weight:bold;color:rgba(155,66,1,1);margin-bottom: .32rem"></h4>
       <div class="profit-items">
         <div class="p-header">
-          <ul>
+          锦鲤名单
+        </div>
+        <div class="p-time" style="margin-bottom: .08rem;margin-top: 0.11rem;"></div>
+        <div class="p-items p-items-content" :class="{isfull:isFull}">
+          <ul style="margin: .2rem;font-size: .28rem;">
             <li>
-              <span>{{myInfo.myRank?myInfo.myRank:'未上榜'}}</span>
-            </li>
-            <li>
-              <span>{{myInfo.totalDriedFish}}g</span>
-            </li>
-            <li>
-              <span>{{myInfo.currentAwards}}</span>
+              <span style="border-right: 1px solid #fff;">序号</span>
+              <span style="border-right: 1px solid #fff;">玩家昵称</span>
+              <span style="border-right: 1px solid #fff;">锦鲤分类</span>
+              <span>奖品</span>
             </li>
           </ul>
-        </div>
-        <div class="p-time" style="margin-bottom: .08rem;margin-top: 0.11rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
-        <div class="p-items p-items-content" :class="{isfull:isFull}">
           <div class="p-container" :class="{isfull:isFull}">
             <scroll :data="behindThreeData" ref="scroll" :listenScroll="true" :probeType="3">
               <ul class="p-item-title">
                 <li v-for="(item,index) in behindThreeData">
-                  <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank>3?item.rank:''}}</i></span>
+                  <span><i class="icon-dot">{{index+1}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.koiName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>
                 <li v-if="isOpen" v-for="(item,index) in otherData">
-                  <span><i class="icon-dot">{{item.rank}}</i></span>
+                  <span><i class="icon-dot">{{index+behindThreeData.length+1}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.koiName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>
                 <li v-if="!isOpen">
                   <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit"></a>
                 </li>
                 <li v-for="(item,index) in lastThreeData">
-                  <span><i class="icon-dot">{{item.rank}}</i></span>
+                  <span><i class="icon-dot">{{index+behindThreeData.length+otherData.length+1}}</i></span>
                   <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.koiName}}</em></span>
+                  <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>
               </ul>
             </scroll>
           </div>
         </div>
       </div>
-      <div class="profit-footer">仅50名及以内有奖励</div>
+      <!--<div class="profit-footer">仅50名及以内有奖励</div>-->
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
@@ -125,28 +119,11 @@
         this.isLoading = true
         const {code, data} = await rankList()
         if (code === 200) {
-          if (!data.countdown.includes('-')) {
-            this.countDown(data.countdown)
-          }
-          this.myInfo = data.userInfo
-          this.profitData = data.rankList
-          if (!this.isFull) {
-            if (this.profitData.length > 3) {
-              this.lastThreeData = this.profitData.slice(3)
-            }
-            if (this.profitData.length > 6) {
-              this.isOpen = false
-              this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
-              this.otherData = this.profitData.slice(3, this.profitData.length - 3)
-            }
-            this.topthreeData = this.profitData.slice(0, 3)
-            this.behindThreeData = this.profitData.slice(0, 3)
-          } else {
-            this.isOpen = false
-            this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
-            this.behindThreeData = this.profitData.slice(0, 6)
-            this.otherData = this.profitData.slice(6, this.profitData.length - 6)
-          }
+          this.profitData = data
+          this.isOpen = false
+          this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
+          this.behindThreeData = this.profitData.slice(0, 6)
+          this.otherData = this.profitData.slice(6, this.profitData.length - 6)
           this.isLoading = false
         }
       },

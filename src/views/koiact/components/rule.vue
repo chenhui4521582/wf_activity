@@ -1,5 +1,5 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?101:(from>0?100:1)}" :class="{pop2:from==2}">
+  <section class="rule" :style="{zIndex:isShowPop?101:(from>0?100:1)}" :class="{pop2:from==2,pop5:from==5}">
     <template v-if="from==0">
       <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
       <transition name="scalc">
@@ -7,36 +7,56 @@
           <div class="wrap">
             <div class="main">
               <div class="title">活动规则</div>
-              <div class="time">活动时间：{{ruleMain.replace(/\./g,'月').replace('-','日-')}}日</div>
-              <div class="title1">每日任务活动：</div>
-              <p>1、活动期间每天会有3个每日任务，完成后可领取奖励(仅限当日领取)；</p>
-              <p>2、任务设有任务引导，点击可查看具体的完成方式，帮助你迅速地了解猫并完成相应任务；</p>
-              <p>3、若连续5天每天都完成所有每日任务，则可获得额外金叶奖励，额外奖励需手动领取，如未领取，活动结束后系统会发至个人账户。</p>
-              <div class="title1">集鱼干排行活动：</div>
-              <p>1、玩家通过游戏消耗金叶可自动获取鱼干，每消耗1000金叶可获得1g鱼干。可获得鱼干的游戏限以下：糖果萌消消、欢乐竞技台球、捕鱼游戏、王者弹珠、三国大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法除外)、斗地主和麻将(仅算桌费)。好感度、特权及商城商品可提供鱼干加成，加速鱼干的获取；</p>
-              <p>2、活动期间内仅通过游戏获得的鱼干会被计入排行中(老玩家首次进入招财猫转换所得鱼干、活动中获得的鱼干不计入排行)。活动结束后会根据用户5天累计的鱼干获取量排名发放奖励。奖励会在活动结束后自动发放至个人账户，活动结束后三天内，用户可通过活动入口进入查看结果。</p>
+              <div class="container">
+                <scroll ref="scroll">
+                  <div>
+                    <div class="title1">1.活动时间</div>
+                    <p>{{ruleMain}},共计7天</p>
+                    <div class="title1">2.玩法介绍</div>
+                    <p> ·每天设置游戏累计消耗金叶和签到2个打卡任务,在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入任务中。打卡任务每天0点刷新清零已完成情况；</p>
+                    <p> ·每天达成任意1个打卡任务,即可领取1颗金星；每日所得金星可累计,集齐2颗可转盘抽奖1次；</p>
+                    <p> ·累计打卡有机会成为锦鲤,赢超级奖励(详见第4条)</p>
+                    <div class="title1">3.每日转盘100%中奖</div>
+                    <p>奖池共有10个奖品,2颗金星抽取1次,<i style="font-weight: bold;color:#FF1616">100%中奖</i>;</p>
+                    <div class="title1">4.累计打卡抽锦鲤</div>
+                    <p>·活动期间,<i style="font-weight: bold;color:#FF1616">完成当日2个活动任务即为打卡成功</i>,累计打卡有机会获得锦鲤大奖;</p>
+                    <p>·累计打卡完成后,对应锦鲤抽奖资格即解锁,并自动显示“已参与”状态;未达到对应打卡天数,锦鲤显示“待解锁”;</p>
+                    <p>·打卡天数越多,<i style="font-weight: bold;color:#FF1616">解锁的锦鲤资格越多,将参与更多种锦鲤的抽选</i>(每人最多获得1种锦鲤奖励);</p>
+                    <p>·活动结束将从解锁锦鲤的玩家中抽取中奖名单,具体名额如下：</p>
+                    <p>累计2天,抽200名锦鲤,每人1张铜套圈券;</p>
+                    <p>累计3天,抽100名锦鲤,每人10000金叶;</p>
+                    <p>累计4天,抽80名锦鲤,每人50元话费券;</p>
+                    <p>累计5天,抽50名锦鲤,每人100元京东卡;</p>
+                    <p>累计6天,抽30名锦鲤,每人500元话费券;</p>
+                    <p>累计7天,抽10名锦鲤,每人888元京东卡。</p>
+                    <div class="title1">5.奖品发放</div>
+                    <p>·转盘奖品将在3个工作日内通过站内信发放到账,中奖记录在【抽奖记录-转盘奖励】查看;</p>
+                    <p>·锦鲤名单将于活动结束1天内在【抽奖记录-锦鲤名单】公布,<i style="font-weight: bold;color:#FF1616">锦鲤奖励需由玩家登录活动页手动领取,过期不领取将视为放弃</i>;</p>
+                    <p>·活动结束后未使用的金星将自动作废。</p>
+                    <div class="title1">6.其他</div>
+                    <p>平台保留对活动条款的最终解释权,如需咨询或有疑问,请联系在线客服。</p>
+                    <div style="height:.2rem"></div>
+                  </div>
+                </scroll>
+              </div>
             </div>
           </div>
           <div class="close-icon" @click="isShowPop = false"></div>
         </div>
       </transition>
     </template>
-    <template v-if="from==1">
-      <img src="../pages/images/package/profit/bangshoubtn.png" alt="" @click="showPop" class="profit profit1">
+    <template v-else-if="from==1">
       <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
       <transition name="scalc">
         <div class="pop" v-if="isShowPop">
-          <div class="wrap">
+          <div class="wrap wrap3">
             <div class="main">
-              <div class="title">榜首攻略</div>
-              <div class="title1">鱼干如何获取？</div>
-              <p>游戏中每消耗1000金叶可自动获得1g鱼干，可获得鱼干的游戏限以下：糖果萌消消、欢乐竞技台球、捕鱼游戏、王者弹珠、三国大作战、众神风云、深海探一探、枪火英雄(物资争夺玩法除外)、斗地主和麻将（仅算桌费)。</p>
-              <div class="title1">如何快速获取鱼干登上榜单？</div>
-              <p>1、升猫等级解锁特权，10级可获得鱼干加成特权，继续提升猫等级还可使特权权益扩大，永久性加快鱼干获取<i  @click="gotocat">(戳此查看招财猫特权详情)</i>；</p>
-              <p>2、持续与猫互动保持好感度，好感度越高，获得的鱼干加成比例也越高<i @click="gotocat">(戳此查看招财猫好感度)</i>；</p>
-              <p>3、商城道具附带鱼干加成效果，道具有期限，有效期内可提供高额的鱼干加成<i  @click="gotocat">(戳此查看猫商城道具)</i>。</p>
-              <div class="title1">猫币有什么用？</div>
-              <p>猫币可在招财猫领奖页兑换高额话费券、京东卡和游戏金叶子。</p>
+              <div class="title">大家都在玩</div>
+              <div class="gamelist">
+                <img :src="require(`../pages/images/pop/games/${index}.png`)" alt="" v-for="(item,index) in games" class="game" @click="gotogame(item)">
+              </div>
+              <div class="gogames" @click="gotoindex">更多游戏>></div>
+              <div class="info" style="font-size: .28rem;color: #fff;font-weight: bold;margin-top: .5rem;line-height: .3rem;text-align: center">小贴士：部分游戏金叶消耗不计入此 活动,具体可查看规则哦~</div>
             </div>
           </div>
           <div class="close-icon" @click="isShowPop = false"></div>
@@ -44,20 +64,74 @@
       </transition>
     </template>
     <template v-else-if="from==2">
-      <img src="../pages/images/package/profit/chongbangbtn.png"  class="profit profit2" alt="" @click="showPop">
       <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
       <transition name="scalc">
-        <div class="pop" v-if="isShowPop">
-          <div class="wrap wrap3">
-            <div class="main">
-              <div class="title1">以下游戏可获取鱼干哦，快快冲榜吧</div>
-              <div class="gamelist">
-                <img :src="require(`../pages/images/pop/games/${index}.png`)" alt="" v-for="(item,index) in games" class="game" @click="gotogame(item)">
-              </div>
-              <div class="gogames" @click="gotoindex">更多游戏></div>
+        <div class="pop pop2" v-if="isShowPop">
+          <div class="title">锦鲤名单</div>
+          <div class="wrap wrap2">
+            <div class="main" style="padding: 1rem 0.1rem;box-sizing: border-box;">
+              <p style="font-size: .3rem;font-weight:bold;color:rgba(255,255,255,1);line-height: .4rem">锦鲤名单将在{{lotteryDate}}公布,记得连续打卡,赢888元锦鲤哦！</p>
             </div>
           </div>
           <div class="close-icon" @click="isShowPop = false"></div>
+        </div>
+      </transition>
+    </template>
+    <template v-else-if="from==3">
+      <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
+      <transition name="scalc">
+        <div class="pop pop2" v-if="isShowPop">
+          <div class="title">转盘中奖记录</div>
+          <div class="wrap wrap2">
+            <div class="main">
+              <div class="bonus-record" v-if="list.length">
+                <div class="title1">奖励</div>
+                <div class="title1">时间</div>
+                <div class="line" style="width: 1px; height: .3rem; position: absolute; left: 2rem; background: rgba(255, 255, 255, 0.38); margin-top: .1rem;"></div>
+                <div class="content">
+                  <scroll :data="list"  ref="scroll" :beforeScroll="true" :listenScroll="true" :probeType="3">
+                    <ul>
+                      <li v-for="(item,index) in list">
+                        <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width: 3rem;">{{item.awardName}}</div>
+                        <div style="width: 2rem;text-align: center;display: flex;justify-content: center;">{{item.time||''}}</div>
+                      </li>
+                    </ul>
+                  </scroll>
+                </div>
+              </div>
+              <div class="record-null" v-else>
+                <img src="../pages/images/pop/empty.png" alt="" class="empty">
+                <div class="text">无记录</div>
+              </div>
+            </div>
+          </div>
+          <div class="close-icon" @click="isShowPop = false"></div>
+        </div>
+      </transition>
+    </template>
+    <template v-else-if="from==4">
+      <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
+      <transition name="scalc">
+        <div class="pop" v-if="isShowPop">
+          <div class="wrap wrap4">
+            <div class="main">
+              <div class="title" style="font-size: .36rem">您的金星数量不足哦！</div>
+              <img src="../pages/images/pop/bbstar.png" alt="" style="width: 2.65rem;margin:1rem auto;display: block">
+              <div class="info" style="font-size: .36rem;font-weight:bold;color:rgba(253,88,1,1);text-align: center">去完成任务或者明天再来！</div>
+            </div>
+          </div>
+          <div class="close-icon" @click="isShowPop = false"></div>
+        </div>
+      </transition>
+    </template>
+    <template v-else-if="from>=5&&from<=10">
+      <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
+      <transition name="scalc">
+        <div class="pop pop5" v-if="isShowPop">
+          <div class="wrap" :class="{wrap5:from==5,wrap6:from==6,wrap7:from==7,wrap8:from==8,wrap9:from==9,wrap10:from==10}">
+            <div class="btn" v-if="from==5" style="width: 3.86rem; height: 1rem; position: absolute; bottom: 1.4rem; left: 0; right: 0; margin: auto;" @click="close"></div>
+          </div>
+          <div class="close-icon" @click="close"></div>
         </div>
       </transition>
     </template>
@@ -65,6 +139,8 @@
 </template>
 
 <script>
+  import scroll from './scroll'
+  import {prizeRecord} from '../utils/api'
 export default {
   name: "rule",
   data () {
@@ -74,11 +150,15 @@ export default {
         id:12,
         url:'/crush'
       },{
-        id:21,url:'/Marbles'
+        id:18,url:'/square'
+      },{
+        id:2,url:'/billiards'
       },{
         id:10,url:'/fish'
       },{
-        id:2,url:'/billiards'
+        id:13,url:'/kingdom2'
+      },{
+        id:21,url:'/Marbles'
       }]
     };
   },
@@ -90,33 +170,46 @@ export default {
     from: {
       type: String,
       default: "0"
+    },
+    lotteryDate:{
+      type: String,
+      default: ""
     }
   },
+  components:{
+    scroll
+  },
   methods: {
-    showPop () {
-      if (this.from>0) {
-        //2067:H5平台-撸猫活动-排行榜页面-我要上榜首按钮点击
-        //2068:H5平台-撸猫活动-排行榜页面-立即冲榜按钮点击
-        GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002067':'A_H5PT0201002068')
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0201002054')   //H5平台-撸猫活动-规则按钮点击
+    async showPop () {
+      if(this.from=='0'){//规则
+        GLOBALS.marchSetsPoint('A_H5PT0211002229')
       }
-      this.isShowPop = true
-      //2069:H5平台-撸猫活动-排行榜页面-榜首攻略弹窗加载完成
-      //2071:H5平台-撸猫活动-排行榜页面-立即冲榜弹窗加载完成
-      this.from>0&&GLOBALS.marchSetsPoint(this.from==1?'A_H5PT0201002069':'A_H5PT0201002071')
-    },
-    gotocat(){
-      GLOBALS.marchSetsPoint('A_H5PT0201002070')//H5平台-撸猫活动-排行榜页面-榜首攻略弹窗-蓝色跳转内容点击(跳转招财猫)
-      location.href= `https://wap.beeplaying.com/petcat?channel=${localStorage.getItem('APP_CHANNEL')}`
+      if(this.from=='2'){//H5平台-7天打卡抽锦鲤活动-锦鲤开奖点击
+        GLOBALS.marchSetsPoint('A_H5PT0211002230')
+      }
+      if(this.from!='3'){
+        this.isShowPop = true
+      }else{
+        GLOBALS.marchSetsPoint('A_H5PT0211002239')
+        let {code,data}=await prizeRecord()
+        if(code==200){
+          this.list=data
+          this.isShowPop = true
+        }
+      }
     },
     gotoindex(){
-      GLOBALS.marchSetsPoint('A_H5PT0201002073')//H5平台-撸猫活动-排行榜页面-立即冲榜弹窗-更多游戏点击(跳转平台首页)
       location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     gotogame({url,id}){
-      GLOBALS.marchSetsPoint('A_H5PT0201002072',{target_project_id:id})//H5平台-撸猫活动-排行榜页面-立即冲榜弹窗-具体游戏点击
+      GLOBALS.marchSetsPoint('A_H5PT0211002235',{target_project_id:id})
       GLOBALS.jumpOutsideGame(url)
+    },
+    close(){
+      this.isShowPop = false
+      if(this.from=='5'||this.from=='6'){//H5平台-7天打卡抽锦鲤活动-活动第8日发奖弹窗-关闭
+        GLOBALS.marchSetsPoint('A_H5PT0211002241')
+      }
     }
   }
 };
@@ -127,11 +220,15 @@ export default {
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-left: -3rem;
-  margin-top: -4.9rem;
+  margin-left: -2.83rem;
+  margin-top: -4.32rem;
   &.pop2{
-    margin-left: -2.79rem;
-    margin-top: -3.9rem;
+    margin-left: -2.8rem;
+    margin-top: -4.68rem;
+  }
+  &.pop5{
+    margin-left: -2.85rem;
+    margin-top: -5rem;
   }
   img {
     &.ruleicon{
@@ -167,27 +264,34 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
-      width: 6rem;
-      height: 9.8rem;
-      background: url("../pages/images/rule/bg.png") no-repeat center center /
+      width: 5.66rem;
+      height: 8.64rem;
+      background: url("../pages/images/pop/rule.png") no-repeat center center /
         100% 100%;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: .4rem;
+      padding: .15rem .6rem;
       .main {
-        font-size: 0.2rem;
-        letter-spacing: 0.02rem;
+        font-size: 0.24rem;
+        /*letter-spacing: 0.02rem;*/
         font-weight: bold;
-        color:rgba(196,94,19,1);
+        color:#B3552C;
         .title{
-          font-size:.26rem;
-          color:rgba(155,66,1,1);
+          font-size:.5rem;
+          color:#fff;
           text-align: center;
-          margin-bottom:.28rem;
+        }
+        .container{
+          overflow: hidden;
+          position: absolute;
+          left: .6rem;
+          right: .6rem;
+          top: 1.2rem;
+          bottom: 1.3rem;
         }
         .title1{
-          margin-top:.22rem;
-          margin-bottom:.22rem;
+          margin-top:.1rem;
+          margin-bottom:.1rem;
           text-align: left;
         }
         .time{
@@ -196,49 +300,195 @@ export default {
         }
 
         p {
+          font-size: 0.2rem;
           line-height: 0.32rem;
           font-weight:400;
-          color:rgba(196,94,19,1);
+          color:#C8744F;
           text-align: left;
           i{
             color: #005AFF;
           }
         }
       }
+      &.wrap2{
+        width: 5.6rem;
+        height:6.28rem;
+        padding: .15rem .4rem;
+        background: url("../pages/images/pop/pop3.png") no-repeat center
+          center / 100% 100%;
+        .bonus-record {
+          position: absolute;
+          z-index: 11;
+          left: .3rem;
+          right: .3rem;
+          height: 5.8rem;
+          padding: .4rem 0 0;
+          box-sizing: border-box;
+          .title1 {
+            font-size: .3rem;
+            font-weight:bold;
+            color: rgba(236, 244, 255, 1);
+            position: absolute;
+            &:nth-child(1) {
+              left: .1rem;
+            }
+            &:nth-child(2) {
+              left: 3.8rem;
+            }
+          }
+          .line{
+            width: 1px;
+            height: .1rem;
+            position: absolute;
+            left: 2rem;
+          }
+          .content {
+            position: absolute;
+            height: 5rem;
+            top: .9rem;
+            left: 0rem;
+            right: 0;
+            font-size: .22rem;
+            font-weight: bold;
+            color: #fff;
+            overflow: hidden;
+            ul {
+              margin-top: .1rem;
+              display: flex;
+              flex-direction: column;
+              li {
+                display: flex;
+                justify-content: space-between;
+                height: .53rem;
+                border-bottom: 1px solid rgba(255,255,255,0.38);
+                box-sizing: border-box;
+                div{
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+          }
+        }
+        .record-null {
+          height: 3.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          margin-top: 1rem;
+          img {
+            width: 1.27rem;
+            height: 1.27rem;
+          }
+          .text {
+            font-size: .5rem;
+            font-weight: 400;
+            color: rgba(169, 21, 40, 1);
+          }
+        }
+      }
       &.wrap3{
-        width: 5.58rem;
-        height: 7.76rem;
-        padding: .7rem;
+        width: 5.66rem;
+        height: 7.32rem;
+        padding: .15rem .4rem;
+        background: url("../pages/images/pop/pop1.png") no-repeat center center /
+        100% 100%;
         .title1{
           text-align: center;
         }
         .gamelist{
           display: flex;
           flex-wrap: wrap;
-          height: 5.62rem;
+          height: 4.4rem;
           justify-content: space-between;
+          margin-top: .6rem;
+          margin-bottom: .1rem;
           .game{
-            width: 1.96rem;
-            height: 2.68rem;
+            width: 1.49rem;
+            height: 2.05rem;
           }
         }
         .gogames{
-          font-size:.24rem;
-          font-weight:400;
-          color:rgba(196,94,19,1);
+          font-size:.28rem;
+          color: #b3552c;
           text-align: right;
+          font-weight: bold;
+          text-align: center;
         }
+      }
+      &.wrap4{
+        width: 5.66rem;
+        height: 6.44rem;
+        padding: .35rem .4rem;
+        background: url("../pages/images/pop/pop4.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap5{
+        width: 5.7rem;
+        height: 8.26rem;
+        padding: .35rem .4rem;
+        background: url("../pages/images/pop/pop_after1.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap6{
+        width: 5.66rem;
+        height: 6.44rem;
+        background: url("../pages/images/pop/pop_after0.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap7{
+        width: 5.66rem;
+        height: 8.26rem;
+        background: url("../pages/images/pop/pop_task10.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap8{
+        width: 5.7rem;
+        height: 8.26rem;
+        background: url("../pages/images/pop/pop_task20.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap9{
+        width: 5.66rem;
+        height: 8.26rem;
+        background: url("../pages/images/pop/pop_task11.png") no-repeat center center /
+        100% 100%;
+      }
+      &.wrap10{
+        width: 5.66rem;
+        height: 8.26rem;
+        background: url("../pages/images/pop/pop_task21.png") no-repeat center center /
+        100% 100%;
       }
     }
 
     .close-icon {
-      width: 0.9rem;
-      height: 0.8rem;
+      width: 0.6rem;
+      height: 0.6rem;
       background: url("../pages/images/common/close.png") no-repeat center
         center / 100% 100%;
-      position: absolute;
-      top: .58rem;
-      right: 0;
+      margin: 0.4rem auto 0;
+    }
+    &.pop2{
+      .title{
+        width: 4.55rem;
+        height: 1.63rem;
+        background: url("../pages/images/pop/title.png") no-repeat center center /
+        100% 100%;
+        adding-top: .6rem;
+        box-sizing: border-box;
+        line-height: 1rem;
+        text-align: center;
+        margin: auto;
+        font-size:.4rem;
+        font-weight:bold;
+        color:rgba(255,255,255,1);
+        text-shadow:1px 1px 0px rgba(224,33,30,1);
+        padding: .6rem;
+        box-sizing: border-box;
+        margin-bottom: .45rem;
+      }
     }
   }
   .scalc-enter-active {

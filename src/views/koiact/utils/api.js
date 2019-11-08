@@ -43,8 +43,8 @@ export const betBatch = async (params) => {
  * @return {Object} data
  */
 
-export const betProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/plant-food-v2/bet-progress')
+export const betProgress = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/process',params)
   return data
 }
 /**
@@ -80,7 +80,7 @@ export const noticeList = async () => {
  */
 
 export const rankList = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/rankList')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/koiResult')
   return data
 }
 /**
@@ -139,11 +139,20 @@ export const receiveExtAwards = async () => {
 }
 
 /**
- * @description 获取额外奖励
+ * @description 7天打卡抽锦鲤领取锦鲤奖励
  * @return {Object} data
  */
 
 export const receivePopupAwards = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/cat/activity/popup')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/sendAward')
+  return data
+}
+/**
+ * @description 抽奖奖励记录
+ * @return {Object} data
+ */
+
+export const prizeRecord = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/myLotteryLog')
   return data
 }
