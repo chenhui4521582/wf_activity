@@ -8,21 +8,21 @@
             <div class="main">
               <div class="title">活动规则</div>
               <div class="container">
-                <scroll ref="scroll">
+                <scroll ref="scroll" :scrollbar="true">
                   <div>
                     <div class="title1">1.活动时间</div>
                     <p>{{ruleMain}},共计7天</p>
                     <div class="title1">2.玩法介绍</div>
-                    <p> ·每天设置游戏累计消耗金叶和签到2个打卡任务,在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入任务中。打卡任务每天0点刷新清零已完成情况；</p>
-                    <p> ·每天达成任意1个打卡任务,即可领取1颗金星；每日所得金星可累计,集齐2颗可转盘抽奖1次；</p>
-                    <p> ·累计打卡有机会成为锦鲤,赢超级奖励(详见第4条)</p>
+                    <p> <i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>每天设置游戏累计消耗金叶和签到2个打卡任务,在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入任务中。打卡任务每天0点刷新清零已完成情况；</p>
+                    <p> <i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>每天达成任意1个打卡任务,即可领取1颗金星；每日所得金星可累计,集齐2颗可转盘抽奖1次；</p>
+                    <p> <i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>累计打卡有机会成为锦鲤,赢超级奖励(详见第4条)</p>
                     <div class="title1">3.每日转盘100%中奖</div>
                     <p>奖池共有10个奖品,2颗金星抽取1次,<i style="font-weight: bold;color:#FF1616">100%中奖</i>;</p>
                     <div class="title1">4.累计打卡抽锦鲤</div>
-                    <p>·活动期间,<i style="font-weight: bold;color:#FF1616">完成当日2个活动任务即为打卡成功</i>,累计打卡有机会获得锦鲤大奖;</p>
-                    <p>·累计打卡完成后,对应锦鲤抽奖资格即解锁,并自动显示“已参与”状态;未达到对应打卡天数,锦鲤显示“待解锁”;</p>
-                    <p>·打卡天数越多,<i style="font-weight: bold;color:#FF1616">解锁的锦鲤资格越多,将参与更多种锦鲤的抽选</i>(每人最多获得1种锦鲤奖励);</p>
-                    <p>·活动结束将从解锁锦鲤的玩家中抽取中奖名单,具体名额如下：</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>活动期间,<i style="font-weight: bold;color:#FF1616">完成当日2个活动任务即为打卡成功</i>,累计打卡有机会获得锦鲤大奖;</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>累计打卡完成后,对应锦鲤抽奖资格即解锁,并自动显示“已参与”状态;未达到对应打卡天数,锦鲤显示“待解锁”;</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>打卡天数越多,<i style="font-weight: bold;color:#FF1616">解锁的锦鲤资格越多,将参与更多种锦鲤的抽选</i>(每人最多获得1种锦鲤奖励);</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>活动结束将从解锁锦鲤的玩家中抽取中奖名单,具体名额如下：</p>
                     <p>累计2天,抽200名锦鲤,每人1张铜套圈券;</p>
                     <p>累计3天,抽100名锦鲤,每人10000金叶;</p>
                     <p>累计4天,抽80名锦鲤,每人50元话费券;</p>
@@ -30,9 +30,9 @@
                     <p>累计6天,抽30名锦鲤,每人500元话费券;</p>
                     <p>累计7天,抽10名锦鲤,每人888元京东卡。</p>
                     <div class="title1">5.奖品发放</div>
-                    <p>·转盘奖品将在3个工作日内通过站内信发放到账,中奖记录在【抽奖记录-转盘奖励】查看;</p>
-                    <p>·锦鲤名单将于活动结束1天内在【抽奖记录-锦鲤名单】公布,<i style="font-weight: bold;color:#FF1616">锦鲤奖励需由玩家登录活动页手动领取,过期不领取将视为放弃</i>;</p>
-                    <p>·活动结束后未使用的金星将自动作废。</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>转盘奖品将在3个工作日内通过站内信发放到账,中奖记录在【抽奖记录-转盘奖励】查看;</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>锦鲤名单将于活动结束1天内在【抽奖记录-锦鲤名单】公布,<i style="font-weight: bold;color:#FF1616">锦鲤奖励需由玩家登录活动页手动领取,过期不领取将视为放弃</i>;</p>
+                    <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>活动结束后未使用的金星将自动作废。</p>
                     <div class="title1">6.其他</div>
                     <p>平台保留对活动条款的最终解释权,如需咨询或有疑问,请联系在线客服。</p>
                     <div style="height:.2rem"></div>
