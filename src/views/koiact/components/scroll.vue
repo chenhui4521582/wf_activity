@@ -41,7 +41,11 @@
 	      scrollY: {
 	      	type: Boolean,
 	      	default: true
-	      }
+	      },
+        scrollbar: {
+          type: Boolean,
+          default: false
+        }
 	    },
 		mounted() {
 			var that = this;
@@ -60,7 +64,8 @@
 					scrollY: this.scrollY,
 	          		scrollX: this.scrollX,
 					probeType: this.probeType,
-					click: this.click
+					click: this.click,
+          scrollbar: this.scrollbar
 				})
 				if (this.listenScroll) {
 					this.scroll.on('scroll', (pos) => {
