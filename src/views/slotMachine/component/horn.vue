@@ -15,7 +15,7 @@ export default {
   props: {
     hornList: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   data: () => ({
