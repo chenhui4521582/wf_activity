@@ -99,7 +99,8 @@
           <div class="item">当前金星数量：<i>{{activityInfoData.currentStarNum}}颗</i></div>
         </div>
         <div class="container">
-          <div class="turntable-light"></div>
+          <img src="./images/index/light1.png" alt="" class="turntable-light">
+          <img src="./images/index/light2.png" alt="" class="turntable-light">
           <lottery :beginAwardData="activityInfoData.starAwardInfoVos" :starnum="activityInfoData.currentStarNum" @lessstar="$refs.lessstar.showPop()" @refresh="getActivityInfo"></lottery>
         </div>
         <div class="record" @click="$refs.lotteryrecord.showPop()">我的中奖记录>></div>

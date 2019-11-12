@@ -252,6 +252,18 @@
         margin: auto;
       }
     }
+    &.gift1,&.gift3,&.gift6,&.gift8{
+      :before{
+        content: '';
+        position: absolute;
+        top:0;
+        right: 0;
+        width: .45rem;
+        height: .45rem;
+        background: url(../pages/images/index/corner.png) no-repeat center center;
+        background-size: 100% 100%;
+      }
+    }
   }
 
   .group-item {
