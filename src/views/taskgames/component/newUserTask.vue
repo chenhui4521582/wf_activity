@@ -122,9 +122,7 @@ export default {
   },
   computed: {
     newUserTaskList () {
-      return this.newTaskItems.taskList.filter(element => {
-        return element.taskStatus === 0 || element.taskStatus === 1
-      })
+      return this.newTaskItems.taskList
     }
   },
   methods: {
