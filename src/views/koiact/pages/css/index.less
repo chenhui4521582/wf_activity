@@ -474,7 +474,8 @@
       margin-left: -0.4rem;
       margin-top: -0.45rem;
       background: url('../images/index/light1.png') no-repeat center center / 100% 100%;
-      animation: changeBg 0.3s alternate  infinite ease,changeBg1 0.3s infinite ease
+        animation: changeBg 0.3s alternate  infinite ease,changeBg1 0.3s infinite ease;
+      -webkit-animation:changeBg 0.3s alternate  infinite ease,changeBg1 0.3s infinite ease;
     }
   }
   .record{
@@ -498,6 +499,28 @@
   }
 }
 @keyframes changeBg1 {
+  0% {
+    opacity: 0;
+    background: url('../images/index/light1.png') no-repeat center center / 100% 100%;
+  }
+
+  100% {
+    opacity: 1;
+    background: url('../images/index/light2.png') no-repeat center center / 100% 100%;
+  }
+}
+@-webkit-keyframes changeBg{
+  0% {
+    opacity: 1;
+    background: url('../images/index/light1.png') no-repeat center center / 100% 100%;
+  }
+
+  100% {
+    opacity: 0;
+    background: url('../images/index/light2.png') no-repeat center center / 100% 100%;
+  }
+}
+@-webkit-keyframes changeBg1 {
   0% {
     opacity: 0;
     background: url('../images/index/light1.png') no-repeat center center / 100% 100%;
