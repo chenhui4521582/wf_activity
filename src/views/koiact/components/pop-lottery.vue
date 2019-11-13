@@ -29,6 +29,9 @@
       close() {
         this.$emit('close');
       }
+    },
+    mounted(){
+      this.lotteryParmas&&GLOBALS.marchSetsPoint('A_H5PT0211002238',{awards_id:this.lotteryParmas.awardId,awards_name:this.lotteryParmas.awardName})
     }
   }
 </script>
