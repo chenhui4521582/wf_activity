@@ -133,7 +133,8 @@ export default {
   box-sizing: border-box;
 }
 .list {
-  padding: .4rem;
+  min-height: 4rem;
+  padding: .3rem .4rem .6rem;
   ul {
     overflow: hidden;
     li {

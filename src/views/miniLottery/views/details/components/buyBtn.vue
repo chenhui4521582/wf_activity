@@ -9,7 +9,6 @@
       <div class="button-add base-button" @click.stop="addClick">+</div>
       <div class="max-num">
         <div class="btn" @click.stop="buyMax">最大</div>
-        次
       </div>
     </div>
     <div class="buy" @click="submit" v-if="status == 0">
