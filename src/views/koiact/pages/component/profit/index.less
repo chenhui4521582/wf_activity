@@ -1,0 +1,207 @@
+.profit-container {
+  text-align: center;
+  padding: 0.5rem .17rem 0;
+  width: 100%;
+  height: calc(100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  overflow-y: scroll;
+
+  .title {
+    width: 4.25rem;
+    margin: 0.18rem auto 0.1rem;
+  }
+
+  .p-time {
+    font-size: 0.2rem;
+    font-weight: 400;
+    color:rgba(196,94,19,1);
+    margin-bottom: 0.15rem;
+  }
+  .profit-items {
+    .p-header {
+      line-height: 0.3rem;
+      width: 4.55rem;
+      height: 1.63rem;
+      background: url("../../images/pop/title.png") no-repeat center center /
+        100% 100%;
+      adding-top: .6rem;
+      box-sizing: border-box;
+      line-height: 1rem;
+      text-align: center;
+      margin: auto;
+      font-size:.4rem;
+      font-weight:bold;
+      color:rgba(255,255,255,1);
+      text-shadow:1px 1px 0px rgba(224,33,30,1);
+      padding: .6rem;
+      box-sizing: border-box;
+      margin-bottom: .45rem;
+      margin: auto;
+      ul {
+        height: 0.7rem;
+        line-height: 0.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      li {
+        flex: 1;
+        white-space: nowrap;
+        font-size: 0.3rem;
+        padding-top: 1rem;
+        font-weight: bold;
+        color: rgba(155,66,1,1);
+      }
+    }
+
+    .p-items {
+      background: #FFFAF1;
+      box-sizing: border-box;
+
+      &.p-items-content {
+        position: relative;
+        height: 4.7rem;
+        overflow-y: hidden;
+        font-size: 0.2rem;
+        color:rgba(255,255,255,1);
+        &.isfull{
+          margin: auto;
+          width: 6.86rem;
+          height: 7.5rem;
+          background: url("../../images/pop/after_bg.png");
+          background-size: 100% 100%;
+        }
+        .p-container{
+          position: absolute;
+          top:.8rem;
+          left: .2rem;
+          right: .2rem;
+          height: 3.5rem;
+          &.isfull{
+            height: 6.5rem;
+          }
+          overflow-y: scroll;
+        }
+        .i-font-style {
+          font-style: normal;
+          color:rgba(255,255,255,1);
+        }
+      }
+
+      &.p-items-header {
+        width: 100%;
+        color: #FEC041;
+        font-size: 0.18rem;
+
+        li {
+
+          span:nth-child(1):after,
+          span:nth-child(2):after,
+          span:nth-child(3):after {
+            content: '';
+            width: 1px;
+            height: 0.15rem;
+            background: rgba(254, 192, 65, 1);
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin-top: -0.075rem;
+          }
+        }
+      }
+
+      li {
+        height: 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0.05rem 0;
+        box-sizing: border-box;
+        &:not(:last-child) {
+          border-bottom: 0.01rem solid rgba(255,255,255,.4);
+        }
+
+        span {
+          display: inline-block;
+          height: 0.36rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+
+          em.i-ellipsis {
+            display: flex;
+            font-style: normal;
+            overflow: hidden;
+            /*超出部分隐藏*/
+            white-space: nowrap;
+            /*不换行*/
+            text-overflow: ellipsis;
+            /*超出部分文字以...显示*/
+            padding: 0 0.02rem;
+            height: 100%;
+            align-items: center;
+          }
+
+          &:nth-child(1) {
+            flex: 0 0 13%;
+          }
+          &:nth-child(2) {
+            flex: 0 0 30%;
+          }
+          &:nth-child(3) {
+            flex: 0 0 30%;
+          }
+          &:nth-child(4) {
+            flex: 1;
+            line-height: 0.34rem;
+          }
+
+
+        }
+
+        .icon-dot {
+          display: block;
+          width: 0.35rem;
+          height: 0.35rem;
+          line-height: 0.35rem;
+          border-radius: 50%;
+          text-align: center;
+          font-style: normal;
+          margin: 0 auto;
+          font-size: 0.24rem;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .profit-footer {
+    margin-top: .12rem;
+    font-size: 0.2rem;
+    font-weight:400;
+    color:rgba(196,94,19,1);
+  }
+
+  .btn-check-profit {
+    display: block;
+    width: 2.7*0.6rem;
+    height: 0.56*0.6rem;
+    background: url(../../images/pop/expand.png) no-repeat;
+    background-size: 100% 100%;
+    margin: auto;
+  }
+
+  &.full {
+    padding: 0.3rem 0 0;
+
+    .s-text {
+      bottom: 0.4rem;
+    }
+  }
+}
