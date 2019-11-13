@@ -16,9 +16,22 @@
         <div class="log" @click="logClick">
           <img src="./img/log-icon.png" alt="">
         </div>
+        <div class="my-log" @click="mylogClick">
+          <img src="./img/my-log-icon.png" alt="">
+        </div>
       </div>
       <user-info :userInfo="userInfo"/>
       <list :list="list" @refreshList="_getLotteryList"/>
+      <div class="rule">
+        <div class="title">
+          <img src="./img/rule-title-1.png" alt="">
+        </div>
+        <div class="center">
+          参与方式：<br>
+          点击夺宝卡旁边+，使用话费券购买夺宝卡，打开感兴趣的奖品，点击底部“去夺宝”，等待开奖！
+          祝大家好运气！
+        </div>
+      </div>
     </div>
     <popup v-model="showPopup" :popupStatus="popupStatus" :list="historyList"/>
   </div>
@@ -56,9 +69,20 @@ export default {
     },
     /** 历史记录按钮点击 **/
     logClick() {
-      this.showPopup = true
-      this.popupStatus = 2
-      GLOBALS.marchSetsPoint('A_H5PT0202002077')
+      this.$router.push({
+        name: 'log',
+        query: {
+          from: 'mylog'
+        }
+      })
+    },
+    mylogClick() {
+      this.$router.push({
+        name: 'log',
+        query: {
+          from: 'historylog'
+        }
+      })
     },
     /** 返回按钮点击 **/
     backClick() {
@@ -76,7 +100,6 @@ export default {
     },
     /** 获取全部场次列表 **/
     _getLotteryList() {
-
       Services.getLotteryList().then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code === 200) {
@@ -104,8 +127,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .index {
+  min-height: 100vh;
   position: relative;
-  background: #e0384a;
+  background: #f03e50;
   .bg {
     position: absolute;
     z-index: 1;
@@ -114,7 +138,7 @@ export default {
       width: 100%;
       vertical-align: top;
       &:last-child{
-        margin-top: -1px;
+        margin-top: .5rem;
       }
     }
   }
@@ -124,7 +148,7 @@ export default {
     .btns {
       position: relative;
       width: 100%;
-      height: 3.4rem;
+      height: 3.36rem;
       img {
         width: 100%;
         height: 100%;
@@ -139,16 +163,39 @@ export default {
       .rule {
         position: absolute;
         right: 0;
-        top: .27rem;
+        top: .22rem;
         width: .93rem;
         height: .6rem;
       }
       .log {
         position: absolute;
         right: 0;
-        top: 1.06rem;
+        top: .92rem;
         width: .93rem;
         height: .6rem;
+      }
+      .my-log {
+        position: absolute;
+        right: 0;
+        top: 1.64rem;
+        width: .93rem;
+        height: .6rem;
+      }
+    }
+    .rule {
+      .title {
+        height: .38rem;
+        text-align: center;
+        img {
+          vertical-align: top;
+          height: 100%;
+        }
+      }
+      .center {
+        padding: .27rem .33rem;
+        font-size: .22rem;
+        color: #fff;
+        line-height: .38rem;
       }
     }
   }
