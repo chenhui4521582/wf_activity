@@ -72,7 +72,7 @@ export default {
       this.$router.push({
         name: 'log',
         query: {
-          from: 'mylog'
+          from: 'historylog'
         }
       })
     },
@@ -80,7 +80,7 @@ export default {
       this.$router.push({
         name: 'log',
         query: {
-          from: 'historylog'
+          from: 'mylog'
         }
       })
     },
