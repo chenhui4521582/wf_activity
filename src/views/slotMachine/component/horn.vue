@@ -1,6 +1,6 @@
 <template>
   <div class="horn">
-    <swiper v-if="isShow" :options="defaultOptions" >
+    <swiper v-if="isShow" :options="defaultOptions">
       <swiper-slide class="swiper-slide" v-for="(item, index) in hornList" :key="index">
         恭喜{{item.nickname}}抽中了{{item.amount}}金叶子
       </swiper-slide>
@@ -9,16 +9,16 @@
 </template>
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'vue-awesome-swiper/node_modules/swiper/dist/css/swiper.css'
+import 'swiper/dist/css/swiper.css'
 export default {
   name: 'horn',
   props: {
     hornList: {
       type: Array,
-      default: ()=>([])
+      default: () => []
     }
   },
-  data: ()=> ({
+  data: () => ({
     defaultOptions: {
       loop: true,
       autoplay: 3000,
@@ -31,20 +31,20 @@ export default {
     swiperSlide
   },
   computed: {
-    isShow() {
+    isShow () {
       return this.hornList.length
     }
   },
 }
 </script>
 <style lang="less" scoped>
-  .horn {
-    margin: 2.4rem 0 0 2rem;
-    width: 4rem;
-    overflow: hidden;
-    color: #FFE8DF;
-    height: .6rem;
-    line-height: .6rem;
-    font-size: .24rem;
-  }
+.horn {
+  margin: 2.4rem 0 0 2rem;
+  width: 4rem;
+  overflow: hidden;
+  color: #ffe8df;
+  height: 0.6rem;
+  line-height: 0.6rem;
+  font-size: 0.24rem;
+}
 </style>
