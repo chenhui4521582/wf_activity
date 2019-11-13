@@ -72,7 +72,7 @@ export default {
       this.$router.push({
         name: 'log',
         query: {
-          from: 'mylog'
+          from: 'historylog'
         }
       })
     },
@@ -80,7 +80,7 @@ export default {
       this.$router.push({
         name: 'log',
         query: {
-          from: 'historylog'
+          from: 'mylog'
         }
       })
     },
@@ -106,21 +106,11 @@ export default {
           this.list = _get(res, 'data.data.list', [])
         }
       })
-    },
-    /** 获取之前场次列表 **/
-    _getHistoryList() {
-      Services.getHistoryList().then(res=> {
-        let {code, data, message} = _get(res, 'data')
-        if(code === 200) {
-          this.historyList = _get(res, 'data.data.historyList', [])
-        }
-      })
     }
   },
   mounted() {
     this._getUserInfo()
     this._getLotteryList()
-    this._getHistoryList()
     GLOBALS.marchSetsPoint('P_H5PT0202')
   }
 }

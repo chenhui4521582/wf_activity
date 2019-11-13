@@ -20,8 +20,9 @@
       :title="modal.title"  
       :type="2" 
       :saveText="modal.saveText" 
-      :closeButtonShow=false 
+      :closeButtonShow="modal.closeButtonShow" 
       @on-save="hide"
+      @on-close="closed"
     >
       <div class="message" v-html="modal.message"></div>
     </Modal>
@@ -52,7 +53,8 @@ export default {
       status: 0,
       title: '温馨提示',
       saveText: '知道了',
-      message: ''
+      message: '',
+      closeButtonShow: false
     }
   }),
   computed: {
@@ -86,6 +88,9 @@ export default {
     },
     buyMax() {
       this.inputValue = this.max || 1
+    },
+    closed() {
+      this.modal.show = false
     },
     hide() {
       let {status} = this.modal
@@ -122,7 +127,8 @@ export default {
             status: 0,
             message: `您的${data.length}次夺宝次数参与成功`,
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
           this.$emit('refresh')
           this.inputValue = 1
@@ -136,7 +142,8 @@ export default {
             status: 0,
             message: '本期夺宝参与次数已达到上限<br>把机会让给其他人吧',
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
           GLOBALS.marchSetsPoint('A_H5PT0202002096', {
             task_id: this.details.currentPeriodStatus,
@@ -148,7 +155,8 @@ export default {
             status: 1,
             message: '您的夺宝卡不足',
             title: '温馨提示',
-            saveText: '去兑换夺宝卡'
+            saveText: '去兑换夺宝卡',
+            closeButtonShow: true
           }
           GLOBALS.marchSetsPoint('A_H5PT0202002099', {
             task_id: this.details.currentPeriodStatus,
@@ -161,7 +169,8 @@ export default {
             status: 0,
             message: message,
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
         }
       }).catch(res=> {

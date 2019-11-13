@@ -13,12 +13,6 @@ new function() {
     window.addEventListener('resize', function() {
     _self.changePage();
   }, false);
-
-    // let hm = document.createElement("script");
-    // hm.src = `https://wap.beeplaying.com/ErrorPage/linkUrl.js?time=${new Date().getTime()}`;
-    // let s = document.getElementsByTagName("script")[0];
-    // s.parentNode.insertBefore(hm, s);
-
   var time1 = new Date().getTime();
   var script1 = document.createElement("script");
   script1.type = "text/javascript";
