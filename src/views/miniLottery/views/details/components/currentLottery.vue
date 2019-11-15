@@ -99,7 +99,7 @@ export default {
       font-weight: normal;
     }
     &.no {
-      margin-bottom: 0;
+      margin-bottom: .18rem;
       .name {
         i {
           color: #FF4141;
