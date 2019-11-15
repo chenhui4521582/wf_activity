@@ -96,10 +96,10 @@ export default {
       let {status} = this.modal
       if(status == 1) {
         let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
-        if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL)> -1) {
-          parent.location.href = `https://wap.beeplaying.com/xmWap/#/mall?channel=${localStorage.getItem('APP_CHANNEL')}`
+        if(['100069','100070','100073','100075','100080','100055','100068','100045'].includes(APP_CHANNEL)) {
+          window.location.href = `https://wap.beeplaying.com/xmWap/?channel=100000#/mall/details?accountBalance=992091.2&phyAwardsType=46&phyAwardsId=1281&name=%E5%A4%BA%E5%AE%9D%E5%8D%A1&channel=${localStorage.getItem('APP_CHANNEL')}`
         }else {
-          parent.location.href = `https://wap.beeplaying.com/activities/billshop.html#/?from=bdWap&channel=${localStorage.getItem('APP_CHANNEL')}`
+          window.location.href = `https://wap.beeplaying.com/activities/billshop.html#/detail?from=bdWap&source=bdWap&phyAwardsType=46&phyAwardsId=836&showOut=1&channel=${localStorage.getItem('APP_CHANNEL')}`
         }
         GLOBALS.marchSetsPoint('A_H5PT0202002100', {
           task_id: this.details.currentPeriodStatus,

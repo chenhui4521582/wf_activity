@@ -11,7 +11,9 @@
           </div>
           <div class="text">
             <div class="title">{{item.title}}</div>
-            <div class="desc" v-html="item.description"></div>
+            <div class="desc">
+              {{item.description}}
+            </div>
             <div class="edit">
               已抢<span>{{item.participantsNumber || 0}}</span>次
             </div>
@@ -177,6 +179,7 @@ export default {
 
         .img {
           position: relative;
+          flex-shrink: 0;
           margin-top: .09rem;
           width: 2.4rem;
           height: 1.8rem;
@@ -212,6 +215,7 @@ export default {
             margin-bottom: .1rem;
             font-size: .22rem;
             color: #404040;
+            white-space: nowrap;
           }
           .edit {
             margin-bottom: .1rem;
