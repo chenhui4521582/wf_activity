@@ -434,7 +434,7 @@ export default {
     },
     async jumpMine () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
-      let _url = '#/personal'
+      let _url = '#/luckdraw'
       if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
         _url = '#/my'
       }
