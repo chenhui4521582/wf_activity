@@ -12,7 +12,9 @@
         至少<i>{{details.limitTotalAmount || 0}}</i>人次报名开奖
       </span>
     </div>
-    
+    <div class="explain">
+      本期夺宝每次参与需{{details.cardAmount}}夺宝卡，每人最多参与{{details.currentUserInfo.allowBuyNumber}}次
+    </div>
     <div class="people" v-if="status == 0">
       您已经参与：<span>{{bettingCodesLength}}</span>次
     </div>
@@ -104,6 +106,11 @@ export default {
         }
       }
     }
+  }
+  .explain {
+    margin-bottom: .18rem;
+    font-size: .24rem;
+    color: #FF4141;
   }
   .people {
     margin-bottom: .18rem;
