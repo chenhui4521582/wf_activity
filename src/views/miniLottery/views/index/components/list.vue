@@ -203,6 +203,7 @@ export default {
           }
         }
         .text {
+          overflow: hidden;
           position: relative;
           padding-left: .22rem; 
           .title {
@@ -216,6 +217,8 @@ export default {
             font-size: .22rem;
             color: #404040;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .edit {
             margin-bottom: .1rem;
