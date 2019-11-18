@@ -89,7 +89,7 @@ export default {
     }
   },
   async created () {
-    let arr = [232, 523]
+    let arr = [232, 523, 340]
     const { data: userInfo } = await this.axios.post('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
     this.accountBalance = userInfo.code == 200 && (parseFloat(userInfo.data.hfSum / 10).toFixed(1) + '')
     // this.currentList = localStorage.getItem('BILL_DETAILS') ? JSON.parse(localStorage.getItem('BILL_DETAILS')) : []
