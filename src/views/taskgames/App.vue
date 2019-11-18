@@ -3,43 +3,64 @@
     <div class="header">
       <ul>
         <li class="leaf">{{userInfo&&userInfo.amount}}</li>
-        <li class="hf-fragment" v-if="telFragment" @click="jumpMine">{{telFragment&&telFragment[0].price}}
-          <i :class="{'huafeifont':!huafeiShow}" v-html="huafeiShow ? '(满'+huafeiNum+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
+        <li class="hf-fragment"
+          v-if="telFragment"
+          @click="jumpMine">{{telFragment&&telFragment[0].price}}
+          <i :class="{'huafeifont':!huafeiShow}"
+            v-html="huafeiShow ? '(满'+huafeiNum+'可领)&nbsp':`&nbsp点击领取&nbsp`"></i>
         </li>
         <!--<p class="figure" v-if="!huafeiShow">-->
         <!--<img src="./images/fighur.png" class="touch">-->
         <!--快去领！-->
         <!--</p>-->
       </ul>
-      <entrance-header @gotokf="kfclick" @getUserInfo="getTransInfo" :userInfo="userInfo"></entrance-header>
+      <entrance-header @gotokf="kfclick"
+        @getUserInfo="getTransInfo"
+        :userInfo="userInfo"></entrance-header>
     </div>
     <!-- sdk 推广 -->
     <!-- <sdk-recommend :showCrushMasterTask = "showCrushMasterTask" :showKingTask = "showKingTask" :currentGameType = "currentGameType" :newUser = "newTaskItems" /> -->
     <!-- sdk 新版运营位 -->
-    <sdk-tab-box :currentGameType='currentGameType' :id="userInfo&&userInfo.userId" @kickegg="kickegg">
+    <sdk-tab-box :currentGameType='currentGameType'
+      :id="userInfo&&userInfo.userId"
+      @kickegg="kickegg">
       <div>
-        <div class="t-content" v-if="!isTfStatus">
+        <div class="t-content"
+          v-if="!isTfStatus">
           <adventure-task :current-game-type="currentGameType"></adventure-task>
-          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="channel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
-          <div v-if="showNewUserTask && !newTaskItems.newVersion" class="new-user-task">
+          <new-user-task :newTaskItems="newTaskItems"
+            :motherTask="motherTask"
+            :newUserTaskobj="newUserTaskobj"
+            :channel="channel"
+            @receive="receive"
+            @goFinish="goFinish"
+            @getList="getNewTask"
+            v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
+          <div v-if="showNewUserTask && !newTaskItems.newVersion"
+            class="new-user-task">
             <div class="tips">
-              <img src="./img/tips-old.png" alt="">
+              <img src="./img/tips-old.png"
+                alt="">
             </div>
             <div class="new-task-header">
               <div class="new-task-inner">
                 <h4 class="h-title h-new-title icon-tips">
                   <p class="h-subtitle">
-                    <img src="./img/title1-old.png" class="xr-icon">
-                    <img src="./images/small-xs-tips.png" class="small-xs-tips">
+                    <img src="./img/title1-old.png"
+                      class="xr-icon">
+                    <img src="./images/small-xs-tips.png"
+                      class="small-xs-tips">
                   </p>
                   <div class="text"><img src="./images/cloak.png">{{newTaskItems.countDown | formatTime}}</div>
                 </h4>
                 <div class="newTask">
-                  <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)" class="title">
+                  <div v-if="motherTask&&(motherTask.hasFinishedNum != motherTask.allTaskNum)"
+                    class="title">
                     <span class="text">全部完成</span>
                     <span>再得{{motherTask.awardsNum / 10}}元话费</span>
                   </div>
-                  <div class="title" v-else>恭喜！新人任务已全部完成！</div>
+                  <div class="title"
+                    v-else>恭喜！新人任务已全部完成！</div>
                   <ul>
                     <li class="percent-lq">
                       <div class="percent-box">
@@ -49,7 +70,8 @@
                   </ul>
                   <div class="explain">
                     <div class="text">{{motherTask.hasFinishedNum}}/{{motherTask.allTaskNum}}</div>
-                    <div v-show="newTaskItems.receiverCounter" class="receive">已有{{newTaskItems.receiverCounter}}人领取</div>
+                    <div v-show="newTaskItems.receiverCounter"
+                      class="receive">已有{{newTaskItems.receiverCounter}}人领取</div>
                   </div>
                 </div>
               </div>
@@ -59,24 +81,35 @@
                 <li class="not-daily">
                   <div :class="{'actived': newUserTaskobj.taskStatus == 2}">
                     <div class="pic">
-                      <img :src="newUserTaskobj.icon | filter" alt="">
+                      <img :src="newUserTaskobj.icon | filter"
+                        alt="">
                       <span class="label">任务{{motherTask.hasFinishedNum + 1}}</span>
                     </div>
                     <div class="item-text">
-                      <p class="title" v-html="newUserTaskobj.taskName"></p>
+                      <p class="title"
+                        v-html="newUserTaskobj.taskName"></p>
                       <div class="percent-container">
                         <div class="percent-box">
                           <div class="text">{{newUserTaskobj.finishNum}}/{{newUserTaskobj.taskOps}}</div>
                           <em :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></em>
                         </div>
-                        <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter" alt="">{{newUserTaskobj.awardsName}}</i></span>
+                        <span class="item-award"><i><img :src="newUserTaskobj.awardsImage | filter"
+                              alt="">{{newUserTaskobj.awardsName}}</i></span>
                       </div>
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="newUserTaskobj.taskStatus == 0" @click="receive(newUserTaskobj, 'newtask')">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="newUserTaskobj.taskStatus == 1" @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
-                    <a href="javascript:" class="btn btn-gray" v-if="newUserTaskobj.taskStatus == 2">已领取</a>
+                    <a href="javascript:"
+                      class="btn btn-receive"
+                      v-if="newUserTaskobj.taskStatus == 0"
+                      @click="receive(newUserTaskobj, 'newtask')">领取</a>
+                    <a href="javascript:"
+                      class="btn btn-play"
+                      v-if="newUserTaskobj.taskStatus == 1"
+                      @click="goFinish(newUserTaskobj,'newtask')">去完成</a>
+                    <a href="javascript:"
+                      class="btn btn-gray"
+                      v-if="newUserTaskobj.taskStatus == 2">已领取</a>
                   </p>
                 </li>
               </ul>
@@ -85,40 +118,66 @@
               <ul class="finish">
                 <li>
                   <div class="head-img">
-                    <img src="./img/signIn-icon.png" alt="">
+                    <img src="./img/signIn-icon.png"
+                      alt="">
                   </div>
                   <div class="f-content">
                     <p>快领取话费奖励吧</p>
                     <p>{{motherTask.awardsName}}</p>
                   </div>
                 </li>
-                <li @click="receive(motherTask,'motherTask')" class="btn">领取</li>
+                <li @click="receive(motherTask,'motherTask')"
+                  class="btn">领取</li>
               </ul>
             </div>
             <!-- 人人大恶魔勋章 -->
             <renren-mowang v-if="channel==='100049'"></renren-mowang>
           </div>
-          <fixed-entrance @checkTaskStatus="goFinish" @close="closeFixedEntrance" v-if="isShowOther"></fixed-entrance>
+          <fixed-entrance @checkTaskStatus="goFinish"
+            @close="closeFixedEntrance"
+            v-if="isShowOther"></fixed-entrance>
           <!-- 人人大恶魔勋章 -->
           <renren-mowang v-if="channel==='100049'"></renren-mowang>
           <template v-if="isShowOther">
-            <div class="wrap" >
-              <cost-down :type="2" @masterTaskStatus="masterTaskStatus"></cost-down>
-              <div class="wrapper" v-if="MasterCostDown">
+            <div class="wrap">
+              <cost-down :type="2"
+                @masterTaskStatus="masterTaskStatus"></cost-down>
+              <div class="wrapper"
+                v-if="MasterCostDown">
                 <!-- 大师任务 -->
-                <crush-master-task v-if="showCrushMasterTask " :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+                <crush-master-task v-if="showCrushMasterTask "
+                  :crushTaskList="crushTaskList"
+                  :showReceiveMedal="showReceiveMedal"
+                  :showMedalAnimate="showMedalAnimate"
+                  :currentMedalIndex="currentMedalIndex"
+                  :currentGameType="currentGameType"
+                  @checkTaskStatus="checkTaskStatus"
+                  @hideMedalAnimate="showMedalAnimate = false"
+                  @receive="receive"
+                  @refreshTask="refreshTask" />
                 <!-- 王者任务 -->
-                <king-task v-if="showKingTask" :crushTaskList="crushTaskList" :showReceiveMedal="showReceiveMedal" :showMedalAnimate="showMedalAnimate" :currentMedalIndex="currentMedalIndex" :currentGameType="currentGameType" @checkTaskStatus="checkTaskStatus" @hideMedalAnimate="showMedalAnimate = false" @receive="receive" @refreshTask="refreshTask" />
+                <king-task v-if="showKingTask"
+                  :crushTaskList="crushTaskList"
+                  :showReceiveMedal="showReceiveMedal"
+                  :showMedalAnimate="showMedalAnimate"
+                  :currentMedalIndex="currentMedalIndex"
+                  :currentGameType="currentGameType"
+                  @checkTaskStatus="checkTaskStatus"
+                  @hideMedalAnimate="showMedalAnimate = false"
+                  @receive="receive"
+                  @refreshTask="refreshTask" />
               </div>
             </div>
           </template>
           <div v-if="currentGamesItems&&currentGamesItems.length && newTaskItems&&(isShowOther||currentGamesItems[0].flag)">
             <h4 class="h-title h-first-title">当前游戏每日任务</h4>
             <!-- 魅族渠道新手完成活动 下线时清删除 -->
-            <div class="complete-task" v-if="completeData.show">
+            <div class="complete-task"
+              v-if="completeData.show">
               <div style="display: flex;align-items: center;">
                 <div class="pic">
-                  <img src="./img/complete-icon.png" alt="">
+                  <img src="./img/complete-icon.png"
+                    alt="">
                 </div>
                 <div class="item-text">
                   <p class="title">做任务瓜分{{completeData.jackpotAmount || 2000}}奖池 </p>
@@ -131,37 +190,59 @@
                 </div>
               </div>
               <p class="btn-box">
-                <a href="javascript:" class="btn btn-play1" v-if="completeData.userTaskFinishAll" @click="completeClick">完成</a>
-                <a href="javascript:" class="btn btn-play2" v-else>未完成</a>
+                <a href="javascript:"
+                  class="btn btn-play1"
+                  v-if="completeData.userTaskFinishAll"
+                  @click="completeClick">完成</a>
+                <a href="javascript:"
+                  class="btn btn-play2"
+                  v-else>未完成</a>
               </p>
             </div>
             <!-- 魅族渠道新手完成活动 下线时清删除 -->
             <ul class="t-items">
-              <li v-for="(item, index) in currentGamesItems" :key="index">
-                <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
+              <li v-for="(item, index) in currentGamesItems"
+                :key="index">
+                <div :class="{'actived': item.taskStatus == 2}"
+                  style="display: flex;align-items: center;">
                   <div class="pic">
-                    <img :src="item.icon | filter" alt="" v-if="item.action!=72">
-                    <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
+                    <img :src="item.icon | filter"
+                      alt=""
+                      v-if="item.action!=72">
+                    <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)"
+                      alt=""
+                      v-else>
                   </div>
                   <div class="item-text">
-                    <p class="title" v-html="item.taskDescShow"></p>
+                    <p class="title"
+                      v-html="item.taskDescShow"></p>
                     <div class="percent-container">
                       <div class="percent-box">
                         <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                         <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                       </div>
                       <div class="new-item-award">
-                        <p><img :src="item.awardsImage | filter" alt=""></p>
+                        <p><img :src="item.awardsImage | filter"
+                            alt=""></p>
                         <span>{{item.awardsName}}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <p class="btn-box">
-                  <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
-                  <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item, index)">去完成</a>
-                  <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
-                  <span v-if="woolUserType && item.taskStatus == 0&&!item.flag" class="in-game wool_user">看完广告获得奖励</span>
+                  <a href="javascript:"
+                    class="btn btn-receive"
+                    v-if="item.taskStatus == 0"
+                    @click="checkTaskStatus(item,'dayTask',index)">领取</a>
+                  <a href="javascript:"
+                    class="btn btn-play"
+                    v-if="item.taskStatus == 1"
+                    @click="goFinishs(item, index)">去完成</a>
+                  <a href="javascript:"
+                    class="btn btn-gray"
+                    v-if="item.taskStatus == 2">已领取</a>
+                  <span v-if="woolUserType && item.taskStatus == 0&&!item.flag"
+                    class="in-game wool_user">看完广告获得奖励</span>
                 </p>
               </li>
             </ul>
@@ -171,62 +252,109 @@
               <!-- 其他任务 -->
               <h4 class="h-title h-third-title">更多每日任务</h4>
               <ul class="t-items">
-                <li v-for="(item, index) in otherGamesItems" :key="index">
-                  <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;">
+                <li v-for="(item, index) in otherGamesItems"
+                  :key="index">
+                  <div :class="{'actived': item.taskStatus == 2}"
+                    style="display: flex;align-items: center;">
                     <div class="pic">
-                      <img :src="item.icon | filter" alt="" v-if="item.action!=72">
-                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)" alt="" v-else>
+                      <img :src="item.icon | filter"
+                        alt=""
+                        v-if="item.action!=72">
+                      <img :src="require(`./images/meizugg/${Math.round(Math.random()*7+1)}.gif`)"
+                        alt=""
+                        v-else>
                     </div>
                     <div class="item-text">
-                      <p class="title" v-html="item.taskDescShow"></p>
+                      <p class="title"
+                        v-html="item.taskDescShow"></p>
                       <div class="percent-container">
-                        <div class="percent-box" :class="{'bigNum': item.taskOps > 10000}">
+                        <div class="percent-box"
+                          :class="{'bigNum': item.taskOps > 10000}">
                           <div class="text">{{item.finishNum}}/{{item.taskOps}}</div>
                           <em :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></em>
                         </div>
                         <div class="new-item-award">
-                          <p><img :src="item.awardsImage | filter" alt=""></p>
+                          <p><img :src="item.awardsImage | filter"
+                              alt=""></p>
                           <span>{{item.awardsName}}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <p class="btn-box">
-                    <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="checkTaskStatus(item,'dayTask',index)">领取</a>
-                    <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinish(item, 'dayTask')">去完成</a>
-                    <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2" @click="goFinish(item)">已完成</a>
-                    <span v-if="woolUserType && item.taskStatus == 0" class="in-game wool_user">看完广告获得奖励</span>
-                    <span class="in-game" v-if="item.taskStatus == 2">点击可进入</span>
+                    <a href="javascript:"
+                      class="btn btn-receive"
+                      v-if="item.taskStatus == 0"
+                      @click="checkTaskStatus(item,'dayTask',index)">领取</a>
+                    <a href="javascript:"
+                      class="btn btn-play"
+                      v-if="item.taskStatus == 1"
+                      @click="goFinish(item, 'dayTask')">去完成</a>
+                    <a href="javascript:"
+                      class="btn btn-gray"
+                      v-if="item.taskStatus == 2"
+                      @click="goFinish(item)">已完成</a>
+                    <span v-if="woolUserType && item.taskStatus == 0"
+                      class="in-game wool_user">看完广告获得奖励</span>
+                    <span class="in-game"
+                      v-if="item.taskStatus == 2">点击可进入</span>
                   </p>
                 </li>
               </ul>
             </div>
           </template>
-          <img src="./img/weekbetting.png" alt="" class="weekbetting" style="display: block;width: 100%;margin: .2rem 0" @click="gotoweekbetting" v-if="showWeekBetting">
-          <poplog v-if="isPopLog" :crushTaskList="crushTaskList" :awardItem="awardItem" :motherTask="motherTask" :isNewTask="isNewTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
+          <img src="./img/weekbetting.png"
+            alt=""
+            class="weekbetting"
+            style="display: block;width: 100%;margin: .2rem 0"
+            @click="gotoweekbetting"
+            v-if="showWeekBetting">
+          <poplog v-if="isPopLog"
+            :crushTaskList="crushTaskList"
+            :awardItem="awardItem"
+            :motherTask="motherTask"
+            :isNewTask="isNewTask"
+            :masterTask="masterTask"
+            :newUserTaskFinish="newUserTaskFinish"
+            @close="closePopLog">
           </poplog>
           <!-- 新版奖励弹窗   -->
           <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
-          <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="closeDailyReceivePop"></task-award-pop>
+          <task-award-pop v-if="true"
+            :awards="receiveAwards"
+            @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
-          <box-dialog v-if="showBoxDialog" :awardItem="awardItem" @closeBoxDialog="closeBoxDialog" />
+          <box-dialog v-if="showBoxDialog"
+            :awardItem="awardItem"
+            @closeBoxDialog="closeBoxDialog" />
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
         </div>
-        <div class="t-content" v-show="isTfStatus">
-          <img src="./images/tf-task-bg.png" class="tf-task-bg">
+        <div class="t-content"
+          v-show="isTfStatus">
+          <img src="./images/tf-task-bg.png"
+            class="tf-task-bg">
         </div>
       </div>
     </sdk-tab-box>
-    <common-pop title="温馨提示" @close="showzspop=false" btn-name="确定" v-if="showzspop" @besure="gotokf">
-      <div class="common-pop-text" style="position: absolute;top:0;bottom: 0;left:0;right:0;margin: auto;line-height: 2.44rem">
+    <common-pop title="温馨提示"
+      @close="showzspop=false"
+      btn-name="确定"
+      v-if="showzspop"
+      @besure="gotokf">
+      <div class="common-pop-text"
+        style="position: absolute;top:0;bottom: 0;left:0;right:0;margin: auto;line-height: 2.44rem">
         离开当前游戏 前往客服专区？
       </div>
     </common-pop>
     <!-- 人人中青渠道每日任务未完成情况点击弹出 -->
-    <div class="rr-zq-mask" v-if="isRRZQPop">
+    <div class="rr-zq-mask"
+      v-if="isRRZQPop">
       <div class="rr-zq-container">
-        <img :src="quitConfig && quitConfig.taskImage | filter" class="wanliu">
-        <a href="javascript:" class="rr-zq-close" @click.stop="closeRRZQPop"></a>
+        <img :src="quitConfig && quitConfig.taskImage | filter"
+          class="wanliu">
+        <a href="javascript:"
+          class="rr-zq-close"
+          @click.stop="closeRRZQPop"></a>
       </div>
     </div>
   </div>
@@ -266,7 +394,7 @@ export default {
       selectItem: {},
       woolUserType: false,
       completeData: {}, // 魅族渠道新手完成活动 下线时清删除
-      showWeekBetting:false,
+      showWeekBetting: false,
       countdown: 5000,
       MasterCostDown: false
     }
@@ -810,9 +938,9 @@ export default {
         // // parent.location.href = 'https://wap.beeplaying.com' + url + '?channel=' + this.channel + '&token=' + this.token;
         // parent.location.href = GLOBALS.getJumpToGameUrl(url)
         if (url === 'prizesurvey') {
-          if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap'){
+          if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
             parent.location.href = 'https://wap.beeplaying.com/xmWap#/personalCenter/survey'
-          }else{
+          } else {
             parent.location.href = 'https://wap.beeplaying.com/publicWap/personalCenter.html#/survey'
           }
           return
@@ -958,11 +1086,11 @@ export default {
         }
       }
       let { data: dataWeekBetting } = await this.axios.post('//platform-api.beeplaying.com/task/api/activity/week/task/info')
-      if(dataWeekBetting.code==200&&dataWeekBetting.data.openFlag){
-        this.showWeekBetting=true
+      if (dataWeekBetting.code == 200 && dataWeekBetting.data.openFlag) {
+        this.showWeekBetting = true
       }
-      if(this.showWeekBetting){
-        this.currentGamesItems =arrring2;
+      if (this.showWeekBetting) {
+        this.currentGamesItems = arrring2;
         return
       }
       let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
@@ -1059,10 +1187,10 @@ export default {
       parent.closeTaksPage()
     },
     // 魅族渠道新手完成活动 下线时清删除
-    gotoweekbetting(){
-      parent.location.href='//wap.beeplaying.com/activities/weekbetting.html?vt='+new Date().getTime()
+    gotoweekbetting () {
+      parent.location.href = '//wap.beeplaying.com/activities/weekbetting.html?vt=' + new Date().getTime()
     },
-    masterTaskStatus(status) {
+    masterTaskStatus (status) {
       this.MasterCostDown = status
     }
   }
