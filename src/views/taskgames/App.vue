@@ -320,7 +320,7 @@
           </poplog>
           <!-- 新版奖励弹窗   -->
           <!--<daily-task-receive-pop v-if="isDailyReceivePop" :awards="receiveAwards" @closePop="closeDailyReceivePop"></daily-task-receive-pop>-->
-          <task-award-pop v-if="true"
+          <task-award-pop v-if="isDailyReceivePop"
             :awards="receiveAwards"
             @close="closeDailyReceivePop"></task-award-pop>
           <!-- 踏青寻宝   活动特有  活动下线 删除-->
@@ -562,7 +562,7 @@ export default {
     },
     async jumpMine () {
       await GLOBALS.marchSetsPoint('A_H5PT0061000534', { project_id: this.currentGameType }) // H5平台-游戏内SDK-话费余额按钮
-      let _url = '#/luckdraw'
+      let _url = '#/personal'
       if (window.linkUrl.getBackUrlFlag(this.channel) === 'xmWap') {
         _url = '#/my'
       }
@@ -1075,7 +1075,6 @@ export default {
     },
     async getDayTask () {
       let arrring2 = []
-      /**删除套圈任务**/
       if (parent.location.href.includes('ring2')) {
         let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
         if (dataA.code == 200) {
