@@ -40,31 +40,14 @@
         </p>
       </li>
     </ul>
-    <div v-if="awardItem.isShow">
-      <div class="mask"></div>
-      <div class="shine-box">
-        <img class="shine"
-          src="../img/dialog/shine.png"
-          alt="">
-      </div>
-      <div class="content-box">
-        <img class="bg"
-          src="../img/dialog/bg.png">
-        <div class="content">
-          <img class="title"
-            src="../img/dialog/congratulations-text.png"
-            alt="">
-          <div class="icon">
-            <img src="../img/task_mowang.png"
-              alt="">
-          </div>
-          <p class="num">{{awardItem.awardsName}}</p>
-          <p style="color:#fad2cc;font-size:0.16rem;text-align:center;">奖励将在2天内发送，请及时在人人视频查收</p>
-          <div class="close"
-            @click="close">继续赚话费</div>
-        </div>
-      </div>
-    </div>
+    <!-- 任务弹窗样式更新 begin -->
+    <task-award-pop v-if="awardItem.isShow"
+      btnName="继续赚话费"
+      info="奖励将在2天内发送，请及时在人人视频查收"
+      :awards="{awardsName:awardItem.awardsName}"
+      :awards-image="require('../img/renrenmowang.png')"
+      @close="close"></task-award-pop>
+    <!-- 任务弹窗样式更新 end -->
   </section>
 </template>
 

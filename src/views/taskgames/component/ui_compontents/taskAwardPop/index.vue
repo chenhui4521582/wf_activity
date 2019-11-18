@@ -10,7 +10,7 @@
         class="title">
       <div class="content">
         <div class="img">
-          <img :src="awards.awardsImage|filter"
+          <img :src="(awards.showAwardsImage||awards.awardsImage)|filter"
             alt=""
             v-if="!awardsImage">
           <img :src="awardsImage"
@@ -107,14 +107,13 @@ export default {
   align-items: center;
   margin: 1.43 * 0.9rem 0 0.74 * 0.9rem;
   .img {
-    width: 1.48 * 0.9rem;
-    height: 1.48 * 0.9rem;
-    background: rgba(34, 36, 51, 0.08);
+    height: 1.6rem;
+    // background: rgba(34, 36, 51, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
     img {
-      width: 80%;
+      height: 100%;
     }
   }
   .award-name {

@@ -40,29 +40,12 @@
         </p>
       </li>
     </ul>
-    <div v-if="awardItem.isShow">
-      <div class="mask"></div>
-      <img class="shine"
-        src="../img/dialog/shine.png"
-        alt="">
-      <div class="content-box">
-        <img class="bg"
-          src="../img/dialog/bg.png">
-        <div class="content">
-          <img class="title"
-            src="../img/dialog/congratulations-text.png"
-            alt="">
-          <div class="icon">
-            <img :src="awardItem.awardsImage"
-              alt="">
-          </div>
-          <p class="num">{{awardItem.awardsName}}</p>
-          <!--<p style="color:#fad2cc;font-size:0.2rem;text-align:center;">奖励将在2天内发送，请及时在人人视频查收</p>-->
-          <div class="close"
-            @click="close">朕收下了</div>
-        </div>
-      </div>
-    </div>
+    <!-- 任务弹窗样式更新 begin -->
+    <task-award-pop v-if="awardItem.isShow"
+      btnName="朕收下了"
+      :awards="awardItem"
+      @close="close"></task-award-pop>
+    <!-- 任务弹窗样式更新 end -->
   </section>
 </template>
 
