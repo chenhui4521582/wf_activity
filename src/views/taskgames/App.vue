@@ -995,7 +995,7 @@ export default {
         if (res.data.code == 200) {
           // 弹窗弹出
           if (item.flag && item.flag == 'ring2') {
-            item.awardsImage = res.data.data.awardsImg
+            item.awardsImage = res.data.data.showAwardsImg
             item.awardsNum = res.data.data.num
             item.flag = 'ring2'
           }
@@ -1028,7 +1028,7 @@ export default {
           }
           if (res.data.data && res.data.data.awardsName) {
             if (item.flag && item.flag == 'ring2') {
-              res.data.data.awardsImage = res.data.data.awardsImg
+              res.data.data.awardsImage = res.data.data.showAwardsImg
               res.data.data.awardsNum = res.data.data.num
               res.data.data.flag = 'ring2'
             }
