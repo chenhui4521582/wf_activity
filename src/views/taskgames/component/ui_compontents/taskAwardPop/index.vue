@@ -5,20 +5,30 @@
     </transition>
     <!--<img src="./images/shine.png" alt="" class="shine">-->
     <div class="modal-content">
-      <img :src="titleImage" alt="" class="title">
+      <img :src="titleImage"
+        alt=""
+        class="title">
       <div class="content">
         <div class="img">
-          <img :src="awards.awardsImage|filter" alt="" v-if="!awardsImage">
-          <img :src="awardsImage" alt="" v-else>
+          <img :src="awards.awardsImage|filter"
+            alt=""
+            v-if="!awardsImage">
+          <img :src="awardsImage"
+            alt=""
+            v-else>
         </div>
-        <p v-if="awards.awardsNum&&awards.awardsNum>1" class="award-name">{{awards.awardsName}}x{{awards.awardsNum}}</p>
-        <p v-else class="award-name">{{awards.awardsName}}</p>
+        <p v-if="awards.awardsNum&&awards.awardsNum>1"
+          class="award-name">{{awards.awardsName}}x{{awards.awardsNum}}</p>
+        <p v-else
+          class="award-name">{{awards.awardsName}}</p>
       </div>
       <div class="footer-warp">
-        <div class="btn" @click="close(0)">{{btnName}}</div>
+        <div class="btn"
+          @click="close(0)">{{btnName}}</div>
         <div class="info">{{info}}</div>
       </div>
-      <div class="close" @click="close(1)"></div>
+      <div class="close"
+        @click="close(1)"></div>
     </div>
   </div>
 </template>

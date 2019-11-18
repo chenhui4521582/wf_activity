@@ -2,9 +2,11 @@
   <section v-if="mowangList&&mowangList.taskList&&mowangList.taskList.length>0 && mowangList.taskList[0].taskStatus != 2&&countdown.time">
     <ul class="t-items">
       <li v-for="(item, index) in mowangList.taskList">
-        <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;flex:1">
+        <div :class="{'actived': item.taskStatus == 2}"
+          style="display: flex;align-items: center;flex:1">
           <div class="pic">
-            <img :src="item.icon" alt="">
+            <img :src="item.icon"
+              alt="">
           </div>
           <div class="item-text">
             <div class="title">
@@ -17,30 +19,47 @@
             </div>
             <div class="new-item-award">
               <p v-if="countdown.time">仅剩{{countdown.time}}</p>
-              <p style="display: flex;align-items: center"><img :src="item.awardsImage|filter" alt="" style="height: .24rem;width: .24rem">{{item.awardsName}}</p>
+              <p style="display: flex;align-items: center"><img :src="item.awardsImage|filter"
+                  alt=""
+                  style="height: .24rem;width: .24rem">{{item.awardsName}}</p>
             </div>
           </div>
         </div>
         <p class="btn-box">
-          <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item)">领取</a>
-          <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="checkTaskStatus(item,'new_user_task_fixed_entrance')">去完成</a>
-          <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+          <a href="javascript:"
+            class="btn btn-receive"
+            v-if="item.taskStatus == 0"
+            @click="receive(item)">领取</a>
+          <a href="javascript:"
+            class="btn btn-play"
+            v-if="item.taskStatus == 1"
+            @click="checkTaskStatus(item,'new_user_task_fixed_entrance')">去完成</a>
+          <a href="javascript:"
+            class="btn btn-gray"
+            v-if="item.taskStatus == 2">已领取</a>
         </p>
       </li>
     </ul>
     <div v-if="awardItem.isShow">
       <div class="mask"></div>
-      <img class="shine" src="../img/dialog/shine.png" alt="">
+      <img class="shine"
+        src="../img/dialog/shine.png"
+        alt="">
       <div class="content-box">
-        <img class="bg" src="../img/dialog/bg.png">
+        <img class="bg"
+          src="../img/dialog/bg.png">
         <div class="content">
-          <img class="title" src="../img/dialog/congratulations-text.png" alt="">
+          <img class="title"
+            src="../img/dialog/congratulations-text.png"
+            alt="">
           <div class="icon">
-            <img :src="awardItem.awardsImage" alt="">
+            <img :src="awardItem.awardsImage"
+              alt="">
           </div>
           <p class="num">{{awardItem.awardsName}}</p>
           <!--<p style="color:#fad2cc;font-size:0.2rem;text-align:center;">奖励将在2天内发送，请及时在人人视频查收</p>-->
-          <div class="close" @click="close">朕收下了</div>
+          <div class="close"
+            @click="close">朕收下了</div>
         </div>
       </div>
     </div>
@@ -78,7 +97,7 @@ export default {
       }).then((res) => {
         if (res.data.code == 200) {
           this.mowangList = res.data.data
-          this.mowangList.taskList=this.mowangList.taskList||[]
+          this.mowangList.taskList = this.mowangList.taskList || []
           GLOBALS.remainingTime(
             this,
             this.mowangList.countDown,
@@ -197,7 +216,7 @@ export default {
     color: #624e42;
     p {
       height: 0.24rem;
-      line-height: .24rem;
+      line-height: 0.24rem;
       text-align: center;
     }
 

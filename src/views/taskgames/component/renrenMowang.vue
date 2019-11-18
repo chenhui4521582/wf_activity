@@ -2,13 +2,16 @@
   <section v-if="mowangList.length>0 && mowangList[0].taskStatus != 2">
     <ul class="t-items">
       <li v-for="(item, index) in mowangList">
-        <div :class="{'actived': item.taskStatus == 2}" style="display: flex;align-items: center;flex:1">
+        <div :class="{'actived': item.taskStatus == 2}"
+          style="display: flex;align-items: center;flex:1">
           <div class="pic">
-            <img src="../img/mowang_icon.png" alt="">
+            <img src="../img/mowang_icon.png"
+              alt="">
           </div>
           <div class="item-text">
             <div class="title">
-              <img src="../img/mowang-text.png" alt="">
+              <img src="../img/mowang-text.png"
+                alt="">
               <p>（人人视频用户专属）</p>
             </div>
             <div class="percent-container">
@@ -23,27 +26,42 @@
           </div>
         </div>
         <p class="btn-box">
-          <a href="javascript:" class="btn btn-receive" v-if="item.taskStatus == 0" @click="receive(item, 'mowangTask')">领取</a>
-          <a href="javascript:" class="btn btn-play" v-if="item.taskStatus == 1" @click="goFinishs(item)">去完成</a>
-          <a href="javascript:" class="btn btn-gray" v-if="item.taskStatus == 2">已领取</a>
+          <a href="javascript:"
+            class="btn btn-receive"
+            v-if="item.taskStatus == 0"
+            @click="receive(item, 'mowangTask')">领取</a>
+          <a href="javascript:"
+            class="btn btn-play"
+            v-if="item.taskStatus == 1"
+            @click="goFinishs(item)">去完成</a>
+          <a href="javascript:"
+            class="btn btn-gray"
+            v-if="item.taskStatus == 2">已领取</a>
         </p>
       </li>
     </ul>
     <div v-if="awardItem.isShow">
       <div class="mask"></div>
       <div class="shine-box">
-        <img class="shine" src="../img/dialog/shine.png" alt="">
+        <img class="shine"
+          src="../img/dialog/shine.png"
+          alt="">
       </div>
       <div class="content-box">
-        <img class="bg" src="../img/dialog/bg.png">
+        <img class="bg"
+          src="../img/dialog/bg.png">
         <div class="content">
-          <img class="title" src="../img/dialog/congratulations-text.png" alt="">
+          <img class="title"
+            src="../img/dialog/congratulations-text.png"
+            alt="">
           <div class="icon">
-            <img src="../img/task_mowang.png" alt="">
+            <img src="../img/task_mowang.png"
+              alt="">
           </div>
           <p class="num">{{awardItem.awardsName}}</p>
           <p style="color:#fad2cc;font-size:0.16rem;text-align:center;">奖励将在2天内发送，请及时在人人视频查收</p>
-          <div class="close" @click="close">继续赚话费</div>
+          <div class="close"
+            @click="close">继续赚话费</div>
         </div>
       </div>
     </div>
