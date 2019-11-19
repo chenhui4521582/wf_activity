@@ -120,7 +120,7 @@ export default {
     padding: 0 0.1rem;
     height: 0.3rem;
     line-height: 0.3rem;
-    background: #f8b918;
+    background: #FFED89;
     border-radius: 0.15rem;
     font-size: 0.2rem;
     font-weight: bold;
