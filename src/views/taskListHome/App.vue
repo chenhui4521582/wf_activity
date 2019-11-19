@@ -66,9 +66,13 @@
         </div>
       </div>
     </div>
-    <awardsPop v-if="showReceivePop"
+    <!-- 新版奖励弹窗   -->
+    <task-award-pop v-if="showReceivePop"
+      :awards="receiveData"
+      @close="showReceivePop = false"></task-award-pop>
+    <!-- <awardsPop v-if="showReceivePop"
       :receiveData="receiveData"
-      @close="showReceivePop = false"></awardsPop>
+      @close="showReceivePop = false"></awardsPop> -->
     <king-mask v-model="maskShow"
       @lockKingTask="lockKingTask" />
   </div>
@@ -103,6 +107,7 @@ export default {
     this.getMasterTaskNameList()
   },
   components: {
+    taskAwardPop: () => import('./components/taskAwardPop'),
     awardsPop: () => import('./components/dialog'),
     crushTask: () => import('./components/crushTask'),
     kingTask: () => import('./components/kingTask'),
@@ -285,7 +290,7 @@ export default {
         }
 
         if (type == 'refresh') {
-          let { taskId, taskLogId, awardsImage, awardsName, gameType } = item
+          let { taskId, taskLogId, awardsImage, showAwardsImage, awardsName, gameType } = item
           // 刷新接口时替换当前任务显示位置
           this.allTaskList.map((item, index) => {
             if (item.batchId == val) {
@@ -294,14 +299,14 @@ export default {
               if (otherStatus == 'mother_crush_task') {
                 this.showReceivePop = true
                 this.receiveData = {
-                  awardsImage: awardsImage,
+                  awardsImage: showAwardsImage,
                   awardsName: awardsName,
                   type: otherStatus,
                   medalimg: this.curMedelIcon
                 }
               } else {
                 this.receiveData = {
-                  awardsImage: awardsImage,
+                  awardsImage: showAwardsImage,
                   awardsName: awardsName,
                   showMedalImg: null
                 }
