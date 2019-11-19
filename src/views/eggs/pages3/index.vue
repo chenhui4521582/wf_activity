@@ -5,8 +5,8 @@
     <message ref="message"></message>
     <div class="header1">
       <img src="./images/index/header-title.png" class="header-title">
-      <h4 v-if="countTime" class="e-time">剩余时间：{{countTime}}</h4>
-      <h4 v-if="countTime===0" class="e-time">截止时间：{{endTime}}</h4>
+      <!-- <h4 v-if="countTime" class="e-time">剩余时间：{{countTime}}</h4>
+      <h4 v-if="countTime===0" class="e-time">截止时间：{{endTime}}</h4> -->
     </div>
     <div class="header2">
       <div class="eggs-info" :class="{show:isEggsInfoShow}">
@@ -48,7 +48,7 @@ export default {
       currentLev: 0,
       currentIndex: null,
       currentItem: {},
-      eggStyle: [[3, 0.56], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
+      eggStyle: [[3, 0.96], [4.3, 1.12], [5.46, 1.66], [4.26, 2.36], [2.36, 2.18], [1.12, 2.8], [1.8, 3.84], [3, 4.4], [4.14, 4.24], [5.46, 4.78], [4.26, 5.4], [3.1, 6.02], [1.84, 5.68], [0.66, 6.4], [2.4, 7.4]],
       allEggsInfo: [],
       eggsInfoList: [],
       awardsList: [],
