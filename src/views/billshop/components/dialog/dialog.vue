@@ -12,7 +12,7 @@
         <img v-if="statusCode===200" src="./image/succecc.png" alt="">
         <!--<img v-if="statusCode===103" src="./image/succecc.png"  style="width: 1.67rem;height: 1.72rem" alt="">-->
 
-        <div v-if="statusCode===102" class="content-text"> 您的话费券不足以支付当前订单快去赚话费吧</div>
+        <div v-if="statusCode===102" class="content-text"> 您的话费券不足<br />快去欢乐套圈快速赚话费吧</div>
         <div v-if="statusCode===104" class="content-text">当前商品库存不足<br />去看看其他商品吧</div>
         <div v-if="statusCode===103" class="content-text"> 今天已购买过了哟<br />明天再来吧~</div>
         <div v-if="statusCode===200" class="content-text">换取成功<br />快去领取吧</div>
@@ -70,19 +70,7 @@ export default {
       await marchSetsPoint('A_H5PT0035000638', {
         residual_phone: this.$route.query['accountBalance']
       })
-      switch (getUrlParam('from')) {
-        case 'bdWap':
-          parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break
-        case 'jsWap':
-          parent.location.href = `https://wap.beeplaying.com/bdWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break
-        case 'miniWap':
-          parent.location.href = `https://wap.beeplaying.com/miniWap/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-          break
-        default:
-          parent.location.href = `https://wap.beeplaying.com/wap/home/?channel=${localStorage.getItem('APP_CHANNEL')}#/taskview`
-      }
+      this.goRing()
     },
     // 去看看其他
     async lookMall () {
@@ -104,8 +92,28 @@ export default {
       let CHANNEL = localStorage.getItem('APP_CHANNEL') || 100070
       let TOKEN = localStorage.getItem('ACCESS_TOKEN') || 100070
       window.location.href = `https://wap.beeplaying.com/activities/miniLottery.html#/?channel=${CHANNEL}&token=${TOKEN}`
+    },
+    _getRingServerStatus () {
+      let url = '//quoits-api.beeplaying.com/quoits/api/quoitsgame/serverStatus'
+      this.axios.post(url).then(res => {
+        let { data, code } = res.data
+        if (code === 200) {
+          if (data.type === '1' || (data.distanceStop < 0 && data.distanceStart >= 0)) {
+            this.ringData = data
+          }
+        }
+      })
+    },
+    goRing() {
+      GLOBALS.marchSetsPoint('A_H5PT0019002354')
+      let url = this.ringData.type == 2 ? '/ring2/' : '/ring/'
+      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      window.location.href = `https://wap.beeplaying.com${url}?channel=${APP_CHANNEL}&time=${new Date().getTime()}`
     }
   },
+  mounted() {
+    this._getRingServerStatus()
+  }
 }
 </script>
 <style lang="less" scoped>
