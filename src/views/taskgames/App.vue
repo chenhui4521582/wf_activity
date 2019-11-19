@@ -999,7 +999,7 @@ export default {
             item.awardsNum = res.data.data.num
             item.flag = 'ring2'
           }
-          this.awardItem = { ...item, showMedalImg: true }
+          this.awardItem = item
           this.getTransInfo()
           this.getPhoneFragment()
           switch (type) {
