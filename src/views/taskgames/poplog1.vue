@@ -98,7 +98,7 @@ export default {
         if (this.awardItem.showMedalImg) {
           this.awardItem.awardsImage = this.awardItem.medalimg
         } else {
-          url = `${require('./img/crushMasterTask/task_huafei.png')}`
+          url = url || `${require('./img/crushMasterTask/task_huafei.png')}`
         }
       } else {
         if (this.newUserTaskFinish) {

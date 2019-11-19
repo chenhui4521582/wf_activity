@@ -512,7 +512,7 @@ export default {
     sdkTabBox: () => import('./component/tabBox'),
     fixedEntrance: () => import('./component/fixedEntrance'),
     entranceHeader: () => import('./component/entranceHeader'),
-    costDown: () => import('@/components/costDown/costDown'),
+    costDown: () => import('@/components/costDown/costDown')
   },
   methods: {
     initParentAd () {
@@ -999,7 +999,7 @@ export default {
             item.awardsNum = res.data.data.num
             item.flag = 'ring2'
           }
-          this.awardItem = { ...item, showMedalImg: true }
+          this.awardItem = item
           this.getTransInfo()
           this.getPhoneFragment()
           switch (type) {
@@ -1090,7 +1090,7 @@ export default {
         this.showWeekBetting = true
       }
       if (this.showWeekBetting) {
-        this.currentGamesItems = arrring2;
+        this.currentGamesItems = arrring2
         return
       }
       let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
