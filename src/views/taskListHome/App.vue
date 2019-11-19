@@ -1,46 +1,81 @@
 <template>
   <div id="app">
     <div class="title">
-      <span class="btn-back" @click="backHome" v-if="!getChannel">
-        <img src="./images/btn_back.png" alt="">
+      <span class="btn-back"
+        @click="backHome"
+        v-if="!getChannel">
+        <img src="./images/btn_back.png"
+          alt="">
       </span>
       <img src="./images/title.png">
     </div>
     <!-- tab -->
-    <task-tab v-model="tabSelected" :is-show-red-point="isShowRedPoint" />
+    <task-tab v-model="tabSelected"
+      :is-show-red-point="isShowRedPoint" />
     <div class="task-wrap">
       <cost-down @masterTaskStatus="masterTaskStatus"></cost-down>
-      <div class="wrap" v-if="MasterCostDown">
-        <div v-for="(item,index) in allTaskList" :style="{'margin-bottom':'0.2rem'}" :key="index">
+      <div class="wrap"
+        v-if="MasterCostDown">
+        <div v-for="(item,index) in allTaskList"
+          :style="{'margin-bottom':'0.2rem'}"
+          :key="index">
           <template v-if="tabSelected===0">
-            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <crushTask v-if="showCrushMasterTask(item)"
+              :item="item"
+              :index="index"
+              @showCurDetails="showCurDetails"
+              @receive="receive"
+              @finish="finish" />
           </template>
           <template v-if="tabSelected===1">
-            <kingTask v-if="showKingTask(item)" :item="item" :index="index" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <kingTask v-if="showKingTask(item)"
+              :item="item"
+              :index="index"
+              @showCurDetails="showCurDetails"
+              @receive="receive"
+              @finish="finish" />
             <div @click="changeKingLock(item)">
-              <king-no-lock :item="item" v-if="showKingTaskNoLock(item)" />
+              <king-no-lock :item="item"
+                v-if="showKingTaskNoLock(item)" />
             </div>
           </template>
 
         </div>
-        <div v-for="(item,index) in finishList" :style="{'margin-bottom':'0.2rem'}" :key="'finish'+index">
+        <div v-for="(item,index) in finishList"
+          :style="{'margin-bottom':'0.2rem'}"
+          :key="'finish'+index">
           <template v-if="tabSelected===0">
-            <crushTask v-if="showCrushMasterTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <crushTask v-if="showCrushMasterTask(item)"
+              :item="item"
+              :index="index"
+              :type="'finishList'"
+              @showCurDetails="showCurDetails"
+              @receive="receive"
+              @finish="finish" />
           </template>
           <template v-if="tabSelected===1">
-            <kingTask v-if="showKingTask(item)" :item="item" :index="index" :type="'finishList'" @showCurDetails="showCurDetails" @receive="receive" @finish="finish" />
+            <kingTask v-if="showKingTask(item)"
+              :item="item"
+              :index="index"
+              :type="'finishList'"
+              @showCurDetails="showCurDetails"
+              @receive="receive"
+              @finish="finish" />
           </template>
 
         </div>
       </div>
     </div>
-    <awardsPop v-if="showReceivePop" :receiveData="receiveData" @close="showReceivePop = false"></awardsPop>
-    <king-mask v-model="maskShow" @lockKingTask="lockKingTask" />
+    <awardsPop v-if="showReceivePop"
+      :receiveData="receiveData"
+      @close="showReceivePop = false"></awardsPop>
+    <king-mask v-model="maskShow"
+      @lockKingTask="lockKingTask" />
   </div>
 </template>
 
 <script>
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 export default {
   name: 'app',
   data () {
@@ -72,19 +107,19 @@ export default {
     crushTask: () => import('./components/crushTask'),
     kingTask: () => import('./components/kingTask'),
     kingNoLock: () => import('./components/kingNoLock'),
-    taskTab: () => import("./components/taskTab.vue"),
-    kingMask: () => import("./components/kingMask.vue"),
-    costDown: () => import("@/components/costDown/costDown")
+    taskTab: () => import('./components/taskTab.vue'),
+    kingMask: () => import('./components/kingMask.vue'),
+    costDown: () => import('@/components/costDown/costDown')
   },
   computed: {
     getChannel () {
       return this.curChannel == '100047001' || this.curChannel == '100048001'
     },
     isShowRedPoint () {
-      let crushShow = 0;
-      let kingShow = 0;
+      let crushShow = 0
+      let kingShow = 0
       for (let index = 0; index < this.allTaskList.length; index++) {
-        const { isShowRed, achievementType } = this.allTaskList[index];
+        const { isShowRed, achievementType } = this.allTaskList[index]
         // 大师完成未领取
         if (isShowRed && achievementType === 1) {
           crushShow++
@@ -94,7 +129,7 @@ export default {
           kingShow++
         }
       }
-      return [crushShow > 0 ? true : false, kingShow > 0 ? true : false];
+      return [crushShow > 0, kingShow > 0]
     },
     platSource () {
       return GLOBALS.getUrlParam('from')
@@ -108,7 +143,7 @@ export default {
   },
   methods: {
     async getMasterTaskNameList () {
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskList')
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskList')
       if (data.code == 200) {
         let list = data.data.batchIds
         //                if(!this.clearFerrule) {  //删除赏金
@@ -121,25 +156,25 @@ export default {
           } else {
             setTimeout(() => {
               this.getMasterList(item, '')
-            }, 10);
+            }, 10)
           }
         })
       }
     },
-    //获取地址栏问号后面的参数值
+    // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
-      var url = window.location.href;
-      var Request = new Object();
-      if (url && url.indexOf("?") != -1) {
-        var str = url.split('?')[1];
-        var strs = str.split("&");
+      var url = window.location.href
+      var Request = new Object()
+      if (url && url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
         for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+          Request[strs[i].split('=')[0]] = (strs[i].split('=')[1])
         }
       } else {
-        return '';
+        return ''
       }
-      return Request[ename];
+      return Request[ename]
     },
     async backHome () {
       // H5平台-任务-成就大厅-返回
@@ -161,7 +196,7 @@ export default {
         task_id: item.taskId,
         task_name: item.taskName
       })
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType', { value: type })
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/cacheGameType', { value: type })
       location.href = `//wap.beeplaying.com${item.url}?channel=${localStorage.getItem('APP_CHANNEL')}`
     },
     async receive (item, type, val, curParentTask) {
@@ -169,7 +204,7 @@ export default {
         this.curMedelIcon = curParentTask.medalIcon.replace('medal-1', 'medal-2')
       }
       let { taskId, taskLogId, awardsImage, awardsName, gameType } = item
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {
         taskId,
         taskLogId
       })
@@ -186,12 +221,12 @@ export default {
       }
     },
     async getMasterList (val, type, item, otherStatus) {
-      let { data: data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskInHall', { value: val })
+      let { data } = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/achievementTaskInHall', { value: val })
       if (data.code == 200 && data.data) {
         let showSubMasterList = [],
           masterList = data.data.list,
           currentParentTask,
-          masterTaskList;
+          masterTaskList
         if (data.data.hasFinishedTask == data.data.totalTask) {
           currentParentTask = masterList[3]
         } else {
@@ -216,7 +251,7 @@ export default {
         // 判断当前母任务完成情况
         let currentLength = currentParentTask.subListA.length + currentParentTask.subListB.length,
           finishLength = 0,
-          unReceived = 0;
+          unReceived = 0
         currentParentTask.subListA.map(item => {
           item.taskStatus == 2 ? finishLength += 1 : ''
           item.taskStatus == 0 ? unReceived += 1 : ''
@@ -226,21 +261,21 @@ export default {
           item.taskStatus == 0 ? unReceived += 1 : ''
         })
 
-        //判断当前任务是否有已领取状态
+        // 判断当前任务是否有已领取状态
         let isShowRed = currentParentTask.parentTask.taskStatus == 0 || unReceived != 0
         masterTaskList = {
-          showSubMasterList: showSubMasterList, //外显子任务列表
+          showSubMasterList: showSubMasterList, // 外显子任务列表
           hasFinishedTask: data.data.hasFinishedTask, // 已完成任务数量
           totalTask: data.data.totalTask, // 总任务数量
           currentParentTask: currentParentTask, // 当前任务
           finishLength: finishLength, // 当前已完成子任务
           currentLength: currentLength, // 当前总任务
-          allTask: data.data.list,// 总任务列表
-          isShowRed: isShowRed, //是否显示红点
-          reward: data.data.reward,//当前奖励总数
-          bgIcon: data.data.bgIcon,// 背景图
-          gameNameIcon: data.data.gameNameIcon,//游戏
-          titleIcon: data.data.titleIcon,//游戏名称icon
+          allTask: data.data.list, // 总任务列表
+          isShowRed: isShowRed, // 是否显示红点
+          reward: data.data.reward, // 当前奖励总数
+          bgIcon: data.data.bgIcon, // 背景图
+          gameNameIcon: data.data.gameNameIcon, // 游戏
+          titleIcon: data.data.titleIcon, // 游戏名称icon
           batchId: data.data.batchId, // 当前游戏value
           lock: data.data.lock,
           achievementType: data.data.achievementType,
@@ -251,7 +286,7 @@ export default {
 
         if (type == 'refresh') {
           let { taskId, taskLogId, awardsImage, awardsName, gameType } = item
-          //刷新接口时替换当前任务显示位置
+          // 刷新接口时替换当前任务显示位置
           this.allTaskList.map((item, index) => {
             if (item.batchId == val) {
               this.allTaskList.splice(index, 1, masterTaskList)
@@ -279,11 +314,11 @@ export default {
             }
           })
         } else {
-          //已完成任务置底显示
+          // 已完成任务置底显示
           if (masterTaskList.totalTask == masterTaskList.hasFinishedTask) {
             this.finishList.push(masterTaskList)
           } else {
-            //未完成的,未解锁的置底
+            // 未完成的,未解锁的置底
             if (masterTaskList.achievementType == 2 && masterTaskList.lock) {
               this.allTaskList.push(masterTaskList)
             } else {
@@ -292,7 +327,7 @@ export default {
           }
         }
         // 添加排序
-        this.taskSort();
+        this.taskSort()
       }
     },
     showCurDetails (i, type) {
@@ -330,7 +365,7 @@ export default {
     },
     // 没有解锁的王者任务解锁
     changeKingLock (item) {
-      this.maskShow = true;
+      this.maskShow = true
     },
     // 去解锁弹珠大师任务
     lockKingTask (type) {
@@ -341,7 +376,7 @@ export default {
       if (currentChindTask) {
         currentChindTask.sort((to, form) => {
           if (to['sort'] < form['sort']) {
-            return -1;
+            return -1
           }
         })
         this.finish(currentChindTask[0], type)
@@ -359,7 +394,7 @@ export default {
     showKingTaskNoLock (item) {
       return item.achievementType == 2 && item.lock
     },
-    masterTaskStatus(status) {
+    masterTaskStatus (status) {
       this.MasterCostDown = status
     }
   }
