@@ -5,12 +5,25 @@
         <li v-if="index == 0" :key="index" :class="{'hot':index == 0}" @click="goDetail(item)">
           <div class="img">
             <img :src="item.picture | filter" alt="">
+            <div class="icon">
+              <img src="../img/hot-icon.png" alt="">
+            </div>
           </div>
           <div class="text">
             <div class="title">{{item.title}}</div>
-            <div class="desc">三网直充 / 3~5个工作日到帐</div>
+            <div class="desc">
+              {{item.description}}
+            </div>
             <div class="edit">
-              已抢{{item.participantsNumber || 0}}次
+              已抢<span>{{item.participantsNumber || 0}}</span>次
+            </div>
+            <div class="progress">
+              <div class="wrap">
+                <div class="bg" :style="{width: countProgress(item)}"></div>
+              </div>
+              <div class="num">
+                {{item.participantsNumber}}/{{item.limitTotalAmount}}
+              </div>
             </div>
             <div class="count-down" v-if="item.underway">
               开奖剩余时间 <br>
@@ -36,7 +49,15 @@
           </div>
           <div class="title">{{item.title}}</div>
           <div class="edit">
-            已抢{{item.participantsNumber || 0}}次
+            已抢<span>{{item.participantsNumber || 0}}</span>次
+          </div>
+          <div class="progress">
+            <div class="wrap">
+              <div class="bg" :style="{width: countProgress(item)}"></div>
+            </div>
+            <div class="num">
+              {{item.participantsNumber}}/{{item.limitTotalAmount}}
+            </div>
           </div>
           <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
         </li>
@@ -112,6 +133,12 @@ export default {
       setTimeout(()=> {
         this.$emit('refreshList')
       }, 1000)
+    },
+    countProgress(item) {
+      if(item.participantsNumber / item.limitTotalAmount >= 1) {
+        return '100%'
+      }
+      return parseInt(item.participantsNumber / item.limitTotalAmount)
     }
   },
   beforeDestroy() {
@@ -143,24 +170,40 @@ export default {
       border-radius: .16rem;
       margin-bottom: .21rem;
       &.hot {
+        
         display: flex;
         justify-content: flex-start;
-        padding: .33rem .3rem;
+        padding: .33rem .1rem .26rem;
         width: 100%;
         flex: 1;
+
         .img {
           position: relative;
-          height: 1.78rem;
-          width: 2.22rem;
+          flex-shrink: 0;
+          margin-top: .09rem;
+          width: 2.4rem;
+          height: 1.8rem;
           border-right: 1px solid #e8e2e2;
           img {
             vertical-align: top;
-            margin-top: .13rem;
-            width: 2.03rem;
-            height: 1.51rem;
+            width: 100%;
+            height: 100%;
+          }
+          .icon {
+            position: absolute;
+            width: .7rem;
+            height: .3rem;
+            top: -.25rem;
+            left: .1rem;
+            img {
+              vertical-align: top;
+              width: 100%;
+              height: 100%;
+            }
           }
         }
         .text {
+          overflow: hidden;
           position: relative;
           padding-left: .22rem; 
           .title {
@@ -170,19 +213,50 @@ export default {
             color: #404040;
           }
           .desc {
-            margin-bottom: .19rem;
+            margin-bottom: .1rem;
             font-size: .22rem;
             color: #404040;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .edit {
-            margin-bottom: .27rem;
+            margin-bottom: .1rem;
             font-size: .22rem;
+            text-align: left;
             color: #818181;
+            span {
+              color: #FF4141;
+            }
+          }
+          .progress {
+            margin-bottom: .15rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .wrap {
+              position: relative;
+              overflow: hidden;
+              margin-right: .17rem;
+              width: 1.5rem;
+              height: .16rem;
+              background: #FFFFFF;
+              border-radius: .08rem;
+              .bg {
+                position: absolute;
+                width: 0;
+                height: 100%;
+                background: #FF5400
+              }
+            }
+            .num {
+              font-size: .2rem;
+              color: #818181
+            }
           }
           .count-down {
             width: 1.96rem;
-            height: .3rem;
-            line-height: .3rem;
+            line-height: .26rem;
             font-size: .22rem;
             color: #FF4141;
             white-space: nowrap;
@@ -192,15 +266,15 @@ export default {
           }
           .btn {
             position: absolute;
-            left: 2.18rem;
-            top: 1.28rem;
+            left: 2.2rem;
+            bottom: 0;
             width: 1.4rem;
             height: .56rem;
             line-height: .56rem;
             background: #FF4141;
             text-align: center;
             line-height: .56rem;
-            border-radius: .16rem;
+            border-radius: .1rem;
             font-size: .24rem;
             color: #fff;
             &.no {
@@ -217,6 +291,7 @@ export default {
           margin-right: 0;
         }
         .count-down {
+          margin-bottom: .1rem;
           font-size: .22rem;
           color: #FF4141;
           text-align: center;
@@ -226,29 +301,57 @@ export default {
           }
         }
         .img {
-          margin: 0 auto .21rem;
-          padding: .22rem 0 .19rem;
-          width: 2.45rem;
+          margin: 0 auto .2rem;
+          padding-bottom: .06rem;
+          width: 2.4rem;
+          height: 1.8rem;
           border-bottom: 1px solid #e8e2e2;
           text-align: center;
           img {
             vertical-align: top;
-            width: 1.84rem;
-            height: .92rem;
+            width: 100%;
+            height: 100%;
           }
         }
         .title {
-          margin-bottom: .19rem;
-          text-align: center;
+          margin-bottom: .14rem;
           font-size: .32rem;
           color: #404040;
           font-weight: Bold;
         }
         .edit {
-          margin-bottom: .2rem;
-          text-align: center;
+          margin-bottom: .08rem;
+          text-align: left;
           font-size: .22rem;
           color: #818181;
+          span {
+            color: #FF4141;
+          }
+        }
+        .progress {
+          margin-bottom: .15rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .wrap {
+            position: relative;
+            overflow: hidden;
+            margin-right: .17rem;
+            width: 1.5rem;
+            height: .16rem;
+            background: #FFFFFF;
+            border-radius: .08rem;
+            .bg {
+              position: absolute;
+              width: 0;
+              height: 100%;
+              background: #FF5400
+            }
+          }
+          .num {
+            font-size: .2rem;
+            color: #818181
+          }
         }
         .btn {
           margin: 0 auto;
@@ -258,7 +361,7 @@ export default {
           background: #FF4141;
           text-align: center;
           line-height: .56rem;
-          border-radius: .16rem;
+          border-radius: .1rem;
           font-size: .24rem;
           color: #fff;
           &.no {

@@ -20,8 +20,9 @@
       :title="modal.title"  
       :type="2" 
       :saveText="modal.saveText" 
-      :closeButtonShow=false 
+      :closeButtonShow="modal.closeButtonShow" 
       @on-save="hide"
+      @on-close="closed"
     >
       <div class="message" v-html="modal.message"></div>
     </Modal>
@@ -52,7 +53,8 @@ export default {
       status: 0,
       title: '温馨提示',
       saveText: '知道了',
-      message: ''
+      message: '',
+      closeButtonShow: false
     }
   }),
   computed: {
@@ -87,14 +89,17 @@ export default {
     buyMax() {
       this.inputValue = this.max || 1
     },
+    closed() {
+      this.modal.show = false
+    },
     hide() {
       let {status} = this.modal
       if(status == 1) {
         let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
-        if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL)> -1) {
-          parent.location.href = `https://wap.beeplaying.com/xmWap/#/mall?channel=${localStorage.getItem('APP_CHANNEL')}`
+        if(['100069','100070','100073','100075','100080','100055','100068','100045'].includes(APP_CHANNEL)) {
+          window.location.href = `https://wap.beeplaying.com/xmWap/?channel=100000#/mall/details?accountBalance=992091.2&phyAwardsType=46&phyAwardsId=1281&name=%E5%A4%BA%E5%AE%9D%E5%8D%A1&channel=${localStorage.getItem('APP_CHANNEL')}`
         }else {
-          parent.location.href = `https://wap.beeplaying.com/activities/billshop.html#/?from=bdWap&channel=${localStorage.getItem('APP_CHANNEL')}`
+          window.location.href = `https://wap.beeplaying.com/activities/billshop.html#/detail?from=bdWap&source=bdWap&phyAwardsType=46&phyAwardsId=836&showOut=1&channel=${localStorage.getItem('APP_CHANNEL')}`
         }
         GLOBALS.marchSetsPoint('A_H5PT0202002100', {
           task_id: this.details.currentPeriodStatus,
@@ -122,7 +127,8 @@ export default {
             status: 0,
             message: `您的${data.length}次夺宝次数参与成功`,
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
           this.$emit('refresh')
           this.inputValue = 1
@@ -136,7 +142,8 @@ export default {
             status: 0,
             message: '本期夺宝参与次数已达到上限<br>把机会让给其他人吧',
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
           GLOBALS.marchSetsPoint('A_H5PT0202002096', {
             task_id: this.details.currentPeriodStatus,
@@ -148,7 +155,8 @@ export default {
             status: 1,
             message: '您的夺宝卡不足',
             title: '温馨提示',
-            saveText: '去兑换夺宝卡'
+            saveText: '去兑换夺宝卡',
+            closeButtonShow: true
           }
           GLOBALS.marchSetsPoint('A_H5PT0202002099', {
             task_id: this.details.currentPeriodStatus,
@@ -161,7 +169,8 @@ export default {
             status: 0,
             message: message,
             title: '温馨提示',
-            saveText: '知道了'
+            saveText: '知道了',
+            closeButtonShow: false
           }
         }
       }).catch(res=> {

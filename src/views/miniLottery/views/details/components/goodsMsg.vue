@@ -37,7 +37,7 @@
         奖品：{{details.title}}
       </div>
       <div class="purchased">
-        已抢 <span>{{details.participantsNumber || 0}}</span> 次
+        已有<span>{{details.participantsNumber || 0}}</span>人参与此次夺宝
       </div>
     </div>
     <Modal title="规则说明" v-model="ruleModal" type="2" :saveText="'知道了'" :closeButtonShow=false @on-save="hideRule">

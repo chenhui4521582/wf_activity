@@ -9,7 +9,7 @@ const services = {
     return axios.post(url, params)
   },
   getHistoryList: function(params) {
-    let url = '//ops-api.beeplaying.com/ops/api/smallTreasure/allWinningLotteryLog'
+    let url = `//ops-api.beeplaying.com/ops/api/smallTreasure/allWinningLotteryLog?page=${params.page}&pageSize=${params.pageSize}`
     return axios.post(url, params)
   },
   getDetails: function(params) {
@@ -21,7 +21,7 @@ const services = {
     return axios.post(url, params)
   },
   getMyLotteryLog: function(params) {
-    let url = '//ops-api.beeplaying.com/ops/api/smallTreasure/lotteryLog'
+    let url = `//ops-api.beeplaying.com/ops/api/smallTreasure/lotteryLog?page=${params.page}&pageSize=${params.pageSize}`
     return axios.post(url, params)
   }
 }

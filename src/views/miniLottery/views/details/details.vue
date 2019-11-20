@@ -45,6 +45,10 @@ export default {
     },
     _getDetails() {
       let {periodId, smallTreasureId} = this.$route.query
+      /** 兼容问题 没有穿id 不调用接口 **/
+      if(!periodId || !smallTreasureId) {
+        return false
+      }
       Services.getDetails({periodId, smallTreasureId}).then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code === 200) {
