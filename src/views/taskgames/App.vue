@@ -948,16 +948,16 @@ export default {
     async getDayTask () {
       let arrring2 = []
       /**删除套圈任务**/
-      if (parent.location.href.includes('ring2')) {
-        let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
-        if (dataA.code == 200) {
-          dataA.data.awardsList.map(item => {
-            arrring2.push({
-              'taskId': item.amount, 'taskName': item.description, 'gameType': this.currentGameType, 'taskDesc': item.description, 'icon': item.icon, 'taskOps': item.costNum, 'finishNum': item.currNum, 'taskStatus': item.costNum <= item.currNum ? 0 : 1, 'taskLogId': item.amount, 'cycle': 0, 'awardsType': 0, 'awardsName': item.awardsName, 'url': null, 'awardsImage': item.awardsImg, 'taskDescShow': item.description, 'awardsNum': 0, 'taskType': 0, 'subTask': '', 'preTask': null, 'action': 0, 'sort': 0, flag: 'ring2'
-            })
-          })
-        }
-      }
+      // if (parent.location.href.includes('ring2')) {
+      //   let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
+      //   if (dataA.code == 200) {
+      //     dataA.data.awardsList.map(item => {
+      //       arrring2.push({
+      //         'taskId': item.amount, 'taskName': item.description, 'gameType': this.currentGameType, 'taskDesc': item.description, 'icon': item.icon, 'taskOps': item.costNum, 'finishNum': item.currNum, 'taskStatus': item.costNum <= item.currNum ? 0 : 1, 'taskLogId': item.amount, 'cycle': 0, 'awardsType': 0, 'awardsName': item.awardsName, 'url': null, 'awardsImage': item.awardsImg, 'taskDescShow': item.description, 'awardsNum': 0, 'taskType': 0, 'subTask': '', 'preTask': null, 'action': 0, 'sort': 0, flag: 'ring2'
+      //       })
+      //     })
+      //   }
+      // }
       let { data: dataWeekBetting } = await this.axios.post('//platform-api.beeplaying.com/task/api/activity/week/task/info')
       if(dataWeekBetting.code==200&&dataWeekBetting.data.openFlag){
         this.showWeekBetting=true
