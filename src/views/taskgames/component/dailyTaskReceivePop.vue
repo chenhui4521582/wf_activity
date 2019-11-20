@@ -3,13 +3,17 @@
     <div class="mask"></div>
     <div class="content-box">
       <div class="content-wrapper">
-        <img :src="awards.awardsImage|filter" alt="">
+        <img :src="(awards.showAwardsImage||awards.awardsImage)|filter"
+          alt="">
         <p v-if="awards.awardsNum>1">{{getPrizeName(awards)}}</p>
         <p v-else>{{awards.awardsName}}</p>
-        <p class="btn" @click="closePop(1)">朕收下啦</p>
-        <p class="text" v-if="isDaily">完成每日任务,领更多红包</p>
+        <p class="btn"
+          @click="closePop(1)">朕收下啦</p>
+        <p class="text"
+          v-if="isDaily">完成每日任务,领更多红包</p>
       </div>
-      <div class="close" @click="closePop(0)"></div>
+      <div class="close"
+        @click="closePop(0)"></div>
     </div>
   </main>
 </template>

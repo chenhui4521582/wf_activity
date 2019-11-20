@@ -2,11 +2,14 @@
   <div class="crush-master-wrap">
     <overtime-master-task :game-type="parseInt(currentGameType)"></overtime-master-task>
     <div class="head">
-      <img :src="crushTaskList.bgIcon | filter" alt="">
+      <img :src="crushTaskList.bgIcon | filter"
+        alt="">
       <p class="title">
         <span>
           <i>成就任务</i>
-          <img class="name-title" :src="crushTaskList.gameNameIcon | filter" alt="">
+          <img class="name-title"
+            :src="crushTaskList.gameNameIcon | filter"
+            alt="">
         </span>
         <span class="reware-bg">
           共得<i>{{crushTaskList.reward}}</i>奖励
@@ -14,7 +17,8 @@
       </p>
       <div class="process">
         <div class="probar-ball">
-          <div class="bar" :style="{width:crushTaskList.finishLength/crushTaskList.currentLength * 100 + '%'}"></div>
+          <div class="bar"
+            :style="{width:crushTaskList.finishLength/crushTaskList.currentLength * 100 + '%'}"></div>
         </div>
         <p class="tips">
           <span>{{transUint(crushTaskList.finishLength,crushTaskList.currentLength)}}</span>
@@ -23,51 +27,70 @@
       </div>
     </div>
     <div class="crush-task-list">
-      <ul class="master-task-list" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
-        <li v-for="(item,index) in crushTaskList.showSubMasterList" v-if="item && index < 2" @click="checkTaskStatus(item,'crush_task')">
-          <div class="description" :class="{opacitying:item.taskStatus == 2}">
+      <ul class="master-task-list"
+        v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 1">
+        <li v-for="(item,index) in crushTaskList.showSubMasterList"
+          v-if="item && index < 2"
+          @click="checkTaskStatus(item,'crush_task')">
+          <div class="description"
+            :class="{opacitying:item.taskStatus == 2}">
             <div class="head-img">
-              <img :src="item.icon | filter" alt="">
+              <img :src="item.icon | filter"
+                alt="">
             </div>
             <div class="content">
               <p v-html="item.taskDescShow"></p>
               <div class="progress">
                 <div class="progress-bg">
-                  <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                  <div class="progress-bar"
+                    :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
                   <span>{{transUint(item.finishNum,item.taskOps)}}</span>
                 </div>
                 <div class="num">
-                  <img :src="item.awardsImage | filter" alt="">
+                  <img :src="item.awardsImage | filter"
+                    alt="">
                   <span>{{item.awardsName}}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="btn" v-if="item.taskStatus == 0">领取</div>
+          <div class="btn"
+            v-if="item.taskStatus == 0">领取</div>
 
-          <div class="btn play" v-if="item.taskStatus == 1">去完成</div>
-          <div class="btn gray opacitying" v-if="item.taskStatus == 2">已领取</div>
+          <div class="btn play"
+            v-if="item.taskStatus == 1">去完成</div>
+          <div class="btn gray opacitying"
+            v-if="item.taskStatus == 2">已领取</div>
         </li>
       </ul>
-      <div class="medals-locked" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
+      <div class="medals-locked"
+        v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 0">
         <img src="../img/crushMasterTask/chengjiu_bg.png">
-        <p class="btn" @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
+        <p class="btn"
+          @click="receive(crushTaskList.currentParentTask.parentTask,'mother_crush_task')">获取成就奖励</p>
       </div>
-      <div class="medals-lock" v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
+      <div class="medals-lock"
+        v-if="crushTaskList.currentParentTask.parentTask.taskStatus == 2">
         <img src="../img/crushMasterTask/chengjiu_locked_title.png">
-        <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+        <img :src="crushTaskList.currentParentTask.medalIcon | filter"
+          class="medeal">
         <!-- <p>获取日期<br>2018-12-13</p> -->
       </div>
-      <div class="medals-lock unlock" v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
+      <div class="medals-lock unlock"
+        v-if="currentMedalList && currentMedalList.index > 0 && crushTaskList.currentParentTask.parentTask.taskStatus == 4 ">
         <img src="../img/crushMasterTask/chengjiu_unlocked_title.png">
-        <img :src="crushTaskList.currentParentTask.medalIcon | filter" class="medeal">
+        <img :src="crushTaskList.currentParentTask.medalIcon | filter"
+          class="medeal">
         <p>解锁前提条件<br>获得“{{crushTaskList.medalList[currentMedalList.index-1].medalName}}”称号</p>
       </div>
     </div>
     <div class="medal-wrap">
       <ul>
-        <li v-for="(item,i) in crushTaskList.medalList" :class="{hightlight:item.selected}" @click="checkMedals(item)">
-          <img :src="item.statusIcon | filter" :class="{'animate':item.selected && showMedalAnimate}">
+        <li v-for="(item,i) in crushTaskList.medalList"
+          :class="{hightlight:item.selected}"
+          @click="checkMedals(item)">
+          <img :src="item.statusIcon | filter"
+            :class="{'animate':item.selected && showMedalAnimate}">
         </li>
       </ul>
     </div>
@@ -98,12 +121,12 @@ export default {
   },
   data () {
     return {
-      medalList: null, //勋章列表
-      isShowMasterLocked: false, //是否显示已解锁勋章
-      isShowFinished: false, //是否显示领取奖励
-      isShowMasterUnlocked: false, //是否显示未解锁勋章
+      medalList: null, // 勋章列表
+      isShowMasterLocked: false, // 是否显示已解锁勋章
+      isShowFinished: false, // 是否显示领取奖励
+      isShowMasterUnlocked: false, // 是否显示未解锁勋章
       // currentMedalList : null, //当前点击勋章
-      isShowList: true,//是否显示任务列表
+      isShowList: true, // 是否显示任务列表
       flag: 1,
       changeAnimation: false,
       isMotherType: true,
@@ -123,13 +146,13 @@ export default {
         {
           name: '大师',
           img: require('../img/crushMasterTask/name_master.png')
-        },
-      ],
+        }
+      ]
     }
   },
   components: { overtimeMasterTask },
   mounted () {
-    //taskStatus 0 已完成未领取 1 去完成 2 已领取
+    // taskStatus 0 已完成未领取 1 去完成 2 已领取
     // setTimeout(() => {
     //     console.log(this.crushTaskList.currentIndex+'------');
     //     this.currentMedalList = this.crushTaskList.medalList[this.crushTaskList.currentIndex]
@@ -195,7 +218,7 @@ export default {
     showMedalAnimate (newIndex, oldIndex) {
       if (newIndex) {
       }
-    },
+    }
   }
 }
 </script>
@@ -250,7 +273,7 @@ div {
 
           .num {
             img {
-              width: 0.32rem;
+              // width: 0.32rem;
               height: 0.23rem;
               display: inline;
             }
