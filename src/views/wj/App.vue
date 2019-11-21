@@ -523,9 +523,9 @@ export default {
         }else{
           //665e用700002 玩蜂700001
           if(APP_CHANNEL==700002){
-            top.location.href ='https://www.665e.com/'
+            top.location.href ='//www.665e.com/'
           }else{
-            top.location.href ='https://beeplay123.com/'
+            top.location.href ='//beeplay123.com/'
           }
         }
       }
