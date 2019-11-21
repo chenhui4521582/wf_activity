@@ -293,6 +293,10 @@ export default {
     await this.getBetAwards()
     await this.getBetProgress()
     await this.getActivityGuide()
+    if(sessionStorage['event_recordEgg']){
+      GLOBALS.marchSetsPoint('A_H5PT0019002302');
+      sessionStorage.removeItem('event_recordEgg');
+    }
     GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
   }
 }
