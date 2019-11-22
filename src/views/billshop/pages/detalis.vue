@@ -1,32 +1,44 @@
 <template>
   <div class="details-warp">
+    <Loading v-if="isLoading" />
     <div class="details-content">
-      <base-header title="商品详情" :accountBalance="accountBalance"></base-header>
-      <div class="luck-box" v-if="currentItem.phyAwardsType==7" @click="$router.push('/schedule')">我的幸运盒子 ></div>
+      <base-header title="商品详情"
+        :accountBalance="accountBalance"></base-header>
+      <div class="luck-box"
+        v-if="currentItem.phyAwardsType==7"
+        @click="$router.push('/schedule')">我的幸运盒子 ></div>
       <!-- 头图 -->
       <div class="title-warp">
         <div class="banner-title">
-          <img :src="bannerImg | filter" alt="">
+          <img :src="bannerImg | filter"
+            alt="">
         </div>
         <div class="title-tet">
           <div class="item">{{currentItem.name}}
-            <div class="buyone" v-if="buyone(currentItem)">每人每日限购{{currentItem.limitPerPersonDay}}次</div>
+            <div class="buyone"
+              v-if="buyone(currentItem)">每人每日限购{{currentItem.limitPerPersonDay}}次</div>
           </div>
           <span>{{currentItem.allConvertedQuota}}人已获取</span>
         </div>
       </div>
       <!-- 规格 -->
       <div class="spec-warp">
-        <div class="spec-item" v-if="currentList.length>1">
+        <div class="spec-item"
+          v-if="currentList.length>1">
           <div class="item-title">规格</div>
           <div class="item-content-spec">
             <template v-for="(item,index) in currentList">
-              <span v-if="item.specs" :key="index" :class="{'item-active':selectedIndex===index}" @click="changeSpec(index)" class="item-content-child">
+              <span v-if="item.specs"
+                :key="index"
+                :class="{'item-active':selectedIndex===index}"
+                @click="changeSpec(index)"
+                class="item-content-child">
                 {{item.specs}}</span>
             </template>
           </div>
         </div>
-        <div class="spec-item" style="margin-bottom:0.2rem">
+        <div class="spec-item"
+          style="margin-bottom:0.2rem">
           <div class="item-title">已选</div>
           <div class="item-content item-content-title">{{currentItem.specs}}</div>
         </div>
@@ -34,10 +46,14 @@
         <div class="spec-item">
           <div class="item-title">数量</div>
           <div class="item-content">
-            <span class="item-number-title" v-if="currentItem.allUsersTodayAvailableQuota == null && currentItem.currentUserTodayAvailableQuota == null">（剩余库存充足）</span>
-            <span class="item-number-title" v-else>（剩余库存: {{residueNumber}}）</span>
+            <span class="item-number-title"
+              v-if="allUsersTodayAvailableQuota">（剩余库存充足）</span>
+            <span class="item-number-title"
+              v-if="!allUsersTodayAvailableQuota">（剩余库存为0）</span>
             <div class="item-number-add">
-              <field v-model="specNumber" :store-max="currentItem.allUsersTodayAvailableQuota" :buyone="currentItem.limitPerPersonDay||0"></field>
+              <field v-model="specNumber"
+                :store-max="currentItem.allUsersTodayAvailableQuota"
+                :buyone="currentItem.limitPerPersonDay||0"></field>
             </div>
           </div>
         </div>
@@ -45,20 +61,32 @@
       <!-- 详情 -->
       <div class="spec-warp description-warp">
         <div class="title">商品详情</div>
-        <div class="details" id="product_description" v-html="currentItem.description"></div>
+        <div class="details"
+          id="product_description"
+          v-html="currentItem.description"></div>
       </div>
     </div>
-    <div class="button-warp" @click="goExchange(false)">
-      <div class="save-button" :class="{'save-button-on':!allUsersTodayAvailableQuota}">
-        <span v-if="allUsersTodayAvailableQuota">{{currentItem.purchasePrice*specNumber}}话费券换取
+    <div class="button-warp"
+      @click="goExchange(false)">
+      <div class="save-button"
+        :class="{'save-button-on':!allUsersTodayAvailableQuota}">
+        <span v-if="allUsersTodayAvailableQuota">{{(currentItem.purchasePrice || 0)*specNumber}}话费券换取
           <i><br>话费券余额：{{accountBalance}}</i>
         </span>
         <span v-if="!allUsersTodayAvailableQuota">已售罄</span>
       </div>
     </div>
     <!-- 提升弹框 -->
-    <dialog-gain-mask v-model="dialogGainShow" @on-checkprize="checkprize" @close="dialogGainShow=false" @goExchange="goExchange" :detail="currentItem" :specNumber="specNumber" />
-    <dialog-mask v-model="dialogShow" :status-code="statusCode" :awards-type="phyAwardsType" @on-checkprize="checkprize" />
+    <dialog-gain-mask v-model="dialogGainShow"
+      @on-checkprize="checkprize"
+      @close="dialogGainShow=false"
+      @goExchange="goExchange"
+      :detail="currentItem"
+      :specNumber="specNumber" />
+    <dialog-mask v-model="dialogShow"
+      :status-code="statusCode"
+      :awards-type="phyAwardsType"
+      @on-checkprize="checkprize" />
   </div>
 </template>
 <script>
@@ -68,11 +96,13 @@ import { placeOrder, getGoodsDetail } from '../utils/api'
 import dialogMask from '../components/dialog/dialog'
 import dialogGainMask from '../components/dialog/dialogGain'
 import { getUrlParam, marchSetsPoint } from '../utils/common'
+import Loading from '@/components/common/loading'
 export default {
   name: 'detailsPage',
-  components: { baseHeader, field, dialogMask, dialogGainMask },
+  components: { baseHeader, Loading, field, dialogMask, dialogGainMask },
   data () {
     return {
+      isLoading: true,
       selectedIndex: 0,
       specNumber: 1,
       requestType: false,
@@ -109,6 +139,7 @@ export default {
         source_address: getUrlParam('source')
       })
     }
+    this.isLoading = false
   },
   computed: {
     bannerImg () {
