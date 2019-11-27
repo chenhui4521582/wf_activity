@@ -1,6 +1,6 @@
 <template>
   <div class="button">
-
+    <slot />
   </div>
 </template>
 
@@ -18,6 +18,6 @@ export default {
   color: #7b4913;
   font-size: 0.36rem;
   text-align: center;
-  background: linear-gradient(#dbbd6e, #ffeab5);
+  background: linear-gradient(90deg, #ffeab5, #dbbd6e);
 }
 </style>

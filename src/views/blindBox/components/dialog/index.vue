@@ -1,35 +1,34 @@
 <template>
   <article>
-    <section v-if="show"
-      class="mask">
-    </section>
     <transition name="fade">
       <section v-if="show"
-        class="content">
-        <img v-if="close"
-          @click="$emit('onClose')"
-          class="close"
-          src="./assets/close.png"
-          alt="关闭">
-        <div v-if="title">
-          <slot name='header'>
-            <div class="title">{{title}}</div>
-          </slot>
-        </div>
-        <slot />
-        <slot name='footer'>
-          <div class="footer">
-            <div class="button"
-              v-if="cancel"
-              v-html="cancel"
-              @click="$emit('onCancel')">{{cancel}}</div>
-            <div class="button"
-              :style="{width:cancel?'50%':'100%'}"
-              v-if="confirm"
-              v-html="confirm"
-              @click="$emit('onConfirm')"></div>
+        class="mask">
+        <section class="content">
+          <img v-if="close"
+            @click="$emit('onClose')"
+            class="close"
+            src="./assets/close.png"
+            alt="关闭">
+          <div v-if="title">
+            <slot name='header'>
+              <div class="title">{{title}}</div>
+            </slot>
           </div>
-        </slot>
+          <slot />
+          <slot name='footer'>
+            <div class="footer">
+              <div class="button"
+                v-if="cancel"
+                v-html="cancel"
+                @click="$emit('onCancel')">{{cancel}}</div>
+              <div class="button"
+                :style="{width:cancel?'50%':'100%'}"
+                v-if="confirm"
+                v-html="confirm"
+                @click="$emit('onConfirm')"></div>
+            </div>
+          </slot>
+        </section>
       </section>
     </transition>
   </article>
@@ -63,7 +62,7 @@ export default {
 <style lang="less" scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s;
+  transition: opacity 0.5s;
 }
 .fade-enter,
 .fade-leave-to {
@@ -76,18 +75,16 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 99;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .content {
-  width: 4.7rem;
+  width: 4.72rem;
   border-radius: 0.32rem;
   background: #fff;
   text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 999;
-  transform: translate3d(-50%, -50%, 0);
   .close {
     position: absolute;
     top: 0.26rem;

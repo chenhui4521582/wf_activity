@@ -32,6 +32,14 @@ const routes = [
         }
       },
       {
+        path: '/chooseBox',
+        name: 'ChooseBox',
+        component: () => import('../pages/chooseBox'),
+        meta: {
+          title: '选择盲盒'
+        }
+      },
+      {
         path: '/allProducts',
         name: 'AllProducts',
         component: () => import('../pages/allProducts'),
