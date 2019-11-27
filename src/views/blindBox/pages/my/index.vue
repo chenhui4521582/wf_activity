@@ -13,6 +13,9 @@ export default {
   components: {
     RowGroup,
     Account
+  },
+  mounted () {
+
   }
 }
 </script>
