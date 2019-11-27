@@ -14,9 +14,7 @@
     <section class="content">
       <Goods v-for="(item,index) in goodsList"
         :key="index"
-        :name="item.name"
-        :count="item.count"
-        :img="item.img">
+        :goods="item">
         <p class="goods-time"
           slot="left">开盒时间：{{item.time}}</p>
       </Goods>
@@ -105,6 +103,9 @@ export default {
     padding-top: 0.31rem;
     background: rgb(238, 238, 238);
     overflow: scroll;
+    .goods-time {
+      margin-top: 0.09rem;
+    }
   }
   .container {
     font-size: 0.24rem;

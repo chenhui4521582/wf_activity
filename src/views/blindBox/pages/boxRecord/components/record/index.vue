@@ -2,9 +2,7 @@
   <article class="wrapper-record">
     <Goods v-for="(item,index) in goodsList"
       :key="index"
-      :name="item.name"
-      :count="item.count"
-      :img="item.img">
+      :goods="item">
       <p class="goods-time"
         slot="left">开盒时间：{{item.time}}</p>
     </Goods>

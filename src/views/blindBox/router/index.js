@@ -32,6 +32,14 @@ const routes = [
         }
       },
       {
+        path: '/allProducts',
+        name: 'AllProducts',
+        component: () => import('../pages/allProducts'),
+        meta: {
+          title: '所有商品'
+        }
+      },
+      {
         path: '/boxRecord',
         name: 'BoxRecord',
         component: () => import('../pages/boxRecord'),

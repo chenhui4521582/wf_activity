@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <Swiper class="container-swiper" />
+    <ShortSwiper class="container-swiper" />
     <div class="content">
       <img src=""
         alt="头像">
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import Swiper from '../swiper'
+import ShortSwiper from '../../../../components/shortSwiper'
 
 export default {
   components: {
-    Swiper
+    ShortSwiper
   }
 }
 </script>

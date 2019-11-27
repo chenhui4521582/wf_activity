@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Swiper from '../../../../components/swiper/index'
-import SwiperItem from '../../../../components/swiper/swiperItem'
+import Swiper from '../swiper/index'
+import SwiperItem from '../swiper/swiperItem'
 
 export default {
   data () {

@@ -2,14 +2,14 @@
   <section class="wrapper">
     <div class="des">
       <div class="goods-img">
-        <img :img="img"
+        <img :img="goods.img"
           alt="商品">
       </div>
       <div class="goods-info">
-        <p class="goods-name">{{name}}</p>
+        <p class="goods-name">{{goods.name}}</p>
         <div></div>
         <div class="goods-count">
-          <p>数量：{{count}}个</p>
+          <p>数量：{{goods.count}}个</p>
           <slot name='left' />
         </div>
       </div>
@@ -21,14 +21,13 @@
 <script>
 export default {
   props: {
-    name: {
-      type: String
-    },
-    count: {
-      type: Number
-    },
-    img: {
-      type: String
+    goods: {
+      type: Object,
+      default: {
+        name: null,
+        count: null,
+        img: null
+      }
     }
   }
 }
