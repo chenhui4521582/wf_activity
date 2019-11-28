@@ -1,18 +1,51 @@
 <template>
   <section class="box-wrapper">
-    <div class="box">
-      <img src="./assets/box-pink.png">
-      <p>iPhone 11</p>
+    <div v-if="activity"
+      class="box">
+      <div class="box__img--box">
+        <div class="img-wrapper">
+          <img :src="isTransparent?activity.boxTransparent:activity.box">
+          <img :src="isTransparent?activity.boxTransparent:activity.box">
+        </div>
+      </div>
+      <p v-if="isTransparent">iPhone 11</p>
+      <img class="box__img--goods"
+        v-if="isTransparent"
+        :src="goods">
     </div>
-    <p class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <Side-Bar class="side-bar" />
+    <p @click="refresh"
+      class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <Side-Bar @use="useCard"
+      class="side-bar" />
   </section>
 </template>
 
 <script>
 import SideBar from '../sideBar'
+import { boxGroup } from '../../../../config/box'
 
 export default {
+  data () {
+    return {
+      isTransparent: false,
+      activity: null,
+      goods: null
+    }
+  },
+  mounted () {
+    this.activity = boxGroup.find(res => res.type === this.$route.params.type)
+  },
+  methods: {
+    // 使用透视卡
+    useCard () {
+      this.isTransparent = true
+      this.goods = require('../../assets/goods.png')
+    },
+    // 换一盒
+    refresh () {
+
+    }
+  },
   components: {
     SideBar
   }
@@ -38,11 +71,29 @@ export default {
     font-size: 0.3rem;
     color: #b8bbcb;
     text-align: center;
-    img {
+    position: relative;
+    &__img--box {
       width: 3.2rem;
       height: 3.72rem;
       display: block;
       margin: 0 auto 0.24rem;
+      overflow: hidden;
+      .img-wrapper {
+        width: 6.4rem;
+        height: 3.72rem;
+        display: flex;
+        img {
+          width: 3.2rem;
+          height: 3.72rem;
+        }
+      }
+    }
+    &__img--goods {
+      width: 2.3rem;
+      height: 2.3rem;
+      position: absolute;
+      top: 1.42rem;
+      left: 2.11rem;
     }
   }
   .refresh {

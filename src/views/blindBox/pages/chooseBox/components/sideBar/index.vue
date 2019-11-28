@@ -17,6 +17,7 @@
       :close="true"
       @onClose="show=false"
       @onCancel="show=false"
+      @onConfirm="show=false;$emit('use')"
       confirm="<p style='color:#FF4141'>购买一张</p>">
       <p class="subtitle">您有2张透视卡</p>
       <p class="des">

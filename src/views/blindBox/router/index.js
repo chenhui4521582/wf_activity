@@ -32,7 +32,7 @@ const routes = [
         }
       },
       {
-        path: '/chooseBox',
+        path: '/chooseBox/:type',
         name: 'ChooseBox',
         component: () => import('../pages/chooseBox'),
         meta: {
