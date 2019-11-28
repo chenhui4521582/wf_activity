@@ -1,8 +1,11 @@
 <template>
-  <transition name="fade">
-    <article v-if="show"
-      class="mask">
-      <section class="content">
+  <main>
+    <article class="mask"
+      v-if="show">
+    </article>
+    <transition name="fade">
+      <section class="content"
+        v-if="show">
         <img v-if="close"
           @click="$emit('onClose')"
           class="close"
@@ -28,8 +31,8 @@
           </div>
         </slot>
       </section>
-    </article>
-  </transition>
+    </transition>
+  </main>
 </template>
 
 <script>
@@ -60,11 +63,11 @@ export default {
 <style lang="less" scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: transform 0.4s;
 }
 .fade-enter,
 .fade-leave-to {
-  opacity: 0;
+  transform: translateY(100%);
 }
 .mask {
   width: 100vw;
@@ -75,15 +78,16 @@ export default {
   top: 0;
   z-index: 999;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 .content {
-  width: 4.72rem;
-  border-radius: 0.32rem;
+  width: 100%;
   background: #fff;
   text-align: center;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
   .close {
     position: absolute;
     top: 0.26rem;

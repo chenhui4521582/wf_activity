@@ -14,6 +14,9 @@
     <Dialog :show="show"
       title="透视卡"
       cancel="取消"
+      :close="true"
+      @onClose="show=false"
+      @onCancel="show=false"
       confirm="<p style='color:#FF4141'>购买一张</p>">
       <p class="subtitle">您有2张透视卡</p>
       <p class="des">
@@ -30,7 +33,7 @@ import Dialog from '../../../../components/dialog'
 export default {
   data () {
     return {
-      show: true
+      show: false
     }
   },
   components: {
@@ -39,7 +42,7 @@ export default {
   methods: {
     // 使用透视卡
     useCard () {
-
+      this.show = true
     }
   }
 }

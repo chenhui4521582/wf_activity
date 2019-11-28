@@ -2,10 +2,14 @@
   <article class="wrapper">
     <LongSwiper class="notice" />
     <Box />
-    <MButton class="choose-button">就选它</MButton>
+    <MButton @confirm="show=true"
+      class="choose-button">就选它</MButton>
     <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
     <img class="goods-detail"
       src="./assets/detail.png">
+    <Pay-Dialog :show="show"
+      @onClose="show=false"
+      :close="true" />
   </article>
 </template>
 
@@ -13,12 +17,19 @@
 import LongSwiper from '../../components/longSwiper'
 import MButton from '../../components/MButton'
 import Box from './components/box'
+import PayDialog from '../../components/payDialog'
 
 export default {
+  data () {
+    return {
+      show: false
+    }
+  },
   components: {
     LongSwiper,
     MButton,
-    Box
+    Box,
+    PayDialog
   }
 }
 </script>
