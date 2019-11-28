@@ -97,7 +97,7 @@ export default {
       if(status == 1) {
         let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
         if(['100069','100070','100073','100075','100080','100055','100068','100045'].includes(APP_CHANNEL)) {
-          window.location.href = `https://wap.beeplaying.com/xmWap/#/mall/details?accountBalance=992091.2&phyAwardsType=46&phyAwardsId=1281&name=%E5%A4%BA%E5%AE%9D%E5%8D%A1&channel=${localStorage.getItem('APP_CHANNEL')}`
+          window.location.href = `https://wap.beeplaying.com/xmWap/#/mall/details?accountBalance=0.2&phyAwardsType=46&phyAwardsId=836&name=50%E5%A4%BA%E5%AE%9D%E5%8D%A1%E5%88%B8&channel=${localStorage.getItem('APP_CHANNEL')}`
         }else {
           window.location.href = `https://wap.beeplaying.com/activities/billshop.html#/detail?from=bdWap&source=bdWap&phyAwardsType=46&phyAwardsId=836&showOut=1&channel=${localStorage.getItem('APP_CHANNEL')}`
         }
