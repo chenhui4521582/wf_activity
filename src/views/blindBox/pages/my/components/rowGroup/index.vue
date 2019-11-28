@@ -39,13 +39,13 @@ export default {
           title: '问题反馈',
           jump: () => {
             let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-            let url = `/${channelFlag}/#/problem?channel=${GLOBALS.channel}`
+            let url = `https://wap.beeplaying.com/${channelFlag}/#/problem?channel=${GLOBALS.channel}`
             switch (channelFlag) {
               case 'wap':
-                url = `/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
+                url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
                 break;
               case 'xmWap':
-                url = `/${channelFlag}/#/issues?channel=${GLOBALS.channel}`
+                url = `https://wap.beeplaying.com/${channelFlag}/#/issues?channel=${GLOBALS.channel}`
                 break;
               default:
                 break;
