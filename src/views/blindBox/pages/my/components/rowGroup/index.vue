@@ -38,9 +38,19 @@ export default {
           icon: require('./assets/problem.png'),
           title: '问题反馈',
           jump: () => {
-            this.$router.push({
-              name: 'MyPrize'
-            })
+            let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
+            let url = `/${channelFlag}/#/problem?channel=${GLOBALS.channel}`
+            switch (channelFlag) {
+              case 'wap':
+                url = `/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
+                break;
+              case 'xmWap':
+                url = `/${channelFlag}/#/issues?channel=${GLOBALS.channel}`
+                break;
+              default:
+                break;
+            }
+            location.href = url
           }
         }
       ]
