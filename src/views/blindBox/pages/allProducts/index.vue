@@ -24,74 +24,18 @@ import NavBar from '../../components/navBar'
 import Product from './components/product'
 import Bottom from './components/bottom'
 import ShortSwiper from '../../components/shortSwiper'
+import { awardsList } from '../../apis/products'
 
 export default {
   data () {
     return {
       scrollTop: null,
       products: [
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1574844710234&di=aafa619456b5a5aca55f828c868ae9d4&imgtype=0&src=http%3A%2F%2Fi1.sinaimg.cn%2Fent%2Fd%2F2008-06-04%2FU105P28T3D2048907F326DT20080604225106.jpg',
-          name: 'iphone11手机',
-          price: 123123,
-          count: 123
-        }
       ]
     }
+  },
+  async mounted () {
+    ({ data: { data: this.products } } = await awardsList())
   },
   methods: {
     // 返回顶部

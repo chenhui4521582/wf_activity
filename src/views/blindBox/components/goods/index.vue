@@ -2,19 +2,21 @@
   <section class="wrapper">
     <div class="des">
       <div class="goods-img">
-        <img :img="goods.img"
+        <img :img="goods.awardsImage"
           alt="商品">
       </div>
       <div class="goods-info">
-        <p class="goods-name">{{goods.name}}</p>
+        <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
-          <p>数量：{{goods.count}}个</p>
+          <p>数量：{{goods.awardsNum}}个</p>
           <slot name='left' />
         </div>
       </div>
     </div>
-    <slot name='right' />
+    <div class="right">
+      <slot name='right' />
+    </div>
   </section>
 </template>
 
@@ -24,9 +26,9 @@ export default {
     goods: {
       type: Object,
       default: {
-        name: null,
-        count: null,
-        img: null
+        awardsName: null,
+        awardsNum: null,
+        awardsImage: null
       }
     }
   }
@@ -40,10 +42,16 @@ export default {
   background: #fff;
   border-radius: 0.16rem;
   margin: 0 auto 0.2rem auto;
-  padding: 0.32rem 0.7rem 0.39rem 0.3rem;
+  padding: 0.32rem 0.35rem 0.39rem 0.3rem;
   display: flex;
   align-items: center;
   flex-direction: row;
+  position: relative;
+  .right {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.64rem;
+  }
   .des {
     flex: 1;
     display: flex;
@@ -70,6 +78,8 @@ export default {
       .goods-name {
         font-size: 0.28rem;
         color: #000;
+        text-align: left;
+        padding-bottom: 0.36rem;
       }
       .goods-count {
         text-align: left;

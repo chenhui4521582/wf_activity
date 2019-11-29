@@ -1,15 +1,15 @@
 <template>
   <section class="product">
     <div class="product-img">
-      <img :src="product.img"
+      <img :src="product.awardsImage "
         alt="奖品">
     </div>
     <div class="product-info">
-      <p class="name">{{product.name}}</p>
+      <p class="name">{{product.awardsName }}</p>
       <p class="des">
-        <span class="price">¥{{product.price}}</span>
+        <span class="price">¥{{product.showAmount }}</span>
         <span></span>
-        <span class="count">{{product.count}}人已获得</span>
+        <span class="count">{{product.showOpenNum }}人已获得</span>
       </p>
     </div>
   </section>
@@ -21,10 +21,10 @@ export default {
     product: {
       type: Object,
       default: {
-        img: null,
-        name: null,
-        price: null,
-        count: null
+        awardsImage: null,
+        awardsName: null,
+        showAmount: null,
+        showOpenNum: null
       }
     }
   }

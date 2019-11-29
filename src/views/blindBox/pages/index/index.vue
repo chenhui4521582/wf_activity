@@ -11,6 +11,8 @@ import TabBar from '../../components/tabBar'
 export default {
   components: {
     TabBar
+  },
+  mounted () {
   }
 }
 </script>

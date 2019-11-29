@@ -39,16 +39,17 @@ export default {
           title: '问题反馈',
           jump: () => {
             let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-            let url = `https://wap.beeplaying.com/${channelFlag}/#/problem?channel=${GLOBALS.channel}`
+            let url
             switch (channelFlag) {
-              case 'wap':
+              case 'bdWap':
                 url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
-                break;
+                break
               case 'xmWap':
                 url = `https://wap.beeplaying.com/${channelFlag}/#/issues?channel=${GLOBALS.channel}`
-                break;
+                break
               default:
-                break;
+                url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
+                break
             }
             location.href = url
           }

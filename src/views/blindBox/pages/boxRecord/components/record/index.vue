@@ -1,58 +1,34 @@
 <template>
   <article class="wrapper-record">
-    <Goods v-for="(item,index) in goodsList"
-      :key="index"
-      :goods="item">
-      <p class="goods-time"
-        slot="left">开盒时间：{{item.time}}</p>
-    </Goods>
+    <section v-if="goodsList && goodsList.length > 0">
+      <Goods v-for="(item,index) in goodsList"
+        :key="index"
+        :goods="item">
+        <p class="goods-time"
+          slot="left">开盒时间：{{item.openTime }}</p>
+      </Goods>
+    </section>
+    <Default v-if="goodsList && goodsList.length === 0" />
   </article>
 </template>
 
 <script>
 import Goods from '../../../../components/goods'
+import Default from '../../../../components/default'
+import { OpenList } from '../../../../apis/user'
 
 export default {
   data () {
     return {
-      goodsList: [
-        {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        },
-        {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        }, {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        }, {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        }, {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        }, {
-          name: 'iphone11手机',
-          count: 1,
-          time: '2019.11.18',
-          img: ''
-        }
-      ]
+      goodsList: null
     }
   },
+  async mounted () {
+    ({ data: { data: this.goodsList } } = await OpenList())
+  },
   components: {
-    Goods
+    Goods,
+    Default
   }
 }
 </script>
