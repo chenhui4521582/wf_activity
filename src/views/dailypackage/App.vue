@@ -22,14 +22,14 @@
                       <img src="./images/fudai.png" alt="" v-if="item1.awardsType==28">
                       <img src="./images/package_leaf.png" alt="" v-if="item1.awardsType==1">
                       <span v-if="item1.awardsType==28">幸运币福袋</span>
-                      <span v-if="item1.awardsType==1">{{item1.awardsNum}}</span>
+                      <span v-if="item1.awardsType==1">{{item1.awardsNum}}金叶</span>
                     </div>
                     <div class="tip">{{item.name}}</div>
                   </div>
                   <div class="sec2">
                     <div class="item">
                       <img :src="item.productIcon|filter" alt="">
-                      <span>{{item.amount}}</span>
+                      <span>{{item.amount}}金叶</span>
                     </div>
                     <div class="btn gray" @click="gotopay(item,false)" v-if="item.buyFlag == 0">{{item.price}}元抢购</div>
                     <div class="btn" @click="gotopay(item,true)" v-else>{{item.price}}元抢购</div>
@@ -294,7 +294,7 @@
         margin: auto;
         .item {
           flex: 1;
-          line-height: .7rem;
+          line-height: .75rem;
           width: 3rem;
           height: .7rem;
           background: rgba(223, 140, 247, 1);
@@ -316,7 +316,7 @@
     }
     .container1 {
       position: absolute;
-      top: 3.6rem;
+      top: 3.45rem;
       width: 100%;
       margin-bottom: .5rem;
       .title {
@@ -329,7 +329,7 @@
       .total-num {
         display: inline-block;
         position: relative;
-        top: .27rem;
+        top: .26rem;
         left: 50%;
         transform: translateX(-50%);
         padding: 0 .25rem;
@@ -414,8 +414,8 @@
               height: .6rem;
               text-align: center;
               line-height: .6rem;;
-              background: rgba(255, 114, 37, 1);
-              border-radius: .22rem;
+              background:linear-gradient(0deg,rgba(249,104,48,1) 0%,rgba(234,62,98,1) 0%,rgba(254,160,117,1) 99%);
+              border-radius: .3rem;
               font-size: .34rem;
               font-weight: bold;
               color: rgba(255, 255, 255, 1);
@@ -459,6 +459,8 @@
                 img {
                   width: .94rem;
                   height: .94rem;
+                  display: inline-block;
+                  margin: 0 auto;
                 }
                 span {
                   margin-top: .12rem;
