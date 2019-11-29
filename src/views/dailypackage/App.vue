@@ -129,7 +129,7 @@
         if (code == 200 && data) {
           this.myInfo = data
           if (flag) {
-            GLOBALS.marchSetsPoint('P_H5PT0224')//H5平台-限购商城页面加载完成
+            GLOBALS.marchSetsPoint('P_H5PT0224',{ source_address: GLOBALS.getUrlParam('from')||''})//H5平台-限购商城页面加载完成
           }
           flag && this.getBuyState()
           flag && this.getTaskInfo()
