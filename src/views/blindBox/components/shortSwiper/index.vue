@@ -15,6 +15,7 @@
 <script>
 import Swiper from '../swiper/index'
 import SwiperItem from '../swiper/swiperItem'
+import { NoticeList } from '../../apis/my'
 
 export default {
   data () {
@@ -42,6 +43,9 @@ export default {
         }
       ]
     }
+  },
+  async mounted () {
+    await NoticeList()
   },
   components: {
     Swiper,

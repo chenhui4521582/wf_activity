@@ -40,6 +40,14 @@ const routes = [
         }
       },
       {
+        path: '/openBox/:type',
+        name: 'OpenBox',
+        component: () => import('../pages/openBox'),
+        meta: {
+          title: '获得盲盒'
+        }
+      },
+      {
         path: '/allProducts',
         name: 'AllProducts',
         component: () => import('../pages/allProducts'),

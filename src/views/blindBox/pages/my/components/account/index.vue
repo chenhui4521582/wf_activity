@@ -1,11 +1,12 @@
 <template>
   <section class="container">
     <ShortSwiper class="container-swiper" />
-    <div class="content">
-      <img src=""
+    <div v-if="userInfo"
+      class="content">
+      <img :src="userInfo.head || require('./assets/head.png')"
         alt="头像">
-      <span class="name">刘德华</span>
-      <span class="id">ID:8888888</span>
+      <span class="name">{{userInfo.nickname}}</span>
+      <span class="id">ID:{{userInfo.userId}}</span>
     </div>
   </section>
 </template>
@@ -14,6 +15,14 @@
 import ShortSwiper from '../../../../components/shortSwiper'
 
 export default {
+  data () {
+    return {
+      userInfo: null
+    }
+  },
+  mounted () {
+    this.userInfo = JSON.parse(localStorage.getItem('user_Info'))
+  },
   components: {
     ShortSwiper
   }
