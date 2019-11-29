@@ -238,7 +238,6 @@
       }
     },
     created() {
-      this.fetch('//uic-api.beeplaying.com/uic/api/user/login/transInfo')
       this.getActInfo(true)
     }
   }
