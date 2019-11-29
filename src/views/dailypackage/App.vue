@@ -110,7 +110,8 @@
         this.$refs.rule.showPop()
       },
       back() {
-        history.go(-1)
+        //默认跳首页去
+        location.href ='//wap.beeplaying.com'+linkUrl.getBackUrl(localStorage['APP_CHANNEL']);
       },
       fetch(url, params) {
         if (url.startsWith('/ops/api')) {
