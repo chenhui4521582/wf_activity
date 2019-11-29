@@ -16,14 +16,19 @@
     </div>
     <p @click="refresh"
       class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <MButton class="choose-button">就选它</MButton>
+    <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
     <Side-Bar @use="useCard"
+      :user-info="userInfo"
       class="side-bar" />
   </section>
 </template>
 
 <script>
 import SideBar from '../sideBar'
+import MButton from '../../../../components/MButton'
 import { boxGroup } from '../../../../config/box'
+import { UserInfo } from '../../../../apis/user'
 
 export default {
   data () {
@@ -33,11 +38,13 @@ export default {
       activity: 0,
       goods: null,
       boxes: [],
+      userInfo: null,
       boxGroup,
       boxLength: boxGroup.length
     }
   },
-  mounted () {
+  async mounted () {
+    ({ data: { data: this.userInfo } } = await UserInfo())
     this.activity = this.boxGroup.findIndex(res => res.type === Number(this.$route.params.type))
     this.boxes.push(this.boxGroup[this.activity])
     this.addBox()
@@ -78,7 +85,8 @@ export default {
     }
   },
   components: {
-    SideBar
+    SideBar,
+    MButton
   }
 }
 </script>
@@ -92,6 +100,17 @@ export default {
   background: url("./assets/shine.png") no-repeat;
   background-size: cover;
   position: relative;
+  .choose-button {
+    margin: 0 auto;
+    margin-top: 0.5rem;
+  }
+  .note {
+    color: #b5b9cb;
+    font-size: 0.22rem;
+    padding-top: 0.33rem;
+    text-align: center;
+    font-weight: bold;
+  }
   .side-bar {
     position: absolute;
     right: -0.34rem;

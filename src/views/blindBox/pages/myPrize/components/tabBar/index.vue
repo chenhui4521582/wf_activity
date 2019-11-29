@@ -11,7 +11,7 @@
         若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
       <p class="tip"
-        v-if="this.active===2">您的运单号为：446564646</p>
+        v-if="this.active===2">您的运单号为：{{orderNumber}}</p>
     </Dialog>
     <section class="container">
       <div class="bar"
@@ -36,7 +36,7 @@
             <p class="goods-time"
               v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
           </div>
-          <div @click="handelList[active].handle"
+          <div @click="handelList[active].handle(item)"
             class="button"
             :class="handelList[active].buttonType"
             slot="right">{{handelList[active].buttonText}}</div>
@@ -63,6 +63,7 @@ export default {
       active: 0,
       goodsList: null,
       tabBar: sendStatusMapper,
+      orderNumber: null,
       handelList: [
         {
           buttonType: 'button-primary',
@@ -81,7 +82,8 @@ export default {
         {
           buttonType: 'button-primary',
           buttonText: '立即查看',
-          handle: () => {
+          handle: item => {
+            this.orderNumber = item.remark
             this.show = true
           }
         }

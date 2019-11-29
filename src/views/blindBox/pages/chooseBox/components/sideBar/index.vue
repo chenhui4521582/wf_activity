@@ -4,7 +4,7 @@
       class="nav nav-reverse">
       <p>透视卡</p>
       <img src="./assets/card.png">
-      <span class="count">2</span>
+      <span class="count">{{userInfo && userInfo.transparentRemanent || 0}}</span>
     </div>
     <div @click="$router.push({name:'My'})"
       class="nav">
@@ -18,8 +18,8 @@
       @onClose="show=false"
       @onCancel="show=false"
       @onConfirm="show=false;$emit('use')"
-      confirm="<p style='color:#FF4141'>购买一张</p>">
-      <p class="subtitle">您有2张透视卡</p>
+      :confirm="`<p style='color:#FF4141'>${userInfo && userInfo.transparentRemanent ? '立即使用' : '购买一张'}</p>`">
+      <p class="subtitle">您有{{userInfo && userInfo.transparentRemanent || 0}}张透视卡</p>
       <p class="des">
         透视卡能帮你看出盲盒中是否是你
         心仪的商品哦。
@@ -34,7 +34,12 @@ import Dialog from '../../../../components/dialog'
 export default {
   data () {
     return {
-      show: false
+      show: false,
+    }
+  },
+  props: {
+    userInfo: {
+      type: Object
     }
   },
   components: {
