@@ -46,12 +46,6 @@ axios.interceptors.response.use(
     var res = JSON.parse(response.request.response)
     if (res && res.code && res.code != 200) {
       switch (res.code) {
-        case 400:
-          Vue.prototype.$toast.show({
-            message: '请求处理失败',
-            duration: 1500
-          })
-          break
         case 401:
           let uid = localStorage.getItem('user_Info') && JSON.parse(localStorage.getItem('user_Info')) && JSON.parse(localStorage.getItem('user_Info')).userId || ''
           if (uid) {

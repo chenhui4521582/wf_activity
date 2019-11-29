@@ -6,17 +6,19 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
-          <div class="title">勋章领取规则</div>
+          <div class="title">活动规则</div>
           <div class="main">
-            <p>1. 活动时间：{{ruleMain}}</p>
-            <p>2. 部分任务每天可多次完成，且每个任务每天都有最大完成次数限制</p>
-            <p>3. 玩家每完成一个任务，都可以获得一定的勋章奖励，当勋章达到一定数量要求即可领取对应奖励</p>
-            <p>4. 奖励分为每日奖励及7日累计奖励</p>
-            <p>5. 活动期间，每日奖励会在当日24点清零，次日重新累计。7日奖励在活动期间内不清零</p>
-            <p>6. 兑换奖励后，勋章数量不会被消耗</p>
+            <p>①活动日期：{{ruleMain}}</p>
+            <p>②幸运币是限购礼包内的特有货币，可用于兑换对应奖品； </p>
+            <p>③每种限购礼包每人每天仅可购买1次； </p>
+            <p>④购买礼包可获得对应金叶，并有概率获得超级幸运币； </p>
+            <p>⑤活动期间，幸运币累计一定数量可在兑换页中换取各类奖品，且奖品兑换不限次数； </p>
+            <p>⑥活动结束后，幸运币清零； </p>
+            <p>⑦如玩家选择购买单独礼包，则无法享受购买所有礼包的折扣； </p>
+            <p>⑧如有任何问题可联系在线客服。</p>
+            <div class="btn" @click="isShowPop = false">确定</div>
           </div>
         </div>
-        <div class="close-icon" @click="isShowPop = false"></div>
       </div>
     </transition>
   </section>
@@ -39,11 +41,6 @@ export default {
   methods: {
     showPop () {
       this.isShowPop = true
-      if (this.from) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001482')   // H5平台-砸金蛋-活动已结束-点击规则
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001459')   // H5平台-砸金蛋-点击规则
-      }
     }
   }
 };
@@ -52,9 +49,9 @@ export default {
 <style rel="stylesheet/less" lang="less" scoped>
 .rule {
   position: fixed;
-  top: 1.64rem;
+  top:0;
   left: 50%;
-  margin-left: -3rem;
+  margin-left: -2.5rem;
   .icon {
     width: 0.74rem;
     height: 0.4rem;
@@ -82,19 +79,20 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
-      width: 6rem;
-      height: 6rem;
-      background:rgba(255,255,255,1);
+      width: 5.05rem;
+      height: 10.58rem;
+      background:url("../images/pop/rule_bg.png");
+      background-size: 100% 100%;
       border-radius:.16rem;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: .5rem 0.2rem 0;
+      padding: 2.55rem 0.2rem 0;
       .title{
-        font-size:.32rem;
-        font-weight:bold;
-        color:rgba(21,0,43,1);
+        font-size:.48rem;
         text-align: center;
         margin-bottom: .4rem;
+        font-weight:800;
+        color:rgba(169,92,23,1);
       }
       .main {
         font-size: 0.24rem;
@@ -102,19 +100,22 @@ export default {
         font-weight: bold;
         color: #fff;
         p {
-          line-height: 0.32rem;
-          color:#60586A;
+          line-height: 0.4rem;
+          color:#A95C17;
+        }
+        .btn{
+          width:2.96rem;
+          height:.8rem;
+          line-height:.8rem;
+          text-align: center;
+          background:linear-gradient(0deg,rgba(249,104,48,1) 0%,rgba(234,62,98,1) 0%,rgba(254,160,117,1) 99%);
+          border-radius:.4rem;
+          font-size:.32rem;
+          font-weight:bold;
+          color:rgba(255,255,255,1);
+          margin:.3rem auto;
         }
       }
-    }
-    .close-icon {
-      width: 0.2rem;
-      height: 0.2rem;
-      background: url("../images/close.png") no-repeat center
-        center / 100% 100%;
-      position: absolute;
-      top: .2rem;
-      right:.2rem;
     }
   }
   .scalc-enter-active {

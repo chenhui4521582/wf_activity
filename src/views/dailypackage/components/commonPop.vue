@@ -8,20 +8,33 @@
           <div class="main">
             <ul class="awards-list">
               <li>
-                <img :src="awardData.awardsImg|filter" alt="" style="width: 2.98rem;height: 1.86rem">
-                <template v-if="fail">
-                  <div class="awardsname">您还差{{surplus}}勋章就可以领取<br>{{awardData.awardsName}}啦~</div>
-                  <div class="info">快去完成任务吧！</div>
+                <div class="title" style="font-size: 0.48rem; font-weight: 400; color: rgb(169, 92, 23); height: .9rem; line-height: .8rem; padding-bottom: .1rem; box-sizing: border-box;font-weight: bold;">
+                  <template v-if="fail&&surplus">很遗憾</template>
+                  <template v-else>
+                    <template v-if="fail">
+                      是否兑换？
+                    </template>
+                    <template v-else>
+                      兑换成功
+                    </template>
+                  </template>
+                </div>
+                <template v-if="fail&&surplus">
+                  <img src="../images/sad.png" alt="" style="width: 1.73rem;height: 1.85rem;margin-top: .35rem">
+                  <!--<div class="awardsname">您还差{{surplus}}勋章就可以领取<br>{{awardData.awardsName}}啦~</div>-->
+                  <div class="info">幸运币不足</div>
                 </template>
                 <template v-else>
-                  <div class="awardsname">{{awardData.awardsName}}</div>
+                  <img :src="awardData.awardsImg|filter" alt="" style="width: 2.7rem;">
+                  <div class="info" :class="{success:!fail}">{{awardData.awardsName}}</div>
+                  <p v-if="!fail" style="margin-bottom: .2rem;color:rgba(169,92,23,1);">请前往我的页面查询使用~</p>
                 </template>
               </li>
             </ul>
           </div>
-          <div class="hit-egg-btn" @click="closePop(1)">{{fail?'去完成':'领取'}}</div>
+          <div class="hit-egg-btn" @click="closePop(1)">{{fail&&surplus?'获取幸运币':'确定'}}</div>
         </div>
-        <div class="close-icon" :class="{fail:fail}" @click="closePop(0)"></div>
+        <div class="close-icon" @click="closePop(0)"></div>
       </div>
     </transition>
   </section>
@@ -60,15 +73,15 @@ export default {
   methods: {
     closePop (flag) {
       if(flag){
-        GLOBALS.marchSetsPoint(this.fail?'A_H5PT0199002023':'A_H5PT0199002021',{
-          task_id:this.awardData&&this.awardData.id,
-          task_name:`${this.awardData&&this.awardData.cost}勋章领取${this.awardData&&this.awardData.awardsName}`
-        })
+        if(this.fail&&this.surplus){
+          this.$emit('gototask')
+        }else{
+          if(this.fail){
+            this.$emit('exchange',this.awardData)
+          }
+        }
       }
       this.$emit('close-pop')
-      if(this.fail){
-        this.$emit('gototask')
-      }
     },
   },
   mounted () {
@@ -79,14 +92,10 @@ export default {
 <style rel="stylesheet/less" lang="less" scoped>
 .commonPop {
   position: fixed;
-  top: 1.5rem;
+  top: 1rem;
   left: 50%;
-  margin-left: -3rem;
+  margin-left: -2.5rem;
   z-index: 10;
-  &.fail{
-    top:50%;
-    margin-top: -2.8rem;
-  }
   .pop-mask {
     position: fixed;
     left: 0;
@@ -110,13 +119,13 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
-      width: 6rem;
-      height: 7.1rem;
+      width: 5.05rem;
+      height: 7.68rem;
       background: no-repeat center center / 100% 100%;
-      background-image: url("../images/pop/award_success_pop.png");
+      background-image: url("../images/pop/pop.png");
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 3rem 0.26rem 0;
+      padding: 2.35rem 0.26rem 0;
       .main {
         font-size: 0.24rem;
         line-height: 0.3rem;
@@ -144,46 +153,36 @@ export default {
             .info{
               font-size:.24rem;
               font-weight:bold;
-              color:rgba(21,0,43,0.6);
+              color:rgba(169,92,23,1);
+              /*margin-top: .28rem;*/
+              margin-bottom: .5rem;
+              &.success{
+                margin-bottom: .3rem;
+              }
             }
           }
         }
       }
       .get-cz-btn,
       .hit-egg-btn {
-        width: 4.8rem;
-        height: 0.7rem;
-        line-height: 0.7rem;
-        border-radius: 0.34rem;
+        width:2.96rem;
+        height:.8rem;
+        background:linear-gradient(0deg,rgba(249,104,48,1) 0%,rgba(234,62,98,1) 0%,rgba(254,160,117,1) 99%);
+        border-radius:.4rem;
+        line-height: 0.8rem;
         font-weight:bold;
-        color:rgba(21,0,43,1);
-        font-size: 0.3rem;
+        color:#fff;
+        font-size: 0.32rem;
         text-align: center;
-        margin: 0.18rem auto 0;
-        background: #FDED66;
-      }
-      &.fail{
-        height: 5.6rem;
-        background:rgba(255,255,255,1);
-        border-radius:16px;
-        padding: .4rem 0.26rem 0;
-        box-sizing: border-box;
-        .main .awards-list{
-          min-height: 4rem;
-        }
+        margin: auto;
       }
     }
     .close-icon {
-      width: 0.2rem;
-      height: 0.2rem;
+      width: 0.57rem;
+      height: 0.57rem;
       background: url("../images/close.png") no-repeat center
         center / 100% 100%;
-      position: absolute;
-      right: .21rem;
-      top: 2.17rem;
-      &.fail{
-        top: .2rem;
-      }
+      margin:.2rem auto;
     }
   }
   .scalc-enter-active {
