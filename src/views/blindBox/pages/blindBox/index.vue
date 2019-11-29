@@ -1,15 +1,12 @@
 <template>
-  <main>
-    <div @click="show=true">打的费撒的飞洒</div>
-    <Dialog :show="show"
-      title="dfsdfsa"
-      cancel="cancel"
-      confirm="<p style='color:red'>dfsdfsaaf</p>" />
+  <main class="blind-box-wrap">
+    <current-product-list></current-product-list>
   </main>
 </template>
 
 <script>
 import Dialog from '../../components/dialog'
+import currentProductList from './components/currentProductList'
 
 export default {
   data () {
@@ -18,7 +15,7 @@ export default {
     }
   },
   components: {
-    Dialog
+    Dialog, currentProductList
   },
   methods: {
   },
