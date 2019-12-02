@@ -2,21 +2,20 @@
   <section class="box-wrapper">
     <div class="box">
       <div class="box__img--box">
-        <div :style="trackStyles"
-          class="img-wrapper">
-          <img v-for="(item,index) in boxes"
-            :key="index"
-            :src="goods&&index===offsetIndex?item.boxTransparent:item.box">
+        <div class="img-wrapper">
+          <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
         <img class="box__img--goods"
-          v-if="goods"
-          :src="goods">
+          v-if="awardsImage"
+          :src="awardsImage | imgFilter">
       </div>
-      <p v-if="goods">iPhone 11</p>
+      <p v-if="awardsName">{{awardsName}}</p>
     </div>
     <p @click="refresh"
       class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton class="choose-button">就选它</MButton>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
+      @confirm="onConfirm"
+      class="choose-button">{{buttonText}}</MButton>
     <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
     <Side-Bar @use="useCard"
       :user-info="userInfo"
@@ -29,59 +28,94 @@ import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
+import { Operation, Lock, Dynamic } from '../../../../apis/box'
 
 export default {
   data () {
     return {
-      offsetIndex: 0,
-      offsetWidth: 0,
-      activity: 0,
-      goods: null,
-      boxes: [],
+      box: null,
       userInfo: null,
+      sort: null,
+      type: null,
       boxGroup,
-      boxLength: boxGroup.length
+      awardsImage: null,
+      awardsName: null,
+      isTransparent: false
     }
   },
   async mounted () {
     ({ data: { data: this.userInfo } } = await UserInfo())
-    this.activity = this.boxGroup.findIndex(res => res.type === Number(this.$route.params.type))
-    this.boxes.push(this.boxGroup[this.activity])
-    this.addBox()
-    this.offsetWidth = document.getElementsByClassName('box__img--box')[0].clientWidth
+    this.type = Number(this.$route.params.type)
+    this.box = this.boxGroup.find(res => res.type === this.type)
+    this.sort = Number(this.$route.query.sort)
+    Lock(this.sort)
+  },
+  computed: {
+    buttonText () {
+      if (this.userInfo && this.userInfo.openBoxTimes) return '立即开盒'
+      return '15元开盒'
+    }
   },
   methods: {
     // 使用透视卡
     useCard () {
-      this.goods = require('../../assets/goods.png')
+      if (this.isTransparent) {
+        this.$toast.show({
+          message: '该盒子已经透视过了',
+          duration: 3000
+        })
+        return
+      }
+      if (this.userInfo.transparentTimes) this.transparent()
+    },
+    // 有透视次数，直接透视
+    async transparent () {
+      this.$loading.show({
+        render (h) {
+          return h('div', '正在为您透视……')
+        }
+      })
+      this.isTransparent = true
+      let { data: { data } } = await Operation({
+        category: 2,
+        sort: this.sort
+      })
+      this.userInfo.transparentTimes = this.userInfo.transparentTimes - 1
+      this.awardsName = data.awardsName
+      this.awardsImage = data.awardsImage
+      this.$loading.hide()
+    },
+    // 点击按钮
+    onConfirm () {
+      if (this.userInfo && this.userInfo.openBoxTimes) this.openBox()
+    },
+    // 开盒
+    openBox () {
+      this.$router.push({
+        name: 'OpenBox',
+        params: {
+          type: this.type
+        },
+        query: {
+          sort: this.sort,
+          isTransparent: this.isTransparent
+        }
+      })
     },
     // 换一盒
-    refresh () {
-      this.addBox()
-      this.offsetIndex++
-      this.goods = null
-      // this.removeBox()
-    },
-    // 增加一个盒子
-    addBox () {
-      if (this.activity === (this.boxLength - 1)) this.activity = 0
-      else this.activity++
-      this.boxes.push(this.boxGroup[this.activity])
-    },
-    // 删除上一个盒子
-    removeBox () {
-      this.boxes.shift()
-    }
-  },
-  computed: {
-    trackOffset () {
-      return this.offsetIndex * this.offsetWidth
-    },
-    trackStyles () {
-      return {
-        transform: `translate3d( ${-this.trackOffset}px, 0,0)`,
-        transition: `transform 500ms ease`
-      }
+    async refresh () {
+      this.isTransparent = false
+      this.awardsImage = null
+      this.$loading.show({
+        render (h) {
+          return h('div', '正在为您挑选……')
+        }
+      })
+      const { data: { data } } = await Dynamic(this.sort)
+      this.$loading.hide()
+      this.sort = data.sort
+      this.type = data.newColor
+      this.box = this.boxGroup.find(res => res.type === this.type)
     }
   },
   components: {

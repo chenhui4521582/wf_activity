@@ -13,6 +13,13 @@ fastclick.attach(document.body)
 
 Vue.prototype.axios = axios
 Vue.prototype.$loading = Loading
+Vue.filter('imgFilter', url => {
+  if (url && url.indexOf('http') < 0) {
+    return '//file.beeplaying.com' + url
+  } else {
+    return url
+  }
+})
 
 new Vue({
   router,
