@@ -1,13 +1,17 @@
 <template>
   <main class="blind-box-wrap">
     <current-product-list></current-product-list>
-    <box-list></box-list>
+    <div class="main-wrapper">
+      <horn-and-more></horn-and-more>
+      <box-list></box-list>
+    </div>
   </main>
 </template>
 
 <script>
 import Dialog from '../../components/dialog'
 import currentProductList from './components/currentProductList'
+import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 
 export default {
@@ -17,7 +21,7 @@ export default {
     }
   },
   components: {
-    Dialog, currentProductList, boxList
+    Dialog, currentProductList, hornAndMore, boxList
   },
   methods: {
   },
@@ -29,4 +33,7 @@ export default {
 
 <style scoped lang="less">
 @import "./index.less";
+.main-wrapper {
+  background: #f0ead1;
+}
 </style>

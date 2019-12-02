@@ -30,15 +30,6 @@ export default {
   mounted () {
     this.getProductInfo()
   },
-  filters: {
-    imgFilter (url) {
-      if (url && url.indexOf('http') < 0) {
-        return '//file.beeplaying.com' + url
-      } else {
-        return url
-      }
-    }
-  },
   methods: {
     async getProductInfo () {
       const res = await awardsList()

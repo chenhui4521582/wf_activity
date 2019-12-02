@@ -1,18 +1,21 @@
 <template>
   <section class="box-list-wrapper">
-    <ul class="box-list"
-      v-for="(items,key) in boxList"
-      :key="'list'+key">
-      <li class="box-item"
-        v-for="(item,index) in items"
-        :key="'item'+index">
-        <img class="box-image"
-          :src="item.color|boxImage('box')"
-          alt="">
-      </li>
-    </ul>
-    <section class="box-list-btn-wrap">
-      <div class="open-btn"></div>
+    <section class="box-list-container">
+      <ul class="box-list"
+        v-for="(items,key) in boxList"
+        :key="'list'+key">
+        <li class="box-item"
+          v-for="(item,index) in items"
+          :key="'item'+index">
+          <img class="box-image"
+            :src="item.color|boxImage('box')"
+            alt="">
+        </li>
+      </ul>
+    </section>
+    <section class="btn-container">
+      <m-button>{{userInfo.openBoxTimes?'立即开盒':'15元开一次'}}</m-button>
+      <div class="change-btn">换一批</div>
     </section>
   </section>
 </template>
@@ -21,10 +24,11 @@
 import { boxGroup } from '../../../config/box'
 import { BoxList } from '../../../apis/box'
 import { UserInfo } from '../../../apis/user'
+import MButton from '../../../components/MButton'
 export default {
   name: '',
   components: {
-
+    MButton
   },
   data () {
     return {
@@ -74,9 +78,21 @@ export default {
 
 <style lang="less" scoped>
 .box-list-wrapper {
+  margin-top: -0.32rem;
+  .box-list-container {
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 0.18rem;
+      background: #1b1f29 url(../assets/list-bottom-bg.png) no-repeat center
+        center / 100% 100%;
+      font-size: 0;
+    }
+  }
   .box-list {
-    background: #f0ead1 url(../assets/list-bg.png) no-repeat center bottom /
-      100% 0.96rem;
+    background: url(../assets/list-bg.png) no-repeat center bottom / 100%
+      0.96rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -93,14 +109,26 @@ export default {
       }
     }
   }
-  &::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 0.18rem;
-    background: url(../assets/list-bottom-bg.png) no-repeat center center / 100%
-      100%;
-    font-size: 0;
+  .btn-container {
+    position: relative;
+    background: #1b1f29;
+    padding: 0.16rem;
+    .button {
+      margin: auto;
+    }
+    .change-btn {
+      position: absolute;
+      top: calc(~"50%" - 0.21rem);
+      right: 0.36rem;
+      width: 1.14rem;
+      box-sizing: border-box;
+      color: #fff;
+      border: 0.02rem solid #fff;
+      line-height: 0.42rem;
+      text-align: center;
+      border-radius: 0.22rem;
+      font-size: 0.24rem;
+    }
   }
 }
 </style>
