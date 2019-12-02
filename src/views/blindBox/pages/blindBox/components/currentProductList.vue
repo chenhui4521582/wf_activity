@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     async getProductInfo () {
-      // {"code":200,"data":[{"awardsName":"iPhone XS","awardsImage":null,"awardsNum":1,"showAmount":8699,"showOpenNum":0},{"awardsName":"华为P20","awardsImage":null,"awardsNum":1,"showAmount":4280,"showOpenNum":0},{"awardsName":"oppoR15","awardsImage":null,"awardsNum":1,"showAmount":3199,"showOpenNum":0},{"awardsName":"JBL蓝牙耳机","awardsImage":null,"awardsNum":1,"showAmount":499,"showOpenNum":0},{"awardsName":"叮咚智能音响","awardsImage":null,"awardsNum":1,"showAmount":299,"showOpenNum":0},{"awardsName":"天猫精灵","awardsImage":null,"awardsNum":1,"showAmount":292,"showOpenNum":0}],"message":null}
       const res = await awardsList()
       const { data } = res.data
       this.products = data && data.slice(0, 4) || []
@@ -77,6 +76,9 @@ export default {
       font-size: 0.18rem;
       position: relative;
       overflow: hidden;
+      text-align: center;
+      padding-top: 0.04rem;
+      box-sizing: border-box;
       img {
         max-height: 100%;
         max-width: 100%;

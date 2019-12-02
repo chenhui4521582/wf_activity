@@ -1,12 +1,14 @@
 <template>
   <main class="blind-box-wrap">
     <current-product-list></current-product-list>
+    <box-list></box-list>
   </main>
 </template>
 
 <script>
 import Dialog from '../../components/dialog'
 import currentProductList from './components/currentProductList'
+import boxList from './components/boxList'
 
 export default {
   data () {
@@ -15,7 +17,7 @@ export default {
     }
   },
   components: {
-    Dialog, currentProductList
+    Dialog, currentProductList, boxList
   },
   methods: {
   },
