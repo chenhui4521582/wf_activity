@@ -11,7 +11,7 @@
         若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
       <p class="tip"
-        v-if="this.active===2">您的运单号为：446564646</p>
+        v-if="this.active===2">您的运单号为：{{orderNumber}}</p>
     </Dialog>
     <section class="container">
       <div class="bar"
@@ -36,7 +36,7 @@
             <p class="goods-time"
               v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
           </div>
-          <div @click="handelList[active].handle"
+          <div @click="handelList[active].handle(item)"
             class="button"
             :class="handelList[active].buttonType"
             slot="right">{{handelList[active].buttonText}}</div>
@@ -55,6 +55,8 @@ import Default from '../../../../components/default'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
+import { findUrl } from '../../../../utils/index'
+import { onlineServiceUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -63,6 +65,7 @@ export default {
       active: 0,
       goodsList: null,
       tabBar: sendStatusMapper,
+      orderNumber: null,
       handelList: [
         {
           buttonType: 'button-primary',
@@ -81,7 +84,8 @@ export default {
         {
           buttonType: 'button-primary',
           buttonText: '立即查看',
-          handle: () => {
+          handle: item => {
+            this.orderNumber = item.remark
             this.show = true
           }
         }
@@ -105,20 +109,7 @@ export default {
     },
     // 在线客服
     toOnlineService () {
-      let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-      let url
-      switch (channelFlag) {
-        case 'bdWap':
-          url = `https://wap.beeplaying.com/${channelFlag}/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`
-          break
-        case 'xmWap':
-          url = `https://wap.beeplaying.com/${channelFlag}/#/my/customerService?channel=${GLOBALS.channel}`
-          break
-        default:
-          url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`
-          break
-      }
-      location.href = url
+      location.href = findUrl(onlineServiceUrl, `home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)
     }
   },
   components: {

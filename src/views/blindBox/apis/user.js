@@ -18,3 +18,8 @@ export const OpenList = () => {
 export const InventoryList = (state) => {
   return client.post(`@box/inventory/list/${state}`)
 }
+
+// 用户信息
+export const UserInfo = () => {
+  return client.post(`@box/user/info`)
+}

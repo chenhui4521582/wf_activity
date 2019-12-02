@@ -1,10 +1,10 @@
 <template>
   <article class="swiper-user">
-    <Swiper>
+    <Swiper v-if="swiperList">
       <SwiperItem v-for="(item,index) in swiperList"
         :key="index">
         <div class="swiper-info">
-          <p>恭喜{{item.name}}用户开出{{item.prize}}</p>
+          <p>恭喜{{item.nickname}}开出{{item.awardsName}}</p>
         </div>
       </SwiperItem>
     </Swiper>
@@ -14,33 +14,17 @@
 <script>
 import Swiper from '../swiper/index'
 import SwiperItem from '../swiper/swiperItem'
+import { NoticeList } from '../../apis/user'
 
 export default {
   data () {
     return {
-      swiperList: [
-        {
-          name: 'xxxxxx',
-          prize: '奔驰'
-        },
-        {
-          name: 'xxxxxx',
-          prize: 'iphone'
-        },
-        {
-          name: 'xxxxxx',
-          prize: 'ipad'
-        },
-        {
-          name: 'xxxxxx',
-          prize: 'macBook'
-        },
-        {
-          name: 'xxxxxx',
-          prize: '100元话费aaaaaaaaaaa'
-        }
-      ]
+      swiperList: null
     }
+  },
+  async mounted () {
+    const { data: { data } } = await NoticeList()
+    this.swiperList = data
   },
   components: {
     Swiper,
