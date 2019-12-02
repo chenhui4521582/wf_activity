@@ -55,6 +55,8 @@ import Default from '../../../../components/default'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
+import { findUrl } from '../../../../utils/index'
+import { onlineServiceUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -107,20 +109,7 @@ export default {
     },
     // 在线客服
     toOnlineService () {
-      let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-      let url
-      switch (channelFlag) {
-        case 'bdWap':
-          url = `https://wap.beeplaying.com/${channelFlag}/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`
-          break
-        case 'xmWap':
-          url = `https://wap.beeplaying.com/${channelFlag}/#/my/customerService?channel=${GLOBALS.channel}`
-          break
-        default:
-          url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`
-          break
-      }
-      location.href = url
+      location.href = findUrl(onlineServiceUrl, `home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)
     }
   },
   components: {
