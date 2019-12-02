@@ -7,6 +7,9 @@ Loading.newInstance = properties => {
     data: Object.assign({}, _props, {}),
     render (h) {
       let vnode = h(Loading)
+      if (this.render) {
+        vnode = h(Loading, {}, [this.render(h)])
+      }
       return vnode
     }
   })
@@ -21,6 +24,9 @@ Loading.newInstance = properties => {
     remove (cb) {
       setTimeout(() => {
         component.$destroy
+        if (document.getElementsByClassName('box-loading__section')[0] !== undefined) {
+          document.body.removeChild(document.getElementsByClassName('box-loading__section')[0])
+        }
         cb()
       }, 500)
     },

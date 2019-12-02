@@ -1,44 +1,75 @@
 <template>
-  <article class="wrapper">
-    <LongSwiper class="notice" />
-    <img class="get"
-      src="./assets/box-get.png">
-    <div v-if="box"
-      class="prize"
-      :style="{'background':`url(${box.boxOpen}) no-repeat`,'background-size':'cover'}">
-      <img class="goods"
-        src="../chooseBox/assets/goods.png">
-    </div>
-    <p class="name">iPhone 11</p>
-    <p class="des">
-      <span class="price">价值：¥5499</span>
-      <span>数量：1</span>
-    </p>
-    <MButton class="button"
-      @click="$router.push({name:'Index'})">再开一次</MButton>
-    <p @click="$router.push({name:'MyPrize'})"
-      class="view-prize">查看我的奖品>></p>
-  </article>
+  <div class="main">
+    <article v-if="show"
+      class="wrapper">
+      <LongSwiper class="notice" />
+      <img class="get"
+        src="./assets/box-get.png">
+      <div v-if="awardsInfo"
+        class="prize"
+        :style="{'background':`url(${box.boxOpen}) no-repeat`,'background-size':'cover'}">
+        <img class="goods"
+          :src="awardsInfo.awardsImage | imgFilter">
+      </div>
+      <p v-if="awardsInfo"
+        class="name">{{awardsInfo.awardsName}}</p>
+      <p v-if="awardsInfo"
+        class="des">
+        <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
+        <span>数量：{{awardsInfo.awardsNum}}</span>
+      </p>
+      <MButton class="button"
+        @click="$router.push({name:'Index'})">再开一次</MButton>
+      <p @click="$router.push({name:'MyPrize'})"
+        class="view-prize">查看我的奖品>></p>
+    </article>
+  </div>
 </template>
 
 <script>
 import LongSwiper from '../../components/longSwiper'
 import MButton from '../../components/MButton'
 import { boxGroup } from '../../config/box'
+import { Operation, Exchange } from '../../apis/box'
 
 export default {
   data () {
     return {
+      show: false,
       box: null,
-      goods: null
+      goods: null,
+      type: null,
+      sort: null,
+      isTransparent: false,
+      awardsInfo: null
     }
   },
   components: {
     LongSwiper,
     MButton
   },
-  mounted () {
-    this.box = boxGroup.find(res => res.type === this.$route.params.type)
+  async mounted () {
+    this.$loading.show({
+      render (h) {
+        return h('div', '正在为您开盒……')
+      }
+    })
+    this.type = Number(this.$route.params.type)
+    this.sort = Number(this.$route.query.sort)
+    this.isTransparent = this.$route.query.isTransparent
+    this.box = boxGroup.find(res => res.type === this.type)
+    if (this.isTransparent) {
+      const { data: { data } } = await Exchange(this.sort)
+      this.awardsInfo = data
+    } else {
+      const { data: { data } } = await Operation({
+        category: 1,
+        sort: this.sort
+      })
+      this.awardsInfo = data
+    }
+    this.$loading.hide()
+    this.show = true
   }
 }
 </script>
@@ -56,58 +87,63 @@ export default {
   }
 }
 
-.wrapper {
-  height: 100vh;
-  position: relative;
+.main {
   background: #2a2d3c;
-  padding-top: 0.5rem;
-  box-sizing: border-box;
-  overflow: hidden;
-  text-align: center;
-  .notice {
-    margin: 0 auto;
-    width: 3.87rem;
-  }
-  .get {
-    width: 2.18rem;
-    height: 0.79rem;
-  }
-  .prize {
-    width: 6.71rem;
-    height: 6.23rem;
-    margin-left: 0.49rem;
-    margin-top: -0.3rem;
-    padding-top: 1.1rem;
+  min-width: 100vw;
+  min-height: 100vh;
+  .wrapper {
+    height: 100vh;
+    position: relative;
+    background: #2a2d3c;
+    padding-top: 0.5rem;
     box-sizing: border-box;
-    .goods {
-      width: 2.3rem;
-      // transform-origin: right bottom;
-      animation: show 1s linear;
+    overflow: hidden;
+    text-align: center;
+    .notice {
+      margin: 0 auto;
+      width: 3.87rem;
     }
-  }
-  .name {
-    padding: 0.4rem 0;
-    color: #b6b9cb;
-    font-size: 0.26rem;
-    font-weight: bold;
-  }
-  .des {
-    padding-bottom: 0.8rem;
-    color: #b6b9cb;
-    font-size: 0.22rem;
-    font-weight: bold;
-    .price {
-      padding-right: 0.3rem;
+    .get {
+      width: 2.18rem;
+      height: 0.79rem;
     }
-  }
-  .button {
-    margin: 0 auto;
-  }
-  .view-prize {
-    color: #ecd69a;
-    font-weight: bold;
-    font-size: 0.22rem;
-    padding-top: 0.33rem;
+    .prize {
+      width: 6.71rem;
+      height: 6.23rem;
+      margin-left: 0.49rem;
+      margin-top: -0.3rem;
+      padding-top: 1.1rem;
+      box-sizing: border-box;
+      .goods {
+        width: 2.3rem;
+        // transform-origin: right bottom;
+        animation: show 1s linear;
+      }
+    }
+    .name {
+      padding: 0.4rem 0;
+      color: #b6b9cb;
+      font-size: 0.26rem;
+      font-weight: bold;
+    }
+    .des {
+      padding-bottom: 0.8rem;
+      color: #b6b9cb;
+      font-size: 0.22rem;
+      font-weight: bold;
+      .price {
+        padding-right: 0.3rem;
+      }
+    }
+    .button {
+      margin: 0 auto;
+    }
+    .view-prize {
+      color: #ecd69a;
+      font-weight: bold;
+      font-size: 0.22rem;
+      padding-top: 0.33rem;
+    }
   }
 }
 </style>
