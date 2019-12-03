@@ -34,3 +34,8 @@ export const ChangeOne = sort => {
 export const PayPoint = propType => {
   return client.post(`@box/pay-point/${propType}`)
 }
+
+// 领取奖品
+export const Receiver = () => (
+  client.post('@box/inventory/receiver')
+)

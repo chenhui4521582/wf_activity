@@ -28,7 +28,7 @@ import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
-import { Operation, ChangeOne, Lock, PayPoint } from '../../../../apis/box'
+import { Operation, ChangeOne, PayPoint } from '../../../../apis/box'
 import { Pay } from '../../../../utils'
 
 export default {
@@ -50,7 +50,7 @@ export default {
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
     Pay.clearPayInfo()
-    Lock(this.sort)
+    // Lock(this.sort)
   },
   computed: {
     buttonText () {

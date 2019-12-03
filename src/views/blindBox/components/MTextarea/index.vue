@@ -43,12 +43,13 @@ export default {
   background: #f7f7f7;
   border-radius: 0.16rem;
   font-size: 0.24rem;
-  height: 11rem;
+  height: 1.1rem;
   padding: 0.23rem;
   textarea {
     background: #f7f7f7;
     width: 100%;
     height: 100%;
+    border: none;
   }
 }
 </style>

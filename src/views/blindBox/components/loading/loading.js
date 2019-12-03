@@ -28,7 +28,7 @@ Loading.newInstance = properties => {
           document.body.removeChild(document.getElementsByClassName('box-loading__section')[0])
         }
         cb()
-      }, 500)
+      }, 200)
     },
     component
   }
