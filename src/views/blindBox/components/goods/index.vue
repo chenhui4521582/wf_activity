@@ -2,7 +2,7 @@
   <section class="wrapper">
     <div class="des">
       <div class="goods-img">
-        <img :img="goods.awardsImage"
+        <img :src="goods.awardsImage | imgFilter"
           alt="商品">
       </div>
       <div class="goods-info">

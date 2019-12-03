@@ -1,5 +1,5 @@
 <template>
-  <article class="wrapper">
+  <article class="myprize-wrapper">
     <Dialog :show="show"
       title="温馨提示"
       @onConfirm="show=false"
@@ -109,7 +109,8 @@ export default {
     },
     // 在线客服
     toOnlineService () {
-      location.href = findUrl(onlineServiceUrl, `home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)
+      const channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
+      location.href = findUrl(onlineServiceUrl, `https://wap.beeplaying.com/${channelFlag}/home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)
     }
   },
   components: {
@@ -121,7 +122,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wrapper {
+.myprize-wrapper {
   display: flex;
   flex-direction: column;
   .tip {
@@ -143,6 +144,7 @@ export default {
       line-height: 0.52rem;
       border-radius: 0.26rem;
       font-size: 0.24rem;
+      text-align: center;
       &.button-primary {
         background: #d1ac42;
         color: #fff;

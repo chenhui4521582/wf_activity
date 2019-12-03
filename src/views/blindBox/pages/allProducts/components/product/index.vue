@@ -1,7 +1,7 @@
 <template>
   <section class="product">
     <div class="product-img">
-      <img :src="product.awardsImage "
+      <img :src="product.awardsImage | imgFilter "
         alt="奖品">
     </div>
     <div class="product-info">

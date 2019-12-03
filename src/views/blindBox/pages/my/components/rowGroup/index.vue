@@ -11,6 +11,8 @@
 
 <script>
 import Row from '../row'
+import { findUrl } from '../../../../utils/index'
+import { problemUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -38,20 +40,7 @@ export default {
           icon: require('./assets/problem.png'),
           title: '问题反馈',
           jump: () => {
-            let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-            let url
-            switch (channelFlag) {
-              case 'bdWap':
-                url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
-                break
-              case 'xmWap':
-                url = `https://wap.beeplaying.com/${channelFlag}/#/issues?channel=${GLOBALS.channel}`
-                break
-              default:
-                url = `https://wap.beeplaying.com/${channelFlag}/home/#/problem?channel=${GLOBALS.channel}`
-                break
-            }
-            location.href = url
+            location.href = findUrl(problemUrl, `https://wap.beeplaying.com/wap/home/#/problem?channel=${GLOBALS.channel}`)
           }
         }
       ]
