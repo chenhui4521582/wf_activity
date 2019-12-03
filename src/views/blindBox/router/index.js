@@ -48,6 +48,14 @@ const routes = [
         }
       },
       {
+        path: '/receiveGoods',
+        name: 'ReceiveGoods',
+        component: () => import('../pages/receiveGoods'),
+        meta: {
+          title: '领取实物'
+        }
+      },
+      {
         path: '/allProducts',
         name: 'AllProducts',
         component: () => import('../pages/allProducts'),

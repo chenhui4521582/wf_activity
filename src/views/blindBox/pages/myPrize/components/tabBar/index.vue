@@ -71,7 +71,7 @@ export default {
           buttonType: 'button-primary',
           buttonText: '立即领取',
           handle: () => {
-            this.$router.push({ name: 'Index' })
+            this.$router.push({ name: 'ReceiveGoods' })
           }
         },
         {
@@ -93,6 +93,8 @@ export default {
     }
   },
   mounted () {
+    const active = Number(this.$route.query.active)
+    if (active === 0 || active) this.active = active
     this.getTabGoods()
   },
   methods: {

@@ -22,6 +22,15 @@ export const Exchange = sort => {
 }
 
 // 更换盲盒
-export const Dynamic = sort => {
+export const ChangeOne = sort => {
   return client.post(`@box/change-one/${sort}`)
+}
+
+/**
+ * @des 获取支付订单信息
+ * @param {number} propType 购买类型 1--盒子 2--透视 3--邮费
+ * @return {Promise}
+ */
+export const PayPoint = propType => {
+  return client.post(`@box/pay-point/${propType}`)
 }

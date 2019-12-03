@@ -15,11 +15,12 @@
         </div>
         <slot />
         <slot name='footer'>
-          <div class="footer">
+          <div v-if="cancel || confirm"
+            class="footer">
             <div class="button"
               v-if="cancel"
               v-html="cancel"
-              @click="$emit('onCancel')">{{cancel}}</div>
+              @click="$emit('onCancel')"></div>
             <div class="button"
               :style="{width:cancel?'50%':'100%'}"
               v-if="confirm"
