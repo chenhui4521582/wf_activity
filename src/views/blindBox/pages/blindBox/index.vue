@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import Dialog from '../../components/dialog'
 import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
@@ -21,7 +20,7 @@ export default {
     }
   },
   components: {
-    Dialog, currentProductList, hornAndMore, boxList
+    currentProductList, hornAndMore, boxList
   },
   methods: {
   },

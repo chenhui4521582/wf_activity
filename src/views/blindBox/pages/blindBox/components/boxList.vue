@@ -15,14 +15,15 @@
     </section>
     <section class="btn-container">
       <m-button>{{userInfo.openBoxTimes?'立即开盒':'15元开一次'}}</m-button>
-      <div class="change-btn">换一批</div>
+      <div class="change-btn"
+        @click="changeAll">换一批</div>
     </section>
   </section>
 </template>
 
 <script>
 import { boxGroup } from '../../../config/box'
-import { BoxList } from '../../../apis/box'
+import { BoxList, ChangeAll } from '../../../apis/box'
 import { UserInfo } from '../../../apis/user'
 import MButton from '../../../components/MButton'
 export default {
@@ -63,6 +64,12 @@ export default {
     // 获取盒子信息
     async getBoxInfo () {
       const res = await BoxList()
+      const { data } = res.data
+      this.box = data || []
+    },
+    // 换一批
+    async changeAll () {
+      const res = await ChangeAll()
       const { data } = res.data
       this.box = data || []
     },

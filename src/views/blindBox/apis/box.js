@@ -5,6 +5,10 @@ export const BoxList = () => {
   return client.post('@box/list')
 }
 
+// 跑马灯
+export const NoticeList = sort => {
+  return client.post(`@box/notice-list`)
+}
 // 盲盒锁定
 export const Lock = sort => {
   return client.post(`@box/lock/${sort}`)
@@ -29,4 +33,8 @@ export const Exchange = sort => {
 // 更换盲盒
 export const Dynamic = sort => {
   return client.post(`@box/change-one/${sort}`)
+}
+// 更换一批盲盒
+export const ChangeAll = sort => {
+  return client.post(`@box/change-all`)
 }
