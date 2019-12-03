@@ -29,6 +29,7 @@ import MButton from '../../../../components/MButton'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
 import { Operation, Lock, Dynamic } from '../../../../apis/box'
+import { Pay } from '../../../../utils'
 
 export default {
   data () {
@@ -87,7 +88,8 @@ export default {
     },
     // 点击按钮
     onConfirm () {
-      if (this.userInfo && this.userInfo.openBoxTimes) this.openBox()
+      // if (this.userInfo && this.userInfo.openBoxTimes) this.openBox()
+      // Pay.toPay()
     },
     // 开盒
     openBox () {
