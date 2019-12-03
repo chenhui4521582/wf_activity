@@ -28,7 +28,7 @@ import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
-import { Operation, Lock, Dynamic } from '../../../../apis/box'
+import { Operation, ChangeOne, Lock, PayPoint } from '../../../../apis/box'
 import { Pay } from '../../../../utils'
 
 export default {
@@ -49,6 +49,7 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
+    Pay.clearPayInfo()
     Lock(this.sort)
   },
   computed: {
@@ -68,6 +69,7 @@ export default {
         return
       }
       if (this.userInfo.transparentTimes) this.transparent()
+      else this.payTransparent()
     },
     // 有透视次数，直接透视
     async transparent () {
@@ -86,10 +88,19 @@ export default {
       this.awardsImage = data.awardsImage
       this.$loading.hide()
     },
+    // 无透视次数 购买
+    async payTransparent () {
+      const { data: { data: payInfo } } = await PayPoint(2)
+      Pay.toPay({ payInfo })
+    },
     // 点击按钮
-    onConfirm () {
-      // if (this.userInfo && this.userInfo.openBoxTimes) this.openBox()
-      // Pay.toPay()
+    async onConfirm () {
+      if (this.userInfo && this.userInfo.openBoxTimes) {
+        this.openBox()
+      } else {
+        const { data: { data: payInfo } } = await PayPoint(1)
+        Pay.toPay({ payInfo })
+      }
     },
     // 开盒
     openBox () {
@@ -113,7 +124,7 @@ export default {
           return h('div', '正在为您挑选……')
         }
       })
-      const { data: { data } } = await Dynamic(this.sort)
+      const { data: { data } } = await ChangeOne(this.sort)
       this.$loading.hide()
       this.sort = data.sort
       this.type = data.newColor

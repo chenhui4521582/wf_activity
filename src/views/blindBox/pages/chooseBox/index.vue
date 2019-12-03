@@ -3,6 +3,9 @@
     <LongSwiper class="notice" />
     <Box />
     <img class="goods-detail"
+      @click="$router.push({
+      name:'AllProducts'
+    })"
       src="./assets/detail.png">
   </article>
 </template>
