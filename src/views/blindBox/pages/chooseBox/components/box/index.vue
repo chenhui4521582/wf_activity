@@ -50,7 +50,6 @@ export default {
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
     Pay.clearPayInfo()
-    // Lock(this.sort)
   },
   computed: {
     buttonText () {
@@ -119,6 +118,7 @@ export default {
     async refresh () {
       this.isTransparent = false
       this.awardsImage = null
+      this.awardsName = null
       this.$loading.show({
         render (h) {
           return h('div', '正在为您挑选……')
@@ -140,10 +140,11 @@ export default {
 
 <style lang="less" scoped>
 .box-wrapper {
-  width: 6.52rem;
+  box-sizing: border-box;
   height: 6.58rem;
   padding-top: 1.2rem;
-  margin: 0 auto;
+  padding-left: 0.34rem;
+  padding-right: 0.34rem;
   background: url("./assets/shine.png") no-repeat;
   background-size: cover;
   position: relative;
@@ -160,7 +161,7 @@ export default {
   }
   .side-bar {
     position: absolute;
-    right: -0.34rem;
+    right: 0;
     top: 1.34rem;
   }
   .box {
