@@ -1,7 +1,8 @@
 <template>
   <section class="box-wrapper">
     <div class="box">
-      <div class="box__img--box">
+      <div :class="{'on-change':isOnChange}"
+        class="box__img--box">
         <div class="img-wrapper">
           <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
@@ -34,6 +35,7 @@ import { Pay } from '../../../../utils'
 export default {
   data () {
     return {
+      isOnChange: false,
       box: null,
       userInfo: null,
       sort: null,
@@ -116,9 +118,6 @@ export default {
     },
     // 换一盒
     async refresh () {
-      this.isTransparent = false
-      this.awardsImage = null
-      this.awardsName = null
       this.$loading.show({
         render (h) {
           return h('div', '正在为您挑选……')
@@ -126,9 +125,16 @@ export default {
       })
       const { data: { data } } = await ChangeOne(this.sort)
       this.$loading.hide()
+      this.isOnChange = true
       this.sort = data.sort
       this.type = data.newColor
-      this.box = this.boxGroup.find(res => res.type === this.type)
+      setTimeout(() => {
+        this.isTransparent = false
+        this.awardsImage = null
+        this.awardsName = null
+        this.box = this.boxGroup.find(res => res.type === this.type)
+        this.isOnChange = false
+      }, 700)
     }
   },
   components: {
@@ -176,6 +182,10 @@ export default {
       margin: 0 auto 0.24rem;
       position: relative;
       overflow: hidden;
+      transition: all 0.7s;
+      &.on-change {
+        opacity: 0;
+      }
       .box__img--goods {
         width: 2.3rem;
         height: 2.3rem;
