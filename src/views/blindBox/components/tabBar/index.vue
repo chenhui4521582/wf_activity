@@ -72,6 +72,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 3;
   .bar {
     flex: 1;
     display: flex;

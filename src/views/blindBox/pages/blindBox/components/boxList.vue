@@ -2,25 +2,24 @@
   <section class="box-list-wrapper">
     <section class="box-list-container">
       <ul class="box-list"
+        :class="{'all-has-shelf':firstTime}"
         v-for="(items,key) in boxList"
-        :key="'list'+key">
+        :key="'list'+key"
+        :style="{zIndex:3-key}">
         <li class="box-item"
-          :class="{'shake-rotate':isShake}"
           v-for="(item,index) in items"
           :key="'item'+index"
+          :class="{'shake-rotate':hasShake(item.state)}"
           @click="toDetail(item)">
-          <img class="box-image"
-            :src="item.color|boxImage(item.state)"
-            alt="">
-          <div class="awards-info"
-            v-if="item.extend">
-            <template v-if="item.state===5">
-              <img :src="item.extend"
-                alt="">
-            </template>
-            <template v-else>
-              <p>用户{{item.extend.nickname}}{{item.state===3?'购买成功':'正在透视'}}</p>
-            </template>
+          <box-info :class="{'has-shelf':hasShelf(item)}"
+            :info="item"></box-info>
+          <div class="old-box-image box-drop"
+            v-if="item.state===3">
+            <img :src="item.extend.oldColor|boxImage(item.state)"
+              alt="">
+            <div class="awards-info">
+              <p class="other-people">用户{{item.extend.nickname}}正在购买</p>
+            </div>
           </div>
         </li>
       </ul>
@@ -53,24 +52,43 @@
 </template>
 
 <script>
-import { boxGroup } from '../../../config/box'
-import { BoxList, ChangeAll, Lock, PayPoint } from '../../../apis/box'
+import { BoxList, ChangeAll, PayPoint } from '../../../apis/box'
 import { UserInfo } from '../../../apis/user'
 import MButton from '../../../components/MButton'
 import { Pay } from '../../../utils'
 import Dialog from '../../../components/dialog'
+import BoxInfo from './boxInfo'
+import { boxGroup } from '../../../config/box'
 export default {
   name: '',
   components: {
-    MButton, Dialog
+    MButton, Dialog, BoxInfo
   },
   data () {
     return {
       box: [],
       userInfo: {},
-      countTimer: null,
-      isShowPop: true,
-      isShake: false
+      isShowPop: false,
+      isShake: false,
+      isHasShelf: false,
+      isRefresh: false,
+      refreshTimer: null,
+      boxTimer: null
+    }
+  },
+  filters: {
+    boxImage (color, state) {
+      let type = ''
+      switch (state) {
+        case 4:
+          type = 'boxTransparent'
+          break
+        default:
+          type = 'box'
+          break
+      }
+      let index = boxGroup.findIndex(res => res.type === Number(color))
+      return boxGroup[index][type]
     }
   },
   computed: {
@@ -85,39 +103,47 @@ export default {
         res.push(temp)
       }
       return res
-    }
-  },
-  filters: {
-    boxImage (color, state) {
-      let type = ''
-      switch (state) {
-        case 5:
-          type = 'boxTransparent'
-          break;
-        default:
-          type = 'box'
-          break;
-      }
-      let index = boxGroup.findIndex(res => res.type === Number(color))
-      return boxGroup[index][type]
+    },
+    firstTime () {
+      return !sessionStorage.blindBoxFirstTime || this.isRefresh
     }
   },
   mounted () {
-    this.getBoxInfo()
-    Pay.clearPayInfo()
+    this.init()
   },
   methods: {
+    async init () {
+      Pay.clearPayInfo()
+      await this.getBoxInfo()
+      this.loopBox()
+      sessionStorage.blindBoxFirstTime = true
+    },
     // 获取盒子信息
     async getBoxInfo () {
       const res = await BoxList()
       const { data } = res.data
-      this.box = data || []
+      console.log('透视', res.data.data.filter(item => item.state === 2).length)
+      console.log('购买', res.data.data.filter(item => item.state === 3).length)
+      this.$set(this, 'box', data || [])
+    },
+    loopBox () {
+      clearTimeout(this.boxTimer)
+      this.boxTimer = setTimeout(async () => {
+        await this.getBoxInfo()
+        this.loopBox()
+      }, 3000)
     },
     // 换一批
     async changeAll () {
       const res = await ChangeAll()
       const { data } = res.data
       this.box = data || []
+      this.loopBox()
+      this.isRefresh = true
+      this.refreshTimer = setTimeout(() => {
+        this.isRefresh = false
+        clearTimeout(this.refreshTimer)
+      }, 1000)
     },
     // 获取用户活动信息
     async getUserInfo () {
@@ -127,14 +153,13 @@ export default {
     },
     async toDetail (item) {
       this.isShake = false
-      const res = await Lock(item.sort)
-      const { code } = res.data
-      if (code === 200) {
-        if (this.userInfo.openBoxTimes) {
-          this.$router.push(`/openBox/${item.color}?sort=${item.sort}`)
-        } else {
-          this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}&isTransparent=${item.state === 5}`)
-        }
+      if (item.state === 2) {
+        return
+      }
+      if (this.userInfo.openBoxTimes) {
+        this.$router.push(`/openBox/${item.color}?sort=${item.sort}`)
+      } else {
+        this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}&isTransparent=${item.state === 4}`)
       }
     },
     async buyOne () {
@@ -150,12 +175,29 @@ export default {
       switch (type) {
         case 1:
           this.isShake = true
-          break;
-
+          break
+        case 2:
+          let canBuyBoxArr = this.box.filter(item => item.state === 1 || item === 4)
+          let selectedItem = canBuyBoxArr[Math.floor((Math.random() * canBuyBoxArr.length))]
+          this.toDetail(selectedItem)
+          break
         default:
-          break;
+          break
       }
+    },
+    hasShake (state) {
+      return (state === 1 || state === 4) && this.isShake
+    },
+    hasShelf (item) {
+      return item.state === 3
+    },
+    clearTimer () {
+      clearTimeout(this.refreshTimer)
+      clearInterval(this.boxTimer)
     }
+  },
+  destroyed () {
+    this.clearTimer()
   }
 }
 </script>
@@ -163,7 +205,10 @@ export default {
 <style lang="less" scoped>
 @import "../index.less";
 .box-list-wrapper {
+  position: relative;
   margin-top: -0.32rem;
+  z-index: 1;
+  overflow: hidden;
   .box-list-container {
     &::after {
       content: "";
@@ -183,18 +228,58 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 0.04rem 0 0.2rem;
+    position: relative;
+    &.all-has-shelf:after {
+      content: "";
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      background: url(../assets/long-shelf.png) no-repeat center center / 98%
+        1.2rem;
+    }
+
     .box-item {
       min-width: 1.8rem;
       text-align: center;
       background: url(../assets/box-shadow.png) no-repeat center ~"0.4rem" / 100%
         1.12rem;
       position: relative;
-      .box-image {
+      .has-shelf::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        background: url(../assets/shelf.png) no-repeat center center / 90%
+          1.2rem;
+      }
+      .old-box-image {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -0.73rem;
         height: 1.7rem;
         width: 1.46rem;
-      }
-      .awards-info {
-        position: absolute;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+
+        .awards-info {
+          position: absolute;
+          top: 0.6rem;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          .other-people {
+            margin: 0.2rem 0 0;
+            color: #fff;
+            font-size: 0.18rem;
+          }
+        }
       }
     }
   }

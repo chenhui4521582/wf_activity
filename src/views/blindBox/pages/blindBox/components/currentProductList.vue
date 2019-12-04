@@ -4,14 +4,25 @@
       <span>本期明星产品</span>
       <router-link to="/allProducts">更多奖品>></router-link>
     </p>
-    <ul class="product-list">
-      <li v-for="(item,index) in products"
-        :key="`product-${index}`">
-        <img :src="item.awardsImage|imgFilter"
-          alt="">
-        <span>{{item.awardsName}}</span>
-      </li>
-    </ul>
+    <section class="product-list-wrapper">
+      <div ref="productDivWraper">
+        <ul ref="productUl"
+          id="productUl"
+          :style="productStyles">
+          <li v-for="(item,index) in products"
+            :key="index"
+            ref="productLi">
+            <div>
+              <img :src="item.awardsImage|imgFilter"
+                alt="">
+              <span>{{item.awardsName}}</span>
+            </div>
+          </li>
+        </ul>
+        <ul id="copyProductUl"
+          :style="copyStyles"></ul>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -24,7 +35,17 @@ export default {
   },
   data () {
     return {
-      products: []
+      products: [],
+      productStyles: {
+        width: `${this.wrapWidth}px`,
+        left: 0
+      },
+      copyStyles: {
+        width: `${this.wrapWidth}px`,
+        left: 0
+      },
+      wrapWidth: 0,
+      productTimer: null
     }
   },
   mounted () {
@@ -34,8 +55,44 @@ export default {
     async getProductInfo () {
       const res = await awardsList()
       const { data } = res.data
-      this.products = data && data.slice(0, 4) || []
+      this.products = data || []
+      this.$nextTick(() => {
+        this.wrapWidth = this.$refs.productDivWraper && this.$refs.productDivWraper.offsetWidth
+        this.newProductLogic()
+      })
+    },
+    newProductLogic () {
+      this.$nextTick(() => {
+        let productUl = document.getElementById('productUl')
+        let nodes = document.getElementById('copyProductUl')
+        let liNodes = this.$refs.productLi
+        nodes.innerHTML = productUl.innerHTML
+
+        let offsetWidth = 0
+
+        liNodes && liNodes.map((item, index) => {
+          offsetWidth += item.offsetWidth + 1
+        })
+
+        // 设置UL宽度
+        this.productStyles.width = `${offsetWidth}px`
+        this.copyStyles.width = `${offsetWidth}px`
+        this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
+        let x = 0
+        let fun = () => {
+          this.productStyles.left = x + 'px'
+          this.copyStyles.left = (x + parseInt(offsetWidth)) + 'px'
+          x--
+          if ((x + parseInt(offsetWidth)) === 0) {
+            x = 0
+          }
+        }
+        this.productTimer = setInterval(fun, 20)
+      })
     }
+  },
+  destroyed () {
+    clearInterval(this.productTimer)
   }
 }
 </script>
@@ -45,6 +102,9 @@ export default {
   padding: 0.32rem;
   color: #fff;
   font-size: 0.24rem;
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow: hidden;
   p {
     display: flex;
     justify-content: space-between;
@@ -54,36 +114,52 @@ export default {
       color: #fee994;
     }
   }
+  .product-list-wrapper {
+    position: relative;
+    width: 100%;
+    height: 1.12rem;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
   ul {
-    display: flex;
-    align-items: center;
-    margin: 0 -0.16rem;
+    position: absolute;
+    top: 0;
+    height: 1.12rem;
+    overflow: hidden;
     li {
-      flex: 1;
-      height: 1.12rem;
-      background: #6e7588;
-      border-radius: 0.1rem;
-      margin: 0 0.16rem;
-      font-size: 0.18rem;
-      position: relative;
-      overflow: hidden;
+      float: left;
+      overflow: auto;
+      white-space: nowrap;
+      transition: all 1s ease 0.5s;
       text-align: center;
-      padding-top: 0.04rem;
-      box-sizing: border-box;
-      img {
-        max-height: 100%;
-        max-width: 100%;
-      }
-      span {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        bottom: 0;
-        left: 0;
-        height: 0.3rem;
-        line-height: 0.3rem;
-        background: #f2db8f;
-        color: #2a2e3a;
+      div {
+        position: relative;
+        width: 1.4rem;
+        height: 1.12rem;
+        margin: 0 0.16rem;
+        padding-top: 0.04rem;
+        background: #6e7588;
+        box-sizing: border-box;
+        border-radius: 0.1rem;
+        font-size: 0.18rem;
+        overflow: hidden;
+        box-sizing: border-box;
+        img {
+          max-height: 100%;
+          max-width: 100%;
+        }
+        span {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          bottom: 0;
+          left: 0;
+          height: 0.3rem;
+          line-height: 0.3rem;
+          background: #f2db8f;
+          color: #2a2e3a;
+        }
       }
     }
   }

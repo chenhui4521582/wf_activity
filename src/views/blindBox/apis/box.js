@@ -9,10 +9,6 @@ export const BoxList = () => {
 export const NoticeList = sort => {
   return client.post(`@box/notice-list`)
 }
-// 盲盒锁定
-export const Lock = sort => {
-  return client.post(`@box/lock/${sort}`)
-}
 
 /**
  * @des 透视/开盒
