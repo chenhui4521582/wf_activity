@@ -10,7 +10,7 @@
         <img v-if="userInfo.gameIcon" :src="userInfo.gameIcon | filter" alt="">
       </div>
       <div class="explain">
-        玩2局糖果夺宝即可瓜分
+        玩{{userInfo.gameTimes}}局{{userInfo.gameName}}即可瓜分
       </div>
       <div class="progress" v-if="!isFinished">
         <div class="body">
