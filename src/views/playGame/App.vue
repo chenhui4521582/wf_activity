@@ -3,7 +3,7 @@
     <div class="title">
       <img src="./images/title-text.png" alt="">
     </div>
-    <div class="back-btn"></div>
+    <div class="back-btn" @click="back"></div>
     <div class="rule-btn" @click="openRule"></div>
     <div class="game-info">
       <div class="game-img">
@@ -174,7 +174,7 @@ export default {
         border:2px solid #A25A32;
         border-radius: .22rem;
         .bg {
-          width: 30%;
+          width: 0%;
           height: 100%;
           background: #A25A32;
         }
