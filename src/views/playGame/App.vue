@@ -188,10 +188,10 @@ export default {
       }
     }
     .finished {
-      margin-bottom: 2.41rem;
+      margin:.7rem 0 2rem;
       text-align: center;
       font-size: .36rem;
-      color: #A25A32;
+      color: #999999;
       font-weight:bold;
     }
   }
