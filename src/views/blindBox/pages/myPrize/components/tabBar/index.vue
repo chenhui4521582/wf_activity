@@ -127,6 +127,7 @@ export default {
 .myprize-wrapper {
   display: flex;
   flex-direction: column;
+  overflow: scroll;
   .tip {
     padding: 0 0.43rem 0.46rem 0.43rem;
     color: #888888;
@@ -134,6 +135,7 @@ export default {
     line-height: 1.5;
     span {
       color: #5186ca;
+      border-bottom: 1px solid #5186ca;
     }
   }
   .content {

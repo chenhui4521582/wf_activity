@@ -2,6 +2,7 @@
   <section @click="onFocus"
     class="input-group">
     <input v-model="value"
+      :type="type"
       class="input"
       :placeholder="placeholder" />
   </section>
@@ -33,6 +34,10 @@ export default {
     },
     default: {
       type: String
+    },
+    type: {
+      type: String,
+      default: 'text'
     }
   }
 }

@@ -19,7 +19,7 @@
         <span>数量：{{awardsInfo.awardsNum}}</span>
       </p>
       <MButton class="button"
-        @click="$router.push({name:'Index'})">再开一次</MButton>
+        @confirm="$router.push({name:'Index'})">再开一次</MButton>
       <p @click="$router.push({name:'MyPrize'})"
         class="view-prize">查看我的奖品>></p>
     </article>

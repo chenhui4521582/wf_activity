@@ -4,10 +4,22 @@
       title="领取奖品" />
     <section class="content">
       <div :class="{'bg':!isPostInfo}"
-        @click="isReceiveInfo=true"
+        @click="editPostInfo"
         class="post-info">
         <p class="no-info"
-          v-if="!isPostInfo">请填写收货人信息 ></p>
+          v-if="!isPostInfo">请填写收货人信息 <img src="./assets/arrow-white.png"></p>
+        <div v-else
+          class="edit-info">
+          <img class="icon"
+            src="./assets/icon.png">
+          <div class="edit-info__div">
+            <p class="name">{{post.name}}</p>
+            <p class="mobile">{{post.mobile}}</p>
+            <p class="address">{{post.address}}</p>
+          </div>
+          <img class="arrow"
+            src="./assets/arrow.png">
+        </div>
       </div>
       <p class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
       <Goods v-for="(item,index) in goodsList"
@@ -29,9 +41,11 @@
         class="footer__div">确认</div>
     </section>
     <Dialog :show="show"
+      :close="true"
+      @onClose="show=false"
       title="温馨提示"
       @onCancel="$router.push({name:'Index'})"
-      @onConfirm="show=false"
+      @onConfirm="onPay"
       cancel="去再开一盒"
       confirm="<p style='color:#FF4141'>支付邮费</p>">
       <p class="tip">
@@ -53,6 +67,8 @@ import Goods from '../../components/goods'
 import Dialog from '../../components/dialog'
 import ReceiveInfo from './components/receiveInfo'
 import { InventoryList, PostInfo } from '../../apis/user'
+import { Receiver, PayPoint } from '../../apis/box'
+import { Pay } from '../../utils/index'
 
 export default {
   data () {
@@ -64,6 +80,8 @@ export default {
     }
   },
   async mounted () {
+    if (this.$route.query.type === 'success') this.receiveSuccess()
+    Pay.clearPayInfo();
     ({ data: { data: this.goodsList } } = await InventoryList(1));
     ({ data: { data: this.post } } = await PostInfo())
   },
@@ -76,11 +94,21 @@ export default {
   methods: {
     // 更新收货地址
     updatePostInfo (val) {
-      this.post = val
+      this.post = Object.assign({}, val)
       this.isReceiveInfo = false
     },
+    // 填写收货人信息
+    editPostInfo () {
+      this.isReceiveInfo = true
+    },
+    // 支付邮费
+    async onPay () {
+      this.show = false
+      const { data: { data: payInfo } } = await PayPoint(3)
+      Pay.toPay({ payInfo, originDeffer: `${location.href}?type=success` })
+    },
     // 确认按钮
-    confirm () {
+    async confirm () {
       if (!this.isPostInfo) {
         this.$toast.show({
           message: '请填写收货信息',
@@ -88,9 +116,28 @@ export default {
         })
         return
       }
+      if (!this.goodsList.length) return
       if (this.goodsList.length < 2) {
         this.show = true
+        return
       }
+      await Receiver()
+      this.receiveSuccess()
+    },
+    // 领取成功
+    receiveSuccess () {
+      this.$toast.show({
+        message: '领取成功',
+        duration: 2000
+      })
+      setTimeout(() => {
+        this.$router.push({
+          name: 'MyPrize',
+          query: {
+            active: 1
+          }
+        })
+      }, 2000)
     }
   },
   components: {
@@ -134,6 +181,43 @@ export default {
       .no-info {
         padding: 0.3rem;
         color: #fff;
+        display: flex;
+        align-items: center;
+        img {
+          width: 0.1rem;
+          margin-left: 0.17rem;
+        }
+      }
+      .edit-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.4rem 0.3rem 0 0.4rem;
+        font-size: 0.24rem;
+        color: #000;
+        text-align: left;
+        .icon {
+          width: 0.75rem;
+        }
+        .arrow {
+          width: 0.15rem;
+        }
+        &__div {
+          padding: 0 0.4rem 0 0.5rem;
+          flex: 1;
+          .name {
+            font-size: 0.28rem;
+            padding-bottom: 0.18rem;
+          }
+          .mobile {
+            font-size: 0.28rem;
+            padding-bottom: 0.18rem;
+            color: #888;
+          }
+          .address {
+            line-height: 1.5;
+          }
+        }
       }
       &.bg {
         background: url("./assets/bg.png") no-repeat;
