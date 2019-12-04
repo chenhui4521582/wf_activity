@@ -9,11 +9,14 @@
 export default {
   data () {
     return {
+      openTimer: null,
+      transTimer: null
     }
   },
   components: {
   },
   methods: {
+
   },
   mounted () {
 

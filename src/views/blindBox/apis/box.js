@@ -39,6 +39,14 @@ export const ChangeAll = sort => {
   return client.post(`@box/change-all`)
 }
 /**
+ * @des 盲盒变更信息
+ * @param {number} category 操作类型 1--盲盒 2--透视
+ * @return {Promise}
+ */
+export const Dynamic = category => {
+  return client.post(`@box/dynamic/${category}`)
+}
+/**
  * @des 获取支付订单信息
  * @param {number} propType 购买类型 1--盒子 2--透视 3--邮费
  * @return {Promise}

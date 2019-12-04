@@ -31,8 +31,18 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "./index.less";
-.main-wrapper {
-  background: #f0ead1;
+.blind-box-wrap {
+  background: #1b1f29;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 1.2rem;
+  .main-wrapper {
+    background: #f0ead1;
+  }
+}
+
+div,
+section {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 </style>
