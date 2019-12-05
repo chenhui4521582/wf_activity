@@ -4,3 +4,7 @@ import client from '../client'
 export const awardsList = () => {
   return client.post('@box/awards/list')
 }
+// 热门奖品
+export const hotAwardsList = () => {
+  return client.post('@box/awards/hot-list')
+}

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { awardsList } from '../../../apis/products'
+import { hotAwardsList } from '../../../apis/products'
 export default {
   name: '',
   components: {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async getProductInfo () {
-      const res = await awardsList()
+      const res = await hotAwardsList()
       const { data } = res.data
       this.products = data || []
       this.$nextTick(() => {
