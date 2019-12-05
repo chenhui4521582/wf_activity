@@ -25,7 +25,7 @@ export default {
   methods: {
   },
   mounted () {
-
+    GLOBALS.marchSetsPoint('P_H5PT0225') // H5平台-盲盒页面加载完成
   }
 }
 </script>

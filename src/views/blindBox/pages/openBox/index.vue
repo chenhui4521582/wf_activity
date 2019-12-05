@@ -19,8 +19,8 @@
         <span>数量：{{awardsInfo.awardsNum}}</span>
       </p>
       <MButton class="button"
-        @confirm="$router.push({name:'Index'})">再开一次</MButton>
-      <p @click="$router.push({name:'MyPrize'})"
+        @confirm="toIndex()">再开一次</MButton>
+      <p @click="toMyPrize()"
         class="view-prize">查看我的奖品>></p>
     </article>
   </div>
@@ -70,6 +70,17 @@ export default {
     }
     this.$loading.hide()
     this.show = true
+    GLOBALS.marchSetsPoint("A_H5PT0225002564") // H5平台-盲盒页面-开盲盒页面加载完成
+  },
+  methods: {
+    toIndex () {
+      this.$router.push({ name: 'Index' })
+      GLOBALS.marchSetsPoint("A_H5PT0225002565") // H5平台-盲盒页面-开盲盒页面-再开一次点击
+    },
+    toMyPrize () {
+      this.$router.push({ name: 'MyPrize' })
+      GLOBALS.marchSetsPoint("A_H5PT0225002566") // H5平台-盲盒页面-开盲盒页面-查看我的奖品点击      
+    }
   }
 }
 </script>

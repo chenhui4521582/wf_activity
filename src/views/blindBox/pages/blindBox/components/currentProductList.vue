@@ -2,7 +2,8 @@
   <section class="current-product-list">
     <p>
       <span>本期明星产品</span>
-      <router-link to="/allProducts">更多奖品>></router-link>
+      <a href="#/allProducts"
+        @click="moreAwards()">更多奖品>></a>
     </p>
     <section class="product-list-wrapper">
       <div ref="productDivWraper">
@@ -60,6 +61,9 @@ export default {
         this.wrapWidth = this.$refs.productDivWraper && this.$refs.productDivWraper.offsetWidth
         this.newProductLogic()
       })
+    },
+    moreAwards () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002541') // H5平台-盲盒页面-更多奖品点击
     },
     newProductLogic () {
       this.$nextTick(() => {

@@ -5,7 +5,8 @@
     <horn-list :notice-list="noticeList"
       v-if="noticeList.length"></horn-list>
     <section class="text-btn">
-      <router-link to="/myPrize">获得奖品</router-link>
+      <a href="#/myPrize"
+        @click="getAwards">获得奖品</a>
     </section>
     <Dialog :show="isShowRule"
       title="活动规则"
@@ -57,9 +58,13 @@ export default {
     },
     showRule () {
       this.isShowRule = true
+      GLOBALS.marchSetsPoint("A_H5PT0225002543") // H5平台-盲盒页面-活动规则点击
     },
     closeRule () {
       this.isShowRule = false
+    },
+    getAwards () {
+      GLOBALS.marchSetsPoint("A_H5PT0225002544") // H5平台-盲盒页面-获得奖品点击
     }
   }
 }
