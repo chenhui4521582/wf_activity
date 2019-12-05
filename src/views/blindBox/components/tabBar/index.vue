@@ -43,6 +43,11 @@ export default {
      */
     changeBar (item, index) {
       this.active = index
+      if (index) {
+        GLOBALS.marchSetsPoint("A_H5PT0225002545") // H5平台-盲盒页面-底部我的导航栏点击
+      } else {
+        GLOBALS.marchSetsPoint("A_H5PT0225002546") // H5平台-盲盒页面-底部盲盒导航栏点击
+      }
       this.$router.push({ name: item.name })
     }
   },

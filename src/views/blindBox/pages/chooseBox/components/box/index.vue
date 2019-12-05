@@ -73,8 +73,14 @@ export default {
         })
         return
       }
-      if (this.userInfo.transparentTimes) this.transparent()
-      else this.payTransparent()
+      if (this.userInfo.transparentTimes) {
+        this.transparent()
+        GLOBALS.marchSetsPoint("A_H5PT0225002559") // H5平台-盲盒页面-选盲盒页面-透视卡弹窗-使用点击(有透视卡)
+      }
+      else {
+        this.payTransparent()
+        GLOBALS.marchSetsPoint("A_H5PT0225002558") // H5平台-盲盒页面-选盲盒页面-透视卡弹窗-购买点击(无透视卡)
+      }
     },
     // 有透视次数，直接透视
     async transparent () {
@@ -139,6 +145,7 @@ export default {
         this.box = this.boxGroup.find(res => res.type === this.type)
         this.isOnChange = false
       }, 700)
+      GLOBALS.marchSetsPoint("A_H5PT0225002553") // H5平台-盲盒页面-选盲盒页面-换一盒点击
     }
   },
   components: {

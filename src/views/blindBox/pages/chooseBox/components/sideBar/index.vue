@@ -6,7 +6,7 @@
       <img src="./assets/card.png">
       <span class="count">{{userInfo && userInfo.transparentTimes || 0}}</span>
     </div>
-    <div @click="$router.push({name:'My'})"
+    <div @click="toMy"
       class="nav">
       <img src="./assets/my.png">
       <p>我的</p>
@@ -15,8 +15,8 @@
       title="透视卡"
       cancel="取消"
       :close="true"
-      @onClose="show=false"
-      @onCancel="show=false"
+      @onClose="close"
+      @onCancel="cancel"
       @onConfirm="show=false;$emit('use')"
       :confirm="`<p style='color:#FF4141'>${userInfo && userInfo.transparentTimes ? '立即使用' : '购买一张'}</p>`">
       <p class="subtitle">您有{{userInfo && userInfo.transparentTimes || 0}}张透视卡</p>
@@ -49,6 +49,21 @@ export default {
     // 使用透视卡
     useCard () {
       this.show = true
+      GLOBALS.marchSetsPoint("A_H5PT0225002555", {
+        awards_id: this.userInfo.transparentTimes || 0
+      }) // H5平台-盲盒页面-选盲盒页面-透视卡点击
+    },
+    toMy () {
+      this.$router.push({ name: 'My' })
+      GLOBALS.marchSetsPoint("A_H5PT0225002556") // H5平台-盲盒页面-选盲盒页面-我的点击
+    },
+    close () {
+      this.show = false
+      GLOBALS.marchSetsPoint("A_H5PT0225002561") // H5平台-盲盒页面-选盲盒页面-透视卡弹窗-关闭点击
+    },
+    cancel () {
+      this.show = false
+      GLOBALS.marchSetsPoint("A_H5PT0225002560") // H5平台-盲盒页面-选盲盒页面-透视卡弹窗-取消点击
     }
   }
 }

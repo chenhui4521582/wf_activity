@@ -1,16 +1,21 @@
 <template>
   <footer class="footer">
     <div class="button"
-      @click="$router.push({
-      name:'Index'
-    })">去开盲盒</div>
+      @click="toIndex()">去开盲盒</div>
     <p class="tips">15元可开到心仪商品</p>
   </footer>
 </template>
 
 <script>
 export default {
-
+  methods: {
+    toIndex () {
+      this.$router.push({
+        name: 'Index'
+      })
+      GLOBALS.marchSetsPoint("A_H5PT0225002563") // H5平台-盲盒页面-商品列表页面-去开盲盒点击
+    }
+  }
 }
 </script>
 
