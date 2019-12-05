@@ -113,7 +113,6 @@ export default {
   },
   methods: {
     async init () {
-      Pay.clearPayInfo()
       await this.getBoxInfo()
       this.loopBox()
       sessionStorage.blindBoxFirstTime = true

@@ -45,10 +45,4 @@ export class Pay {
     localStorage.setItem('originDeffer', originDeffer)
     location.href = url
   }
-
-  static clearPayInfo () {
-    // if (localStorage.getItem('originDeffer')) localStorage.removeItem('originDeffer')
-    // if (localStorage.getItem('JDD_PARAM')) localStorage.removeItem('JDD_PARAM')
-    // if (localStorage.getItem('payment')) localStorage.removeItem('payment')
-  }
 }

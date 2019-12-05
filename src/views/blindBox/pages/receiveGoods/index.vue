@@ -80,8 +80,9 @@ export default {
     }
   },
   async mounted () {
-    if (this.$route.query.type === 'success') this.receiveSuccess()
-    Pay.clearPayInfo();
+    if (this.$route.query.type === 'success') {
+      this.receiveSuccess()
+    }
     ({ data: { data: this.goodsList } } = await InventoryList(1));
     ({ data: { data: this.post } } = await PostInfo())
   },

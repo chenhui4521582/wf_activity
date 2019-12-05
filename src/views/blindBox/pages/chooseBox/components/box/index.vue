@@ -56,7 +56,6 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
-    Pay.clearPayInfo()
   },
   computed: {
     buttonText () {
