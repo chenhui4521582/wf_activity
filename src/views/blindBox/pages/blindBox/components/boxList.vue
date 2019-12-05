@@ -157,9 +157,9 @@ export default {
         return
       }
       if (this.userInfo.openBoxTimes) {
-        this.$router.push(`/openBox/${item.color}?sort=${item.sort}`)
+        this.$router.push(`/openBox/${item.color}?sort=${item.sort}&isTransparent=${item.state === 4}`)
       } else {
-        this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}&isTransparent=${item.state === 4}`)
+        this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}${item.state === 4 ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}` : ''}`)
       }
     },
     async buyOne () {
