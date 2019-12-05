@@ -23,6 +23,7 @@
     "jquery": "2.2.4",
     "less": "2.7.3",
     "less-loader": "4.1.0",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",
     "moment": "2.24.0",
     "qrcode": "1.4.0",
