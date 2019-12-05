@@ -132,7 +132,7 @@ export default {
     // 在线客服
     toOnlineService () {
       GLOBALS.marchSetsPoint('A_H5PT0225002577')
-      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService?channel=100070'
+      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     }
   },
   components: {
