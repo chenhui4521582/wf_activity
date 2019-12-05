@@ -11,6 +11,9 @@ import NavBar from '../../components/navBar'
 import TabBar from './components/tabBar'
 
 export default {
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002571')
+  },
   components: {
     NavBar,
     TabBar

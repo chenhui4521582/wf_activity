@@ -22,6 +22,7 @@ export default {
           icon: require('./assets/my-prize.png'),
           title: '我的奖品',
           jump: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002568')
             this.$router.push({
               name: 'MyPrize'
             })
@@ -31,6 +32,7 @@ export default {
           icon: require('./assets/record.png'),
           title: '开盒记录',
           jump: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002569')
             this.$router.push({
               name: 'BoxRecord'
             })
@@ -40,6 +42,7 @@ export default {
           icon: require('./assets/problem.png'),
           title: '问题反馈',
           jump: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002570')
             location.href = 'https://wap.beeplaying.com/xmWap/#/my/feedback'
             // location.href = findUrl(problemUrl, `https://wap.beeplaying.com/wap/home/#/problem?channel=${GLOBALS.channel}`)
           }

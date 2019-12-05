@@ -22,14 +22,14 @@ export default {
     Box
   },
   mounted () {
-    GLOBALS.marchSetsPoint("A_H5PT0225002551") // H5平台-盲盒页面-选盲盒页面加载完成
+    GLOBALS.marchSetsPoint('A_H5PT0225002551') // H5平台-盲盒页面-选盲盒页面加载完成
   },
   methods: {
     toAllProduct () {
       this.$router.push({
         name: 'AllProducts'
       })
-      GLOBALS.marchSetsPoint("A_H5PT0225002554") // H5平台-盲盒页面-选盲盒页面-商品详情点击
+      GLOBALS.marchSetsPoint('A_H5PT0225002554') // H5平台-盲盒页面-选盲盒页面-商品详情点击
     }
   }
 }
