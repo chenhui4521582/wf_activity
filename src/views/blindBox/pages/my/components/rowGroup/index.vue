@@ -11,8 +11,8 @@
 
 <script>
 import Row from '../row'
-import { findUrl } from '../../../../utils/index'
-import { problemUrl } from '../../../../config/url'
+// import { findUrl } from '../../../../utils/index'
+// import { problemUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -40,7 +40,8 @@ export default {
           icon: require('./assets/problem.png'),
           title: '问题反馈',
           jump: () => {
-            location.href = findUrl(problemUrl, `https://wap.beeplaying.com/wap/home/#/problem?channel=${GLOBALS.channel}`)
+            location.href = 'https://wap.beeplaying.com/xmWap/#/my/feedback'
+            // location.href = findUrl(problemUrl, `https://wap.beeplaying.com/wap/home/#/problem?channel=${GLOBALS.channel}`)
           }
         }
       ]

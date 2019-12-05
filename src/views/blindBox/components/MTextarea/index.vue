@@ -47,6 +47,8 @@ export default {
   padding: 0.23rem;
   textarea {
     background: #f7f7f7;
+    font-size: 0.24rem;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
     width: 100%;
     height: 100%;
     border: none;

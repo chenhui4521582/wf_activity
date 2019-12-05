@@ -4,7 +4,7 @@
       @click="$router.push({
       name:'Index'
     })">去开盲盒</div>
-    <p class="tips">20元可开到心仪商品</p>
+    <p class="tips">15元可开到心仪商品</p>
   </footer>
 </template>
 
