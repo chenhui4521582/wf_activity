@@ -5,34 +5,37 @@
     </div>
     <div class="back-btn" @click="back"></div>
     <div class="rule-btn" @click="openRule"></div>
-    <div class="game-info">
-      <div class="game-img">
-        <img v-if="userInfo.gameIcon" :src="userInfo.gameIcon | filter" alt="">
-      </div>
-      <div class="explain">
-        玩{{userInfo.gameTimes}}局{{userInfo.gameName}}即可瓜分
-      </div>
-      <div class="progress" v-if="!isFinished">
-        <div class="body">
-          <div class="bg" :style="{'width': countWidth}"></div>
+    <template v-if="isMounted">
+      <div class="game-info">
+        <div class="game-img">
+          <img v-if="userInfo.gameIcon" :src="userInfo.gameIcon | filter" alt="">
         </div>
-        <div class="progress-text">{{userInfo.myGameTimes}}/{{userInfo.gameTimes}}</div>
+        <div class="explain">
+          玩{{userInfo.gameTimes}}局{{userInfo.gameName}}即可瓜分
+        </div>
+        
+        <div class="progress" v-if="!isFinished">
+          <div class="body">
+            <div class="bg" :style="{'width': countWidth}"></div>
+          </div>
+          <div class="progress-text">{{userInfo.myGameTimes}}/{{userInfo.gameTimes}}</div>
+        </div>
+        <div class="finished" v-if="isFinished">
+          已完成
+        </div>
       </div>
-      <div class="finished" v-else>
-        已完成
+      <div class="btns" v-if="!isApply" >
+        <div class="play-btn" v-if="!isFinished" @click="playGame">去玩游戏</div>
+        <div class="go-apply" v-else @click="_goApplay">参与瓜分</div>
       </div>
-    </div>
-    <div class="btns" v-if="!isApply" >
-      <div class="play-btn" v-if="!isFinished" @click="playGame">去玩游戏</div>
-      <div class="go-apply" v-else @click="_goApplay">参与瓜分</div>
-    </div>
-    <div class="apply" v-else>
-      <p>恭喜您成功参与瓜分</p>
-      奖励于次日0点发放
-    </div>
-    <div class="people">
-      已经有{{userInfo.divideNum}}人参与瓜分
-    </div>
+      <div class="apply" v-else>
+        <p>恭喜您成功参与瓜分</p>
+        奖励于次日0点发放
+      </div>
+      <div class="people">
+        已经有{{userInfo.divideNum}}人参与瓜分
+      </div>
+    </template>
     <div class="rule" v-if="showRule">
       <div class="mask"></div>
       <div class="center">
@@ -56,7 +59,8 @@ export default {
   name: 'playGame',
   data: () => ({
     showRule: false,
-    userInfo: {}
+    userInfo: {},
+    isMounted: false
   }),
   computed: {
     isFinished() {
@@ -98,6 +102,7 @@ export default {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.userInfo = _get(res, 'data.data')
+          this.isMounted = true
           if(this.userInfo.apply) {
             GLOBALS.marchSetsPoint('A_H5PT0227002604')
           }

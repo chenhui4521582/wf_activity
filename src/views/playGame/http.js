@@ -56,12 +56,6 @@ axios.interceptors.response.use(
             duration: 1500
           })
           break
-        case 408:
-          Vue.prototype.$toast.show({
-            message: '请求超时',
-            duration: 1500
-          })
-          break
         case 500:
           Vue.prototype.$toast.show({
             message: '服务器内部错误',
@@ -115,22 +109,6 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    // let aa = `timeout of ${axios.defaults.timeout}ms exceeded`;
-    // error = JSON.stringify(error);
-
-    // console.log(error.response.status)
-    if (error && error.response) {
-
-    } else {
-      error = JSON.stringify(error)
-      if (error.indexOf('timeout') != -1) {
-        Vue.prototype.$toast.show({
-          message: '请求超时',
-          duration: 1500
-        })
-        return
-      }
-    }
     return Promise.reject(error)
     // return '';
   }
