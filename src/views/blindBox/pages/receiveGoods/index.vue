@@ -134,7 +134,7 @@ export default {
         return
       }
       if (!this.goodsList.length) return
-      if (this.goodsList.length < 2) {
+      if (this.goodsList.length < 2 && !this.post.singlePostTimes) {
         GLOBALS.marchSetsPoint('A_H5PT0225002587')
         this.show = true
         return
