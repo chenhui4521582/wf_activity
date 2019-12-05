@@ -70,8 +70,10 @@ export default {
         {
           buttonType: 'button-primary',
           buttonText: '立即领取',
-          handle: () => {
-            GLOBALS.marchSetsPoint('A_H5PT0225002575')
+          handle: item => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002575', {
+              awards_id: item.awardsName
+            })
             this.$router.push({ name: 'ReceiveGoods' })
           }
         },
@@ -123,7 +125,10 @@ export default {
     },
     // 去抽盲盒
     toIndex () {
-      GLOBALS.marchSetsPoint('A_H5PT0225002580')
+      const addressIndex = this.active
+      GLOBALS.marchSetsPoint('A_H5PT0225002580', {
+        source_address: addressIndex
+      })
       this.$router.push({ name: 'Index' })
     },
     // 在线客服

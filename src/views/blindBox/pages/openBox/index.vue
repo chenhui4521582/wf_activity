@@ -44,18 +44,6 @@ export default {
       awardsInfo: null
     }
   },
-  methods: {
-    // 再开一次
-    openAgain () {
-      GLOBALS.marchSetsPoint('A_H5PT0225002565')
-      this.$router.push({ name: 'Index' })
-    },
-    // 查看我的奖品
-    viewMyPrize () {
-      GLOBALS.marchSetsPoint('A_H5PT0225002566')
-      this.$router.push({ name: 'MyPrize' })
-    }
-  },
   components: {
     LongSwiper,
     MButton
@@ -81,13 +69,15 @@ export default {
     GLOBALS.marchSetsPoint('A_H5PT0225002564') // H5平台-盲盒页面-开盲盒页面加载完成
   },
   methods: {
-    toIndex () {
+    // 再开一次
+    openAgain () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002565')
       this.$router.push({ name: 'Index' })
-      GLOBALS.marchSetsPoint('A_H5PT0225002565') // H5平台-盲盒页面-开盲盒页面-再开一次点击
     },
-    toMyPrize () {
+    // 查看我的奖品
+    viewMyPrize () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002566')
       this.$router.push({ name: 'MyPrize' })
-      GLOBALS.marchSetsPoint('A_H5PT0225002566') // H5平台-盲盒页面-开盲盒页面-查看我的奖品点击
     }
   }
 }
