@@ -114,6 +114,7 @@ export default {
   methods: {
     async init () {
       await this.getBoxInfo()
+      await this.getUserInfo()
       this.loopBox()
       sessionStorage.blindBoxFirstTime = true
     },
@@ -143,12 +144,17 @@ export default {
         this.isRefresh = false
         clearTimeout(this.refreshTimer)
       }, 1000)
+      GLOBALS.marchSetsPoint('A_H5PT0225002540') // H5平台-盲盒页面-换一批点击
     },
     // 获取用户活动信息
     async getUserInfo () {
       const res = await UserInfo()
       const { data } = res.data
-      this.box = data || {}
+      this.userInfo = data || {}
+      if (this.userInfo.openBoxTimes) {
+        this.isShowPop = true
+        GLOBALS.marchSetsPoint("A_H5PT0225002547") // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
+      }
     },
     async toDetail (item) {
       this.isShake = false
@@ -156,17 +162,20 @@ export default {
         return
       }
       if (this.userInfo.openBoxTimes) {
-        this.$router.push(`/openBox/${item.color}?sort=${item.sort}&isTransparent=${item.state === 4}`)
+        this.$router.push(`/openBox/${item.color}?sort=${item.sort}${item.state === 4 ? '&isTransparent=true' : ''}`)
       } else {
         this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}${item.state === 4 ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}` : ''}`)
       }
+      GLOBALS.marchSetsPoint("A_H5PT0225002542") // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
     },
     async buyOne () {
       if (this.userInfo && this.userInfo.openBoxTimes) {
+        GLOBALS.marchSetsPoint("A_H5PT0225002547") // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
         this.isShowPop = true
       } else {
         const { data: { data: payInfo } } = await PayPoint(1)
         Pay.toPay({ payInfo })
+        GLOBALS.marchSetsPoint('A_H5PT0225002539') // H5平台-盲盒页面-开一次按钮点击(点击购买)
       }
     },
     closePop (type) {
@@ -174,13 +183,16 @@ export default {
       switch (type) {
         case 1:
           this.isShake = true
+          GLOBALS.marchSetsPoint("A_H5PT0225002548") // H5平台-盲盒页面-购买盲盒支付成功弹窗-好的点击
           break
         case 2:
           let canBuyBoxArr = this.box.filter(item => item.state === 1 || item === 4)
           let selectedItem = canBuyBoxArr[Math.floor((Math.random() * canBuyBoxArr.length))]
           this.toDetail(selectedItem)
+          GLOBALS.marchSetsPoint("A_H5PT0225002549") // H5平台-盲盒页面-购买盲盒支付成功弹窗-随机开点击
           break
         default:
+          GLOBALS.marchSetsPoint("A_H5PT0225002550") // H5平台-盲盒页面-购买盲盒支付成功弹窗-关闭点击
           break
       }
     },

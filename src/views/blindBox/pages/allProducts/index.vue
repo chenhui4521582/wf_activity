@@ -36,6 +36,7 @@ export default {
   },
   async mounted () {
     ({ data: { data: this.products } } = await awardsList())
+    GLOBALS.marchSetsPoint("A_H5PT0225002562") // H5平台-盲盒页面-商品列表页面加载完成
   },
   methods: {
     // 返回顶部
