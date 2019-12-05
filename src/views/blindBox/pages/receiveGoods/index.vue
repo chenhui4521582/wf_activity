@@ -42,9 +42,9 @@
     </section>
     <Dialog :show="show"
       :close="true"
-      @onClose="show=false"
+      @onClose="onClose"
       title="温馨提示"
-      @onCancel="$router.push({name:'Index'})"
+      @onCancel="toIndex"
       @onConfirm="onPay"
       cancel="去再开一盒"
       confirm="<p style='color:#FF4141'>支付邮费</p>">
@@ -106,14 +106,26 @@ export default {
       this.isReceiveInfo = true
       GLOBALS.marchSetsPoint('A_H5PT0225002583')
     },
+    // 关闭按钮点击
+    onClose () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002590')
+      this.show = false
+    },
+    // 再开一盒
+    toIndex () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002589')
+      this.$router.push({ name: 'Index' })
+    },
     // 支付邮费
     async onPay () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002588')
       this.show = false
       const { data: { data: payInfo } } = await PayPoint(3)
       Pay.toPay({ payInfo, originDeffer: `${location.href}?type=success` })
     },
     // 确认按钮
     async confirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002586')
       if (!this.isPostInfo) {
         this.$toast.show({
           message: '请填写收货信息',
@@ -123,6 +135,7 @@ export default {
       }
       if (!this.goodsList.length) return
       if (this.goodsList.length < 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002587')
         this.show = true
         return
       }

@@ -30,7 +30,7 @@
 import LongSwiper from '../../components/longSwiper'
 import MButton from '../../components/MButton'
 import { boxGroup } from '../../config/box'
-import { Operation, Exchange } from '../../apis/box'
+import { Operation } from '../../apis/box'
 
 export default {
   data () {
@@ -71,16 +71,11 @@ export default {
     this.sort = Number(this.$route.query.sort)
     this.isTransparent = this.$route.query.isTransparent
     this.box = boxGroup.find(res => res.type === this.type)
-    if (this.isTransparent) {
-      const { data: { data } } = await Exchange(this.sort)
-      this.awardsInfo = data
-    } else {
-      const { data: { data } } = await Operation({
-        category: 1,
-        sort: this.sort
-      })
-      this.awardsInfo = data
-    }
+    const { data: { data } } = await Operation({
+      category: 1,
+      sort: this.sort
+    })
+    this.awardsInfo = data
     this.$loading.hide()
     this.show = true
     GLOBALS.marchSetsPoint('A_H5PT0225002564') // H5平台-盲盒页面-开盲盒页面加载完成

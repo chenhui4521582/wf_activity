@@ -8,7 +8,8 @@
           slot="left">开盒时间：{{item.openTime }}</p>
       </Goods>
     </section>
-    <Default v-if="goodsList && goodsList.length === 0" />
+    <Default @onConfirm="onConfirm"
+      v-if="goodsList && goodsList.length === 0" />
   </article>
 </template>
 
@@ -21,6 +22,11 @@ export default {
   data () {
     return {
       goodsList: null
+    }
+  },
+  methods: {
+    onConfirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002592')
     }
   },
   async mounted () {

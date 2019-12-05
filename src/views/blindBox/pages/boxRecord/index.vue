@@ -11,6 +11,9 @@ import NavBar from '../../components/navBar'
 import Record from './components/record'
 
 export default {
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002591')
+  },
   components: {
     NavBar,
     Record
