@@ -48,6 +48,11 @@ export default {
   },
   async mounted () {
     ({ data: { data: this.userInfo } } = await UserInfo())
+    if (this.$route.query.awardsImage) {
+      this.awardsImage = this.$route.query.awardsImage
+      this.isTransparent = true
+    }
+    if (this.$route.query.awardsName) this.awardsName = this.$route.query.awardsName
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
