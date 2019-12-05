@@ -47,8 +47,8 @@ export class Pay {
   }
 
   static clearPayInfo () {
-    if (localStorage.getItem('originDeffer')) localStorage.removeItem('originDeffer')
-    if (localStorage.getItem('JDD_PARAM')) localStorage.removeItem('JDD_PARAM')
-    if (localStorage.getItem('payment')) localStorage.removeItem('payment')
+    // if (localStorage.getItem('originDeffer')) localStorage.removeItem('originDeffer')
+    // if (localStorage.getItem('JDD_PARAM')) localStorage.removeItem('JDD_PARAM')
+    // if (localStorage.getItem('payment')) localStorage.removeItem('payment')
   }
 }
