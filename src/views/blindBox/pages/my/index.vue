@@ -15,7 +15,7 @@ export default {
     Account
   },
   mounted () {
-    GLOBALS.marchSetsPoint("A_H5PT0225002567") // H5平台-盲盒页面-我的页面加载完成
+    GLOBALS.marchSetsPoint('A_H5PT0225002567')
   }
 }
 </script>
