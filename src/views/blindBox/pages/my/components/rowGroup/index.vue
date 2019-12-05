@@ -11,8 +11,6 @@
 
 <script>
 import Row from '../row'
-// import { findUrl } from '../../../../utils/index'
-// import { problemUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -44,7 +42,6 @@ export default {
           jump: () => {
             GLOBALS.marchSetsPoint('A_H5PT0225002570')
             location.href = 'https://wap.beeplaying.com/xmWap/#/my/feedback'
-            // location.href = findUrl(problemUrl, `https://wap.beeplaying.com/wap/home/#/problem?channel=${GLOBALS.channel}`)
           }
         }
       ]
