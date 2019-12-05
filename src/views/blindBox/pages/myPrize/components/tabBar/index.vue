@@ -2,7 +2,7 @@
   <article class="myprize-wrapper">
     <Dialog :show="show"
       title="温馨提示"
-      @onConfirm="show=false"
+      @onConfirm="onConfirm"
       confirm="我知道了">
       <p v-if="this.active===1"
         class="tip">
@@ -44,7 +44,7 @@
       </section>
       <Default v-if="this.goodsList && this.goodsList.length === 0"
         :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
-        @onConfirm="$router.push({name:'Index'})" />
+        @onConfirm="toIndex" />
     </section>
   </article>
 </template>
@@ -71,6 +71,7 @@ export default {
           buttonType: 'button-primary',
           buttonText: '立即领取',
           handle: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002575')
             this.$router.push({ name: 'ReceiveGoods' })
           }
         },
@@ -78,13 +79,16 @@ export default {
           buttonType: 'button-ghost',
           buttonText: '待发货',
           handle: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002597')
             this.show = true
+            GLOBALS.marchSetsPoint('A_H5PT0225002576')
           }
         },
         {
           buttonType: 'button-primary',
           buttonText: '立即查看',
           handle: item => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002579')
             this.orderNumber = item.remark
             this.show = true
           }
@@ -103,14 +107,28 @@ export default {
      */
     changeTab (item, index) {
       this.active = index
+      if (index === 0) GLOBALS.marchSetsPoint('A_H5PT0225002572')
+      if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')
+      if (index === 2) GLOBALS.marchSetsPoint('A_H5PT0225002574')
       this.getTabGoods()
     },
     // 获取相应tab下的数据
     async getTabGoods () {
       ({ data: { data: this.goodsList } } = await InventoryList(this.tabBar[this.active].value))
     },
+    // 我知道了点击
+    onConfirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002578')
+      this.show = false
+    },
+    // 去抽盲盒
+    toIndex () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002580')
+      this.$router.push({ name: 'Index' })
+    },
     // 在线客服
     toOnlineService () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002577')
       location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService?channel=100070'
       // const channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
       // location.href = findUrl(onlineServiceUrl, `https://wap.beeplaying.com/${channelFlag}/home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)

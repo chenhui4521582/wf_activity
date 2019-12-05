@@ -15,7 +15,7 @@ export default {
     Account
   },
   mounted () {
-
+    GLOBALS.marchSetsPoint('A_H5PT0225002567')
   }
 }
 </script>

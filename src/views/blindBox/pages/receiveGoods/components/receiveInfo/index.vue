@@ -80,6 +80,7 @@ export default {
       this.updatePostInfo.address = value
     },
     async confirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002584')
       for (let res of Object.entries(this.updatePostInfo)) {
         const item = this.rules.find(config => config.type === res[0])
         if (!item) continue

@@ -80,6 +80,7 @@ export default {
     }
   },
   async mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002581')
     if (this.$route.query.type === 'success') {
       this.receiveSuccess()
     }
@@ -100,7 +101,10 @@ export default {
     },
     // 填写收货人信息
     editPostInfo () {
+      if (this.isPostInfo) GLOBALS.marchSetsPoint('A_H5PT0225002585')
+      else GLOBALS.marchSetsPoint('A_H5PT0225002582')
       this.isReceiveInfo = true
+      GLOBALS.marchSetsPoint('A_H5PT0225002583')
     },
     // 支付邮费
     async onPay () {

@@ -19,8 +19,8 @@
         <span>数量：{{awardsInfo.awardsNum}}</span>
       </p>
       <MButton class="button"
-        @confirm="$router.push({name:'Index'})">再开一次</MButton>
-      <p @click="$router.push({name:'MyPrize'})"
+        @confirm="openAgain">再开一次</MButton>
+      <p @click="viewMyPrize"
         class="view-prize">查看我的奖品>></p>
     </article>
   </div>
@@ -44,11 +44,24 @@ export default {
       awardsInfo: null
     }
   },
+  methods: {
+    // 再开一次
+    openAgain () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002565')
+      this.$router.push({ name: 'Index' })
+    },
+    // 查看我的奖品
+    viewMyPrize () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002566')
+      this.$router.push({ name: 'MyPrize' })
+    }
+  },
   components: {
     LongSwiper,
     MButton
   },
   async mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002564')
     this.$loading.show({
       render (h) {
         return h('div', '正在为您开盒……')
