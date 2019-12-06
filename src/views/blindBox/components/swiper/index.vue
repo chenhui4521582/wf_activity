@@ -1,8 +1,15 @@
 <template>
   <section class="container-swiper">
     <div class="track"
+      ref="originTrack"
+      :class="showCopyTrack ? '' : 'higher'"
       :style="trackStyles">
       <slot />
+    </div>
+    <div class="track"
+      :class="showCopyTrack ? 'higher' : ''"
+      :style="copyTrackStyles"
+      ref="copyTrack">
     </div>
   </section>
 </template>
@@ -11,11 +18,16 @@
 export default {
   data () {
     return {
+      currentIndex: 0,
       trackIndex: 0,
+      copyTrackIndex: 0,
       trackHeight: 0,
       trackOffset: 0,
+      trackCopyOffset: 0,
+      showCopyTrack: false,
       slides: [],
-      timer: null
+      timer: null,
+      hideTrackPos: -1 // 默认左滑
     }
   },
   props: {
@@ -53,23 +65,60 @@ export default {
       const slidesLength = this.slides.length || 0
       this.trackHeight = slidesLength * this.listHeight
     },
+    // copy trackDom
+    initCopyTrackDom () {
+      this.$nextTick(() => {
+        this.$refs.copyTrack.innerHTML = this.$refs.originTrack.innerHTML
+      })
+    },
+    updateTrackPos (index) {
+      if (this.showCopyTrack) {
+        this.trackIndex = index
+      } else {
+        this.copyTrackIndex = index
+      }
+    },
     // 切换
     add (offset) {
+      let slidesLen = this.slides.length
+      if (offset > 0) {
+        // 初始化左滑轨道位置
+        this.hideTrackPos = -1
+      } else {
+        // 初始化右滑轨道位置
+        this.hideTrackPos = slidesLen
+      }
+      this.updateTrackPos(this.hideTrackPos)
       // 获取当前展示图片的索引值
-      const oldIndex = this.trackIndex
+      const oldIndex = this.showCopyTrack ? this.copyTrackIndex : this.trackIndex
       let index = oldIndex + offset
-      this.updateTrackIndex(index)
+      while (index < 0) index += slidesLen
+      if (((offset > 0 && index === slidesLen) || (offset < 0 && index === slidesLen - 1))) {
+        // 极限值（左滑：当前索引为总图片张数， 右滑：当前索引为总图片张数 - 1）切换轨道
+        this.showCopyTrack = !this.showCopyTrack
+        this.trackIndex += offset
+        this.copyTrackIndex += offset
+      } else {
+        this.updateTrackIndex(index)
+      }
+      this.currentIndex = index === this.slides.length ? 0 : index
     },
     // 更新偏移位置
     updateOffset () {
       this.$nextTick(() => {
+        let ofs = this.copyTrackIndex > 0 ? -1 : 1
         this.trackOffset = this.trackIndex * this.listHeight
+        this.trackCopyOffset = this.copyTrackIndex * this.listHeight + ofs
       })
     },
     // 更新轮播位置
     updateTrackIndex (index) {
-      if (this.trackIndex <= this.slides.length - 1) this.trackIndex = index
-      else window.clearInterval(this.timer)
+      if (this.showCopyTrack) {
+        this.copyTrackIndex = index
+      } else {
+        this.trackIndex = index
+      }
+      this.currentIndex = index
     },
     // 自动播放
     setAutoplay () {
@@ -92,6 +141,14 @@ export default {
         visibility: visibleStyle
       }
     },
+    copyTrackStyles () {
+      return {
+        height: `${this.trackHeight}px`,
+        transform: `translate3d(0px, ${-this.trackCopyOffset}px, 0px)`,
+        transition: `transform 1000ms ${this.easing}`,
+        position: 'absolute'
+      }
+    },
     listHeight () {
       const computedStyle = document.defaultView.getComputedStyle(this.$el, '')
       return this.$el.style.height || computedStyle ? parseFloat(computedStyle['height']) : null
@@ -99,6 +156,9 @@ export default {
   },
   watch: {
     trackIndex () {
+      this.updateOffset()
+    },
+    copyTrackIndex () {
       this.updateOffset()
     }
   },
@@ -114,11 +174,17 @@ export default {
   overflow: hidden;
   display: block;
   height: 100%;
+  position: relative;
   .track {
     position: relative;
     top: 0;
     left: 0;
     z-index: 1;
+    visibility: hidden;
+    &.higher {
+      z-index: 2;
+      visibility: visible;
+    }
   }
 }
 </style>

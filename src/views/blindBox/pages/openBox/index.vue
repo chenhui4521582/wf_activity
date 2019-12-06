@@ -101,12 +101,12 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
   .wrapper {
-    height: 100vh;
+    // height: 100vh;
     position: relative;
     background: #2a2d3c;
     padding-top: 0.5rem;
     box-sizing: border-box;
-    overflow: hidden;
+    // overflow: hidden;
     text-align: center;
     .notice {
       margin: 0 auto;
@@ -153,6 +153,7 @@ export default {
       font-weight: bold;
       font-size: 0.22rem;
       padding-top: 0.33rem;
+      padding-bottom: 0.33rem;
     }
   }
 }

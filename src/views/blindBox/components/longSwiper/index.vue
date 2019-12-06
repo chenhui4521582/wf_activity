@@ -36,6 +36,7 @@ export default {
 <style lang="less" scoped>
 .swiper-user {
   height: 1rem;
+  background: #2a2d3c;
   .swiper-info {
     border: 0.02rem solid #fff;
     border-radius: 0.25rem;
