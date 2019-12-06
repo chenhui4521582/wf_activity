@@ -115,14 +115,13 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
-      // this.loopBox()
+      this.loopBox()
       sessionStorage.blindBoxFirstTime = true
     },
     // 获取盒子信息
     async getBoxInfo () {
-      // const res = await BoxList()
-      // const { data } = res.data
-      const { data } = { "code": 200, "data": [{ "sort": 1, "color": 3, "state": 1, "extend": null }, { "sort": 2, "color": 3, "state": 1, "extend": null }, { "sort": 3, "color": 3, "state": 4, "extend": { "nickname": "不知道", "awardsId": null, "awardsName": "iphoneX", "awardsImage": "/group1/M00/3F/5B/CmcEHF3o3u-AVDKUAAAgxKfHgdg663.png", "expireTime": null, "expireSecond": 60, "oldColor": 1 } }, { "sort": 4, "color": 3, "state": 1, "extend": null }, { "sort": 5, "color": 1, "state": 1, "extend": null }, { "sort": 6, "color": 3, "state": 1, "extend": { "nickname": "不知道", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 3 } }, { "sort": 7, "color": 1, "state": 3, "extend": { "nickname": "你好", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 3 } }, { "sort": 8, "color": 3, "state": 2, "extend": { "nickname": "12561", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": 1575603211024, "expireSecond": 10, "oldColor": null } }, { "sort": 9, "color": 3, "state": 1, "extend": { "nickname": "做梦", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 1 } }, { "sort": 10, "color": 2, "state": 1, "extend": { "nickname": "做梦", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 2 } }, { "sort": 11, "color": 1, "state": 1, "extend": null }, { "sort": 12, "color": 2, "state": 1, "extend": null }], "message": null }
+      const res = await BoxList()
+      const { data } = res.data
       this.$set(this, 'box', data || [])
     },
     loopBox () {
