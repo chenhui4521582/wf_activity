@@ -58,13 +58,13 @@ export default {
     },
     showRule () {
       this.isShowRule = true
-      GLOBALS.marchSetsPoint("A_H5PT0225002543") // H5平台-盲盒页面-活动规则点击
+      GLOBALS.marchSetsPoint('A_H5PT0225002543') // H5平台-盲盒页面-活动规则点击
     },
     closeRule () {
       this.isShowRule = false
     },
     getAwards () {
-      GLOBALS.marchSetsPoint("A_H5PT0225002544") // H5平台-盲盒页面-获得奖品点击
+      GLOBALS.marchSetsPoint('A_H5PT0225002544') // H5平台-盲盒页面-获得奖品点击
     }
   }
 }
@@ -85,13 +85,18 @@ export default {
   .text-btn {
     display: flex;
     font-weight: bold;
-    background: linear-gradient(
-      0deg,
-      rgba(240, 243, 252, 1) 0%,
-      rgba(228, 223, 203, 1) 98.92578125%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #edeef1;
+    a {
+      color: #edeef1;
+    }
+
+    // background: linear-gradient(
+    //   0deg,
+    //   rgba(240, 243, 252, 1) 0%,
+    //   rgba(228, 223, 203, 1) 98.92578125%
+    // );
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
     &::after {
       content: "";
       margin-left: 0.04rem;

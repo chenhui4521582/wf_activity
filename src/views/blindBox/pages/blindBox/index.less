@@ -30,20 +30,14 @@
 }
 
 .has-shelf {
-  animation: shelf-show 500ms 1 ease-in-out 1.3s running forwards;
+  animation: shelf-show 500ms 1 ease-in-out 1.7s running forwards;
   transform-origin: center center;
   opacity: 0;
 
-  &::after {
-    animation: shelf-hidden 500ms 1 ease-in-out 1.8s running forwards;
-    transform-origin: center 0.3rem;
-  }
-}
-
-
-.all-has-shelf::after {
-  animation: shelf-show-hidden 1000ms 1 linear 0s running forwards;
-  transform-origin: center 0.3rem;
+  // &::after {
+  //   animation: shelf-hidden 500ms 1 ease-in-out 1.8s running forwards;
+  //   transform-origin: center 0.3rem;
+  // }
 }
 
 @keyframes shelf-show {
@@ -58,14 +52,19 @@
   }
 }
 
-@keyframes shelf-hidden {
-  0% {
-    transform: rotateX(0);
-  }
+// @keyframes shelf-hidden {
+//   0% {
+//     transform: rotateX(0);
+//   }
 
-  100% {
-    transform: rotateX(90deg);
-  }
+//   100% {
+//     transform: rotateX(90deg);
+//   }
+// }
+
+.all-has-shelf::after {
+  animation: shelf-show-hidden 1000ms 1 linear 0s running forwards;
+  transform-origin: center 0.3rem;
 }
 
 @keyframes shelf-show-hidden {

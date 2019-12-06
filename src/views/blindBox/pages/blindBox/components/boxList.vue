@@ -115,15 +115,14 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
-      this.loopBox()
+      // this.loopBox()
       sessionStorage.blindBoxFirstTime = true
     },
     // 获取盒子信息
     async getBoxInfo () {
-      const res = await BoxList()
-      const { data } = res.data
-      console.log('透视', res.data.data.filter(item => item.state === 2).length)
-      console.log('购买', res.data.data.filter(item => item.state === 3).length)
+      // const res = await BoxList()
+      // const { data } = res.data
+      const { data } = { "code": 200, "data": [{ "sort": 1, "color": 3, "state": 1, "extend": null }, { "sort": 2, "color": 3, "state": 1, "extend": null }, { "sort": 3, "color": 3, "state": 4, "extend": { "nickname": "不知道", "awardsId": null, "awardsName": "iphoneX", "awardsImage": "/group1/M00/3F/5B/CmcEHF3o3u-AVDKUAAAgxKfHgdg663.png", "expireTime": null, "expireSecond": 60, "oldColor": 1 } }, { "sort": 4, "color": 3, "state": 1, "extend": null }, { "sort": 5, "color": 1, "state": 1, "extend": null }, { "sort": 6, "color": 3, "state": 1, "extend": { "nickname": "不知道", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 3 } }, { "sort": 7, "color": 1, "state": 3, "extend": { "nickname": "你好", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 3 } }, { "sort": 8, "color": 3, "state": 2, "extend": { "nickname": "12561", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": 1575603211024, "expireSecond": 10, "oldColor": null } }, { "sort": 9, "color": 3, "state": 1, "extend": { "nickname": "做梦", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 1 } }, { "sort": 10, "color": 2, "state": 1, "extend": { "nickname": "做梦", "awardsId": null, "awardsName": null, "awardsImage": null, "expireTime": null, "expireSecond": null, "oldColor": 2 } }, { "sort": 11, "color": 1, "state": 1, "extend": null }, { "sort": 12, "color": 2, "state": 1, "extend": null }], "message": null }
       this.$set(this, 'box', data || [])
     },
     loopBox () {
@@ -153,7 +152,7 @@ export default {
       this.userInfo = data || {}
       if (this.userInfo.openBoxTimes) {
         this.isShowPop = true
-        GLOBALS.marchSetsPoint("A_H5PT0225002547") // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
+        GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
       }
     },
     async toDetail (item) {
@@ -166,13 +165,13 @@ export default {
       } else {
         this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}${item.state === 4 ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}` : ''}`)
       }
-      GLOBALS.marchSetsPoint("A_H5PT0225002542", {
+      GLOBALS.marchSetsPoint('A_H5PT0225002542', {
         awards_id: item.sort
       }) // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
     },
     async buyOne () {
       if (this.userInfo && this.userInfo.openBoxTimes) {
-        GLOBALS.marchSetsPoint("A_H5PT0225002547") // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
+        GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
         this.isShowPop = true
       } else {
         const { data: { data: payInfo } } = await PayPoint(1)
@@ -185,16 +184,16 @@ export default {
       switch (type) {
         case 1:
           this.isShake = true
-          GLOBALS.marchSetsPoint("A_H5PT0225002548") // H5平台-盲盒页面-购买盲盒支付成功弹窗-好的点击
+          GLOBALS.marchSetsPoint('A_H5PT0225002548') // H5平台-盲盒页面-购买盲盒支付成功弹窗-好的点击
           break
         case 2:
           let canBuyBoxArr = this.box.filter(item => item.state === 1 || item === 4)
           let selectedItem = canBuyBoxArr[Math.floor((Math.random() * canBuyBoxArr.length))]
           this.toDetail(selectedItem)
-          GLOBALS.marchSetsPoint("A_H5PT0225002549") // H5平台-盲盒页面-购买盲盒支付成功弹窗-随机开点击
+          GLOBALS.marchSetsPoint('A_H5PT0225002549') // H5平台-盲盒页面-购买盲盒支付成功弹窗-随机开点击
           break
         default:
-          GLOBALS.marchSetsPoint("A_H5PT0225002550") // H5平台-盲盒页面-购买盲盒支付成功弹窗-关闭点击
+          GLOBALS.marchSetsPoint('A_H5PT0225002550') // H5平台-盲盒页面-购买盲盒支付成功弹窗-关闭点击
           break
       }
     },
@@ -242,6 +241,10 @@ export default {
     justify-content: space-between;
     padding: 0.04rem 0 0.2rem;
     position: relative;
+    .box-info {
+      background: url(../assets/box-shadow.png) no-repeat center ~"0.4rem" / 100%
+        1.12rem;
+    }
     &.all-has-shelf:after {
       content: "";
       position: absolute;
@@ -256,19 +259,17 @@ export default {
     .box-item {
       min-width: 1.8rem;
       text-align: center;
-      background: url(../assets/box-shadow.png) no-repeat center ~"0.4rem" / 100%
-        1.12rem;
       position: relative;
-      .has-shelf::after {
-        content: "";
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        background: url(../assets/shelf.png) no-repeat center center / 90%
-          1.2rem;
-      }
+      // .has-shelf::after {
+      //   content: "";
+      //   position: absolute;
+      //   display: block;
+      //   width: 100%;
+      //   height: 100%;
+      //   top: 0;
+      //   background: url(../assets/shelf.png) no-repeat center center / 90%
+      //     1.2rem;
+      // }
       .old-box-image {
         position: absolute;
         top: 0;
@@ -276,6 +277,8 @@ export default {
         margin-left: -0.73rem;
         height: 1.7rem;
         width: 1.46rem;
+        background: url(../assets/box-shadow.png) no-repeat center ~"0.4rem" / 100%
+          1.12rem;
         img {
           width: 100%;
           height: 100%;
@@ -289,8 +292,11 @@ export default {
           text-align: center;
           .other-people {
             margin: 0.2rem 0 0;
-            color: #fff;
+            color: #2a2d3c;
+            background: #fff;
+            border-radius: 0.13rem;
             font-size: 0.18rem;
+            padding: 0.1rem;
           }
         }
       }
