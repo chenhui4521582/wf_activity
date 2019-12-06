@@ -2,6 +2,13 @@
   <section @click="onFocus"
     class="input-group">
     <input v-model="value"
+      v-if="type==='number'"
+      :type="type"
+      oninput="if(value.length>11)value=value.slice(0,11)"
+      class="input"
+      :placeholder="placeholder" />
+    <input v-model="value"
+      v-else
       :type="type"
       class="input"
       :placeholder="placeholder" />
@@ -31,6 +38,10 @@ export default {
   props: {
     placeholder: {
       type: String
+    },
+    max: {
+      type: Number,
+      default: 9999
     },
     default: {
       type: String

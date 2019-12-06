@@ -12,6 +12,7 @@
         placeholder="请输入您的真实姓名" />
       <MInput class="my-input"
         @onChange="setMobile"
+        :max="11"
         :default="updatePostInfo && updatePostInfo.mobile"
         type="number"
         placeholder="请输入您的手机号" />
