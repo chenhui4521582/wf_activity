@@ -87,6 +87,7 @@ export default {
   position: relative;
   .close {
     position: absolute;
+    z-index: 99999;
     top: 0.26rem;
     right: 0.2rem;
     width: 0.18rem;

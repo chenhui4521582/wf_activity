@@ -1,6 +1,5 @@
 <template>
-  <section @click="onFocus"
-    class="input-group">
+  <section class="input-group">
     <textarea v-model="value"
       class="input"
       :placeholder="placeholder" />
