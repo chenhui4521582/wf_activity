@@ -55,8 +55,6 @@ import Default from '../../../../components/default'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
-// import { findUrl } from '../../../../utils/index'
-// import { onlineServiceUrl } from '../../../../config/url'
 
 export default {
   data () {
@@ -108,6 +106,7 @@ export default {
      * @des 切换tab
      */
     changeTab (item, index) {
+      this.goodsList = null
       this.active = index
       if (index === 0) GLOBALS.marchSetsPoint('A_H5PT0225002572')
       if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')
@@ -134,9 +133,7 @@ export default {
     // 在线客服
     toOnlineService () {
       GLOBALS.marchSetsPoint('A_H5PT0225002577')
-      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService?channel=100070'
-      // const channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
-      // location.href = findUrl(onlineServiceUrl, `https://wap.beeplaying.com/${channelFlag}/home/#/problem?tab=contact_personal&channel=${GLOBALS.channel}`)
+      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     }
   },
   components: {
