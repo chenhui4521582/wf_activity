@@ -1,6 +1,5 @@
 <template>
-  <section @click="onFocus"
-    class="input-group">
+  <section class="input-group">
     <input v-model="value"
       v-if="type==='number'"
       :type="type"
