@@ -30,12 +30,13 @@ export default {
     info: {
       type: Object,
       default: () => { }
-    },
+    }
   },
   filters: {
     boxImage (color, state) {
       let type = ''
       switch (state) {
+        case 2:
         case 4:
           type = 'boxTransparent'
           break
@@ -85,7 +86,13 @@ export default {
 .downTime-wrapper {
   font-size: 0.2rem;
   font-weight: bold;
-  color: #ff1520;
+  color: #fff;
+  background: #ff1520;
+  border-radius: 0.13rem;
+  position: absolute;
+  padding: 0.02rem 0.04rem;
+  right: 0.1rem;
+  top: -0.1rem;
 }
 .box-info {
   .box-image {
@@ -117,8 +124,11 @@ export default {
     }
     .other-people {
       margin: 0.2rem 0.14rem 0;
-      color: #fff;
+      color: #2a2d3c;
+      background: #fff;
+      border-radius: 0.13rem;
       font-size: 0.18rem;
+      padding: 0.1rem;
     }
   }
 }

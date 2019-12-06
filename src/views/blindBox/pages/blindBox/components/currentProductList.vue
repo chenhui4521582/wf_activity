@@ -91,7 +91,7 @@ export default {
             x = 0
           }
         }
-        this.productTimer = setInterval(fun, 20)
+        this.productTimer = setInterval(fun, 80)
       })
     }
   },
@@ -135,7 +135,7 @@ export default {
       float: left;
       overflow: auto;
       white-space: nowrap;
-      transition: all 1s ease 0.5s;
+      transition: all 50ms linear;
       text-align: center;
       div {
         position: relative;
