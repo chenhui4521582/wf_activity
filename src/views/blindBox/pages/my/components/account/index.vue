@@ -20,7 +20,10 @@ export default {
       userInfo: null
     }
   },
-  mounted () {
+  async mounted () {
+    let r = await this.axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo')
+    const userInfo = r.data.data || r.data
+    localStorage.setItem('user_Info', JSON.stringify(userInfo))
     this.userInfo = JSON.parse(localStorage.getItem('user_Info'))
   },
   components: {

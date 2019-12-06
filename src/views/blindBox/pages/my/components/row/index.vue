@@ -34,7 +34,7 @@ export default {
   color: #000;
   display: flex;
   align-items: center;
-  padding: 0 0.31rem 0 0.23rem;
+  padding: 0 0 0 0.23rem;
   height: 0.85rem;
   img {
     width: 0.36rem;
@@ -43,6 +43,7 @@ export default {
     margin-bottom: 0.04rem;
   }
   .content {
+    padding-right: 0.31rem;
     display: flex;
     flex: 1;
     justify-content: space-between;
@@ -50,16 +51,17 @@ export default {
     height: 100%;
     position: relative;
     &.border {
-      &::after {
-        content: "";
-        position: absolute;
-        width: 200%;
-        height: 1px;
-        background: #bbbbbb;
-        transform: scale(0.5);
-        transform-origin: 0 0 0;
-        bottom: 0;
-      }
+      border-bottom: 0.01rem solid #bbbbbb;
+      // &::after {
+      //   content: "";
+      //   position: absolute;
+      //   width: 200%;
+      //   height: 1px;
+      //   background: #bbbbbb;
+      //   transform: scale(0.5);
+      //   transform-origin: 0 0 0;
+      //   bottom: 0;
+      // }
     }
     img {
       width: 0.16rem;

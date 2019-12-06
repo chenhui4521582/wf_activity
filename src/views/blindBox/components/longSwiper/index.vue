@@ -1,24 +1,32 @@
 <template>
   <article class="swiper-user">
-    <Swiper v-if="swiperList">
-      <SwiperItem v-for="(item,index) in swiperList"
+    <swiper v-if="swiperList"
+      :options="swiperOption">
+      <swiper-slide v-for="(item,index) in swiperList"
         :key="index">
         <div class="swiper-info">
           <p>恭喜{{item.nickname}}开出{{item.awardsName}}</p>
         </div>
-      </SwiperItem>
-    </Swiper>
+      </swiper-slide>
+    </swiper>
   </article>
 </template>
 
 <script>
-import Swiper from '../swiper/index'
-import SwiperItem from '../swiper/swiperItem'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 import { NoticeList } from '../../apis/user'
 
 export default {
   data () {
     return {
+      swiperOption: {
+        autoplay: true,
+        loop: true,
+        watchOverflow: true,
+        speed: 300,
+        direction: 'vertical'
+      },
       swiperList: null
     }
   },
@@ -27,8 +35,8 @@ export default {
     this.swiperList = data
   },
   components: {
-    Swiper,
-    SwiperItem
+    swiper,
+    swiperSlide
   }
 }
 </script>
@@ -37,6 +45,7 @@ export default {
 .swiper-user {
   height: 1rem;
   background: #2a2d3c;
+  overflow: hidden;
   .swiper-info {
     border: 0.02rem solid #fff;
     border-radius: 0.25rem;
