@@ -2,7 +2,8 @@
   <article class="receive-wrapper">
     <NavBar @back="$router.go(-1)"
       title="领取奖品" />
-    <section class="content">
+    <section class="content"
+      v-if="isLoad">
       <div :class="{'bg':!isPostInfo}"
         @click="editPostInfo"
         class="post-info">
@@ -73,6 +74,7 @@ import { Pay } from '../../utils/index'
 export default {
   data () {
     return {
+      isLoad: false,
       show: false,
       isReceiveInfo: false,
       goodsList: [],
@@ -86,6 +88,7 @@ export default {
     }
     ({ data: { data: this.goodsList } } = await InventoryList(1));
     ({ data: { data: this.post } } = await PostInfo())
+    this.isLoad = true
   },
   computed: {
     isPostInfo () {
