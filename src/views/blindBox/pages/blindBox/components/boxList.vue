@@ -156,17 +156,16 @@ export default {
     },
     async toDetail (item) {
       this.isShake = false
-      if (item.state === 2) {
-        return
+      if (item.state === 1 || item.state === 3 || item.state === 4) {
+        if (this.userInfo.openBoxTimes) {
+          this.$router.push(`/openBox/${item.color}?sort=${item.sort}${item.state === 4 ? '&isTransparent=true' : ''}`)
+        } else {
+          this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}${item.state === 4 ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}` : ''}`)
+        }
+        GLOBALS.marchSetsPoint('A_H5PT0225002542', {
+          awards_id: item.sort
+        }) // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
       }
-      if (this.userInfo.openBoxTimes) {
-        this.$router.push(`/openBox/${item.color}?sort=${item.sort}${item.state === 4 ? '&isTransparent=true' : ''}`)
-      } else {
-        this.$router.push(`/chooseBox/${item.color}?sort=${item.sort}${item.state === 4 ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}` : ''}`)
-      }
-      GLOBALS.marchSetsPoint('A_H5PT0225002542', {
-        awards_id: item.sort
-      }) // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
     },
     async buyOne () {
       if (this.userInfo && this.userInfo.openBoxTimes) {
