@@ -130,13 +130,13 @@ ul {
       height: 0.48rem;
       width: 100%;
       font-weight: bold;
-      background: linear-gradient(
-        0deg,
-        rgba(240, 243, 252, 1) 0%,
-        rgba(228, 223, 203, 1) 98.92578125%
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      // background: linear-gradient(
+      //   0deg,
+      //   rgba(240, 243, 252, 1) 0%,
+      //   rgba(228, 223, 203, 1) 98.92578125%
+      // );
+      // -webkit-background-clip: text;
+      // -webkit-text-fill-color: transparent;
     }
   }
 }
