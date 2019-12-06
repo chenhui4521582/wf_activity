@@ -1,22 +1,11 @@
 <template>
   <section class="box-list-wrapper">
     <section class="box-list-container">
-      <ul class="box-list"
-        :class="{'all-has-shelf':firstTime}"
-        v-for="(items,key) in boxList"
-        :key="'list'+key"
-        :style="{zIndex:3-key}">
-        <li class="box-item"
-          v-for="(item,index) in items"
-          :key="'item'+index"
-          :class="{'shake-rotate':hasShake(item.state)}"
-          @click="toDetail(item)">
-          <box-info :class="{'has-shelf':hasShelf(item)}"
-            :info="item"></box-info>
-          <div class="old-box-image box-drop"
-            v-if="item.state===3">
-            <img :src="item.extend.oldColor|boxImage(item.state)"
-              alt="">
+      <ul class="box-list" :class="{'all-has-shelf':firstTime}" v-for="(items,key) in boxList" :key="'list'+key" :style="{zIndex:3-key}">
+        <li class="box-item" v-for="(item,index) in items" :key="'item'+index" :class="{'shake-rotate':hasShake(item.state)}" @click="toDetail(item)">
+          <box-info :class="{'has-shelf':hasShelf(item)}" :info="item"></box-info>
+          <div class="old-box-image box-drop" v-if="item.state===3">
+            <img :src="item.extend.oldColor|boxImage(item.state)" alt="">
             <div class="awards-info">
               <p class="other-people">用户{{item.extend.nickname}}正在购买</p>
             </div>
@@ -26,24 +15,17 @@
     </section>
     <section class="btn-container">
       <m-button @confirm="buyOne">{{userInfo.openBoxTimes?'立即开盒':'15元开一次'}}</m-button>
-      <div class="change-btn"
-        @click="changeAll">换一批</div>
+      <div class="change-btn" @click="changeAll">换一批</div>
     </section>
-    <Dialog :show="isShowPop"
-      title="支付完成"
-      :close="true"
-      @onClose="closePop()">
+    <Dialog :show="isShowPop" title="支付完成" :close="true" @onClose="closePop()">
       <p class="pop-content">
         您已付款成功，选一个盲盒吧
       </p>
-      <section class="pop-btn-wrapper"
-        slot="footer">
-        <div class="confirm"
-          @click="closePop(1)">
+      <section class="pop-btn-wrapper" slot="footer">
+        <div class="confirm" @click="closePop(1)">
           好的
         </div>
-        <div class="cancel"
-          @click="closePop(2)">
+        <div class="cancel" @click="closePop(2)">
           不选了，随机开一个
         </div>
       </section>
@@ -52,6 +34,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box'
 import { UserInfo } from '../../../apis/user'
 import MButton from '../../../components/MButton'
@@ -66,7 +49,7 @@ export default {
   },
   data () {
     return {
-      isChange: true,
+      isChange: false,
       box: [],
       userInfo: {},
       isShowPop: false,
@@ -134,8 +117,8 @@ export default {
     },
     // 换一批
     async changeAll () {
-      if (!this.isChange) return
-      this.isChange = false
+      if (this.isChange) return
+      this.isChange = true
       const res = await ChangeAll()
       const { data } = res.data
       this.box = data || []
@@ -143,7 +126,7 @@ export default {
       this.isRefresh = true
       this.refreshTimer = setTimeout(() => {
         this.isRefresh = false
-        this.isChange = true
+        this.isChange = false
         clearTimeout(this.refreshTimer)
       }, 1000)
       GLOBALS.marchSetsPoint('A_H5PT0225002540') // H5平台-盲盒页面-换一批点击

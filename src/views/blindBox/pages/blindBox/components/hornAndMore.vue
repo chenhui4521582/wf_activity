@@ -1,17 +1,11 @@
 <template>
   <section class="horn-and-more">
-    <section class="text-btn"
-      @click="showRule"><span>活动规则</span></section>
-    <horn-list :notice-list="noticeList"
-      v-if="noticeList.length"></horn-list>
+    <section class="text-btn" @click="showRule"><span>活动规则</span></section>
+    <horn-list :notice-list="noticeList" v-if="noticeList.length"></horn-list>
     <section class="text-btn">
-      <a href="#/myPrize"
-        @click="getAwards">获得奖品</a>
+      <a href="#/myPrize" @click="getAwards">获得奖品</a>
     </section>
-    <Dialog :show="isShowRule"
-      title="活动规则"
-      :close="true"
-      @onClose="closeRule()">
+    <Dialog :show="isShowRule" title="活动规则" :close="true" @onClose="closeRule()">
       <p class="rule-content">
         1.用户支付15元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
         2.购买盲盒可100%开出奖品；<br>
@@ -20,10 +14,8 @@
         5.盲盒和透视卡一旦购买后不支持退换。<br>
         玩蜂对此具有最终解释权
       </p>
-      <section class="rule-btn-wrapper"
-        slot="footer">
-        <div class="confirm"
-          @click="closeRule()">
+      <section class="rule-btn-wrapper" slot="footer">
+        <div class="confirm" @click="closeRule()">
           我知道了
         </div>
       </section>
@@ -32,6 +24,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import hornList from './hornList'
 import Dialog from '../../../components/dialog'
 import { NoticeList } from '../../../apis/box'
