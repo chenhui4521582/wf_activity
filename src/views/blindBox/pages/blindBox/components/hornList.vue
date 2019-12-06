@@ -3,23 +3,19 @@
     <div class="horn">
       <div class="horn-list">
         <div ref="hornDivWraper">
-          <ul ref="hornUl"
-            id="hornUl"
-            :style="hornStyles">
-            <li v-for="(item,index) in noticeList"
-              :key="index"
-              ref="hornLi">
+          <ul ref="hornUl" id="hornUl" :style="hornStyles">
+            <li v-for="(item,index) in noticeList" :key="index" ref="hornLi">
               <span>恭喜用户</span><span class="nickname">{{item.nickname}}</span><span>抽中了{{item.awardsName}}</span>
             </li>
           </ul>
-          <ul id="copyHornUl"
-            :style="copyStyles"></ul>
+          <ul id="copyHornUl" :style="copyStyles"></ul>
         </div>
       </div>
     </div>
   </section>
 </template>
 <script>
+/* eslint-disable no-undef */
 export default {
   props: {
     noticeList: {

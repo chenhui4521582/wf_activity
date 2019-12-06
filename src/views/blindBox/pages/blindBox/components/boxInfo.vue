@@ -1,17 +1,11 @@
 <template>
   <section class="box-info">
-    <img class="box-image"
-      :src="info.color|boxImage(info.state)"
-      alt="">
-    <div class="awards-info"
-      v-if="info.state!==1">
+    <img class="box-image" :src="info.color|boxImage(info.state)" alt="">
+    <div class="awards-info" v-if="info.state!==1">
       <template v-if="info.state===4">
-        <img class="awards-image"
-          :src="info.extend.awardsImage|imgFilter"
-          alt="">
+        <img class="awards-image" :src="info.extend.awardsImage|imgFilter" alt="">
         <p class="awards-name">{{info.extend.awardsName}}</p>
-        <section class="downTime-wrapper"
-          v-if="isShow">
+        <section class="downTime-wrapper" v-if="isShow">
           {{info.extend.expireSecond}}s
         </section>
       </template>
@@ -23,6 +17,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { boxGroup } from '../../../config/box'
 export default {
   name: 'boxInfo',

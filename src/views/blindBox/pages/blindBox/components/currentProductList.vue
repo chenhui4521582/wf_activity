@@ -2,32 +2,26 @@
   <section class="current-product-list">
     <p>
       <span>本期明星产品</span>
-      <a href="#/allProducts"
-        @click="moreAwards()">更多奖品>></a>
+      <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </p>
     <section class="product-list-wrapper">
       <div ref="productDivWraper">
-        <ul ref="productUl"
-          id="productUl"
-          :style="productStyles">
-          <li v-for="(item,index) in products"
-            :key="index"
-            ref="productLi">
+        <ul ref="productUl" id="productUl" :style="productStyles">
+          <li v-for="(item,index) in products" :key="index" ref="productLi">
             <div>
-              <img :src="item.awardsImage|imgFilter"
-                alt="">
+              <img :src="item.awardsImage|imgFilter" alt="">
               <span>{{item.awardsName}}</span>
             </div>
           </li>
         </ul>
-        <ul id="copyProductUl"
-          :style="copyStyles"></ul>
+        <ul id="copyProductUl" :style="copyStyles"></ul>
       </div>
     </section>
   </section>
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { hotAwardsList } from '../../../apis/products'
 export default {
   name: '',
@@ -139,7 +133,7 @@ export default {
       text-align: center;
       div {
         position: relative;
-        // width: 1.4rem;
+        min-width: 1.4rem;
         height: 1.12rem;
         margin: 0 0.16rem;
         padding-top: 0.04rem;
@@ -165,6 +159,7 @@ export default {
           bottom: 0;
           left: 0;
           height: 0.3rem;
+          padding: 0 0.02rem;
           line-height: 0.3rem;
           background: #f2db8f;
           color: #2a2e3a;
