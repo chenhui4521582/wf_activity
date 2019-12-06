@@ -1,5 +1,8 @@
 <template>
   <article class="wrapper">
+    <img class="back"
+      @click="$router.push({name:'Index'})"
+      src="./assets/arrow.png">
     <LongSwiper class="notice" />
     <section class="box__section">
       <div class="bg__div--rotate"></div>
@@ -55,6 +58,12 @@ export default {
   padding-top: 0.3rem;
   box-sizing: border-box;
   overflow: hidden;
+  .back {
+    width: 0.16rem;
+    position: absolute;
+    left: 0.4rem;
+    top: 0.4rem;
+  }
   .box__section {
     position: relative;
     .bg__div--rotate {

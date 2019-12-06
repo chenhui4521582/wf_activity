@@ -139,7 +139,7 @@ export default {
       text-align: center;
       div {
         position: relative;
-        width: 1.4rem;
+        // width: 1.4rem;
         height: 1.12rem;
         margin: 0 0.16rem;
         padding-top: 0.04rem;
@@ -152,9 +152,14 @@ export default {
         img {
           max-height: 100%;
           max-width: 100%;
+          display: block;
+          margin: 0 auto;
         }
         span {
-          position: absolute;
+          position: relative;
+          display: block;
+          z-index: 8;
+          margin-top: -0.3rem;
           width: 100%;
           text-align: center;
           bottom: 0;
