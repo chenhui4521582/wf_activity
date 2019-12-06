@@ -166,7 +166,10 @@ export default {
     overflow: scroll;
     .button {
       width: 1.27rem;
-      line-height: 0.52rem;
+      height: 0.52rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 0.26rem;
       font-size: 0.24rem;
       text-align: center;
