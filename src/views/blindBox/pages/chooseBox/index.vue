@@ -1,7 +1,10 @@
 <template>
   <article class="wrapper">
     <LongSwiper class="notice" />
-    <Box />
+    <section class="box__section">
+      <div class="bg__div--rotate"></div>
+      <Box />
+    </section>
     <img class="goods-detail"
       @click="toAllProduct"
       src="./assets/detail.png">
@@ -36,6 +39,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .wrapper {
   height: 100vh;
   position: relative;
@@ -43,6 +55,17 @@ export default {
   padding-top: 0.3rem;
   box-sizing: border-box;
   overflow: hidden;
+  .box__section {
+    position: relative;
+    .bg__div--rotate {
+      background: url("./components/box/assets/shine.png") no-repeat;
+      background-size: cover;
+      position: absolute;
+      width: 7.2rem;
+      height: 6.58rem;
+      animation: rotate 4.5s linear infinite;
+    }
+  }
   .notice {
     margin: 0 auto;
     width: 3.87rem;

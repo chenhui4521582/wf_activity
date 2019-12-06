@@ -23,7 +23,7 @@ export default {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);
@@ -38,7 +38,7 @@ export default {
   text-align: center;
   background: linear-gradient(90deg, #ffeab5, #dbbd6e);
   &.breathe {
-    animation: breathe 1.4s infinite;
+    animation: breathe 1s infinite;
   }
 }
 </style>

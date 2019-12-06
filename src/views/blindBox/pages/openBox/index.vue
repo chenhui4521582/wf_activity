@@ -119,7 +119,8 @@ export default {
     .prize {
       width: 6.71rem;
       height: 6.23rem;
-      margin-left: 0.49rem;
+      margin-left: auto;
+      margin-right: auto;
       margin-top: -0.3rem;
       padding-top: 1.1rem;
       box-sizing: border-box;
