@@ -14,7 +14,7 @@ export default {
     RowGroup,
     Account
   },
-  mounted () {
+  async mounted () {
     GLOBALS.marchSetsPoint('A_H5PT0225002567')
   }
 }
