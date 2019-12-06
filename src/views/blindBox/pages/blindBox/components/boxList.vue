@@ -66,6 +66,7 @@ export default {
   },
   data () {
     return {
+      isChange: true,
       box: [],
       userInfo: {},
       isShowPop: false,
@@ -133,6 +134,8 @@ export default {
     },
     // 换一批
     async changeAll () {
+      if (!this.isChange) return
+      this.isChange = false
       const res = await ChangeAll()
       const { data } = res.data
       this.box = data || []
@@ -140,6 +143,7 @@ export default {
       this.isRefresh = true
       this.refreshTimer = setTimeout(() => {
         this.isRefresh = false
+        this.isChange = true
         clearTimeout(this.refreshTimer)
       }, 1000)
       GLOBALS.marchSetsPoint('A_H5PT0225002540') // H5平台-盲盒页面-换一批点击
