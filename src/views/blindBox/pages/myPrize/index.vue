@@ -1,6 +1,6 @@
 <template>
   <article class="wrapper">
-    <NavBar @back="$router.go(-1)"
+    <NavBar @back="$router.push({name:'Index'})"
       title="我的奖品" />
     <TabBar class="container" />
   </article>

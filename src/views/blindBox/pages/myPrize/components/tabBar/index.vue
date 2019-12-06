@@ -106,6 +106,7 @@ export default {
      * @des 切换tab
      */
     changeTab (item, index) {
+      this.goodsList = null
       this.active = index
       if (index === 0) GLOBALS.marchSetsPoint('A_H5PT0225002572')
       if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')

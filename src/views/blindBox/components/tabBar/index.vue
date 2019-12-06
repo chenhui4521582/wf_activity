@@ -3,6 +3,7 @@
     <section v-if="isTabBar"
       class="content">
       <div class="bar"
+        :class="{'active':index===active}"
         @click="changeBar(item,index)"
         v-for="(item,index) in bar"
         :key="item.name">
@@ -44,9 +45,9 @@ export default {
     changeBar (item, index) {
       this.active = index
       if (index) {
-        GLOBALS.marchSetsPoint("A_H5PT0225002545") // H5平台-盲盒页面-底部我的导航栏点击
+        GLOBALS.marchSetsPoint('A_H5PT0225002545') // H5平台-盲盒页面-底部我的导航栏点击
       } else {
-        GLOBALS.marchSetsPoint("A_H5PT0225002546") // H5平台-盲盒页面-底部盲盒导航栏点击
+        GLOBALS.marchSetsPoint('A_H5PT0225002546') // H5平台-盲盒页面-底部盲盒导航栏点击
       }
       this.$router.push({ name: item.name })
     }
@@ -87,6 +88,9 @@ export default {
     font-size: 0.24rem;
     color: #9699aa;
     font-weight: bold;
+    &.active {
+      color: #e2c87e;
+    }
     img {
       width: 0.6rem;
       height: 0.6rem;
