@@ -79,8 +79,8 @@ export default {
         this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
         let x = 0
         let fun = () => {
-          this.productStyles.left = x + 'px';
-          this.copyStyles.left = x + parseInt(offsetWidth) + 'px';
+          this.productStyles.left = `${x}px`
+          this.copyStyles.left = `${x + parseInt(offsetWidth)}px`
           x--
           if (x + parseInt(offsetWidth) === 0) {
             x = 0
