@@ -66,8 +66,8 @@ export default {
 <style lang="less" scoped>
 .horn-and-more {
   height: 1.16rem;
-  background: #1b1f29 url(../assets/top-btn-wrap.png) no-repeat center bottom /
-    100% 100%;
+  background: #1b1f29 url(../assets/top-btn-wrap.png) no-repeat center top /
+    100% 103%;
   display: flex;
   align-items: center;
   justify-content: space-between;
