@@ -82,12 +82,13 @@ export default {
     }
   },
   async mounted () {
-    GLOBALS.marchSetsPoint('A_H5PT0225002581')
-    if (this.$route.query.type === 'success') {
-      this.receiveSuccess()
-    }
+    GLOBALS.marchSetsPoint('A_H5PT0225002581');
     ({ data: { data: this.goodsList } } = await InventoryList(1));
     ({ data: { data: this.post } } = await PostInfo())
+    if (this.$route.query.type === 'success' && this.post.singlePostTimes) {
+      await Receiver()
+      this.receiveSuccess()
+    }
     this.isLoad = true
   },
   computed: {
