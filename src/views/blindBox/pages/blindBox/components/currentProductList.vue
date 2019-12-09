@@ -86,7 +86,7 @@ export default {
             x = 0
           }
         }
-        this.productTimer = setInterval(fun, 10)
+        this.productTimer = setInterval(fun, 80)
       })
     }
   },
