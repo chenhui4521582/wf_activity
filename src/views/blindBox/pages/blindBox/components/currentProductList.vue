@@ -70,7 +70,7 @@ export default {
 
         liNodes &&
           liNodes.map((item, index) => {
-            offsetWidth += item.offsetWidth + 1
+            offsetWidth += item.offsetWidth + 0.01
           })
 
         // 设置UL宽度
@@ -86,7 +86,7 @@ export default {
             x = 0
           }
         }
-        this.productTimer = setInterval(fun, 80)
+        this.productTimer = setInterval(fun, 10)
       })
     }
   },
