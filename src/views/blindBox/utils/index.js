@@ -6,6 +6,7 @@ export class Pay {
   static toPay ({ originDeffer = location.href, payInfo }) {
     let url =
       'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true';
+    localStorage.setItem('originDeffer', originDeffer)
     localStorage.setItem('payment', JSON.stringify(payInfo))
     location.replace(url)
   }
