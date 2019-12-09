@@ -6,9 +6,7 @@
       confirm="我知道了">
       <p v-if="this.active===1"
         class="tip">
-        领取成功后，预计1-2个工作日
-        发货,请您耐心等待，并确保通话畅通
-        若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
+        领取成功后，预计1-2个工作日发货,请您耐心等待，并确保通话畅通若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
       <p class="tip"
         v-if="this.active===2">您的运单号为：{{orderNumber}}</p>
