@@ -2,38 +2,30 @@
   <section class="current-product-list">
     <p>
       <span>本期明星产品</span>
-      <a href="#/allProducts"
-        @click="moreAwards()">更多奖品>></a>
+      <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </p>
     <section class="product-list-wrapper">
       <div ref="productDivWraper">
-        <ul ref="productUl"
-          id="productUl"
-          :style="productStyles">
-          <li v-for="(item,index) in products"
-            :key="index"
-            ref="productLi">
+        <ul ref="productUl" id="productUl" :style="productStyles">
+          <li v-for="(item, index) in products" :key="index" ref="productLi">
             <div>
-              <img :src="item.awardsImage|imgFilter"
-                alt="">
-              <span>{{item.awardsName}}</span>
+              <img :src="item.awardsImage | imgFilter" alt="" />
+              <span>{{ item.awardsName }}</span>
             </div>
           </li>
         </ul>
-        <ul id="copyProductUl"
-          :style="copyStyles"></ul>
+        <ul id="copyProductUl" :style="copyStyles"></ul>
       </div>
     </section>
   </section>
 </template>
 
 <script>
-import { hotAwardsList } from '../../../apis/products'
+/* eslint-disable no-undef */
+import { hotAwardsList } from '../../../apis/products';
 export default {
   name: '',
-  components: {
-
-  },
+  components: {},
   data () {
     return {
       products: [],
@@ -58,7 +50,9 @@ export default {
       const { data } = res.data
       this.products = data || []
       this.$nextTick(() => {
-        this.wrapWidth = this.$refs.productDivWraper && this.$refs.productDivWraper.offsetWidth
+        this.wrapWidth =
+          this.$refs.productDivWraper &&
+          this.$refs.productDivWraper.offsetWidth
         this.newProductLogic()
       })
     },
@@ -74,9 +68,10 @@ export default {
 
         let offsetWidth = 0
 
-        liNodes && liNodes.map((item, index) => {
-          offsetWidth += item.offsetWidth + 1
-        })
+        liNodes &&
+          liNodes.map((item, index) => {
+            offsetWidth += item.offsetWidth + 0.01
+          })
 
         // 设置UL宽度
         this.productStyles.width = `${offsetWidth}px`
@@ -84,14 +79,14 @@ export default {
         this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
         let x = 0
         let fun = () => {
-          this.productStyles.left = x + 'px'
-          this.copyStyles.left = (x + parseInt(offsetWidth)) + 'px'
+          this.productStyles.left = x + 'px';
+          this.copyStyles.left = x + parseInt(offsetWidth) + 'px';
           x--
-          if ((x + parseInt(offsetWidth)) === 0) {
+          if (x + parseInt(offsetWidth) === 0) {
             x = 0
           }
         }
-        this.productTimer = setInterval(fun, 80)
+        this.productTimer = setInterval(fun, 10)
       })
     }
   },
@@ -139,7 +134,7 @@ export default {
       text-align: center;
       div {
         position: relative;
-        // width: 1.4rem;
+        min-width: 1.4rem;
         height: 1.12rem;
         margin: 0 0.16rem;
         padding-top: 0.04rem;
@@ -160,11 +155,11 @@ export default {
           display: block;
           z-index: 8;
           margin-top: -0.3rem;
-          width: 100%;
           text-align: center;
           bottom: 0;
           left: 0;
           height: 0.3rem;
+          padding: 0 0.1rem;
           line-height: 0.3rem;
           background: #f2db8f;
           color: #2a2e3a;

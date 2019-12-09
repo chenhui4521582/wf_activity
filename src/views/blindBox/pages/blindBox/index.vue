@@ -9,6 +9,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
