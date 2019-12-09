@@ -21,6 +21,20 @@ Vue.filter('imgFilter', url => {
   }
 })
 
+Vue.filter('textFilter', value => {
+  if (value && value.length > 9) {
+    return `${value.substr(0, 9)}…`
+  }
+  return value
+})
+
+Vue.filter('productFilter', value => {
+  if (value && value.length > 17) {
+    return `${value.substr(0, 17)}…`
+  }
+  return value
+})
+
 new Vue({
   router,
   render: r => r(App)

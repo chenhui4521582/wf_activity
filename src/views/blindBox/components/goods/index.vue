@@ -6,7 +6,7 @@
           alt="商品">
       </div>
       <div class="goods-info">
-        <p class="goods-name">{{goods.awardsName}}</p>
+        <p class="goods-name">{{goods.awardsName | textFilter}}</p>
         <div></div>
         <div class="goods-count">
           <p>数量：{{goods.awardsNum}}个</p>

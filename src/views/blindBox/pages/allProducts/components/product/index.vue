@@ -5,7 +5,7 @@
         alt="奖品">
     </div>
     <div class="product-info">
-      <p class="name">{{product.awardsName }}</p>
+      <p class="name">{{product.awardsName | productFilter}}</p>
       <p class="des">
         <span class="price">¥{{product.showAmount }}</span>
         <span></span>
@@ -34,7 +34,7 @@ export default {
 <style lang="less" scoped>
 .product {
   width: 3.15rem;
-  height: 3.71rem;
+  // height: 3.71rem;
   border-radius: 0.16rem;
   overflow: hidden;
   margin: 0.15rem;

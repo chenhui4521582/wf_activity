@@ -10,7 +10,7 @@
           v-if="awardsImage"
           :src="awardsImage | imgFilter">
       </div>
-      <p v-if="awardsName">{{awardsName}}</p>
+      <p v-if="awardsName">{{awardsName | textFilter}}</p>
     </div>
     <p @click="refresh"
       class="refresh"><img src="./assets/refresh.png">换一盒</p>
