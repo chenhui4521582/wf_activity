@@ -70,7 +70,7 @@ export default {
 
         liNodes &&
           liNodes.map((item, index) => {
-            offsetWidth += item.offsetWidth + 0.01
+            offsetWidth += item.offsetWidth + 0.05
           })
 
         // 设置UL宽度
