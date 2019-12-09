@@ -8,6 +8,6 @@ export class Pay {
     let payStorage = 'payment'
     localStorage.setItem(payStorage, JSON.stringify(payInfo))
     localStorage.setItem('originDeffer', originDeffer)
-    location.href = url
+    location.replace(url)
   }
 }
