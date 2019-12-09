@@ -12,7 +12,7 @@
           :src="awardsInfo.awardsImage | imgFilter">
       </div>
       <p v-if="awardsInfo"
-        class="name">{{awardsInfo.awardsName}}</p>
+        class="name">{{awardsInfo.awardsName | textFilter}}</p>
       <p v-if="awardsInfo"
         class="des">
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>

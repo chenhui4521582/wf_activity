@@ -6,7 +6,7 @@
         :key="index">
         <div class="swiper-info">
           <p>恭喜{{item.nickname}}用户</p>
-          <p>抽中{{item.awardsName}}</p>
+          <p>抽中{{item.awardsName | textFilter}}</p>
         </div>
       </swiper-slide>
     </swiper>
