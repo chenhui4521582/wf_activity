@@ -22,7 +22,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { hotAwardsList } from '../../../apis/products'
+import { hotAwardsList } from '../../../apis/products';
 export default {
   name: '',
   components: {},
@@ -134,8 +134,8 @@ export default {
       text-align: center;
       div {
         position: relative;
-        max-width: 1.8rem;
-        min-width: 1.8rem;
+        max-width: 1.74rem;
+        min-width: 1.74rem;
         overflow: hidden;
         text-overflow: ellipsis;
         height: 1.12rem;
