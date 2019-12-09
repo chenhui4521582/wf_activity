@@ -79,14 +79,14 @@ export default {
         this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
         let x = 0
         let fun = () => {
-          this.productStyles.left = x + 'px';
-          this.copyStyles.left = x + parseInt(offsetWidth) + 'px';
+          this.productStyles.left = `${x}px`
+          this.copyStyles.left = `${x + parseInt(offsetWidth)}px`
           x--
           if (x + parseInt(offsetWidth) === 0) {
             x = 0
           }
         }
-        this.productTimer = setInterval(fun, 10)
+        this.productTimer = setInterval(fun, 80)
       })
     }
   },
@@ -134,7 +134,10 @@ export default {
       text-align: center;
       div {
         position: relative;
-        min-width: 1.4rem;
+        max-width: 2.1rem;
+        min-width: 2.1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
         height: 1.12rem;
         margin: 0 0.16rem;
         padding-top: 0.04rem;
@@ -142,27 +145,31 @@ export default {
         box-sizing: border-box;
         border-radius: 0.1rem;
         font-size: 0.18rem;
-        overflow: hidden;
-        box-sizing: border-box;
         img {
           max-height: 100%;
           max-width: 100%;
           display: block;
           margin: 0 auto;
+          border-radius: 0.1rem;
         }
         span {
-          position: relative;
+          position: absolute;
           display: block;
           z-index: 8;
           margin-top: -0.3rem;
           text-align: center;
           bottom: 0;
           left: 0;
+          right: 0;
           height: 0.3rem;
-          padding: 0 0.1rem;
           line-height: 0.3rem;
+          padding: 0 0.1rem;
           background: #f2db8f;
           color: #2a2e3a;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          box-sizing: border-box;
+          border-radius: 0 0 0.1rem 0.1rem;
         }
       }
     }
