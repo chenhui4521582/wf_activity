@@ -5,7 +5,7 @@
       <swiper-slide v-for="(item,index) in swiperList"
         :key="index">
         <div class="swiper-info">
-          <p>恭喜{{item.nickname}}开出{{item.awardsName}}</p>
+          <p>恭喜{{item.nickname}}开出{{item.awardsName | textFilter}}</p>
         </div>
       </swiper-slide>
     </swiper>

@@ -70,7 +70,7 @@ export default {
 
         liNodes &&
           liNodes.map((item, index) => {
-            offsetWidth += item.offsetWidth + 0.01
+            offsetWidth += item.offsetWidth + 0.1
           })
 
         // 设置UL宽度
@@ -134,8 +134,8 @@ export default {
       text-align: center;
       div {
         position: relative;
-        max-width: 2.1rem;
-        min-width: 2.1rem;
+        max-width: 1.74rem;
+        min-width: 1.74rem;
         overflow: hidden;
         text-overflow: ellipsis;
         height: 1.12rem;
