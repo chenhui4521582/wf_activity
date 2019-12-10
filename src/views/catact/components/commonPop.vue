@@ -42,12 +42,12 @@
                 <li><span>{{myInfo.rankInfo.currentAwards}}</span></li>
               </ul>
               <p v-if="myInfo.state==3" style="margin-top: .14rem">
-                您连续5天完成所有每日任务，<br>
+                您累计4天完成当日所有任务，<br>
                 请收下额外奖励
               </p>
             </template>
             <p v-else>
-              您连续5天完成所有每日任务，<br>
+              您累计4天完成当日所有任务，<br>
               请收下额外奖励
             </p>
             <ul class="awards-list" v-if="myInfo.state==2||myInfo.state==3">
