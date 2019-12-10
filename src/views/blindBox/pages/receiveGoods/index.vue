@@ -1,6 +1,6 @@
 <template>
   <article class="receive-wrapper">
-    <NavBar @back="$router.go(-1)"
+    <NavBar @back="$router.push({name:'MyPrize'})"
       title="领取奖品" />
     <section class="content"
       v-if="isLoad">

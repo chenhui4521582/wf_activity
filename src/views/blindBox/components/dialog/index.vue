@@ -4,7 +4,7 @@
       class="mask">
       <section class="content">
         <img v-if="close"
-          @click="$emit('onClose')"
+          @click.self="$emit('onClose')"
           class="close"
           src="./assets/close.png"
           alt="关闭">
@@ -85,6 +85,7 @@ export default {
   background: #fff;
   text-align: center;
   position: relative;
+  z-index: 9999;
   .close {
     position: absolute;
     z-index: 99999;
