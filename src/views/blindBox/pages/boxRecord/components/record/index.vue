@@ -27,6 +27,9 @@ export default {
   methods: {
     onConfirm () {
       GLOBALS.marchSetsPoint('A_H5PT0225002592')
+      this.$router.push({
+        name: 'Index'
+      })
     }
   },
   async mounted () {

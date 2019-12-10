@@ -38,15 +38,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-input,
-textarea {
-  -webkit-user-select: auto !important;
-  -khtml-user-select: auto !important;
-  -moz-user-select: auto !important;
-  -ms-user-select: auto !important;
-  -o-user-select: auto !important;
-  user-select: auto !important;
-}
 .input-group {
   background: #f7f7f7;
   border-radius: 0.16rem;
@@ -60,6 +51,12 @@ textarea {
     width: 100%;
     height: 100%;
     border: none;
+    -webkit-user-select: auto !important;
+    -khtml-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    -o-user-select: auto !important;
+    user-select: auto !important;
   }
 }
 </style>

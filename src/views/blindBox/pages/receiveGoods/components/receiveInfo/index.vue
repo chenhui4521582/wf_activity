@@ -24,7 +24,7 @@
     <section class="post-info-dialog__section">
       <div slot="footer"
         :class="{'primary':isConfirm}"
-        @click="confirm"
+        @click.self="confirm"
         class="post-info-dialog__div">提交</div>
     </section>
   </Dialog>
