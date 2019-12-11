@@ -59,9 +59,10 @@ export default {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-      max-height: 0.6rem;
-      line-height: 0.3rem;
+      height: 0.8rem;
+      line-height: 0.4rem;
       overflow: hidden;
+      word-break: break-all;
     }
     .des {
       display: flex;
