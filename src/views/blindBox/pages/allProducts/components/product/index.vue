@@ -1,11 +1,10 @@
 <template>
   <section class="product">
     <div class="product-img">
-      <img :src="product.awardsImage | imgFilter "
-        alt="奖品">
+      <img :src="product.awardsImage | imgFilter " alt="奖品">
     </div>
     <div class="product-info">
-      <p class="name">{{product.awardsName | productFilter}}</p>
+      <p class="name">{{product.awardsName}}</p>
       <p class="des">
         <span class="price">¥{{product.showAmount }}</span>
         <span></span>
@@ -56,7 +55,13 @@ export default {
     .name {
       color: #000;
       font-size: 0.28rem;
-      padding-bottom: 0.19rem;
+      margin-bottom: 0.19rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      max-height: 0.6rem;
+      line-height: 0.3rem;
+      overflow: hidden;
     }
     .des {
       display: flex;

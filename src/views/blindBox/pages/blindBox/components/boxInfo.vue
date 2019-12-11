@@ -1,17 +1,11 @@
 <template>
   <section class="box-info">
-    <img class="box-image"
-      :src="info.color | boxImage(info.state)"
-      alt="" />
-    <div class="awards-info"
-      v-if="info.state !== 1">
+    <img class="box-image" :src="info.color | boxImage(info.state)" alt="" />
+    <div class="awards-info" v-if="info.state !== 1">
       <template v-if="info.state === 4">
-        <img class="awards-image"
-          :src="info.extend.awardsImage | imgFilter"
-          alt="" />
+        <img class="awards-image" :src="info.extend.awardsImage | imgFilter" alt="" />
         <p class="awards-name">{{ info.extend.awardsName | textFilter}}</p>
-        <section class="downTime-wrapper"
-          v-if="isShow">
+        <section class="downTime-wrapper" v-if="isShow">
           {{ info.extend.expireSecond }}s
         </section>
       </template>
@@ -118,15 +112,19 @@ export default {
       position: relative;
       white-space: nowrap;
       width: min-content;
+      max-width: 100%;
       background: #fff;
       line-height: 0.26rem;
       border-radius: 0.13rem;
       color: #2a2d3c;
-      font-weight: bold;
+      font-weight: 700;
       font-size: 0.18rem;
       margin: -0.1rem auto 0;
       padding: 0 0.1rem;
       z-index: 1;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .other-people {
       margin: 0.2rem 0.14rem 0;
