@@ -1,35 +1,23 @@
 <template>
   <article class="receive-wrapper">
-    <NavBar @back="$router.push({name:'MyPrize'})"
-      title="领取奖品" />
-    <section class="content"
-      v-if="isLoad">
-      <div :class="{'bg':!isPostInfo}"
-        @click="editPostInfo"
-        class="post-info">
-        <p class="no-info"
-          v-if="!isPostInfo">请填写收货人信息 <img src="./assets/arrow-white.png"></p>
-        <div v-else
-          class="edit-info">
-          <img class="icon"
-            src="./assets/icon.png">
+    <NavBar @back="$router.push({name:'MyPrize'})" title="领取奖品" />
+    <section class="content" v-if="isLoad">
+      <div :class="{'bg':!isPostInfo}" @click="editPostInfo" class="post-info">
+        <p class="no-info" v-if="!isPostInfo">请填写收货人信息 <img src="./assets/arrow-white.png"></p>
+        <div v-else class="edit-info">
+          <img class="icon" src="./assets/icon.png">
           <div class="edit-info__div">
             <p class="name">{{post.name}}</p>
             <p class="mobile">{{post.mobile}}</p>
             <p class="address">{{post.address}}</p>
           </div>
-          <img class="arrow"
-            src="./assets/arrow.png">
+          <img class="arrow" src="./assets/arrow.png">
         </div>
       </div>
       <p class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
-      <Goods v-for="(item,index) in goodsList"
-        :key="index"
-        :goods="item">
-        <p class="goods-time"
-          slot="left">获奖时间：{{item.openTime }}</p>
-        <div class="receive-price"
-          slot="right">
+      <Goods v-for="(item,index) in goodsList" :key="index" :goods="item">
+        <p class="goods-time" slot="left">获奖时间：{{item.openTime }}</p>
+        <div class="receive-price" slot="right">
           <p class="receive-price-amount">¥{{item.showAmount}}</p>
           <p>（价值）</p>
         </div>
@@ -37,28 +25,15 @@
     </section>
     <section class="footer">
       <p class="footer__p">温馨提示：满2件奖品发货可包邮哦</p>
-      <div @click="confirm"
-        :class="isPostInfo?'primary':''"
-        class="footer__div">确认</div>
+      <div @click="confirm" :class="isPostInfo?'primary':''" class="footer__div">确认</div>
     </section>
-    <Dialog :show="show"
-      :close="true"
-      @onClose="onClose"
-      title="温馨提示"
-      @onCancel="toIndex"
-      @onConfirm="onPay"
-      cancel="去再开一盒"
-      confirm="<p style='color:#FF4141'>支付邮费</p>">
+    <Dialog :show="show" :close="true" @onClose="onClose" title="温馨提示" @onCancel="toIndex" @onConfirm="onPay" cancel="去再开一盒" confirm="<p style='color:#FF4141'>支付邮费</p>">
       <p class="tip">
         您领取的奖品不足2件，<br>需要支付<span>8元</span>邮费才能发货哦~
         <br>满2件奖品发货即可包邮！
       </p>
     </Dialog>
-    <ReceiveInfo :show="isReceiveInfo"
-      v-if="isReceiveInfo"
-      :receive="post"
-      @onConfirm="updatePostInfo"
-      @onClose="isReceiveInfo=false" />
+    <ReceiveInfo :show="isReceiveInfo" v-if="isReceiveInfo" :receive="post" @onConfirm="updatePostInfo" @onClose="isReceiveInfo=false" />
   </article>
 </template>
 
@@ -125,7 +100,7 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0225002588')
       this.show = false
       const { data: { data: payInfo } } = await PayPoint(3)
-      Pay.toPay({ payInfo, originDeffer: `${location.href}?type=success` })
+      Pay.toPay({ payInfo, originDeffer: '/activities/blindBox.html#/receiveGoods?type=success' })
     },
     // 确认按钮
     async confirm () {
