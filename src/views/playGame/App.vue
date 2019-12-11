@@ -82,7 +82,13 @@ export default {
       this.showRule = false
     },
     back() {
-      window.history.back()
+      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
+      let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+      if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL) > -1) {
+        parent.location.href = `https://wap.beeplaying.com/xmWap/#/?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
+      }else {
+        parent.location.href = `https://wap.beeplaying.com/bdWap/#/?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
+      }
     },
     playGame() {
       if(this.userInfo.gameUrl){
