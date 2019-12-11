@@ -51,11 +51,11 @@ export default {
     }
   }
   .product-info {
-    padding: 0.19rem;
+    padding: 0.12rem 0.2rem 0.2rem;
     .name {
       color: #000;
       font-size: 0.28rem;
-      margin-bottom: 0.19rem;
+      margin-bottom: 0.12rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
