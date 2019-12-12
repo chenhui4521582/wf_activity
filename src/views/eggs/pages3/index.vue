@@ -106,7 +106,8 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0075001458')   // H5平台-砸金蛋-点击返回
-      history.back(-1)
+       //默认跳首页去
+      location.href ='//wap.beeplaying.com'+linkUrl.getBackUrl(localStorage['APP_CHANNEL']);
     },
     getLiClass (index) {
       return `e-item${index + 1}`
@@ -293,6 +294,10 @@ export default {
     await this.getBetAwards()
     await this.getBetProgress()
     await this.getActivityGuide()
+    if(sessionStorage['event_recordEgg']){
+      GLOBALS.marchSetsPoint('A_H5PT0019002302');
+      sessionStorage.removeItem('event_recordEgg');
+    }
     GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
   }
 }

@@ -57,10 +57,6 @@ export default {
     hitPercent: () => import('./component/hitPercent/hitPercent.vue')
   },
   mounted () {
-    if(sessionStorage['event_recordEgg']){
-      GLOBALS.marchSetsPoint('A_H5PT0019002302');
-      sessionStorage.removeItem('event_recordEgg');
-    }
     this.getShowLeaguePacksList()
     this.getUserInfo()
   },

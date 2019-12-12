@@ -14,7 +14,7 @@ let channel = utils.getUrlParam('channel') ? utils.getUrlParam('channel') : loca
   token = utils.getUrlParam('token') ? utils.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN'),
   version = localStorage.getItem('APP_VERSION')
 
-if (localStorage.getItem('APP_CHANNEL') === '100001') {
+if (localStorage.getItem('APP_CHANNEL') == '100001') {
   localStorage.setItem('APP_VERSION', '1.0.0')
 } else {
   localStorage.setItem('APP_VERSION', '1.0.0')
@@ -36,7 +36,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(
   response => {
     var res = JSON.parse(response.request.response)
-    if (res && res.code && res.code !== 200) {
+    if (res && res.code && res.code != 200) {
       switch (res.code) {
         case 400:
           Vue.prototype.$toast.show({
@@ -55,12 +55,6 @@ axios.interceptors.response.use(
             message: '请求地址出错！',
             duration: 1500
           })
-          break
-        case 408:
-          // Vue.prototype.$toast.show({
-          //   message: '请求超时',
-          //   duration: 1500
-          // })
           break
         case 500:
           Vue.prototype.$toast.show({
@@ -102,7 +96,7 @@ axios.interceptors.response.use(
           var result = response.config && response.config.data
           if (result) {
             result = JSON.parse(result)
-            if (result && result.isShowToast === 'false') {
+            if (result && result.isShowToast == 'false') {
               break
             }
           }
@@ -115,22 +109,6 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    // let aa = `timeout of ${axios.defaults.timeout}ms exceeded`;
-    // error = JSON.stringify(error);
-
-    // console.log(error.response.status)
-    if (error && error.response) {
-
-    } else {
-      error = JSON.stringify(error)
-      if (error.indexOf('timeout') !== -1) {
-        // Vue.prototype.$toast.show({
-        //   message: '请求超时',
-        //   duration: 1500
-        // })
-        return
-      }
-    }
     return Promise.reject(error)
     // return '';
   }
