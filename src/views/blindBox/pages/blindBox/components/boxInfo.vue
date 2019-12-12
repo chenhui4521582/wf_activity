@@ -3,8 +3,12 @@
     <img class="box-image" :src="info.color | boxImage(info.state)" alt="" />
     <div class="awards-info" v-if="info.state !== 1">
       <template v-if="info.state === 4">
-        <img class="awards-image" :src="info.extend.awardsImage | imgFilter" alt="" />
-        <p class="awards-name">{{ info.extend.awardsName | textFilter}}</p>
+        <img
+          class="awards-image"
+          :src="info.extend.awardsImage | imgFilter"
+          alt=""
+        />
+        <p class="awards-name">{{ info.extend.awardsName | textFilter }}</p>
         <section class="downTime-wrapper" v-if="isShow">
           {{ info.extend.expireSecond }}s
         </section>
@@ -18,25 +22,25 @@
 
 <script>
 /* eslint-disable no-undef */
-import { boxGroup } from '../../../config/box'
+import { boxGroup } from '../../../config/box';
 export default {
   name: 'boxInfo',
   props: {
     info: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   filters: {
     boxImage (color, state) {
-      let type = ''
+      let type = '';
       switch (state) {
         case 2:
         case 4:
-          type = 'boxTransparent'
+          type = 'boxTransparent';
           break
         default:
-          type = 'box'
+          type = 'box';
           break
       }
       let index = boxGroup.findIndex(res => res.type === Number(color))
@@ -133,6 +137,7 @@ export default {
       border-radius: 0.13rem;
       font-size: 0.18rem;
       padding: 0.1rem;
+      word-break: break-all;
     }
   }
 }
