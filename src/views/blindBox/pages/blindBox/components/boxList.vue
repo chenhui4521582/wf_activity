@@ -327,6 +327,7 @@ export default {
             border-radius: 0.13rem;
             font-size: 0.18rem;
             padding: 0.1rem;
+            word-break: break-all;
           }
         }
       }
