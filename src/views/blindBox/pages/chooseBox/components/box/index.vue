@@ -1,26 +1,18 @@
 <template>
   <section class="box-wrapper">
     <div class="box">
-      <div :class="{'on-change':isOnChange}"
-        class="box__img--box">
+      <div :class="{'on-change':isOnChange}" class="box__img--box">
         <div class="img-wrapper">
           <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
-        <img class="box__img--goods"
-          v-if="awardsImage"
-          :src="awardsImage | imgFilter">
+        <img class="box__img--goods" v-if="awardsImage" :src="awardsImage | imgFilter">
       </div>
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
     </div>
-    <p @click="refresh"
-      class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
-      @confirm="onConfirm"
-      class="choose-button">{{buttonText}}</MButton>
+    <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm" class="choose-button">{{buttonText}}</MButton>
     <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
-    <Side-Bar @use="useCard"
-      :user-info="userInfo"
-      class="side-bar" />
+    <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
   </section>
 </template>
 
@@ -56,6 +48,9 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
+    if (this.userInfo && this.userInfo.openBoxTimes) {
+      this.openBox()
+    }
   },
   computed: {
     buttonText () {
