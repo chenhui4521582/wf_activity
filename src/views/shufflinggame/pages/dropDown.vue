@@ -88,7 +88,9 @@ export default {
       }
     },
     outHandleTab (idx) {
-      GLOBALS.marchSetsPoint('A_H5PT0156001774')//H5平台-翻牌活动-中间区域-获得更多翻牌点点击
+      //H5平台-翻牌活动-底部获取翻牌点TAB点击(展开) A_H5PT0156002609
+      //H5平台-翻牌活动-底部有奖排行榜TAB点击(展开) A_H5PT0156002610
+      GLOBALS.marchSetsPoint(idx?'A_H5PT0156002610':'A_H5PT0156002609')//H5平台-翻牌活动-中间区域-获得更多翻牌点点击
       if(idx==0){
         this.handleTab(idx)
       }else{

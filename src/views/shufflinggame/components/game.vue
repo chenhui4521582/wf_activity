@@ -47,10 +47,11 @@
         this.isShowPop = true
       },
       gotogame({url, id}) {
-        GLOBALS.marchSetsPoint('A_H5PT0211002235', {target_project_id: id})
+        GLOBALS.marchSetsPoint('A_H5PT0156002613', {task_id: id,task_name:url})
         GLOBALS.jumpOutsideGame(url)
       },
       gotoindex(){
+        GLOBALS.marchSetsPoint('A_H5PT0156002614')
         location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
       },
     }
