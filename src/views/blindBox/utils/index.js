@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-const channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
 
 // 支付
 const defaultUrl = 'https://wap.beeplaying.com/payment/#/payment'
@@ -23,6 +22,7 @@ export class Pay {
   static toPay ({ originDeffer = location.href, payInfo }) {
     let url = defaultUrl
     let payStorage = defaultStorage
+    let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
     let pay = payArr.find(res => res.channel === channelFlag)
     if (pay) {
       url = pay.url
