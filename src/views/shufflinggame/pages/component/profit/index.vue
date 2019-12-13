@@ -71,7 +71,7 @@
             </ul>
           </div>
         </div>
-        <div class="profit-footer">仅30名及以内有奖励</div>
+        <div class="profit-footer"><i class="dot"></i>前30名上榜有奖励,最终累计翻牌点一样,则先达成排名靠前；<br><i class="dot"></i>高级场加赠翻牌点不计入排行榜中</div>
       </div>
       <div class="loading-wrap" v-if="isLoading">
         <div class="container">
