@@ -22,7 +22,7 @@ export class Pay {
   static toPay ({ originDeffer = location.href, payInfo }) {
     let url = defaultUrl
     let payStorage = defaultStorage
-    let channelFlag = window.linkUrl.getBackUrlFlag(GLOBALS.channel)
+    let channelFlag = window.linkUrl ? window.linkUrl.getBackUrlFlag(GLOBALS.channel) : 'wap'
     let pay = payArr.find(res => res.channel === channelFlag)
     if (pay) {
       url = pay.url
