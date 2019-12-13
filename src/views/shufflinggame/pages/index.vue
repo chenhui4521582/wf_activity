@@ -110,7 +110,7 @@
         if (code == 200) {
           this.actData = data
           this.isEnd = data.state != 1;
-          localStorage.removeItem('card_level1')
+          !this.isEnd&&localStorage.removeItem('ranked')
           !this.countdown.time && data.countdown && GLOBALS.remainingTime(
             this,
             data.countdown,
@@ -225,9 +225,9 @@
         if (code == 200) {
           this.userData = data
           if (this.isEnd) {
-            let ranked = localStorage.getItem('card_level1') == 1
+            let ranked = localStorage.getItem('ranked') == 1
             if (!ranked) {
-              localStorage.setItem('card_level1', 1)
+              localStorage.setItem('ranked', 1)
               GLOBALS.marchSetsPoint(data.myRank ? 'A_H5PT0156002617' : 'A_H5PT0156002618')
               if (data.myRank == 0) {
                 this.flag = 1
