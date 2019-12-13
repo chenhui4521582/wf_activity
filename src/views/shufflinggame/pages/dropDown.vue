@@ -48,9 +48,7 @@ export default {
   data () {
     return {
       curIndex: 0,
-      isDropDown: false,
-      remanentNum: 0,
-      totalNum: 0
+      isDropDown: false
     }
   },
   props: {
@@ -67,12 +65,17 @@ export default {
       default: 1
     }
   },
+  computed:{
+    remanentNum(){
+      return this.data&&this.data.remanentNum||0
+    },
+    totalNum(){
+      return this.data&&this.data.remanentNum||0
+    },
+  },
   components: {
     getHammer: () => import('./component/getHammer'),
     profit: () => import('./component/profit')
-  },
-  mounted () {
-    this.init()
   },
   methods: {
     innerHandleTab (idx) {
@@ -95,13 +98,6 @@ export default {
     handleTab (idx) {
       this.isDropDown = true
       this.curIndex = idx
-    },
-    async init () {
-      // const { code, data } = await userInfo()
-      // if (code === 200) {
-        this.remanentNum = this.data.remanentNum
-        this.totalNum = this.data.totalNum
-      // }
     },
     close () {
       this.isDropDown = false
