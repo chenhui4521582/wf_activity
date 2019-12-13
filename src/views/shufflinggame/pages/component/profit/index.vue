@@ -24,7 +24,7 @@
               </li>
               <li>
                 <h4>累计获得翻牌点</h4>
-                <span>{{myInfo.totalNum}}点</span>
+                <span>{{myInfo.rankNum}}点</span>
               </li>
               <li>
                 <h4>当前奖励</h4>

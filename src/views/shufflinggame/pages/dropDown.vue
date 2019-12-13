@@ -25,7 +25,7 @@
       </div>
     </transition>
     <div class="bottom-wrap" :class="{header1:level==1,header2:level==2,header3:level==3}" v-if="!isDropDown">
-      <div class="tab get-hammer" @click="outHandleTab(0)">
+      <div class="tab get-hammer" @click="outHandleTab(0)" v-if="!end">
         <div class="hammer_icon"></div>
         <div class="right">
           <div class="main-text">剩余翻牌点<span>{{remanentNum}}</span></div>
@@ -63,6 +63,10 @@ export default {
     level:{
       type: Number,
       default: 1
+    },
+    end:{
+      type: Boolean,
+      default:()=>false
     }
   },
   computed:{
