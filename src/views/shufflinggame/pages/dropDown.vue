@@ -7,21 +7,37 @@
         <div class="drop-down-content">
 
           <div class="d-tab">
-            <div style="position: absolute;width: 100%;left: 0;top: 0;height: 100%">
-              <!-- 右下角图标 -->
-              <img src="../images/bottom/close.png" class="icon-back" @click.stop="close">
+            <div style="position: absolute;width: 100%;left: 0;top: 0;">
+              <ul>
+                <li @click="innerHandleTab(0)" :class="{'active':curIndex == 0}">获取翻牌点</li>
+                <li @click="innerHandleTab(1)" :class="{'active':curIndex == 1}">有奖排行榜</li>
+              </ul>
             </div>
           </div>
           <!-- 获取锤子组件 -->
-          <getHammer :pUserInfo="data" v-if="curIndex == 0" @getUserInfo="getUserInfo"/>
+          <getHammer :pUserInfo="data" v-if="curIndex == 0" @getUserInfo="getUserInfo" @gotoplay="gotoplay"/>
 
           <!-- 排行榜 -->
           <profit v-if="curIndex == 1" :is-full="false" />
+          <!-- 右下角图标 -->
+          <img src="../images/icon-back.png" class="icon-back" @click.stop="close">
         </div>
       </div>
     </transition>
-    <div class="bottom-wrap" v-if="!isDropDown">
+    <div class="bottom-wrap" :class="{header1:level==1,header2:level==2,header3:level==3}" v-if="!isDropDown">
       <div class="tab get-hammer" @click="outHandleTab(0)">
+        <div class="hammer_icon"></div>
+        <div class="right">
+          <div class="main-text">剩余翻牌点<span>{{remanentNum}}</span></div>
+          <div class="btn">获取翻牌点</div>
+        </div>
+      </div>
+      <div class="tab profit" @click="outHandleTab(1)">
+        <div class="hammer_icon"></div>
+        <div class="right">
+          <div class="main-text">累计翻牌点<span>{{totalNum}}</span></div>
+          <div class="btn">有奖排行榜</div>
+        </div>
       </div>
     </div>
   </div>
@@ -32,9 +48,7 @@ export default {
   data () {
     return {
       curIndex: 0,
-      isDropDown: false,
-      remanentNum: 0,
-      totalNum: 0
+      isDropDown: false
     }
   },
   props: {
@@ -45,38 +59,45 @@ export default {
     data:{
       type: Object,
       default: null
+    },
+    level:{
+      type: Number,
+      default: 1
     }
+  },
+  computed:{
+    remanentNum(){
+      return this.data&&this.data.remanentNum||0
+    },
+    totalNum(){
+      return this.data&&this.data.totalNum||0
+    },
   },
   components: {
     getHammer: () => import('./component/getHammer'),
     profit: () => import('./component/profit')
   },
-  mounted () {
-    this.init()
-  },
   methods: {
     innerHandleTab (idx) {
       if (idx) {
-        GLOBALS.marchSetsPoint('A_H5PT0075001466')   // H5平台-砸金蛋-获取锤子大浮层-点击有奖排行榜
+        GLOBALS.marchSetsPoint('A_H5PT0075001466')   // H5平台-有奖排行榜
+        this.$router.push('/after')
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0075001470')   // H5平台-砸金蛋-有奖排行榜大浮层-点击获取锤子
+        this.handleTab(idx)
+        GLOBALS.marchSetsPoint('A_H5PT0075001470')   // H5平台-点击获取翻牌点
       }
-      this.handleTab(idx)
     },
     outHandleTab (idx) {
       GLOBALS.marchSetsPoint('A_H5PT0156001774')//H5平台-翻牌活动-中间区域-获得更多翻牌点点击
-      this.handleTab(idx)
+      if(idx==0){
+        this.handleTab(idx)
+      }else{
+        this.$router.push('/after')
+      }
     },
     handleTab (idx) {
       this.isDropDown = true
       this.curIndex = idx
-    },
-    async init () {
-      // const { code, data } = await userInfo()
-      // if (code === 200) {
-        this.remanentNum = this.data.remanentNum
-        this.totalNum = this.data.totalNum
-      // }
     },
     close () {
       this.isDropDown = false
@@ -85,6 +106,10 @@ export default {
     },
     getUserInfo(){
       this.$emit('getUserInfo')
+    },
+    gotoplay(){
+      this.isDropDown = false
+      this.$emit('gotoplay')
     }
   }
 }

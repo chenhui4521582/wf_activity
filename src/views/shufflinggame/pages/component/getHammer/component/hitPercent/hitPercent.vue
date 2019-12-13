@@ -165,7 +165,8 @@ export default {
     },
     gotocomplete (item) {
       GLOBALS.marchSetsPoint('A_H5PT0156001777')   // H5平台-翻牌活动-底部弹窗-去完成点击
-      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      // location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      this.$emit('gotoplay')
     }
   }
 }

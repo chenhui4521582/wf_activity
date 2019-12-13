@@ -3,9 +3,10 @@
     <!--返回-->
     <img src="../images/back.png" class="e-back" @click.stop="back">
     <!--规则-->
-    <rule></rule>
-    <!--礼包-->
-    <package v-if="!isEnd"></package>
+    <rule :ruleMain="actData.beginDate+'~'+actData.endDate+'，'+actData.rankDate" v-if="actData"></rule>
+    <game ref="game"></game>
+    <!--&lt;!&ndash;礼包&ndash;&gt;-->
+    <package ref="package"></package>
     <!--攻略-->
     <gonglue></gonglue>
     <!--走马灯-->
@@ -13,43 +14,40 @@
     <div class="btn">
       <!--头部的信息-累计翻牌点、下级奖励-->
       <div class="top_container">
-        <div class="top_containeritem" @click="showrecord">
-          <div class="r-item1">翻牌点</div>
-          <div class="r-item1">记录</div>
-        </div>
-        <div class="top_containeritem">
-          <div class="r-item1">剩余翻牌点：</div>
-          <div class="r-item2">{{userData&&userData.remanentNum||0}}</div>
-        </div>
-        <div class="top_containeritem" @click.stop="rankClick(0)">
-          <div class="r-item1">下级奖励：</div>
-          <div class="r-item2">{{userData&&userData.nextAwards||''}}</div>
-        </div>
+        <div class="time" v-if="actData">{{actData.beginDate.split(' ')[0]}} ~ {{actData.endDate.split(' ')[0]}}</div>
       </div>
-      <!--排行榜-->
-      <img src="../images/rank.png" class="rank" @click.stop="rankClick(1)">
-      <!--文案-->
-      <div class="index_info">翻出翻倍卡后,再翻出任意奖品,翻出奖励翻倍!</div>
-      <!--升级场次按钮-->
-      <div class="grade_btn" :class="{header1:level==1,header2:level==2,header3:level==3}" v-if="userData">
-        <div class="txt" v-if="level<3" @click="gameUpgradeStageClick">用<i>{{userData.nextStageConsumeNum}}翻牌点</i>升级为{{level==1?'中级场':'高级场'}}</div>
-        <div class="txt" v-else>当前最高场</div>
+      <div class="tabs" :class="{header1:level==1,header2:level==2,header3:level==3}">
+        <div class="item" v-for="item in 3" @click="switchTab(item)"></div>
       </div>
+      <div class="eggs-info">
+        <h4>可能翻出</h4>
+        <!--<scroll :data="awards">-->
+        <div class="container">
+          <scroll :data="awards">
+            <ul>
+              <!--<li v-for="(item,index) in eggsInfoList" :key="index">{{item.awardsName}}</li>-->
+              <li v-for="item in awards">{{item.awardsName}}</li>
+            </ul>
+          </scroll>
+        </div>
+        <!--</scroll>-->
+      </div>
+      <div class="record" @click="showrecord" :class="{header1:level==1,header2:level==2,header3:level==3}">已翻奖励</div>
       <!--重置-->
       <div class="reset" :class="{header1:level==1,header2:level==2,header3:level==3}" @click="resetClick"></div>
     </div>
     <!--翻牌区域-->
     <card :level="level" :isReset="isReset" @reset="isReset=false" :cardData="styleItemsArr"  v-if="userData&&styleItemsArr.length" @refreshUserInfo="getUserInfo" @refreshCardInfo="getBetProgress" @getawards="getcardawards" :isBeginAnimate="isBeginAnimate"></card>
     <!--获得更多翻牌点-->
-    <drop-down ref="dropDown" :data="userData" v-if="!isEnd&&userData" @getUserInfo="getUserInfo"></drop-down>
+    <drop-down ref="dropDown" :level="level" :data="userData" v-if="!isEnd&&userData" @getUserInfo="getUserInfo" @gotoplay="gotoplay"></drop-down>
     <!--翻牌点记录-->
-    <record v-if="isshowrecord" :show="isshowrecord" @close="isshowrecord=false" @package="$refs.dropDown.handleTab(0)"></record>
+    <record ref="record" @package="$refs.dropDown.handleTab(0)"></record>
     <!--通用弹窗1-10场景-->
-    <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="$refs.dropDown.handleTab(0)" @sureCard="sureCard" :carddata="cardawardsdata" @card="isReset=true"></com-pop>
+    <com-pop v-if="flag" :from="flag" :level="level" @close="closecomPop" @sureGrade="sureGrade" @package="openpackage" @sureCard="sureCard" :carddata="cardawardsdata" @card="isReset=true" @gotoplay="gotoplay" @downpackage="$refs.dropDown.outHandleTab(0)" :rank="rank"></com-pop>
   </div>
 </template>
 <script type="text/javascript">
-import { betProgress,userInfo,gameUpgradeStage,gameResetProgress} from '../utils/api'
+import { betProgress,userInfo,gameUpgradeStage,gameResetProgress,betAwards} from '../utils/api'
 export default {
   name: 'index',
   data () {
@@ -58,7 +56,7 @@ export default {
       level:1,
       isReset:false,
       isshowrecord:false,
-      flag:0,//1.首次赠送 2.恭喜升级 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置-翻倍卡-提醒弹窗 8.抱歉不能升级 9.是否升级中级场 10.是否升级高级场 11 升级-翻倍卡-提醒弹窗
+      flag:0,//1.排行榜已发榜fail 2.排行榜已发榜success 3.翻倍点不足 4.正常奖励 5.翻倍开出 6.获得翻倍卡 7.重置-翻倍卡-提醒弹窗 8.新的翻牌点 待领取
       userData:null,
       cardawardsdata:[],
       isBeginAnimate:false,//牌是否要有开场动画
@@ -66,9 +64,24 @@ export default {
       countdown: {// 倒计时
         time: ''
       },
+      data:null,
+      actData:null,
+      haveDoubleCard:false,
+      rank:0
+    }
+  },
+  computed:{
+    awards(){
+      if(this.data){
+        let item=this.data.filter(item=>item.stage==this.level)[0]
+        return item&&item.awardsList||[]
+      }else{
+        return []
+      }
     }
   },
   components: {
+    game: () => import('../components/game'),
     rule: () => import('../components/rule'),
     message: () => import('../components/message'),
     dropDown: () => import('./dropDown'),
@@ -77,6 +90,7 @@ export default {
     card: () => import('../components/card'),
     record: () => import('../components/record'),
     comPop:() => import('../components/comPop'),
+    scroll:() => import('../components/scroll'),
   },
   async beforeRouteEnter (to, from, next) {
     next()
@@ -85,6 +99,7 @@ export default {
     async getActInfo(){
       let {code,data}=(await this.axios.post('//ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
       if(code==200){
+        this.actData=data
         this.isEnd=data.state!=1
         !this.countdown.time && data.countdown && GLOBALS.remainingTime(
           this,
@@ -95,7 +110,7 @@ export default {
     },
     async sureCard(flag){//flag1 有翻倍卡-确定重置 flag2 有翻倍卡-确定升级
       if(flag==1){//确定重置
-        let {code,data,message}=await gameResetProgress()
+        let {code,data,message}=await gameResetProgress(this.level)
         if(code==200){
           await this.getBetProgress()
           await this.getUserInfo()
@@ -125,7 +140,11 @@ export default {
       if(arr){
         this.cardawardsdata=arr
         if(arr.length==2){
-          this.flag=6
+          if(arr.filter(item=>item.awardsType=='fbk').length){
+            this.flag=6
+          }else{
+            this.flag=9
+          }
         }else{
           if(arr[0].doubleState){
             this.flag=5
@@ -141,10 +160,10 @@ export default {
     //重置按钮点击
     async resetClick(){
       GLOBALS.marchSetsPoint('A_H5PT0156001773')//H5平台-翻牌活动-中间区域-重置按钮点击
-      if(this.userData.haveDoubleCard){//拥有翻倍卡
+      if(this.haveDoubleCard){//拥有翻倍卡
         this.flag=7
       }else{
-        let {code,data,message}=await gameResetProgress()
+        let {code,data,message}=await gameResetProgress(this.level)
         if(code==200){
           await this.getBetProgress()
           setTimeout(()=>{
@@ -191,13 +210,29 @@ export default {
       }
     },
     //活动信息
-    async getUserInfo(){
+    async getUserInfo(ismount=false){
       let {code,data}=await userInfo()
       if(code==200){
         this.userData=data
-        this.level=data.stage
-        if(data.firstLoad){//首次进入免增1翻牌点
-          this.flag=1
+        if(this.isEnd){
+          if(data.myRank==0){
+            this.flag=1
+          }else{
+            data.currentAwards.split('+').map(item=>{
+              if(item.includes('金叶')||item.includes('京东')){
+                this.cardawardsdata.push({
+                  awardsType:item.includes('金叶')?'jyz':'jdk',
+                  awardsName:item
+                })
+              }
+            })
+            this.rank=data.myRank
+            this.flag=2
+          }
+        }else{
+          if(ismount&&data.gameUnreceive){
+            this.flag=8
+          }
         }
       }
     },
@@ -212,7 +247,7 @@ export default {
     //展示翻牌点记录
     showrecord(){
       GLOBALS.marchSetsPoint('A_H5PT0156001766')//H5平台-翻牌活动-顶部区域-翻牌点记录点击
-      this.isshowrecord=true
+      this.$refs.record.showPop()
     },
     //点击返回
     back () {
@@ -221,13 +256,31 @@ export default {
     },
     //获取翻牌数据
     async getBetProgress () {
-      const { code, data } = await betProgress()
+      const { code, data } = await betProgress(this.level)
       if (code === 200) {
-        this.styleItemsArr = data
+        this.haveDoubleCard=data.haveDoubleCard
+        this.styleItemsArr = data.progressList
         if(location.href.includes('from=')){//从入口进入动效条件无免增1翻牌点且牌中无成功翻开的数据
           this.isBeginAnimate=this.flag!=1&&data.filter(item=>item.status).length==0
         }
       }
+    },
+    async getBetAwards() {
+      const {code, data} = await betAwards()
+      if (code === 200) {
+        this.data = data
+      }
+    },
+    gotoplay(){
+      this.$refs.game.showPop()
+    },
+    openpackage(){
+      this.$refs.package.showPop()
+    },
+    async switchTab(item){
+      //获取翻牌数据
+      this.level=item
+      await this.getBetProgress()
     }
   },
   async mounted () {
@@ -236,9 +289,10 @@ export default {
     })//H5平台-翻牌活动-页面加载完成
     await this.getActInfo()
     //活动信息
-    await this.getUserInfo()
+    await this.getUserInfo(true)
     //获取翻牌数据
     await this.getBetProgress()
+    await this.getBetAwards()
     //活动地址：shufflinggame.html?from=index
     history.pushState({}, '', location.href.split(/\?|\&/)[0])//shufflinggame.html
     // GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面

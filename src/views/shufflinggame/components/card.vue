@@ -122,7 +122,7 @@
       },
       async goHit(item, index) {
         this.isCanHit = false
-        const {code, data, message} = await betSingle({value: item.sort})
+        const {code, data, message} = await betSingle({sort: item.sort,stage:this.level})
         if (code === 200) {
           this.cardData.splice(index, 1, Object.assign(data[0], {consumeNum: item.consumeNum, status: 1}))
           setTimeout(() => {
@@ -239,7 +239,7 @@
     width: 5.15rem;
     position: relative;
     left: 50%;
-    top: 1.6rem;
+    top: .8rem;
     transform: translateX(-50%);
   }
 
