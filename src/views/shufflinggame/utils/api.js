@@ -23,8 +23,8 @@ export const betSingle = async (params) => {
  * @return {Object} data
  */
 
-export const betProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress')
+export const betProgress = async (level) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress/'+level)
   return data
 }
 /**
@@ -97,7 +97,7 @@ export const gameReceive = async (params) => {
  */
 
 export const gameReceiveRecord = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-receive-record')
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/user-awards')
   return data
 }
 
@@ -112,12 +112,12 @@ export const gameUpgradeStage = async () => {
 }
 
 /**
- * @description 升级场次
+ * @description 重置
  * @return {Object} data
  */
 
-export const gameResetProgress = async () => {
-  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress-reset')
+export const gameResetProgress = async (level) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/open-card/bet-progress-reset/'+level)
   return data
 }
 

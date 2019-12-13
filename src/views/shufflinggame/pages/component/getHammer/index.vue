@@ -23,7 +23,7 @@
     <span class="info">活动期间在游戏中累计支持金叶子达到一定值即可获得翻牌点</span>
     <div class="g-package">
       <div class="g-package-container g2">
-        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo"></hit-percent>
+        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo" @gotoplay="gotoplay"></hit-percent>
       </div>
       <div class="g-package-info">
         <ul>
@@ -91,7 +91,10 @@
       },
       isGoBDPayment() {
         return window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap'
-      }
+      },
+      gotoplay() {
+        this.$emit('gotoplay')
+      },
     }
   }
 </script>

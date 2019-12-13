@@ -5,15 +5,16 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
+          <div class="title">活动规则</div>
           <div class="main">
-            <div class="text1" style="text-align: center">活动时间：9月12日10:00 -9月18日23:59:59</div>
-            <div class="text"><i></i><span>翻牌以及升级场次需要消耗一定的翻牌点,翻牌点可以通过游戏累计支持以及充值礼包获得</span></div>
-            <div class="text"><i></i><span>玩家升级场次后,无法退回至原场次。例:玩家消耗翻牌点从初级场升级至中级场,则无法退回初级场</span></div>
-            <div class="text"><i></i><span>单场次翻牌次数越多,所需要的翻牌点也越多</span></div>
-            <div class="text"><i></i><span>初级场消耗的翻牌点最少,中级场其次,高级场最多</span></div>
-            <div class="text"><i></i><span>翻牌获得的奖励中,高级场奖励最丰厚,中级场其次,初级场最少</span></div>
-            <div class="text"><i></i><span>用户可以在翻牌中途选择重置翻牌进度,开始新一轮翻牌</span></div>
-            <div class="text"><i></i><span>当任意场次,玩家翻完所有的牌面,会重新洗牌开始新一轮的翻牌,每轮消耗的翻牌点不变</span></div>
+            <div class="text" v-if="ruleMain">1、活动时间：{{ruleMain}}大奖发榜；</div>
+            <div class="text"><span>2、共有初、中、高级3个场次，玩家可通过消耗翻牌点进行翻牌，100%有奖；活动期间累计翻牌点最高可赢35000元大奖；</span></div>
+            <div class="text"><span>3、翻牌点可通过玩游戏和购买活动页礼包获得，在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入活动内；</span></div>
+            <div class="text"><span>4、单场次翻牌次数越多，所需要的翻牌点越多；</span></div>
+            <div class="text"><span>5、初级场消耗翻牌点最少，中级场其次，随机加赠翻倍卡。翻倍卡只能在所得场次使用，使下次翻牌奖励X2；高级场最多，奖励最高，随机加赠翻倍卡或翻牌点（赠送的翻牌点不计入排行榜中）；</span>
+            </div>
+            <div class="text"><span>6、任意场次中，翻牌中途或翻完所有牌面后选择重新洗牌，将开始新一轮翻牌，且每轮消耗翻牌点不变；</span></div>
+            <div class="text"><span>7、每个场次重新洗牌限30次。翻倍卡需及时使用，重新洗牌后将失效。</span></div>
           </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
@@ -23,108 +24,136 @@
 </template>
 
 <script>
-export default {
-  name: "rule",
-  data () {
-    return {
-      isShowPop: false
-    };
-  },
-  props: {
-    ruleMain: {
-      type: String,
-      default: ""
+  export default {
+    name: "rule",
+    data() {
+      return {
+        isShowPop: false
+      };
     },
-    from: {
-      type: Number,
-      default: 0
+    props: {
+      ruleMain: {
+        type: String,
+        default: ""
+      }
+    },
+    methods: {
+      showPop() {
+        this.isShowPop = true
+        GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
+      }
     }
-  },
-  methods: {
-    showPop () {
-      this.isShowPop = true
-      GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
-    }
-  }
-};
+  };
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-.rule {
-  position: fixed;
-  top: 1.64rem;
-  left: 50%;
-  margin-left: -2.46rem;
-  img {
-    width: 0.88rem;
-    height: 0.88rem;
+  .rule {
     position: fixed;
-    left: 0.04rem;
-    top: 2.72rem;
-  }
-
-  .pop-mask {
-    position: fixed;
-    left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.55);
-  }
-  .pop {
-    position: relative;
-    z-index: 10;
-    .wrap {
-      width: 4.92rem;
-      height: 5.62rem;
-      background: url("../images/pop/rule/bg.png") no-repeat center center /
+    left: 50%;
+    margin-left: -2.86*1.125rem;
+    img:not(.game) {
+      width: 0.84rem;
+      height: 0.84rem;
+      position: fixed;
+      right: 0;
+      top: .36rem;
+    }
+
+    .pop-mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+    }
+    .pop {
+      position: relative;
+      z-index: 10;
+      .wrap {
+        width: 5.72*1.125rem;
+        height: 8.68*1.125rem;
+        background: url("../images/pop/rule/bg.png") no-repeat center center /
         100% 100%;
-      margin: 0 auto;
-      box-sizing: border-box;
-      padding: .9rem 0.2rem 0;
-      .main {
-        font-size: 0.2rem;
-        font-weight: bold;
-        color:rgba(236,110,71,1);
-        .text{
-          display: flex;
-          i{
-            margin-top: .1rem;
-            display: inline-block;
-            width:.1rem;
-            height:.1rem;
-            background:rgba(236,110,71,1);
-            border-radius:50%;
-            margin-right: .18rem;
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding: 1.15*1.125rem .75rem .6rem 1rem;
+        .title {
+          font-size: 0.54rem;
+          height: 1*1.125rem;
+          line-height: 1*1.125rem;
+          text-align: center;
+          font-weight: 400;
+          color: rgba(255, 230, 173, 1);
+          background: linear-gradient(0deg, rgba(254, 222, 87, 1) 0%, rgba(254, 252, 201, 1) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .main {
+          font-size: 0.2rem;
+          background: #750503;
+          border-radius: 0px 0px .16rem .16rem;
+          padding: .2rem;
+          color: #fff;
+          .text {
+            display: flex;
+            i {
+              margin-top: .1rem;
+              display: inline-block;
+              width: .1rem;
+              height: .1rem;
+              background: rgba(236, 110, 71, 1);
+              border-radius: 50%;
+              margin-right: .18rem;
+            }
+            span {
+              max-width: 4.2rem;
+            }
+            line-height: 0.3rem;
           }
-          span{
-            max-width: 4.2rem;
+          .gamelist {
+            display: flex;
+            flex-wrap: wrap;
+            height: 4.2rem;
+            justify-content: space-between;
+            margin-top: .4rem;
+            .game {
+              width: 1.24rem;
+              height: 1.69rem;
+            }
           }
-          line-height: 0.3rem;
+          .gogames {
+            font-size: .3rem;
+            color: #FDF35E;
+            text-align: right;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: .1rem;
+          }
         }
       }
+      .close-icon {
+        width: 0.6rem;
+        height: 0.6rem;
+        background: url("../pages/images/common/close.png") no-repeat center
+          center / 100% 100%;
+        margin: 0 auto;
+      }
     }
-    .close-icon {
-      width: 0.6rem;
-      height: 0.6rem;
-      background: url("../pages/images/common/close.png") no-repeat center
-        center / 100% 100%;
-      margin: 0.4rem auto 0;
+    .scalc-enter-active {
+      animation: fadeAnimation 0.3s ease-in-out;
+    }
+    @keyframes fadeAnimation {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   }
-  .scalc-enter-active {
-    animation: fadeAnimation 0.3s ease-in-out;
-  }
-  @keyframes fadeAnimation {
-    0% {
-      transform: scale(0);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-}
 </style>
