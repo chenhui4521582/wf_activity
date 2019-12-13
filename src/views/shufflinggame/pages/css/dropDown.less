@@ -3,8 +3,7 @@
   left: 0;
   bottom: 0;
   width: 100vw;
-  height: .9rem;
-  background: url('../../images/bottom.png') center center / 100% 100%;
+  height: 1.33rem;
   display: flex;
   padding: 0.2rem 0.2rem 0.16rem;
   box-sizing: border-box;
@@ -15,12 +14,8 @@
     align-items: center;
     font-size: 0.28rem;
     font-weight: bold;
-    color: #B05201;
-
     .hammer_icon {
       margin-left: 0.24rem;
-      width: 0.7rem;
-      height: 0.88rem;
       background: center center / 100% 100%;
     }
 
@@ -30,10 +25,6 @@
 
       .main-text {
         line-height: 0.44rem;
-
-        span {
-          color: #FF280E;
-        }
       }
 
       .btn {
@@ -47,6 +38,89 @@
         line-height: 0.44rem;
         border-radius: 0.22rem;
         color: #fff;
+      }
+    }
+    &.get-hammer {
+      .hammer_icon {
+        width: 0.65rem;
+        height: 0.66rem;
+        background-image: url('../../images/cardpoints.png');
+      }
+
+      .btn {
+        background: #FD542A;
+      }
+    }
+
+    &.profit {
+      .hammer_icon {
+        width: 0.6rem;
+        height: 0.66rem;
+        background-image: url('../../images/cardrank.png');
+      }
+
+      .btn {
+        background: #408CFF;
+      }
+    }
+  }
+  &.header1 {
+    background: url('../../images/level1/down_bg.png') center center / 100% 100%;
+    .tab .right {
+      .main-text {
+        color: #73372A;
+      }
+    }
+    .tab.get-hammer {
+      .btn {
+        background:rgba(184,103,71,1);
+        border:2px solid rgba(255, 255, 255, 1);
+      }
+    }
+    .tab.profit {
+      .btn {
+        background:rgba(209,35,11,1);
+        border:2px solid rgba(255, 242, 206, 1);
+    }
+  }
+  }
+  &.header2 {
+    background: url('../../images/level2/down_bg.png') center center / 100% 100%;
+    .tab .right {
+      .main-text {
+        color: #85324C;
+      }
+    }
+    .tab.get-hammer {
+      .btn {
+        background: rgba(172, 77, 107, 1);
+        border: 2px solid rgba(255, 255, 255, 1);
+      }
+    }
+    .tab.profit {
+      .btn {
+        background: rgba(198, 2, 96, 1);
+        border: 2px solid rgba(255, 242, 206, 1);
+      }
+    }
+  }
+  &.header3 {
+    background: url('../../images/level3/down_bg.png') center center / 100% 100%;
+    .tab .right {
+      .main-text {
+        color: #5C2F2E;
+      }
+    }
+    .tab.get-hammer {
+      .btn {
+        background: rgba(156, 86, 72, 1);
+        border: 2px solid rgba(255, 255, 255, 1);
+      }
+    }
+    .tab.profit {
+      .btn {
+        background: rgba(211, 58, 10, 1);
+        border: 2px solid rgba(255, 242, 206, 1);
       }
     }
   }
@@ -87,25 +161,43 @@
   .d-tab {
     border-radius: 0.4rem 0.4rem 0 0;
     overflow-y: hidden;
-    background: url("../../images/bottom/bg0.png");
-    background-size: 100% 100%;
+    background: #eb774d;
     width: 100%;
-    height: 0.78rem;
+    height: 0.84rem;
     /*position: fixed;*/
     position: relative;
     z-index: 15;
     -webkit-transform: translateZ(0);
+
+
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.4rem 0.4rem 0 0;
+    }
+
+    li {
+      flex: 1;
+      height: 0.84rem;
+      line-height: 0.84rem;
+      text-align: center;
+      font-size: 0.36rem;
+      color: #fffcd6;
+
+      &.active {
+        background: #FFE6B3;
+        color: #f6612b;
+      }
+    }
   }
 }
 
 .icon-back {
-  width:2.15rem;
-  height: 0.33rem;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0rem;
-  margin: auto;
+  width: 0.8rem;
+  height: 0.8rem;
+  position: fixed;
+  right: 0.16rem;
+  bottom: 0.46rem;
   z-index: 10;
 }
