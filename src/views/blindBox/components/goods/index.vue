@@ -76,7 +76,7 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       .goods-name {
-        font-size: 0.28rem;
+        font-size: 0.24rem;
         color: #000;
         text-align: left;
         padding-bottom: 0.36rem;
