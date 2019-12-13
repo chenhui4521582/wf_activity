@@ -5,8 +5,9 @@ export class Pay {
   // JDD_PARAM payment 缓存支付信息
   static toPay ({ originDeffer = location.href, payInfo }) {
     let url =
-      'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true';
+      'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     localStorage.setItem('originDeffer', originDeffer)
+    localStorage.setItem('JDD_PARAM', JSON.stringify(payInfo))
     localStorage.setItem('payment', JSON.stringify(payInfo))
     location.replace(url)
   }
