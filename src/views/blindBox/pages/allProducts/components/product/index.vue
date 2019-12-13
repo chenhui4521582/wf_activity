@@ -1,15 +1,14 @@
 <template>
   <section class="product">
     <div class="product-img">
-      <img :src="product.awardsImage | imgFilter "
-        alt="奖品">
+      <img :src="product.awardsImage | imgFilter" alt="奖品" />
     </div>
     <div class="product-info">
-      <p class="name">{{product.awardsName | productFilter}}</p>
+      <p class="name">{{ product.awardsName }}</p>
       <p class="des">
-        <span class="price">¥{{product.showAmount }}</span>
+        <span class="price">¥{{ product.showAmount }}</span>
         <span></span>
-        <span class="count">{{product.showOpenNum }}人已获得</span>
+        <span class="count">库存充足</span>
       </p>
     </div>
   </section>
@@ -28,7 +27,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -52,11 +51,18 @@ export default {
     }
   }
   .product-info {
-    padding: 0.19rem;
+    padding: 0.12rem 0.2rem 0.2rem;
     .name {
       color: #000;
       font-size: 0.28rem;
-      padding-bottom: 0.19rem;
+      margin-bottom: 0.12rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      height: 0.8rem;
+      line-height: 0.4rem;
+      overflow: hidden;
+      word-break: break-all;
     }
     .des {
       display: flex;

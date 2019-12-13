@@ -1,7 +1,7 @@
 <template>
   <section class="current-product-list">
     <p>
-      <span>本期明星产品</span>
+      <span>本期明星奖品</span>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </p>
     <section class="product-list-wrapper">
