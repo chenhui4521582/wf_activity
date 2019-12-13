@@ -70,7 +70,7 @@ export default {
       return this.data&&this.data.remanentNum||0
     },
     totalNum(){
-      return this.data&&this.data.remanentNum||0
+      return this.data&&this.data.totalNum||0
     },
   },
   components: {
