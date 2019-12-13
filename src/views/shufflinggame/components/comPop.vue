@@ -37,7 +37,7 @@
             </template>
             <div :class="getClassName('product-img')" v-if="[2,4,5,6,9].includes(from)">
               <div class="item" v-for="(item,index) in carddata">
-                <div :class="getClassName('img_bg')">
+                <div class="img_bg" :class="{double:item.doubleState}">
                   <img :src="`${require(`../images/${item.awardsType}.png`)}`" alt="" v-if="item.awardsType!='fbk'">
                   <img :src="`${require(`../images/${item.awardsType}${level}.png`)}`" alt="" v-else>
                 </div>
@@ -367,7 +367,8 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              &.flag5:before{
+              position: relative;
+              &.double:before{
                 content: '';
                 position: absolute;
                 width: 1.01rem;
