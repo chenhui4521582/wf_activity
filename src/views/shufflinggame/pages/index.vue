@@ -110,7 +110,7 @@
         if (code == 200) {
           this.actData = data
           this.isEnd = data.state != 1;
-          localStorage.removeItem('ranked')
+          localStorage.removeItem('card_level1')
           !this.countdown.time && data.countdown && GLOBALS.remainingTime(
             this,
             data.countdown,
