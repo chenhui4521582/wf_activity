@@ -140,7 +140,7 @@ export default {
       if(arr){
         this.cardawardsdata=arr
         if(arr.length==2){
-          if(arr.filter(item=>item.awardType=='fbk').length){
+          if(arr.filter(item=>item.awardsType=='fbk').length){
             this.flag=6
           }else{
             this.flag=9
