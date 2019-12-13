@@ -30,6 +30,6 @@ export class Pay {
     }
     localStorage.setItem(payStorage, JSON.stringify(payInfo))
     localStorage.setItem('originDeffer', originDeffer)
-    location.replace(url)
+    location.href = url
   }
 }
