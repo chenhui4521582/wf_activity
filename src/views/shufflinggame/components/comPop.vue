@@ -140,20 +140,15 @@
           if (this.from == 7) {
             this.$emit('close', 0)
           }
-        } else if (this.from == 8) {//去充值得翻牌点
+        } else if (this.from == 8) {//立即查看
           this.$emit('close', 0)
+          GLOBALS.marchSetsPoint('A_H5PT0156002616')
           this.$emit('downpackage')
-        } else if (this.from == 9) {//我要升级
-          this.$emit('close', 0)
-          this.$emit('sureGrade')
-        } else {//我要升级
-          this.$emit('close', 0)
-          this.$emit('sureGrade')
         }
       },
       btnpinkclick() {
         if (this.from == 3) {//去玩游戏得牌点
-          GLOBALS.marchSetsPoint('A_H5PT0156001797')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
+          GLOBALS.marchSetsPoint('A_H5PT0156002612')//H5平台-翻牌活动-弹窗反馈-翻牌点不够弹窗-去玩游戏得翻牌点点击
           // location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
           this.$emit('close', 0)
           this.$emit('gotoplay')

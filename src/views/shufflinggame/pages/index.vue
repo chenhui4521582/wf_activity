@@ -215,6 +215,7 @@ export default {
       if(code==200){
         this.userData=data
         if(this.isEnd){
+          GLOBALS.marchSetsPoint(data.myRank?'A_H5PT0156002617':'A_H5PT0156002618')
           if(data.myRank==0){
             this.flag=1
           }else{
@@ -231,6 +232,7 @@ export default {
           }
         }else{
           if(ismount&&data.gameUnreceive){
+            GLOBALS.marchSetsPoint('A_H5PT0156002615')
             this.flag=8
           }
         }
@@ -244,9 +246,9 @@ export default {
       // await this.getBetProgress()
       this.flag=0
     },
-    //展示翻牌点记录
+    //H5平台-翻牌活动-已翻奖励按钮点击
     showrecord(){
-      GLOBALS.marchSetsPoint('A_H5PT0156001766')//H5平台-翻牌活动-顶部区域-翻牌点记录点击
+      GLOBALS.marchSetsPoint('A_H5PT0156002608')//H5平台-翻牌活动-已翻奖励按钮点击
       this.$refs.record.showPop()
     },
     //点击返回
@@ -279,13 +281,19 @@ export default {
     },
     async switchTab(item){
       //获取翻牌数据
-      this.level=item
-      await this.getBetProgress()
+      let points=['A_H5PT0156002605','A_H5PT0156002606','A_H5PT0156002607']
+      GLOBALS.marchSetsPoint(points[item-1])
+      if(this.level!=item){
+        this.level=item
+        await this.getBetProgress()
+      }
     }
   },
   async mounted () {
-    location.href.includes('from=')&&GLOBALS.marchSetsPoint('P_H5PT0156',{
-      source_address:GLOBALS.getUrlParam('from')||''
+    localStorage.setItem('card_level',this.level)
+    GLOBALS.marchSetsPoint('P_H5PT0156',{
+      source_address:GLOBALS.getUrlParam('from')||'',
+      classify:this.level
     })//H5平台-翻牌活动-页面加载完成
     await this.getActInfo()
     //活动信息
@@ -302,6 +310,9 @@ export default {
       if (!val) {
         this.getActInfo()
       }
+    },
+    level(val){
+      localStorage.setItem('card_level',val)
     }
   }
 }

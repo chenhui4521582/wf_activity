@@ -124,6 +124,7 @@
         this.isCanHit = false
         const {code, data, message} = await betSingle({sort: item.sort,stage:this.level})
         if (code === 200) {
+          GLOBALS.marchSetsPoint('A_H5PT0156002611')//H5平台-翻牌活动-弹窗反馈-翻牌点翻出页面加载完成
           this.cardData.splice(index, 1, Object.assign(data[0], {consumeNum: item.consumeNum, status: 1}))
           setTimeout(() => {
             this.$emit('getawards', data)
