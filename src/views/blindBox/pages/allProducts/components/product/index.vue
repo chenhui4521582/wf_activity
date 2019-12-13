@@ -1,7 +1,8 @@
 <template>
   <section class="product">
     <div class="product-img">
-      <img :src="product.awardsImage | imgFilter" alt="奖品" />
+      <img :src="product.awardsImage | imgFilter"
+        alt="奖品" />
     </div>
     <div class="product-info">
       <p class="name">{{ product.awardsName }}</p>
@@ -27,7 +28,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -54,7 +55,7 @@ export default {
     padding: 0.12rem 0.2rem 0.2rem;
     .name {
       color: #000;
-      font-size: 0.28rem;
+      font-size: 0.24rem;
       margin-bottom: 0.12rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
