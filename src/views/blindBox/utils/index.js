@@ -12,7 +12,7 @@ const payArr = [
   },
   {
     channel: 'xmWap',
-    url: 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist',
+    url: 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true',
     payStorage: 'payment'
   }
 ]
@@ -30,6 +30,8 @@ export class Pay {
     }
     localStorage.setItem(payStorage, JSON.stringify(payInfo))
     localStorage.setItem('originDeffer', originDeffer)
+    if (localStorage.getItem('checkPlatOrderStatus')) localStorage.removeItem('checkPlatOrderStatus')
+    if (localStorage.getItem('checkOrderStatus')) localStorage.removeItem('checkOrderStatus')
     location.href = url
   }
 }
