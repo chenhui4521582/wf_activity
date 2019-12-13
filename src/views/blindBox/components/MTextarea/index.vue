@@ -44,9 +44,10 @@ export default {
   font-size: 0.24rem;
   height: 1.1rem;
   padding: 0.23rem;
+  -webkit-text-size-adjust: none;
   textarea {
     background: #f7f7f7;
-    font-size: 0.24rem;
+    // font-size: 0.24rem;
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     width: 100%;
     height: 100%;
