@@ -1,14 +1,16 @@
 <template>
   <div class="eggs-container" @click.prevent="isEggsInfoShow=false">
-    <rule :rule-main="rulesInfo" from="0" ref="rule"></rule>
+    <rule :rule-main="rulesInfo" from="0" ref="rule" :lotteryDate="activityInfoData&&activityInfoData.lotteryDate"></rule>
     <rule from="1" ref="games"></rule>
     <rule from="2" :lotteryDate="activityInfoData&&activityInfoData.lotteryDate" ref="openprize"></rule>
     <rule from="3" ref="lotteryrecord"></rule>
     <rule from="4" ref="lessstar"></rule>
-    <rule from="7" ref="onlysign"></rule>
-    <rule from="8" ref="onlygametask"></rule>
-    <rule from="9" ref="signall"></rule>
-    <rule from="10" ref="gametaskall"></rule>
+    <rule from="7" ref="onlysign" :starnum="activityInfoData.taskInfos.length" v-if="activityInfoData&&activityInfoData.taskInfos"></rule>
+    <rule from="8" ref="onlygametask" :starnum="activityInfoData.taskInfos.length" v-if="activityInfoData&&activityInfoData.taskInfos"></rule>
+    <rule from="9" ref="signall" :starnum="activityInfoData.taskInfos.length" v-if="activityInfoData&&activityInfoData.taskInfos"></rule>
+    <rule from="10" ref="gametaskall" :starnum="activityInfoData.taskInfos.length" v-if="activityInfoData&&activityInfoData.taskInfos"></rule>
+    <rule from="11" ref="xuyuanfail"></rule>
+    <rule from="12" ref="xuyuansuccess" :lotteryDate="activityInfoData&&activityInfoData.lotteryDate"></rule>
     <div class="header1">
       <img src="./images/index/back.png" class="e-back" @click.stop="back">
       <div class="rule_icon" @click="$refs.rule.showPop()">活动规则</div>
@@ -33,8 +35,8 @@
             <div class="progress_bar":style="{width:progresswidth[activityInfoData.currentDay-1]}"></div>
           </div>
         </div>
-        <div class="task-container" :class="{complete:activityInfoData.taskInfos.filter(item=>item.status==2).length==2}">
-          <template v-if="activityInfoData.taskInfos.filter(item=>item.status==2).length<2">
+        <div class="task-container" :class="{complete:activityInfoData.taskInfos.filter(item=>item.status==2).length==activityInfoData.taskInfos.length}">
+          <template v-if="activityInfoData.taskInfos.filter(item=>item.status==2).length<activityInfoData.taskInfos.length">
             <div class="title">
               今日打卡小任务 <i>(全部完成即打卡成功)</i>
             </div>
@@ -44,7 +46,7 @@
                   <div class="item1"><i></i>{{item.taskName}}</div>
                   <div class="item2">
                     <div class="progress">
-                      <div class="rate">{{item.finishnum}}/{{item.totalnum}}</div>
+                      <div class="rate">{{transUint(item.finishnum,item.totalnum)}}</div>
                       <div class="progress_bar":style="{width:item.finishnum*100/item.totalnum+'%'}"></div>
                     </div>
                     <img src="./images/index/star.png" alt="" class="task_star">
@@ -59,7 +61,7 @@
           </template>
           <template v-else>
             <div class="item">今日打卡任务已完成</div>
-            <div class="item">记得明天再来哦~</div>
+            <div class="item">下滑有转盘，奖励免费领取哦！</div>
           </template>
         </div>
       </div>
@@ -77,17 +79,23 @@
           <div class="container_div">
             <div>
               <div class="item" v-for="item in activityInfoData.koiAwardInfoVos">
-                <div class="item_img" :class="{bg00:item.koiLevel==2&&item.currentUserStatus==0,bg01:item.koiLevel==2&&item.currentUserStatus==1,bg10:item.koiLevel==3&&item.currentUserStatus==0,bg11:item.koiLevel==3&&item.currentUserStatus==1,bg20:item.koiLevel==4&&item.currentUserStatus==0,bg21:item.koiLevel==4&&item.currentUserStatus==1,bg30:item.koiLevel==5&&item.currentUserStatus==0,bg31:item.koiLevel==5&&item.currentUserStatus==1,bg40:item.koiLevel==6&&item.currentUserStatus==0,bg41:item.koiLevel==6&&item.currentUserStatus==1,bg50:item.koiLevel==7&&item.currentUserStatus==0,bg51:item.koiLevel==7&&item.currentUserStatus==1}">
-                  <div class="item_sec1">累计打卡{{item.koiLevel}}天</div>
+                <div class="item_img" :class="{bg00:item.koiLevel==2,bg10:item.koiLevel==3,bg20:item.koiLevel==4,bg30:item.koiLevel==5,bg40:item.koiLevel==6,bg50:item.koiLevel==7}">
+                  <div class="item_sec1">累计{{item.koiLevel}}天</div>
                   <div class="item_sec2">
-                    {{getkoiname(item.koiLevel)}}
+                    {{getkoiname(item.koiLevel)}}{{item.winnersNum}}名
                   </div>
-                  <div class="item_sec3">
-                    <div class="item_sec3_item">{{item.awardName}}<br>抽{{item.winnersNum}}位锦鲤</div>
-                    <div class="item_sec3_item">{{item.currentUserStatus==0?'待解锁':'已参与'}}</div>
+                  <div class="item_sec3" @click="gotoVow(item)">
+                    <div class="item_sec3_item">{{item.awardName}}</div>
+                    <template v-if="item.currentUserStatus==2">
+                      <div class="item_sec3_item completed">已许愿</div>
+                    </template>
+                    <template v-else>
+                      <div class="item_sec3_item xuyuan" v-if="item.currentUserStatus==1">点击许愿</div>
+                      <div class="item_sec3_item gray" v-else>未许愿</div>
+                    </template>
                   </div>
                 </div>
-                <div class="info1">当前参与人数：{{item.currentNum}}</div>
+                <div class="info1">{{item.currentNum}}人已参与</div>
               </div>
             </div>
           </div>
@@ -109,7 +117,7 @@
   </div>
 </template>
 <script type="text/javascript">
-  import {activityInfo,betProgress} from '../utils/api'
+  import {activityInfo,betProgress,prizeVow} from '../utils/api'
 
   export default {
     name: 'index',
@@ -125,8 +133,13 @@
       lottery: () => import('../components/lottery'),
     },
     methods: {
+      transUint (finishNum, taskOps) {
+        let finish = finishNum > 10000 ? (finishNum / 10000).toFixed(2) + '万' : finishNum,
+          ops = taskOps > 10000 ? taskOps / 10000 + '万' : taskOps
+        return finish + '/' + ops
+      },
       back() {
-        history.back(-1)
+        location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
       },
       async getActivityInfo(){
         const {code, data} = await activityInfo()
@@ -138,13 +151,17 @@
               sort:1,
               finishnum:data.todaySignInStatus?1:0,
               totalnum:1
-            },{
-              taskName:`每日游戏累计消耗${data.configConsumption}金叶`,
-              status:data.todayConsumptionStatus,
-              sort:2,
-              finishnum:data.todayConsumption,
-              totalnum:data.configConsumption
             }]
+            data.bettingAmountTarget.map((item,index)=>{
+              console.log(index,item)
+              data.taskInfos.push({
+                taskName:`每日游戏累计消耗${item}金叶`,
+                status:data.bettingAmountStatus[index],
+                sort:index+2,
+                finishnum:data.todayConsumption,
+                totalnum:item
+              })
+            })
             this.activityInfoData=data
             this.rulesInfo = data.activityDateRange
           }
@@ -161,13 +178,14 @@
         }
       },
       async taskclick(item){
+        console.log(this.activityInfoData.taskInfos.filter(item=>item.status==2))
         if(item.status==2) return
         if(item.sort==1){//去签到
           GLOBALS.marchSetsPoint('A_H5PT0211002231')
-          let {code,data}=await betProgress({value:1})
+          let {code,data}=await betProgress({type:1,level:0})
           if(code==200){
             GLOBALS.marchSetsPoint('A_H5PT0211002233')
-            if(this.activityInfoData.taskInfos.filter(item=>item.status==2).length==1){
+            if(this.activityInfoData.taskInfos.filter(item=>item.status==2).length==this.activityInfoData.taskInfos.length-1){
               this.$refs.signall.showPop()
             }else{
               this.$refs.onlysign.showPop()
@@ -180,9 +198,9 @@
             this.$refs.games.showPop()
           }else{//点击领取
             GLOBALS.marchSetsPoint('A_H5PT0211002234')
-            let {code,data}=await betProgress({value:2})
+            let {code,data}=await betProgress({type:2,level:item.totalnum})
             if(code==200){
-              if(this.activityInfoData.taskInfos.filter(item=>item.status==2).length==1){
+              if(this.activityInfoData.taskInfos.filter(item=>item.status==2).length==this.activityInfoData.taskInfos.length-1){
                 this.$refs.gametaskall.showPop()
               }else{
                 this.$refs.onlygametask.showPop()
@@ -190,6 +208,18 @@
             }
             this.getActivityInfo()
           }
+        }
+      },
+      async gotoVow({koiLevel,currentUserStatus}){
+        if(currentUserStatus==2) return
+        if(currentUserStatus==1){//点击许愿
+          let {code}=await prizeVow({value:koiLevel})
+          if(code==200){
+            this.$refs.xuyuansuccess.showPop()
+          }
+          this.getActivityInfo()
+        }else{//未许愿
+          this.$refs.xuyuanfail.showPop()
         }
       }
     },
