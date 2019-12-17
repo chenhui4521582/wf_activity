@@ -73,7 +73,7 @@
         </div>
         <div class="info">
           <div class="item">当前累计打卡:<i>{{activityInfoData.cumulativeDays}}天</i></div>
-          <div class="item">当前许愿锦鲤为:<i>{{getkoiname(activityInfoData.cumulativeDays)||'无'}}</i> {{activityInfoData.currentKoiAwardName||''}}</div>
+          <div class="item">已许愿锦鲤为:<i>{{getkoiname(activityInfoData.koiAwardInfoVos.filter(item=>item.currentUserStatus==2).map(item=>item.koiLevel).reverse()[0]||'')||'无'}}</i> <template v-if="activityInfoData.koiAwardInfoVos.filter(item=>item.currentUserStatus==2).length">(当前最高)</template></div>
         </div>
         <div class="container">
           <div class="container_div">
