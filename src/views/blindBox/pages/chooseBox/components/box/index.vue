@@ -10,7 +10,8 @@
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
     </div>
     <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm" class="choose-button">{{buttonText}}</MButton>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
+      class="choose-button">{{buttonText}}</MButton>
     <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
     <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
   </section>
@@ -100,6 +101,7 @@ export default {
     },
     // 点击按钮
     async onConfirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002552') // H5平台-盲盒页面-选盲盒页面-就选它点击
       if (this.userInfo && this.userInfo.openBoxTimes) {
         this.openBox()
       } else {
