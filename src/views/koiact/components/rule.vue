@@ -34,14 +34,14 @@
                     <p>累计2天,抽400名锦鲤,每人1张500金叶套圈券;</p>
                     <p>累计3天,抽300名锦鲤,每人10000金叶;</p>
                     <p>累计4天,抽150名锦鲤,每人50元话费券;</p>
-                    <p>累计5天,抽80名锦鲤,每人100元京东卡;</p>
+                    <p>累计5天,抽80名锦鲤,每人100元京东券;</p>
                     <p>累计6天,抽60名锦鲤,每人500元话费券;</p>
                     <p>累计7天,抽10名锦鲤,每人1000元京东卡。</p>
                     <div class="title1">5.奖品发放</div>
                     <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>转盘奖品将自动发放到账，中奖记录在【锦鲤开奖】查看；
                     </p>
                     <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>锦鲤名单将于活动结束1天内在【锦鲤开奖】公布,<i
-                      style="font-weight: bold;color:#FF1616">锦鲤奖励在玩家当天进入活动页后自动发送,过期视为放弃;</i>;</p>
+                      style="font-weight: bold;color:#FF1616">锦鲤奖励在玩家当天进入活动页后自动发送,过期视为放弃</i>;</p>
                     <p><i style="font-weight: bolder; color: #C8744F; margin-right: .1rem;">·</i>活动结束后未使用的金星将自动作废。</p>
                     <div class="title1">6.其他</div>
                     <p>平台保留对活动条款的最终解释权,如需咨询或有疑问,请联系在线客服。</p>
