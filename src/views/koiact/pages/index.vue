@@ -54,7 +54,7 @@
                   </div>
                 </div>
                 <div class="btn" :class="{btn0:item.status==0,btn1:item.status==1,btn2:item.status==2}" @click="taskclick(item)">
-                  {{item.status==0?(item.sort==1?'去签到':'去完成'):(item.status==1?'点击领取':(item.sort==1?'已签到':'已完成'))}}
+                  {{item.status==0?'去完成':(item.status==1?(item.sort==1?'点击签到':'点击领取'):(item.sort==1?'已签到':'已完成'))}}
                 </div>
               </div>
             </div>
@@ -72,8 +72,8 @@
           <img src="./images/index/right.png" alt="">
         </div>
         <div class="info">
-          <div class="item">当前累计打卡：<i>{{activityInfoData.cumulativeDays}}天</i></div>
-          <div class="item">当前解锁锦鲤为：<i>{{activityInfoData.currentKoiName||'无'}}</i> {{activityInfoData.currentKoiAwardName||''}}</div>
+          <div class="item">当前累计打卡:<i>{{activityInfoData.cumulativeDays}}天</i></div>
+          <div class="item">当前许愿锦鲤为:<i>{{getkoiname(activityInfoData.cumulativeDays)||'无'}}</i> {{activityInfoData.currentKoiAwardName||''}}</div>
         </div>
         <div class="container">
           <div class="container_div">
@@ -147,7 +147,7 @@
           if (data.state==1) {
             data.taskInfos=[{
               taskName:'每日活动页签到1次',
-              status:data.todaySignInStatus?2:0,
+              status:data.todaySignInStatus?2:1,
               sort:1,
               finishnum:data.todaySignInStatus?1:0,
               totalnum:1
@@ -175,6 +175,7 @@
           case 5:return '绿锦鲤';break;
           case 6:return '红锦鲤';break;
           case 7:return '紫锦鲤';break;
+          default:return '';
         }
       },
       async taskclick(item){
