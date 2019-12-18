@@ -25,14 +25,18 @@
             <img :src="priceData.data.awardsImg | filter">
             <!-- <img :src="priceData.data.awardsImg"> -->
           </div>
-          <p class="explain">金叶翻{{priceData.data&&priceData.data.returnRatio}}倍,共<span>得{{priceData.data&&priceData.data.awardsAmount}}金叶</span></p>
+          <p class="explain">
+            金叶翻{{priceData.data&&priceData.data.returnRatio}}倍,共<span>得{{priceData.data&&priceData.data.awardsAmount}}金叶</span>
+          </p>
           <div v-if="priceData.data.betStage>0" class="btn" @click="going(true)">
             继续翻倍{{priceData.data.betStage }}金叶
           </div>
           <div v-else class="btn" @click="going(false)">
             知道了
           </div>
-          <p class="other" v-if="priceData.data.betStage>0">最多得{{priceData.data.betStage * 8 > 10000? Math.floor(priceData.data.betStage * 8 / 1000) / 10+'万' : priceData.data.betStage * 8}}金叶</p>
+          <p class="other" v-if="priceData.data.betStage>0">
+            最多得{{priceData.data.betStage * 8 > 10000? Math.floor(priceData.data.betStage * 8 / 1000) / 10+'万' : priceData.data.betStage * 8}}金叶
+          </p>
         </div>
         <div class="closed" @click="hideDialog"></div>
       </div>
@@ -125,9 +129,7 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0074001133')
       }
-
-      localStorage.setItem('originDeffer', window.location.href)
-      window.location.href = 'https://wap.beeplaying.com/payment/#/mall'
+      location.href = 'https://wap.beeplaying.com/xmWap/#/payment/'
     },
     going (status) {
       if (status) {

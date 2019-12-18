@@ -10,7 +10,8 @@
           <p>4. 终极大奖瓜分时间：{{dividetimetxt}}。</p>
           <p>5. 终极大奖瓜分规则：活动期间报名3天即可拥有瓜分机会,参与天数越多,瓜分中奖率更高。参与5天以上必中奖哟。</p>
           <p>6. 奖品发放：红包奖励可能为话费券或优惠券或未中奖。进入活动页面领取后的奖励将直接发放至我的资产。活动期间内所得的奖励,若用户在活动结束时仍未领取,则自动失效。</p>
-          <p>7. 如有其他疑问,请点击<i @click="concat" style="text-decoration: underline">咨询客服</i>。活动最终解释权归平台所有。</p>
+          <p>7. 如有其他疑问,请点击<i @click="concat"
+              style="text-decoration: underline">咨询客服</i>。活动最终解释权归平台所有。</p>
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
@@ -39,7 +40,7 @@
       <!--预报名成功-->
       <div class="bonus-success unbaomingsuccess" v-if="count==4">
         <div class="desc" style="font-size: .26rem">
-          付费任意金额即可报名成功<br/>
+          付费任意金额即可报名成功<br />
           每天{{timetxt}}:00瓜分千元红包
           <div class="btn" @click="gotoshop">马上参与</div>
         </div>
@@ -66,7 +67,8 @@
             可补1天未报名场次,任意报名5天<br>
             拥有终极大奖必中机会！
           </p>
-          <div class="btn" @click="gotopay(makeupPackageData)">{{makeupPackageData&&makeupPackageData.price}}元</div>
+          <div class="btn" @click="gotopay(makeupPackageData)">
+            {{makeupPackageData&&makeupPackageData.price}}元</div>
         </div>
         <div class="close" @click="close(1)"></div>
       </div>
@@ -74,408 +76,402 @@
   </transition>
 </template>
 <script type="text/javascript">
-  export default {
-    data() {
-      return {
-        telPhone: ''
-      }
+export default {
+  data () {
+    return {
+      telPhone: ''
+    }
+  },
+  props: {
+    count: {
+      type: Number,
+      default: '0'
     },
-    props: {
-      count: {
-        type: Number,
-        default: '0'
-      },
-      dataStr: {
-        type: String,
-        default: ''
-      },
-      timetxt: {
-        type: Number,
-        default: 0
-      },
-      num: {
-        type: Number,
-        default: 0
-      },
-      dividetimetxt: {
-        type: String,
-        default: ''
-      },
-      makeupPackageData: {
-        type: Object,
-        default: null
-      },
-      appointmentday: {
-        type: Number,
-        default: 0
-      },
-      timeline:{
-        type: String,
-        default: ''
-      }
+    dataStr: {
+      type: String,
+      default: ''
     },
-    computed: {
-      isRight() {
-        let reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
-        return this.telPhone && reg.test(this.telPhone)
-      },
-      transitionname() {
-        return this.count == 6 || this.count == 7 ? 'slide' : ''
-      }
+    timetxt: {
+      type: Number,
+      default: 0
     },
-    methods: {
-      fetch(url, params) {
-        if (url.startsWith('/ops/api')) {
-          url = '//ops-api.beeplaying.com' + url
-        }
-        if (url.startsWith('/wap/api')) {
-          url = '//platform-api.beeplaying.com' + url
-        }
-        if (url.startsWith('/wap/api')) {
-          url = '//shop-api.beeplaying.com' + url
-        }
-        return this.axios.post(url, params, {})
-      },//请求封装方法
-      async besure() {
-        if (!this.isRight) {
+    num: {
+      type: Number,
+      default: 0
+    },
+    dividetimetxt: {
+      type: String,
+      default: ''
+    },
+    makeupPackageData: {
+      type: Object,
+      default: null
+    },
+    appointmentday: {
+      type: Number,
+      default: 0
+    },
+    timeline: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    isRight () {
+      let reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
+      return this.telPhone && reg.test(this.telPhone)
+    },
+    transitionname () {
+      return this.count == 6 || this.count == 7 ? 'slide' : ''
+    }
+  },
+  methods: {
+    fetch (url, params) {
+      if (url.startsWith('/ops/api')) {
+        url = '//ops-api.beeplaying.com' + url
+      }
+      if (url.startsWith('/wap/api')) {
+        url = '//platform-api.beeplaying.com' + url
+      }
+      if (url.startsWith('/wap/api')) {
+        url = '//shop-api.beeplaying.com' + url
+      }
+      return this.axios.post(url, params, {})
+    }, // 请求封装方法
+    async besure () {
+      if (!this.isRight) {
+        this.$toast.show({
+          message: '请输入正确的手机号',
+          duration: 2000
+        })
+        return
+      } else {
+        // 接口
+        let { data } = await this.fetch('/ops/api/jackpot/userOpenSms', { value: this.telPhone })
+        if (data.code == 200) {
           this.$toast.show({
-            message: '请输入正确的手机号',
+            message: '提交成功',
             duration: 2000
           })
-          return
-        } else {
-          //接口
-          let {data: data} = await this.fetch('/ops/api/jackpot/userOpenSms', {value: this.telPhone})
-          if (data.code == 200) {
-            this.$toast.show({
-              message: '提交成功',
-              duration: 2000
-            })
-            this.$emit('refresh')
-            this.$emit('close')
-          } else {
-            this.$toast.show({
-              message: data.message,
-              duration: 2000
-            })
-          }
-        }
-      },
-      close(flag) {
-        if (flag) {
-          if(this.flag==5){
-            GLOBALS.marchSetsPoint('A_H5PT0074001817')
-          }
-          if(this.flag==6||this.flag==7){
-            GLOBALS.marchSetsPoint('A_H5PT0074001814')
-          }
+          this.$emit('refresh')
           this.$emit('close')
         } else {
-          this.$emit('closemobile')
+          this.$toast.show({
+            message: data.message,
+            duration: 2000
+          })
         }
-      },
-      concat() {
-        if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
-          location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
-        } else {
-          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/problem?tab=contact_personal')
-        }
-      },
-      async gotoshop() {
-        await GLOBALS.marchSetsPoint('A_H5PT0074001593')
-        if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
-          location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
-        } else {
-          location.href = 'https://wap.beeplaying.com/payment/#/mall'
-        }
-      },
-      appointmentBonus() {//去报名
-        GLOBALS.marchSetsPoint('A_H5PT0074001816')
-        this.$emit('close')
-        this.$emit('appointmentBonus', true)
-      },
-      goback() {
-        this.$emit('close')
-        history.go(-1)
-      },
-      gotopay(item) {
-        localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0074001813', {recharge_rmb: item.price, product_id: item.bizId})   // HH5平台-奖池瓜分页面-补签卡弹窗-购买点击
-        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-        if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
-          location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
-        } else {
-          location.href = 'https://wap.beeplaying.com/payment/#/payment'
-        }
-      },
+      }
     },
-    mounted() {
-      this.$refs.telPhone && this.$refs.telPhone.focus()
+    close (flag) {
+      if (flag) {
+        if (this.flag == 5) {
+          GLOBALS.marchSetsPoint('A_H5PT0074001817')
+        }
+        if (this.flag == 6 || this.flag == 7) {
+          GLOBALS.marchSetsPoint('A_H5PT0074001814')
+        }
+        this.$emit('close')
+      } else {
+        this.$emit('closemobile')
+      }
+    },
+    concat () {
+      if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
+        location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+      } else {
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', false, false, '#/problem?tab=contact_personal')
+      }
+    },
+    async gotoshop () {
+      await GLOBALS.marchSetsPoint('A_H5PT0074001593')
+      location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
+    },
+    appointmentBonus () { // 去报名
+      GLOBALS.marchSetsPoint('A_H5PT0074001816')
+      this.$emit('close')
+      this.$emit('appointmentBonus', true)
+    },
+    goback () {
+      this.$emit('close')
+      history.go(-1)
+    },
+    gotopay (item) {
+      localStorage.setItem('originDeffer', window.location.href)
+      GLOBALS.marchSetsPoint('A_H5PT0074001813', { recharge_rmb: item.price, product_id: item.bizId })   // HH5平台-奖池瓜分页面-补签卡弹窗-购买点击
+      localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+      localStorage.setItem('payment', JSON.stringify(item))
+      location.href =
+        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     }
+  },
+  mounted () {
+    this.$refs.telPhone && this.$refs.telPhone.focus()
   }
+}
 </script>
 <style lang="less" scoped>
-  .pop-window {
-    position: relative;
-    z-index: 11;
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    .pop-close {
-      width: 0.68rem;
-      height: 0.68rem;
-      position: absolute;
-      right: -0.34rem;
-      top: -0.34rem;
-    }
+.pop-window {
+  position: relative;
+  z-index: 11;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  .pop-close {
+    width: 0.68rem;
+    height: 0.68rem;
+    position: absolute;
+    right: -0.34rem;
+    top: -0.34rem;
   }
+}
 
-  .pop-mask {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .7);
-    z-index: 10;
-  }
+.pop-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
 
-  .bonus-success {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 5.1rem;
-    height: 6.2rem;
-    background: url("../images/rule_bg.png");
+.bonus-success {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5.1rem;
+  height: 6.2rem;
+  background: url("../images/rule_bg.png");
+  background-size: 100% 100%;
+  z-index: 11;
+  &.profit {
+    background: url("../images/record_bg.png");
     background-size: 100% 100%;
-    z-index: 11;
-    &.profit {
-      background: url("../images/record_bg.png");
-      background-size: 100% 100%;
-      .bottom {
-        position: absolute;
-        height: .66rem;
-        bottom: 0;
-        left: 0rem;
-        right: 0;
-        background: rgba(175, 14, 38, 1);
-        border-radius: 0 0 .4rem .4rem;
-        line-height: .66rem;
-        text-align: center;
-        font-size: .3rem;
-        font-weight: 400;
-        color: rgba(249, 184, 115, 1);
-      }
-    }
-    .title {
+    .bottom {
       position: absolute;
-      top: .61rem;
-      left: .9rem;
-      right: 1.04rem;
-      font-size: .36rem;
-      font-weight: bold;
-      color: rgba(255, 247, 243, 1);
+      height: 0.66rem;
+      bottom: 0;
+      left: 0rem;
+      right: 0;
+      background: rgba(175, 14, 38, 1);
+      border-radius: 0 0 0.4rem 0.4rem;
+      line-height: 0.66rem;
       text-align: center;
-      &.title0 {
-        top: .34rem;
-      }
+      font-size: 0.3rem;
+      font-weight: 400;
+      color: rgba(249, 184, 115, 1);
+    }
+  }
+  .title {
+    position: absolute;
+    top: 0.61rem;
+    left: 0.9rem;
+    right: 1.04rem;
+    font-size: 0.36rem;
+    font-weight: bold;
+    color: rgba(255, 247, 243, 1);
+    text-align: center;
+    &.title0 {
+      top: 0.34rem;
+    }
+  }
+  .desc {
+    position: absolute;
+    top: 1rem;
+    left: 0.2rem;
+    right: 0.2rem;
+    font-size: 0.22rem;
+    font-weight: 400;
+    color: rgba(255, 225, 229, 1);
+    line-height: 0.32rem;
+    i {
+      color: #ffd619;
+    }
+  }
+  .info {
+    position: absolute;
+    bottom: 0.95rem;
+    left: 0.55rem;
+    right: 0.45rem;
+    font-size: 0.22rem;
+    font-weight: 400;
+    color: rgba(255, 223, 142, 1);
+    line-height: 0.36rem;
+  }
+  .btnsure {
+    position: absolute;
+    left: 0.57rem;
+    top: 2.87rem;
+    line-height: 0.76rem;
+    text-align: center;
+    width: 3.9rem;
+    height: 0.76rem;
+    background: rgba(253, 192, 40, 1);
+    border-radius: 0.38rem;
+    font-size: 0.36rem;
+    font-weight: bold;
+    color: rgba(253, 21, 51, 1);
+  }
+  .close {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -0.8rem;
+    width: 0.57rem;
+    height: 0.57rem;
+    background: url("../images/close.png");
+    background-size: 100% 100%;
+  }
+  &.baomingsuccess {
+    height: 3.58rem;
+    background: url("../images/baoming_success_bg.png");
+    background-size: 100% 100%;
+    .desc {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.3rem;
+      line-height: 0.4rem;
+      font-weight: 400;
+      color: #ffe1e5;
+    }
+  }
+  &.unbaomingsuccess {
+    height: 3.58rem;
+    background: url("../images/gobaoming_bg.png");
+    background-size: 100% 100%;
+    &.wanliu {
+      height: 5.58rem;
+      background: url("../images/new2/tips_pop.png");
+      background-size: 100% 100%;
     }
     .desc {
       position: absolute;
-      top: 1rem;
-      left: .2rem;
-      right: .2rem;
-      font-size: .22rem;
+      left: 0.3rem;
+      right: 0.3rem;
+      font-size: 0.3rem;
+      line-height: 0.4rem;
       font-weight: 400;
-      color: rgba(255, 225, 229, 1);
-      line-height: .32rem;
-      i {
-        color: #FFD619;
-      }
-    }
-    .info {
-      position: absolute;
-      bottom: .95rem;
-      left: .55rem;
-      right: .45rem;
-      font-size: .22rem;
-      font-weight: 400;
-      color: rgba(255, 223, 142, 1);
-      line-height: .36rem;
-    }
-    .btnsure {
-      position: absolute;
-      left: .57rem;
-      top: 2.87rem;
-      line-height: .76rem;
+      color: #ffe1e5;
+      top: 40%;
       text-align: center;
-      width: 3.9rem;
-      height: .76rem;
-      background: rgba(253, 192, 40, 1);
-      border-radius: .38rem;
-      font-size: .36rem;
-      font-weight: bold;
-      color: rgba(253, 21, 51, 1);
-    }
-    .close {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -.8rem;
-      width: .57rem;
-      height: .57rem;
-      background: url("../images/close.png");
-      background-size: 100% 100%;
-    }
-    &.baomingsuccess {
-      height: 3.58rem;
-      background: url("../images/baoming_success_bg.png");
-      background-size: 100% 100%;
-      .desc {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: .5rem;
-        right: .5rem;
-        font-size: .3rem;
-        line-height: .4rem;
-        font-weight: 400;
-        color: #ffe1e5;
+      i {
+        color: #ffd76a;
       }
-    }
-    &.unbaomingsuccess {
-      height: 3.58rem;
-      background: url("../images/gobaoming_bg.png");
-      background-size: 100% 100%;
-      &.wanliu {
-        height: 5.58rem;
-        background: url("../images/new2/tips_pop.png");
-        background-size: 100% 100%;
-      }
-      .desc {
-        position: absolute;
-        left: .3rem;
-        right: .3rem;
-        font-size: .3rem;
-        line-height: .4rem;
-        font-weight: 400;
-        color: #ffe1e5;
-        top: 40%;
+      .btn {
+        width: 3.9rem;
+        height: 0.76rem;
+        line-height: 0.8rem;
         text-align: center;
-        i {
-          color: #FFD76A;
-        }
-        .btn {
-          width: 3.9rem;
-          height: .76rem;
-          line-height: .8rem;
-          text-align: center;
-          font-size: .36rem;
-          font-weight: bold;
-          color: rgba(253, 21, 51, 1);
-          line-height: .76rem;
-          background: rgba(248, 202, 142, 1);
-          border-radius: .38rem;
-          margin: .3rem auto 0;
-        }
-      }
-      &.wanliu .desc {
-        top: 1.5rem;
-        line-height: .5rem;
-        .btn {
-          width: 3.3rem;
-          height: .9rem;
-          line-height: .8rem;
-          text-align: center;
-          font-size: .43rem;
-          font-weight: bold;
-          color: rgba(150, 48, 8, 1);
-          background: url("../images/new2/btn.png");
-          background-size: 100% 100%;
-          margin: 1rem auto 0;
-          border-radius: 0;
-        }
-      }
-    }
-    &.zhongji_guafen {
-      width: 6rem;
-      height: 8.4rem;
-      background: url("../images/new2/buqian_guafen.png");
-      background-size: 100% 100%;
-      .desc {
-        position: absolute;
-        top: 3.4rem;
-        bottom: .4rem;
-        left: .2rem;
-        right: .2rem;
-        font-size: .3rem;
+        font-size: 0.36rem;
         font-weight: bold;
-        color: rgba(123, 24, 0, 1);
-        line-height: .32rem;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        .info1 {
-          font-size: .36rem;
-          color: rgba(245, 198, 131, 1);
-        }
-        .info2 {
-          line-height: .4rem;
-        }
-        .buqian_leaf {
-          width: 3.5rem;
-          height: 1.96rem;
-          background: url("../images/new2/buqian_bg.png");
-          background-size: 100% 100%;
-          font-size: .36rem;
-          color: #fff;
-          font-weight: 400;
-          position: relative;
-          span {
-            position: absolute;
-            top: 1.2rem;
-            left: 1rem;
-          }
-        }
-        .btn {
-          width: 3.3rem;
-          height: .9rem;
-          line-height: .8rem;
-          text-align: center;
-          font-size: .43rem;
-          font-weight: bold;
-          color: rgba(150, 48, 8, 1);
-          background: url("../images/new2/btn.png");
-          background-size: 100% 100%;
-          border-radius: 0;
-        }
+        color: rgba(253, 21, 51, 1);
+        line-height: 0.76rem;
+        background: rgba(248, 202, 142, 1);
+        border-radius: 0.38rem;
+        margin: 0.3rem auto 0;
       }
     }
-    &.zhongji_bizhong {
-      width: 6rem;
-      height: 8.4rem;
-      background: url("../images/new2/buqian_bizhong.png");
-      background-size: 100% 100%;
+    &.wanliu .desc {
+      top: 1.5rem;
+      line-height: 0.5rem;
+      .btn {
+        width: 3.3rem;
+        height: 0.9rem;
+        line-height: 0.8rem;
+        text-align: center;
+        font-size: 0.43rem;
+        font-weight: bold;
+        color: rgba(150, 48, 8, 1);
+        background: url("../images/new2/btn.png");
+        background-size: 100% 100%;
+        margin: 1rem auto 0;
+        border-radius: 0;
+      }
     }
   }
-
-  .slide-enter,
-  .slide-leave-to {
-    transform-origin: right bottom;
-    transform:translateY(-60%) scale(0);
+  &.zhongji_guafen {
+    width: 6rem;
+    height: 8.4rem;
+    background: url("../images/new2/buqian_guafen.png");
+    background-size: 100% 100%;
+    .desc {
+      position: absolute;
+      top: 3.4rem;
+      bottom: 0.4rem;
+      left: 0.2rem;
+      right: 0.2rem;
+      font-size: 0.3rem;
+      font-weight: bold;
+      color: rgba(123, 24, 0, 1);
+      line-height: 0.32rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      .info1 {
+        font-size: 0.36rem;
+        color: rgba(245, 198, 131, 1);
+      }
+      .info2 {
+        line-height: 0.4rem;
+      }
+      .buqian_leaf {
+        width: 3.5rem;
+        height: 1.96rem;
+        background: url("../images/new2/buqian_bg.png");
+        background-size: 100% 100%;
+        font-size: 0.36rem;
+        color: #fff;
+        font-weight: 400;
+        position: relative;
+        span {
+          position: absolute;
+          top: 1.2rem;
+          left: 1rem;
+        }
+      }
+      .btn {
+        width: 3.3rem;
+        height: 0.9rem;
+        line-height: 0.8rem;
+        text-align: center;
+        font-size: 0.43rem;
+        font-weight: bold;
+        color: rgba(150, 48, 8, 1);
+        background: url("../images/new2/btn.png");
+        background-size: 100% 100%;
+        border-radius: 0;
+      }
+    }
   }
-
-  .slide-enter-to,
-  .slide-leave {
-    transform:translateY(60%) scale(2);
+  &.zhongji_bizhong {
+    width: 6rem;
+    height: 8.4rem;
+    background: url("../images/new2/buqian_bizhong.png");
+    background-size: 100% 100%;
   }
+}
 
-  .slide-enter-active,
-  .slide-leave-active {
-    transition: all 0.4s ease;
-  }
+.slide-enter,
+.slide-leave-to {
+  transform-origin: right bottom;
+  transform: translateY(-60%) scale(0);
+}
+
+.slide-enter-to,
+.slide-leave {
+  transform: translateY(60%) scale(2);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.4s ease;
+}
 </style>
