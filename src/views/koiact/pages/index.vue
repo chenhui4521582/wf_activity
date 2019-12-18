@@ -146,7 +146,7 @@
         if (code === 200) {
           if (data.state==1) {
             data.taskInfos=[{
-              taskName:'每日活动页签到1次',
+              taskName:'活动页签到1次',
               status:data.todaySignInStatus?2:1,
               sort:1,
               finishnum:data.todaySignInStatus?1:0,
@@ -155,7 +155,7 @@
             data.bettingAmountTarget.map((item,index)=>{
               console.log(index,item)
               data.taskInfos.push({
-                taskName:`每日游戏累计消耗${item}金叶`,
+                taskName:`游戏累计消耗${item}金叶`,
                 status:data.bettingAmountStatus[index],
                 sort:index+2,
                 finishnum:data.todayConsumption,
