@@ -12,7 +12,7 @@
           <ul style="margin: .2rem;font-size: .28rem;">
             <li>
               <span style="border-right: 1px solid #fff;">序号</span>
-              <span style="border-right: 1px solid #fff;">玩家昵称</span>
+              <span style="border-right: 1px solid #fff;">玩家ID</span>
               <span style="border-right: 1px solid #fff;">锦鲤分类</span>
               <span>奖品</span>
             </li>
@@ -22,13 +22,13 @@
               <ul class="p-item-title">
                 <li v-for="(item,index) in behindThreeData">
                   <span><i class="icon-dot">{{index+1}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.userId}}</em></span>
                   <span><em class="i-ellipsis">{{item.koiName}}</em></span>
                   <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>
                 <li v-if="isOpen" v-for="(item,index) in otherData">
                   <span><i class="icon-dot">{{index+behindThreeData.length+1}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.userId}}</em></span>
                   <span><em class="i-ellipsis">{{item.koiName}}</em></span>
                   <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>
@@ -37,7 +37,7 @@
                 </li>
                 <li v-for="(item,index) in lastThreeData">
                   <span><i class="icon-dot">{{index+behindThreeData.length+otherData.length+1}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+                  <span><em class="i-ellipsis">{{item.userId}}</em></span>
                   <span><em class="i-ellipsis">{{item.koiName}}</em></span>
                   <span><em class="i-ellipsis">{{item.awardName}}</em></span>
                 </li>

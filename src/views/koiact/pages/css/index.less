@@ -20,11 +20,13 @@
   .e-time {
     font-size: 0.19rem;
     font-weight: bold;
-    color: rgba(255, 255, 255, 1);
+    color: #ffffff;
     position: absolute;
-    left: 2.3rem;
-    right: 2.25rem;
-    top: 1.95rem;
+    left: 2.4rem;
+    top: 1.57rem;
+    padding: .05rem;
+    background: #521FCC;
+    border-radius: .4rem;
     text-align: center;
   }
 
@@ -131,13 +133,13 @@
   .task-container {
     box-sizing: border-box;
     width: 6.6rem;
-    height: 1.98rem;
     background: rgba(121, 73, 244, 1);
     border-radius: .12rem;
     margin: auto;
     padding: .3rem .2rem;
     box-sizing: border-box;
     &.complete{
+      height: 1.98rem;
       background: url("../images/index/todaytaskdone.png");
       background-size: 100% 100%;
       padding-top:1.15rem;
@@ -161,7 +163,7 @@
       font-size: .28rem;
       font-weight: 800;
       color: rgba(231, 226, 255, 1);
-      margin-bottom: .3rem;
+      margin-bottom: .1rem;
       i {
         margin-left: .35rem;
         font-size: .2rem;
@@ -177,9 +179,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        &:nth-child(2) {
-          margin-top: .1rem;
-        }
+        margin-top: .1rem;
         .task_star {
           width: .26rem;
           margin-right: .04rem;
@@ -218,7 +218,7 @@
             .progress {
               margin-right: .06rem;
               height: .15rem;
-              width: 1rem;
+              width: 1.5rem;
               background: rgba(241, 238, 255, 1);
               border-radius: .07rem;
               font-size: .18rem;
@@ -226,6 +226,8 @@
               color:rgba(21,0,43,.8);
               text-align: center;
               position: relative;
+              display: flex;
+              align-items: center;
               .rate{
                 position: absolute;
                 z-index: 1;
@@ -237,6 +239,7 @@
                 height: 100%;
                 background: rgba(255, 210, 0, 1);
                 border-radius: .07rem;
+                max-width: 100%;
               }
             }
           }
@@ -354,28 +357,39 @@
         text-align: center;
       }
       .item_sec2{
-        height: .35rem;
-        line-height: .35rem;
+        height: .3rem;
+        line-height: .32rem;
         text-align: center;
-        margin-bottom: 1.35rem;
+        margin-bottom: 1.4rem;
       }
       .item_sec3{
         height: .7rem;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         .item_sec3_item:nth-child(1){
           color:rgba(20,20,20,1);
-          flex: 5;
           display: flex;
           justify-content: center;
           line-height: .25rem;
         }
         .item_sec3_item:nth-child(2){
           color:rgba(255,245,236,1);
-          flex: 1;
           text-align: center;
-
+          width:1.22rem;
+          height:.36rem;
+          line-height: .4rem;
+          border-radius:.18rem;
+          &.completed{
+            background:rgba(121,73,244,1);
+          }
+          &.xuyuan{
+            background:rgba(21,212,120,1);
+          }
+          &.gray{
+            background:rgba(171,171,171,1);
+          }
         }
       }
     }
@@ -383,79 +397,25 @@
       background: url("../images/index/icon_slices/00.png");
       background-size: 100% 100%;
     }
-    .bg01 {
-      background: url("../images/index/icon_slices/01.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
-    }
     .bg10 {
       background: url("../images/index/icon_slices/10.png");
       background-size: 100% 100%;
-    }
-    .bg11 {
-      background: url("../images/index/icon_slices/11.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
     }
     .bg20 {
       background: url("../images/index/icon_slices/20.png");
       background-size: 100% 100%;
     }
-    .bg21 {
-      background: url("../images/index/icon_slices/21.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
-    }
     .bg30 {
       background: url("../images/index/icon_slices/30.png");
       background-size: 100% 100%;
-    }
-    .bg31 {
-      background: url("../images/index/icon_slices/31.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
     }
     .bg40 {
       background: url("../images/index/icon_slices/40.png");
       background-size: 100% 100%;
     }
-    .bg41 {
-      background: url("../images/index/icon_slices/41.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
-    }
     .bg50 {
       background: url("../images/index/icon_slices/50.png");
       background-size: 100% 100%;
-    }
-    .bg51 {
-      background: url("../images/index/icon_slices/51.png");
-      background-size: 100% 100%;
-      .item_sec3{
-        .item_sec3_item:nth-child(2){
-          color:#E92304;
-        }
-      }
     }
   }
   &.turntable .container {

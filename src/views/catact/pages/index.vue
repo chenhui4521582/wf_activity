@@ -40,7 +40,7 @@
         </div>
         <div class="task-container">
           <div class="title">
-            <div class="item">{{getActTime(activityInfoData)}}连续5天完成所有每日任务，还可额外领取{{activityInfoData.extAwardInfo.awardsNum}}{{activityInfoData.extAwardInfo.awardsName}}</div>
+            <div class="item">{{getActTime(activityInfoData)}}任意4天完成当日所有任务,还可额外领取{{activityInfoData.extAwardInfo.awardsNum}}{{activityInfoData.extAwardInfo.awardsName}}</div>
             <div class="item">每日任务列表</div>
           </div>
           <div class="task_list">
@@ -56,7 +56,7 @@
                 </div>
               </div>
               <div class="btn">
-                <div @click="slideclick(index,item)">{{index==0?'如何喂猫':(index==1?'如何逗猫':'如何增加好感度')}}></div>
+                <div @click="slideclick(index,item)">{{index==0?'如何喂猫':(index==1?'如何逗猫':'如何迅速获得鱼干')}}></div>
                 <img src="./images/index/task_complete.png" alt="" class="task_btn" v-if="item.status==0" @click="gotocat(item)">
                 <img src="./images/index/task_gain.png" alt="" class="task_btn" v-else-if="item.status==1" @click="gettaskaward(item)">
                 <img src="./images/index/task_gained.png" alt="" class="task_btn" v-else                                                                                                                                                        >

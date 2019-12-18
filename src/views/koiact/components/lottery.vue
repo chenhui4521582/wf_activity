@@ -27,7 +27,7 @@
         <div class="gift cj-gift enstart">
           <span class="start-btn">
               <em class="text">每次转盘消耗 <img src="../pages/images/index/star.png" alt=""
-                                           style="width: .37rem;height: .37rem"> <i>x2</i></em>
+                                           style="width: .37rem;height: .37rem"> <i>x3</i></em>
           </span>
         </div>
       </template>
@@ -35,7 +35,7 @@
         <div class="gift cj-gift" @click="starBtn">
                         <span class="start-btn">
                             <em class="text">每次转盘消耗 <img src="../pages/images/index/star.png" alt=""
-                                                         style="width: .37rem;height: .37rem"> <i>x2</i></em>
+                                                         style="width: .37rem;height: .37rem"> <i>x3</i></em>
                         </span>
         </div>
       </template>
