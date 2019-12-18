@@ -6,7 +6,8 @@
       <div class="g-package-container g1">
         <ul>
           <li v-for="item in leaguePacksListArr" @click="gotopay(item)">
-            <span class="item-text">{{item.content.split('+')[0]}}<br />+{{item.content.split('+')[1]}}</span>
+            <span
+              class="item-text">{{item.content.split('+')[0]}}<br />+{{item.content.split('+')[1]}}</span>
             <a href="javascript:" class="btn-price">￥{{item.price}}</a>
           </li>
         </ul>
@@ -74,11 +75,9 @@ export default {
       localStorage.setItem('originDeffer', window.location.href)
       GLOBALS.marchSetsPoint('A_H5PT0075001467', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-      if (window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap' && this.channel != '100001') { // 好看、全民小视频
-        location.href = 'https://wap.beeplaying.com/payment/#/bdPayment'
-      } else {
-        location.href = 'https://wap.beeplaying.com/payment/#/payment'
-      }
+      localStorage.setItem('payment', JSON.stringify(item))
+      location.href =
+        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     },
     async getShowLeaguePacksList () {
       const { code, data } = await showLeaguePacksList()
@@ -101,14 +100,14 @@ export default {
 <style lang="less" scoped>
 .get-hammer {
   padding: 1.24rem 0.38rem 0;
-    height: calc(100%);
-    width: 100%;
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow-y: scroll;
+  height: calc(100%);
+  width: 100%;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
   .s-title {
     font-size: 0.24rem;
     color: #c07002;

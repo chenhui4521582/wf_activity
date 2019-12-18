@@ -13,7 +13,7 @@
         <div class="explain">
           玩{{userInfo.gameTimes}}局{{userInfo.gameName}}即可瓜分
         </div>
-        
+
         <div class="progress" v-if="!isFinished">
           <div class="body">
             <div class="bg" :style="{'width': countWidth}"></div>
@@ -24,7 +24,7 @@
           已完成
         </div>
       </div>
-      <div class="btns" v-if="!isApply" >
+      <div class="btns" v-if="!isApply">
         <div class="play-btn" v-if="!isFinished" @click="playGame">去玩游戏</div>
         <div class="go-apply" v-else @click="_goApplay">参与瓜分</div>
       </div>
@@ -63,73 +63,67 @@ export default {
     isMounted: false
   }),
   computed: {
-    isFinished() {
+    isFinished () {
       return this.userInfo.myGameTimes >= this.userInfo.gameTimes
     },
-    isApply() {
+    isApply () {
       return this.userInfo.apply
     },
-    countWidth() {
+    countWidth () {
       let width = this.userInfo.myGameTimes / this.userInfo.gameTimes * 100
-      if(width> 100) {
+      if (width > 100) {
         return '100%'
       }
-      return  width + '%'
+      return width + '%'
     }
   },
   methods: {
-    openRule() {
+    openRule () {
       this.showRule = true
       GLOBALS.marchSetsPoint('A_H5PT0227002603')
     },
-    hidRule() {
+    hidRule () {
       this.showRule = false
     },
-    back() {
-      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
-      let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL) > -1) {
-        parent.location.href = `https://wap.beeplaying.com/xmWap/#/?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
-      }else {
-        parent.location.href = `https://wap.beeplaying.com/bdWap/#/?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
-      }
+    back () {
+      location.href = `https://wap.beeplaying.com/xmWap/#/`
     },
-    playGame() {
-      if(this.userInfo.gameUrl){
+    playGame () {
+      if (this.userInfo.gameUrl) {
         GLOBALS.marchSetsPoint('A_H5PT0227002601')
         let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
         let time = new Date().getTime()
         window.location.href = `${this.userInfo.gameUrl}?channel=${APP_CHANNEL}&time=${time}`
       }
     },
-    _getUserInfo() {
+    _getUserInfo () {
       let url = '//ops-api.beeplaying.com/ops/api/play-game-jackpot/user-info'
-      this.axios.post(url).then(res=> {
-        let {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+      this.axios.post(url).then(res => {
+        let { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.userInfo = _get(res, 'data.data')
           this.isMounted = true
-          if(this.userInfo.apply) {
+          if (this.userInfo.apply) {
             GLOBALS.marchSetsPoint('A_H5PT0227002604')
           }
         }
       })
     },
-    _goApplay() {
+    _goApplay () {
       let url = '//ops-api.beeplaying.com/ops/api/play-game-jackpot/apply'
-      this.axios.post(url).then(res=> {
-        let {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+      this.axios.post(url).then(res => {
+        let { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this._getUserInfo()
         }
       })
       GLOBALS.marchSetsPoint('A_H5PT0227002602')
     },
-    localTime() {
-      var date=new Date();
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
+    localTime () {
+      var date = new Date()
+      var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var day = date.getDate()
       this.time = `${year}/${month}/${day}`
     }
   },
@@ -141,14 +135,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import '../../common/css/base.css';
+@import "../../common/css/base.css";
 .play-game {
   position: relative;
   overflow: hidden;
   min-height: 100vh;
-  background: url(./images/bg.png) no-repeat center top / 100% auto #FDC9A7;
+  background: url(./images/bg.png) no-repeat center top / 100% auto #fdc9a7;
   .title {
-    margin: .26rem auto 0;
+    margin: 0.26rem auto 0;
     width: 5.27rem;
     height: 1.91rem;
     img {
@@ -158,9 +152,9 @@ export default {
     }
   }
   .game-info {
-    margin-top: .81rem;
+    margin-top: 0.81rem;
     .game-img {
-      margin:0 auto .35rem;
+      margin: 0 auto 0.35rem;
       width: 1.2rem;
       height: 1.2rem;
       img {
@@ -170,93 +164,93 @@ export default {
       }
     }
     .explain {
-      margin-bottom: .25rem;
+      margin-bottom: 0.25rem;
       text-align: center;
-      font-size: .36rem;
-      color: #A25A32;
-      font-weight:bold;
+      font-size: 0.36rem;
+      color: #a25a32;
+      font-weight: bold;
     }
     .progress {
       .body {
         position: relative;
-        margin: 0 auto .2rem;
+        margin: 0 auto 0.2rem;
         width: 3.42rem;
-        height: .22rem;
-        border:2px solid #A25A32;
-        border-radius: .22rem;
+        height: 0.22rem;
+        border: 2px solid #a25a32;
+        border-radius: 0.22rem;
         .bg {
           width: 0%;
           height: 100%;
-          background: #A25A32;
+          background: #a25a32;
         }
       }
-      .progress-text{
+      .progress-text {
         margin-bottom: 2.41rem;
         text-align: center;
-        font-size: .3rem;
-        color: #A25A32;
-        font-weight:bold;
+        font-size: 0.3rem;
+        color: #a25a32;
+        font-weight: bold;
       }
     }
     .finished {
-      margin:.7rem 0 2rem;
+      margin: 0.7rem 0 2rem;
       text-align: center;
-      font-size: .36rem;
+      font-size: 0.36rem;
       color: #999999;
-      font-weight:bold;
+      font-weight: bold;
     }
   }
-  .btns{
-    margin: 0 auto .57rem;
+  .btns {
+    margin: 0 auto 0.57rem;
     width: 3.72rem;
     height: 1.15rem;
     background: url(./images/btn.png) no-repeat center top / 100% 100%;
     text-align: center;
-    font-size: .36rem;
-    color: #A25A32;
-    font-weight:bold;
-    line-height: .9rem;
+    font-size: 0.36rem;
+    color: #a25a32;
+    font-weight: bold;
+    line-height: 0.9rem;
   }
   .apply {
-    margin-bottom:.57rem;
+    margin-bottom: 0.57rem;
     height: 1.15rem;
     text-align: center;
-    font-size: .36rem;
-    color: #A25A32;
-    font-weight:bold;
-    color: #FFE294;
-    font-size: .24rem;
+    font-size: 0.36rem;
+    color: #a25a32;
+    font-weight: bold;
+    color: #ffe294;
+    font-size: 0.24rem;
     p {
       line-height: 1;
-      margin-bottom: .17rem;
-      font-size: .4rem;
+      margin-bottom: 0.17rem;
+      font-size: 0.4rem;
     }
   }
   .people {
     margin: 0 auto;
-    width:3.93rem;
-    height: .44rem;
-    background:rgba(141,18,11,1);
-    border-radius: .22rem;
+    width: 3.93rem;
+    height: 0.44rem;
+    background: rgba(141, 18, 11, 1);
+    border-radius: 0.22rem;
     text-align: center;
-    font-size: .24rem;
-    color: #FFE497;
-    line-height: .44rem;
+    font-size: 0.24rem;
+    color: #ffe497;
+    line-height: 0.44rem;
   }
   .back-btn {
     position: absolute;
     left: 0;
-    top: .14rem;
-    width: .82rem;
-    height: .5rem;
+    top: 0.14rem;
+    width: 0.82rem;
+    height: 0.5rem;
     background: url(./images/back.png) no-repeat center top / 100% 100%;
   }
   .rule-btn {
     position: absolute;
     left: 0;
-    top: .79rem;
-    width: .82rem;
-    height: .5rem;
+    top: 0.79rem;
+    width: 0.82rem;
+    height: 0.5rem;
     background: url(./images/rule.png) no-repeat center top / 100% 100%;
   }
 }
@@ -274,7 +268,7 @@ export default {
     bottom: 0;
     top: 0;
     z-index: 2;
-    background: rgba(0,0,0,.5)
+    background: rgba(0, 0, 0, 0.5);
   }
   .center {
     position: absolute;
@@ -284,35 +278,35 @@ export default {
     z-index: 3;
     width: 5.11rem;
     height: 6.39rem;
-    
+
     .rule-title {
-      height: .98rem;
-      background: #C36F44;
-      font-size: .36rem;
-      color: #FDD5BA;
+      height: 0.98rem;
+      background: #c36f44;
+      font-size: 0.36rem;
+      color: #fdd5ba;
       font-weight: bold;
       text-align: center;
-      line-height: .98rem;
-      border-radius: .16rem .16rem 0 0;
+      line-height: 0.98rem;
+      border-radius: 0.16rem 0.16rem 0 0;
     }
     .body {
       box-sizing: border-box;
-      padding: .37rem .45rem;
+      padding: 0.37rem 0.45rem;
       height: 5.4rem;
-      background: #FDD5BA;
-      font-size: .26rem;
-      color:#C36F44;
-      line-height: .44rem;
-      border-radius: 0 0 .16rem .16rem;
+      background: #fdd5ba;
+      font-size: 0.26rem;
+      color: #c36f44;
+      line-height: 0.44rem;
+      border-radius: 0 0 0.16rem 0.16rem;
     }
     .close {
       position: absolute;
       bottom: -1rem;
       left: 50%;
       transform: translate(-50%, 0);
-      width: .6rem;
-      height: .6rem;
-       background: url(./images/close.png) no-repeat center top / 100% 100%;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: url(./images/close.png) no-repeat center top / 100% 100%;
     }
   }
 }
