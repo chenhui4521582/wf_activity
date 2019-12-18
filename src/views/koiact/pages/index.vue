@@ -195,10 +195,14 @@
           this.getActivityInfo()
         }else{
           if(item.status==0){//去完成
-            GLOBALS.marchSetsPoint('A_H5PT0211002232')
+            GLOBALS.marchSetsPoint('A_H5PT0211002232',{
+              task_name:item.taskName
+            })
             this.$refs.games.showPop()
           }else{//点击领取
-            GLOBALS.marchSetsPoint('A_H5PT0211002234')
+            GLOBALS.marchSetsPoint('A_H5PT0211002234',{
+              task_name:item.taskName
+            })
             let {code,data}=await betProgress({type:2,level:item.totalnum})
             if(code==200){
               if(this.activityInfoData.taskInfos.filter(item=>item.status==2).length==this.activityInfoData.taskInfos.length-1){
@@ -214,12 +218,17 @@
       async gotoVow({koiLevel,currentUserStatus}){
         if(currentUserStatus==2) return
         if(currentUserStatus==1){//点击许愿
+          GLOBALS.marchSetsPoint('A_H5PT0211002676')
           let {code}=await prizeVow({value:koiLevel})
           if(code==200){
+            GLOBALS.marchSetsPoint('A_H5PT0211002677')
             this.$refs.xuyuansuccess.showPop()
+          }else{
+            GLOBALS.marchSetsPoint('A_H5PT0211002678')
           }
           this.getActivityInfo()
         }else{//未许愿
+          GLOBALS.marchSetsPoint('A_H5PT0211002678')
           this.$refs.xuyuanfail.showPop()
         }
       }
