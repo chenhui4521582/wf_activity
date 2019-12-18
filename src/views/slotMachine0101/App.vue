@@ -29,17 +29,15 @@
         </div>
       </div>
       <game></game>
-      <prize @openprize='openprize(arguments)'></prize>
+      <prize @openprize='checkPrizeInfo'></prize>
       <bottom></bottom>
-      <rule v-show="showRule" :stime='time' @close='close'></rule>
-      <lookprize v-show="prizeshow" @closeprize='closeprize' :num='num'></lookprize>
 
     </div>
     <congratulation v-show="false"></congratulation>
     <!--<sorry1></sorry1>-->
     <!--<sorry2 v-if="false"></sorry2>-->
     <!--<remind v-if='false'></remind>-->
-    <com-pop :poptype="poptype" :prize-info-type="prizeInfoType" :rule-time="time" ref="comPop"></com-pop>
+    <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :rule-time="time" :prize-info-list=" prizeInfoList" ref="comPop"></com-pop>
   </div>
 </template>
 
@@ -49,12 +47,7 @@
   import prize from './component/prize'
   import bottom from './component/bottom'
   import pop from './component/popup'
-  import rule from './component/rule'
-  import lookprize from './component/lookprize'
   import congratulation from './component/congratulation'
-  import sorry1 from './component/sorry1'
-  import sorry2 from './component/sorry2'
-  import remind from './component/remind'
 
   export default {
     data() {
@@ -63,16 +56,103 @@
         prizeshow: true,
         num: '',
         time: '2019年12月25日-2020年1月1日',
-        poptype:0,//0 规则 1我的奖励 2奖品信息 3抽奖弹窗
-        prizeInfoType:0
+        popType: 2,//0 规则 1我的奖励 2奖品信息 3抽奖弹窗
+        prizeInfoType: 0,
+        prizeInfoList: [
+          [{
+            awardType: 'jdk',
+            awardName: '京东券1000元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券800元'
+          }],
+          [{
+            awardType: 'jdk',
+            awardName: '京东券500元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券300元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券250元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券250元'
+          }],
+          [{
+            awardType: 'jdk',
+            awardName: '京东券200元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券188元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券100元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券100元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券70元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券70元'
+          }],
+          [{
+            awardType: '',
+            awardName: ''
+          },{
+            awardType: 'hfq',
+            awardName: '话费券50元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券40元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券30元'
+          },{
+            awardType: '',
+            awardName: ''
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券23元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券23元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券20元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券20元'
+          }],
+          [{
+            awardType: 'yg',
+            awardName: '鱼干50g'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券1元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券0.5元'
+          }, {
+            awardType: 'jdk',
+            awardName: '京东券0.4元'
+          }, {
+            awardType: 'hfq',
+            awardName: '话费券0.4元'
+          }, {
+            awardType: 'jyz',
+            awardName: '金叶子500'
+          }]
+        ]
       }
     },
     methods: {
-      openprize: function (e) {
-        this.prizeshow = e[0]
-        this.num = e[1]
-        console.log(this.prizeshow)
-        console.log('父组件num', this.num)
+      checkPrizeInfo(type) {
+        this.popType = 2;
+        this.prizeInfoType = parseInt(type)
+        this.$refs.comPop.showPop()
       },
       closeprize: function (e) {
         this.prizeshow = e
@@ -80,20 +160,13 @@
       close: function (e) {
         this.showRule = e
       },
-      rule() {
-        if (this.showRule == false) {
-          this.showRule = true
-        } else {
-          this.showRule = false
-        }
-      },
-      back(){//返回
+      back() {//返回
 
       },
-      gotoRank(){//去排行榜
+      gotoRank() {//去排行榜
       },
-      showPop(type){//展示弹窗
-        this.popType=type;
+      showPop(type) {//展示弹窗
+        this.popType = type;
         this.$refs.comPop.showPop()
       },
     },
@@ -102,13 +175,8 @@
       prize,
       bottom,
       pop,
-      rule,
-      lookprize,
       congratulation,
-      sorry1,
-      sorry2,
-      remind,
-      comPop:()=>import('./component/comPop')
+      comPop: () => import('./component/comPop')
     }
   }
 </script>
