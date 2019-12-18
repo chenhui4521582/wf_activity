@@ -1,0 +1,134 @@
+.bottom-wrap {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1rem;
+  background: url('./images/bottom-top.png') center center / 100% 100%;
+  display: flex;
+  padding: 0.2rem 0.2rem 0.16rem;
+  box-sizing: border-box;
+
+  .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 0.28rem;
+    font-weight: bold;
+    color: #B05201;
+
+    .hammer_icon {
+      margin-left: 0.24rem;
+      width: 0.7rem;
+      height: 0.88rem;
+      background: center center / 100% 100%;
+    }
+
+    .right {
+      flex: 1;
+      text-align: center;
+      img {
+        width: 2rem;
+        height: .08rem;
+      }
+      .main-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0.44rem;
+        color: #7B3317;
+        img{
+          width: .69rem;
+          height: .36rem;
+        }
+      }
+
+      .btn {
+        margin-top: 0.12rem;
+        font-size: 0.24rem;
+        margin: 0 auto;
+        padding: 0 0.24rem;
+        width: min-content;
+        white-space: nowrap;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        border-radius: 0.22rem;
+        color: #C45E13;
+      }
+    }
+  }
+}
+
+.drop-down {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.drop-down-content {
+  width: 100%;
+  height: 8.73rem;
+  max-height: 90%;
+  //background: url("../images/package/profit/bg.png");
+  background-size: 100% 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  -webkit-user-select: none;
+  border-radius: 0.4rem 0.4rem 0 0;
+  font-size: 0.2rem;
+  z-index: 12;
+  padding-top: .11rem;
+  box-sizing: border-box;
+  .d-tab {
+    border-radius: 0.4rem 0.4rem 0 0;
+    overflow-y: hidden;
+    width: 100%;
+    height: 0.75rem;
+    position: relative;
+    z-index: 15;
+    -webkit-transform: translateZ(0);
+    ul {
+      height: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    li {
+      text-align: center;
+      font-size: 0.3rem;
+      color: #FA2D35;
+      font-weight: bold;
+      &:nth-child(2) {
+        font-size: 0.2rem;
+        color: rgba(196, 94, 19, 1);
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.icon-back {
+  width: 0.8rem;
+  height: 0.8rem;
+  position: absolute;
+  right: 0.16rem;
+  top: 0.11rem;
+  z-index: 100;
+}

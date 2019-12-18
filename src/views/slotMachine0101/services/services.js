@@ -11,7 +11,11 @@ let services = {
   runAnimation: function(params) {
     let url = "//ops-api.beeplaying.com/ops/api/number-wheel/bet"
     return axios.post(url, params)
-  }
+  },
+  gameReceiveRecord: function(params) {
+    let url = "//ops-api.beeplaying.com/ops/api/open-card/user-awards"
+    return axios.post(url, params)
+  },
 }
 
 export default services

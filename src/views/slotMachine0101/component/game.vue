@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-   
+
     <div class="game_img">
        <div class="light"><img src="../images/runhorse.png"></div>
        <div class="mask"><img src="../images/mask.png"></div>
@@ -14,7 +14,7 @@
         <div class="line2"></div>
         <div class="num2">200</div>
       </div>
-      <div class="click">
+      <div class="click" @click="gotowave">
         <img src="../images/click.png" alt />
       </div>
       <div class="prize_information">奖励说明</div>
@@ -26,7 +26,7 @@
               <img :src="imgsrc"><span>{{i.text}}</span>
             </div>
             </div>
-            
+
           </div>
         </div>
         <div class="prize_consume_bg">
@@ -51,7 +51,7 @@ export default {
         {text:'消耗500个游戏币'},{text:'消耗200个游戏币'},{text:'消耗50个游戏币'},{text:'消耗1个游戏币'}
       ]
     };
-    
+
   },
   methods:{
     up(){
@@ -60,6 +60,9 @@ export default {
       }else{
         this.show=false;
       }
+    },
+    gotowave(){
+      this.$emit('gotowave','500')
     }
   }
 };

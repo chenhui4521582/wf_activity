@@ -4,10 +4,10 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div :class="getClassName('wrap')">
-          <div class="title">
+          <div class="title_bg">
             <img :src="titleImgs[popType].url" alt=""
                  :style="{width:titleImgs[popType].width,height:titleImgs[popType].height}">
-            <div class="close" @click="isShowPop = false">
+            <div class="close" @click="close">
             </div>
           </div>
           <div class="main">
@@ -21,12 +21,33 @@
                 <p>5. 活动结束后，排行榜还会展示一天时间。</p>
               </template>
               <template v-if="popType==1">
-                <p v-if="ruleTime">活动时间:{{ruleTime}}</p>
-                <p>1. 活动期间内，玩家在游戏中消耗一定的叶子，可领取摇奖机次数;</p>
-                <p>2. 每次摇奖都会随机摇出5个图案，玩家根据摇出的相同图案的数量会获得不同的奖励，出现的相同图案越多，奖励越丰厚;</p>
-                <p>3. 活动期间，玩家累计获得的摇奖次数会进行排行;</p>
-                <p>4. 活动结束后，按照最终排行进行奖励发放;</p>
-                <p>5. 活动结束后，排行榜还会展示一天时间。</p>
+                <div class="toatl_awards">
+                  <div class="item" v-for="item in toalItems">
+                    <div class="img_bg">
+                      <img :src="`${require(`../images/${item.awardsType}.png`)}`" alt="" class="game">
+                    </div>
+                    <span>{{item.name}}<br><i>{{item.value}}</i></span>
+                  </div>
+                </div>
+                <h4>摇奖记录</h4>
+                <div class="bonus-record" :class="{empty:!record.length}">
+                  <div class="title_items">
+                    <div class="title">摇奖时间</div>
+                    <div class="title">摇奖奖励</div>
+                  </div>
+                  <div class="content" :class="{empty:!record.length}">
+                    <scroll :data="record" v-if="record.length">
+                      <ul>
+                        <li v-for="item in record">
+                          <div>{{item.receiverTime}}</div>
+                          <div>
+                            {{item.awardsName}}
+                          </div>
+                        </li>
+                      </ul>
+                    </scroll>
+                  </div>
+                </div>
               </template>
               <template v-if="popType==2">
                 <p>随机获得下列奖励</p>
@@ -43,6 +64,42 @@
                   </div>
                 </div>
               </template>
+              <template v-if="popType==3">
+                <template v-if="wavePrizeInfoType==0">
+                  <p>当前游戏币不足</p>
+                  <p>快去玩游戏获取摇游戏币吧</p>
+                  <div class="btn btn_yellow" @click="gotogame">去玩游戏</div>
+                </template>
+                <template v-else-if="wavePrizeInfoType==1">
+                  <p>您的游戏币充足</p>
+                  <p>是否需要切换成{{maxCanSelectLimit}}额度</p>
+                  <p><i>获得大奖概率更高哟</i></p>
+                  <div class="btns">
+                    <div class="btn btn_purple" @click="changeGear">切换额度</div>
+                    <div class="btn btn_yellow" @click="gotowave">直接摇奖</div>
+                  </div>
+                </template>
+                <template v-else-if="wavePrizeInfoType==2">
+                  <p>恭喜您获得<i>特等奖</i></p>
+                  <div class="prize_info">
+                    <div class="prize_info_item">
+                      <div class="prize_info_img">
+                        <img :src="`${require(`../images/comPop/${awardData.awardType}.png`)}`" alt="">
+                      </div>
+                      <div class="prize_info_name">
+                        <div class="prize_info_name_item">{{getAwardName(awardData.awardType)}}</div>
+                        <div class="prize_info_name_item">{{awardData.awardName.replace(awardData.awardName.split(/\d+/)[0],'')}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn btn_yellow" @click="gotowave">再摇一次</div>
+                </template>
+                <template v-else-if="wavePrizeInfoType==3">
+                  <p>恭喜您获得{{jinbinum}}个游戏币</p>
+                  <div class="btn btn_yellow" @click="close">快去摇奖</div>
+                </template>
+              </template>
             </div>
             <div class="footer"></div>
           </div>
@@ -53,11 +110,14 @@
 </template>
 
 <script>
+  import Services from '../services/services'
   export default {
     name: "comPop",
     data() {
       return {
-        isShowPop: true,
+        isShowPop: false,
+        record: [],
+        toalItems: [],
       };
     },
     props: {
@@ -73,9 +133,25 @@
         type: Number,
         default: 0
       },
+      wavePrizeInfoType: {
+        type: Number,
+        default: 0
+      },
       prizeInfoList: {
         type: Array,
         default: () => []
+      },
+      awardData: {
+        type: Object,
+        default: () => null
+      },
+      maxCanSelectLimit: {
+        type: Number,
+        default: 0
+      },
+      jinbinum: {
+        type: Number,
+        default: 0
       }
     },
     computed: {
@@ -86,14 +162,21 @@
           height: '.54rem'
         }, {
           url: `${require('../images/comPop/1/title.png')}`,
-          width: '2.33rem',
-          height: '.54rem'
+          width: '2.34rem',
+          height: '.56rem'
         }, {
           url: `${require(`../images/comPop/2/title${this.prizeInfoType}.png`)}`,
           width: '1.74rem',
           height: '.56rem'
+        },{
+          url: `${require(`../images/comPop/3/title${this.wavePrizeInfoType}.png`)}`,
+          width: '2.36rem',
+          height: '.55rem'
         }]
       }
+    },
+    components:{
+      scroll:()=>import('./scroll')
     },
     methods: {
       getClassName(name) {
@@ -115,9 +198,54 @@
             break;
         }
       },
-      showPop() {
-        this.isShowPop = true
-        GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
+      async showPop() {
+        console.log(this.wavePrizeInfoType)
+        if(this.popType!=1){
+          this.isShowPop = true
+          GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
+        }else{
+          let {code, data} =(await Services.gameReceiveRecord()).data
+          if (code == 200) {
+            this.toalItems = [{
+              awardsType: 'hfq',
+              name: '话费券',
+              value: data.hfqAmount
+            }, {
+              awardsType: 'jdk',
+              name: '京东卡',
+              value: data.jdkAmount
+            }, {
+              awardsType: 'jyz',
+              name: '金叶',
+              value: data.jyzAmount
+            }, {
+              awardsType: 'yg',
+              name: '鱼干',
+              value: data.ygAmount
+            }]
+            // this.record = data.awardsList
+            this.record=[{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'}]
+            this.isShowPop = true
+          }
+        }
+      },
+      close(){
+        if(this.popType==3&&this.wavePrizeInfoType==1){
+          this.$emit('gotowavedirect')
+        }
+        this.$emit('close')
+        this.isShowPop = false;
+      },
+      gotogame(){
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      },
+      gotowave(){
+        this.isShowPop = false;
+        this.$emit('gotowavedirect')
+      },
+      changeGear(){
+        this.isShowPop = false;
+        this.$emit('close')
       }
     }
   };
@@ -143,7 +271,7 @@
       .wrap {
         margin: 0 auto;
         box-sizing: border-box;
-        .title {
+        .title_bg {
           width: 6.27rem;
           height: 3.66rem;
           background: url("../images/comPop/top.png") no-repeat center
@@ -184,7 +312,7 @@
           font-size: 0.2rem;
           background: #ED2437;
           border-radius: 0px 0px .16rem .16rem;
-          padding: 0 0 1.43rem;
+          padding: 0 0 1.3rem;
           color: #fff;
           margin-left: .14rem;
           position: relative;
@@ -195,6 +323,115 @@
               font-size: 24px;
               font-weight: 500;
               line-height: .36rem;
+            }
+            &.flag1{
+              .toatl_awards {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content:space-around;
+                margin-bottom: .3rem;
+                .item{
+                  width: 1.22rem;
+                  height: 1.8rem;
+                  .img_bg{
+                    height: 1.15rem;
+                    background: rgba(254, 253, 251, 1);
+                    border-radius: .2rem .2rem 0 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img {
+                      width: 80%;
+                      height: 80%;
+                    }
+                  }
+                  span {
+                    font-size: .22rem;
+                    font-weight: 800;
+                    display: inline-block;
+                    text-align: center;
+                    width: 100%;
+                    height: .65rem;
+                    background: rgba(255, 127, 50, 1);
+                    border-radius: 0 0 .2rem .2rem;
+                    padding-top: .15rem;
+                    box-sizing: border-box;
+                    i{
+                      color: #FFF500;
+                    }
+                  }
+                }
+              }
+              h4{
+                padding-left: .39rem;
+                font-size: .3rem;
+                font-weight:800;
+                color:rgba(255,255,255,1);
+                margin-bottom: .14rem;
+                position: relative;
+                padding-left: .6rem;
+                &:before{
+                  content: '';
+                  position: absolute;
+                  left: .39rem;
+                  width:.1rem;
+                  height:.36rem;
+                  background:rgba(254,253,251,1);
+                  border-radius:.05rem;
+                }
+              }
+              .bonus-record {
+                width:5.42rem;
+                height: 2.16rem;
+                position: relative;
+                margin: auto;
+                font-size: .22rem;
+                font-weight:bold;
+                .title_items{
+                  display: flex;
+                  height: .36rem;
+                  background:rgba(255,127,50,1);
+                  border-radius:.1rem .1rem 0 0;
+                  .title{
+                    flex: 1;
+                    text-align: center;
+                    height: .36rem;
+                    line-height:.36rem;
+                  }
+                }
+                .content {
+                  position: absolute;
+                  height: 1.8rem;
+                  top: .34rem;
+                  left: 0rem;
+                  right: 0;
+                  font-weight: 500;
+                  color: #666666;
+                  overflow: hidden;
+                  background: #fff;
+                  border-radius:0 0 .1rem .1rem;
+                  ul {
+                    display: flex;
+                    flex-direction: column;
+                    li {
+                      display: flex;
+                      justify-content: space-between;
+                      line-height: .36rem;
+                      height: .36rem;
+                      div{
+                        flex: 1;
+                        text-align: center;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                      }
+                      &:nth-child(2n){
+                        background:rgba(255,230,179,1);
+                      }
+                    }
+                  }
+                }
+              }
             }
             &.flag2 {
               p {
@@ -210,7 +447,100 @@
                 box-sizing: border-box;
                 justify-content: space-between;
                 .prize_info_item {
-                  width: 1.12rem;
+                  width: 1.22rem;
+                  margin-bottom:.1rem;
+                  &.empty{
+                    opacity: 0;
+                    width: .48rem;
+                  }
+                  .prize_info_img {
+                    height: 1.15rem;
+                    background: rgba(254, 253, 251, 1);
+                    border-radius: .2rem .2rem 0 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    img {
+                      width: 80%;
+                      margin: auto;
+                    }
+                  }
+                  .prize_info_name {
+                    height: .65rem;
+                    background: rgba(255, 127, 50, 1);
+                    border-radius: 0 0 .2rem .2rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    padding: .1rem 0;
+                    box-sizing: border-box;
+                    .prize_info_name_item {
+                      font-size: .22rem;
+                      font-weight: 800;
+                      text-align: center;
+                      &:nth-child(2) {
+                        color: #FFF500;
+                      }
+                    }
+                  }
+                }
+                &.lte2 {
+                  justify-content: center;
+                  .prize_info_item:nth-child(1) {
+                    margin-right: .58rem;
+                  }
+                }
+                &.triple{
+                  width:4.5rem;
+                  margin: auto;
+                }
+              }
+            }
+            &.flag3{
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              p{
+                font-size: .3rem;
+                line-height: .5rem;
+                i{
+                  font-weight: bold;
+                  font-size: .36rem;
+                  color: #FCFF00;
+                }
+              }
+              .btn{
+                margin-top:.46rem;
+                width: 1.94rem;
+                height: .8rem;
+                line-height: .8rem;
+                text-align: center;
+                font-size:.36rem;
+                font-weight:bold;
+                &.btn_yellow{
+                  color:rgba(237,36,55,1);
+                  background: url("../images/comPop/button.png") no-repeat center
+                    center / 100% 100%;
+                }
+                &.btn_purple{
+                  margin-right: .46rem;
+                  background: url("../images/comPop/3/purplebutton.png") no-repeat center
+                    center / 100% 100%;
+                }
+              }
+              .btns{
+                display: flex;
+              }
+              .prize_info {
+                margin-top: .23rem;
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0 .22rem 0 .26rem;
+                box-sizing: border-box;
+                justify-content: space-between;
+                .prize_info_item {
+                  width: 1.22rem;
                   margin-bottom:.1rem;
                   &.empty{
                     opacity: 0;

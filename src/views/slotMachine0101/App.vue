@@ -28,16 +28,15 @@
           <img src="./images/vice-title.png" alt="">
         </div>
       </div>
-      <game></game>
+      <game @gotowave="gotowave"></game>
       <prize @openprize='checkPrizeInfo'></prize>
-      <bottom></bottom>
-
+      <!--<bottom></bottom>-->
     </div>
     <congratulation v-show="false"></congratulation>
-    <!--<sorry1></sorry1>-->
-    <!--<sorry2 v-if="false"></sorry2>-->
-    <!--<remind v-if='false'></remind>-->
-    <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :rule-time="time" :prize-info-list=" prizeInfoList" ref="comPop"></com-pop>
+    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
+    <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
+             :rule-time="time" :prize-info-list=" prizeInfoList" :award-data="awardData"
+             :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum" @close="popType=0" @gotowavedirect="gotowavedirect"></com-pop>
   </div>
 </template>
 
@@ -56,8 +55,12 @@
         prizeshow: true,
         num: '',
         time: '2019年12月25日-2020年1月1日',
-        popType: 2,//0 规则 1我的奖励 2奖品信息 3抽奖弹窗
-        prizeInfoType: 0,
+        popType: 0,//0 规则 1我的奖励 2奖品信息 3抽奖弹窗
+        prizeInfoType: 0,//0 特等奖 1 一等奖 2 二等奖 3 三等奖 4 参与奖
+        wavePrizeInfoType: 0,//0 游戏币不足 1. 切换投注额度 2中奖弹窗
+        awardData: null,//摇中奖品数据
+        maxCanSelectLimit: 0,
+        jinbinum:0,//点击领取获得金币数
         prizeInfoList: [
           [{
             awardType: 'jdk',
@@ -101,7 +104,7 @@
           [{
             awardType: '',
             awardName: ''
-          },{
+          }, {
             awardType: 'hfq',
             awardName: '话费券50元'
           }, {
@@ -110,7 +113,7 @@
           }, {
             awardType: 'jdk',
             awardName: '京东券30元'
-          },{
+          }, {
             awardType: '',
             awardName: ''
           }, {
@@ -167,8 +170,28 @@
       },
       showPop(type) {//展示弹窗
         this.popType = type;
+        setTimeout(() => {
+          this.$refs.comPop.showPop()
+        })
+      },
+      gotowave(num){
+        this.popType = 3;
+        this.wavePrizeInfoType=2;
+        this.awardData={
+          awardType: 'hfq',
+          awardName: '话费券0.5元'
+        }
         this.$refs.comPop.showPop()
       },
+      gotowavedirect(){
+        this.popType = 3;
+        this.wavePrizeInfoType=2;
+        this.awardData={
+          awardType: 'jyz',
+          awardName: '话费券0.5元'
+        }
+        this.$refs.comPop.showPop()
+      }
     },
     components: {
       game,
@@ -176,7 +199,8 @@
       bottom,
       pop,
       congratulation,
-      comPop: () => import('./component/comPop')
+      comPop: () => import('./component/comPop'),
+      dropDown: () => import('./component/dropDown')
     }
   }
 </script>
