@@ -63,6 +63,7 @@ export default {
             duration: 1500
           })
         }
+        console.log('hornlist的数据',data)
       })
     },
     _runAnimation () { },

@@ -32,7 +32,7 @@
     },
     methods: {
       hide() {
-        this.$emit('input', false)
+        this.$emit('input',false)
       }
     },
     mounted() {
