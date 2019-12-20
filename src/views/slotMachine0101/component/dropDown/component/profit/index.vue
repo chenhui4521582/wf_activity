@@ -16,7 +16,7 @@
             </div>
             <span class="icon-number"></span>
             <span class="s-text">{{item.nickName}}</span>
-            <span class="hammer-number">{{item.totalNum}}个币</span>
+            <span class="hammer-number">{{item.totalNum|filterPrice}}个币</span>
           </li>
         </ul>
       </div>
@@ -29,7 +29,7 @@
             </li>
             <li>
               <h4>累计获得游戏币</h4>
-              <span>{{myInfo.useNum}}个币</span>
+              <span>{{myInfo.useNum|filterPrice}}个币</span>
             </li>
             <li>
               <h4>当前奖励</h4>
@@ -52,13 +52,13 @@
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}个币</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum|filterPrice}}个币</em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}个币<</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum|filterPrice}}个币<</em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
@@ -67,7 +67,7 @@
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}个币</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum|filterPrice}}个币</em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>
