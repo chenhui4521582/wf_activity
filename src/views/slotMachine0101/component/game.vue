@@ -2,7 +2,7 @@
   <div class="game">
     <div class="game_img">
       <horn :horn-list="hornList"></horn>
-      <div class="light"><img src="../images/runhorse.png"></div>
+      <div class="light" :class="{lightopen:showLight}"></div>
       <!--<div class="mask"><img src="../images/mask.png"></div>-->
       <div class="luckdraw">
         <ul>
@@ -66,6 +66,7 @@
         showLoading: false,
         show: false,
         imgsrc: require(`../images/pop-gamecoin.png`),
+        showLight: false,
         currentIndex: 0,
         awardTop: [],
         resArr: [1, 2, 3, 4, 5],
@@ -163,10 +164,12 @@
                 arr.push(-(this.lotteryawardlist.length * 2 * this.num * 1.73 + (this.resArr[index] - 1) * 1.73) + 'rem')
                 if (arr.length == this.resArr.length) {
                   this.awardTop = arr
+                  this.showLight = true
                 }
               })
               this.$refs.luck4[0].addEventListener("webkitTransitionEnd", function () {
                 GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
+                self.showLight = false
                 self.$emit('gotowave', {
                   item: self.actInfo.stageList[self.currentIndex],
                   popType: 3,
@@ -343,21 +346,20 @@
   }
 
   .already_text {
-    // width: 1.29rem;
-    height: 0.22rem;
+    height: 100%;
     font-size: 0.22rem;
     font-family: PingFang SC;
     font-weight: bold;
     color: rgba(255, 233, 130, 1);
     position: absolute;
     left: 0.1rem;
-    line-height: 0.34rem;
+    line-height: 0.36rem;
   }
 
   .line1 {
     position: absolute;
     left: 1.5rem;
-    width: 0.01rem;
+    width: 1px;
     height: 0.34rem;
     background: rgba(247, 179, 77, 1);
     border-radius: 0.17rem;
@@ -389,19 +391,18 @@
   }
 
   .now_text {
-    // width:1.50rem;
-    height: 0.22rem;
+    height: 100%;
     font-size: 0.22rem;
     font-family: PingFang SC;
     font-weight: bold;
     color: rgba(255, 252, 175, 1);
-    line-height: 0.34rem;
+    line-height: 0.36rem;
     position: absolute;
     left: 0.1rem;
   }
 
   .line2 {
-    width: 0.01rem;
+    width: 1px;
     height: 0.34rem;
     background: rgba(248, 108, 112, 1);
     border-radius: 0.17rem;
@@ -423,11 +424,16 @@
   }
 
   .light {
+    width: 5.72rem;
+    height: 2.58rem;
     position: absolute;
     top: 1.37rem;
-
     left: 50%;
     transform: translateX(-50%);
+    background: url('../images/light1.png') no-repeat center center / 100% 100%;
+    &.lightopen {
+      animation: changeBg 1s infinite ease;
+    }
   }
 
   .light img {
@@ -443,7 +449,7 @@
   /*}*/
   .luckdraw {
     width: 5.85rem;
-    height: 1.73rem;
+    height: 1.75rem;
     background: url(../images/mask.png) no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -471,7 +477,7 @@
       position: relative;
       top: -2.5rem;
       transition: all 3s;
-      -webkit-transition: all .3s;
+      -webkit-transition: all 3s;
       &.luckdraw0 {
         width: 1.1rem;
       }
@@ -567,5 +573,17 @@
 
   .pop_inner1 div:last-child {
     border-bottom: 0px;
+  }
+
+  @keyframes changeBg {
+    0% {
+      background: url('../images/light1.png') no-repeat center center / 100%
+      100%;
+    }
+
+    100% {
+      background: url('../images/light2.png') no-repeat center center / 100%
+      100%;
+    }
   }
 </style>

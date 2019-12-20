@@ -29,7 +29,8 @@
             <img src="./images/vice-title.png" alt="">
           </div>
         </div>
-        <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList" :award-data="awardData" ref="game"></game>
+        <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList" :award-data="awardData"
+              ref="game"></game>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
       <profit v-else @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
@@ -49,6 +50,7 @@
   import Services from './services/services'
   import game from './component/game'
   import prize from './component/prize'
+
   export default {
     data() {
       return {
@@ -65,9 +67,9 @@
         showRank: false,//是否展示排行榜
         actData: null,//活动信息
         userData: null,//用户信息
-        awardsLevelItem:null,//选中的档位
-        showLoading:false,
-        hornList:[]
+        awardsLevelItem: null,//选中的档位
+        showLoading: false,
+        hornList: []
       }
     },
     methods: {
@@ -101,10 +103,10 @@
         GLOBALS.marchSetsPoint('A_H5PT0229002654')//H5平台-双旦活动页-返回按钮点击
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
       },
-      rankBack(){
-        if(this.actData.state==1){
-          this.showRank=false
-        }else{
+      rankBack() {
+        if (this.actData.state == 1) {
+          this.showRank = false
+        } else {
           location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
         }
       },
@@ -115,20 +117,20 @@
       showPop(type) {//展示弹窗
         //A_H5PT0229002655 H5平台-双旦活动页-规则按钮点击
         //A_H5PT0229002658 H5平台-双旦活动页-摇奖记录按钮点击
-        let points=['A_H5PT0229002655','A_H5PT0229002658']
+        let points = ['A_H5PT0229002655', 'A_H5PT0229002658']
         GLOBALS.marchSetsPoint(points[type])
         this.popType = type;
         setTimeout(() => {
           this.$refs.comPop.showPop()
         })
       },
-      gotowave({item,popType,wavePrizeInfoType,maxCanSelectLimit,awardData}) {
-        this.awardsLevelItem=item
+      gotowave({item, popType, wavePrizeInfoType, maxCanSelectLimit, awardData}) {
+        this.awardsLevelItem = item
         this.popType = popType;
-        this.wavePrizeInfoType=wavePrizeInfoType
-        this.maxCanSelectLimit=maxCanSelectLimit
-        this.awardData=awardData
-        if(wavePrizeInfoType==2){
+        this.wavePrizeInfoType = wavePrizeInfoType
+        this.maxCanSelectLimit = maxCanSelectLimit
+        this.awardData = awardData
+        if (wavePrizeInfoType == 2) {
           this.getUserInfo()
         }
         setTimeout(() => {
@@ -146,7 +148,7 @@
           })//H5平台-双旦活动页面加载完成
           this.actData = data
           this.time = data.beginDate + '-' + data.endDate
-          this.showRank = data.state!=1
+          this.showRank = data.state != 1
           this.getUserInfo()
         }
       },
@@ -157,18 +159,18 @@
           this.getHornList()
         }
       },
-      async getHornList(){
+      async getHornList() {
         let {code, data} = (await Services.getHornList()).data
         if (code == 200) {
           this.hornList = data
         }
       },
-      refresh(num){
+      refresh(num) {
         this.getUserInfo()
-        if(num){
+        if (num) {
           this.popType = 3;
           this.wavePrizeInfoType = 3;
-          this.jinbinum=num
+          this.jinbinum = num
           setTimeout(() => {
             this.$refs.comPop.showPop()
           }, 100)
@@ -181,7 +183,7 @@
       comPop: () => import('./component/comPop'),
       dropDown: () => import('./component/dropDown'),
       profit: () => import('./component/dropDown/component/profit'),
-      loading:()=>import('../../components/common/loading.vue'),
+      loading: () => import('../../components/common/loading.vue'),
     },
     mounted() {
       this.getActInfo()
@@ -320,21 +322,19 @@
     height: 0.49rem;
     position: absolute;
     top: 0.15rem;
-    left: 5.76rem;
+    right: 0;
     display: flex;
     align-items: center;
   }
 
   .rank div {
-    /* width:0.70rem;
-  height:0.23rem; */
     font-size: 0.24rem;
-    font-family: PingFang SC;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
-    line-height: 0.14rem;
     position: absolute;
     left: 0.49rem;
+    height: 100%;
+    line-height: .49rem;
   }
 
   .rank img {
@@ -371,15 +371,13 @@
   }
 
   .myprize div {
-    /* width:0.94rem; */
-    /* height:0.23rem; */
     font-size: 0.24rem;
     font-family: PingFang SC;
     font-weight: bold;
     color: rgba(237, 36, 55, 1);
-    line-height: 0.14rem;
     position: absolute;
     left: 0.45rem;
-
+    height: 100%;
+    line-height: .49rem;
   }
 </style>
