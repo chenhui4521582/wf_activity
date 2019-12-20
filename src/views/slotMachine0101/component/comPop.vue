@@ -323,11 +323,12 @@
           color: #fff;
           margin-left: .14rem;
           position: relative;
+          top: -.1rem;
           .container_compop {
             &.flag0 {
               padding: 0 .2rem;
               box-sizing: border-box;
-              font-size: 24px;
+              font-size: .24rem;
               font-weight: 500;
               line-height: .36rem;
             }
