@@ -47,8 +47,12 @@ Vue.filter('timeFormat', function (data, type) {
     }
     return `${y}-${m}-${d} ${h}:${minute}:${second}`
 });
-
+Vue.filter('filterPrice', function (value) {
+  if (value) {
+    return value > 10000 ? value / 10000 + '万' : value
+  }
+})
 new Vue({
-    
+
     render: r => r(App)
 }).$mount('#app')

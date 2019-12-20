@@ -5,13 +5,17 @@
       <div class="pop" v-if="isShowPop">
         <div :class="getClassName('wrap')">
           <div class="title_bg">
-            <img :src="titleImgs[popType].url" alt=""
-                 :style="{width:titleImgs[popType].width,height:titleImgs[popType].height}">
+            <img :src="`${require(`../images/comPop/${this.popType}/title.png`)}`" alt=""
+                 style="width:2.34rem;height:.56rem" v-if="[0,1].includes(popType)">
+            <img :src="`${require(`../images/comPop/${this.popType}/title${this.prizeInfoType}.png`)}`" alt=""
+                 style="width:1.74rem;height:.56rem" v-else-if="popType==2">
+            <img :src="`${require(`../images/comPop/3/title${this.wavePrizeInfoType}.png`)}`" alt=""
+                 style="width:2.36rem;height:.55rem" v-else-if="popType==3">
             <div class="close" @click="close">
             </div>
           </div>
           <div class="main">
-            <div :class="getClassName('container')">
+            <div :class="getClassName('container_compop')">
               <template v-if="popType==0">
                 <p v-if="ruleTime">活动时间:{{ruleTime}}</p>
                 <p>1. 活动期间内，玩家在游戏中消耗一定的叶子，可领取摇奖机次数;</p>
@@ -39,7 +43,7 @@
                     <scroll :data="record" v-if="record.length">
                       <ul>
                         <li v-for="item in record">
-                          <div>{{item.receiverTime}}</div>
+                          <div>{{item.createTime}}</div>
                           <div>
                             {{item.awardsName}}
                           </div>
@@ -51,14 +55,16 @@
               </template>
               <template v-if="popType==2">
                 <p>随机获得下列奖励</p>
-                <div class="prize_info" :class="{lte2:prizeInfoList[prizeInfoType].length<=2,triple:prizeInfoList[prizeInfoType].length%3==0&&prizeInfoList[prizeInfoType].length<=6}">
-                  <div class="prize_info_item" v-for="(item,index) in prizeInfoList[prizeInfoType]" :class="{empty:!item.awardName}">
+                <div class="prize_info"
+                     :class="{lte2:prizeInfoList.length<=2,triple:prizeInfoList.length%3==0&&prizeInfoList.length<=6}">
+                  <div class="prize_info_item" v-for="(item,index) in prizeInfoList" :class="{empty:!item.awardsName}">
                     <div class="prize_info_img">
-                      <img :src="`${require(`../images/comPop/${item.awardType}.png`)}`" alt="" v-if="item.awardType">
+                      <img :src="`${require(`../images/comPop/${item.awardsType}.png`)}`" alt="" v-if="item.awardsType">
                     </div>
                     <div class="prize_info_name">
-                      <div class="prize_info_name_item" v-if="item.awardType">{{getAwardName(item.awardType)}}</div>
-                      <div class="prize_info_name_item" v-if="item.awardName">{{item.awardName.replace(item.awardName.split(/\d+/)[0],'')}}
+                      <div class="prize_info_name_item" v-if="item.awardsType">{{getAwardName(item.awardsType)}}</div>
+                      <div class="prize_info_name_item" v-if="item.awardsName">
+                        {{item.awardsName}}
                       </div>
                     </div>
                   </div>
@@ -72,15 +78,15 @@
                 </template>
                 <template v-else-if="wavePrizeInfoType==1">
                   <p>您的游戏币充足</p>
-                  <p>是否需要切换成{{maxCanSelectLimit}}额度</p>
+                  <p>是否需要切换成{{maxCanSelectLimit.consumeNum}}额度</p>
                   <p><i>获得大奖概率更高哟</i></p>
                   <div class="btns">
                     <div class="btn btn_purple" @click="changeGear">切换额度</div>
-                    <div class="btn btn_yellow" @click="gotowave">直接摇奖</div>
+                    <div class="btn btn_yellow" @click="gotowave(0)">直接摇奖</div>
                   </div>
                 </template>
                 <template v-else-if="wavePrizeInfoType==2">
-                  <p>恭喜您获得<i>特等奖</i></p>
+                  <p>恭喜您获得<i>{{awardData.levelName}}</i></p>
                   <div class="prize_info">
                     <div class="prize_info_item">
                       <div class="prize_info_img">
@@ -88,15 +94,16 @@
                       </div>
                       <div class="prize_info_name">
                         <div class="prize_info_name_item">{{getAwardName(awardData.awardType)}}</div>
-                        <div class="prize_info_name_item">{{awardData.awardName.replace(awardData.awardName.split(/\d+/)[0],'')}}
+                        <div class="prize_info_name_item">
+                          {{awardData.awardName}}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="btn btn_yellow" @click="gotowave">再摇一次</div>
+                  <div class="btn btn_yellow" @click="gotowave(1)">再摇一次</div>
                 </template>
                 <template v-else-if="wavePrizeInfoType==3">
-                  <p>恭喜您获得{{jinbinum}}个游戏币</p>
+                  <p>恭喜您获得{{jinbinum| filterPrice}}个游戏币</p>
                   <div class="btn btn_yellow" @click="close">快去摇奖</div>
                 </template>
               </template>
@@ -111,6 +118,7 @@
 
 <script>
   import Services from '../services/services'
+
   export default {
     name: "comPop",
     data() {
@@ -118,6 +126,7 @@
         isShowPop: false,
         record: [],
         toalItems: [],
+        prizeInfoList: []
       };
     },
     props: {
@@ -137,46 +146,21 @@
         type: Number,
         default: 0
       },
-      prizeInfoList: {
-        type: Array,
-        default: () => []
-      },
       awardData: {
         type: Object,
         default: () => null
       },
       maxCanSelectLimit: {
-        type: Number,
-        default: 0
+        type: Object,
+        default: null
       },
       jinbinum: {
         type: Number,
         default: 0
       }
     },
-    computed: {
-      titleImgs() {
-        return [{
-          url: `${require('../images/comPop/0/title.png')}`,
-          width: '2.33rem',
-          height: '.54rem'
-        }, {
-          url: `${require('../images/comPop/1/title.png')}`,
-          width: '2.34rem',
-          height: '.56rem'
-        }, {
-          url: `${require(`../images/comPop/2/title${this.prizeInfoType}.png`)}`,
-          width: '1.74rem',
-          height: '.56rem'
-        },{
-          url: `${require(`../images/comPop/3/title${this.wavePrizeInfoType}.png`)}`,
-          width: '2.36rem',
-          height: '.55rem'
-        }]
-      }
-    },
-    components:{
-      scroll:()=>import('./scroll')
+    components: {
+      scroll: () => import('./scroll')
     },
     methods: {
       getClassName(name) {
@@ -199,51 +183,74 @@
         }
       },
       async showPop() {
-        console.log(this.wavePrizeInfoType)
-        if(this.popType!=1){
+        if (this.popType != 1 && this.popType != 2) {
           this.isShowPop = true
-          GLOBALS.marchSetsPoint('A_H5PT0156001769')//H5平台-翻牌活动-中间区域-规则按钮点击
-        }else{
-          let {code, data} =(await Services.gameReceiveRecord()).data
-          if (code == 200) {
-            this.toalItems = [{
-              awardsType: 'hfq',
-              name: '话费券',
-              value: data.hfqAmount
-            }, {
-              awardsType: 'jdk',
-              name: '京东卡',
-              value: data.jdkAmount
-            }, {
-              awardsType: 'jyz',
-              name: '金叶',
-              value: data.jyzAmount
-            }, {
-              awardsType: 'yg',
-              name: '鱼干',
-              value: data.ygAmount
-            }]
-            // this.record = data.awardsList
-            this.record=[{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'},{receiverTime:'2019-10-21',awardsName:'100金叶子'}]
-            this.isShowPop = true
+        } else {
+          if (this.popType == 1) {
+            let {code, data} = (await Services.gameReceiveRecord()).data
+            if (code == 200) {
+              this.toalItems = [{
+                awardsType: 'hfq',
+                name: '话费券',
+                value: data.hfqAmount
+              }, {
+                awardsType: 'jdk',
+                name: '京东卡',
+                value: data.jdkAmount
+              }, {
+                awardsType: 'jyz',
+                name: '金叶',
+                value: data.jyzAmount
+              }, {
+                awardsType: 'yg',
+                name: '鱼干',
+                value: data.ygAmount
+              }]
+              this.record = data.awardsList
+              this.isShowPop = true
+            }
+          } else {
+            let {code, data} = (await Services.getAwardsInfo(this.prizeInfoType)).data
+            if (code == 200) {
+              if (data.length == 7) {
+                data.splice(0, 0, {
+                  awardsType: '',
+                  awardsName: ''
+                })
+                data.splice(4, 0, {
+                  awardsType: '',
+                  awardsName: ''
+                })
+                this.prizeInfoList = data
+              } else {
+                this.prizeInfoList = data
+              }
+              this.isShowPop = true
+            }
           }
         }
       },
-      close(){
-        if(this.popType==3&&this.wavePrizeInfoType==1){
+      close() {
+        if (this.popType == 3 && this.wavePrizeInfoType == 1) {
           this.$emit('gotowavedirect')
         }
         this.$emit('close')
         this.isShowPop = false;
       },
-      gotogame(){
+      gotogame() {
+        GLOBALS.marchSetsPoint('A_H5PT0229002662')//H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗-去玩游戏点击
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
       },
-      gotowave(){
+      gotowave(flag) {
+        //A_H5PT0229002664 H5平台-双旦活动页-摇一摇点击后中奖弹窗-再摇一次点击
+        //A_H5PT0229002667 H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-直接摇奖点击
+        let points=['A_H5PT0229002667','A_H5PT0229002664']
+        GLOBALS.marchSetsPoint(points[flag])
         this.isShowPop = false;
         this.$emit('gotowavedirect')
       },
-      changeGear(){
+      changeGear() {
+        GLOBALS.marchSetsPoint('A_H5PT0229002666')//H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-切换额度点击
         this.isShowPop = false;
         this.$emit('close')
       }
@@ -289,7 +296,7 @@
             height: .84rem;
             background: url("../images/comPop/close-bg.png") no-repeat center
               center / 100% 100%;
-            position: relative;
+            position: absolute;
             top: 1rem;
             right: .17rem;
             &:before {
@@ -316,7 +323,7 @@
           color: #fff;
           margin-left: .14rem;
           position: relative;
-          .container {
+          .container_compop {
             &.flag0 {
               padding: 0 .2rem;
               box-sizing: border-box;
@@ -324,16 +331,16 @@
               font-weight: 500;
               line-height: .36rem;
             }
-            &.flag1{
+            &.flag1 {
               .toatl_awards {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content:space-around;
+                justify-content: space-around;
                 margin-bottom: .3rem;
-                .item{
+                .item {
                   width: 1.22rem;
                   height: 1.8rem;
-                  .img_bg{
+                  .img_bg {
                     height: 1.15rem;
                     background: rgba(254, 253, 251, 1);
                     border-radius: .2rem .2rem 0 0;
@@ -356,47 +363,47 @@
                     border-radius: 0 0 .2rem .2rem;
                     padding-top: .15rem;
                     box-sizing: border-box;
-                    i{
+                    i {
                       color: #FFF500;
                     }
                   }
                 }
               }
-              h4{
+              h4 {
                 padding-left: .39rem;
                 font-size: .3rem;
-                font-weight:800;
-                color:rgba(255,255,255,1);
+                font-weight: 800;
+                color: rgba(255, 255, 255, 1);
                 margin-bottom: .14rem;
                 position: relative;
                 padding-left: .6rem;
-                &:before{
+                &:before {
                   content: '';
                   position: absolute;
                   left: .39rem;
-                  width:.1rem;
-                  height:.36rem;
-                  background:rgba(254,253,251,1);
-                  border-radius:.05rem;
+                  width: .1rem;
+                  height: .36rem;
+                  background: rgba(254, 253, 251, 1);
+                  border-radius: .05rem;
                 }
               }
               .bonus-record {
-                width:5.42rem;
+                width: 5.42rem;
                 height: 2.16rem;
                 position: relative;
                 margin: auto;
                 font-size: .22rem;
-                font-weight:bold;
-                .title_items{
+                font-weight: bold;
+                .title_items {
                   display: flex;
                   height: .36rem;
-                  background:rgba(255,127,50,1);
-                  border-radius:.1rem .1rem 0 0;
-                  .title{
+                  background: rgba(255, 127, 50, 1);
+                  border-radius: .1rem .1rem 0 0;
+                  .title {
                     flex: 1;
                     text-align: center;
                     height: .36rem;
-                    line-height:.36rem;
+                    line-height: .36rem;
                   }
                 }
                 .content {
@@ -409,7 +416,7 @@
                   color: #666666;
                   overflow: hidden;
                   background: #fff;
-                  border-radius:0 0 .1rem .1rem;
+                  border-radius: 0 0 .1rem .1rem;
                   ul {
                     display: flex;
                     flex-direction: column;
@@ -418,15 +425,15 @@
                       justify-content: space-between;
                       line-height: .36rem;
                       height: .36rem;
-                      div{
+                      div {
                         flex: 1;
                         text-align: center;
                         overflow: hidden;
                         white-space: nowrap;
                         text-overflow: ellipsis;
                       }
-                      &:nth-child(2n){
-                        background:rgba(255,230,179,1);
+                      &:nth-child(2n) {
+                        background: rgba(255, 230, 179, 1);
                       }
                     }
                   }
@@ -448,8 +455,8 @@
                 justify-content: space-between;
                 .prize_info_item {
                   width: 1.22rem;
-                  margin-bottom:.1rem;
-                  &.empty{
+                  margin-bottom: .1rem;
+                  &.empty {
                     opacity: 0;
                     width: .48rem;
                   }
@@ -490,46 +497,46 @@
                     margin-right: .58rem;
                   }
                 }
-                &.triple{
-                  width:4.5rem;
+                &.triple {
+                  width: 4.5rem;
                   margin: auto;
                 }
               }
             }
-            &.flag3{
+            &.flag3 {
               display: flex;
               flex-direction: column;
               align-items: center;
               text-align: center;
-              p{
+              p {
                 font-size: .3rem;
                 line-height: .5rem;
-                i{
+                i {
                   font-weight: bold;
                   font-size: .36rem;
                   color: #FCFF00;
                 }
               }
-              .btn{
-                margin-top:.46rem;
+              .btn {
+                margin-top: .46rem;
                 width: 1.94rem;
                 height: .8rem;
                 line-height: .8rem;
                 text-align: center;
-                font-size:.36rem;
-                font-weight:bold;
-                &.btn_yellow{
-                  color:rgba(237,36,55,1);
+                font-size: .36rem;
+                font-weight: bold;
+                &.btn_yellow {
+                  color: rgba(237, 36, 55, 1);
                   background: url("../images/comPop/button.png") no-repeat center
                     center / 100% 100%;
                 }
-                &.btn_purple{
+                &.btn_purple {
                   margin-right: .46rem;
                   background: url("../images/comPop/3/purplebutton.png") no-repeat center
                     center / 100% 100%;
                 }
               }
-              .btns{
+              .btns {
                 display: flex;
               }
               .prize_info {
@@ -541,8 +548,8 @@
                 justify-content: space-between;
                 .prize_info_item {
                   width: 1.22rem;
-                  margin-bottom:.1rem;
-                  &.empty{
+                  margin-bottom: .1rem;
+                  &.empty {
                     opacity: 0;
                     width: .48rem;
                   }
@@ -583,8 +590,8 @@
                     margin-right: .58rem;
                   }
                 }
-                &.triple{
-                  width:4.5rem;
+                &.triple {
+                  width: 4.5rem;
                   margin: auto;
                 }
               }

@@ -1,53 +1,54 @@
 <template>
-  <div class="big">
-    <div class="snow">
-      <img src="./images/backgroundsnow.png"></div>
-    <div class="container">
-      <div class="top">
-        <div class="back" @click="back">
-          <div>返回</div>
+  <div class="big" :class="{noshowrank:!showRank}">
+    <template v-if="actData">
+      <div class="snow">
+        <img src="./images/backgroundsnow.png"></div>
+      <div class="container" v-if="!showRank">
+        <div class="top">
+          <div class="back" @click="back">
+            <div>返回</div>
+          </div>
+          <div class="rule" @click="showPop(0)">
+            <div>规则</div>
+          </div>
+          <div class="rank" @click="gotoRank">
+            <img src="./images/cup.png">
+            <div>排行榜</div>
+          </div>
+          <div class="myprize" @click="showPop(1)">
+            <img src="./images/christmas-present.png" alt="">
+            <div>我的奖励</div>
+          </div>
+          <div class="active-time">
+            <span style="white-space: nowrap;">活动时间:{{actData.timeline}}</span>
+          </div>
+          <div class="main-title">
+            <img src="./images/main-title.png" alt="">
+          </div>
+          <div class="vice-title">
+            <img src="./images/vice-title.png" alt="">
+          </div>
         </div>
-        <div class="rule" @click="showPop(0)">
-          <div>规则</div>
-        </div>
-        <div class="rank" @click="gotoRank">
-          <img src="./images/cup.png">
-          <div>排行榜</div>
-        </div>
-        <div class="myprize" @click="showPop(1)">
-          <img src="./images/christmas-present.png" alt="">
-          <div>我的奖励</div>
-        </div>
-        <div class="active-time">
-          <span style="white-space: nowrap;">活动时间：2019年12月25日-2020年1月1日</span>
-        </div>
-        <div class="main-title">
-          <img src="./images/main-title.png" alt="">
-        </div>
-        <div class="vice-title">
-          <img src="./images/vice-title.png" alt="">
-        </div>
+        <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList" :award-data="awardData" ref="game"></game>
+        <prize @openprize='checkPrizeInfo'></prize>
       </div>
-      <game @gotowave="gotowave"></game>
-      <prize @openprize='checkPrizeInfo'></prize>
-      <!--<bottom></bottom>-->
-    </div>
-    <congratulation v-show="false"></congratulation>
-    <drop-down ref="dropDown" :rules-explain="rulesExplain" @show-eggs-info="showDefaultEggs()"></drop-down>
-    <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
-             :rule-time="time" :prize-info-list=" prizeInfoList" :award-data="awardData"
-             :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum" @close="popType=0" @gotowavedirect="gotowavedirect"></com-pop>
+      <profit v-else @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
+      <drop-down ref="dropDown" :rules-explain="time" @show-eggs-info="showDefaultEggs()" v-if="!showRank"
+                 :my-info="userData" @refresh="refresh"></drop-down>
+      <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
+               :rule-time="time" :award-data="awardData"
+               :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum" @close="popType=0"
+               @gotowavedirect="gotowavedirect"></com-pop>
+    </template>
+    <loading v-show="showLoading"></loading>
   </div>
 </template>
 
 
 <script>
+  import Services from './services/services'
   import game from './component/game'
   import prize from './component/prize'
-  import bottom from './component/bottom'
-  import pop from './component/popup'
-  import congratulation from './component/congratulation'
-
   export default {
     data() {
       return {
@@ -59,162 +60,141 @@
         prizeInfoType: 0,//0 特等奖 1 一等奖 2 二等奖 3 三等奖 4 参与奖
         wavePrizeInfoType: 0,//0 游戏币不足 1. 切换投注额度 2中奖弹窗
         awardData: null,//摇中奖品数据
-        maxCanSelectLimit: 0,
-        jinbinum:0,//点击领取获得金币数
-        prizeInfoList: [
-          [{
-            awardType: 'jdk',
-            awardName: '京东券1000元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券800元'
-          }],
-          [{
-            awardType: 'jdk',
-            awardName: '京东券500元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券300元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券250元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券250元'
-          }],
-          [{
-            awardType: 'jdk',
-            awardName: '京东券200元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券188元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券100元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券100元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券70元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券70元'
-          }],
-          [{
-            awardType: '',
-            awardName: ''
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券50元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券40元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券30元'
-          }, {
-            awardType: '',
-            awardName: ''
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券23元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券23元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券20元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券20元'
-          }],
-          [{
-            awardType: 'yg',
-            awardName: '鱼干50g'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券1元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券0.5元'
-          }, {
-            awardType: 'jdk',
-            awardName: '京东券0.4元'
-          }, {
-            awardType: 'hfq',
-            awardName: '话费券0.4元'
-          }, {
-            awardType: 'jyz',
-            awardName: '金叶子500'
-          }]
-        ]
+        maxCanSelectLimit: null,
+        jinbinum: 0,//点击领取获得金币数
+        showRank: false,//是否展示排行榜
+        actData: null,//活动信息
+        userData: null,//用户信息
+        awardsLevelItem:null,//选中的档位
+        showLoading:false,
+        hornList:[]
       }
     },
     methods: {
+      getLevelName(showLevel) {
+        switch (showLevel) {
+          case 1:
+            return '参与奖';
+            break;
+          case 2:
+            return '三等奖';
+            break;
+          case 3:
+            return '二等奖';
+            break;
+          case 4:
+            return '一等奖';
+            break;
+          case 5:
+            return '特等奖';
+            break;
+        }
+      },
       checkPrizeInfo(type) {
         this.popType = 2;
         this.prizeInfoType = parseInt(type)
-        this.$refs.comPop.showPop()
-      },
-      closeprize: function (e) {
-        this.prizeshow = e
-      },
-      close: function (e) {
-        this.showRule = e
+        setTimeout(() => {
+          this.$refs.comPop.showPop()
+        })
       },
       back() {//返回
-
+        GLOBALS.marchSetsPoint('A_H5PT0229002654')//H5平台-双旦活动页-返回按钮点击
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      },
+      rankBack(){
+        if(this.actData.state==1){
+          this.showRank=false
+        }else{
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+        }
       },
       gotoRank() {//去排行榜
+        GLOBALS.marchSetsPoint('A_H5PT0229002656') //H5平台-双旦活动页-排行榜按钮点击
+        this.showRank = true
       },
       showPop(type) {//展示弹窗
+        //A_H5PT0229002655 H5平台-双旦活动页-规则按钮点击
+        //A_H5PT0229002658 H5平台-双旦活动页-摇奖记录按钮点击
+        let points=['A_H5PT0229002655','A_H5PT0229002658']
+        GLOBALS.marchSetsPoint(points[type])
         this.popType = type;
         setTimeout(() => {
           this.$refs.comPop.showPop()
         })
       },
-      gotowave(num){
-        this.popType = 3;
-        this.wavePrizeInfoType=2;
-        this.awardData={
-          awardType: 'hfq',
-          awardName: '话费券0.5元'
+      gotowave({item,popType,wavePrizeInfoType,maxCanSelectLimit,awardData}) {
+        this.awardsLevelItem=item
+        this.popType = popType;
+        this.wavePrizeInfoType=wavePrizeInfoType
+        this.maxCanSelectLimit=maxCanSelectLimit
+        this.awardData=awardData
+        if(wavePrizeInfoType==2){
+          this.getUserInfo()
         }
-        this.$refs.comPop.showPop()
+        setTimeout(() => {
+          this.$refs.comPop.showPop()
+        }, 100)
       },
-      gotowavedirect(){
-        this.popType = 3;
-        this.wavePrizeInfoType=2;
-        this.awardData={
-          awardType: 'jyz',
-          awardName: '话费券0.5元'
+      async gotowavedirect() {
+        this.$refs.game.gotowavedirect()
+      },
+      async getActInfo() {
+        let {code, data} = (await Services.getActInfo()).data
+        if (code == 200) {
+          GLOBALS.marchSetsPoint('P_H5PT0229', {
+            source_address: GLOBALS.getUrlParam('from') || ''
+          })//H5平台-双旦活动页面加载完成
+          this.actData = data
+          this.time = data.beginDate + '-' + data.endDate
+          this.showRank = data.state!=1
+          this.getUserInfo()
         }
-        this.$refs.comPop.showPop()
+      },
+      async getUserInfo() {
+        let {code, data} = (await Services.getUserInfo()).data
+        if (code == 200) {
+          this.userData = data
+          this.getHornList()
+        }
+      },
+      async getHornList(){
+        let {code, data} = (await Services.getHornList()).data
+        if (code == 200) {
+          this.hornList = data
+        }
+      },
+      refresh(num){
+        this.getUserInfo()
+        if(num){
+          this.popType = 3;
+          this.wavePrizeInfoType = 3;
+          this.jinbinum=num
+          setTimeout(() => {
+            this.$refs.comPop.showPop()
+          }, 100)
+        }
       }
     },
     components: {
       game,
       prize,
-      bottom,
-      pop,
-      congratulation,
       comPop: () => import('./component/comPop'),
-      dropDown: () => import('./component/dropDown')
+      dropDown: () => import('./component/dropDown'),
+      profit: () => import('./component/dropDown/component/profit'),
+      loading:()=>import('../../components/common/loading.vue'),
+    },
+    mounted() {
+      this.getActInfo()
     }
   }
 </script>
-
-<style scoped type="less">
+<style lang="less">
   @import '../../common/css/base.css';
-
-</style>
-<style scoped type="less">
 
   .container {
     position: absolute;
     top: 0;
-    height: 15rem;
+    /*height: 15rem;*/
   }
 
   .top {
@@ -224,8 +204,11 @@
 
   .big {
     width: 7.2rem;
-    height: 15rem;
+    height: 12.8rem;
     background: rgba(237, 36, 55, 1);
+    &.noshowrank {
+      padding-bottom: 1.5rem;
+    }
   }
 
   .snow {
@@ -275,7 +258,7 @@
 
   .vice-title {
     position: absolute;
-    z-index: 5;
+    z-index: 1;
     top: 1.95rem;
     left: 1.65rem;
   }
@@ -374,7 +357,7 @@
     position: absolute;
     top: 0.87rem;
     right: 0;
-    z-index: 5;
+    z-index: 1;
     align-items: center;
   }
 
@@ -400,135 +383,3 @@
 
   }
 </style>
-<!--<template>
-  <div class="slot-machine">
-    <div class="container">
-      <div class="btns">
-        <div class="back" @click="back"></div>
-        <div class="openRule" @click="openRule"></div>
-      </div>
-      <horn :hornList="hornList"></horn>
-      <animation :animationList="animationList" :userInfo="userInfo" @refersh="_getUserInfo"/>
-    </div>
-    <div class="bg">
-      <img src="./images/bg.png" alt="">
-    </div>
-    <slot-Machine-rule v-model="showRule" :userInfo="userInfo"/>
-  </div>
-</template>
-<script>
-// import Services from './services/services'
-// import _get from 'lodash.get'
-// export default {
-//   name: 'slotMachine',
-//   data: () => ({
-//     userInfo: {
-//       beginDate: '',
-//       endDate: '',
-//       nextStage: '',
-//       nextStageRecharge: '',
-//       recharge: ''
-//     },
-//     hornList: [1,2,3,4,5,6],
-//     animationList: [],
-//     nextStage: 3,
-//     showRule: false
-//   }),
-//   components: {
-//     animation: () => import('./component/animation'),
-//     slotMachineRule: () => import('./component/slotMachineRule'),
-//     horn: () => import('./component/horn')
-//   },
-//   methods: {
-//     _getUserInfo() {
-//       Services.getUserInfo().then(res=> {
-//         let {code, data, message} = _get(res, 'data', '')
-//         if(code === 200) {
-//           this.userInfo = _get(res, 'data.data',[])
-//           this.animationList = _get(res, 'data.data.playProgressList',[])
-//         }else {
-//           this.$toast.show({
-//             message: message,
-//             duration: 1500
-//           });
-//         }
-//       })
-//     },
-//     _getHornList() {
-//       Services.getHornList().then(res => {
-//         let {code, data, message} = _get(res, 'data', '')
-//         if(code === 200) {
-//           this.hornList = data
-//         }else {
-//           this.$toast.show({
-//             message: message,
-//             duration: 1500
-//           });
-//         }
-//         console.log('hornlist的数据',data)
-//       })
-//     },
-//     _runAnimation() {},
-//     /** 打开规则 **/
-//     openRule() {
-//       this.showRule = true
-//       GLOBALS.marchSetsPoint('A_H5PT0203002128')
-//     },
-//     /** 返回 **/
-//     back() {
-//       history.back(-1)
-//       GLOBALS.marchSetsPoint('A_H5PT0203002127')
-//     }
-//   },
-//   mounted () {
-//     this._getUserInfo()
-//     this._getHornList()
-//     GLOBALS.marchSetsPoint('A_H5PT0203002126')
-//   }
-// }
-// </script>
-
-// <style scoped type="less">
-// @import '../../common/css/base.css';
-// </style>
-
-// <style lang="less" scoped>
-// .slot-machine {
-//   position: relative;
-//   min-height: 100vh;
-//   background: #800508;
-//   .container {
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     z-index: 2;
-//     .btns {
-//       position: absolute;
-//       left: 0;
-//       top: 0;
-//       .back {
-//         width: .6rem;
-//         height: 1.3rem;
-//         background: url(./images/back-btn.png) no-repeat center center / 100% 100%;
-//       }
-//       .openRule {
-//         width: .6rem;
-//         height: 1.3rem;
-//         background: url(./images/rule.png) no-repeat center center / 100% 100%;
-//       }
-//     }
-//   }
-//   .bg {
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     z-index: 1;
-//     img {
-//       vertical-align: top;
-//       width: 100%;
-//     }
-//   }
-// }
-// </style>

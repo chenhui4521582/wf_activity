@@ -26,31 +26,31 @@
             text: `摇到<span class='num' style='font-weight: bold; margin:0 0.1rem;'>5</span>个一样的游戏图标可得特等奖`,
             btnText: "查看特等奖",
             btnColor: "#ED2437",
-            id: "0"
+            id: "5"
           },
           {
             text: `摇到<span class='num' style='font-weight: bold; margin:0 0.1rem;'>4</span>个一样的游戏图标可得一等奖`,
             btnText: "查看一等奖",
             btnColor: "#CA17AD",
-            id: "1"
+            id: "4"
           },
           {
             text: `摇到<span class='num' style='font-weight: bold; margin:0 0.1rem;'>3</span>个一样的游戏图标可得二等奖`,
             btnText: "查看二等奖",
             btnColor: "#BA4EFF",
-            id: "2"
+            id: "3"
           },
           {
             text: `摇到<span class='num' style='font-weight: bold; margin:0 0.1rem;'>2</span>个一样的游戏图标可得三等奖`,
             btnText: "查看三等奖",
             btnColor: "#10B0E9",
-            id: "3"
+            id: "2"
           },
           {
             text: `摇到<span class='num' style='font-weight: bold; margin:0 0.1rem;'>不同</span>的图标可得参与奖`,
             btnText: "查看参与奖",
             btnColor: "#0F8C3E",
-            id: "4"
+            id: "1"
           }
         ]
       };

@@ -2,7 +2,7 @@
   <div class="horn">
     <swiper v-if="isShow" :options="defaultOptions">
       <swiper-slide class="swiper-slide" v-for="(item, index) in hornList" :key="index">
-        恭喜{{item.nickname}}抽中了{{item.amount}}金叶子
+        恭喜{{item.nickname}}抽中了{{item.awardsName}}
       </swiper-slide>
     </swiper>
   </div>
@@ -39,12 +39,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .horn {
-  margin: 2.4rem 0 0 2rem;
+  position: absolute;
+  top: .9rem;
+  left: 2rem;
   width: 4rem;
   overflow: hidden;
-  color: #ffe8df;
-  height: 0.6rem;
-  line-height: 0.6rem;
-  font-size: 0.24rem;
+  color:rgba(255,255,255,1);
+  height: 0.4rem;
+  line-height: 0.4rem;
+  font-size: 0.22rem;
 }
 </style>

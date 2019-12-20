@@ -1,58 +1,79 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
-      <h4 v-if="isFull" class="p-time"
-          style="font-size:.3rem;font-weight:bold;color:rgba(155,66,1,1);margin-bottom: .32rem">活动已发榜</h4>
-      <template v-if="!isFull">
-        <h4 v-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
-        <h4 v-else class="p-time">发榜时间 ：{{endTime}}</h4>
-      </template>
+      <div class="back" @click="back">
+        <div>返回</div>
+      </div>
+      <img src="./images/title.png" class="title">
+      <h4 v-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
+      <h4 v-else class="p-time">活动已结束</h4>
+      <div class="profit-tx-container">
+        <ul class="profit-icon">
+          <li v-for="(item,index) in topthreeData">
+            <div class="s-tx">
+              <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
+              <img v-if="!item.profilePhoto" :src="defaultImg | filter">
+            </div>
+            <span class="icon-number"></span>
+            <span class="s-text">{{item.nickName}}</span>
+            <span class="hammer-number">{{item.totalNum}}个币</span>
+          </li>
+        </ul>
+      </div>
       <div class="profit-items">
         <div class="p-header">
           <ul>
             <li>
-              <span>{{myInfo.myRank?myInfo.myRank:'未上榜'}}</span>
+              <h4>我的排名</h4>
+              <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
             <li>
-              <span>{{myInfo.totalDriedFish}}g</span>
+              <h4>累计获得游戏币</h4>
+              <span>{{myInfo.useNum}}个币</span>
             </li>
             <li>
+              <h4>当前奖励</h4>
               <span>{{myInfo.currentAwards}}</span>
             </li>
           </ul>
         </div>
-        <div class="p-time" style="margin-bottom: .08rem;margin-top: 0.11rem;">玩游戏自动获得鱼干，老用户转换所得鱼干不计入</div>
-        <div class="p-items p-items-content" :class="{isfull:isFull}">
-          <div class="p-container" :class="{isfull:isFull}">
-            <scroll :data="behindThreeData" ref="scroll" :listenScroll="true" :probeType="3">
-              <ul class="p-item-title">
-                <li v-for="(item,index) in behindThreeData">
-                  <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank>3?item.rank:''}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
-                </li>
-                <li v-if="isOpen" v-for="(item,index) in otherData">
-                  <span><i class="icon-dot">{{item.rank}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
-                </li>
-                <li v-if="!isOpen">
-                  <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit"></a>
-                </li>
-                <li v-for="(item,index) in lastThreeData">
-                  <span><i class="icon-dot">{{item.rank}}</i></span>
-                  <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
-                  <span><em class="i-ellipsis">{{item.totalDriedFish}}g</em></span>
-                  <span><em class="i-ellipsis">{{item.awardsName}}</em></span>
-                </li>
-              </ul>
-            </scroll>
-          </div>
+        <div class="p-items p-items-header">
+          <ul class="p-item-title">
+            <li style="border:none">
+              <span>排名</span>
+              <span><em class="i-ellipsis">昵称</em></span>
+              <span><em class="i-ellipsis">累计获得游戏币</em></span>
+              <span><em class="i-ellipsis" style="line-height: 0.68rem;">奖励</em></span>
+            </li>
+          </ul>
+        </div>
+        <div class="p-items p-items-content">
+          <ul class="p-item-title">
+            <li v-for="(item,index) in behindThreeData">
+              <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum}}个币</em></span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+            <li v-if="isOpen" v-for="(item,index) in otherData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum}}个币<</em></span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+            <li v-if="!isOpen">
+              <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
+            </li>
+            <li v-for="(item,index) in lastThreeData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickName || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum}}个币</em></span>
+              <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="profit-footer">仅50名及以内有奖励</div>
+      <div class="profit-footer">仅30名及以内有奖励</div>
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
@@ -75,8 +96,8 @@
   </div>
 </template>
 <script type="text/javascript">
-  import rule from '../../../components/rule'
-  import {rankList, activityInfo, userRanking} from '../../../utils/api'
+  import Services from '../../../../services/services'
+  // import {rankList, activityInfo, userRanking} from '../../../utils/api'
 
   export default {
     data() {
@@ -90,7 +111,6 @@
         isOpen: true,
         countTime: null,
         endTime: '',
-        myInfo: {},
         isLoading: false,
         defaultImg: '/cdn/common/images/common/img_photo.png'
       }
@@ -98,74 +118,49 @@
     props: {
       isFull: {
         type: Boolean,
-        default: false
+        default: true
       },
-      from: {
+      myInfo: {
+        type: Object,
+        default: null
+      },
+      countDown: {
         type: Number,
         default: 0
-      }
+      },
     },
-    components: {
-      rule: () => import('../../../components/rule'),
-      scroll: () => import('../../../components/scroll')
-    },
+    components: {},
     mounted() {
+      this.getCountDown(this.countDown)
       this.getRankList()
-      this.getActivityInfo()
     },
     methods: {
+      back() {
+        this.$emit('back')
+      },
       closeOpenProfit() {
+        GLOBALS.marchSetsPoint('A_H5PT0229002657') //H5平台-双旦活动页-排行榜页-查看更多榜单点击
         this.isOpen = true
-        setTimeout(() => {
-          this.$refs.scroll.scrollTo(0, 0)// 滑到顶部
-          this.$refs.scroll && this.$refs.scroll.refresh()
-        })
       },
       async getRankList() {
         this.isLoading = true
-        const {code, data} = await rankList()
+        const {code, data} = (await Services.rankList()).data
         if (code === 200) {
-          if (!data.countdown.includes('-')) {
-            this.countDown(data.countdown)
+          this.profitData = data
+          if (this.profitData.length > 6) {
+            this.lastThreeData = this.profitData.slice(6)
           }
-          this.myInfo = data.userInfo
-          this.profitData = data.rankList
-          if (!this.isFull) {
-            if (this.profitData.length > 3) {
-              this.lastThreeData = this.profitData.slice(3)
-            }
-            if (this.profitData.length > 6) {
-              this.isOpen = false
-              this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
-              this.otherData = this.profitData.slice(3, this.profitData.length - 3)
-            }
-            this.topthreeData = this.profitData.slice(0, 3)
-            this.behindThreeData = this.profitData.slice(0, 3)
-          } else {
+          if (this.profitData.length > 9) {
             this.isOpen = false
-            this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
-            this.behindThreeData = this.profitData.slice(0, 6)
-            this.otherData = this.profitData.slice(6, this.profitData.length - 6)
+            this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
+            this.otherData = this.profitData.slice(6, this.profitData.length - 3)
           }
+          this.topthreeData = this.profitData.slice(0, 3)
+          this.behindThreeData = this.profitData.slice(3, 6)
           this.isLoading = false
         }
       },
-      async getActivityInfo() {
-        const {code, data} = await activityInfo()
-        if (code === 200) {
-          this.endTime = data.endDate
-        }
-      },
-      async getUserRanking() {
-        const {code, data} = await userRanking()
-        if (code === 200) {
-          this.myInfo = data
-          if (this.isFull) {
-            this.$emit('set-my-info', data)
-          }
-        }
-      },
-      countDown(item) {
+      getCountDown (item) {
         if (!item) return false
         let date = item / 1000
         this.timer = setInterval(() => {
@@ -182,9 +177,7 @@
           let countHour = hour >= 10 ? hour : '0' + hour
           let countMinute = minute >= 10 ? minute : '0' + minute
           let countSecond = second >= 10 ? second : '0' + second
-          if (day >= 2) {
-            this.countTime = 0
-          } else if (day > 0) {
+          if (day > 0) {
             this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
           } else {
             this.countTime = `${countHour}:${countMinute}:${countSecond}`
