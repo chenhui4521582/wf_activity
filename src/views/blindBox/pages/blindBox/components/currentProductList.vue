@@ -1,9 +1,13 @@
 <template>
   <section class="current-product-list">
-    <p>
-      <span>本期明星奖品</span>
+    <div class="header">
+      <div class="header-left">
+        <span @click="toPlatform" class="back">返回</span>
+        <img src="../assets/box.png" alt="">
+        <span>本期明星奖品</span>
+      </div>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
-    </p>
+    </div>
     <section class="product-list-wrapper">
       <div ref="productDivWraper">
         <ul ref="productUl" id="productUl" :style="productStyles">
@@ -45,6 +49,10 @@ export default {
     this.getProductInfo()
   },
   methods: {
+    // 返回平台
+    toPlatform() {
+      location.href = 'https://wap.beeplaying.com/xmWap/#/'
+    },
     async getProductInfo () {
       const res = await hotAwardsList()
       const { data } = res.data
@@ -99,23 +107,44 @@ export default {
 <style lang="less" scoped>
 .current-product-list {
   padding: 0.32rem;
+  padding-left: 0;
   color: #fff;
   font-size: 0.24rem;
   max-width: 100vw;
   box-sizing: border-box;
   overflow: hidden;
-  p {
+  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.3rem;
+    .header-left {
+      display: flex;
+      align-items: center;
+      .back {
+        padding: 0 0.15rem 0 0.09rem;
+        line-height: 0.45rem;
+        font-size: 0.24rem;
+        color: #fff;
+        border: 1px solid #fff;
+        border-top-right-radius: 0.23rem;
+        border-bottom-right-radius: 0.23rem;
+      }
+      img {
+        width: .22rem;
+        height: .22rem;
+        margin-left: .15rem;
+        margin-right: .06rem;
+      }
+    }
     a {
       color: #fee994;
     }
   }
   .product-list-wrapper {
+    margin-left: 0.32rem;
     position: relative;
-    width: 100%;
+    box-sizing: border-box;
     height: 1.12rem;
     box-sizing: border-box;
     overflow: hidden;
@@ -124,7 +153,7 @@ export default {
   ul {
     position: absolute;
     top: 0;
-    height: 1.12rem;
+    height: 1.27rem;
     overflow: hidden;
     li {
       float: left;
@@ -133,6 +162,8 @@ export default {
       transition: all 50ms linear;
       text-align: center;
       div {
+        padding-bottom: 0.3rem;
+        box-sizing: border-box;
         position: relative;
         max-width: 1.74rem;
         min-width: 1.74rem;

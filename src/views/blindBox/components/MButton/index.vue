@@ -1,6 +1,7 @@
 <template>
   <div @click="$emit('confirm')"
     class="button"
+    :style="buttonStyle"
     :class="breathe?'breathe':''">
     <slot />
   </div>
@@ -12,6 +13,10 @@ export default {
     breathe: {
       type: Boolean,
       default: false
+    },
+    buttonStyle: {
+      type: Object,
+      default: () => {}
     }
   }
 }

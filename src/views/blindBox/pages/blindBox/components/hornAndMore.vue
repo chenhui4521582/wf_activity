@@ -3,16 +3,18 @@
     <section class="text-btn" @click="showRule"><span>活动规则</span></section>
     <horn-list :notice-list="noticeList" v-if="noticeList.length"></horn-list>
     <section class="text-btn">
+      <div class="mark">13</div>
       <a href="#/myPrize" @click="getAwards">获得奖品</a>
     </section>
     <Dialog :show="isShowRule" title="活动规则" :close="true" @onClose="closeRule()">
       <p class="rule-content">
         1.用户支付15元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
         2.购买盲盒可100%开出奖品；<br>
-        3.购买一张透视卡，使用后即可查看盲盒内是否是想要的奖品；<br>
-        4.盲盒获得的奖品可在“我的奖品”中领取，领取成功后我们会尽快给您发货；<br>
-        5.盲盒和透视卡一旦购买后不支持退换。<br>
-        6.盲盒购买花费的金额不计入游戏平台的充值活动。<br>
+        3.选择一个盲盒，支付5元购买一张透视卡，可查看盲盒内是否是想要的商品；<br>
+        4.盲盒获得的奖品可在“我的奖品”中领取，满2件奖品即可包邮，不满2件需支付8元邮费；<br>
+        5.奖品领取成功后我们会在1-2天内给您发货；如有疑问可联系在线客服；
+        6.盲盒和透视卡购买后不支持退换哦；<br>
+        6.盲盒购买金额不计入游戏平台的累充活动；<br>
         玩蜂对此具有最终解释权
       </p>
       <section class="rule-btn-wrapper" slot="footer">
@@ -80,10 +82,25 @@ export default {
     display: flex;
     font-weight: bold;
     color: #edeef1;
+    position: relative;
     a {
       color: #edeef1;
     }
-
+    .mark {
+      background: #F53434;
+      border-radius: 50%;
+      color: #fff;
+      width: 0.34rem;
+      height: 0.34rem;
+      font-size: 0.22rem;
+      position: absolute;
+      padding: 0.02rem;
+      right: -0.02rem;
+      top: -0.26rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     // background: linear-gradient(
     //   0deg,
     //   rgba(240, 243, 252, 1) 0%,

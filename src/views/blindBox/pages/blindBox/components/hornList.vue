@@ -9,7 +9,7 @@
             <li v-for="(item,index) in noticeList"
               :key="index"
               ref="hornLi">
-              <span>恭喜用户</span><span class="nickname">{{item.nickname}}</span><span>抽中了{{item.awardsName | textFilter}}</span>
+              <span>恭喜用户</span><span class="nickname">{{item.nickname}}</span><span>抽中了{{item.awardsName}}</span>
             </li>
           </ul>
           <ul id="copyHornUl"

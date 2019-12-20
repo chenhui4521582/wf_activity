@@ -9,7 +9,8 @@
         领取成功后，预计1-2个工作日发货,请您耐心等待，并确保通话畅通若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
       <p class="tip"
-        v-if="this.active===2">您的运单号为：{{orderNumber}}</p>
+        v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
+          v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
     <section class="container">
       <div class="bar"
@@ -23,8 +24,12 @@
       </div>
     </section>
     <section class="content">
-      <p v-if="this.goodsList && this.goodsList.length > 0"
-        class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
+      <div v-if="this.goodsList && this.goodsList.length > 0"
+        class="total">
+        <p>共<span>{{this.goodsList.length}}件</span>商品</p>
+        <p></p>
+        <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0" class="free-shipping">领取奖品满2件即可包邮哦~</p>
+        </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
         <Goods v-for="(item,index) in goodsList"
           :key="index"
@@ -111,6 +116,13 @@ export default {
       if (index === 2) GLOBALS.marchSetsPoint('A_H5PT0225002574')
       this.getTabGoods()
     },
+    // 复制成功
+    copySuccess () {
+      this.$toast.show({
+        message: '复制成功',
+        duration: 1000
+      })
+    },
     // 获取相应tab下的数据
     async getTabGoods () {
       ({ data: { data: this.goodsList } } = await InventoryList(this.tabBar[this.active].value))
@@ -184,7 +196,14 @@ export default {
       font-size: 0.24rem;
       color: #999;
       text-align: left;
-      padding: 0.1rem 0 0.2rem 0.3rem;
+      padding: 0.1rem 0.3rem 0.2rem 0.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      .free-shipping {
+        font-size: 0.2rem;
+        color: #999999;
+      }
       span {
         color: #d1ac42;
       }
