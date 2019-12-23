@@ -22,7 +22,8 @@
 
 <script>
 /* eslint-disable no-undef */
-import { boxGroup } from '../../../config/box';
+import { boxGroup } from '../../../config/box'
+
 export default {
   name: 'boxInfo',
   props: {
@@ -33,14 +34,14 @@ export default {
   },
   filters: {
     boxImage (color, state) {
-      let type = '';
+      let type = ''
       switch (state) {
         case 2:
         case 4:
-          type = 'boxTransparent';
+          type = 'boxTransparent'
           break
         default:
-          type = 'box';
+          type = 'box'
           break
       }
       let index = boxGroup.findIndex(res => res.type === Number(color))

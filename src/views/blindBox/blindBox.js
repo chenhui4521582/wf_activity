@@ -7,6 +7,10 @@ import App from './App'
 import Toast from '../../plugins/toast'
 import Loading from './components/loading'
 import '@/common/js/window.js'
+import VueClipboard from 'vue-clipboard2'
+// 复制
+Vue.use(VueClipboard)
+
 Vue.use(Toast)
 Vue.config.productionTip = false
 // fastclick.attach(document.body)
