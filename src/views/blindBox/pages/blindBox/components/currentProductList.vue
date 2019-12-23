@@ -51,6 +51,7 @@ export default {
   methods: {
     // 返回平台
     toPlatform() {
+      GLOBALS.marchSetsPoint('A_H5PT0225002684')
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
     },
     async getProductInfo () {

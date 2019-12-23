@@ -36,7 +36,7 @@
         <div class="change-btn" @click="changeAll">换一批</div>
       </section>
       <section v-if="!isOpenBox" class="btn-container">
-        <m-button :button-style="buttonStyle" @confirm="isVirtual=true">使用金叶子购买</m-button>
+        <m-button :button-style="buttonStyle" @confirm="leafsBuy">使用金叶子购买</m-button>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
     </article>
@@ -58,8 +58,10 @@
         </div>
       </section>
     </Dialog>
-    <TipDialog :show="showTip" @close="showTip=false"/>
+    <TipDialog v-if="showTip" source="index" :show="showTip" @close="showTip=false"/>
     <VirtualDialog :show="isVirtual"
+      v-if="isVirtual"
+      source="index"
       @close="isVirtual = false"
       @updateUserInfo="getUserInfo" />
   </section>
@@ -164,6 +166,11 @@ export default {
     async isPopup () {
       ({data: {data: this.isFirstIn}} = await Popup(1))
     },
+    // 使用金叶子购买
+    leafsBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002683')
+      this.isVirtual = true
+    },
     // 获取盒子信息
     async getBoxInfo () {
       const res = await BoxList()
@@ -215,6 +222,9 @@ export default {
             duration: 2000
           })
         }
+        GLOBALS.marchSetsPoint('A_H5PT0225002686', {
+          awards_id: item.sort
+        })
       } else if (item.state === 3) {
         // 别人正在购买
         return
