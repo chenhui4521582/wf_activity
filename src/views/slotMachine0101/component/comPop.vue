@@ -254,6 +254,17 @@
         this.isShowPop = false;
         this.$emit('close')
       }
+    },
+    watch: {
+      isShowPop(value) {
+        if(value) {
+          document.body.style.overflow = 'hidden';
+          document.addEventListener('touchmove', this.move, { passive: false });
+        }else {
+          document.body.style.overflow = null;
+          document.removeEventListener('touchmove', this.move, { passive: false });
+        }
+      }
     }
   };
 </script>
