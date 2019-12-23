@@ -28,12 +28,18 @@
         </li>
       </ul>
     </section>
-    <section class="btn-container">
-      <m-button @confirm="buyOne">{{
-        userInfo.openBoxTimes ? "立即开盒" : "15元开一次"
-      }}</m-button>
-      <div class="change-btn" @click="changeAll">换一批</div>
-    </section>
+    <article class="botton-wrapper">
+      <section class="btn-container">
+        <m-button @confirm="buyOne">{{
+          isOpenBox ? "立即开盒" : "15元开一次"
+        }}</m-button>
+        <div class="change-btn" @click="changeAll">换一批</div>
+      </section>
+      <section v-if="!isOpenBox" class="btn-container">
+        <m-button :button-style="buttonStyle" @confirm="isVirtual=true">使用金叶子购买</m-button>
+        <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
+      </section>
+    </article>
     <Dialog
       :show="isShowPop"
       title="支付完成"
@@ -52,27 +58,44 @@
         </div>
       </section>
     </Dialog>
+    <TipDialog :show="showTip" @close="showTip=false"/>
+    <VirtualDialog :show="isVirtual"
+      @close="isVirtual = false"
+      @updateUserInfo="getUserInfo" />
   </section>
 </template>
 
 <script>
 /* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
-import { UserInfo } from '../../../apis/user';
+import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
 import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
+import TipDialog from './tip-dialog'
+import VirtualDialog from '../../../components/virtual-dialog'
+
 export default {
   name: '',
   components: {
     MButton,
     Dialog,
-    BoxInfo
+    BoxInfo,
+    TipDialog,
+    VirtualDialog
   },
   data () {
     return {
+      buttonStyle: {
+        background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
+        color: '#fff'
+      },
+      isVirtual: false,
+      // 用户当天是否第一次进入页面
+      isFirstIn: true,
+      showTip: false,
       isChange: false,
       box: [],
       userInfo: {},
@@ -100,6 +123,10 @@ export default {
     }
   },
   computed: {
+    // 是否可以开盒
+    isOpenBox () {
+      return this.userInfo.openBoxTimes
+    },
     boxList () {
       let len = this.box.length
       let n = 4 // 假设每行显示4个
@@ -120,6 +147,7 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
+      this.isPopup()
       this.loopBox()
       if (!sessionStorage.blindBoxFirstTime) {
         sessionStorage.blindBoxFirstTime = true
@@ -131,6 +159,10 @@ export default {
           clearTimeout(this.refreshTimer)
         }, 1000)
       }
+    },
+    // 用户点击被透视的盒子是否弹窗
+    async isPopup () {
+      ({data: {data: this.isFirstIn}} = await Popup(1))
     },
     // 获取盒子信息
     async getBoxInfo () {
@@ -172,8 +204,21 @@ export default {
       }
     },
     async toDetail (item) {
-      this.isShake = false
-      if (item.state === 1 || item.state === 3 || item.state === 4) {
+      // this.isShake = false
+      // 透视状态下点击盒子
+      if (item.state === 2) {
+        if (this.isFirstIn) {
+          this.showTip = true
+        } else {
+          this.$toast.show({
+            message: '该盒子正在被透视，请选择其他盒子',
+            duration: 2000
+          })
+        }
+      } else if (item.state === 3) {
+        // 别人正在购买
+        return
+      } else {
         if (this.userInfo.openBoxTimes) {
           this.$router.push(
             `/openBox/${item.color}?sort=${item.sort}${
@@ -251,7 +296,16 @@ export default {
   margin-top: -0.32rem;
   z-index: 1;
   overflow: hidden;
+  // background: #f0ead1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  .button-wrapper {
+    flex: 1;
+  }
   .box-list-container {
+    background: #f0ead1;
     &::after {
       content: "";
       display: block;
@@ -285,7 +339,9 @@ export default {
       background: url(../assets/long-shelf.png) no-repeat center center / 98%
         1.2rem;
     }
-
+    .gold-buy {
+      margin-top: 0.15rem;
+    }
     .box-item {
       min-width: 1.8rem;
       text-align: center;
@@ -337,6 +393,12 @@ export default {
     position: relative;
     background: #1b1f29;
     padding: 0.16rem;
+    .buy-tip {
+      color: #6F768E;
+      font-size: 0.24rem;
+      text-align: center;
+      padding-top: 0.33rem;
+    }
     .button {
       margin: auto;
     }

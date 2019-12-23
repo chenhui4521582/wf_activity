@@ -6,7 +6,7 @@
           alt="商品">
       </div>
       <div class="goods-info">
-        <p class="goods-name">{{goods.awardsName | textFilter}}</p>
+        <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
           <p>数量：{{goods.awardsNum}}个</p>
@@ -49,7 +49,7 @@ export default {
   position: relative;
   .right {
     position: absolute;
-    right: 0.3rem;
+    right: 0.2rem;
     top: 0.64rem;
   }
   .des {
@@ -76,10 +76,11 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       .goods-name {
+        width: 3rem;
+        line-height: 1.5;
         font-size: 0.24rem;
         color: #000;
         text-align: left;
-        padding-bottom: 0.36rem;
       }
       .goods-count {
         text-align: left;

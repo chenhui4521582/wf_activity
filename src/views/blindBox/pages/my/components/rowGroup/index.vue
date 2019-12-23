@@ -37,6 +37,14 @@ export default {
           }
         },
         {
+          icon: require('./assets/service.png'),
+          title: '在线客服',
+          jump: () => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002577')
+            location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+          }
+        },
+        {
           icon: require('./assets/problem.png'),
           title: '问题反馈',
           jump: () => {

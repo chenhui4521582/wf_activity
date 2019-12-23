@@ -27,8 +27,8 @@ export const Exchange = sort => {
 }
 
 // 更换盲盒
-export const ChangeOne = sort => {
-  return client.post(`@box/change-one/${sort}`)
+export const ChangeOne = () => {
+  return client.post(`@box/change-one`)
 }
 // 更换一批盲盒
 export const ChangeAll = sort => {

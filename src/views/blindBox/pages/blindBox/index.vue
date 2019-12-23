@@ -39,8 +39,13 @@ export default {
   min-height: 100vh;
   box-sizing: border-box;
   padding-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
   .main-wrapper {
-    background: #f0ead1;
+    // background: #f0ead1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   }
 }
 

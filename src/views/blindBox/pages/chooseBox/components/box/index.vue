@@ -1,25 +1,39 @@
 <template>
   <section class="box-wrapper">
     <div class="box">
-      <div :class="{'on-change':isOnChange}" class="box__img--box">
+      <div :class="{'on-change':isOnChange}"
+        class="box__img--box">
         <div class="img-wrapper">
           <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
-        <img class="box__img--goods" v-if="awardsImage" :src="awardsImage | imgFilter">
+        <img class="box__img--goods"
+          v-if="awardsImage"
+          :src="awardsImage | imgFilter">
       </div>
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
     </div>
-    <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
+    <p @click="refresh"
+      class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
+      @confirm="onConfirm"
       class="choose-button">{{buttonText}}</MButton>
-    <p class="note">盲盒购买后不支持退换，介意请勿拍</p>
-    <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
+    <MButton :button-style="buttonStyle"
+      @confirm="isVirtual=true"
+      v-if="!isOpen"
+      class="gold-buy">使用金叶子购买</MButton>
+    <VirtualDialog :show="isVirtual"
+      @close="isVirtual = false"
+      @updateUserInfo="updateUserInfo" />
+    <Side-Bar @use="useCard"
+      :user-info="userInfo"
+      class="side-bar" />
   </section>
 </template>
 
 <script>
 import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
+import VirtualDialog from '../../../../components/virtual-dialog'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
 import { Operation, ChangeOne, PayPoint } from '../../../../apis/box'
@@ -34,13 +48,18 @@ export default {
       sort: null,
       type: null,
       boxGroup,
+      buttonStyle: {
+        background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
+        color: '#fff'
+      },
+      isVirtual: false,
       awardsImage: null,
       awardsName: null,
       isTransparent: false
     }
   },
   async mounted () {
-    ({ data: { data: this.userInfo } } = await UserInfo())
+    this.updateUserInfo()
     if (this.$route.query.awardsImage) {
       this.awardsImage = this.$route.query.awardsImage
       this.isTransparent = true
@@ -54,12 +73,19 @@ export default {
     }
   },
   computed: {
+    isOpen () {
+      return this.userInfo && this.userInfo.openBoxTimes
+    },
     buttonText () {
-      if (this.userInfo && this.userInfo.openBoxTimes) return '立即开盒'
+      if (this.isOpen) return '立即开盒'
       return '15元开盒'
     }
   },
   methods: {
+    // 更新用户信息
+    async updateUserInfo () {
+      ({ data: { data: this.userInfo } } = await UserInfo())
+    },
     // 使用透视卡
     useCard () {
       if (this.isTransparent) {
@@ -105,6 +131,7 @@ export default {
       if (this.userInfo && this.userInfo.openBoxTimes) {
         this.openBox()
       } else {
+        GLOBALS.marchSetsPoint('A_H5PT0225002552')
         const { data: { data: payInfo } } = await PayPoint(1)
         Pay.toPay({ payInfo })
       }
@@ -129,7 +156,7 @@ export default {
           return h('div', '正在为您挑选……')
         }
       })
-      const { data: { data } } = await ChangeOne(this.sort)
+      const { data: { data } } = await ChangeOne()
       this.$loading.hide()
       this.isOnChange = true
       this.sort = data.sort
@@ -146,7 +173,8 @@ export default {
   },
   components: {
     SideBar,
-    MButton
+    MButton,
+    VirtualDialog
   }
 }
 </script>
@@ -163,6 +191,10 @@ export default {
   .choose-button {
     margin: 0 auto;
     margin-top: 0.5rem;
+  }
+  .gold-buy {
+    margin: 0 auto;
+    margin-top: 0.2rem;
   }
   .note {
     color: #b5b9cb;
