@@ -19,7 +19,7 @@
       class="choose-button">{{buttonText}}</MButton>
     <MButton :button-style="buttonStyle"
       @confirm="isVirtual=true"
-      v-if="isOpen"
+      v-if="!isOpen"
       class="gold-buy">使用金叶子购买</MButton>
     <VirtualDialog :show="isVirtual"
       @close="isVirtual = false"
@@ -68,9 +68,9 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
-    // if (this.userInfo && this.userInfo.openBoxTimes) {
-    //   this.openBox()
-    // }
+    if (this.userInfo && this.userInfo.openBoxTimes) {
+      this.openBox()
+    }
   },
   computed: {
     isOpen () {

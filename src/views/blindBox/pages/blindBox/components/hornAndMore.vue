@@ -3,7 +3,7 @@
     <section class="text-btn" @click="showRule"><span>活动规则</span></section>
     <horn-list :notice-list="noticeList" v-if="noticeList.length"></horn-list>
     <section class="text-btn">
-      <div class="mark">13</div>
+      <div v-if="unreceived" class="mark">{{unreceived}}</div>
       <a href="#/myPrize" @click="getAwards">获得奖品</a>
     </section>
     <Dialog :show="isShowRule" title="活动规则" :close="true" @onClose="closeRule()">
@@ -31,6 +31,8 @@
 import hornList from './hornList'
 import Dialog from '../../../components/dialog'
 import { NoticeList } from '../../../apis/box'
+import { Unreceived } from '../../../apis/user'
+
 export default {
   name: '',
   components: {
@@ -39,11 +41,13 @@ export default {
   data () {
     return {
       noticeList: [],
-      isShowRule: false
+      isShowRule: false,
+      unreceived: 0
     }
   },
   mounted () {
     this.getNoticeList()
+    this.getUnreceived()
   },
   methods: {
     async getNoticeList () {
@@ -51,6 +55,10 @@ export default {
       const res = await NoticeList()
       const { data } = res.data
       this.noticeList = data || []
+    },
+    // 获取用户未领取数量
+    async getUnreceived () {
+      ({data: {data: this.unreceived}} = await Unreceived())
     },
     showRule () {
       this.isShowRule = true
@@ -90,8 +98,9 @@ export default {
       background: #F53434;
       border-radius: 50%;
       color: #fff;
-      width: 0.34rem;
-      height: 0.34rem;
+      box-sizing: border-box;
+      width: 0.36rem;
+      height: 0.36rem;
       font-size: 0.22rem;
       position: absolute;
       padding: 0.02rem;

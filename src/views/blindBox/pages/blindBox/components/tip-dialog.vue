@@ -38,7 +38,7 @@ export default {
       const type = data.newColor
       this.$router.push({
         name: 'ChooseBox',
-        param: {
+        params: {
           type
         },
         query: {

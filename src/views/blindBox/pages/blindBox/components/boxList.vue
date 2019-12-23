@@ -35,7 +35,7 @@
         }}</m-button>
         <div class="change-btn" @click="changeAll">换一批</div>
       </section>
-      <section v-if="isOpenBox" class="btn-container">
+      <section v-if="!isOpenBox" class="btn-container">
         <m-button :button-style="buttonStyle" @confirm="isVirtual=true">使用金叶子购买</m-button>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
@@ -68,7 +68,7 @@
 <script>
 /* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
-import { UserInfo } from '../../../apis/user';
+import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
 import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
@@ -147,6 +147,7 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
+      this.isPopup()
       this.loopBox()
       if (!sessionStorage.blindBoxFirstTime) {
         sessionStorage.blindBoxFirstTime = true
@@ -158,6 +159,10 @@ export default {
           clearTimeout(this.refreshTimer)
         }, 1000)
       }
+    },
+    // 用户点击被透视的盒子是否弹窗
+    async isPopup () {
+      ({data: {data: this.isFirstIn}} = await Popup(1))
     },
     // 获取盒子信息
     async getBoxInfo () {
@@ -210,6 +215,9 @@ export default {
             duration: 2000
           })
         }
+      } else if (item.state === 3) {
+        // 别人正在购买
+        return
       } else {
         if (this.userInfo.openBoxTimes) {
           this.$router.push(

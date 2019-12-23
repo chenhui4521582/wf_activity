@@ -119,7 +119,7 @@ export default {
     // 复制成功
     copySuccess () {
       this.$toast.show({
-        message: '复制成功',
+        message: '单号已复制',
         duration: 1000
       })
     },

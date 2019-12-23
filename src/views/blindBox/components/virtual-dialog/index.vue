@@ -18,6 +18,7 @@
 import Dialog from '../dialog'
 import { PayPoint } from '../../apis/box'
 import { Pay } from '../../utils'
+import { LeafsAccount, LeafsPay } from '../../apis/user'
 
 export default {
   data () {
@@ -33,14 +34,25 @@ export default {
       type: Boolean
     }
   },
+  mounted () {
+    this.getLeafsAccount()
+  },
   components: {
     Dialog
   },
   methods: {
     // 格式化金叶子数量
     formatAmount (val) {
+      if (!val) return 0
       if (val < 10000) return val
       return `${(val / 10000).toFixed(2)}万`
+    },
+    // 获取用户金叶子数
+    async getLeafsAccount () {
+      const { data: { data } } = await LeafsAccount()
+      this.balance = data.userLeafsNum
+      this.deduct = data.buyBoxNum
+      this.isBalance = data.ableBuy
     }
   },
   computed: {
@@ -59,12 +71,14 @@ export default {
           des: `将扣除<span style="color: #FF8E8E;">${this.formatDeduct}</span>金叶子`,
           cancel: '取消',
           confirm: '<span style="color:#FF4141">确认</span>',
-          onConfirm: () => {
+          onConfirm: async () => {
+            await LeafsPay()
             this.$emit('close')
             this.$toast.show({
               message: '购买成功',
               duration: 2000
             })
+            this.getLeafsAccount()
             this.$emit('updateUserInfo')
           },
           onCancel: () => {

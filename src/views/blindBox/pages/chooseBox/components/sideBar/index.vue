@@ -1,10 +1,11 @@
 <template>
   <aside class="aside">
-    <div @click="useCard"
-      class="nav nav-reverse">
-      <p>透视卡</p>
-      <img src="./assets/card.png">
-      <span class="count">{{userInfo && userInfo.transparentTimes || 0}}</span>
+    <div class="nav nav-reverse">
+      <p @click="useCard">透视卡</p>
+      <img @click="useCard"
+        src="./assets/card.png">
+      <span @click="useCard"
+        class="count">{{userInfo && userInfo.transparentTimes || 0}}</span>
       <div class="pop"
         :class="{'active': isActive}">透视卡可偷看奖品哦~</div>
     </div>
@@ -33,20 +34,25 @@
 <script>
 import Dialog from '../../../../components/dialog'
 import { setTimeout } from 'timers'
+import { Popup } from '../../../../apis/user'
 
 export default {
   data () {
     return {
+      isFirstIn: false,
       show: false,
       isActive: false
     }
   },
-  mounted () {
+  async mounted () {
     // 从首页透视卡购买引导弹窗过来，弹窗提示购买
-    if (this.$route.query.guide) this.show = true
-    setTimeout(() => {
-      this.isActive = true
-    }, 2000)
+    if (this.$route.query.guide) this.show = true;
+    ({ data: { data: this.isFirstIn } } = await Popup(1))
+    if (this.isFirstIn) {
+      setTimeout(() => {
+        this.isActive = true
+      }, 2000)
+    }
   },
   props: {
     userInfo: {
