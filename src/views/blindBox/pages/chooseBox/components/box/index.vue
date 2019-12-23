@@ -18,10 +18,12 @@
       @confirm="onConfirm"
       class="choose-button">{{buttonText}}</MButton>
     <MButton :button-style="buttonStyle"
-      @confirm="isVirtual=true"
+      @confirm="leafsBuy"
       v-if="!isOpen"
       class="gold-buy">使用金叶子购买</MButton>
     <VirtualDialog :show="isVirtual"
+      source="detail"
+      v-if="isVirtual"
       @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
     <Side-Bar @use="useCard"
@@ -85,6 +87,11 @@ export default {
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
+    },
+    // 使用金叶子购买
+    leafsBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002685')
+      this.isVirtual = true
     },
     // 使用透视卡
     useCard () {

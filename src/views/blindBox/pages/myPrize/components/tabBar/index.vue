@@ -94,6 +94,7 @@ export default {
             GLOBALS.marchSetsPoint('A_H5PT0225002579')
             this.orderNumber = item.remark
             this.show = true
+            GLOBALS.marchSetsPoint('A_H5PT0225002699')
           }
         }
       ]
@@ -122,6 +123,7 @@ export default {
         message: '单号已复制',
         duration: 1000
       })
+      GLOBALS.marchSetsPoint('A_H5PT0225002700')
     },
     // 获取相应tab下的数据
     async getTabGoods () {

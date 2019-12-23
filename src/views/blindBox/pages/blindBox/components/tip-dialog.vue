@@ -5,9 +5,9 @@
     :close="true"
     confirm="<span style='color:#FF4141'>我也试试</span>"
     cancel="去选盒"
-    @onCancel="$emit('close')"
+    @onCancel="onCancel"
     @onConfirm="toChoose"
-    @onClose="$emit('close')">
+    @onClose="onClose">
     <div class="subtitle">
       该盒子正在被透视<br>请选择其他盒子~
     </div>
@@ -28,11 +28,15 @@ export default {
       type: Boolean
     }
   },
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002687')
+  },
   components: {
     Dialog
   },
   methods: {
     async toChoose () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002689')
       const { data: { data } } = await ChangeOne()
       const sort = data.sort
       const type = data.newColor
@@ -46,6 +50,14 @@ export default {
           guide: true
         }
       })
+    },
+    onCancel () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002688')
+      this.$emit('close')
+    },
+    onClose () {
+      this.$emit('close')
+      GLOBALS.marchSetsPoint('A_H5PT0225002690')
     }
   }
 }
