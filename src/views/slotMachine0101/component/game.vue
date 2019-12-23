@@ -70,6 +70,7 @@
         currentIndex: 0,
         awardTop: [],
         resArr: [1, 2, 3, 4, 5],
+        isCanWave: true,
         lotteryawardlist: [{
           lotteryAwardImage: '/group1/M00/0C/22/CmcEHVu9a56AckjBAAAi1ETP_qI265.png',
           lotteryAwardName: '捕鱼',
@@ -124,7 +125,8 @@
         }
       },
       gotowave() {
-        this.showLoading = true
+        if (!this.isCanWave) return
+        this.isCanWave = false
         let item = this.actInfo.stageList[this.currentIndex]
         let selectVal = item.consumeNum
         GLOBALS.marchSetsPoint('A_H5PT0229002659', {task_id: item.awardsLevel}) //H5平台-双旦活动页-摇一摇按钮点击
@@ -132,7 +134,7 @@
         if (this.myInfo.remanentNum < selectVal) {
           GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
           this.$emit('gotowave', {item: item, popType: 3, wavePrizeInfoType: 0})
-          this.showLoading = false
+          this.isCanWave = true
         } else if (maxItems.length > 0) {//拥有的游戏币可支持比当前选中的更高的档位
           GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗加载完成
           this.$emit('gotowave', {
@@ -141,23 +143,25 @@
             wavePrizeInfoType: 1,
             maxCanSelectLimit: maxItems.sort()[maxItems.length - 1]
           })
-          this.showLoading = false
+          this.isCanWave = true
         } else {
-          this.showLoading = true
           this.gotowavedirect()
         }
       },
       async gotowavedirect() {
+        this.isCanWave = false
         let self = this
         let {consumeNum, awardsLevel} = this.actInfo.stageList[this.currentIndex]
         if (this.myInfo.remanentNum < consumeNum) {
           GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
           this.$emit('gotowave', {item: self.actInfo.stageList[self.currentIndex], popType: 3, wavePrizeInfoType: 0})
+          this.isCanWave = true
         } else {
           this.showLoading = true
           try {
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
+              self.showLoading = false
               if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
                 this.num = this.num == 1 ? 2 : 1
               }
@@ -171,23 +175,26 @@
                 }
               })
               this.$refs.luck4[0].addEventListener("webkitTransitionEnd", function () {
-                GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
-                self.showLight = false
-                self.$emit('gotowave', {
-                  item: self.actInfo.stageList[self.currentIndex],
-                  popType: 3,
-                  wavePrizeInfoType: 2,
-                  awardData: {
-                    awardType: data.awardsType,
-                    awardName: data.awardsName,
-                    levelName: self.getLevelName(data.showLevel),
-                    icons: data.iconArray
-                  }
-                })
-                self.showLoading = false
+                if (!self.isCanWave) {
+                  GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
+                  self.showLight = false
+                  self.$emit('gotowave', {
+                    item: self.actInfo.stageList[self.currentIndex],
+                    popType: 3,
+                    wavePrizeInfoType: 2,
+                    awardData: {
+                      awardType: data.awardsType,
+                      awardName: data.awardsName,
+                      levelName: self.getLevelName(data.showLevel),
+                      icons: data.iconArray
+                    }
+                  })
+                  self.isCanWave = true
+                }
               })
             } else {
               this.showLoading = false
+              this.isCanWave = true
               this.$toast.show({
                 message: message,
                 duration: 2000
@@ -495,6 +502,7 @@
         transition-delay: 0.3s;
       }
       &.luckdraw4 {
+        transition-delay: 0.4s;
         width: 1.1rem;
       }
       .box {
