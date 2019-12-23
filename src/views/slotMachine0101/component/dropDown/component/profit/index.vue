@@ -29,7 +29,7 @@
             </li>
             <li>
               <h4>累计获得游戏币</h4>
-              <span>{{myInfo.useNum|filterPrice}}个币</span>
+              <span>{{myInfo.totalNum|filterPrice}}个币</span>
             </li>
             <li>
               <h4>当前奖励</h4>
