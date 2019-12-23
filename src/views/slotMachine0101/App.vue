@@ -3,7 +3,7 @@
     <template v-if="actData">
       <div class="snow">
         <img src="./images/backgroundsnow.png"></div>
-      <div class="container" v-if="!showRank">
+      <div class="container" v-show="!showRank">
         <div class="top">
           <div class="back" @click="back">
             <div>返回</div>
@@ -33,8 +33,8 @@
               ref="game"></game>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
-      <profit v-else @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
-      <drop-down ref="dropDown" :rules-explain="time" @show-eggs-info="showDefaultEggs()" v-if="!showRank"
+      <profit v-if="showRank" @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
+      <drop-down ref="dropDown" :rules-explain="time" v-if="!showRank"
                  :my-info="userData" @refresh="refresh"></drop-down>
       <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
                :rule-time="time" :award-data="awardData"

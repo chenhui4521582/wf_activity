@@ -55,9 +55,6 @@
       getHammer: () => import('./component/getHammer'),
       // profit: () => import('./component/profit')
     },
-    mounted() {
-      // this.init()
-    },
     methods: {
       outHandleTab(idx) {
         GLOBALS.marchSetsPoint('A_H5PT0229002668')   // H5平台-双旦活动页-获得更多游戏币点击(展开)
@@ -70,7 +67,6 @@
       close() {
         this.isDropDown = false
         GLOBALS.marchSetsPoint('A_H5PT0229002669')   // H5平台-双旦活动页-获得抽奖机会页-点击收起
-        this.init()
         this.$emit('show-eggs-info')
       },
       refresh(num){
