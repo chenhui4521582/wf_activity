@@ -124,6 +124,7 @@
         }
       },
       gotowave() {
+        this.showLoading = true
         let item = this.actInfo.stageList[this.currentIndex]
         let selectVal = item.consumeNum
         GLOBALS.marchSetsPoint('A_H5PT0229002659', {task_id: item.awardsLevel}) //H5平台-双旦活动页-摇一摇按钮点击
@@ -131,6 +132,7 @@
         if (this.myInfo.remanentNum < selectVal) {
           GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
           this.$emit('gotowave', {item: item, popType: 3, wavePrizeInfoType: 0})
+          this.showLoading = false
         } else if (maxItems.length > 0) {//拥有的游戏币可支持比当前选中的更高的档位
           GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗加载完成
           this.$emit('gotowave', {
@@ -139,7 +141,9 @@
             wavePrizeInfoType: 1,
             maxCanSelectLimit: maxItems.sort()[maxItems.length - 1]
           })
+          this.showLoading = false
         } else {
+          this.showLoading = true
           this.gotowavedirect()
         }
       },
@@ -154,7 +158,6 @@
           try {
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
-              this.showLoading = false
               if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
                 this.num = this.num == 1 ? 2 : 1
               }
@@ -181,6 +184,7 @@
                     icons: data.iconArray
                   }
                 })
+                self.showLoading = false
               })
             } else {
               this.showLoading = false
@@ -517,7 +521,7 @@
     position: absolute;
     top: -2.97rem;
     left: 0.12rem;
-    z-index: 5;
+    z-index: 1;
   }
 
   .pop_inner {
