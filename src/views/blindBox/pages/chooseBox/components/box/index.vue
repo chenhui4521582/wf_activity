@@ -61,7 +61,7 @@ export default {
     }
   },
   async mounted () {
-    this.updateUserInfo()
+    await this.updateUserInfo()
     if (this.$route.query.awardsImage) {
       this.awardsImage = this.$route.query.awardsImage
       this.isTransparent = true
