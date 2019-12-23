@@ -72,6 +72,17 @@
       refresh(num){
         this.$emit('refresh',num)
       }
+    },
+    watch: {
+      isDropDown(value) {
+        if(value) {
+          document.body.style.overflow = 'hidden';
+          document.addEventListener('touchmove', this.move, { passive: false });
+        }else {
+          document.body.style.overflow = null;
+          document.removeEventListener('touchmove', this.move, { passive: false });
+        }
+      }
     }
   }
 </script>
