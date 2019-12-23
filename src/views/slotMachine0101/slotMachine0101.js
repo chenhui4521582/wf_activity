@@ -52,6 +52,8 @@ Vue.filter('timeFormat', function (data, type) {
 Vue.filter('filterPrice', function (value) {
   if (value) {
     return value > 10000 ? value / 10000 + '万' : value
+  }else{
+    return 0
   }
 })
 new Vue({
