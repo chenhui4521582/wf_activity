@@ -29,7 +29,7 @@
             <img src="./images/vice-title.png" alt="">
           </div>
         </div>
-        <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList" :award-data="awardData"
+        <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList"
               ref="game"></game>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
