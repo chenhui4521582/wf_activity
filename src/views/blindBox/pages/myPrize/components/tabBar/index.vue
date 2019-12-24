@@ -49,6 +49,10 @@
         :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
         @onConfirm="toIndex" />
     </section>
+    <section @click="toOnlineService" class="service">
+      <img src="./assets/service.png" alt="">
+      <p>客服</p>
+    </section>
   </article>
 </template>
 
@@ -161,6 +165,28 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  .service {
+    width: 0.75rem;
+    height: 0.63rem;
+    border-top-left-radius: 0.32rem;
+    border-bottom-left-radius: 0.32rem;
+    background: #2A2D3C;
+    color: #D9C58E;
+    font-size: 0.2rem;
+    padding-left: 0.1rem;
+    position: fixed;
+    right: 0;
+    top: 9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    img {
+      width: 0.3rem;
+      // margin-bottom:
+    }
+  }
   .tip {
     padding: 0 0.43rem 0.46rem 0.43rem;
     color: #888888;
