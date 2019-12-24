@@ -26,8 +26,8 @@ Vue.filter('imgFilter', url => {
 })
 
 Vue.filter('textFilter', value => {
-  if (value && value.length > 9) {
-    return `${value.substr(0, 9)}…`
+  if (value && value.length > 15) {
+    return `${value.substr(0, 15)}…`
   }
   return value
 })
