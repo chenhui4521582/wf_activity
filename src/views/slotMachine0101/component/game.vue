@@ -161,9 +161,9 @@
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
               this.showBar=false
-              if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
+              // if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
                 this.num = this.num == 1 ? 2 : 1
-              }
+              // }
               this.resArr = data.iconArray
               let arr = []
               data.iconArray.map((item, index) => {
