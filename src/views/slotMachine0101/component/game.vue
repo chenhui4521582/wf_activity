@@ -71,6 +71,7 @@
         currentIndex: 0,
         awardTop: [],
         resArr: [1, 2, 3, 4, 5],
+        awardData:null,
         lotteryawardlist: [{
           lotteryAwardImage: '/group1/M00/0C/22/CmcEHVu9a56AckjBAAAi1ETP_qI265.png',
           lotteryAwardName: '捕鱼',
@@ -107,10 +108,6 @@
       hornList: {
         type: Array,
         default: () => []
-      },
-      awardData: {
-        type: Object,
-        default: () => null
       }
     },
     methods: {
@@ -161,9 +158,10 @@
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
               this.showBar=false
-              if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
+              this.awardData=data
+              // if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
                 this.num = this.num == 1 ? 2 : 1
-              }
+              // }
               this.resArr = data.iconArray
               let arr = []
               data.iconArray.map((item, index) => {
@@ -174,7 +172,7 @@
                 }
               })
               this.$refs.luck4[0].addEventListener("webkitTransitionEnd", function () {
-                if (!self.isCanWave) {
+                if (!self.showBar) {
                   GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
                   self.showLight = false
                   self.$emit('gotowave', {
@@ -182,10 +180,10 @@
                     popType: 3,
                     wavePrizeInfoType: 2,
                     awardData: {
-                      awardType: data.awardsType,
-                      awardName: data.awardsName,
-                      levelName: self.getLevelName(data.showLevel),
-                      icons: data.iconArray
+                      awardType: self.awardData.awardsType,
+                      awardName: self.awardData.awardsName,
+                      levelName: self.getLevelName(self.awardData.showLevel),
+                      icons: self.awardData.iconArray
                     }
                   })
                   self.showLoading = false
