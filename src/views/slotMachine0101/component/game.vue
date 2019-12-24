@@ -71,6 +71,7 @@
         currentIndex: 0,
         awardTop: [],
         resArr: [1, 2, 3, 4, 5],
+        awardData:null,
         lotteryawardlist: [{
           lotteryAwardImage: '/group1/M00/0C/22/CmcEHVu9a56AckjBAAAi1ETP_qI265.png',
           lotteryAwardName: '捕鱼',
@@ -161,6 +162,7 @@
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
               this.showBar=false
+              this.awardData=data
               // if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
                 this.num = this.num == 1 ? 2 : 1
               // }
@@ -182,10 +184,10 @@
                     popType: 3,
                     wavePrizeInfoType: 2,
                     awardData: {
-                      awardType: data.awardsType,
-                      awardName: data.awardsName,
-                      levelName: self.getLevelName(data.showLevel),
-                      icons: data.iconArray
+                      awardType: self.awardData.awardsType,
+                      awardName: self.awardData.awardsName,
+                      levelName: self.getLevelName(self.awardData.showLevel),
+                      icons: self.awardData.iconArray
                     }
                   })
                   self.showLoading = false
