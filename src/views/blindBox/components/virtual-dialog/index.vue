@@ -96,7 +96,7 @@ export default {
             await LeafsPay()
             this.$emit('close')
             this.$toast.show({
-              message: '购买成功',
+              message: '支付成功',
               duration: 2000
             })
             this.getLeafsAccount()

@@ -52,7 +52,8 @@ export default {
       boxGroup,
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
-        color: '#fff'
+        color: '#fff',
+        fontSize: '0.34rem'
       },
       isVirtual: false,
       awardsImage: null,
@@ -70,9 +71,6 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
-    if (this.userInfo && this.userInfo.openBoxTimes) {
-      this.openBox()
-    }
   },
   computed: {
     isOpen () {
@@ -87,6 +85,9 @@ export default {
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
+      if (this.userInfo && this.userInfo.openBoxTimes) {
+        // this.openBox()
+      }
     },
     // 使用金叶子购买
     leafsBuy () {

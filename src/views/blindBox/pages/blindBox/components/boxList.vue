@@ -92,7 +92,8 @@ export default {
     return {
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
-        color: '#fff'
+        color: '#fff',
+        fontSize: '0.34rem'
       },
       isVirtual: false,
       // 用户当天是否第一次进入页面
@@ -149,7 +150,6 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
-      this.isPopup()
       this.loopBox()
       if (!sessionStorage.blindBoxFirstTime) {
         sessionStorage.blindBoxFirstTime = true
@@ -214,6 +214,7 @@ export default {
       // this.isShake = false
       // 透视状态下点击盒子
       if (item.state === 2) {
+        await this.isPopup()
         if (this.isFirstIn) {
           this.showTip = true
         } else {

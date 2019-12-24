@@ -47,7 +47,7 @@ export default {
   async mounted () {
     // 从首页透视卡购买引导弹窗过来，弹窗提示购买
     if (this.$route.query.guide) this.show = true;
-    ({ data: { data: this.isFirstIn } } = await Popup(1))
+    ({ data: { data: this.isFirstIn } } = await Popup(2))
     if (this.isFirstIn) {
       setTimeout(() => {
         this.isActive = true
@@ -74,6 +74,7 @@ export default {
     // 使用透视卡
     useCard () {
       this.show = true
+      this.isActive = false
       GLOBALS.marchSetsPoint("A_H5PT0225002555", {
         awards_id: this.userInfo.transparentTimes || 0
       }) // H5平台-盲盒页面-选盲盒页面-透视卡点击
