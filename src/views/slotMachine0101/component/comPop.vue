@@ -231,9 +231,9 @@
         }
       },
       close() {
-        if (this.popType == 3 && this.wavePrizeInfoType == 1) {
-          this.$emit('gotowavedirect')
-        }
+        // if (this.popType == 3 && this.wavePrizeInfoType == 1) {
+        //   this.$emit('gotowavedirect')
+        // }
         this.$emit('close')
         this.isShowPop = false;
       },
