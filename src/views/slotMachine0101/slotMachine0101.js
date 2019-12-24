@@ -56,7 +56,6 @@ Vue.filter('filterPrice', function (value) {
     return 0
   }
 })
-localStorage.setItem('ACCESS_TOKEN','c260dd7375f443f4a8c485a279c5553e')
 new Vue({
   render: r => r(App)
 }).$mount('#app')
