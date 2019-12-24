@@ -58,7 +58,7 @@
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum|filterPrice}}个币<</em></span>
+              <span><em class="i-ellipsis">{{item.totalNum|filterPrice}}个币</em></span>
               <span><em class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen">
