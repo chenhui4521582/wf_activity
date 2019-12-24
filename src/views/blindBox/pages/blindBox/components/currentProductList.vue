@@ -128,6 +128,7 @@ export default {
         font-size: 0.24rem;
         color: #fff;
         border: 1px solid #fff;
+        border-left: none;
         border-top-right-radius: 0.23rem;
         border-bottom-right-radius: 0.23rem;
       }
