@@ -174,7 +174,7 @@
                 }
               })
               this.$refs.luck4[0].addEventListener("webkitTransitionEnd", function () {
-                if (!self.isCanWave) {
+                if (!self.showBar) {
                   GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
                   self.showLight = false
                   self.$emit('gotowave', {
