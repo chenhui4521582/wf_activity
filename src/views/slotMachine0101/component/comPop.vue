@@ -1,5 +1,5 @@
 <template>
-  <section class="com_pop" :style="{zIndex:isShowPop?100:99}">
+  <section class="com_pop" :style="{zIndex:isShowPop?100:99}" :class="{flag0:popType==0}">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
@@ -17,12 +17,19 @@
           <div class="main">
             <div :class="getClassName('container_compop')">
               <template v-if="popType==0">
-                <p v-if="ruleTime">活动时间:{{ruleTime}}</p>
-                <p>1. 活动期间内，玩家在游戏中消耗一定的叶子，可领取摇奖机次数;</p>
-                <p>2. 每次摇奖都会随机摇出5个图案，玩家根据摇出的相同图案的数量会获得不同的奖励，出现的相同图案越多，奖励越丰厚;</p>
-                <p>3. 活动期间，玩家累计获得的摇奖次数会进行排行;</p>
-                <p>4. 活动结束后，按照最终排行进行奖励发放;</p>
-                <p>5. 活动结束后，排行榜还会展示一天时间。</p>
+                <template v-if="ruleTime">
+                  <p>活动时间:</p>
+                  <p>{{ruleTime}}</p>
+                </template>
+                <p>活动期间内:</p>
+                <p>1. 玩家在游戏中消耗一定的叶子,可领取游戏币,游戏币可以用于摇奖(套圈、枪火英雄、麻将、斗地主、生肖大作战及跑得快不计入本次活动)</p>
+                <p>2. 每次摇奖都会随机摇出5个图案,玩家根据摇出的相同图案的数量会获得不同的奖励,出现的相同图案越多,奖励越丰厚</p>
+                <p>3. 单次消耗游戏币额度越大,越容易中大奖哟</p>
+                <p>4. 玩家累计获得的游戏币进行排行</p>
+                <p>活动结束后:</p>
+                <p>1. 未使用和未领取的游戏币作废,请及时领取使用</p>
+                <p>2. 系统会按照最终排行进行奖励发放</p>
+                <p>3. 排行榜还会展示一天时间</p>
               </template>
               <template v-if="popType==1">
                 <div class="toatl_awards">
@@ -231,9 +238,9 @@
         }
       },
       close() {
-        if (this.popType == 3 && this.wavePrizeInfoType == 1) {
-          this.$emit('gotowavedirect')
-        }
+        // if (this.popType == 3 && this.wavePrizeInfoType == 1) {
+        //   this.$emit('gotowavedirect')
+        // }
         this.$emit('close')
         this.isShowPop = false;
       },
@@ -275,6 +282,9 @@
     top: 1rem;
     left: 50%;
     margin-left: -3.14rem;
+    &.flag0{
+      top: .5rem;
+    }
     .pop-mask {
       position: fixed;
       left: 0;
@@ -337,7 +347,7 @@
           top: -.1rem;
           .container_compop {
             &.flag0 {
-              padding: 0 .2rem;
+              padding: 0 .3rem;
               box-sizing: border-box;
               font-size: .24rem;
               font-weight: 500;
