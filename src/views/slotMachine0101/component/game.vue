@@ -108,10 +108,6 @@
       hornList: {
         type: Array,
         default: () => []
-      },
-      awardData: {
-        type: Object,
-        default: () => null
       }
     },
     methods: {
