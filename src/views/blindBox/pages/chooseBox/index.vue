@@ -3,7 +3,9 @@
     <img class="back"
       @click="$router.push({name:'Index'})"
       src="./assets/arrow.png">
-    <LongSwiper class="notice" />
+    <HornList class="notice"
+      :notice-list="noticeList"
+      v-if="noticeList.length" />
     <section class="box__section">
       <div class="bg__div--rotate"></div>
       <Box />
@@ -15,22 +17,31 @@
 </template>
 
 <script>
-import LongSwiper from '../../components/longSwiper'
+import HornList from '../blindBox/components/hornList'
 import Box from './components/box'
+import { NoticeList } from '../../apis/box'
 
 export default {
   data () {
     return {
+      noticeList: []
     }
   },
   components: {
-    LongSwiper,
-    Box
+    Box,
+    HornList
   },
   mounted () {
+    this.getNoticeList()
     GLOBALS.marchSetsPoint('A_H5PT0225002551') // H5平台-盲盒页面-选盲盒页面加载完成
   },
   methods: {
+    async getNoticeList () {
+      // 获取跑马灯信息
+      const res = await NoticeList()
+      const { data } = res.data
+      this.noticeList = data || []
+    },
     toAllProduct () {
       this.$router.push({
         name: 'AllProducts'
@@ -77,7 +88,7 @@ export default {
   }
   .notice {
     margin: 0 auto;
-    width: 3.87rem;
+    width: 5rem;
   }
   .goods-detail {
     width: 3.45rem;

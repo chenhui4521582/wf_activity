@@ -170,7 +170,7 @@ export default {
         min-width: 1.74rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        height: 1.12rem;
+        height: 1.15rem;
         margin: 0 0.16rem;
         padding-top: 0.04rem;
         background: #6e7588;
