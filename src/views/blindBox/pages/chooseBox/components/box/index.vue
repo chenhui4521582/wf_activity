@@ -86,7 +86,7 @@ export default {
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
       if (this.userInfo && this.userInfo.openBoxTimes) {
-        // this.openBox()
+        this.openBox()
       }
     },
     // 使用金叶子购买
