@@ -4,7 +4,7 @@
       <div class="header-left">
         <span @click="toPlatform" class="back">返回</span>
         <img src="../assets/box.png" alt="">
-        <span>本期明星奖品</span>
+        <span>盲盒明星奖品</span>
       </div>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </div>

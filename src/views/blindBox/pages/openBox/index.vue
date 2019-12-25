@@ -2,7 +2,9 @@
   <div class="main">
     <article v-if="show"
       class="wrapper">
-      <LongSwiper class="notice" />
+      <HornList class="notice"
+        :notice-list="noticeList"
+        v-if="noticeList.length" />
       <img class="get"
         src="./assets/box-get.png">
       <div v-if="awardsInfo"
@@ -18,23 +20,24 @@
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
         <span>数量：{{awardsInfo.awardsNum}}</span>
       </p>
-      <MButton class="button"
-        @confirm="openAgain">再开一次</MButton>
       <p @click="viewMyPrize"
         class="view-prize">查看我的奖品>></p>
+      <MButton class="button"
+        @confirm="openAgain">再开一次</MButton>
     </article>
   </div>
 </template>
 
 <script>
-import LongSwiper from '../../components/longSwiper'
+import HornList from '../blindBox/components/hornList'
 import MButton from '../../components/MButton'
 import { boxGroup } from '../../config/box'
-import { Operation } from '../../apis/box'
+import { Operation, NoticeList } from '../../apis/box'
 
 export default {
   data () {
     return {
+      noticeList: [],
       show: false,
       box: null,
       goods: null,
@@ -45,7 +48,7 @@ export default {
     }
   },
   components: {
-    LongSwiper,
+    HornList,
     MButton
   },
   async mounted () {
@@ -55,6 +58,7 @@ export default {
         return h('div', '正在为您开盒……')
       }
     })
+    this.getNoticeList()
     this.type = Number(this.$route.params.type)
     this.sort = Number(this.$route.query.sort)
     this.isTransparent = this.$route.query.isTransparent
@@ -73,6 +77,12 @@ export default {
     openAgain () {
       GLOBALS.marchSetsPoint('A_H5PT0225002565')
       this.$router.push({ name: 'Index' })
+    },
+    async getNoticeList () {
+      // 获取跑马灯信息
+      const res = await NoticeList()
+      const { data } = res.data
+      this.noticeList = data || []
     },
     // 查看我的奖品
     viewMyPrize () {
@@ -110,7 +120,7 @@ export default {
     text-align: center;
     .notice {
       margin: 0 auto;
-      width: 3.87rem;
+      width: 5rem;
     }
     .get {
       width: 2.18rem;
@@ -151,7 +161,7 @@ export default {
     .view-prize {
       color: #ecd69a;
       font-weight: bold;
-      font-size: 0.22rem;
+      font-size: 0.26rem;
       padding-top: 0.33rem;
       padding-bottom: 0.33rem;
     }
