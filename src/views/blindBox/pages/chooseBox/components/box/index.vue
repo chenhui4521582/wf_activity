@@ -1,34 +1,22 @@
 <template>
   <section class="box-wrapper">
     <div class="box">
-      <div :class="{'on-change':isOnChange}"
-        class="box__img--box">
+      <div :class="{'on-change':isOnChange}" class="box__img--box">
         <div class="img-wrapper">
           <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
-        <img class="box__img--goods"
-          v-if="awardsImage"
-          :src="awardsImage | imgFilter">
+        <img class="box__img--goods" v-if="awardsImage" :src="awardsImage | imgFilter">
       </div>
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
     </div>
-    <p @click="refresh"
-      class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
-      @confirm="onConfirm"
+    <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
       class="choose-button">{{buttonText}}</MButton>
-    <MButton :button-style="buttonStyle"
-      @confirm="leafsBuy"
-      v-if="!isOpen"
-      class="gold-buy">使用金叶子购买</MButton>
-    <VirtualDialog :show="isVirtual"
-      source="detail"
-      v-if="isVirtual"
-      @close="isVirtual = false"
+    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen" class="gold-buy">使用金叶子购买
+    </MButton>
+    <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
-    <Side-Bar @use="useCard"
-      :user-info="userInfo"
-      class="side-bar" />
+    <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
   </section>
 </template>
 
@@ -62,7 +50,6 @@ export default {
     }
   },
   async mounted () {
-    await this.updateUserInfo()
     if (this.$route.query.awardsImage) {
       this.awardsImage = this.$route.query.awardsImage
       this.isTransparent = true
@@ -71,6 +58,7 @@ export default {
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
+    await this.updateUserInfo()
   },
   computed: {
     isOpen () {
