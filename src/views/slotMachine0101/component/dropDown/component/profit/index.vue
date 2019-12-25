@@ -5,7 +5,7 @@
         <div>返回</div>
       </div>
       <img src="./images/title.png" class="title">
-      <h4 v-if="countTime" class="p-time">发榜倒计时：{{countTime}}</h4>
+      <h4 v-if="countDown" class="p-time">发榜倒计时：{{countDown}}</h4>
       <h4 v-else class="p-time">活动已结束</h4>
       <div class="profit-tx-container">
         <ul class="profit-icon">
@@ -97,7 +97,6 @@
 </template>
 <script type="text/javascript">
   import Services from '../../../../services/services'
-  // import {rankList, activityInfo, userRanking} from '../../../utils/api'
 
   export default {
     data() {
@@ -109,7 +108,6 @@
         otherData: [],
         lastThreeData: [],
         isOpen: true,
-        countTime: null,
         endTime: '',
         isLoading: false,
         defaultImg: '/cdn/common/images/common/img_photo.png'
@@ -125,18 +123,21 @@
         default: null
       },
       countDown: {
-        type: Number,
-        default: 0
+        type: String,
+        default: ''
       },
     },
     components: {},
     mounted() {
-      this.getCountDown(this.countDown)
       this.getRankList()
     },
     methods: {
       back() {
-        this.$emit('back')
+        if(this.countDown){
+          this.$emit('back')
+        }else{
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+        }
       },
       closeOpenProfit() {
         GLOBALS.marchSetsPoint('A_H5PT0229002657') //H5平台-双旦活动页-排行榜页-查看更多榜单点击
@@ -159,30 +160,14 @@
           this.behindThreeData = this.profitData.slice(3, 6)
           this.isLoading = false
         }
-      },
-      getCountDown (item) {
-        if (!item) return false
-        let date = item / 1000
-        this.timer = setInterval(() => {
-          date = date - 1
-          if (date <= 0) {
-            date = 0
-            clearInterval(this.timer)
-          }
-          let day = Math.floor(date / 86400)
-          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
-          let minute = Math.floor(parseInt(date / 60) % 60)
-          let second = Math.floor(date % 60)
-          // let countDay = day >= 10 ? day : '0' + day
-          let countHour = hour >= 10 ? hour : '0' + hour
-          let countMinute = minute >= 10 ? minute : '0' + minute
-          let countSecond = second >= 10 ? second : '0' + second
-          if (day > 0) {
-            this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
-          } else {
-            this.countTime = `${countHour}:${countMinute}:${countSecond}`
-          }
-        }, 1000)
+      }
+    },
+    watch:{
+      countDown(val){
+        if(!val){
+          this.getRankList()
+          this.$emit('refresh',false)
+        }
       }
     }
   }
