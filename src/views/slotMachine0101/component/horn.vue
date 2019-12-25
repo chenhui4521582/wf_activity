@@ -1,52 +1,90 @@
 <template>
-  <div class="horn">
-    <swiper v-if="isShow" :options="defaultOptions">
-      <swiper-slide class="swiper-slide" v-for="(item, index) in hornList" :key="index">
-        恭喜{{item.nickname}}抽中了{{item.awardsName}}
-      </swiper-slide>
-    </swiper>
-  </div>
+  <section class="message" v-if="lamp.length">
+    <div class="item-move">
+      <ul :class="{'anim':isMove}">
+        <li v-for="item in lamp">
+          <div>
+            恭喜{{item.nickname}}抽中了{{item.awardsName}}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
 </template>
+
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
-export default {
-  name: 'horn',
-  props: {
-    hornList: {
-      type: Array,
-      default: () => []
+  export default {
+    name: 'message',
+    props: {
+      hornList: {
+        type: Array,
+        default: () => []
+      }
+    },
+    data() {
+      return {
+        ylbScroll: null,
+        isMove: false,
+        lamp: []
+      }
+    },
+    methods: {
+      // 跑马灯滚动
+      scroll() {
+        this.isMove = true
+        setTimeout(() => {
+          this.lamp.push(this.lamp[0])
+          this.lamp.shift()
+          this.isMove = false
+        }, 1000)
+      },
+      init() {
+        this.lamp = this.hornList
+        clearInterval(this.ylbScroll)
+        this.ylbScroll = setInterval(this.scroll, 2500)
+      }
+    },
+    mounted() {
+      this.init()
+    },
+    destroyed() {
+      clearInterval(this.ylbScroll)
     }
-  },
-  data: () => ({
-    defaultOptions: {
-      loop: true,
-      autoplay: 3000,
-      direction: 'vertical',
-      height: 60
-    }
-  }),
-  components: {
-    swiper,
-    swiperSlide
-  },
-  computed: {
-    isShow () {
-      return this.hornList.length
-    }
-  },
-}
+  }
 </script>
-<style lang="less" scoped>
-.horn {
-  position: absolute;
-  top: .9rem;
-  left: 2rem;
-  width: 4rem;
-  overflow: hidden;
-  color:rgba(255,255,255,1);
-  height: 0.4rem;
-  line-height: 0.4rem;
-  font-size: 0.22rem;
-}
+
+<style rel="stylesheet/less" lang="less" scoped>
+  .message {
+    position: absolute;
+    top: .9rem;
+    left: 2rem;
+    width: 4rem;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 1);
+    height: 0.4rem;
+    line-height: 0.4rem;
+    font-size: 0.22rem;
+    .item-move {
+      height: 0.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      ul {
+        width: 100%;
+      }
+      li {
+        display: flex;
+        align-items: center;
+      }
+      p {
+        i {
+          color: #F5A86E;
+        }
+      }
+    }
+    .anim {
+      transition: all 1s;
+      margin-top: -0.8rem;
+    }
+  }
 </style>
