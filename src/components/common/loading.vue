@@ -1,7 +1,7 @@
 <template lang="html">
-    <div :class="{'loading-wrap': !smaller}">
+    <div :class="{'loading-wrap': !smaller,hidebar:!showBar}">
         <div class="container">
-            <div class="spinner">
+            <div class="spinner" v-if="showBar">
                 <div class="bar1"></div>
                 <div class="bar2"></div>
                 <div class="bar3"></div>
@@ -23,7 +23,8 @@
 export default {
     name : 'loading',
     props:{
-        smaller : Boolean
+        smaller : Boolean,
+        showBar:true
     }
 }
 </script>
@@ -37,6 +38,9 @@ export default {
    height:100%;
    background-color: rgba(0,0,0,0.7);
    z-index: 15;
+   &.hidebar{
+     background-color: rgba(0,0,0,0.1);
+   }
 }
 .container {
     position: absolute;

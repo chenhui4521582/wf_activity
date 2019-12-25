@@ -61,6 +61,8 @@ export default {
     }
   },
   data () {
+
+    
     return {
       round: 4, // 转几回合后停下来
       prizes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
