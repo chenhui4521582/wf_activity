@@ -19,6 +19,7 @@ import Dialog from '../dialog'
 import { PayPoint } from '../../apis/box'
 import { Pay } from '../../utils'
 import { LeafsAccount, LeafsPay } from '../../apis/user'
+import { setTimeout } from 'timers'
 
 export default {
   data () {
@@ -97,10 +98,12 @@ export default {
             this.$emit('close')
             this.$toast.show({
               message: '支付成功',
-              duration: 2000
+              duration: 1000
             })
-            this.getLeafsAccount()
-            this.$emit('updateUserInfo')
+            // this.getLeafsAccount()
+            setTimeout(() => {
+              this.$emit('updateUserInfo')
+            }, 1000)
           },
           onCancel: () => {
             this.$emit('close')
