@@ -6,7 +6,7 @@
         :key="index">
         <div class="swiper-info">
           <p>恭喜{{item.nickname}}用户</p>
-          <p>抽中{{item.awardsName | textFilter}}</p>
+          <p>抽中{{item.awardsName | swiperFilter}}</p>
         </div>
       </swiper-slide>
     </swiper>
@@ -31,6 +31,14 @@ export default {
       swiperList: null
     }
   },
+  filters: {
+    swiperFilter (value) {
+      if (value && value.length > 15) {
+        return `${value.substr(0, 15)}…`
+      }
+      return value
+    }
+  },
   async mounted () {
     const { data: { data } } = await NoticeList()
     this.swiperList = data
@@ -44,7 +52,7 @@ export default {
 
 <style lang="less" scoped>
 .swiper-user {
-  height: 0.62rem;
+  height: 0.63rem;
   overflow: hidden;
   .swiper-info {
     padding: 0.06rem 0.2rem;
@@ -52,7 +60,8 @@ export default {
     background: rgba(28, 32, 42, 0.52);
     border-radius: 0.25rem;
     color: #fff;
-    font-size: 0.18rem;
+    line-height: 1.2;
+    font-size: 0.22rem;
     text-align: center;
   }
 }

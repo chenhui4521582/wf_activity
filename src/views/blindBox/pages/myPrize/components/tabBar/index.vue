@@ -9,7 +9,8 @@
         领取成功后，预计1-2个工作日发货,请您耐心等待，并确保通话畅通若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
       <p class="tip"
-        v-if="this.active===2">您的运单号为：{{orderNumber}}</p>
+        v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
+          v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
     <section class="container">
       <div class="bar"
@@ -23,8 +24,12 @@
       </div>
     </section>
     <section class="content">
-      <p v-if="this.goodsList && this.goodsList.length > 0"
-        class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
+      <div v-if="this.goodsList && this.goodsList.length > 0"
+        class="total">
+        <p>共<span>{{this.goodsList.length}}件</span>商品</p>
+        <p></p>
+        <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0" class="free-shipping">领取奖品满2件即可包邮哦~</p>
+        </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
         <Goods v-for="(item,index) in goodsList"
           :key="index"
@@ -43,6 +48,10 @@
       <Default v-if="this.goodsList && this.goodsList.length === 0"
         :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
         @onConfirm="toIndex" />
+    </section>
+    <section @click="toOnlineService" class="service">
+      <img src="./assets/service.png" alt="">
+      <p>客服</p>
     </section>
   </article>
 </template>
@@ -89,6 +98,7 @@ export default {
             GLOBALS.marchSetsPoint('A_H5PT0225002579')
             this.orderNumber = item.remark
             this.show = true
+            GLOBALS.marchSetsPoint('A_H5PT0225002699')
           }
         }
       ]
@@ -110,6 +120,14 @@ export default {
       if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')
       if (index === 2) GLOBALS.marchSetsPoint('A_H5PT0225002574')
       this.getTabGoods()
+    },
+    // 复制成功
+    copySuccess () {
+      this.$toast.show({
+        message: '单号已复制',
+        duration: 1000
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0225002700')
     },
     // 获取相应tab下的数据
     async getTabGoods () {
@@ -147,6 +165,28 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  .service {
+    width: 0.75rem;
+    height: 0.63rem;
+    border-top-left-radius: 0.32rem;
+    border-bottom-left-radius: 0.32rem;
+    background: #2A2D3C;
+    color: #D9C58E;
+    font-size: 0.2rem;
+    padding-left: 0.1rem;
+    position: fixed;
+    right: 0;
+    top: 9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    img {
+      width: 0.3rem;
+      // margin-bottom:
+    }
+  }
   .tip {
     padding: 0 0.43rem 0.46rem 0.43rem;
     color: #888888;
@@ -184,7 +224,14 @@ export default {
       font-size: 0.24rem;
       color: #999;
       text-align: left;
-      padding: 0.1rem 0 0.2rem 0.3rem;
+      padding: 0.1rem 0.3rem 0.2rem 0.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      .free-shipping {
+        font-size: 0.2rem;
+        color: #999999;
+      }
       span {
         color: #d1ac42;
       }

@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="button"
       @click="toIndex()">去开盲盒</div>
-    <p class="tips">15元可开到心仪商品</p>
+    <p class="tips">15元可开到心仪奖品</p>
   </footer>
 </template>
 

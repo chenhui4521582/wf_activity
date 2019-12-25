@@ -1,7 +1,7 @@
 <template>
   <article class="wrapper">
     <NavBar @back="$router.go(-1)"
-      title="所有商品" />
+      title="所有奖品" />
     <section ref="products"
       @scroll="getScroll"
       class="container">
@@ -91,8 +91,8 @@ export default {
     flex-wrap: wrap;
     position: relative;
     .products-swiper {
-      position: absolute;
-      top: 0.2rem;
+      position: fixed;
+      top: 1.23rem;
       left: 0.2rem;
     }
     .over {
