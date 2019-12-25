@@ -33,7 +33,7 @@
               ref="game"></game>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
-      <profit v-if="showRank" @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
+      <profit v-if="showRank" @back="rankBack" :my-info="userData" :count-down="countTime" @refresh="getActInfo"></profit>
       <drop-down ref="dropDown" :rules-explain="time" v-if="!showRank"
                  :my-info="userData" @refresh="refresh"></drop-down>
       <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
@@ -69,7 +69,8 @@
         userData: null,//用户信息
         awardsLevelItem: null,//选中的档位
         showLoading: false,
-        hornList: []
+        hornList: [],
+        countTime:''
       }
     },
     methods: {
@@ -112,7 +113,9 @@
       },
       gotoRank() {//去排行榜
         GLOBALS.marchSetsPoint('A_H5PT0229002656') //H5平台-双旦活动页-排行榜按钮点击
-        this.showRank = true
+        setTimeout(()=>{
+          this.showRank = true
+        })
       },
       showPop(type) {//展示弹窗
         //A_H5PT0229002655 H5平台-双旦活动页-规则按钮点击
@@ -140,13 +143,14 @@
       async gotowavedirect() {
         this.$refs.game.gotowavedirect()
       },
-      async getActInfo() {
+      async getActInfo(flag) {
         let {code, data} = (await Services.getActInfo()).data
         if (code == 200) {
-          GLOBALS.marchSetsPoint('P_H5PT0229', {
+          flag&&GLOBALS.marchSetsPoint('P_H5PT0229', {
             source_address: GLOBALS.getUrlParam('from') || ''
           })//H5平台-双旦活动页面加载完成
           this.actData = data
+          this.getCountDown(this.actData.countdown)
           this.time = data.beginDate + '-' + data.endDate
           this.showRank = data.state != 1
           this.getUserInfo()
@@ -175,6 +179,32 @@
             this.$refs.comPop.showPop()
           }, 100)
         }
+      },
+      getCountDown (item) {
+        if (!item) return false
+        let date = item / 1000
+        this.timer = setInterval(() => {
+          date = date - 1
+          if (date <= 0) {
+            date = 0
+            clearInterval(this.timer)
+            this.countTime =''
+            return
+          }
+          let day = Math.floor(date / 86400)
+          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+          let minute = Math.floor(parseInt(date / 60) % 60)
+          let second = Math.floor(date % 60)
+          // let countDay = day >= 10 ? day : '0' + day
+          let countHour = hour >= 10 ? hour : '0' + hour
+          let countMinute = minute >= 10 ? minute : '0' + minute
+          let countSecond = second >= 10 ? second : '0' + second
+          if (day > 0) {
+            this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
+          } else {
+            this.countTime = `${countHour}:${countMinute}:${countSecond}`
+          }
+        }, 1000)
       }
     },
     components: {
