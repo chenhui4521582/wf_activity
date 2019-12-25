@@ -65,7 +65,7 @@
     line-height: 0.4rem;
     font-size: 0.22rem;
     .item-move {
-      height: 0.8rem;
+      height: 0.4rem;
       position: relative;
       overflow: hidden;
       transition: all 0.3s;
@@ -84,7 +84,7 @@
     }
     .anim {
       transition: all 1s;
-      margin-top: -0.8rem;
+      margin-top: -0.4rem;
     }
   }
 </style>
