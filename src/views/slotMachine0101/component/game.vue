@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="game_img">
-      <horn :horn-list="hornList"></horn>
+      <horn :horn-list="hornList" v-if="hornList.length"></horn>
       <div class="light" :class="{lightopen:showLight}"></div>
       <!--<div class="mask"><img src="../images/mask.png"></div>-->
       <div class="luckdraw">
