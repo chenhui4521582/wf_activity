@@ -8,7 +8,7 @@
       </div>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </div>
-    <section class="product-list-wrapper">
+    <!-- <section class="product-list-wrapper">
       <div ref="productDivWraper">
         <ul ref="productUl" id="productUl" :style="productStyles">
           <li v-for="(item, index) in products" :key="index" ref="productLi">
@@ -20,16 +20,19 @@
         </ul>
         <ul id="copyProductUl" :style="copyStyles"></ul>
       </div>
-    </section>
+    </section> -->
+    <Swiper />
   </section>
 </template>
 
 <script>
 /* eslint-disable no-undef */
 import { hotAwardsList } from '../../../apis/products';
+import Swiper from './prodcut-list'
+
 export default {
   name: '',
-  components: {},
+  components: {Swiper},
   data () {
     return {
       products: [],
@@ -46,7 +49,7 @@ export default {
     }
   },
   mounted () {
-    this.getProductInfo()
+    // this.getProductInfo()
   },
   methods: {
     // 返回平台
@@ -62,7 +65,7 @@ export default {
         this.wrapWidth =
           this.$refs.productDivWraper &&
           this.$refs.productDivWraper.offsetWidth
-        this.newProductLogic()
+        // this.newProductLogic()
       })
     },
     moreAwards () {
