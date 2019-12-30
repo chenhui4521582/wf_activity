@@ -85,7 +85,7 @@ export default {
   background: #fff;
   text-align: center;
   position: relative;
-  z-index: 9999;
+  z-index: 999;
   .close {
     position: absolute;
     z-index: 99999;
