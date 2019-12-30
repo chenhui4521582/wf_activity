@@ -8,6 +8,7 @@
           <img :src="item.awardsImage | imgFilter"
             alt="" />
           <p class="des">{{ item.awardsName }}</p>
+          <span class="price">¥{{item.showAmount}}</span>
         </section>
       </swiper-slide>
     </swiper>
@@ -49,18 +50,28 @@ export default {
 
 <style lang="less" scoped>
 .wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 0.32rem;
-  width: 100%;
+  padding: 0 0.2rem;
   .content {
     border-radius: 0.1rem;
     width: 1.74rem;
-    background: #6e7588;
+    background: #F4C4A3;
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
+    .price {
+      width: 0.64rem;
+      line-height: 0.26rem;
+      background: #FA7A19;
+      color: #fff;
+      text-align: center;
+      font-size: 0.18rem;
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-bottom-left-radius: 0.1rem;
+      border-top-right-radius:  0.1rem;
+    }
     img {
       width: 0.8rem;
       height: 0.8rem;

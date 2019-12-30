@@ -55,3 +55,6 @@ export const PayPoint = propType => {
 export const Receiver = () => (
   client.post('@box/inventory/receiver')
 )
+
+// 首次进入，平台最近在玩显示
+export const FirstLoad = () => client.post('//platform-api.beeplaying.com/wap/api/game/firstLoad/28')

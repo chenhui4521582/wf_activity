@@ -30,6 +30,17 @@
     </section>
     <article class="botton-wrapper">
       <section class="btn-container">
+        <div class="money-buy" @click="buyOne">{{
+          isOpenBox ? "立即开盒" : "15元开一次"
+        }}</div>
+        <div class="change-btn" @click="changeAll">换一批</div>
+      </section>
+      <section v-if="!isOpenBox" class="btn-container">
+        <div class="leaf-buy" @click="leafsBuy">使用金叶子购买</div>
+        <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
+      </section>
+      <!-- 非年货节按钮 begin-->
+      <!-- <section class="btn-container">
         <m-button @confirm="buyOne">{{
           isOpenBox ? "立即开盒" : "15元开一次"
         }}</m-button>
@@ -38,7 +49,8 @@
       <section v-if="!isOpenBox" class="btn-container">
         <m-button :button-style="buttonStyle" @confirm="leafsBuy">使用金叶子购买</m-button>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
-      </section>
+      </section> -->
+      <!-- 非年货节按钮 end -->
     </article>
     <Dialog
       :show="isShowPop"
@@ -322,7 +334,7 @@ export default {
       display: block;
       width: 100%;
       height: 0.18rem;
-      background: #1b1f29 url(../assets/list-bottom-bg.png) no-repeat center
+      background: #f4d6b0 url(../assets/list-bottom-bg.png) no-repeat center
         center / 100% 100%;
       font-size: 0;
     }
@@ -402,10 +414,30 @@ export default {
   }
   .btn-container {
     position: relative;
-    background: #1b1f29;
+    background: #f4d6b0;
     padding: 0.16rem;
+    .money-buy {
+      margin: 0 auto;
+      width: 3.07rem;
+      line-height: 0.78rem;
+      color: #F5DBBB;
+      font-size: 0.36rem;
+      text-align: center;
+      background: url('../assets/button1.png') no-repeat;
+      background-size: 100% 100%;
+    }
+    .leaf-buy {
+      margin: 0 auto;
+      width: 3.07rem;
+      line-height: 0.78rem;
+      color: #F4D6B0;
+      font-size: 0.3rem;
+      text-align: center;
+      background: url('../assets/button2.png') no-repeat;
+      background-size: 100% 100%;
+    }
     .buy-tip {
-      color: #6F768E;
+      color: #7b4913;
       font-size: 0.24rem;
       text-align: center;
       padding-top: 0.33rem;
@@ -419,8 +451,8 @@ export default {
       right: 0.36rem;
       width: 1.14rem;
       box-sizing: border-box;
-      color: #fff;
-      border: 0.02rem solid #fff;
+      color: #DD1914;
+      border: 0.02rem solid #DD1914;
       line-height: 0.42rem;
       text-align: center;
       border-radius: 0.22rem;
