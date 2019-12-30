@@ -7,14 +7,14 @@
         class="banner">
         <div class="time">01.03-01.10</div>
       </section>
-      <span @click="toPlatform"
-        class="back">返回</span>
       <article class="container"
         :class="{'active':bannerHeight + translateY}">
+        <span @click="toPlatform"
+          class="back">返回</span>
         <current-product-list></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
-          <box-list></box-list>
+          <box-list @load="init"></box-list>
         </div>
       </article>
     </article>
@@ -101,7 +101,6 @@ export default {
     }
   },
   mounted () {
-    this.init()
     FirstLoad()
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
@@ -123,6 +122,8 @@ export default {
   display: flex;
   flex-direction: column;
   transition: all 200ms linear;
+  position: relative;
+  z-index: 2;
   .main-wrapper {
     display: flex;
     flex: 1;
@@ -135,7 +136,8 @@ export default {
   height: 6.13rem;
   transition: all 200ms linear;
   transform: translateY(0);
-  position: fixed;
+  position: absolute;
+  z-index: 1;
   left: 0;
   top: 0;
   background: url("./assets/banner.png") no-repeat;
@@ -159,7 +161,7 @@ export default {
   line-height: 0.45rem;
   font-size: 0.24rem;
   position: fixed;
-  z-index: 100;
+  z-index: 9;
   left: 0;
   top: 0.18rem;
   color: #fff;
@@ -171,7 +173,7 @@ export default {
 
 .container {
   position: relative;
-  z-index: 99;
+  z-index: 8;
   &.active {
     margin-top: -0.25rem;
   }

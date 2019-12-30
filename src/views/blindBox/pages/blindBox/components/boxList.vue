@@ -162,7 +162,7 @@ export default {
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
-      this.loopBox()
+      await this.loopBox()
       if (!sessionStorage.blindBoxFirstTime) {
         sessionStorage.blindBoxFirstTime = true
         this.isRefresh = true
@@ -173,6 +173,7 @@ export default {
           clearTimeout(this.refreshTimer)
         }, 1000)
       }
+      this.$emit('load')
     },
     // 用户点击被透视的盒子是否弹窗
     async isPopup () {
@@ -316,9 +317,10 @@ export default {
 @import "../index.less";
 .box-list-wrapper {
   position: relative;
+  left: 0;
+  top: 0;
   margin-top: -0.32rem;
-  z-index: 1;
-  overflow: hidden;
+  z-index: 99;
   // background: #f0ead1;
   display: flex;
   flex: 1;
