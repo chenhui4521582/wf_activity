@@ -12,12 +12,8 @@
             <div>规则</div>
           </div>
           <div class="rank" @click="gotoRank">
-            <img src="./images/cup.png">
-            <div>排行榜</div>
           </div>
           <div class="myprize" @click="showPop(1)">
-            <img src="./images/christmas-present.png" alt="">
-            <div>我的奖励</div>
           </div>
           <div class="active-time">
             <span style="white-space: nowrap;">活动时间:{{actData.timeline}}</span>
@@ -33,7 +29,8 @@
               ref="game"></game>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
-      <profit v-if="showRank" @back="rankBack" :my-info="userData" :count-down="actData.countdown"></profit>
+      <profit v-if="showRank" @back="rankBack" :my-info="userData" :count-down="countTime"
+              @refresh="getActInfo"></profit>
       <drop-down ref="dropDown" :rules-explain="time" v-if="!showRank"
                  :my-info="userData" @refresh="refresh"></drop-down>
       <com-pop :pop-type="popType" :prize-info-type="prizeInfoType" :wave-prize-info-type="wavePrizeInfoType"
@@ -69,7 +66,8 @@
         userData: null,//用户信息
         awardsLevelItem: null,//选中的档位
         showLoading: false,
-        hornList: []
+        hornList: [],
+        countTime: ''
       }
     },
     methods: {
@@ -112,7 +110,9 @@
       },
       gotoRank() {//去排行榜
         GLOBALS.marchSetsPoint('A_H5PT0229002656') //H5平台-双旦活动页-排行榜按钮点击
-        this.showRank = true
+        setTimeout(() => {
+          this.showRank = true
+        })
       },
       showPop(type) {//展示弹窗
         //A_H5PT0229002655 H5平台-双旦活动页-规则按钮点击
@@ -140,13 +140,14 @@
       async gotowavedirect() {
         this.$refs.game.gotowavedirect()
       },
-      async getActInfo() {
+      async getActInfo(flag) {
         let {code, data} = (await Services.getActInfo()).data
         if (code == 200) {
-          GLOBALS.marchSetsPoint('P_H5PT0229', {
+          flag && GLOBALS.marchSetsPoint('P_H5PT0229', {
             source_address: GLOBALS.getUrlParam('from') || ''
           })//H5平台-双旦活动页面加载完成
           this.actData = data
+          this.getCountDown(this.actData.countdown)
           this.time = data.beginDate + '-' + data.endDate
           this.showRank = data.state != 1
           this.getUserInfo()
@@ -175,6 +176,32 @@
             this.$refs.comPop.showPop()
           }, 100)
         }
+      },
+      getCountDown(item) {
+        if (!item) return false
+        let date = item / 1000
+        this.timer = setInterval(() => {
+          date = date - 1
+          if (date <= 0) {
+            date = 0
+            clearInterval(this.timer)
+            this.countTime = ''
+            return
+          }
+          let day = Math.floor(date / 86400)
+          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+          let minute = Math.floor(parseInt(date / 60) % 60)
+          let second = Math.floor(date % 60)
+          // let countDay = day >= 10 ? day : '0' + day
+          let countHour = hour >= 10 ? hour : '0' + hour
+          let countMinute = minute >= 10 ? minute : '0' + minute
+          let countSecond = second >= 10 ? second : '0' + second
+          if (day > 0) {
+            this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
+          } else {
+            this.countTime = `${countHour}:${countMinute}:${countSecond}`
+          }
+        }, 1000)
       }
     },
     components: {
@@ -305,47 +332,24 @@
   }
 
   .rule div {
-    /* width:46px;
-  height:23px; */
     margin: 0 auto;
     font-size: 0.24rem;
     font-family: PingFang SC;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
-    /* line-height:14px; */
   }
 
   .rank {
     background: url("./images/right.png");
     background-size: 100% 100%;
-    width: 1.44rem;
-    height: 0.49rem;
+    width: 1.74rem;
+    height: 0.58rem;
     position: absolute;
-    top: 0.15rem;
+    top: 0.87rem;
     right: 0;
     display: flex;
     align-items: center;
-  }
-
-  .rank div {
-    font-size: 0.24rem;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 1);
-    position: absolute;
-    left: 0.49rem;
-    height: 100%;
-    line-height: .49rem;
-  }
-
-  .rank img {
-    display: flex;
-    width: 0.28rem;
-    height: 0.27rem;
-    position: absolute;
-    left: 0.15rem;
-
-    top: 50%;
-    transform: translateY(-50%);
+    z-index: 1;
   }
 
   .myprize {
@@ -355,29 +359,9 @@
     width: 1.59rem;
     height: 0.49rem;
     position: absolute;
-    top: 0.87rem;
+    top: 0.15rem;
     right: 0;
     z-index: 1;
     align-items: center;
-  }
-
-  .myprize img {
-    width: 0.25rem;
-    height: 0.29rem;
-    position: absolute;
-    left: 0.16rem;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .myprize div {
-    font-size: 0.24rem;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: rgba(237, 36, 55, 1);
-    position: absolute;
-    left: 0.45rem;
-    height: 100%;
-    line-height: .49rem;
   }
 </style>

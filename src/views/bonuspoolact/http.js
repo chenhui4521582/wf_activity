@@ -14,12 +14,12 @@ axios.defaults.timeout = 10000
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
   // if (!config.headers.Authorization) {
-    config.headers.Authorization =localStorage.getItem('ACCESS_TOKEN')
+  config.headers.Authorization = localStorage.getItem('ACCESS_TOKEN')
   // }
 
   // if (!config.headers['App-Channel']) {
-    let _channel = localStorage.getItem('APP_CHANNEL')
-    config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
+  let _channel = localStorage.getItem('APP_CHANNEL')
+  config.headers['App-Channel'] = _channel && /\d+/.exec(_channel) && /\d+/.exec(_channel)[0]
   // }
 
   // config.headers.Authorization = '872ecc50bfb444d5a929c98344215ab1';
@@ -66,10 +66,10 @@ axios.interceptors.response.use(
           })
           break
         case 408:
-          Vue.prototype.$toast.show({
-            message: '请求超时',
-            duration: 1500
-          })
+          // Vue.prototype.$toast.show({
+          //   message: '请求超时',
+          //   duration: 1500
+          // })
           break
         case 500:
           Vue.prototype.$toast.show({
