@@ -19,7 +19,7 @@
       <p v-if="show"
         class="des">
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
-        <span>数量：{{awardsInfo.awardsNum}}</span>
+        <span>数量：1</span>
       </p>
       <p @click="viewMyPrize"
         v-if="show"
