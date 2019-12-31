@@ -721,6 +721,9 @@ export default {
         case '18':
           return 'warrior-achievement'
           break
+        case '26':
+          return 'bird-achievement'
+          break
         default:
           return ''
       }
@@ -1075,7 +1078,7 @@ export default {
     },
     async getDayTask () {
       let arrring2 = []
-      /**删除套圈任务**/
+      /** 删除套圈任务**/
       // if (parent.location.href.includes('ring2')) {
       //   let { data: dataA } = await this.axios.post('//quoits-api.beeplaying.com/quoits/api/exchange/list')
       //   if (dataA.code == 200) {

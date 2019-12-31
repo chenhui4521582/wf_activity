@@ -114,16 +114,8 @@ export default {
 .fade-leave-active {
   transition: all 0.5s;
 }
-.fade-enter {
-  transform: translateY(100%);
-}
-.fade-enter-to {
-  transform: translateY(0);
-}
-.fade-leave {
-  transform: translateY(0);
-}
-.fade-leave-to {
-  transform: translateY(100%);
+/*低端机型之前的样式会有严重的展示问题，暂且用下面代替*/
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
