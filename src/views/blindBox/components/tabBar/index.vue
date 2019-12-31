@@ -72,13 +72,13 @@ export default {
 .content {
   width: 100%;
   height: 1.1rem;
-  background: #494b58;
+  background: #494B58;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 3;
+  z-index: 100;
   .bar {
     flex: 1;
     display: flex;
@@ -86,7 +86,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 0.24rem;
-    color: #9699aa;
+    color: #9699AA ;
     font-weight: bold;
     &.active {
       color: #e2c87e;

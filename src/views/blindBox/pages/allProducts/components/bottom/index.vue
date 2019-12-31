@@ -27,12 +27,12 @@ export default {
   background: rgb(238, 238, 238);
   padding: 0.3rem 0;
   .button {
-    width: 2.2rem;
-    line-height: 0.56rem;
+    width: 2.4rem;
+    line-height: 0.7rem;
     background: #d1ac42;
     border-radius: 0.16rem;
     color: #fff;
-    font-size: 0.24rem;
+    font-size: 0.28rem;
     text-align: center;
   }
   .tips {

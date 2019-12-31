@@ -1,14 +1,14 @@
 <template>
   <section class="current-product-list">
     <div class="header">
-      <div class="header-left">
-        <span @click="toPlatform" class="back">返回</span>
+      <!-- <div class="header-left">
         <img src="../assets/box.png" alt="">
         <span>盲盒明星奖品</span>
-      </div>
+      </div> -->
+      <div></div>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </div>
-    <section class="product-list-wrapper">
+    <!-- <section class="product-list-wrapper">
       <div ref="productDivWraper">
         <ul ref="productUl" id="productUl" :style="productStyles">
           <li v-for="(item, index) in products" :key="index" ref="productLi">
@@ -20,16 +20,19 @@
         </ul>
         <ul id="copyProductUl" :style="copyStyles"></ul>
       </div>
-    </section>
+    </section> -->
+    <Swiper />
   </section>
 </template>
 
 <script>
 /* eslint-disable no-undef */
 import { hotAwardsList } from '../../../apis/products';
+import Swiper from './prodcut-list'
+
 export default {
   name: '',
-  components: {},
+  components: {Swiper},
   data () {
     return {
       products: [],
@@ -46,14 +49,9 @@ export default {
     }
   },
   mounted () {
-    this.getProductInfo()
+    // this.getProductInfo()
   },
   methods: {
-    // 返回平台
-    toPlatform() {
-      GLOBALS.marchSetsPoint('A_H5PT0225002684')
-      location.href = 'https://wap.beeplaying.com/xmWap/#/'
-    },
     async getProductInfo () {
       const res = await hotAwardsList()
       const { data } = res.data
@@ -62,7 +60,7 @@ export default {
         this.wrapWidth =
           this.$refs.productDivWraper &&
           this.$refs.productDivWraper.offsetWidth
-        this.newProductLogic()
+        // this.newProductLogic()
       })
     },
     moreAwards () {
@@ -107,8 +105,12 @@ export default {
 
 <style lang="less" scoped>
 .current-product-list {
-  padding: 0.32rem;
-  padding-left: 0;
+  background:url('../assets/bg.png') no-repeat;
+  background-size: 100% 100%;
+  width: 7.05rem;
+  padding: 0.18rem;
+  padding-top: 0.38rem;
+  margin: 0 auto;
   color: #fff;
   font-size: 0.24rem;
   max-width: 100vw;
@@ -119,6 +121,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.3rem;
+    padding-left: 0.8rem;
     .header-left {
       display: flex;
       align-items: center;
@@ -144,7 +147,6 @@ export default {
     }
   }
   .product-list-wrapper {
-    margin-left: 0.32rem;
     position: relative;
     box-sizing: border-box;
     height: 1.12rem;

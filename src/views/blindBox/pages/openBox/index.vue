@@ -1,28 +1,32 @@
 <template>
-  <div class="main">
-    <article v-if="show"
-      class="wrapper">
+  <div class="main" :class="{'open' : !show}">
+    <article class="wrapper">
       <HornList class="notice"
         :notice-list="noticeList"
-        v-if="noticeList.length" />
-      <img class="get"
+        v-if="show" />
+      <img v-if="show"
+        class="get"
         src="./assets/box-get.png">
-      <div v-if="awardsInfo"
+      <div
         class="prize"
-        :style="{'background':`url(${box.boxOpen}) no-repeat`,'background-size':'cover'}">
-        <img class="goods"
+        v-if="box && isLoad"
+        :style="{'background':`url(${box.animation}) no-repeat`,'background-size':'cover'}">
+        <img v-if="show" class="goods"
           :src="awardsInfo.awardsImage | imgFilter">
+        <img v-if="show" class="shine" src="./assets/shine.png" alt="">
       </div>
-      <p v-if="awardsInfo"
+      <p v-if="show"
         class="name">{{awardsInfo.awardsName | textFilter}}</p>
-      <p v-if="awardsInfo"
+      <p v-if="show"
         class="des">
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
-        <span>数量：{{awardsInfo.awardsNum}}</span>
+        <span>数量：1</span>
       </p>
       <p @click="viewMyPrize"
+        v-if="show"
         class="view-prize">查看我的奖品>></p>
       <MButton class="button"
+        v-if="show"
         @confirm="openAgain">再开一次</MButton>
     </article>
   </div>
@@ -41,6 +45,7 @@ export default {
       show: false,
       box: null,
       goods: null,
+      isLoad: false,
       type: null,
       sort: null,
       isTransparent: false,
@@ -53,12 +58,7 @@ export default {
   },
   async mounted () {
     GLOBALS.marchSetsPoint('A_H5PT0225002564')
-    this.$loading.show({
-      render (h) {
-        return h('div', '正在为您开盒……')
-      }
-    })
-    this.getNoticeList()
+    await this.getNoticeList()
     this.type = Number(this.$route.params.type)
     this.sort = Number(this.$route.query.sort)
     this.isTransparent = this.$route.query.isTransparent
@@ -68,8 +68,10 @@ export default {
       sort: this.sort
     })
     this.awardsInfo = data
-    this.$loading.hide()
-    this.show = true
+    this.isLoad = true
+    setTimeout(() => {
+      this.show = true
+    }, 700)
     GLOBALS.marchSetsPoint('A_H5PT0225002564') // H5平台-盲盒页面-开盲盒页面加载完成
   },
   methods: {
@@ -110,6 +112,10 @@ export default {
   background: #2a2d3c;
   min-width: 100vw;
   min-height: 100vh;
+  box-sizing: border-box;
+  &.open {
+    padding-top: 1.31rem;
+  }
   .wrapper {
     // height: 100vh;
     position: relative;
@@ -131,13 +137,21 @@ export default {
       height: 6.23rem;
       margin-left: auto;
       margin-right: auto;
-      margin-top: -0.3rem;
+      // margin-top: -0.3rem;
       padding-top: 1.1rem;
       box-sizing: border-box;
+      position: relative;
       .goods {
         width: 2.3rem;
         // transform-origin: right bottom;
         animation: show 1s linear;
+      }
+      .shine {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
       }
     }
     .name {
@@ -147,7 +161,7 @@ export default {
       font-weight: bold;
     }
     .des {
-      padding-bottom: 0.8rem;
+      padding-bottom: 0.3rem;
       color: #b6b9cb;
       font-size: 0.22rem;
       font-weight: bold;
