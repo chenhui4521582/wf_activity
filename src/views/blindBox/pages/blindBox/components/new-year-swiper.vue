@@ -84,12 +84,12 @@ export default {
 <style lang="less" scoped>
 .horn-list-wrap {
   margin: auto;
-  width: 3.8rem;
+  width: 4.2rem;
   color: #B1430C;
   height: 0.52rem;
   line-height: 0.52rem;
   background: #f4d6b0;
-  border: 2px solid #EF232F;
+  // border: 2px solid #EF232F;
   border-radius: 0.26rem;
 }
 .horn {

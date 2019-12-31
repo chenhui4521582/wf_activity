@@ -105,7 +105,7 @@ export default {
 
 <style lang="less" scoped>
 .current-product-list {
-  background: url('../assets/bg.png') no-repeat;
+  background:url('../assets/bg.png') no-repeat;
   background-size: 100% 100%;
   width: 7.05rem;
   padding: 0.18rem;
