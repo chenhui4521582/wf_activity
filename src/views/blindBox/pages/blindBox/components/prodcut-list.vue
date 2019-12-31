@@ -54,7 +54,7 @@ export default {
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
-    background: #818388ba;
+    background: rgba(129,131,136,0.73);
     display: flex;
     position: relative;
     flex-direction: column;
@@ -78,6 +78,8 @@ export default {
     }
     .des {
       // border-radius: 0.1rem;
+      border-bottom-right-radius: 0.1rem;
+      border-bottom-left-radius: 0.1rem;
       background: #f2db8f;
       color: #2a2e3a;
       width: 1.8rem;
