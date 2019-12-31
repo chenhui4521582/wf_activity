@@ -50,7 +50,7 @@ export default {
 
 <style lang="less" scoped>
 .wrapper {
-  padding: 0 0.2rem;
+  padding-left: 0.34rem;
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;

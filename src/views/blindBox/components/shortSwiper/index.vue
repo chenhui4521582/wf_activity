@@ -52,7 +52,7 @@ export default {
 
 <style lang="less" scoped>
 .swiper-user {
-  height: 0.63rem;
+  height: 0.7rem;
   overflow: hidden;
   .swiper-info {
     padding: 0.06rem 0.2rem;

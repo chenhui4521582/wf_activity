@@ -72,7 +72,7 @@ export default {
 .content {
   width: 100%;
   height: 1.1rem;
-  background: #FC4C3E;
+  background: #494B58;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   position: fixed;
@@ -86,7 +86,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 0.24rem;
-    color: #A40C01;
+    color: #9699AA ;
     font-weight: bold;
     &.active {
       color: #e2c87e;

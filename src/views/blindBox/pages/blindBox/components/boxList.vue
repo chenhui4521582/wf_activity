@@ -36,7 +36,7 @@
         <div class="change-btn" @click="changeAll">换一批</div>
       </section>
       <section v-if="!isOpenBox" class="btn-container">
-        <div class="leaf-buy" @click="leafsBuy">使用金叶子购买</div>
+        <div class="leaf-buy" v-if="userInfo.leafsPay" @click="leafsBuy">使用金叶子购买</div>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
       <!-- 非年货节按钮 begin-->
