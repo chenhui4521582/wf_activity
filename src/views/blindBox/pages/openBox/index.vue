@@ -19,7 +19,7 @@
       <p v-if="show"
         class="des">
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
-        <span>数量：{{awardsInfo.awardsNum}}</span>
+        <span>数量：1</span>
       </p>
       <p @click="viewMyPrize"
         v-if="show"
@@ -152,7 +152,7 @@ export default {
       font-weight: bold;
     }
     .des {
-      padding-bottom: 0.8rem;
+      padding-bottom: 0.3rem;
       color: #b6b9cb;
       font-size: 0.22rem;
       font-weight: bold;

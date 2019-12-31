@@ -53,17 +53,17 @@ export default {
   padding: 0 0.2rem;
   .content {
     border-radius: 0.1rem;
-    width: 1.74rem;
+    width: 1.8rem;
     background: #F4C4A3;
     display: flex;
     position: relative;
     flex-direction: column;
     align-items: center;
     .price {
-      width: 0.64rem;
+      width: 0.7rem;
       line-height: 0.26rem;
-      background: #FA7A19;
-      color: #fff;
+      background: #FDF6CC;
+      color: #F5000C;
       text-align: center;
       font-size: 0.18rem;
       position: absolute;
@@ -73,8 +73,8 @@ export default {
       border-top-right-radius:  0.1rem;
     }
     img {
-      width: 0.8rem;
-      height: 0.8rem;
+      width: 1rem;
+      height: 1rem;
     }
     .des {
       border-radius: 0.1rem;

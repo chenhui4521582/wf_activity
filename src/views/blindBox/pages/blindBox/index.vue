@@ -2,7 +2,7 @@
   <main>
     <article class="blind-box-wrap"
       :style="{'padding-top': `${bannerHeight + translateY}px`}">
-      <section ref="banner"
+      <section v-if="isBanner" ref="banner"
         :style="{'transform': `translateY(${translateY}px)`}"
         class="banner">
         <div class="time">01.03-01.10</div>
@@ -34,6 +34,7 @@ export default {
       translateY: 0,
       startY: 0,
       endY: 0,
+      isBanner: true,
       bannerHeight: 0
     }
   },
@@ -93,10 +94,11 @@ export default {
     init () {
       const oldDate = localStorage.getItem('boxUserTime')
       const nowDate = new Date().getTime()
-      this.$nextTick(this.initToucheListener)
       if (!oldDate || (nowDate - Number(oldDate)) / 1000 > 86400) {
         localStorage.setItem('boxUserTime', nowDate)
         this.$nextTick(this.initToucheListener)
+      } else {
+        this.isBanner = false
       }
     }
   },
