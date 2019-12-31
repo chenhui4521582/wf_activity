@@ -152,7 +152,7 @@ export default {
       font-weight: bold;
     }
     .des {
-      padding-bottom: 0.8rem;
+      padding-bottom: 0.3rem;
       color: #b6b9cb;
       font-size: 0.22rem;
       font-weight: bold;
