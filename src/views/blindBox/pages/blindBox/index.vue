@@ -8,7 +8,7 @@
         <div class="time">01.03-01.10</div>
       </section>
       <article class="container"
-        :class="{'active':bannerHeight + translateY}">
+        :class="{'active': (bannerHeight + translateY)}">
         <span @click="toPlatform"
           class="back">返回</span>
         <current-product-list></current-product-list>
@@ -134,8 +134,8 @@ export default {
   position: relative;
   z-index: 2;
   .main-wrapper {
-    display: flex;
     flex: 1;
+    display: flex;
     flex-direction: column;
   }
 }
@@ -183,7 +183,10 @@ export default {
 .container {
   position: relative;
   z-index: 8;
+  flex: 1;
   background: #f4d6b0;
+  flex-direction: column;
+  display: flex;
   &.active {
     margin-top: -0.25rem;
   }
