@@ -12,7 +12,7 @@
     <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
     <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
       class="choose-button">{{buttonText}}</MButton>
-    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen" class="gold-buy">使用金叶子购买
+    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen && userInfo && userInfo.leafsPay" class="gold-buy">使用金叶子购买
     </MButton>
     <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />

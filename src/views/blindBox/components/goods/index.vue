@@ -9,7 +9,7 @@
         <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
-          <p>数量：{{goods.awardsNum}}个</p>
+          <p>数量：1个</p>
           <slot name='left' />
         </div>
       </div>
