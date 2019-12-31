@@ -13,6 +13,7 @@
         :style="{'background':`url(${box.animation}) no-repeat`,'background-size':'cover'}">
         <img v-if="show" class="goods"
           :src="awardsInfo.awardsImage | imgFilter">
+        <img v-if="show" class="shine" src="./assets/shine.png" alt="">
       </div>
       <p v-if="show"
         class="name">{{awardsInfo.awardsName | textFilter}}</p>
@@ -139,10 +140,18 @@ export default {
       // margin-top: -0.3rem;
       padding-top: 1.1rem;
       box-sizing: border-box;
+      position: relative;
       .goods {
         width: 2.3rem;
         // transform-origin: right bottom;
         animation: show 1s linear;
+      }
+      .shine {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
       }
     }
     .name {
