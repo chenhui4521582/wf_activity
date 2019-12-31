@@ -54,7 +54,7 @@ export default {
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
-    background: #F4C4A3;
+    background: #818388ba;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -62,7 +62,7 @@ export default {
     .price {
       width: 0.7rem;
       line-height: 0.26rem;
-      background: #FDF6CC;
+      background: #f2db8f;
       color: #F5000C;
       text-align: center;
       font-size: 0.18rem;
@@ -77,10 +77,10 @@ export default {
       height: 1rem;
     }
     .des {
-      border-radius: 0.1rem;
+      // border-radius: 0.1rem;
       background: #f2db8f;
       color: #2a2e3a;
-      width: 1.74rem;
+      width: 1.8rem;
       height: 0.3rem;
       box-sizing: border-box;
       line-height: 0.3rem;

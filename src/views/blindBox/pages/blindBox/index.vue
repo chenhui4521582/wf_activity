@@ -2,7 +2,7 @@
   <main>
     <article class="blind-box-wrap"
       :style="{'padding-top': `${bannerHeight + translateY}px`}">
-      <section v-if="isBanner" ref="banner"
+      <section ref="banner"
         :style="{'transform': `translateY(${translateY}px)`}"
         class="banner">
         <div class="time">01.03-01.10</div>
@@ -34,8 +34,9 @@ export default {
       translateY: 0,
       startY: 0,
       endY: 0,
-      isBanner: true,
-      bannerHeight: 0
+      bannerHeight: 0,
+      isFirst: false,
+      isTouchBannerHide: false
     }
   },
   components: {
@@ -53,7 +54,9 @@ export default {
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
     },
     initToucheListener () {
+      // if (!this.isFirst) this.translateY = 0
       this.bannerHeight = this.$refs.banner.offsetHeight
+      if (!this.isFirst) this.translateY = -this.bannerHeight
       document.addEventListener('touchstart', this.onToucheStart)
       document.addEventListener('touchmove', this.onToucheMove)
       document.addEventListener('touchend', this.onToucheEnd)
@@ -66,6 +69,7 @@ export default {
     onToucheStart (e) {
       this.startY = Number(e.touches[0].pageY)
       this.endY = 0
+      this.isTouchBannerHide = false
     },
     onToucheMove (e) {
       this.endY = Number(e.touches[0].pageY)
@@ -73,6 +77,7 @@ export default {
       // 向下拉动时banner出现
       if (this.translateY < 0 && scrollY <= 0) {
         this.translateY = this.toucheMoveY - this.bannerHeight
+        this.isTouchBannerHide = true
       }
     },
     onToucheEnd (e) {
@@ -80,6 +85,7 @@ export default {
       // banner图向下滑动，收起banner
       if (this.translateY === 0 && scrollY > 0) {
         this.translateY = -this.bannerHeight
+        if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
         return
       }
       // banner向上拉动
@@ -95,10 +101,11 @@ export default {
       const oldDate = localStorage.getItem('boxUserTime')
       const nowDate = new Date().getTime()
       if (!oldDate || (nowDate - Number(oldDate)) / 1000 > 86400) {
+        this.isFirst = true
         localStorage.setItem('boxUserTime', nowDate)
         this.$nextTick(this.initToucheListener)
       } else {
-        this.isBanner = false
+        this.$nextTick(this.initToucheListener)
       }
     }
   },
@@ -176,6 +183,7 @@ export default {
 .container {
   position: relative;
   z-index: 8;
+  background: #f4d6b0;
   &.active {
     margin-top: -0.25rem;
   }
