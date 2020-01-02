@@ -325,10 +325,11 @@ export default {
     this.token = this.getUrlParam('token') ? this.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN')
     this.channel = this.getUrlParam('channel') ? this.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
     this.currentGameType = this.getUrlParam('gametype')
-    if (this.channel == '100047001' || this.channel == '100048001') {
-      window.location.href = `https://wap.beeplaying.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
-      return
-    }
+    // 注释无用的渠道
+    // if (this.channel == '100047001' || this.channel == '100048001') {
+    //   window.location.href = `https://wap.beeplaying.com/publicWap/taskgames.html?channel=${this.channel}&gametype=${this.currentGameType}`
+    //   return
+    // }
     if (parent.loadTaksPage) {
       parent.loadTaksPage()
     }
