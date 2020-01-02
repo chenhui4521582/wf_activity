@@ -66,7 +66,7 @@ export default {
     },
     buttonText () {
       if (this.isOpen) return '立即开盒'
-      return '15元开盒'
+      return '开一盒试试'
     }
   },
   methods: {
