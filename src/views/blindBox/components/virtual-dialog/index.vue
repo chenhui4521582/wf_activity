@@ -107,7 +107,7 @@ export default {
       return {
         subtitle: '您的金叶子不足',
         des: `需要<span style="color: #FF8E8E;">${this.formatDeduct}</span>金叶子才能购买1个盲盒`,
-        cancel: `<span style="color: #FF8E8E;">15元直接购买</span>`,
+        cancel: `<span style="color: #FF8E8E;">19.9元直接购买</span>`,
         confirm: '补给金叶子',
         onClose: () => {
           this.$emit('close')
