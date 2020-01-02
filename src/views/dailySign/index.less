@@ -1,0 +1,288 @@
+
+.pnl{
+    width:6.8rem;
+    .wrapper
+    {
+        background: #FEF4E4;
+        padding-top:0.22rem;
+
+        .primary_title
+        {
+            background: url('./images/bg_primary_title.png') no-repeat;
+            background-size: cover;
+            width:4.34rem;
+            height:0.6rem;
+            margin: -0.7rem auto 0 auto;
+            text-align: center;
+            color:#fff;
+            line-height: 0.6rem;
+            font-size: 0.36rem;
+        }
+        
+        &>.title
+        {
+            .bgTitle
+            {
+                content: '';
+                background: url('./images/bg_title_left.png') no-repeat;
+                background-size: cover;
+                width:1.06rem;
+                height:0.2rem;
+                display: inline-block;
+            }
+            &::before{
+               .bgTitle;
+                margin-right:0.15rem;
+            }
+            &::after{
+               .bgTitle;
+               background-image:url('./images/bg_title_right.png');
+               margin-left:0.15rem;
+            }
+            font-weight: bold;
+            font-size:0.32rem;
+            text-align: center;
+            color:#A05836;
+        }
+    }
+    &::before{
+        content: '';
+        background:url('./images/bg_border.png') no-repeat;
+        background-size: cover;
+        height:0.16rem;
+        width:6.8rem;
+        display: block;
+    }
+    &::after{
+        transform:rotate(180deg);
+        content: '';
+        background:url('./images/bg_border.png') no-repeat;
+        background-size: cover;
+        height:0.16rem;
+        width:6.8rem;
+        display: block;
+    }
+}
+
+@keyframes bigger {
+    0% {
+        width:1.9rem;
+    }
+    50%{
+        width:1.7rem;
+    }
+    100% {
+        width:1.9rem;
+    }
+}
+.img_float
+{
+    position: absolute;
+    width:100%;
+    top: 5.57rem;
+    left:0;
+    z-index: 2;
+}
+.activity_time
+{
+    position: absolute;
+    top: 2.46rem;
+    left:0;
+    width:100%;
+    height:0.3rem;
+    font-size:0.22rem;
+    color:#FBA1A7;
+    text-align: center;
+}
+.pnl_header
+{
+    margin-top:0.2rem;
+    height:0.5rem;
+
+    a{
+       background: #DE5751;
+       display: block;
+       height:0.5rem;
+       color:#fff;
+       font-size: 0.24rem;
+       line-height: 0.55rem;
+       padding:0 0.2rem;
+
+       &.back{
+           float:left;
+           border-radius:0 0.25rem 0.25rem 0;
+       }
+
+       &.score{
+           float:right;
+           padding-left: 0.5rem;
+           background: url('./images/icon_timer.png') no-repeat #DE5751;
+           background-size: 0.26rem 0.26rem;
+           background-position: 0.15rem 0.1rem;
+           border-radius:0.25rem 0 0 0.25rem;
+       }
+    }
+}
+.img_dailyCard
+{
+    display: block;
+    width:6.1rem;
+    height:2.02rem;
+    margin: 0 auto;
+}
+.pnl_rankList
+{
+    width:6.8rem;
+    margin: 0 auto;
+    .wrapper{
+        min-height: 3rem;
+        padding-bottom:0.3rem;
+    }
+    .card_result
+    {
+        position: relative;
+        width:6.4rem;
+        height:0.44rem;
+        margin: 0.4rem auto 0 auto;
+        background:#FFE5C0;
+        border-radius:0.2rem;
+        &::before{
+            content: '';
+            display: block;
+            left:50%;
+            top:0;
+            position: absolute;
+            width:0.02rem;
+            height:100%;
+            background:#F8D9AC;
+        }
+        ul{
+            list-style: none;
+            li{
+                float:left;
+                text-align: center;
+                font-size:0.24rem;
+                width: 50%;
+                padding-top:0.1rem;
+                background: url("./images/icon_smile.png") no-repeat;
+                background-size: 0.24rem 0.24rem;
+                background-position: 0.8rem 0.09rem;
+                text-indent: 0.2rem;
+                
+                &:nth-child(1)
+                {
+                    color:#FF6000;
+                }
+                &:nth-child(2)
+                {
+                    background-image: url("./images/icon_sad.png");
+                    color:#2A7A9B;
+                }
+            }
+        }
+    }
+    table{
+        width:6.4rem;
+        margin: 0.2rem auto 0 auto;
+        thead{
+            th{
+                font-size:0.24rem;
+                color:#A05836;
+                text-align: center;
+                background:#FFE5C0;
+                height: 0.44rem;
+                line-height: 0.44rem;
+            }
+        }
+        tbody{                
+            tr{
+                &:nth-child(even)
+                {
+                    background: #FDEDD3
+                }
+                td{
+                    text-align: center;
+                    font-size:0.22rem;
+                    height:0.44rem;
+                    position: relative;
+
+                    .icon{
+                        width: 0.32rem;
+                        height: 0.32rem;
+                        border: 0.01rem solid rgba(110,110,110,1);
+                        background: linear-gradient(0deg,rgba(204,204,204,1) 0%,rgba(229,229,229,1) 100%);
+                        border-radius:50%;
+                        margin: 0 auto;
+                        line-height: 0.36rem;
+                    }
+                }
+                .iconAfter{
+                    position: absolute;
+                    top:0.05rem;
+                    left:0.2rem;
+                    content: '';
+                    background: url('./images/icon_rank_1.png') no-repeat;
+                    background-size: cover;
+                    width:0.5rem;
+                    height:0.4rem;
+                    display: block;
+                }
+                &:nth-child(2)
+                {
+                    td:nth-child(1){
+                        .icon{
+                        background: none;
+                        color:#FDEDD3;
+                        border:none;
+                            &::after{
+                                .iconAfter
+                            }
+                        }
+                    }
+                }
+                &:nth-child(3)
+                {
+                    td:nth-child(1){
+                        .icon{
+                        background: none;
+                        color:#FDEDD3;
+                        border:none;
+                            &::after{
+                                .iconAfter;
+                                background-image: url('./images/icon_rank_2.png');
+                            }
+                        }
+                    }
+                }
+                &:nth-child(4)
+                {
+                    td:nth-child(1){
+                        .icon{
+                        background: none;
+                        color:#FDEDD3;
+                        border:none;
+                            &::after{
+                                .iconAfter;
+                                background-image: url('./images/icon_rank_3.png');
+                            }
+                        }
+                    }
+                }
+                &.padding
+                {
+                    td{
+                        height:0.18rem;
+                    }
+                }
+            }
+        }
+    }
+    a{
+        display: block;
+        margin-top:0.3rem;
+        font-size:0.24rem;
+        color:#E32601;
+        width:100%;
+        text-align: center;
+    }
+}
