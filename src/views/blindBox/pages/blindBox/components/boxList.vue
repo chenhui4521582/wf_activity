@@ -31,7 +31,7 @@
     <article class="botton-wrapper">
       <section class="btn-container">
         <div class="money-buy" @click="buyOne">{{
-          isOpenBox ? "立即开盒" : "15元开一次"
+          isOpenBox ? "立即开盒" : "开一盒试试"
         }}</div>
         <div class="change-btn" @click="changeAll">换一批</div>
       </section>
@@ -42,7 +42,7 @@
       <!-- 非年货节按钮 begin-->
       <!-- <section class="btn-container">
         <m-button @confirm="buyOne">{{
-          isOpenBox ? "立即开盒" : "15元开一次"
+          isOpenBox ? "立即开盒" : "开一盒试试"
         }}</m-button>
         <div class="change-btn" @click="changeAll">换一批</div>
       </section>
