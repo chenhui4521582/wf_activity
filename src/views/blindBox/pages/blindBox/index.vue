@@ -86,6 +86,7 @@ export default {
       if (this.translateY === 0 && scrollY > 0) {
         this.translateY = -this.bannerHeight
         if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
+        GLOBALS.marchSetsPoint('A_H5PT0225002748')
         return
       }
       // banner向上拉动
