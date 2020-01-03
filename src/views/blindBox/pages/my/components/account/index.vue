@@ -23,7 +23,7 @@ export default {
   filters: {
     imgUrl (url) {
       if (!url) return require('./assets/head.png')
-      if (url && url.indexOf('http') < 0) {
+      if (url && !url.includes('http')) {
         return '//file.beeplaying.com' + url
       } else {
         return url
