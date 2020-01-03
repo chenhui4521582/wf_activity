@@ -8,6 +8,7 @@ new function () {
   }
   _self.changePage = function () {
     document.getElementsByTagName('html')[0].setAttribute('style', 'font-size:' + _self.widthProportion() * _self.fontSize + 'px !important')
+    localStorage.setItem('fontsize',_self.widthProportion() * _self.fontSize)
   }
   _self.changePage()
   window.addEventListener('resize', function () {
