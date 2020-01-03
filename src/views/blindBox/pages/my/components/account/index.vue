@@ -3,7 +3,7 @@
     <ShortSwiper class="container-swiper" />
     <div v-if="userInfo"
       class="content">
-      <img :src="userInfo.head | imgFilter || require('./assets/head.png')"
+      <img :src="userInfo.head | imgFilter"
         alt="头像">
       <span class="name">{{userInfo.nickname}}</span>
       <span class="id">ID:{{userInfo.userId}}</span>
@@ -18,6 +18,16 @@ export default {
   data () {
     return {
       userInfo: null
+    }
+  },
+  filters: {
+    imgUrl (url) {
+      if (!url) return require('./assets/head.png')
+      if (url && url.indexOf('http') < 0) {
+        return '//file.beeplaying.com' + url
+      } else {
+        return url
+      }
     }
   },
   async mounted () {
