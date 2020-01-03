@@ -1,39 +1,69 @@
 <template>
   <main id="app" class="springfestivalunion" :class="{aoke:curChannel==100006&&isHasIframe}">
     <header class="header">
-      <div class="back">返回</div>
+      <div class="back" @click="back">返回</div>
+    </header>
+    <template v-if="detailData">
       <div class="header_container">
         <div class="timelines" :class="{fixed:isShowTopIcon}">
-          <div class="timelines_item" v-for="(item,index) in timelines" :class="{selected:index==0}">
-            <div class="timelines_item_time">{{item.time}}</div>
-            <div class="timelines_item_title">{{item.title}}</div>
+          <div class="timelines_item" v-for="(item,index) in detailData" :class="{selected:index==currentIndex}"
+               @click="setCurrentIndex(index)">
+            <div class="timelines_item_time">{{item.timeSlot}}</div>
+            <div class="timelines_item_title">{{index==0?'惊喜年末':(index==1?'新春狂欢':'喜乐元宵')}}</div>
           </div>
         </div>
-        <div class="timelines" :class="{static:isShowTopIcon}" v-if="isShowTopIcon">
-          <div class="timelines_item" v-for="(item,index) in timelines" :class="{selected:index==0}">
-            <div class="timelines_item_time">{{item.time}}</div>
-            <div class="timelines_item_title">{{item.title}}</div>
+        <div class="timelines" :class="{static:isShowTopIcon}" v-if="isShowTopIcon" @click="setCurrentIndex(index)">
+          <div class="timelines_item" v-for="(item,index) in detailData" :class="{selected:index==0}">
+            <div class="timelines_item_time">{{item.timeSlot}}</div>
+            <div class="timelines_item_title">{{index==0?'惊喜年末':(index==1?'新春狂欢':'喜乐元宵')}}</div>
           </div>
         </div>
         <div class="timelines_act_list">
-          <div class="timelines__act_item" v-for="item in 3">
-            <img src="./images/game_icon.png" alt="">
-            <div class="timelines__act_state" :class="{green:true,purple:false,gray:false}">
-              1.18开始
+          <div class="timelines__act_item" v-for="item in detailData[currentIndex].opsAggregationActivityPageRsps"
+               @click="gotoact(item,index)">
+            <img :src="item.picture|filter" alt="">
+            <div class="timelines__act_state"
+                 :class="{green:item.activityState==0||item.activityState==1,purple:item.activityState==2,gray:item.activityState==3}">
+              <template v-if="item.activityState==0">
+                敬请期待
+              </template>
+              <template v-else-if="item.activityState==1">
+                <!--有确定时间未开始的：大于24小时，显示“X月X日开始”；小于24小时，显示“XX:YY:ZZ后开始”倒计时-->
+                <template v-if="item.countDown">
+                  {{item.countTime}}后开始
+                </template>
+                <template v-else>
+                  {{dealTime(item.activityBeginTime)}}开始
+                </template>
+              </template>
+              <template v-else-if="item.activityState==2">
+                <!--进行中的：大于24小时，显示“X月X日结束”；小于24小时，显示“XX:YY:ZZ后结束”倒计时-->
+                <template v-if="item.countDown">
+                  {{item.countTime}}后结束
+                </template>
+                <template v-else>
+                  {{dealTime(item.activityEndTime)}} 结束
+                </template>
+              </template>
+              <template v-else>
+                活动结束
+              </template>
             </div>
           </div>
         </div>
       </div>
-    </header>
-    <div class="games">
-      <div class="games_title"></div>
-      <div class="games_list">
-        <div class="games_item" v-for="item in 9">
-          <img src="./images/game_icon.png" alt="">
+      <div class="act_bottom"></div>
+      <div class="games">
+        <div class="games_title"></div>
+        <div class="games_list">
+          <div class="games_item" v-for="(item,index) in detailData[currentIndex].opsAggregationGamePageRsps"
+               @click="gotogame(item)">
+            <img :src="item.picture|filter" alt="">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="back_top" v-if="isShowTopIcon" @click="getAnchor('app')" id="backTop"></div>
+      <div class="back_top" v-if="isShowTopIcon" @click="getAnchor('app')" id="backTop"></div>
+    </template>
   </main>
 </template>
 <script>
@@ -43,53 +73,17 @@
   export default {
     data() {
       return {
-        userInfo: null,
         curChannel: null,
-        curToken: null,
         isFoldRule: false,//折叠规则默认折叠
         isShowTopIcon: false,//是否显示回到顶部图标
-        isshowHand: true,//是否显示小手
-        noticeList: [],//广播
-        isshowBonusList: false,//是否显示红包榜弹窗
-        isshowBonusRecoed: false,//是否显示红包记录弹窗
-        isshowBonusSuccess: false,//是否显示加赠红包获得弹窗
-        isshowBonusFailure: false,//是否显示加赠红包点击去完成弹窗
-        isshowBonusOpened: false,//是否显示开启红包弹窗
-        bonusListData: null,//红包榜数据
-        bonusRecordData: null,//红包记录数据
-        bonusOpenedData: null,//红包开启数据
         detailData: null,//myDetail接口数据
-        countdown: {//红包榜外显倒计时，最后一天显示
-          time: ''
-        },
-        packageData: [],//福袋开福礼包数据
-        jiazengbonusNumber: 0,//加赠红包点击领取获得红包个数
-        hbItems: null,
-        batchRedDotData: null,
-        timer1: null,
-        timer2: null,
-        userID: 0,
-        isMove: false,
-        lamp: [],
-        ylbScroll: null,
-        timelines: [{
-          time: '1.9-1.23',
-          title: '惊喜年末',
-          list: [{}, {}, {}]
-        }, {
-          time: '1.24-1.3',
-          title: '新春狂欢',
-          list: [{}, {}, {}]
-        }, {
-          time: '2.1-2.11',
-          title: '喜乐元宵',
-          list: [{}, {}, {}]
-        }]
+        currentIndex: 0,
+        listTimers: [],
       }
     },
     computed: {
-      backUrl() {
-        return (this.getUrlParam('from') || '').toLowerCase();
+      currentItem() {
+        return this.detailData && this.detailData.length > this.currentIndex && this.detailData[this.currentIndex] && this.detailData[this.currentIndex].opsAggregationActivityPageRsps
       },
       countdownText() {//倒计时文案 红包榜外显倒计时，最后一天显示
         if (this.countdown.time) {
@@ -104,94 +98,6 @@
           return ''
         }
       },
-      envelopsItem() {
-        if (!this.hbItems) {
-          return []
-        }
-
-        // 获取最大值
-        let maxItem = this.hbItems && this.hbItems.length && this.hbItems.sort((a, b) => {
-          return a.taskOps - b.taskOps
-        })[this.hbItems.length - 1]
-
-        // 删除数组最后一位
-        const data = this.hbItems.slice()
-        data.pop()
-
-        let nArr = data.filter((item) => {
-          return item.taskStatus != 2
-        }).sort((a, b) => {
-          return a.taskOps - b.taskOps
-        })
-        let tArr = data.filter((item) => {
-          return item.taskStatus == 2
-        }).sort((a, b) => {
-          return a.taskOps - b.taskOps
-        })
-        let result = []
-        if (nArr.length > 4) {
-          result = nArr.splice(0, 4)
-          // result.push(nArr.pop())
-          // 个数大于5个的时候加个dot
-          result.splice(4, 0, {dot: true})
-          result.push(maxItem)
-          return result
-        } else if (nArr.length == 4) {
-          result = nArr.splice(0, 4)
-          result.push(maxItem)
-          return result
-        } else {
-          result = [...this.getList(nArr, tArr), maxItem]
-          return result
-        }
-
-      },
-      jiazengyuan() {//领下级红包还需消费多少元
-        let minUnfinished = this.hbItems.filter((item) => {
-          return item.taskStatus == 1
-        }).sort((a, b) => {
-          return a.taskOps - b.taskOps
-        })[0]
-        return minUnfinished.taskOps - minUnfinished.finishNum
-      },
-      wpercent() {
-        if (!this.hbItems || this.hbItems.length == 0) {
-          return
-        }
-        if (this.hbItems && this.envelopsItem) {
-          if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].taskStatus != 1) {
-            return '100%'
-          } else {
-            let minUnfinished = this.hbItems.filter((item) => {
-              return item.taskStatus == 1
-            }).sort((a, b) => {
-              return a.taskOps - b.taskOps
-            })[0]
-            let idArr = [...this.envelopsItem.map(c => c.taskId)].indexOf(minUnfinished.taskId)
-            if (this.envelopsItem.length == 6) {
-              if (idArr == -1) {//在省略号里
-                console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
-                return parseFloat(5 * 100 / 6).toFixed(2) + '%'
-              } else {
-                if (idArr == 0) {
-                  return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
-                } else {
-                  return parseFloat((1 / 12 + (idArr - 1) / 6 + minUnfinished.finishNum / (minUnfinished.taskOps) / 6) * 100) + '%'
-                }
-              }
-            } else {
-              if (idArr == 0) {
-                return parseFloat((idArr + minUnfinished.finishNum / (minUnfinished.taskOps)) * 100 / 12) + '%'
-              } else {
-                return parseFloat((1 / 12 + (idArr - 1) * 5 / 24 + minUnfinished.finishNum / (minUnfinished.taskOps) * 5 / 24) * 100) + '%'
-              }
-            }
-          }
-        } else {
-          return 0
-        }
-
-      },
       showTask() {
         if (this.detailData) {
           return this.countdown.time && this.countdown.time != '00:00:00'
@@ -203,173 +109,129 @@
       isHasIframe() {
         return window != window.top
       },
-      fontsize () {
+      fontsize() {
         return parseFloat(localStorage.getItem('fontsize') || '100')
       },
     },
     components: {},
     methods: {
-      // 跑马灯滚动
-      scroll() {
-        this.isMove = true
-        setTimeout(() => {
-          this.lamp.push(this.lamp[0]);
-          this.lamp.shift();
-          this.isMove = false;
-        }, 1000)
-
+      dealTime(time) {
+        let date = time.split(' ')[0]
+        return date.substring(date.indexOf('-') + 1).replace('-', '.')
       },
-      bounceRemove() {
-        clearInterval(this.timer2)
-        this.timer2 = setTimeout(() => {
-          this.$refs.bounce.className = "bonusrecord"
+      /** 多组倒计时 **/
+      countDownArr() {
+        /** 清除多组倒计时列队 **/
+        this.clearCountDown()
+        let length = this.currentItem.length
+        length && this.currentItem.forEach((item, index) => {
+          let _index = index
+          if (item.activityState == 1 || item.activityState == 2) {
+            this.initTime(item.countDown, _index)
+            this.countDownTime(item.countDown, _index)
+          }
+        })
+      },
+      /** 计算倒计时时间 **/
+      initTime(info, index) {
+        if (!info) return false
+        if (info <= 0) {
+          info = 0
+          this.myDetails(false)
+        }
+        let date = info / 1000
+        let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+        let minute = Math.floor(parseInt(date / 60) % 60)
+        let second = Math.floor(parseInt(date) % 60)
+        let countHour = hour >= 10 ? hour : '0' + hour
+        let countMinute = minute >= 10 ? minute : '0' + minute
+        let countSecond = second >= 10 ? second : '0' + second
+        this.$set(
+          this.currentItem,
+          index,
+          {...this.currentItem[index], ...{countTime: `${countHour}:${countMinute}:${countSecond}`}}
+        )
+      },
+      countDownTime(info, index) {
+        if (!info) return false
+        let date = info / 1000
+        this.listTimers[index] = window.setInterval(() => {
+          date = date - 1
+          if (date <= 0) {
+            date = 0
+            window.clearInterval(this.listTimers[index])
+            this.myDetails(false)
+          }
+          let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+          let minute = Math.floor(parseInt(date / 60) % 60)
+          let second = Math.floor(parseInt(date) % 60)
+          let countHour = hour >= 10 ? hour : '0' + hour
+          let countMinute = minute >= 10 ? minute : '0' + minute
+          let countSecond = second >= 10 ? second : '0' + second
+          this.$set(
+            this.currentItem,
+            index,
+            {...this.currentItem[index], ...{countTime: `${countHour}:${countMinute}:${countSecond}`}}
+          )
         }, 1000)
       },
-      //获取地址栏问号后面的参数值
-      getUrlParam: function (ename) {
-        // var url = document.referrer;
-        var url = window.location.href;
-        var Request = new Object();
-        if (url.indexOf("?") != -1) {
-          var str = url.split('?')[1];
-          var strs = str.split("&");
-          for (var i = 0; i < strs.length; i++) {
-            Request[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+      /** 清除多组倒计时列队 **/
+      clearCountDown() {
+        this.listTimers.length && this.listTimers.forEach(item => {
+          window.clearInterval(item)
+        })
+      },
+      back() {
+        GLOBALS.marchSetsPoint('A_H5PT0235002743') // H5平台-活动聚合页-不同时间段TAB点击
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
+      },
+      setCurrentIndex(index) {
+        GLOBALS.marchSetsPoint('A_H5PT0235002744', {
+          task_id: index,
+          task_name: this.detailData[index].timeSlot
+        }) // H5平台-活动聚合页-不同时间段TAB点击
+        if (this.currentIndex != index) {
+          this.myDetails(false)
+          this.currentIndex = index
+        }
+      },
+      gotoact(item, index) {
+        GLOBALS.marchSetsPoint('A_H5PT0235002745', {
+          task_id: item.sort,
+          task_name: item.name
+        }) // H5平台-活动聚合页-活动点击
+        if ((item.activityState <= 1 && item.activityBeginFlag == 1) || item.activityState == 2 || (item.activityState == 3 && item.activityEndFlag == 1)) {
+          if (item.linkUrl) {
+            location.href = item.linkUrl
+          } else {
+            (item.activityState <= 1 || item.activityState === 3) && this.$toast.show({
+              message: item.activityState <= 1 ? '活动未开始' : '活动已结束',
+              duration: 3000
+            })
           }
         } else {
-          return '';
+          this.$toast.show({
+            message: item.activityState <= 1 ? '活动未开始' : '活动已结束',
+            duration: 3000
+          })
         }
-        return Request[ename];
+      },
+      gotogame(item) {
+        GLOBALS.marchSetsPoint('A_H5PT0235002746', {
+          target_project_id: item.linkUrl
+        }) // H5平台-活动聚合页-推荐游戏点击
+        GLOBALS.jumpOutsideGame(item.linkUrl)
       },
       getAnchor(name) {
+        GLOBALS.marchSetsPoint('A_H5PT0235002747') // H5平台-活动聚合页-回到页面顶部点击
         if (window == window.top) {
           document.body.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
           !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76)
         } else {
           document.getElementById('app').scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
-          this.isShowTopIcon = document.getElementById('app').scrollTop > 0
+          this.isShowTopIcon = false
         }
       },
-      ruleClick() {
-        this.isFoldRule = !this.isFoldRule
-        this.$nextTick(() => {
-          this.getAnchor('section5')
-        })
-      },//点击规则按钮 展开折叠
-      back(page) {
-        if (this.backUrl) {
-          if (!page) {
-            this.burryPoint('1207003003', '春节红包-回到平台')
-            switch (this.backUrl) {
-              case 'wap':
-                window.location.href = 'https://wap.beeplaying.com/wap/home?channel=' + this.curChannel;
-                break;
-              case 'jswap':
-                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel;
-                break;
-              case 'bdwap':
-                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel;
-                break;
-            }
-          } else {
-            this.burryPoint('1207003030', '春节红包-玩游戏得红包(每日任务)')
-            switch (this.backUrl) {
-              case 'wap':
-                window.location.href = 'https://wap.beeplaying.com/wap/home?channel=' + this.curChannel + '#/' + page;
-                break;
-              case 'jswap':
-                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel + '#/' + page;
-                break;
-              case 'bdwap':
-                window.location.href = 'https://wap.beeplaying.com/bdWap?channel=' + this.curChannel + '#/' + page;
-                break;
-            }
-          }
-        }
-      },//回到首页、平台任务页面逻辑
-      gainbonus() {
-        this.burryPoint('1207003002', '春节红包-获取更多红包')
-        this.isshowHand = false;
-        this.$nextTick(() => {
-          this.getAnchor('section2')
-        })
-      },//页面“获取更多红包”按钮
-      getComputedStyle(ele, attr) {
-        return window.getComputedStyle(ele, null)[attr]
-      },
-      getNoticeList() {
-        let self = this
-        this.$nextTick(() => {
-          var iMax = this.noticeList && this.noticeList.length;
-          if (this.$refs.hornUl && this.$refs.hornUl.children) {
-            var oLiHeight =
-              this.$refs.hornUl.children.length &&
-              this.$refs.hornUl.children[0].offsetHeight;
-            var oUlWidth = this.$refs.hornUl.offsetWidth;
-            var oDiv = this.$refs.hornDiv;
-            var oLiWidth =
-              this.$refs.hornUl.children.length &&
-              this.$refs.hornUl.children[0].offsetWidth;
-            var speed = oLiHeight;
-            var that = this;
-            var oUl = that.$refs.hornUl;
-            var remarked = [];
-            oUl.innerHTML = oUl.innerHTML + oUl.innerHTML;
-            // oUl.style.height = oUl.children.length * oLiHeight + "px";
-            clearInterval(this.timer);
-            remark();
-            this.timer = setInterval(sliders, 3500);
-            var timer1 = setTimeout(() => {
-              horizontalSlider();
-            }, 1000);
-          }
-
-          function sliders() {
-            clearTimeout(timer1);
-            if (-oUl.offsetTop >= oLiHeight * (iMax - 1)) {
-              oUl.style.webkitTransition = "all 0s";
-              // oUl.style.top = oLiHeight+'px';
-              oUl.style.top = speed + "px";
-            }
-            oUl.style.top = oUl.offsetTop - speed + "px";
-            oUl.style.webkitTransition = "all .5s";
-            setTimeout(() => {
-              horizontalSlider();
-            }, 500);
-          }
-
-          function horizontalSlider() {
-            var fontSize = document.children[0].style.fontSize;
-            for (let i = 0; i < remarked.length; i++) {
-              remarked[i].li.style.marginLeft = "";
-              if (remarked[i].top == -oUl.offsetTop) {
-                remarked[i].li.style.marginLeft = `${remarked[i].left /
-                fontSize.substring(0, fontSize.length - 2)}rem`;
-                break;
-              }
-            }
-          }
-
-          function remark() {
-            if (oUl.children) {
-              for (let i = 0; i < oUl.children.length; i++) {
-                if (
-                  oUl.children[i].offsetWidth > oDiv.offsetWidth &&
-                  oUl.children[i].offsetWidth - oDiv.offsetWidth > 10
-                ) {
-                  /* oUl.children[i].style.position='absolute';
-                                        oUl.children[i].style.left=`-${oUl.children[i].offsetWidth-oDiv.offsetTop}px`; */
-                  remarked.push({
-                    li: oUl.children[i],
-                    left: oDiv.offsetWidth - oUl.children[i].offsetWidth,
-                    top: oUl.children[i].offsetTop + 1
-                  });
-                }
-              }
-            }
-          }
-        });
-      },//走马灯
       fetch(url, params) {
         if (url.startsWith('/ops/api')) {
           url = '//ops-api.beeplaying.com' + url
@@ -382,216 +244,35 @@
         }
         return this.axios.post(url, params, {})
       },//请求封装方法
-      async bonusListClick(val) {
-        if (val) {
-          this.burryPoint('1207003022', '春节红包-下级奖励和当前排名')
-        } else {
-          this.burryPoint('1207003023', '春节红包-红包榜')
-        }
+      async myDetails(flag) {
         try {
-          const res = await this.fetch('/ops/api/springFestival/redEnvelope/ranking', {
-            page: 1,
-            pageSize: 500
-          })
+          const res = await this.fetch('/ops/api/aggregation/activity/pageInfo')
           if (res.data.code == 200 && res.data.data) {
-            this.isshowBonusList = true
-            this.bonusListData = res.data.data
-          }
-        } catch (e) {
-
-        }
-      },//点击红包榜
-      async bonusRecordClick() {
-        this.burryPoint('1207003020', '春节红包-红包记录')
-        try {
-          const res = await this.fetch('/ops/api/springFestival/redEnvelope/receiveLog', {
-            page: 1,
-            pageSize: 100
-          })
-          if (res.data.code == 200 && res.data.data) {
-            this.isshowBonusRecoed = true
-            this.bonusRecordData = res.data.data
-          }
-        } catch (e) {
-
-        }
-      },//点击红包记录
-      async myDetails() {
-        try {
-          const res = await this.fetch('/ops/api/springFestival/redEnvelope/myDetails')
-          if (res.data.code == 200 && res.data.data) {
-            // availableAmount (integer, optional): 待开启红包数量 ,
-            // countDown (integer, optional): 红包榜倒计时：离结算时间毫秒数 ,
-            // currentAwardName (string, optional): 当前奖励 ,
-            // horseRaceLampList (Array[string], optional): 跑马灯列表 ,
-            // nextAwardName (string, optional): 下级奖励 ,
-            // ranking (string, optional): 我的排名 ,
-            // settlementTime (string, optional): 榜单结算时间 ,
-            // totalAmount (integer, optional): 我的红包数量
-            // res.data.data.availableAmount=100 测试代码
             this.detailData = res.data.data;
-            this.lamp = [{
-              name: '下级奖励',
-              desc: this.detailData && this.detailData.nextAwardName,
-            }, {
-              name: '红包榜排名',
-              desc: this.detailData && this.detailData.ranking
-            }]
-
-
-            !this.countdown.time && this.detailData.countDown && GLOBALS.remainingTime(
-              this,
-              this.detailData.countDown,
-              this.countdown
-            );
-            this.noticeList = res.data.data.horseRaceLampList || []
-            //获取广播
-            this.getNoticeList()
-          }
-        } catch (e) {
-
-        }
-      },//获取myDetails数据
-      async openBonus() {//点击开启红包
-        // //测试代码
-        // this.bonusOpenedData ={awardList:[{
-        //         "awardAmount": 100,
-        //         "awardName": "京东卡"
-        //     },{
-        //         "awardAmount": 101,
-        //         "awardName": "金叶子"
-        //     },{
-        //         "awardAmount": 101,
-        //         "awardName": "话费"
-        //     }]};
-        // this.bonusOpenedData.num=this.detailData&&this.detailData.availableAmount||0
-        // this.isshowBonusOpened = true
-        if (this.detailData && this.detailData.availableAmount) {
-          this.burryPoint('1207003025', '春节红包-开红包')
-          try {
-            const res = await this.fetch('/ops/api/springFestival/redEnvelope/open')
-            if (res.data.code == 200 && res.data.data) {
-              this.bonusOpenedData = res.data.data;
-              this.bonusOpenedData.num = this.detailData && this.detailData.availableAmount || 0
-              this.isshowBonusOpened = true
-              this.myDetails();
+            if (flag) {
+              GLOBALS.marchSetsPoint('P_H5PT0235') // H5平台-活动聚合页面加载完成
+              this.currentIndex = this.detailData.findIndex(item => item.currentFlag)
             }
-          } catch (e) {
-
-          }
-        } else {
-          this.$nextTick(() => {
-            this.getAnchor('section2')
-          })
-        }
-      },
-      async getPackage() {//获取福袋礼包数据
-        try {
-          const res = await this.axios.get('//shop-api.beeplaying.com/shop/api/activity/spring')
-          if (res.data.code == 200 && res.data.data) {
-            this.packageData = res.data.data
+            this.countDownArr()
           }
         } catch (e) {
 
         }
-      },
-      gotopay(val) {
-        if (val.price == 188) {
-          this.burryPoint(1207003051, '春节红包-开福袋领红包-立即购买188')
-        }
-        if (val.price == 1888) {
-          this.burryPoint(1207003052, '春节红包-开福袋领红包-立即购买1888')
-        }
-        localStorage.setItem('JDD_PARAM', JSON.stringify(val))
-        if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap') {//好看、全民小视频
-          top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment';
-        } else {
-          top.location.href = 'https://wap.beeplaying.com/payment/#/payment';
-        }
-      },//福袋礼包购买
-      burryPoint(id, name, params) {
-        GLOBALS.buriedPoint(id, name, null, null, params || {})
-      },//埋点方法封装
-      share() {
-        this.burryPoint('1207003060', '春节红包-邀好友得红包-去分享')
-        window.location.href = 'https://wap.beeplaying.com/activities/packetSharing.html'
-      },//去分享
-      // 获取红包任务列表
-      getEnvelopesList() {
-        this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platCommonTaskByBatch', {
-          value: "SpringFestival-recharge"
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.hbItems = res.data.data
-            // this.hbItems = this.hbTestData
-
-          }
-        })
-      },
-      getList(newArr, completeArr, maxItem) {
-        if (newArr.length < 4) {
-          var len = 4 - newArr.length;
-          return newArr.concat(completeArr.splice(completeArr.length - len, len)).sort(function (a, b) {
-            return a.taskOps - b.taskOps
-          })
-        }
-      },
-      async getjiazbonus(item) {//点击加赠红包领取
-        let res = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/finish', {taskId: item.taskId})
-        if (res.data.code == 200) {
-          this.burryPoint('1207003041', '春节红包-加赠红包-红包获得弹窗')
-          this.jiazengbonusNumber = item.awardsNum
-          this.isshowBonusSuccess = true;
-          //刷新
-          //加赠红包接口
-          //详情数据
-          this.getEnvelopesList()
-          this.myDetails()
-        }
-      },
-      gotocomplete() {//点击加赠红包去完成
-        this.burryPoint('1207003044', '春节红包-加赠红包-去完成')
-        // this.isshowBonusFailure = true
-        top.location.href = 'https://wap.beeplaying.com/payment/#/mall'
-      },
-      async getBatchRedDot() {
-        let res = await this.fetch('//platform-api.beeplaying.com/task/api/usertask/batchTaskStatus', {
-          value: 'dayTask'
-        })
-        if (res.data.code == 200) {
-          this.batchRedDotData = res.data.data;
-        }
-      },
-      gotoplay(index) {
-        if (index == 1) {
-          this.burryPoint('1207003080', '春节红包-更多游戏-去玩游戏捕鱼')
-          common.jumpToGame({url: '/fish'})
-        } else if (index == 2) {
-          this.burryPoint('1207003081', '春节红包-更多游戏-去玩游戏桌球')
-          common.jumpToGame({url: '/billiards'})
-        } else {
-          this.burryPoint('1207003082', '春节红包-更多游戏-去玩游戏糖果')
-          common.jumpToGame({url: '/crush'})
-        }
-      },
-      async getaccountInfo() {
-        let res = await this.fetch('//trans-api.beeplaying.com/trans/api/trans/accountInfo')
-        if (res.data.code == 200) {
-          this.userID = res.data.data && res.data.data.userId || 0
-          this.getAnchor('section1')
-        }
-      }
+      }//获取myDetails数据
+    },
+    created() {
+      this.myDetails(true)
     },
     mounted() {
       if (window == window.top) {
         window.onscroll = () => {
           //超过一屏就显示回到顶部的图标
-          this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 4.2*this.fontsize
+          this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 4.32 * this.fontsize
         }
       } else {
         window.ontouchmove = () => {
           //超过一屏就显示回到顶部的图标
-          this.isShowTopIcon = document.getElementById('app').scrollTop > 4.2*this.fontsize
+          this.isShowTopIcon = document.getElementById('app').scrollTop > 4.32 * this.fontsize
         }
       }
     },
@@ -606,9 +287,9 @@
     min-height: 100vh;
     position: relative;
     .header {
-      background: url(./images/bg.png) no-repeat;
+      background: url(./images/header.jpg) no-repeat;
       background-size: cover;
-      height: 13.5rem;
+      height: 4.32rem;
       position: relative;
       .back {
         position: absolute;
@@ -624,53 +305,55 @@
         border: 2px solid rgba(250, 183, 148, 1);
         border-radius: 0 .18rem .18rem 0;
       }
-      .header_container {
-        position: absolute;
-        top: 4.2rem;
-        left: 0;
-        right: 0;
-        margin: auto;
-        .timelines {
+    }
+    .header_container {
+      position: relative;
+      top: -.01rem;
+      left: 0;
+      right: 0;
+      margin: auto;
+      background: url("./images/act_layer.png");
+      background-size: 7.2rem 3.75rem;
+      .timelines {
+        display: flex;
+        justify-content: center;
+        .timelines_item {
           display: flex;
+          flex-direction: column;
+          align-items: center;
           justify-content: center;
-          .timelines_item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 1.82rem;
-            height: .91rem;
-            background: url("./images/unselected.png");
+          width: 1.82rem;
+          height: .91rem;
+          background: url("./images/unselected.png");
+          background-size: 100% 100%;
+          font-weight: bold;
+          color: rgba(252, 185, 157, 1);
+          font-size: .24rem;
+          margin-right: .24rem;
+          .timelines_item_title {
+            margin-top: .09rem;
+            font-size: .3rem;
+          }
+          &:nth-child(3) {
+            margin-right: 0;
+          }
+          &.selected {
+            background: url("./images/selected.png");
             background-size: 100% 100%;
-            font-weight: bold;
-            color: rgba(252, 185, 157, 1);
-            font-size: .24rem;
-            margin-right: .24rem;
-            .timelines_item_title {
-              margin-top: .09rem;
-              font-size: .3rem;
-            }
-            &:nth-child(3) {
-              margin-right: 0;
-            }
-            &.selected {
-              background: url("./images/selected.png");
-              background-size: 100% 100%;
-              color: rgba(165, 12, 34, 1);
-            }
+            color: rgba(165, 12, 34, 1);
           }
-          &.fixed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-            background: #d71031;
-            z-index: 1;
-          }
-          &.static {
-            opacity: 0;
-          }
+        }
+        &.fixed {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+          background: #d71031;
+          z-index: 1;
+        }
+        &.static {
+          opacity: 0;
         }
       }
       .timelines_act_list {
@@ -689,6 +372,7 @@
             position: absolute;
             width: 5.88rem;
             height: 2.2rem;
+            border-radius: .2rem;
           }
           .timelines__act_state {
             width: 1.7rem;
@@ -696,11 +380,14 @@
             border-radius: 0 .16rem 0 .16rem;
             position: absolute;
             right: 0;
-            font-size: .24rem;
+            font-size: .22rem;
             font-weight: 400;
             color: rgba(255, 255, 255, 1);
             text-align: center;
             line-height: .43rem;
+            border-left: .02rem solid #fff;
+            border-bottom: .02rem solid #fff;
+            box-sizing: border-box;
             &.green {
               background: rgba(0, 176, 149, 1);
             }
@@ -716,6 +403,13 @@
           }
         }
       }
+    }
+    .act_bottom {
+      background: url(./images/act_bottom.png) no-repeat;
+      background-size: 100% 100%;
+      height: .99rem;
+      position: relative;
+      top: -.01rem;
     }
     .games {
       position: relative;
