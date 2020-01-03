@@ -13,7 +13,6 @@ import Dialog from '../dialog'
 import { PayPoint } from '../../apis/box'
 import { Pay } from '../../utils'
 import { LeafsAccount, LeafsPay } from '../../apis/user'
-import { setTimeout } from 'timers'
 
 export default {
   data () {
