@@ -3,7 +3,7 @@
     <ShortSwiper class="container-swiper" />
     <div v-if="userInfo"
       class="content">
-      <img :src="userInfo.head | imgFilter"
+      <img :src="userInfo.head | imgUrl"
         alt="头像">
       <span class="name">{{userInfo.nickname}}</span>
       <span class="id">ID:{{userInfo.userId}}</span>
