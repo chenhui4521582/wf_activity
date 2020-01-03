@@ -12,6 +12,8 @@
         v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
           v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
+    <Notice :show="showNotice"
+      @close="showNotice=false" />
     <section class="container">
       <div class="bar"
         v-for="(item,index) in tabBar"
@@ -24,12 +26,17 @@
       </div>
     </section>
     <section class="content">
+      <div class="notice">
+        <span>春节期间快递停运通知</span>
+        <span class="view-notice" @click="openNotice">点击查看></span>
+      </div>
       <div v-if="this.goodsList && this.goodsList.length > 0"
         class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
         <p></p>
-        <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0" class="free-shipping">领取奖品满2件即可包邮哦~</p>
-        </div>
+        <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0"
+          class="free-shipping">领取奖品满2件即可包邮哦~</p>
+      </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
         <Goods v-for="(item,index) in goodsList"
           :key="index"
@@ -49,8 +56,10 @@
         :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
         @onConfirm="toIndex" />
     </section>
-    <section @click="toOnlineService" class="service">
-      <img src="./assets/service.png" alt="">
+    <section @click="toOnlineService"
+      class="service">
+      <img src="./assets/service.png"
+        alt="">
       <p>客服</p>
     </section>
   </article>
@@ -59,14 +68,17 @@
 <script>
 import Goods from '../../../../components/goods'
 import Default from '../../../../components/default'
+import Notice from '../../../../components/notice'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
+import { isShowMyPrizeNotice } from '../../../../utils'
 
 export default {
   data () {
     return {
       show: false,
+      showNotice: false,
       active: 0,
       goodsList: null,
       tabBar: sendStatusMapper,
@@ -108,8 +120,14 @@ export default {
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     this.getTabGoods()
+    if (isShowMyPrizeNotice()) {
+      this.openNotice()
+    }
   },
   methods: {
+    openNotice () {
+      this.showNotice = true
+    },
     /**
      * @des 切换tab
      */
@@ -155,7 +173,8 @@ export default {
   components: {
     Default,
     Goods,
-    Dialog
+    Dialog,
+    Notice
   }
 }
 </script>
@@ -170,8 +189,8 @@ export default {
     height: 0.63rem;
     border-top-left-radius: 0.32rem;
     border-bottom-left-radius: 0.32rem;
-    background: #2A2D3C;
-    color: #D9C58E;
+    background: #2a2d3c;
+    color: #d9c58e;
     font-size: 0.2rem;
     padding-left: 0.1rem;
     position: fixed;
@@ -218,6 +237,23 @@ export default {
       &.button-ghost {
         color: #d1ac42;
         border: 0.02rem solid #d1ac42;
+      }
+    }
+    .notice {
+      box-sizing: border-box;
+      width: 6.8rem;
+      line-height: 0.6rem;
+      border-radius: 0.16rem;
+      background: #fddfdf;
+      font-size: 0.24rem;
+      margin: 0 auto 0.2rem;
+      display: flex;
+      padding: 0 0.2rem;
+      justify-content: space-between;
+      align-items: center;
+      color: #ff4141;
+      .view-notice {
+        color: #ff7800;
       }
     }
     .total {

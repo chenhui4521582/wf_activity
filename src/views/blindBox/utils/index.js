@@ -12,12 +12,26 @@ export class Pay {
   }
 }
 
-export const isShowNotice = () => {
-  const oldDate = localStorage.getItem('boxClickNotice')
+const isFirst = param => {
+  const oldDate = localStorage.getItem(param)
   const nowDate = new Date().getTime()
   if (!oldDate || (nowDate - Number(oldDate)) / 1000 > 86400) {
-    localStorage.setItem('boxClickNotice', nowDate)
+    localStorage.setItem(param, nowDate)
     return true
   }
+  return false
+}
+
+export const isShowNotice = () => {
+  // 1.11号之后才会点击出现
+  const noticeBeginTime = new Date(2020, 0, 11).getTime()
+  const nowDate = new Date().getTime()
+  if (nowDate < noticeBeginTime) return
+  if (isFirst('boxClickNotice')) return true
+  return false
+}
+
+export const isShowMyPrizeNotice = () => {
+  if (isFirst('myPrizeNotice')) return true
   return false
 }
