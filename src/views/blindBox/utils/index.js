@@ -11,3 +11,13 @@ export class Pay {
     location.href = url
   }
 }
+
+export const isShowNotice = () => {
+  const oldDate = localStorage.getItem('boxClickNotice')
+  const nowDate = new Date().getTime()
+  if (!oldDate || (nowDate - Number(oldDate)) / 1000 > 86400) {
+    localStorage.setItem('boxClickNotice', nowDate)
+    return true
+  }
+  return false
+}
