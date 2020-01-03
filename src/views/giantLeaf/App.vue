@@ -14,16 +14,19 @@
       <div class="message">
         <div class="item-move" v-if="lamp.length">
           <ul :class="{'anim':isMove}">
-            <li v-for="item in lamp">恭喜<span class="lamp-text">{{item.nickName}}</span>金叶奖励翻{{item.returnRatio}}倍</li>
+            <li v-for="item in lamp">恭喜<span
+                class="lamp-text">{{item.nickName}}</span>金叶奖励翻{{item.returnRatio}}倍</li>
           </ul>
         </div>
       </div>
       <div class="main-wrapper">
         <ul>
-          <li v-if="awardsList&&awardsList.length>0" :class="{activated:activatedIndex === index}" v-for="(item,index) in awardsList" :key="index">
+          <li v-if="awardsList&&awardsList.length>0" :class="{activated:activatedIndex === index}"
+            v-for="(item,index) in awardsList" :key="index">
             <img :src="item.wheelImage|filter" alt="">
           </li>
-          <li v-else :class="{activated:activatedIndex === index}" v-for="(item,index) in imgList" :key="index">
+          <li v-else :class="{activated:activatedIndex === index}" v-for="(item,index) in imgList"
+            :key="index">
             <img :src="imgList[index]" alt="">
           </li>
           <li v-if="getBetStage>0" class="btn" @click.stop="circle(true)">
@@ -35,7 +38,8 @@
         </ul>
       </div>
       <div class="user-info">
-        去除本金已赚<span>{{getProfit}}</span><img src="./images/leaf_icon.png" /><span class="btn_look" @click.stop="handHistory">查看</span>
+        去除本金已赚<span>{{getProfit}}</span><img src="./images/leaf_icon.png" /><span class="btn_look"
+          @click.stop="handHistory">查看</span>
       </div>
       <div class="count-down-clock">
         <img src="./images/time_icon.png" />距离活动结束：{{countTime}}
@@ -43,7 +47,8 @@
     </div>
     <rule :showRule="showRule" :list="ruleList" @hideRule="hideRule" />
     <history :showHistory="showHistory" @hideHistory="hideHistory" />
-    <turntable-dialog :priceData="priceData" :jyzUserInfo="jyzUserInfo" :showDialog="showDialog" :dialogStatus="dialogStatus" @hideDialog="hideDialog" @going="going" />
+    <turntable-dialog :priceData="priceData" :jyzUserInfo="jyzUserInfo" :showDialog="showDialog"
+      :dialogStatus="dialogStatus" @hideDialog="hideDialog" @going="going" />
   </div>
 </template>
 <script type="text/javascript">
@@ -298,7 +303,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .giant-leaf-new {
-  min-height: calc(~'100vh' - 0.5rem);
+  min-height: calc(~"100vh" - 0.5rem);
   width: 100vw;
   background: #f1a927;
   .bg_img {

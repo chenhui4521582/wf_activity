@@ -156,3 +156,13 @@ export const prizeRecord = async () => {
   const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/myLotteryLog')
   return data
 }
+/**
+ * @description 许愿
+ * @return {Object} data
+ */
+
+export const prizeVow = async (params) => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/koi/vow',params)
+  return data
+}
+

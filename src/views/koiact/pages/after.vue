@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     back () {
-      history.back(-1)
+      location.href= window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     async getPopupAwards () {
       let {code,data}=await receivePopupAwards()

@@ -70,6 +70,7 @@
         </div>
       </section>
     </Dialog>
+    <Notice :show="showNotice" @close="showNotice=false"/>
     <TipDialog v-if="showTip" source="index" :show="showTip" @close="showTip=false"/>
     <VirtualDialog :show="isVirtual"
       v-if="isVirtual"
@@ -84,12 +85,13 @@
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
-import { Pay } from '../../../utils';
+import {Pay, isShowNotice} from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
 import TipDialog from './tip-dialog'
 import VirtualDialog from '../../../components/virtual-dialog'
+import Notice from '../../../components/notice'
 
 export default {
   name: '',
@@ -98,7 +100,8 @@ export default {
     Dialog,
     BoxInfo,
     TipDialog,
-    VirtualDialog
+    VirtualDialog,
+    Notice
   },
   data () {
     return {
@@ -107,6 +110,7 @@ export default {
         color: '#fff',
         fontSize: '0.34rem'
       },
+      showNotice: false,
       isVirtual: false,
       // 用户当天是否第一次进入页面
       isFirstIn: true,
@@ -182,6 +186,10 @@ export default {
     // 使用金叶子购买
     leafsBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002683')
+      if (isShowNotice()) {
+        this.openNotice()
+        return
+      }
       this.isVirtual = true
     },
     // 获取盒子信息
@@ -263,7 +271,14 @@ export default {
         }) // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
       }
     },
+    openNotice () {
+      this.showNotice = true
+    },
     async buyOne () {
+      if (isShowNotice()) {
+        this.openNotice()
+        return
+      }
       if (this.userInfo && this.userInfo.openBoxTimes) {
         GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
         this.isShowPop = true

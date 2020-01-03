@@ -158,7 +158,8 @@ window.GLOBALS = {
             residual_jingdong: null,
             residual_phone: null,
             entrance: localStorage.getItem('platSource') || 'plat',
-            from_project_id: this.getUrlParam('gametype') || this.getUrlParam('gameType')
+            from_project_id: this.getUrlParam('gametype') || this.getUrlParam('gameType'),
+            classify:localStorage.getItem('card_level')||0
           }, eventcontent)
         }
       ]

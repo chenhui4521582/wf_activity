@@ -5,41 +5,6 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
-          <div class="main">
-            <scroll :data="data">
-              <div class="gonglue-container">
-                <img src="../images/pop/gonglue/txt.png" alt="" class="buzhou1">
-                <img src="../images/pop/gonglue/buzhou.png" alt="" class="buzhou">
-                <div class="bonus">
-                  <div class="item" v-for="item in data">
-                    <div class="item1" v-for="item1 in item.awardsList">{{item1.awardsName}}</div>
-
-                    <!--<div class="item1">0.4元话费券</div>-->
-                    <!--<div class="item1">0.4元京东券</div>-->
-                    <!--<div class="item1">0.5元话费券</div>-->
-                    <!--<div class="item1">1元京东卡</div>-->
-                    <!--<div class="item1">50g鱼干</div>-->
-                  </div>
-                  <!--<div class="item">-->
-                    <!--<div class="item1">10000金叶子</div>-->
-                    <!--<div class="item1">10元话费券</div>-->
-                    <!--<div class="item1">15元京东券</div>-->
-                    <!--<div class="item1">18元话费券</div>-->
-                    <!--<div class="item1">28元京东卡</div>-->
-                    <!--<div class="item1">100g鱼干</div>-->
-                  <!--</div>-->
-                  <!--<div class="item">-->
-                    <!--<div class="item1">70000金叶子</div>-->
-                    <!--<div class="item1">70元话费券</div>-->
-                    <!--<div class="item1">88元京东券</div>-->
-                    <!--<div class="item1">88元话费券</div>-->
-                    <!--<div class="item1">128元京东卡</div>-->
-                    <!--<div class="item1">1000g鱼干</div>-->
-                  <!--</div>-->
-                </div>
-              </div>
-            </scroll>
-          </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
       </div>
@@ -89,15 +54,16 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .rule1 {
     position: fixed;
-    top: .64rem;
+    top: 40%;
     left: 50%;
-    margin-left: -2.81rem;
+    margin-left: -2.86rem;
+    margin-top:-3.94rem;
     img.icon {
-      width: 0.88rem;
-      height: 0.88rem;
+      width: 0.84rem;
+      height: 0.84rem;
       position: fixed;
-      right: 0.04rem;
-      top: 2.75rem;
+      right: 0;
+      top: 1.4rem;
     }
 
     .pop-mask {
@@ -112,73 +78,20 @@
       position: relative;
       z-index: 10;
       .wrap {
-        width: 5.62rem;
-        height:7.64rem;
+        width: 5.72rem;
+        height:7.88rem;
         background: url("../images/pop/gonglue/bg.png") no-repeat center center /
         100% 100%;
         margin: 0 auto;
         box-sizing: border-box;
         padding: 2.72rem 0.56rem 0;
-        .main {
-          height: 4.4rem;
-          overflow: hidden;
-          position: absolute;
-          top: 2.72rem;
-          width: 4.5rem;
-          .gonglue-container{
-            .buzhou1{
-              width: 4.32rem;
-              height:.95rem;
-              margin-bottom: .2rem;
-            }
-            .buzhou{
-              width: 4.5rem;
-              height:2.92rem;
-            }
-            .bonus{
-              height:6.2rem;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              align-items: center;
-              .item{
-                width: 4.5rem;
-                height: 2rem;
-                padding: 0 0 0 .5rem;
-                box-sizing: border-box;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                &:nth-child(1){
-                  background: url("../images/pop/gonglue/level1.png") no-repeat center center /
-        100% 100%;
-                }
-                &:nth-child(2){
-                  background: url("../images/pop/gonglue/level2.png") no-repeat center center /
-        100% 100%;
-                }
-                &:nth-child(3){
-                  background: url("../images/pop/gonglue/level3.png") no-repeat center center /
-        100% 100%;
-                }
-                .item1{
-                  text-align: center;
-                  width: 33.3%;
-                  font-size:.18rem;
-                  font-weight:400;
-                  color:rgba(252,227,128,1);
-                }
-              }
-            }
-          }
-        }
       }
       .close-icon {
         width: 0.6rem;
         height: 0.6rem;
         background: url("../pages/images/common/close.png") no-repeat center
           center / 100% 100%;
-        margin: 0.4rem auto 0;
+        margin:auto;
       }
     }
     .scalc-enter-active {
