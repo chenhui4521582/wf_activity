@@ -18,7 +18,7 @@
             <div class="timelines_item_title">{{index==0?'惊喜年末':(index==1?'新春狂欢':'喜乐元宵')}}</div>
           </div>
         </div>
-        <div class="timelines_act_list">
+        <div class="timelines_act_list" id="timelines_act_list">
           <div class="timelines__act_item" v-for="item in detailData[currentIndex].opsAggregationActivityPageRsps"
                @click="gotoact(item,index)">
             <img :src="item.picture|filter" alt="">
@@ -33,7 +33,7 @@
                   {{item.countTime}}后开始
                 </template>
                 <template v-else>
-                  {{dealTime(item.activityBeginTime)}}开始
+                  {{item.activityBeginTime}}开始
                 </template>
               </template>
               <template v-else-if="item.activityState==2">
@@ -42,7 +42,7 @@
                   {{item.countTime}}后结束
                 </template>
                 <template v-else>
-                  {{dealTime(item.activityEndTime)}} 结束
+                  {{item.activityEndTime}} 结束
                 </template>
               </template>
               <template v-else>
@@ -193,6 +193,12 @@
         if (this.currentIndex != index) {
           this.myDetails(false)
           this.currentIndex = index
+          if (window == window.top) {
+            document.body.scrollTop = 4.32 * this.fontsize
+            !document.body.scrollTop && (document.documentElement.scrollTop = 4.32 * this.fontsize)
+          } else {
+            document.getElementById('app').scrollTop = 4.32 * this.fontsize
+          }
         }
       },
       gotoact(item, index) {
@@ -267,12 +273,14 @@
       if (window == window.top) {
         window.onscroll = () => {
           //超过一屏就显示回到顶部的图标
-          this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) > 4.32 * this.fontsize
+          console.log((document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop))
+          console.log(4.32 * this.fontsize)
+          this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) >= 4.32 * this.fontsize
         }
       } else {
         window.ontouchmove = () => {
           //超过一屏就显示回到顶部的图标
-          this.isShowTopIcon = document.getElementById('app').scrollTop > 4.32 * this.fontsize
+          this.isShowTopIcon = document.getElementById('app').scrollTop >= 4.32 * this.fontsize
         }
       }
     },
