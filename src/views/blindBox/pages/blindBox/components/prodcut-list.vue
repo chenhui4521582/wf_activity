@@ -4,7 +4,7 @@
       :options="options">
       <swiper-slide v-for="(item,index) in products"
         :key="index">
-        <section class="content">
+        <section @click="detail(item)" class="content">
           <img :src="item.awardsImage | imgFilter"
             alt="" />
           <p class="des">{{ item.awardsName }}</p>
@@ -29,12 +29,20 @@ export default {
           delay: 2000
         },
         loop: true,
+        initialSlide: 1,
         watchOverflow: true,
         slidesPerView: 3,
         centeredSlides: true,
         speed: 300
       },
       products: null
+    }
+  },
+  methods: {
+    detail (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0225002749', {
+        awards_id: item.awardsName
+      })
     }
   },
   components: {
