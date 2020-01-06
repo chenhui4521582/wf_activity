@@ -78,7 +78,7 @@
         isShowTopIcon: false,//是否显示回到顶部图标
         detailData: null,//myDetail接口数据
         currentIndex: 0,
-        listTimers: [],
+        listTimers: []
       }
     },
     computed: {
@@ -193,11 +193,13 @@
         if (this.currentIndex != index) {
           this.myDetails(false)
           this.currentIndex = index
-          if (window == window.top) {
-            document.body.scrollTop = 4.32 * this.fontsize
-            !document.body.scrollTop && (document.documentElement.scrollTop = 4.32 * this.fontsize)
-          } else {
-            document.getElementById('app').scrollTop = 4.32 * this.fontsize
+          if(this.isShowTopIcon){
+            if (window == window.top) {
+              document.body.scrollTop = 4.32 * this.fontsize
+              !document.body.scrollTop && (document.documentElement.scrollTop = 4.32 * this.fontsize)
+            } else {
+              document.getElementById('app').scrollTop = 4.32 * this.fontsize
+            }
           }
         }
       },
@@ -273,8 +275,7 @@
       if (window == window.top) {
         window.onscroll = () => {
           //超过一屏就显示回到顶部的图标
-          console.log((document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop))
-          console.log(4.32 * this.fontsize)
+          //console.log('document',(document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop))
           this.isShowTopIcon = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop) >= 4.32 * this.fontsize
         }
       } else {
@@ -445,7 +446,7 @@
     .back_top {
       position: fixed;
       right: .05rem;
-      bottom: 5.56rem;
+      bottom: 4rem;
       width: .77rem;
       height: .77rem;
       background: url("./images/backtop.png");
