@@ -1,12 +1,10 @@
 <template>
-  <Dialog :show="show"
-    title="快递停运通知"
-    confirm="<span style='color:#000000;font-weight: bold '>我知道了</span>"
-    @onConfirm="close">
+  <Dialog :show="show" title="快递停运通知"
+    confirm="<span style='color:#000000;font-weight: bold '>我知道了</span>" @onConfirm="close">
     <p class="notice-content">
       1月8号西藏、青海、宁夏、新疆停发 <br>
       1月11号甘肃、内蒙、黑龙江、吉林、辽宁、云南、海南停发 <br>
-      1月13号贵州、司催、陕西、山西、广西停发 <br>
+      1月13号贵州、四川、陕西、山西、广西停发 <br>
       1月14号其他省份停发 <br>
       2月3号开始陆续恢复发货 <br>
       请购买盲盒用户知悉。
