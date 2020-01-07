@@ -108,7 +108,7 @@
                     <p>未开始</p>
                   </template>
                 </div>
-                <div class="superscript" v-if="item.fishNum>=configFishNum">
+                <div class="superscript">
                   <span>完成{{index+1}}次</span>
                 </div>
                 <div class="tips"
