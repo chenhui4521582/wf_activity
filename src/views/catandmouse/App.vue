@@ -61,15 +61,15 @@
     <template v-else>
       <div class="fireworks-bg">
       </div>
-      <div class="main-content">
+      <div class="main-content" @click="currentIndex=0">
         <div class="top">
           <div class="top-left"></div>
           <div class="top-center"></div>
-          <div class="close" @click="closePop()"></div>
+          <div class="close" @click.stop="closePop()"></div>
         </div>
         <div class="time-and-rule">
           <div class="activity-time">活动时间：{{activityTime}}</div>
-          <div class="rule-icon" @click="showRule"></div>
+          <div class="rule-icon" @click.stop="showRule"></div>
         </div>
         <div class="list-wrapper">
           <div class="title"></div>
@@ -78,7 +78,7 @@
             <template v-for="(item,index) in giftList">
               <li class="list-item"
                 :class="{'top-line':index<3,'bottom-line':index>2,'need-open':item.status===0&&item.fishNum>=configFishNum,'unopen':currentStep-item.step<0}"
-                @click="clickItem(item,index)">
+                @click.stop="clickItem(item,index)">
                 <div class="item-content">
                   <img :class="'img-'+item.awardsType"
                     :src="require('./img/awards-'+item.awardsType+'.png')" alt="">
@@ -207,6 +207,7 @@ export default {
       this.getActivityInfo()
     },
     openCatFeedPop () {
+      this.currentIndex = 0;
       if (parent && parent.GameEval && parent.openCatFeedPop) {
         parent.GameEval('closeweb')
         parent.openCatFeedPop()
