@@ -1,33 +1,21 @@
 <template>
   <div class="main" :class="{'open' : !show}">
     <article class="wrapper">
-      <HornList class="notice"
-        :notice-list="noticeList"
-        v-if="show" />
-      <img v-if="show"
-        class="get"
-        src="./assets/box-get.png">
-      <div
-        class="prize"
-        v-if="box && isLoad"
+      <HornList class="notice" :notice-list="noticeList" v-if="show" />
+      <img v-if="show" class="get" src="./assets/box-get.png">
+      <div class="prize" v-if="box && isLoad"
         :style="{'background':`url(${box.animation}) no-repeat`,'background-size':'cover'}">
-        <img v-if="show" class="goods"
-          :src="awardsInfo.awardsImage | imgFilter">
+        <img v-if="show" class="goods" :src="awardsInfo.awardsImage | imgFilter">
         <img v-if="show" class="shine" src="./assets/shine.png" alt="">
       </div>
-      <p v-if="show"
-        class="name">{{awardsInfo.awardsName | textFilter}}</p>
-      <p v-if="show"
-        class="des">
+      <p v-if="show" class="name">{{awardsInfo.awardsName | textFilter}}</p>
+      <p v-if="show" class="des">
         <span class="price">价值：¥{{awardsInfo.showAmount}}</span>
         <span>数量：1</span>
       </p>
-      <p @click="viewMyPrize"
-        v-if="show"
-        class="view-prize">查看我的奖品>></p>
-      <MButton class="button"
-        v-if="show"
-        @confirm="openAgain">再开一次</MButton>
+      <p @click="viewMyPrize" v-if="show" class="view-prize">查看我的奖品>></p>
+      <MButton class="button" v-if="show" @confirm="openAgain">再开一次</MButton>
+      <p class="free-shipping">温馨提示: 领取奖品满2件即可包邮哦~</p>
     </article>
   </div>
 </template>
@@ -178,6 +166,11 @@ export default {
       font-size: 0.26rem;
       padding-top: 0.33rem;
       padding-bottom: 0.33rem;
+    }
+    .free-shipping {
+      font-size: 0.2rem;
+      margin-top: 0.2rem;
+      color: #ff4646;
     }
   }
 }
