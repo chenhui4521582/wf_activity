@@ -1,39 +1,40 @@
 <template>
     <div>
         <img src="../images/img_float.png" class="img_float" />
-        <div class="activity_time">活动时间: 2019.12.25-2020.01.01</div>
+        <div class="activity_time">活动时间: {{activityInfo.timeline}}</div>
         <div class="pnl_header">
             <a href="javascript:history.go(-1)" class="back">< 返回</a>
             <a href="/dailySign.html#/score" class="score"><i class="icon_score"></i>我的战绩</a>
         </div>
         <img src="../images/img_dailyCard.png" class="img_dailyCard" />
         <!--瓜分奖励-->
-        <div class="pnl_getAwards">
-            <div class="pnl_awards_title">20191212期</div>
-            <img src="../images/img_btnAwards.png" class="btn_awards" />
+        <div v-if="activityInfo.status==1" class="pnl_getAwards">
+            <div class="pnl_awards_title">{{activityInfo.period}}期</div>
+            <img src="../images/img_btnAwards.png" @click="doSharing()" class="btn_awards" />
             <div class="pnl_awardState">
                 <div class="pnl_price">
-                    <div class="price">10000元</div>
+                    <div class="price">{{activityInfo.amount}}元</div>
                     <div class="tips">奖励金总额(话费券)</div>
                 </div>
                 <div class="pnl_users">
-                    <div class="userCount">1000人</div>
+                    <div class="userCount">{{activityInfo.applyNum}}人</div>
                     <div class="tips">报名人数</div>
                 </div>
             </div>
         </div>
         <!--活动状态-->
-        <div class="pnl_getAwards">
-            <div class="pnl_awards_title">20191212期<span>瓜分奖励金总额（话费券）</span></div>
+        <div v-else class="pnl_getAwards">
+            <div class="pnl_awards_title">{{activityInfo.period}}期<span>瓜分奖励金总额（话费券）</span></div>
             <div class="pnl_sum_price">
-                <div class="sumPrice"><b>0</b>元</div>
-                <div class="signCount">已有<span>0</span>人报名</div>
+                <div class="sumPrice"><b>{{activityInfo.amount}}</b>元</div>
+                <div class="signCount">已有<span>{{activityInfo.applyNum}}</span>人报名</div>
             </div>
-            <!-- <div class="btn_unstart">活动即将开启</div> -->
-            <!-- <div class="btn_start">立即打卡参与瓜分</div> -->
-            <div class="btn_success">报名成功</div>
-            <div class="start_timer">
-                打卡开启倒计时 12:00:32
+            <div v-if="activityInfo.state == 0" class="btn_unstart">活动即将开启</div>
+            <div v-if="activityInfo.state == 2" class="btn_unstart">活动已结束</div>
+            <a v-if="activityInfo.state == 1 && !activityInfo.apply" @click="event('A_H5PT0238002760')" href="/xmWap/#/payment/" class="btn_start">立即打卡参与瓜分</a>
+            <div v-if="activityInfo.state == 1 && activityInfo.apply" class="btn_success">报名成功</div>
+            <div class="start_timer" v-if="countTime">
+                {{activityInfo.state==1 ? '本期瓜分倒计时':'打卡开启倒计时'}} {{countTime}}
             </div>
         </div>
         <!--三步玩转打卡瓜分-->
@@ -43,11 +44,11 @@
         <!--打卡战况-->
         <div class="pnl pnl_rankList">
             <div class="wrapper">
-                <div class="title">20191211期打卡战况</div>
+                <div class="title">{{rankInfo.period}}期打卡战况</div>
                 <div class="card_result">
                     <ul>
-                        <li>1000人成功</li>
-                        <li>998人失败</li>
+                        <li>{{rankInfo.successNum}}人成功</li>
+                        <li>{{rankInfo.failNum}}人失败</li>
                     </ul>
                 </div>
                 <table cellspacing="0">
@@ -66,13 +67,13 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr v-for="i in 10">
+                        <tr v-for="user in rankInfo.recordRspList" :key="user.rankIndex">
                             <td>
-                                <div class="icon">{{i}}</div>
+                                <div class="icon">{{user.rankIndex}}</div>
                             </td>
-                            <td>我是昵称啊</td>
-                            <td>08:23:12</td>
-                            <td>1.5元话费券</td>
+                            <td>{{user.nickname}}</td>
+                            <td>{{user.applyTime}}</td>
+                            <td>{{user.amount!=null?user.amount+'元话费券':'-'}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -80,25 +81,101 @@
             </div>
         </div>
         <!--弹框-->
-        <pop :isShowPop="isShowPop" />
+        <pop :awardInfo="awardInfo" :isShowPop="isShowPop" />
     </div>
 </template>
 <script>
 import utils from '@/common/js/utils.js'
 import pop from '../components/pop'
-import API from '@/api';
+import _get from 'lodash.get'
+import { activityInfo } from '../../catact/utils/api'
 export default {
     name : 'index',
     data(){
         return{
-           isShowPop:true
+           activityInfo:{},
+           rankInfo:{},
+           awardInfo:{},
+           isShowPop:false,
+           countTime:null
         }
     },
     components:{
       pop
     },
+    methods:{
+        event(id){
+            GLOBALS.marchSetsPoint(id)
+        },
+        doSharing(){
+            GLOBALS.marchSetsPoint('A_H5PT0238002761')
+            this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/sharing').then(res => {
+                if(res.data.code != 200)
+                {
+                     this.$toast.show({
+                      message: res.data.message,
+                      duration: 3000
+                    });
+                }
+                else
+                {
+                    this.awardInfo = _get(res,'data.data',{});
+                    this.isShowPop = true;
+                }
+                
+            })
+        },
+        getActivityInfo(){
+            this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/getActivityInfo').then(res => {
+                this.activityInfo = _get(res,'data.data',{});
+                this.countDown(this.activityInfo.countdown);
+            })
+        },
+        getRankingList(){
+            this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/rank/list',{
+                page:1,
+                pageSize:10
+            }).then(res => {
+                this.rankInfo = _get(res,'data.data',{});
+            })
+        },
+        countDown(item) {
+            if (!item) return false
+            let date = item / 1000
+            this.timer = setInterval(() => {
+                date = date - 1
+                if (date <= 0) {
+                    date = 0
+                    clearInterval(this.timer)
+                }
+                let day = Math.floor(date / 86400)
+                let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+                let minute = Math.floor(parseInt(date / 60) % 60)
+                let second = Math.floor(date % 60)
+                // let countDay = day >= 10 ? day : '0' + day
+                let countHour = hour >= 10 ? hour : '0' + hour
+                let countMinute = minute >= 10 ? minute : '0' + minute
+                let countSecond = second >= 10 ? second : '0' + second
+                if (day >= 2) {
+                    this.countTime = 0
+                } else if (day > 0) {
+                    this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
+                } else {
+                    this.countTime = `${countHour}:${countMinute}:${countSecond}`
+                }
+            }, 1000)
+      }
+    },
     mounted(){
-        
+        GLOBALS.marchSetsPoint('P_H5PT0238',{
+            source_address:document.referrer
+        })
+        //获取活动信息
+        this.getActivityInfo();
+        //获取排行榜信息
+        this.getRankingList();
+        //
+        //this.doSharing();
     },
 }
 </script>
@@ -186,6 +263,7 @@ export default {
             font-weight: bold;
             margin: 0 auto;
             text-align: center;
+            display: block;
 
             &.btn_start{
                 background-image: url('../images/btn_gold.png');
@@ -249,8 +327,9 @@ export default {
                 position: absolute;
                 width:1.5rem;
                 height:0.85rem;
-                right: 0.1rem;
+                right: 0.4rem;
                 top: 0.05rem;
+                text-align: center;
 
                 .userCount{
                     margin: 0.1rem 0 0.1rem 0;

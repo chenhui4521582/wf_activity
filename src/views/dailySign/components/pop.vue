@@ -1,7 +1,7 @@
 <template>
-  <section class="commonPop" @touchmove.prevent >
-    <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
-    <div class="content" v-if="isLater">
+  <section class="commonPop" v-if="isShowPop" @touchmove.prevent >
+    <div class="pop-mask" @touchmove.prevent></div>
+    <div class="content" v-if="awardInfo.status == 2">
         <img class="img_title" src="../images/pic_later.png" />
         <img class="img_sad" src="../images/pic_sad.png" />
         <div class="pnl_awardTime">
@@ -9,14 +9,14 @@
             报名次日 00:00 - 24:00<br/>
             <span>要记得每天来看看哟</span>
         </div>
-        <div class="btn_sign">不服气！马上报名今日打卡</div>
+        <a class="btn_sign" href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
     </div>
-    <div class="content" v-else>
+    <div class="content" v-if="awardInfo.status == 1">
         <img class="img_title" src="../images/pic_success.png" />
         <div class="red_bag">
-            <div class="price"><b>1.5</b>元</div>
+            <div class="price"><b>{{awardInfo.amount}}</b>元</div>
         </div>
-        <div class="btn_sign">马上报名明日打卡瓜分</div>
+        <a class="btn_sign" @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
     </div>
   </section>
 </template>
@@ -30,14 +30,19 @@ export default {
     }
   },
   props: {
-    isLater:false,
+    awardInfo:{
+      type: Object,
+      default:{}
+    },
     isShowPop: {
       type: Boolean,
       default: false
     }
   },
   methods: {
-   
+    event(id){
+      GLOBALS.marchSetsPoint(id)
+    },
   },
   mounted () {
   }
@@ -97,6 +102,7 @@ export default {
           line-height: 0.86rem;
           color:#fff;
           margin: 0.44rem auto 0 auto;
+          display: block;
       }
       .red_bag
       {

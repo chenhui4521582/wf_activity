@@ -6,11 +6,11 @@
         <!--打卡战况-->
         <div class="pnl pnl_rankList">
             <div class="wrapper">
-                <div class="title">20191211期打卡战况</div>
+                <div class="title">{{rankInfo.period}}期打卡战况</div>
                 <div class="card_result">
                     <ul>
-                        <li>1000人成功</li>
-                        <li>998人失败</li>
+                        <li>{{rankInfo.successNum}}人成功</li>
+                        <li>{{rankInfo.failNum}}人失败</li>
                     </ul>
                 </div>
                 <div class="table_wrapper">
@@ -30,17 +30,17 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                            <tr v-for="i in 20">
+                             <tr v-for="user in rankList" :key="user.rankIndex">
                                 <td>
-                                    <div class="icon">{{i}}</div>
+                                    <div class="icon">{{user.rankIndex}}</div>
                                 </td>
-                                <td>我是昵称啊</td>
-                                <td>08:23:12</td>
-                                <td>1.5元话费券</td>
+                                <td>{{user.nickname}}</td>
+                                <td>{{user.applyTime}}</td>
+                                <td>{{user.amount!=null?user.amount+'元话费券':'-'}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <a href="###">点击加载更多</a>
+                    <a @click="getRankingList" v-if="showMore" href="javascript:void(0)">点击加载更多</a>
                 </div>
             </div>
         </div>
@@ -49,17 +49,42 @@
 <script>
 import utils from '@/common/js/utils.js'
 import API from '@/api';
+import _get from 'lodash.get';
+
 export default {
     data(){
         return{
-           
+           page:1,
+           rankInfo:{},
+           rankList:[],
+           showMore:true
+        }
+    },
+    methods:{
+         getRankingList(){
+            this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/rank/list',{
+                page:this.page,
+                pageSize:20
+            }).then(res => {
+                this.rankInfo = _get(res,'data.data',{});
+                this.rankList.push(...this.rankInfo.recordRspList)
+                if(this.rankInfo.recordRspList.length<20)
+                {
+                    this.showMore = false
+                }
+                else
+                {
+                    this.page++;
+                }
+            })
         }
     },
     components:{
       
     },
     mounted(){
-        
+        GLOBALS.marchSetsPoint('A_H5PT0238002766');
+        this.getRankingList();
     },
 }
 </script>
