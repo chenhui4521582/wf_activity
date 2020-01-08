@@ -73,7 +73,7 @@
         </div>
         <div class="list-wrapper">
           <div class="title"></div>
-          <div class="desc">活动每日限达成一次</div>
+          <div class="desc">每日喂20g鱼干 完成领奖励</div>
           <ul class="sign-list">
             <template v-for="(item,index) in giftList">
               <li class="list-item"
@@ -153,10 +153,10 @@ export default {
       let tips = ''
       switch (this.giftList[this.currentIndex].awardsType) {
         case 6:
-          tips = '随机获得免单券、优惠券、话费券、金叶子、鱼干五种奖励的其中一种'
+          tips = '随机获得优惠券、话费券、金叶子、鱼干奖励中的其中一种'
           break
         case 7:
-          tips = '鼠年限定道具，鱼干加成+10%，持续30天，获得后会再猫房间内显示，可自由挪动位置'
+          tips = '鼠年限定道具，鱼干加成+5%，持续5天，获得后会再猫房间内显示，可自由挪动位置'
           break
 
         default:
@@ -446,7 +446,7 @@ export default {
               top: 0.4rem;
             }
             .img-6 {
-              top: 0.3rem;
+              top: 0.26rem;
             }
             .img-7 {
               top: 0.1rem;
@@ -475,7 +475,7 @@ export default {
             height: 0.4rem;
             overflow: hidden;
             color: #fff;
-            bottom: 0.1rem;
+            bottom: 0.16rem;
             left: 0;
             width: 100%;
             text-align: center;
@@ -494,7 +494,7 @@ export default {
                 inset 0px 1px -1px 0px rgba(213, 70, 62, 1);
               display: flex;
               align-items: center;
-              margin-bottom: 0.1rem;
+              margin-bottom: 0.06rem;
               .percent {
                 position: absolute;
                 height: inherit;
@@ -514,7 +514,7 @@ export default {
                 text-shadow: 0 0.02rem #d42011, 0.02rem 0 #d42011,
                   -0.02rem 0 #d42011, 0 -0.02rem #d42011;
                 font-size: 0.2rem;
-                padding-top: 0.02rem;
+                padding-top: 0.01rem;
                 position: relative;
               }
             }
@@ -532,7 +532,7 @@ export default {
         }
         .superscript {
           position: absolute;
-          top: 0;
+          top: -0.06rem;
           left: 0;
           width: 0.76rem;
           height: 0.78rem;
@@ -596,7 +596,7 @@ export default {
     text-align: center;
     .btn {
       color: #c45e13;
-      font-weight: 500;
+      font-weight: bold;
       width: 1.98rem;
       line-height: 0.84rem;
       height: 0.84rem;
@@ -665,6 +665,8 @@ export default {
       .btn-wrapper {
         position: absolute;
         bottom: 1.1rem;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
     .awards-image {
