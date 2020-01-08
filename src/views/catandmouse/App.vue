@@ -197,7 +197,7 @@ export default {
   },
   mounted () {
     this.getActivityInfo()
-    this.$marchSetsPoint('A_ZCM0062002767') // 招财猫-新年活动主界面-弹窗加载完成
+    GLOBALS.marchSetsPoint('A_ZCM0062002767') // 招财猫-新年活动主界面-弹窗加载完成
   },
   methods: {
     async getActivityInfo () {
@@ -209,11 +209,11 @@ export default {
     },
     showRule () {
       this.popType = 1
-      this.$marchSetsPoint('A_ZCM0062002768') // 招财猫-新年活动主界面弹窗-规则点击
+      GLOBALS.marchSetsPoint('A_ZCM0062002768') // 招财猫-新年活动主界面弹窗-规则点击
     },
     clickItem (item, index) {
       if (item.status === 0 && item.fishNum >= this.configFishNum) {
-        this.$marchSetsPoint('A_ZCM0062002770', { task_id: item.awardsType, task_name: item.awardsName }) // 招财猫-新年活动主界面弹窗-奖励领取点击
+        GLOBALS.marchSetsPoint('A_ZCM0062002770', { task_id: item.awardsType, task_name: item.awardsName }) // 招财猫-新年活动主界面弹窗-奖励领取点击
         this.receive(item)
       } else {
         this.currentIndex = index
@@ -224,9 +224,9 @@ export default {
       this.awardsInfo = _get(res, 'data', {})
       if (item.awardsType === 6) {
         this.popType = 3
-        this.$marchSetsPoint('A_ZCM0062002772') // 招财猫-新年活动红包-弹窗加载完成
+        GLOBALS.marchSetsPoint('A_ZCM0062002772') // 招财猫-新年活动红包-弹窗加载完成
       } else {
-        this.$marchSetsPoint('A_ZCM0062002773') // 招财猫-新年活动奖励-弹窗加载完成
+        GLOBALS.marchSetsPoint('A_ZCM0062002773') // 招财猫-新年活动奖励-弹窗加载完成
         this.popType = 2
       }
       if (this.awardsInfo.propType) {
@@ -237,24 +237,24 @@ export default {
     openCatFeedPop () {
       this.currentIndex = 0;
       if (parent && parent.GameEval && parent.openCatFeedPop) {
-        this.$marchSetsPoint('A_ZCM0062002771') // 招财猫-新年活动主界面弹窗-去喂猫点击
+        GLOBALS.marchSetsPoint('A_ZCM0062002771') // 招财猫-新年活动主界面弹窗-去喂猫点击
         parent.GameEval('closeweb')
         parent.openCatFeedPop()
       }
     },
     closePop (flag) {
       if (flag) {
-        this.$marchSetsPoint('A_ZCM0062002774') // 招财猫-新年活动奖励弹窗-收下奖励点击
+        GLOBALS.marchSetsPoint('A_ZCM0062002774') // 招财猫-新年活动奖励弹窗-收下奖励点击
         parent && parent.GameEval && parent.GameEval('closeweb')
         return
       }
       switch (this.popType) {
         case 0:
-          this.$marchSetsPoint('A_ZCM0062002769') // 招财猫-新年活动主界面弹窗-关闭点击
+          GLOBALS.marchSetsPoint('A_ZCM0062002769') // 招财猫-新年活动主界面弹窗-关闭点击
           parent && parent.GameEval && parent.GameEval('closeweb')
           break
         case 3:
-          this.$marchSetsPoint('A_ZCM0062002773') // 招财猫-新年活动奖励-弹窗加载完成
+          GLOBALS.marchSetsPoint('A_ZCM0062002773') // 招财猫-新年活动奖励-弹窗加载完成
           this.popType = 4
           break
 
@@ -273,6 +273,9 @@ export default {
   background-repeat: no-repeat;
   background-position: @pos center;
   background-size: contain;
+}
+div {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .cat-and-mouse {
   position: fixed;
