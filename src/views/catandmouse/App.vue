@@ -28,7 +28,7 @@
               :src="require('./img/awards-'+awardsInfo.awardsType+'.png')" alt="">
           </div>
           <p>
-            {{awardsInfo.awardsName}}{{awardsInfo.awardsName | nameFilter(awardsInfo.awardsType,awardsInfo.awardsNum)}}
+            {{awardsInfo.awardsName | nameFilter(awardsInfo.awardsType,awardsInfo.awardsNum)}}
           </p>
           <div class="btn-wrapper">
             <div class="btn btn-green" @click="closePop(true)">
