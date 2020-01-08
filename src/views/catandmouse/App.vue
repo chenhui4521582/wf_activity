@@ -229,6 +229,9 @@ export default {
         this.$marchSetsPoint('A_ZCM0062002773') // 招财猫-新年活动奖励-弹窗加载完成
         this.popType = 2
       }
+      if (this.awardsInfo.propType) {
+        parent && parent.addActivityPropByType && parent.addActivityPropByType(this.awardsInfo.propType)
+      }
       this.getActivityInfo()
     },
     openCatFeedPop () {
