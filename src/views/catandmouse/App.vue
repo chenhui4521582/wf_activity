@@ -236,8 +236,8 @@ export default {
     },
     openCatFeedPop () {
       this.currentIndex = 0;
+      GLOBALS.marchSetsPoint('A_ZCM0062002771') // 招财猫-新年活动主界面弹窗-去喂猫点击
       if (parent && parent.GameEval && parent.openCatFeedPop) {
-        GLOBALS.marchSetsPoint('A_ZCM0062002771') // 招财猫-新年活动主界面弹窗-去喂猫点击
         parent.GameEval('closeweb')
         parent.openCatFeedPop()
       }
