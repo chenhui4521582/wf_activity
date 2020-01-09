@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="body_wrapper">
         <div class="pnl_header">
             <a href="javascript:history.go(-1)" class="back">< 返回</a>
         </div>
@@ -30,7 +30,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                             <tr v-for="user in rankList" :key="user.rankIndex">
+                            <tr v-for="user in rankList" :key="user.rankIndex">
                                 <td>
                                     <div class="icon">{{user.rankIndex}}</div>
                                 </td>
@@ -89,9 +89,15 @@ export default {
 }
 </script>
 <style lang="less">
-    body{
+    .body_wrapper{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top:0;
+        left: 0;
+        overflow-y: auto;
         background: url('../images/bg_rank.png') no-repeat #71230E;
-        background-size: cover;
+        background-size: contain;
         font-family: 'PingFang-SC-Heavy';
     }
 </style>
@@ -100,10 +106,29 @@ export default {
     
     .pnl_rankList{
         margin-top:1.6rem;
-        .table_wrapper tbody
+        table thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .table_wrapper
         {
-            height: 5rem;
-            overflow: auto;
+            thead{
+                display: table;
+                width:100%;
+            }
+            tbody{
+                height: 6.5rem;
+                overflow: auto;
+                display: block;
+                tr{
+                    width:100%;
+                    display: table;
+                   td{
+                        text-align:center;
+                   }
+                }
+            }
         }
     }
    

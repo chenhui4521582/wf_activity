@@ -73,7 +73,7 @@ export default {
         formatStatus(status){
             if(status==0)
             {
-                return '<span>待瓜分</span>'
+                return '<span class="red">待瓜分</span>'
             }
             else if(status==1)
             {
@@ -105,6 +105,9 @@ export default {
         background: url('../images/bg_homeBack.png') no-repeat #71230E;
         background-size: cover;
         font-family: 'PingFang-SC-Heavy';
+    }
+    .red{
+        color:red;
     }
 </style>
 <style lang="less" scoped>
@@ -180,12 +183,9 @@ export default {
                         }
                         td{
                             text-align: center;
-                            font-size:0.22rem;
-                            height:0.44rem;
+                            font-size: 0.22rem;
+                            height: 0.44rem;
                             position: relative;
-                            span{
-                                color:red;
-                            }
                         }
                         &.padding
                         {
@@ -196,9 +196,7 @@ export default {
                     }
                 }
             }
-        }
-
-        
+        }     
     }
    
 </style>
