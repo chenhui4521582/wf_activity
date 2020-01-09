@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import '@/common/js/window.js'
 export default {
   data () {
     return {
