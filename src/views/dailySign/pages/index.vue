@@ -4,7 +4,7 @@
         <div class="activity_time">活动时间: {{activityInfo.timeline}}</div>
         <div class="pnl_header">
             <a href="javascript:history.go(-1)" class="back">< 返回</a>
-            <a href="/dailySign.html#/score" class="score"><i class="icon_score"></i>我的战绩</a>
+            <a href="./dailySign.html#/score" class="score"><i class="icon_score"></i>我的战绩</a>
         </div>
         <img src="../images/img_dailyCard.png" class="img_dailyCard" />
         <!--瓜分奖励-->
@@ -39,10 +39,10 @@
         </div>
         <!--三步玩转打卡瓜分-->
         <div class="pnl_desc">
-            <a href="/dailySign.html#/rules">查看活动规则>></a>
+            <a href="./dailySign.html#/rules">查看活动规则>></a>
         </div>
         <!--打卡战况-->
-        <div class="pnl pnl_rankList">
+        <div v-if="rankInfo.recordRspList.length>0" class="pnl pnl_rankList">
             <div class="wrapper">
                 <div class="title">{{rankInfo.period}}期打卡战况</div>
                 <div class="card_result">
@@ -77,7 +77,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="/dailySign.html#/rank">查看全部排行>></a>
+                <a href="./dailySign.html#/rank">查看全部排行>></a>
             </div>
         </div>
         <!--弹框-->
@@ -94,7 +94,9 @@ export default {
     data(){
         return{
            activityInfo:{},
-           rankInfo:{},
+           rankInfo:{
+               recordRspList:[]
+           },
            awardInfo:{},
            isShowPop:false,
            countTime:null
