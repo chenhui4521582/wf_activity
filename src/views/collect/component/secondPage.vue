@@ -102,7 +102,7 @@
           <span>1000</span>
         </div>
         <div>
-          <img src="../images/second/fuqi.png" />
+          <img @click="openplay" src="../images/second/fuqi.png" />
         </div>
       </div>
       <div class="lower-middle-text">
@@ -181,6 +181,7 @@ overflow:hidden;text-overflow:ellipsis"
 export default {
   data() {
     return {
+        openPlay:true,
       isOpen: true,
       isChange: false,
       transmitcolor: "#AA0210",
@@ -192,14 +193,14 @@ export default {
           {rank:'2',name:'阿桑的sfds风格的发生的',num:'56132',prize:'1000万金叶+500京东卡'},
           {rank:'3',name:'sdfsdf',num:'561324',prize:'1000万金叶+500京东卡'},
           {rank:'4',name:'dfg dg',num:'56132',prize:'1000万金叶+500京东卡'},
-        //   {rank:'5',name:'第三方士大夫士大夫',num:'561324',prize:'1000万金叶+500京东卡'},
-        //   {rank:'6',name:'士大夫士大夫',num:'5613243',prize:'1000万金叶+500京东卡'},
-        //   {rank:'7',name:'士大夫请问',num:'56132',prize:'1000万金叶+500京东卡'},
-        //   {rank:'8',name:'破i破i破',num:'561',prize:'1000万金叶+500京东卡'},
-        //   {rank:'9',name:'1',num:'561',prize:'1000万金叶+500京东卡'},
-        //   {rank:'10',name:'2',num:'56',prize:'1000万金叶+500京东卡'},
-        //   {rank:'11',name:'3',num:'5',prize:'1000万金叶+500京东卡'},
-        //   {rank:'12',name:'14',num:'1',prize:'1000万金叶+500京东卡'},
+          {rank:'5',name:'第三方士大夫士大夫',num:'561324',prize:'1000万金叶+500京东卡'},
+          {rank:'6',name:'士大夫士大夫',num:'5613243',prize:'1000万金叶+500京东卡'},
+          {rank:'7',name:'士大夫请问',num:'56132',prize:'1000万金叶+500京东卡'},
+          {rank:'8',name:'破i破i破',num:'561',prize:'1000万金叶+500京东卡'},
+          {rank:'9',name:'1',num:'561',prize:'1000万金叶+500京东卡'},
+          {rank:'10',name:'2',num:'56',prize:'1000万金叶+500京东卡'},
+          {rank:'11',name:'3',num:'5',prize:'1000万金叶+500京东卡'},
+          {rank:'12',name:'14',num:'1',prize:'1000万金叶+500京东卡'},
           ]
     };
   },
@@ -208,6 +209,10 @@ export default {
       this.getRankList()
   },
   methods: {
+      openplay(){
+          this.$emit('openplay',this.openPlay)
+          console.log(this.openPlay)
+      },
       back(){
         this.$emit('back',this.isChange,this.transmitcolor)
       },

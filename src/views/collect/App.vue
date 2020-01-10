@@ -43,7 +43,7 @@
             <img src="./images/chongzhi.png" alt />
           </div>
           <div class="button-secondrow">
-            <img src="./images/fanli.png" alt />
+            <img @click="draw(3)" src="./images/fanli.png" alt />
           </div>
         </div>
       </div>
@@ -58,28 +58,85 @@
       v-show="isChange"
       :color="color"
       @receive="receive(arguments)"
-      @back="back(arguments)"
+      @back="back(arguments)" @openplay='openplay'
     ></secondPage>
     <comPop @close="close" v-if="comPop" :popType="popType"></comPop>
+    <congratulation @congra_back='congra_back' :popNumber='popNumber'></congratulation>
+    <congratulation2 :popNumber='popNumber' @goplay='goplay'></congratulation2>
+    <everyoneplay v-if="openPlay" @closeplay='closeplay'></everyoneplay >
+    <rank @closerank='closerank' v-if="openRank" :rankNumber='rankNumber' @gosecondpage='gosecondpage(arguments)'></rank>
+    <!-- 没有上榜的组件 -->
+    <noprize :rankNumber='rankNumber'></noprize>
   </div>
 </template>
 <script>
+import Services from './services/services'
 import secondPage from "./component/secondPage";
 import comPop from "./component/comPop";
+import congratulation from './component/congratulation';
+import congratulation2 from './component/congratulation2'
+import everyoneplay from './component/everyoneplay'
+import rank from './component/rank'
+import noprize from './component/noprize'
 export default {
   data() {
     return {
+      openRank:true,
       isChange: false,
       color: "#AA0210",
       comPop: false,
-      popType: "" //0规则,1攻略,2查看记录
+      congratulation:false,
+      popType: "", //0规则,1攻略,2查看记录,3领取每日返利
+      popNumber:'',
+      openPlay:false,
+      rankNumber:'',
     };
   },
   created() {
-    var a = document.getElementsByClassName(".big");
-    var b = document.getElementsByClassName(".bottom");
+    // popNumber 1弹恭喜1  2弹恭喜2
+    
+    // rankNumber  0未上榜 1福气值 2金叶 3金叶+京东卡 4 京东卡 
+  Services.getDetail().then(res=>{
+    this.details=res.data
+    console.log('活动信息',this.details)
+  })
+      this.popNumber=2
+      this.rankNumber=5
+  },
+  filters:{
+     number:function(value){
+       if(value>10000){
+            return Math.floor(value / 10000 )+ '万'
+       }
+     }             
   },
   methods: {
+    gosecondpage(e){
+      this.isChange=e[0]
+      this.openRank=e[1]
+      this.color=e[2]
+
+    },
+    goplay(e){
+      this.openPlay=e
+    },
+    closerank(e){
+      this.openRank=e
+    },
+    closeplay(e){
+      this.openPlay=e
+    },
+    openplay(e){
+      this.openPlay=e
+      console.log(this.openPlay)
+    },
+    congra_back(e){
+      this.congratulation=e
+    },
+    draw(type){
+      this.popType=type;
+      this.comPop=true;
+    },
     record(type){
       this.popType=type;
       this.comPop=true;
@@ -92,13 +149,15 @@ export default {
     rule(type) {
       (this.comPop = true), (this.popType = type);
       console.log('规则下标',this.popType)
+      console.log('查看关闭发榜',this.openRank)
     },
     close(e) {
       this.comPop = e;
+
     },
     back(e) {
       (this.isChange = e[0]), (this.color = e[1]);
-      console.log("查看", this.isChange, this.color);
+      console.log("查看", this.isChange, this.color,this.openPlay);
     },
     receive(e) {
       (this.isChange = e[0]), (this.color = e[1]);
@@ -107,10 +166,6 @@ export default {
     change() {
       if (this.isChange == true) {
         this.isChange = false;
-        //  var a = document.getElementsByClassName('.big')
-        //  var b = document.getElementsByClassName('.bottom')
-        //  b.style.backgroundColor = 'green'
-        //  a.style.backgroundColor = '#FAD6A9'
         this.color = "#AA0210";
       } else {
         this.isChange = true;
@@ -120,7 +175,12 @@ export default {
   },
   components: {
     secondPage,
-    comPop
+    comPop,
+    congratulation,
+    congratulation2,
+    everyoneplay,
+    rank,
+    noprize
   }
 };
 </script>

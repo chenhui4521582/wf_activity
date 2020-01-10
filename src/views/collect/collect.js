@@ -8,9 +8,22 @@ import fastclick from 'fastclick'
 import Toast from '../../plugins/toast';
 import '@/common/js/window.js'
 
+import Router from 'vue-router'
+Vue.use(Router)
 Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
+
+// export default new Router({
+//   routes: [
+//     {
+//       // path: '/',
+//       // name: 'index',
+//       // component: index
+//     },
+ 
+//   ]
+// })
 
 // 复制
 import VueClipboard from 'vue-clipboard2'
@@ -54,5 +67,6 @@ Vue.filter('filterPrice', function (value) {
   }
 })
 new Vue({
+  // routers,
   render: r => r(App)
 }).$mount('#app')
