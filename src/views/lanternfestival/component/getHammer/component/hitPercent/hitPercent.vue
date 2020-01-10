@@ -142,17 +142,6 @@
       },
     },
     methods: {
-      // 获取红包任务列表
-      getGameProgress() {
-        // gameProgress().then((res) => {
-        //   if (res.code == 200) {
-        //     this.hbItems = res.data
-        //     // 下面是测试数据
-        //     // this.hbItems = this.hbTestData
-        //   }
-        // })
-        this.hbItems = this.gameData
-      },
       getList(newArr, completeArr, maxItem) {
         if (newArr.length < 4) {
           var len = 4 - newArr.length
@@ -166,7 +155,7 @@
           task_id: item.sort,
           task_name: '消耗金叶' + item.amount
         })   // H5平台-元宵活动-获取瓜分券-玩游戏去完成点击
-        this.showPop(4,null)
+        this.showPop(4, null)
       },
       async gotoact(item) { // 领取
         GLOBALS.marchSetsPoint('A_H5PT0240002798', {
@@ -177,8 +166,7 @@
         gameReceive(item.sort).then((res) => {
           if (res.code == 200) {
             this.awardData = item
-            this.showPop(6,this.awardData)
-            this.getGameProgress()
+            this.showPop(6, this.awardData)
             this.$emit('refresh', false)
           } else {
             this.$toast.show({
@@ -191,9 +179,9 @@
           this.showLoading = false
         })
       },
-      showPop(type,awardData) {
-        this.$emit('showPop',{
-          type,awardData
+      showPop(type, awardData) {
+        this.$emit('showPop', {
+          type, awardData
         })
       }
     },

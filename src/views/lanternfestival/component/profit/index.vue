@@ -118,7 +118,7 @@
   </div>
 </template>
 <script type="text/javascript">
-  import {rankList, activityInfo, userRanking} from '../../utils/api'
+  import {rankList} from '../../utils/api'
 
   export default {
     data() {
