@@ -1,5 +1,5 @@
 <template>
-  <div class="lanternfestival" :class="{end:isEnd}" v-if="actInfoData">
+  <div class="lanternfestival" :class="{end:isEnd,showDown:$refs.dropDown&&$refs.dropDown.isDropDown}" v-if="actInfoData">
     <template v-if="!isEnd">
       <div class="lanternfestival_container">
         <div class="clickIcons">
@@ -242,6 +242,13 @@
     height: 100vh;
     position: relative;
     padding-bottom: 1.2rem;
+    &.showDown{
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      top: 0;
+    }
     &.end {
       background: url("./imgs/bg1.png");
       background-size: 100% 1.03rem;
