@@ -263,9 +263,10 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .com_pop {
     position: fixed;
-    top: 1rem;
+    top: 50%;
     left: 50%;
     margin-left: -3.43rem;
+    margin-top: -4rem;
     .com_pop_mask {
       position: fixed;
       left: 0;
