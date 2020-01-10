@@ -307,7 +307,7 @@
           color: #F6CCA4;
           margin-left: .14rem;
           position: relative;
-          &.flag0, &.flag6 {
+          &.flag0, &.flag6,&.flag3 {
             padding: 0 .86rem 0 .7rem;
           }
           .container_compop {
@@ -466,6 +466,7 @@
                 border-radius: .2rem;
                 display: flex;
                 color: #F6C599;
+                margin: auto;
                 h4 {
                   font-size: .24rem;
                   font-weight: bold;
