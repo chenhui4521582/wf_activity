@@ -5,17 +5,19 @@
         <img class="img_title" src="../images/pic_later.png" />
         <img class="img_sad" src="../images/pic_sad.png" />
         <div class="pnl_awardTime">
-            奖励瓜分时间：<br/>
+            {{awardInfo.period}}期奖励瓜分时间：<br/>
             报名次日 00:00 - 24:00<br/>
             <span>要记得每天来看看哟</span>
         </div>
-        <a class="btn_sign" href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
+        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
+        <a class="btn_sign" v-else href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
     </div>
     <div class="content" v-if="awardInfo.status == 1">
         <img class="img_title" src="../images/pic_success.png" />
         <div class="red_bag">
             <div class="price"><b>{{awardInfo.amount}}</b>元</div>
         </div>
+        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
         <a class="btn_sign" @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
     </div>
   </section>
@@ -40,8 +42,12 @@ export default {
     }
   },
   methods: {
+    closePop(){
+      this.$parent.isShowPop = false;
+    },
     event(id){
-      GLOBALS.marchSetsPoint(id)
+      GLOBALS.marchSetsPoint(id);
+      this.closePop();
     },
   },
   mounted () {

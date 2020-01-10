@@ -122,7 +122,9 @@ export default {
                 else
                 {
                     this.awardInfo = _get(res,'data.data',{});
+                    this.awardInfo.apply = this.activityInfo.apply;
                     this.isShowPop = true;
+                    this.getActivityInfo();
                 }
                 
             })
@@ -131,6 +133,15 @@ export default {
             this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/getActivityInfo').then(res => {
                 this.activityInfo = _get(res,'data.data',{});
                 this.countDown(this.activityInfo.countdown);
+                if(this.activityInfo.status == 3){
+                    this.awardInfo = {
+                        amount: 0,
+                        apply:this.activityInfo.apply,
+                        period: this.activityInfo.period,
+                        status: 2
+                    };
+                    this.isShowPop = true;
+                }
             })
         },
         getRankingList(){
