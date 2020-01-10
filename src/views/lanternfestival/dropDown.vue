@@ -43,8 +43,6 @@
   </div>
 </template>
 <script type="text/javascript">
-  import {userInfo} from './utils/api'
-
   export default {
     data() {
       return {
@@ -63,7 +61,7 @@
         type: Number,
         default: 0
       },
-      endDate:{
+      endDate: {
         type: String,
         default: ''
       }
@@ -95,17 +93,17 @@
         this.$emit('refresh', flag)
       },
       showPop(data) {
-        this.$emit('showPop',data)
+        this.$emit('showPop', data)
       }
     },
     watch: {
       isDropDown(value) {
-        if(value) {
+        if (value) {
           document.body.style.overflow = 'hidden';
-          document.addEventListener('touchmove', this.move, { passive: false });
-        }else {
+          document.addEventListener('touchmove', this.move, {passive: false});
+        } else {
           document.body.style.overflow = null;
-          document.removeEventListener('touchmove', this.move, { passive: false });
+          document.removeEventListener('touchmove', this.move, {passive: false});
         }
       }
     }
