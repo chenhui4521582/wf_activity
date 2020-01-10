@@ -108,10 +108,14 @@
           task_id: index + 1,
           task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1张券` : `今日累计充值${item.totalNum}元给1张券`
         })   // H5平台-元宵活动-获取瓜分券-每日任务去完成点击
-        if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
-          location.href = 'https://wap.beeplaying.com/xmWap/#/task'
-        } else {
-          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', '', true, '#/taskview')
+        if(index==0){
+          if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
+            location.href = 'https://wap.beeplaying.com/xmWap/#/task'
+          } else {
+            location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', '', true, '#/taskview')
+          }
+        }else{
+          location.href ='https://wap.beeplaying.com/xmWap/#/payment'
         }
       },
       async gain(item, index) {

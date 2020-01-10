@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pop-mask" v-if="isDropDown"></div>
+    <div class="pop-mask" v-if="isDropDown" @touchmove.prevent></div>
     <transition name="fade">
       <div class="drop-down" v-if="isDropDown">
         <div class="drop-down-content">
@@ -68,7 +68,7 @@
     },
     components: {
       getHammer: () => import('./component/getHammer'),
-      profit: () => import('./component/profit')
+      profit: () => import('./component/profit'),
     },
     methods: {
       innerHandleTab(idx) {
