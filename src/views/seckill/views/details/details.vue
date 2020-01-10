@@ -185,8 +185,11 @@ export default {
       if(this.detail.status == 2) {
         return 100
       }
-      if(this.detail.status == 1) {
+      
+      if(this.detail.status == 1 && this.detail.awardNum >= this.detail.useNum) {
         return Math.floor(this.detail.useNum / this.detail.awardNum * 100)
+      }else {
+        return 100 
       }
     }
   },
@@ -202,7 +205,7 @@ export default {
             /** 秒杀进行中 倒计时逻辑 **/
             if(this.detail.status == 1) {
               let start = new Date().getTime()
-              let endTime = this.detail.endTime.replace('-', '/')
+              let endTime = this.detail.endTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
               let coutDownTime = endTimeStamp - start
               this.cleartTime()
@@ -212,7 +215,7 @@ export default {
             /** 秒杀没开始 倒计时逻辑 **/
             if(this.detail.status == 0) {
               let start = new Date().getTime()
-              let endTime = this.detail.startTime.replace('-', '/')
+              let endTime = this.detail.startTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
               let coutDownTime = endTimeStamp - start
               this.cleartTime()
@@ -229,6 +232,10 @@ export default {
     },
     /** 抢购 **/
     _commit() {
+      if(this.progress == 100) {
+        this.noAwardModal = true
+        return 
+      }
       if(this.lock) return false
       this.lock = true
       Services.commit({value: this.detail.id}).then(res=> {
@@ -255,6 +262,7 @@ export default {
                 this.$router.push({
                   name: 'index'
                 })
+                GLOBALS.marchSetsPoint('A_H5PT0237002756')
               }
             }
           }
@@ -268,6 +276,7 @@ export default {
             duration: 3000
           })
         }
+        GLOBALS.marchSetsPoint('A_H5PT0237002755')
       })
     },
     _getRingServerStatus () {
@@ -292,6 +301,7 @@ export default {
       }else {
         window.location.href = `https://wap.beeplaying.com/ring/?channel=${channel}&time=${Date.now}`
       }
+      GLOBALS.marchSetsPoint('A_H5PT0237002754')
     },
     /** 返回首页 **/
     goHome() {
@@ -374,6 +384,7 @@ export default {
       this.noAwardModal = false
       this.noTimesModal = false
       window.location.href = 'https://wap.beeplaying.com/activities/springfestivalunion.html'
+      GLOBALS.marchSetsPoint('A_H5PT0237002758')
     },
     /** 看看别的秒杀 **/
     modalConfirm(){
@@ -382,9 +393,11 @@ export default {
       this.$router.push({
         name: 'index'
       })
+      GLOBALS.marchSetsPoint('A_H5PT0237002759')
     },
     awardsCallback() {
       window.location.href = "https://wap.beeplaying.com/xmWap/#/my/prize"
+       GLOBALS.marchSetsPoint('A_H5PT0237002757')
     },
     closeCallback(){
       this.detail.status = 2
@@ -638,9 +651,8 @@ export default {
       color: #fff;
     }
     .end {
-      background: #FF4141;
+      background: #FBAFAF;
       color: #fff;
-      opacity: .4;
     }
   }
   .tips {

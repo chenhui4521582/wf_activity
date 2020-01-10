@@ -116,6 +116,7 @@ export default {
     },
     /** 转换时间 **/
     versionDate(time, type) {
+      time = time.replace(/-/g, '/')
       let timesTamp = new Date(time)
       let mounth = timesTamp.getMonth() + 1
       let day = timesTamp.getDate()
@@ -186,7 +187,7 @@ export default {
         if (date <= 0) {
           date = 0
           window.clearInterval(this.listTimers[index])
-          this._getActivityList(this.handIndex)
+          this._getActivityList(this.nav[this.handIndex])
         }
         let hour = Math.floor(parseInt(date / 60 / 60) % 24)
         let minute = Math.floor(parseInt(date / 60) % 60)
@@ -209,8 +210,10 @@ export default {
       if(item.status == 2) {
         return 100
       }
-      if(item.status == 1) {
+      if(item.status == 1 && item.awardNum >= item.useNum) {
         return Math.floor(item.useNum / item.awardNum * 100)
+      }else {
+        return 100
       }
     },
     /** 清除多组倒计时列队 **/
@@ -227,7 +230,10 @@ export default {
           id: item.id
         }
       })
-
+      GLOBALS.marchSetsPoint('A_H5PT0237002753', {
+        awards_id: item.id,
+        awards_name: item.title
+      })
     },
     back () {
       window.location.href = `https://wap.beeplaying.com/xmWap/`
@@ -433,7 +439,7 @@ export default {
           top: 1.29rem;
           width: 1.4rem;
           height: .5rem;
-          line-height: .5rem;
+          line-height: .49rem;
           font-size: .24rem;
           font-weight: bold;
           border-radius: .25rem;
