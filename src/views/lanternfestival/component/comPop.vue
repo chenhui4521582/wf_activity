@@ -244,6 +244,9 @@
       getYesterDayGift() {//领取昨日奖励
         this.isShowPop = false;
         this.$emit('getYesterDayGift')
+      },
+      move (e) {
+        e.preventDefault()
       }
     },
     watch: {

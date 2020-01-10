@@ -8,12 +8,12 @@
           <div class="d-tab">
             <div style="position: absolute;width: 100%;left: 0;top: 0;">
               <ul>
-                <li @click="innerHandleTab(0)" :class="{'active':curIndex == 0}">获取锤子</li>
+                <li @click="innerHandleTab(0)" :class="{'active':curIndex == 0}">获取瓜分券</li>
                 <li @click="innerHandleTab(1)" :class="{'active':curIndex == 1}">有奖排行榜</li>
               </ul>
             </div>
           </div>
-          <!-- 获取锤子组件 -->
+          <!-- 获取瓜分券组件 -->
           <getHammer v-if="curIndex == 0" :countTime="countTime" @refresh="refresh" @showPop="showPop"/>
 
           <!-- 排行榜 -->
@@ -94,17 +94,6 @@
       },
       showPop(data) {
         this.$emit('showPop', data)
-      }
-    },
-    watch: {
-      isDropDown(value) {
-        if (value) {
-          document.body.style.overflow = 'hidden';
-          document.addEventListener('touchmove', this.move, {passive: false});
-        } else {
-          document.body.style.overflow = null;
-          document.removeEventListener('touchmove', this.move, {passive: false});
-        }
       }
     }
   }
