@@ -10,8 +10,8 @@
         <img src="./img/guide-icon.png" class="guide" @click="openPop(2)" />
       </div>
     </section>
-    <main-page v-if="isMainPage" @openPop="openPop"></main-page>
-    <rank-page v-if="!isMainPage" @openPop="openPop"></rank-page>
+    <main-page v-if="isMainPage" :activityInfo="activityInfo" @openPop="openPop"></main-page>
+    <rank-page v-if="!isMainPage" :activityInfo="activityInfo" @openPop="openPop"></rank-page>
     <div class="bottom-btn-wrapper" :class="{'is-long-screen':isLongScreen}"
       :style="{background:configPageInfo[currentPage].bgColor}">
       <div class="btn-container">
@@ -20,15 +20,22 @@
       </div>
     </div>
     <com-pop v-model="popType"></com-pop>
+    <congratulation :activityInfo="activityInfo" @openGamePop="openGamePop"></congratulation>
+    <game-pop v-if="isGamePopOpen" @close="closeGamePop"></game-pop>
+    <rank @close='closeRank' v-if="isRankPopOpen" :myRankInfo='myRankInfo'
+      @toRankPage='currentPage="rank"'></rank>
   </main>
 </template>
 <script>
 // gather-happiness 缩写 gh
+import { activityInfo, myRank } from './services/api'
+import _get from 'lodash.get'
 import rankPage from './component/rankPage'
 import mainPage from './component/mainPage'
 import comPop from './component/comPop'
-import { myRank } from "./services/api"
-import _get from "lodash.get"
+import congratulation from './component/congratulation'
+import gamePop from './component/gamePop'
+import rank from './component/rank'
 export default {
   data () {
     return {
@@ -44,11 +51,14 @@ export default {
         }
       },
       popType: 0, // 0:关闭 1:规则,2:攻略,3查看记录
-      myRankInfo: {}
+      myRankInfo: {},
+      isGamePopOpen: false,
+      activityInfo: {},
+      isRankPopOpen: false
     }
   },
   mounted () {
-    this.getMyRank()
+    this.getActivityInfo()
   },
   computed: {
     isLongScreen () {
@@ -64,21 +74,44 @@ export default {
     openPop (type) {
       this.popType = type
     },
+    async getActivityInfo () {
+      const res = await activityInfo()
+      this.activityInfo = _get(res, 'data', {})
+      if (this.activityInfo.state === 2) {
+        this.getMyRank()
+      }
+    },
     async getMyRank () {
       const res = await myRank()
       this.myRankInfo = _get(res, 'data', {})
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.isRankPopOpen = true
+      }
     },
     back () {
       if (this.isMainPage) {
         return
       }
       this.currentPage = 'main'
+    },
+    openGamePop () {
+      this.isGamePopOpen = true
+    },
+    closeGamePop () {
+      this.isGamePopOpen = false
+    },
+    closeRank () {
+      this.isRankPopOpen = false
     }
   },
   components: {
     mainPage,
     rankPage,
-    comPop
+    comPop,
+    congratulation,
+    gamePop,
+    rank
   }
 }
 </script>

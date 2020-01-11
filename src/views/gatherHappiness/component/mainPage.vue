@@ -14,7 +14,9 @@
           <img src="../img/light.png" />
         </div>
         <div class="text">
-          <span>福气值{{activityInfo.myBlessing}}/{{activityInfo.maxBlessing}}</span>
+          <span
+            v-if="activityInfo.state===1">福气值{{activityInfo.myBlessing}}/{{activityInfo.maxBlessing}}</span>
+          <span v-else>活动已结束</span>
         </div>
       </div>
 
@@ -33,9 +35,10 @@
       </p>
       <div class="button">
         <div class="button-firstrow" @click="toMall()">
-          <img src="../img/chongzhi.png" alt />
+          <img v-if="activityInfo.state===1" src="../img/chongzhi.png" alt />
         </div>
-        <div class="button-secondrow" @click="openPop(4)">
+        <div class="button-secondrow" :class="{'red-dot':activityInfo.unReceiveNum}"
+          @click="openPop(4)">
           <img src="../img/fanli.png" alt />
         </div>
       </div>
@@ -44,38 +47,31 @@
 </template>
 
 <script>
-import { activityInfo } from '../services/api'
-import _get from 'lodash.get'
 export default {
   name: '',
   components: {
 
   },
-  data () {
-    return {
-      activityInfo: {}
+  props: {
+    activityInfo: {
+      type: Object,
+      default: {}
     }
   },
   computed: {
     percent () {
       let percent = Math.floor(this.activityInfo.myBlessing / this.activityInfo.maxBlessing * 100)
       return percent >= 100 ? 100 : percent
-    },
-  },
-  mounted () {
-    this.getActivityInfo()
+    }
   },
   methods: {
-    async getActivityInfo () {
-      const res = await activityInfo()
-      this.activityInfo = _get(res, 'data', {})
-      console.log(this.activityInfo)
-    },
     openPop (type) {
       this.$emit('openPop', type)
     },
     toMall () {
-      location.href = "/xmWap/#/payment/"
+      if (this.activityInfo.state === 1) {
+        location.href = '/xmWap/#/payment/'
+      }
     }
   }
 }
@@ -231,6 +227,17 @@ export default {
         justify-content: center;
         display: flex;
         margin-top: -0.1rem;
+        position: relative;
+        &.red-dot::after {
+          content: "";
+          position: absolute;
+          top: 0.1rem;
+          left: 4.7rem;
+          width: 0.12rem;
+          height: 0.12rem;
+          border-radius: 50%;
+          background: #fe1919;
+        }
       }
       img {
         width: 3.29rem;

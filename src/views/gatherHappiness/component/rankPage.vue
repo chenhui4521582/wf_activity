@@ -1,7 +1,7 @@
 <template>
   <div class="second-bc">
     <div class="top-text">
-      <span>前30名上榜有奖</span>
+      <span>{{activityInfo.state===2?'已发榜，':''}}前30名上榜有奖</span>
     </div>
     <div class="topthree">
       <template v-for="(item,index) in topThreeList">
@@ -27,7 +27,7 @@
       </template>
     </div>
     <div class="my-rank-info-container">
-      <div v-if="myRankInfo.myRank!==1" class="information">
+      <div v-if="myRankInfo.myRank!==1 && activityInfo.state===1" class="information">
         <span>当前距离{{myRankInfo.myRank&&myRankInfo.myRank<=30?'前一名':'上榜'}}奖励还差{{myRankInfo.nextAwardsDiffBlessing}}福气</span>
       </div>
       <div class="my-rank-info">
@@ -39,7 +39,11 @@
           <span>累计福气值</span>
           <span>{{myRankInfo.myBlessing||'暂无福气值'}}</span>
         </div>
-        <div class="to-mall-btn" @click="toMall()"></div>
+        <div v-if="activityInfo.state===1" class="to-mall-btn" @click="toMall()"></div>
+        <div v-else>
+          <span>当前奖励</span>
+          <span>{{myRankInfo.currentAwards||'暂无奖励'}}</span>
+        </div>
       </div>
     </div>
     <div class="rank-list-wrapper">
@@ -96,8 +100,8 @@
   </div>
 </template>
 <script>
-import { rankList } from "../services/api";
-import _get from "lodash.get";
+import { rankList } from '../services/api'
+import _get from 'lodash.get'
 export default {
   data () {
     return {
@@ -112,6 +116,12 @@ export default {
   mounted () {
     this.getRankList()
   },
+  props: {
+    activityInfo: {
+      type: Object,
+      default: {}
+    }
+  },
   methods: {
     closeOpenProfit () {
       this.isOpen = true
@@ -123,11 +133,11 @@ export default {
         currentAwards: _get(res, 'data.currentAwards', ''),
         myBlessing: _get(res, 'data.myBlessing', 0),
         myRank: _get(res, 'data.myRank', 0),
-        nextAwardsDiffBlessing: _get(res, 'data.nextAwardsDiffBlessing', 0),
+        nextAwardsDiffBlessing: _get(res, 'data.nextAwardsDiffBlessing', 0)
       }
     },
     toMall () {
-      location.href = "/xmWap/#/payment/"
+      location.href = '/xmWap/#/payment/'
     }
   },
   filters: {
@@ -177,12 +187,12 @@ export default {
         return index >= this.defaultIndex && index === this.rankList.length - 1
       })
       return arr
-    },
+    }
   }
 
 }
 </script>
-<style scoped lang='less'>
+<style lang='less' scoped>
 * {
   padding: 0;
   margin: 0;
