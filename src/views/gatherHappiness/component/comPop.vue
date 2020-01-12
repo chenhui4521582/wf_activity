@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 import { findRecord, rebateRecord, rebateReceive } from '../services/api'
 import _get from 'lodash.get'
 export default {
@@ -133,11 +134,13 @@ export default {
       this.blessingList = _get(res, 'data.blessingList', [])
       this.totalBlessing = _get(res, 'data.totalBlessing', '')
       this.todayBlessing = _get(res, 'data.todayBlessing', '')
+      GLOBALS.marchSetsPoint('A_H5PT0234002733') // H5平台-集福气赢大奖页-福气值获得记录弹窗加载完成
     },
     async getRebateRecord () {
       const res = await rebateRecord()
       this.rebateList = _get(res, 'data.rebateList', [])
       this.totalRebate = _get(res, 'data.totalRebate', '')
+      GLOBALS.marchSetsPoint('A_H5PT0234002730') // H5平台-集福气赢大奖页-金叶返利记录弹窗加载完成
     },
     async toRebateReceive (id) {
       clearTimeout(this.timer)
@@ -155,7 +158,7 @@ export default {
   props: {
     value: {
       type: Number,
-      default: 0 // 0:关闭 1:规则,2:攻略,3查看记录
+      default: 0 // 0:关闭 1:规则,2:攻略,3:查看记录,4:返利记录
     }
   },
   watch: {

@@ -45,12 +45,14 @@
   </article>
 </template>
 <script>
+/* eslint-disable no-undef */
 export default {
   data () {
     return {
     }
   },
   mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0234002738') // H5平台-集福气赢大奖页-活动发榜弹窗加载完成
   },
   methods: {
     toRankPage () {
