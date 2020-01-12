@@ -1,5 +1,5 @@
 <template>
-  <div class="mask" v-if="isPopOpen && activityInfo.incrBlessing">
+  <div class="mask" v-if="isPopOpen">
     <!-- 第一种短背景 -->
     <div class="congra-bc" :class="{'congra2-bc':activityInfo.myBlessing>=10000}">
       <!-- 第二种长背景 -->
@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 export default {
   data () {
     return {
@@ -75,7 +76,8 @@ export default {
       location.href = '/xmWap/#/payment/'
     }
   },
-  computed: {
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0234002734') // H5平台-集福气赢大奖页-福气值新增弹窗加载完成
   },
   props: {
     activityInfo: {

@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 export default {
   data () {
     return {
@@ -52,10 +53,12 @@ export default {
       this.$emit('close')
     },
     toGame (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0234002736', { target_project_id: item.id }) // H5平台-集福气赢大奖页-大家都在玩弹窗-各游戏点击
       location.href = item.url
     },
     toPlat () {
       this.$emit('close')
+      GLOBALS.marchSetsPoint('A_H5PT0234002737') // H5平台-集福气赢大奖页-大家都在玩弹窗-更多游戏点击
       location.href = '/xmWap'
     }
   }

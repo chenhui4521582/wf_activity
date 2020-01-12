@@ -100,6 +100,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 import { rankList } from '../services/api'
 import _get from 'lodash.get'
 export default {
@@ -135,8 +136,10 @@ export default {
         myRank: _get(res, 'data.myRank', 0),
         nextAwardsDiffBlessing: _get(res, 'data.nextAwardsDiffBlessing', 0)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0234002739') // H5平台-集福气赢大奖页-排行榜页面加载完成
     },
     toMall () {
+      GLOBALS.marchSetsPoint('A_H5PT0234002740') // H5平台-集福气赢大奖页-我要福气按钮点击
       location.href = '/xmWap/#/payment/'
     }
   },

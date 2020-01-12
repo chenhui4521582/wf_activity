@@ -47,6 +47,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -69,6 +70,7 @@ export default {
       this.$emit('openPop', type)
     },
     toMall () {
+      GLOBALS.marchSetsPoint('A_H5PT0234002726') // H5平台-集福气赢大奖页-充值领福气按钮点击
       if (this.activityInfo.state === 1) {
         location.href = '/xmWap/#/payment/'
       }
