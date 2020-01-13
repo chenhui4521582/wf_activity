@@ -70,7 +70,7 @@
               <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+                class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
@@ -78,7 +78,7 @@
               <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+                class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
             <li v-if="!isOpen" style="border: none">
               <a href="javascript:" class="btn-check-profit" @click.stop="closeOpenProfit">点击展开完整榜单</a>
@@ -89,7 +89,7 @@
               <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                class="i-ellipsis">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
+                class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
             </li>
           </ul>
         </div>
