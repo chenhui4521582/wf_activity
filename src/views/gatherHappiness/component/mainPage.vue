@@ -184,6 +184,7 @@ export default {
       line-height: 0.36rem;
       text-align: center;
       transform: translateX(-50%);
+      white-space: nowrap;
     }
     .today {
       text-align: center;
