@@ -185,11 +185,10 @@ export default {
       if(this.detail.status == 2) {
         return 100
       }
-      
-      if(this.detail.status == 0 && this.detail.awardNum >= this.detail.useNum) {
-        return Math.floor(this.detail.useNum / this.detail.awardNum * 100)
-      }else {
-        return 100 
+      if(this.detail.status == 0) {
+        let allNo = this.detail.awardNum + this.detail.useNum
+        let proportion = (this.detail.useNum / allNo > 1) ? 1 : this.detail.useNum / allNo
+        return Math.floor(proportion * 100)
       }
     }
   },
@@ -201,7 +200,7 @@ export default {
           let {code, data, message} = _get(res, 'data')
           if(code == 200) {
             let {fragment, periodInfo} = _get(res, 'data.data')
-            if(periodInfo.useNum >= periodInfo.awardNum ) {
+            if(periodInfo.awardNum <= 0) {
               this.detail = {...{fragment}, ...periodInfo, ... {status: 2}}
             }else {
               this.detail = {...{fragment}, ...periodInfo}
@@ -236,7 +235,7 @@ export default {
     },
     /** 抢购 **/
     _commit() {
-      if(this.progress == 100) {
+      if(this.detail.awardNum <= 0) {
         this.noAwardModal = true
         return 
       }
