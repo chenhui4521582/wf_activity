@@ -14,10 +14,9 @@
           <div class="name">
             <span>{{item.nickname}}</span>
           </div>
+          <div class="prize happiness-number">{{item.totalNum||0}}</div>
           <div class="prize">
-            <p class="awards-number">{{item.awardsName|jdkFilter}}</p>
-            <p>京东卡</p>
-            <p>+</p>
+            <p><span class="awards-number">{{item.awardsName|jdkFilter}}</span>京东卡+</p>
             <p>
               <span class="awards-number">{{item.awardsName|jyzFilter}}</span><span>金叶子</span>
             </p>
@@ -295,8 +294,11 @@ export default {
         text-align: center;
         display: block;
         white-space: nowrap;
-        margin-top: 0.1rem;
         color: #fff7a7;
+        &.happiness-number {
+          margin-top: 0.06rem;
+          margin-bottom: 0.18rem;
+        }
         .awards-number {
           font-size: 0.18rem;
           font-weight: bold;
@@ -323,6 +325,9 @@ export default {
       }
       .prize {
         margin-top: 0.24rem;
+        &.happiness-number {
+          margin-top: 0.14rem;
+        }
       }
     }
   }
