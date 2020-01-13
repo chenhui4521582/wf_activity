@@ -35,9 +35,9 @@
     <div class="goods-info">
       <div class="price">
         <div class="current-price">
-          <em>秒杀价</em><span>{{(detail.seckillPrice / 10).toFixed(2)}}</span><i>话费券</i> 
+          <em>秒杀价</em><span>{{parseInt(detail.seckillPrice / 10)}}</span><i>话费券</i> 
         </div>
-        <div class="mask-price">原价:{{(detail.awardPrice / 10).toFixed(2)}}</div>
+        <div class="mask-price">原价:{{parseInt(detail.awardPrice / 10)}}</div>
       </div>
       <div class="name">
         {{detail.title}}
