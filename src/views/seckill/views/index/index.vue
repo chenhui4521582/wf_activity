@@ -41,9 +41,9 @@
             <div class="item-title">限时秒杀价</div>
             <div class="item-price">
               <div class="current-price">
-                <span>{{(item.seckillPrice / 10).toFixed(2)}}</span><i>话费券</i> 
+                <span>{{parseInt(item.seckillPrice / 10)}}</span><i>话费券</i> 
               </div>
-              <div class="mask-price">原价:{{(item.awardPrice / 10).toFixed(2)}}</div>
+              <div class="mask-price">原价:{{parseInt(item.awardPrice / 10)}}</div>
             </div>
           </div>
           <div class="btn before" v-if="item.status == 1">即将开始</div>
