@@ -106,7 +106,7 @@ import _get from 'lodash.get'
 export default {
   data () {
     return {
-      isOpen: false,
+      isOpen: true,
       otherData: [],
       lastTwoData: [],
       rankList: [],
