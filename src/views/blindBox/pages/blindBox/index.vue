@@ -1,16 +1,15 @@
 <template>
   <main>
-    <article class="blind-box-wrap"
-      :style="{'padding-top': `${bannerHeight + translateY}px`}">
-      <section ref="banner"
+    <!-- <article class="blind-box-wrap" :style="{'padding-top': `${bannerHeight + translateY}px`}"> -->
+    <article class="blind-box-wrap">
+      <!-- <section ref="banner"
         :style="{'transform': `translateY(${translateY}px)`}"
         class="banner">
         <div class="time">01.03-01.10</div>
-      </section>
-      <article class="container"
-        :class="{'active': (bannerHeight + translateY)}">
-        <span @click="toPlatform"
-          class="back">返回</span>
+      </section> -->
+      <!-- <article class="container" :class="{'active': (bannerHeight + translateY)}"> -->
+      <article class="container">
+        <span @click="toPlatform" class="back">返回</span>
         <current-product-list></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
