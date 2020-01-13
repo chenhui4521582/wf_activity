@@ -211,8 +211,10 @@ export default {
       if(item.status == 2) {
         return 100
       }
-      if(item.status == 0 && item.awardNum >= item.useNum) {
-        return Math.floor(item.useNum / item.awardNum * 100)
+      if(item.status == 0 ) {
+        let allNo = item.awardNum + item.useNum
+        let proportion = (item.useNum / allNo > 1) ? 1 : item.useNum / allNo
+        return Math.floor(proportion * 100)
       }else {
         return 100
       }
