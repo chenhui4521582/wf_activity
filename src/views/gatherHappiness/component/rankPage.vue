@@ -287,7 +287,7 @@ export default {
         }
       }
       .prize {
-        width: 1rem;
+        width: 1.5rem;
         font-size: 0.18rem;
         line-height: 0.2rem;
         font-weight: bold;
