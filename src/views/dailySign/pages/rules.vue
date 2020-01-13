@@ -25,7 +25,7 @@
                     </li>
                     <li>
                         <div class="question">Q：如何获得奖励金？</div>
-                        <div class="answer">A：打卡成功后次日回回到活动页面，随机瓜分本期奖励金总额。</div>
+                        <div class="answer">A：打卡成功后次日回到活动页面，随机瓜分本期奖励金总额。</div>
                     </li>
                     <li>
                         <div class="question">Q：奖励如何发放？</div>
