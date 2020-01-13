@@ -73,6 +73,7 @@ export default {
     },
     toMall () {
       this.isPopOpen = false
+      localStorage.setItem('originDeffer', location.href)
       location.href = '/xmWap/#/payment/'
     }
   },
