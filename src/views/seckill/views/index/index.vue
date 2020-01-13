@@ -46,14 +46,15 @@
               <div class="mask-price">原价:{{(item.awardPrice / 10).toFixed(2)}}</div>
             </div>
           </div>
-          <div class="btn before" v-if="item.status == 0">即将开始</div>
-          <div class="btn current" v-if="item.status == 1">
+          <div class="btn before" v-if="item.status == 1">即将开始</div>
+          <div class="btn current" v-if="item.status == 0">
             <span>马上抢</span>
             <img src="./img/right-icon.png" alt="">
           </div>
           <div class="btn end" v-if="item.status == 2">已结束</div>
-          <div class="icon before" v-if="item.status == 0">{{versionDate(item.startTime, 1)}}开始</div>
-          <div class="icon current" v-if="item.status == 1">{{item.countTime}}后结束</div>
+          
+          <div class="icon before" v-if="item.status == 1">{{versionDate(item.startTime, 1)}}开始</div>
+          <div class="icon current" v-if="item.status == 0">{{item.countTime}}后结束</div>
           <div class="icon end" v-if="item.status == 2">已结束</div>
         </div>
       </div>
@@ -139,7 +140,7 @@ export default {
       this.clearCountDown()
       let length = this.list.length
       length && this.list.forEach((item, index) => { 
-        if (item.status == 1) {
+        if (item.status == 0) {
           let _index = index
           let start = new Date().getTime()
           let endTime = item.endTime.replace(/(-)/g, '/')
@@ -148,7 +149,7 @@ export default {
           this.initTime(coutDownTime, _index)
           this.countDownTime(coutDownTime, _index)
         }
-        if(item.status == 0) {
+        if(item.status == 1) {
           let _index = index
           let start = new Date().getTime()
           let endTime = item.startTime.replace(/(-)/g, '/')
@@ -204,13 +205,13 @@ export default {
     },
     /** 进度条 **/
     progress(item) {
-      if(item.status == 0) {
+      if(item.status == 1) {
         return 0
       }
       if(item.status == 2) {
         return 100
       }
-      if(item.status == 1 && item.awardNum >= item.useNum) {
+      if(item.status == 0 && item.awardNum >= item.useNum) {
         return Math.floor(item.useNum / item.awardNum * 100)
       }else {
         return 100

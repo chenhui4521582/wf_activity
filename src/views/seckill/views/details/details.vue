@@ -14,10 +14,10 @@
       <div class="year-icon">
         <img src="./img/year-icon.png" alt="">
       </div>
-      <div class="before" v-if="detail.status == 0">
+      <div class="before" v-if="detail.status == 1">
         {{versionDate(detail.startTime)}}开抢
       </div>
-      <div class="start" v-if="detail.status == 1">
+      <div class="start" v-if="detail.status == 0">
         <div class="count-down">
           疯抢进行中 {{this.detail.countTime}}后结束
         </div>
@@ -76,10 +76,10 @@
       </div>
     </div>
     <div class="commit">
-      <div class="before btn" v-if="detail.status == 0">
+      <div class="before btn" v-if="detail.status == 1">
         {{versionDate(detail.startTime)}}开抢
       </div>
-      <div class="start btn" v-if="detail.status == 1" @click="_commit">
+      <div class="start btn" v-if="detail.status == 0" @click="_commit">
         马上抢购
       </div>
       <div class="end btn" v-if="detail.status == 2">
@@ -179,14 +179,14 @@ export default {
   },
   computed: {
     progress() {
-      if(this.detail.status == 0) {
+      if(this.detail.status == 1) {
         return 0
       }
       if(this.detail.status == 2) {
         return 100
       }
       
-      if(this.detail.status == 1 && this.detail.awardNum >= this.detail.useNum) {
+      if(this.detail.status == 0 && this.detail.awardNum >= this.detail.useNum) {
         return Math.floor(this.detail.useNum / this.detail.awardNum * 100)
       }else {
         return 100 
@@ -203,7 +203,7 @@ export default {
             let {fragment, periodInfo} = _get(res, 'data.data')
             this.detail = {...{fragment}, ...periodInfo}
             /** 秒杀进行中 倒计时逻辑 **/
-            if(this.detail.status == 1) {
+            if(this.detail.status == 0) {
               let start = new Date().getTime()
               let endTime = this.detail.endTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
@@ -213,7 +213,7 @@ export default {
               this.countDownTime(coutDownTime)
             }
             /** 秒杀没开始 倒计时逻辑 **/
-            if(this.detail.status == 0) {
+            if(this.detail.status == 1) {
               let start = new Date().getTime()
               let endTime = this.detail.startTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
@@ -223,7 +223,7 @@ export default {
               this.countDownTime(coutDownTime)
             }
             /** 没开始并且用户话费卷不足显示提示框 **/
-            if(this.detail.status == 0 && this.detail.seckillPrice > this.detail.fragment) {
+            if(this.detail.status == 1 && this.detail.seckillPrice > this.detail.fragment) {
               this.showTips = true
             }
           }
