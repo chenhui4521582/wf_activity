@@ -260,8 +260,8 @@ export default {
       }
       .prize-tip {
         position: absolute;
-        top: 2rem;
-        left: 0.3rem;
+        top: 2.28rem;
+        left: 0.24rem;
         width: 0.38rem;
         height: 0.38rem;
       }
@@ -320,8 +320,8 @@ export default {
         margin-top: -0.2rem;
       }
       .prize-tip {
-        top: 1.9rem;
-        left: 0.26rem;
+        top: 2.22rem;
+        left: 0.16rem;
       }
       .prize {
         margin-top: 0.24rem;
