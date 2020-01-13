@@ -67,18 +67,18 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       close: false,
       //   control:true,
       closePop: true
-    };
+    }
   },
   methods: {
-    congra_back() {
-      this.$emit("congra_back", this.close);
-      this.closePop = false;
-      console.log(this.closePop);
+    congra_back () {
+      this.$emit('congra_back', this.close)
+      this.closePop = false
+      console.log(this.closePop)
     }
   },
   props: {
@@ -87,7 +87,7 @@ export default {
       default: 0
     }
   }
-};
+}
 </script>
 <style lang="less">
 .mask {

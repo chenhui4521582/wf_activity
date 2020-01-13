@@ -30,11 +30,9 @@
                   <br />
                 </div>
                 <div>
-                  <span
-                    style="  color: #D42E27;
+                  <span style="  color: #D42E27;
                 font-size:0.24rem;
-                font-weight:400;"
-                  >+</span>
+                font-weight:400;">+</span>
                   <span style="color:#FF8314;font-size:0.24rem;font-weight:400">500元</span>京东卡
                 </div>
               </div>
@@ -62,21 +60,21 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       closeRank: false,
-      opensecondpage:true,
-      color:'#FAD6A9'
-    };
+      opensecondpage: true,
+      color: '#FAD6A9'
+    }
   },
   methods: {
-      gorank(){
-          this.$emit('gosecondpage',this.opensecondpage,this.closeRank,this.color)
-      },    
-    closerank() {
-      this.$emit("closerank", this.closeRank);
-      console.log(this.closeRank);
-      console.log(this.rankNumber);
+    gorank () {
+      this.$emit('gosecondpage', this.opensecondpage, this.closeRank, this.color)
+    },
+    closerank () {
+      this.$emit('closerank', this.closeRank)
+      console.log(this.closeRank)
+      console.log(this.rankNumber)
     }
   },
   props: {
@@ -88,29 +86,29 @@ export default {
   //   判断发榜传过来的数值 确定奖品名称
   filters: {
     //   判断金叶和京东卡都存在时
-    prizetext_again(value) {
+    prizetext_again (value) {
       if (value == 3) {
-        return "京东卡";
+        return '京东卡'
       }
     },
 
-    prizetext(value) {
+    prizetext (value) {
       switch (value) {
         case 1:
-          return "福气值";
-          break;
+          return '福气值'
+          break
         case 2:
-          return "金叶";
-          break;
+          return '金叶'
+          break
         case 3:
-          return "金叶";
-          break;
+          return '金叶'
+          break
         case 4:
-          return "京东卡";
+          return '京东卡'
       }
     }
   }
-};
+}
 </script>
 <style lang="less">
 .rank-bg {
