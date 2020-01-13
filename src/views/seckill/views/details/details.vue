@@ -545,7 +545,11 @@ export default {
         span {
           font-size: .42rem;
           line-height: .82;
+          
         }
+      }
+      .mask-price {
+        text-decoration: line-through;
       }
     }
     .name {
