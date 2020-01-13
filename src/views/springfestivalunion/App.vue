@@ -42,7 +42,7 @@
                   {{item.countTime}}后结束
                 </template>
                 <template v-else>
-                  {{item.activityEndTime}} 结束
+                  {{item.activityEndTime}}结束
                 </template>
               </template>
               <template v-else>
