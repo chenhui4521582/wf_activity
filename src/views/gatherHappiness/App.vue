@@ -10,25 +10,34 @@
         <img src="./img/guide-icon.png" class="guide" @click="openPop(2)" />
       </div>
     </section>
-    <main-page v-if="isMainPage" @openPop="openPop"></main-page>
-    <rank-page v-if="!isMainPage" @openPop="openPop"></rank-page>
+    <main-page v-if="isMainPage" :activityInfo="activityInfo" @openPop="openPop"></main-page>
+    <rank-page v-if="!isMainPage" :activityInfo="activityInfo"></rank-page>
     <div class="bottom-btn-wrapper" :class="{'is-long-screen':isLongScreen}"
       :style="{background:configPageInfo[currentPage].bgColor}">
       <div class="btn-container">
         <div v-for="(item,key,index) in configPageInfo" :key="key+index"
-          :class="{'actived':currentPage===key}" @click="currentPage=key">{{item.btnText}}</div>
+          :class="{'actived':currentPage===key}" @click="tabClick(key)">{{item.btnText}}</div>
       </div>
     </div>
     <com-pop v-model="popType"></com-pop>
+    <congratulation :activityInfo="activityInfo" v-if="activityInfo.incrBlessing"
+      @openGamePop="openGamePop"></congratulation>
+    <game-pop v-if="isGamePopOpen" @close="closeGamePop"></game-pop>
+    <rank @close='closeRank' v-if="isRankPopOpen" :myRankInfo='myRankInfo'
+      @toRankPage='currentPage="rank"'></rank>
   </main>
 </template>
 <script>
+/* eslint-disable no-undef */
 // gather-happiness 缩写 gh
+import { activityInfo, myRank } from './services/api'
+import _get from 'lodash.get'
 import rankPage from './component/rankPage'
 import mainPage from './component/mainPage'
 import comPop from './component/comPop'
-import { myRank } from "./services/api"
-import _get from "lodash.get"
+import congratulation from './component/congratulation'
+import gamePop from './component/gamePop'
+import rank from './component/rank'
 export default {
   data () {
     return {
@@ -43,12 +52,15 @@ export default {
           bgColor: '#FAD6A9'
         }
       },
-      popType: 0, // 0:关闭 1:规则,2:攻略,3查看记录
-      myRankInfo: {}
+      popType: 0, // 0:关闭 1:规则,2:攻略,3:查看记录,4:返利记录
+      myRankInfo: {},
+      isGamePopOpen: false,
+      activityInfo: {},
+      isRankPopOpen: false
     }
   },
   mounted () {
-    this.getMyRank()
+    this.getActivityInfo()
   },
   computed: {
     isLongScreen () {
@@ -62,23 +74,81 @@ export default {
     /** 打开弹窗
      */
     openPop (type) {
+      switch (type) {
+        case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0234002723') // H5平台-集福气赢大奖页-规则按钮点击
+          break
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0234002724') // H5平台-集福气赢大奖页-攻略按钮点击
+          break
+        case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0234002725') // H5平台-集福气赢大奖页-福气记录按钮点击
+          break
+        case 4:
+          GLOBALS.marchSetsPoint('A_H5PT0234002727') // H5平台-集福气赢大奖页-领每日返利按钮点击
+          break
+
+        default:
+          break
+      }
       this.popType = type
+    },
+    async getActivityInfo () {
+      const res = await activityInfo()
+      this.activityInfo = _get(res, 'data', {})
+      if (this.activityInfo.state === 2) {
+        this.getMyRank()
+      }
+      GLOBALS.marchSetsPoint('P_H5PT0234', { source_address: this.$route.query('from') }) // H5平台-集福气赢大奖-页面加载完成
     },
     async getMyRank () {
       const res = await myRank()
       this.myRankInfo = _get(res, 'data', {})
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.isRankPopOpen = true
+      }
+    },
+    tabClick (key) {
+      this.currentPage = key
+      switch (key) {
+        case 'main':
+          GLOBALS.marchSetsPoint('A_H5PT0234002728') // H5平台-集福气赢大奖页-每日返利TAB点击
+          break
+        case 'rank':
+          GLOBALS.marchSetsPoint('A_H5PT0234002729') // H5平台-集福气赢大奖页-福气排行榜TAB点击
+          break
+
+        default:
+          break
+      }
     },
     back () {
       if (this.isMainPage) {
+        GLOBALS.marchSetsPoint('A_H5PT02340027') // H5平台-集福气赢大奖页-返回按钮点击
+        history.go(-1)
         return
       }
       this.currentPage = 'main'
+    },
+    openGamePop () {
+      this.isGamePopOpen = true
+      GLOBALS.marchSetsPoint('A_H5PT0234002735') // H5平台-集福气赢大奖页-大家都在玩弹窗加载完成
+    },
+    closeGamePop () {
+      this.isGamePopOpen = false
+    },
+    closeRank () {
+      this.isRankPopOpen = false
     }
   },
   components: {
     mainPage,
     rankPage,
-    comPop
+    comPop,
+    congratulation,
+    gamePop,
+    rank
   }
 }
 </script>
