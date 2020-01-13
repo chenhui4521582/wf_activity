@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="activity_time">活动时间: 2019.12.25-2020.01.01</div>
+        <div class="activity_time">活动时间: {{activityInfo.timeline}}</div>
         <div class="pnl_header">
             <a href="javascript:history.go(-1)" class="back">< 返回</a>
         </div>
@@ -61,6 +61,7 @@ import _get from 'lodash.get';
 export default {
     data(){
         return{
+           activityInfo:{},
            recordInfo:{
                recordList:[]
            }
@@ -92,11 +93,17 @@ export default {
                 this.recordInfo = _get(res,'data.data',{});
                 //console.log('rankInfo:'+JSON.stringify(this.recordInfo));
             })
+        },
+        getActivityInfo(){
+            this.axios.post('//ops-api.beeplaying.com/ops/daily/cost/sharing/getActivityInfo').then(res => {
+                this.activityInfo = _get(res,'data.data',{});
+            })
         }
     },
     mounted(){
         GLOBALS.marchSetsPoint('A_H5PT0238002764');
         this.getRecordInfo();
+        this.getActivityInfo();
     },
 }
 </script>
@@ -119,7 +126,7 @@ export default {
 
         .wrapper{
             padding-bottom:0.5rem;
-            min-height:5rem;
+            min-height:7rem;
             .pnl_myScore
             {
                 background:url('../images/bg_score.png') no-repeat;
@@ -151,7 +158,7 @@ export default {
             }
             .pnl_noData
             {
-                margin-top: 0.8rem;
+                margin-top: 1.5rem;
                 text-align: center;
                 img{
                     width:1rem;
