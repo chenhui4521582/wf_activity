@@ -34,13 +34,12 @@
         福气记录
       </p>
       <div class="button">
-        <div class="button-firstrow" @click="toMall()">
-          <img v-if="activityInfo.state===1" src="../img/chongzhi.png" alt />
+        <div class="button-firstrow">
+          <img v-if="activityInfo.state===1" src="../img/chongzhi.png" alt @click="toMall()" />
           <img v-else src="../img/chongzhi_grey.png" alt />
         </div>
-        <div class="button-secondrow" :class="{'red-dot':activityInfo.unReceiveNum}"
-          @click="openPop(4)">
-          <img src="../img/fanli.png" alt />
+        <div class="button-secondrow" :class="{'red-dot':activityInfo.unReceiveNum}">
+          <img src="../img/fanli.png" alt @click="openPop(4)" />
         </div>
       </div>
     </div>
@@ -72,10 +71,8 @@ export default {
     },
     toMall () {
       GLOBALS.marchSetsPoint('A_H5PT0234002726') // H5平台-集福气赢大奖页-充值领福气按钮点击
-      if (this.activityInfo.state === 1) {
-        localStorage.setItem('originDeffer', location.href)
-        location.href = '/xmWap/#/payment/'
-      }
+      localStorage.setItem('originDeffer', location.href)
+      location.href = '/xmWap/#/payment/'
     }
   }
 }
