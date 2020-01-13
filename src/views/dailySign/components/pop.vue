@@ -18,7 +18,7 @@
             <div class="price"><b>{{awardInfo.amount}}</b>元</div>
         </div>
         <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
-        <a class="btn_sign" @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
+        <a class="btn_sign" v-else @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
     </div>
   </section>
 </template>
