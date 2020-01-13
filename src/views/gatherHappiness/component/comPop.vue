@@ -158,6 +158,7 @@ export default {
   },
   methods: {
     comPopback () {
+      clearTimeout(this.timer)
       this.$emit('input', 0)
     },
     async getFindRecord () {
@@ -178,6 +179,7 @@ export default {
       const res = await rebateReceive(id)
       if (_get(res, 'code', 0)) {
         this.isShowTips = true
+        this.$parent.getActivityInfo()
         this.timer = setTimeout(() => {
           clearTimeout(this.timer)
           this.isShowTips = false

@@ -30,8 +30,10 @@
       </div>
     </div>
     <div class="lower-middle">
-      <p class="look" @click="openPop(3)">
-        福气记录
+      <p class="look">
+        <span @click="openPop(3)">
+          福气记录
+        </span>
       </p>
       <div class="button">
         <div class="button-firstrow">
@@ -71,7 +73,7 @@ export default {
     },
     toMall () {
       GLOBALS.marchSetsPoint('A_H5PT0234002726') // H5平台-集福气赢大奖页-充值领福气按钮点击
-      localStorage.setItem('originDeffer', location.href)
+      // localStorage.setItem('originDeffer', location.href)
       location.href = '/xmWap/#/payment/'
     }
   }
@@ -217,19 +219,9 @@ export default {
     .button {
       font-size: 0;
       margin-top: -0.1rem;
-      .button-firstrow {
-        width: 100%;
-        height: 1.09rem;
-        display: flex;
-        justify-content: center;
-      }
+      text-align: center;
       .button-secondrow {
-        width: 100%;
-        height: 1.09rem;
-        justify-content: center;
-        display: flex;
         margin-top: -0.1rem;
-        position: relative;
         &.red-dot::after {
           content: "";
           position: absolute;
@@ -242,8 +234,7 @@ export default {
         }
       }
       img {
-        width: 3.29rem;
-        height: 1.09rem;
+        height: 1.1rem;
       }
     }
   }

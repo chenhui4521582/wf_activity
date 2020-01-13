@@ -100,7 +100,7 @@ export default {
       if (this.activityInfo.state === 2) {
         this.getMyRank()
       }
-      GLOBALS.marchSetsPoint('P_H5PT0234', { source_address: this.$route.query('from') }) // H5平台-集福气赢大奖-页面加载完成
+      GLOBALS.marchSetsPoint('P_H5PT0234', { source_address: GLOBALS.getUrlParam('from') }) // H5平台-集福气赢大奖-页面加载完成
     },
     async getMyRank () {
       const res = await myRank()
