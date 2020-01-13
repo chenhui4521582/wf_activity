@@ -38,9 +38,13 @@
                                 <td>{{user.applyTime}}</td>
                                 <td>{{user.amount!=null?user.amount+'元话费券':'-'}}</td>
                             </tr>
+                            <tr class="tr_nodata">
+                                <td v-if="!showMore" colspan="4"><p>--到底啦--</p></td>
+                                 <a @click="getRankingList" v-if="showMore" href="javascript:void(0)">点击加载更多</a>
+                            </tr>
                         </tbody>
                     </table>
-                    <a @click="getRankingList" v-if="showMore" href="javascript:void(0)">点击加载更多</a>
+                   
                 </div>
             </div>
         </div>
@@ -126,6 +130,15 @@ export default {
                     display: table;
                    td{
                         text-align:center;
+                   }
+                   &.tr_nodata
+                   {
+                       background: none;
+                       td{
+                           color:#999;
+                           height:0.8rem;
+                           vertical-align: bottom
+                       }
                    }
                 }
             }
