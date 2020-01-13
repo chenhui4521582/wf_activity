@@ -217,7 +217,8 @@ export default {
     .inner-container {
       width: 100%;
       height: 4.5rem;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: scroll;
       color: #fff5ed;
       font-size: 0.22rem;
       .rule-header {
