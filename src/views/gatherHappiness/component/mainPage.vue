@@ -10,7 +10,7 @@
       <img class="percent-bg" :src="require(`../img/percent${percent===100?'100':''}-bg.png`)"
         alt />
       <div class="control">
-        <div class="progess" :style="{width:percent+'%'}">
+        <div class="progess" :style="{width:activityInfo.state===1?percent+'%':'0%'}">
           <img src="../img/light.png" />
         </div>
         <div class="text">
@@ -21,9 +21,9 @@
       </div>
 
       <div class="tomorrow">
-        <span v-if="activityInfo.rebateAmount>0">明日返利：{{activityInfo.rebateAmount}}金叶</span>
         <span
-          v-else>今日消耗{{activityInfo.bettingAmount}}金叶，达到{{activityInfo.minBetting}}明日才有返利哦~</span>
+          v-if="activityInfo.rebateAmount===0 && activityInfo.state===1">今日消耗{{activityInfo.bettingAmount}}金叶，达到{{activityInfo.minBetting}}明日才有返利哦~</span>
+        <span v-else>明日返利：{{activityInfo.state===1?activityInfo.rebateAmount:0}}金叶</span>
       </div>
       <div class="today">
         <span>（明日返利=今日总消耗金叶*返利比）</span>
@@ -36,6 +36,7 @@
       <div class="button">
         <div class="button-firstrow" @click="toMall()">
           <img v-if="activityInfo.state===1" src="../img/chongzhi.png" alt />
+          <img v-else src="../img/chongzhi_grey.png" alt />
         </div>
         <div class="button-secondrow" :class="{'red-dot':activityInfo.unReceiveNum}"
           @click="openPop(4)">
@@ -72,6 +73,7 @@ export default {
     toMall () {
       GLOBALS.marchSetsPoint('A_H5PT0234002726') // H5平台-集福气赢大奖页-充值领福气按钮点击
       if (this.activityInfo.state === 1) {
+        localStorage.setItem('originDeffer', location.href)
         location.href = '/xmWap/#/payment/'
       }
     }
@@ -111,7 +113,7 @@ export default {
       }
     }
     .here {
-      width: 1.22rem;
+      width: 1.28rem;
       height: 0.94rem;
       position: relative;
       animation: move 2s linear infinite;
@@ -236,8 +238,8 @@ export default {
           position: absolute;
           top: 0.1rem;
           left: 4.7rem;
-          width: 0.12rem;
-          height: 0.12rem;
+          width: 0.16rem;
+          height: 0.16rem;
           border-radius: 50%;
           background: #fe1919;
         }

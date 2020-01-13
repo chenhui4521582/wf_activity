@@ -9,7 +9,7 @@
           <img class="rank-icon" :src="item.rank?require(`../img/second/${item.rank}.png`):''"
             alt />
           <div class="headpic">
-            <img :src="item.profilePhoto|filter" alt />
+            <img :src="item.profilePhoto || defaultImg |filter" alt />
           </div>
           <div class="name">
             <span>{{item.nickname}}</span>
@@ -111,7 +111,8 @@ export default {
       lastTwoData: [],
       rankList: [],
       myRankInfo: {},
-      defaultIndex: 5
+      defaultIndex: 5,
+      defaultImg: '/cdn/common/images/common/img_photo.png'
     }
   },
   mounted () {
@@ -140,6 +141,7 @@ export default {
     },
     toMall () {
       GLOBALS.marchSetsPoint('A_H5PT0234002740') // H5平台-集福气赢大奖页-我要福气按钮点击
+      localStorage.setItem('originDeffer', location.href)
       location.href = '/xmWap/#/payment/'
     }
   },
@@ -313,7 +315,7 @@ export default {
         width: 1.32rem;
         height: 1.32rem;
         border-radius: 50%;
-        margin-top: -0.18rem;
+        margin-top: -0.2rem;
       }
       .prize-tip {
         top: 1.9rem;

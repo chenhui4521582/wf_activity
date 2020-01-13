@@ -8,30 +8,45 @@
       <div class="inner">
         <!-- 规则页面 -->
         <template v-if="value===1">
-          <div class="inner-container">
-            <p>
-              <span class="rule-header">①活动时间</span>
-              <span>2020年1月27日0点-2月2日24点，2月3日-4日发榜</span>
-            </p>
-            <p>
-              <span class="rule-header">②每日返利</span>
-              <span>活动期间，每天登录活动页可免费领取昨日总消耗金叶0.1%返利金叶（明天领取金叶=今天总消耗金叶*返利比）；充值随机获福气值，每天达到10000福气值，则次日金叶返利升级10倍（返利比1%）</span>
-            </p>
-            <p>
-              <span class="rule-header">③累计福气榜</span>
-              <span>活动期间所得福气可累计，前30名福气最高玩家可上榜赢取大奖。</span>
-            </p>
-            <p>
-              <span class="rule-header">④小提示</span>
-              <span>•每日返利需由玩家每天在“返利记录”页手动领取，2月4日24点前均可领取所得奖励，过时不予补偿；</span>
-              <span>•福气榜统计截止时间为2月2日24点，福气在充值后将自动累计到玩家榜单。</span>
-              <span>•平台保留对活动条款的最终解释权，如需咨询可联系在线客服。</span>
-            </p>
-          </div>
+          <ul class="inner-container">
+            <li>
+              <p class="rule-header">①活动时间</p>
+              <p>2020年1月27日0点-2月2日24点，2月3日-4日发榜</p>
+            </li>
+            <li>
+              <p class="rule-header">②每日返利</p>
+              <p>
+                •活动期间，每天登录活动页可免费领取昨日金叶总消耗的0.1%金叶返利（明天领取金叶=今天总消耗金叶*返利比），且在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动；
+              </p>
+              <p>
+                • 充值随机获福气值，每天达到1万福气值，则次日金叶返利比升级10倍（返利比1%）；
+              </p>
+              <p>
+                • 为次日返利金叶为整数，当天消耗金叶需达到1千以上。
+              </p>
+            </li>
+            <li>
+              <p class="rule-header">③累计福气榜</p>
+              <p>• 活动期间所得福气可累计，前30名福气最高玩家可上榜赢取大奖；</p>
+              <p>• 最终累计福气值一样，则先达成排名靠前。</p>
+            </li>
+            <li>
+              <p class="rule-header">④小提示</p>
+              <p>•每日返利需由玩家每天在“返利记录”页手动领取，2月4日24点前均可领取所得奖励，过时不予补偿；</p>
+              <p>•福气榜统计时间截至2月2日24点，福气在充值后将自动累计到玩家榜单，上榜奖励将由系统自动发放到账。</p>
+              <p>•平台保留对活动条款的最终解释权，如需咨询可联系在线客服。</p>
+            </li>
+            <li>
+              <p class="rule-header">⑤其他</p>
+              <p>平台保留对活动条款的最终解释权，如需咨询可联系在线客服。</p>
+            </li>
+          </ul>
         </template>
         <!-- 攻略页面 -->
         <template v-if="value===2">
-          <img src="../img/comPop/2/inner.png" class="guide-image" alt />
+          <div class="inner-container">
+            <img src="../img/comPop/2/inner.png" class="guide-image" alt />
+          </div>
         </template>
 
         <!-- 查看福气获得记录 -->
@@ -56,12 +71,20 @@
               </div>
             </div>
             <!-- 循环福气获得记录列表 -->
-            <ul class="record-inner">
-              <li class="record-inner-li" v-for="(item,key) in blessingList" :key="key">
-                <div>{{item.createTime}}</div>
-                <div>{{item.blessing}}</div>
-              </li>
-            </ul>
+            <template v-if="blessingList.length>0">
+              <ul class="record-inner">
+                <li class="record-inner-li" v-for="(item,key) in blessingList" :key="key">
+                  <div>{{item.createTime}}</div>
+                  <div>{{item.blessing}}</div>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <div class="empty">
+                <img src="../img/comPop/empty.png" alt=""><br>
+                <span>暂无记录</span>
+              </div>
+            </template>
           </div>
         </template>
 
@@ -87,19 +110,27 @@
             </div>
 
             <!-- 循环列表 -->
-            <ul class="record-inner">
-              <li class="rabate-list" v-for="(item,key) in rebateList" :key="key">
-                <div>{{item.createDate}}</div>
-                <div class="rebate-cell">{{item.rebate}}</div>
-                <!-- 领取按钮 -->
-                <div v-show='item.state === 0' class="btn receive"
-                  @click="toRebateReceive(item.id)">
-                </div>
-                <!-- 已领取 -->
-                <div v-show="item.state === 1" class="btn received">
-                </div>
-              </li>
-            </ul>
+            <template v-if="rebateList.length>0">
+              <ul class="record-inner">
+                <li class="rabate-list" v-for="(item,key) in rebateList" :key="key">
+                  <div>{{item.createDate}}</div>
+                  <div class="rebate-cell">{{item.rebate}}</div>
+                  <!-- 领取按钮 -->
+                  <div v-show='item.state === 0' class="btn receive"
+                    @click="toRebateReceive(item.id)">
+                  </div>
+                  <!-- 已领取 -->
+                  <div v-show="item.state === 1" class="btn received">
+                  </div>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <div class="empty">
+                <img src="../img/comPop/empty.png" alt=""><br>
+                <span>暂无记录</span>
+              </div>
+            </template>
           </div>
         </template>
       </div>
@@ -228,14 +259,26 @@ export default {
     }
     .guide-image {
       width: 4.18rem;
-      height: 4.5rem;
-    }
-    p {
-      display: grid;
-      margin-top: 0.06rem;
+      display: block;
+      margin: auto;
     }
   }
-
+  .empty {
+    text-align: center;
+    margin-top: 0.9rem;
+    font-weight: bold;
+    font-size: 0;
+    img {
+      width: 1rem;
+      height: 1rem;
+    }
+    span {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 0.24rem;
+      color: #850f1d;
+    }
+  }
   .title {
     position: relative;
     top: 2.8rem;

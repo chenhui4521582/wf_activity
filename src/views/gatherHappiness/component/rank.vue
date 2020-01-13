@@ -32,7 +32,7 @@
             <template v-else>
               <p><span>您暂<em>未上榜</em>,下次继续加油哟~</span></p>
               <div @click="close">
-                <div class="noprize-button">我知道啦</div>
+                <img src="../img/rank/button_ikown.png" alt />
               </div>
             </template>
           </div>
@@ -257,18 +257,6 @@ export default {
             em {
               color: #920006;
             }
-          }
-          .noprize-button {
-            width: 2.8rem;
-            height: 0.7rem;
-            background: rgba(255, 219, 72, 1);
-            border-radius: 0.35rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.26rem;
-            font-weight: 800;
-            color: rgba(170, 0, 0, 1);
           }
         }
       }

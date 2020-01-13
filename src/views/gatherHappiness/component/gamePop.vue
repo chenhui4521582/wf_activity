@@ -14,8 +14,7 @@
             <img src="../img/play/button.png" alt />
           </div>
           <div class="play-bottom-tips">
-            小贴士：在斗地主、麻将、跑得快、枪火英雄、
-            套圈中消耗金叶不计入任务中
+            小贴士：部分游戏不计入活动，详见规则
           </div>
         </div>
       </div>

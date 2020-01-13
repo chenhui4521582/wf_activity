@@ -60,6 +60,7 @@ export default {
     }
   },
   mounted () {
+    localStorage.removeItem('originDeffer')
     this.getActivityInfo()
   },
   computed: {
@@ -106,7 +107,7 @@ export default {
       this.myRankInfo = _get(res, 'data', {})
       const code = _get(res, 'code', 0)
       if (code === 200) {
-        this.isRankPopOpen = true
+        this.isRankPopOpen = this.myRankInfo.popup
       }
     },
     tabClick (key) {
