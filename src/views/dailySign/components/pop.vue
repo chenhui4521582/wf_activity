@@ -11,6 +11,7 @@
         </div>
         <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
         <a class="btn_sign" v-else href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
+        <div class="btn_close" @click="closePop()"></div>
     </div>
     <div class="content" v-if="awardInfo.status == 1">
         <img class="img_title" src="../images/pic_success.png" />
@@ -18,7 +19,8 @@
             <div class="price"><b>{{awardInfo.amount}}</b>元</div>
         </div>
         <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
-        <a class="btn_sign" @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
+        <a class="btn_sign" v-else @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
+        <div class="btn_close" @click="closePop()"></div>
     </div>
   </section>
 </template>
@@ -66,6 +68,7 @@ export default {
     background: rgba(0, 0, 0, 0.55);
     z-index: 3;
   }
+  
   .content{
       position: fixed;
       width:5.6rem;
@@ -75,6 +78,18 @@ export default {
       background:url('../images/bg_dialog.png') no-repeat;
       background-size:cover;
       z-index: 4;
+      .btn_close
+      {
+        position: absolute;
+         width: 0.66rem;
+         height: 0.66rem;
+         border-radius:50%;
+         left: 2.5rem;
+         bottom: -1rem;
+         background:url('../images/icon_close.png') #FE7607 no-repeat;
+         background-size:0.33rem 0.33rem;
+         background-position: center center;
+      }
       .img_title
       {
           display: block;

@@ -40,6 +40,7 @@
         <!--三步玩转打卡瓜分-->
         <div class="pnl_desc">
             <a href="./dailySign.html#/rules">查看活动规则>></a>
+            <img class="icon_down" src="../images/icon_down.png" v-if="rankInfo.recordRspList.length>0 && noScroll" />
         </div>
         <!--打卡战况-->
         <div v-if="rankInfo.recordRspList.length>0" class="pnl pnl_rankList">
@@ -98,8 +99,9 @@ export default {
                recordRspList:[]
            },
            awardInfo:{},
-           isShowPop:false,
-           countTime:null
+           isShowPop: false,
+           countTime: null,
+           noScroll: true
         }
     },
     components:{
@@ -180,6 +182,7 @@ export default {
       }
     },
     mounted(){
+        var self =this;
         GLOBALS.marchSetsPoint('P_H5PT0238',{
             source_address:document.referrer
         })
@@ -188,7 +191,9 @@ export default {
         //获取排行榜信息
         this.getRankingList();
         //
-        //this.doSharing();
+        document.onscroll = function () {
+            self.noScroll = false
+        }
     },
 }
 </script>
@@ -201,6 +206,12 @@ export default {
 </style>
 <style lang="less" scoped>
     @import '../index.less';
+    @keyframes goDown
+    {
+        from {bottom: -0.14rem;}
+        to {bottom: -0.2rem;}
+    }
+
     
     .pnl_getAwards
     {
@@ -364,6 +375,16 @@ export default {
         margin:0.33rem auto;
         height:3.3rem;
         width:6.8rem;
+
+        .icon_down
+        {
+            position: absolute;
+            width:0.26rem;
+            height:0.24rem;
+            bottom: -0.14rem;
+            left: calc(50%  - 0.13rem);
+            animation: goDown 0.7s infinite;
+        }
 
         a{
             position: absolute;

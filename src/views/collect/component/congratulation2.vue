@@ -10,20 +10,22 @@
           <span>56456456福气值</span>
         </div>
         <div class="congra2-img">
-            <img src="../images/congratulation/fudai.png" alt="">
+          <img src="../images/congratulation/fudai.png" alt="">
         </div>
         <div class="congra2-bottom-text">
-            <span>
-                <span>福气值已累计</span><span style="color:#FEEC21;font-size:0.24rem">10000</span><span>,今日游戏消耗金叶的</span><span style="color:#FEEC21;font-size:0.24rem">1%</span><span>将在明天返利！</span>
-            </span>
+          <span>
+            <span>福气值已累计</span><span
+              style="color:#FEEC21;font-size:0.24rem">10000</span><span>,今日游戏消耗金叶的</span><span
+              style="color:#FEEC21;font-size:0.24rem">1%</span><span>将在明天返利！</span>
+          </span>
         </div>
         <div class="congra2-bottom-button">
-                <div @click="goplay">
-                <img src="../images/congratulation/goplay.png" alt />
-              </div>
-              <div @click='congra_back' >
-                <img src="../images/congratulation/continue.png" alt />
-              </div>
+          <div @click="goplay">
+            <img src="../images/congratulation/goplay.png" alt />
+          </div>
+          <div @click='congra_back'>
+            <img src="../images/congratulation/continue.png" alt />
+          </div>
         </div>
       </div>
     </div>
@@ -35,22 +37,22 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       closePop: true,
-      openplay:true
-    };
+      openplay: true
+    }
   },
   methods: {
-      goplay(){
-            this.$emit('goplay',this.openplay)
-            this.closePop=false
-          console.log(this.openPlay)
-      },
-    congra_back() {
-      this.$emit("congra_back", this.close);
-      this.closePop = false;
-      console.log(this.closePop);
+    goplay () {
+      this.$emit('goplay', this.openplay)
+      this.closePop = false
+      console.log(this.openPlay)
+    },
+    congra_back () {
+      this.$emit('congra_back', this.close)
+      this.closePop = false
+      console.log(this.closePop)
     }
   },
   props: {
@@ -59,7 +61,7 @@ export default {
       default: 0
     }
   }
-};
+}
 </script>
 <style lang="less">
 .bg {
@@ -99,49 +101,47 @@ export default {
     span:first-child {
       color: #fff6df;
       font-size: 0.3rem;
-        
     }
     span:last-child {
       color: #feec21;
       font-size: 0.3rem;
       // display: block;
-     
     }
   }
-  .congra2-img{
-          display: flex;
+  .congra2-img {
+    display: flex;
     justify-content: center;
     position: relative;
     top: 0.6rem;
-      img{
-           width: 1.66rem;
-            height: 1.7rem;
-      }
+    img {
+      width: 1.66rem;
+      height: 1.7rem;
+    }
   }
-  .congra2-bottom-text{
-      font-size: 0.24rem;
-      color: #fff6df;
-      width: 80%;
+  .congra2-bottom-text {
+    font-size: 0.24rem;
+    color: #fff6df;
+    width: 80%;
     margin: 0 auto;
     position: relative;
     top: 0.7rem;
-      span:first-child{
-              display: inline-block;
-    text-align: center;
-      }
+    span:first-child {
+      display: inline-block;
+      text-align: center;
+    }
   }
 }
-.congra2-bottom-button{
-    position: relative;
-    top: 0.65rem;
-    div{
-        display: flex;
-    justify-content: center;    
-    }
-    img{
-         width: 3.28rem;
-            height: 0.98rem;   
-    }
+.congra2-bottom-button {
+  position: relative;
+  top: 0.65rem;
+  div {
+    display: flex;
+    justify-content: center;
+  }
+  img {
+    width: 3.28rem;
+    height: 0.98rem;
+  }
 }
 .congra-close {
   position: absolute;

@@ -25,14 +25,14 @@
                     </li>
                     <li>
                         <div class="question">Q：如何获得奖励金？</div>
-                        <div class="answer">A：打卡成功后次日回回到活动页面，随机瓜分本期奖励金总额。</div>
+                        <div class="answer">A：打卡成功后次日回到活动页面，随机瓜分本期奖励金总额。</div>
                     </li>
                     <li>
                         <div class="question">Q：奖励如何发放？</div>
                         <div class="answer">A：瓜分后立即到账。可至【我的】-【我的资产】查看。</div>
                     </li>
                     <li>
-                        <div class="question">Q：如果未完成打卡，保证金退还吗？</div>
+                        <div class="question">Q：若未在规定时间内瓜分，奖励发放吗？</div>
                         <div class="answer">A：瓜分时间为打卡次日00:00 - 23:59，若未在规定时间内瓜分，则打卡当期奖励失效，无法获得奖励。</div>
                     </li>
                 </ul>
