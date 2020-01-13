@@ -432,7 +432,6 @@
           align-items: center;
           justify-content: center;
           position: relative;
-
           em.i-ellipsis {
             display: block;
             font-style: normal;
@@ -443,6 +442,9 @@
             text-overflow: ellipsis;
             /*超出部分文字以...显示*/
             padding: 0 0.02rem;
+            &:not(.awardsName){
+              line-height: .68rem;
+            }
           }
 
           &:nth-child(1) {
