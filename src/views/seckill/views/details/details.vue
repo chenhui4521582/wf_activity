@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="goods-img">
-      <img :src="detail.icon | filter" alt="">
+      <img :src="detail.picture | filter" alt="">
     </div>
     <div class="good-status">
       <div class="year-icon">
@@ -35,7 +35,7 @@
     <div class="goods-info">
       <div class="price">
         <div class="current-price">
-          <span>{{(detail.seckillPrice / 10).toFixed(2)}}</span><i>话费券</i> 
+          <em>秒杀价</em><span>{{(detail.seckillPrice / 10).toFixed(2)}}</span><i>话费券</i> 
         </div>
         <div class="mask-price">原价:{{(detail.awardPrice / 10).toFixed(2)}}</div>
       </div>
@@ -50,7 +50,7 @@
       </div>
       <div class="select">
         <div class="key">已选</div>
-        <div class="value">{{detail.title}}</div>
+        <div class="value">{{detail.specs}}</div>
       </div>
       <div class="number">
         <div class="key">数量</div>
@@ -201,7 +201,11 @@ export default {
           let {code, data, message} = _get(res, 'data')
           if(code == 200) {
             let {fragment, periodInfo} = _get(res, 'data.data')
-            this.detail = {...{fragment}, ...periodInfo}
+            if(periodInfo.useNum >= periodInfo.awardNum ) {
+              this.detail = {...{fragment}, ...periodInfo, ... {status: 2}}
+            }else {
+              this.detail = {...{fragment}, ...periodInfo}
+            }
             /** 秒杀进行中 倒计时逻辑 **/
             if(this.detail.status == 0) {
               let start = new Date().getTime()
@@ -269,6 +273,7 @@ export default {
         }
         else if (code == 103) {
           this.noChargeModal = true
+          this.status = 2
         }
         else {
           this.$toast.show({
@@ -531,6 +536,12 @@ export default {
         justify-content: flex-start;
         align-items: flex-end;
         color: #FF4141;
+        em {
+          margin-right: .05rem;
+          font-weight: bold;
+          font-size: .32rem;
+          color: #FF0036;
+        }
         span {
           font-size: .42rem;
           line-height: .82;

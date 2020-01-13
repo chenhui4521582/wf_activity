@@ -1,10 +1,10 @@
 <template>
   <div class="cut-and-add">
-    <div class="button-cut base-button">-</div>
+    <!-- <div class="button-cut base-button">-</div> -->
     <div class="input-warp">
       {{inputValue}}
     </div>
-    <div class="button-add base-button">+</div>
+    <!-- <div class="button-add base-button">+</div> -->
   </div>
 </template>
 <script>
