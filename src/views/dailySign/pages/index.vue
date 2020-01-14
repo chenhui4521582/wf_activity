@@ -99,7 +99,7 @@ export default {
                recordRspList:[]
            },
            awardInfo:{},
-           isShowPop: true,
+           isShowPop: false,
            countTime: null,
            noScroll: true
         }
