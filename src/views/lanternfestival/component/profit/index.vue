@@ -67,7 +67,7 @@
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
                 class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
@@ -75,7 +75,7 @@
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
                 class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
@@ -86,7 +86,7 @@
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis">{{item.totalNum}}张<br/><i
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}张<br/><i
                 class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
                 class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br/>{{item.awardsName.split('+')[1]}}</em></span>
