@@ -124,16 +124,6 @@ export default {
     showRecommend () {
       return this.recommend.cdnImage && this.recommend.url
     }
-  },
-  watch: {
-    value (val) {
-      if (val) {
-        newUtils.ScrollNoMove();
-      }
-      else {
-        newUtils.ScrollMove();
-      }
-    }
   }
 }
 </script>
