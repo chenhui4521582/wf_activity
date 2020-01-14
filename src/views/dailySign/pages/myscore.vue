@@ -92,7 +92,7 @@ export default {
                 page:1,
                 pageSize:1000
             }).then(res => {
-                if(res.code==200){
+                if(_get(res,'data.code',0)==200){
                     this.recordInfo = _get(res,'data.data',{});
                 }
                 //console.log('rankInfo:'+JSON.stringify(this.recordInfo));
