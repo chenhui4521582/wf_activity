@@ -63,6 +63,8 @@ export default {
         return{
            activityInfo:{},
            recordInfo:{
+               days:0,
+               totalAmount:0,
                recordList:[]
            }
         }
@@ -90,7 +92,9 @@ export default {
                 page:1,
                 pageSize:1000
             }).then(res => {
-                this.recordInfo = _get(res,'data.data',{});
+                if(_get(res,'data.code',0)==200){
+                    this.recordInfo = _get(res,'data.data',{});
+                }
                 //console.log('rankInfo:'+JSON.stringify(this.recordInfo));
             })
         },
