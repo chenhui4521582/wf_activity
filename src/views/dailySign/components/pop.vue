@@ -14,7 +14,7 @@
         <a class="btn_sign" v-else href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
         <div class="btn_close" @click="closePop()"></div>
     </div>
-    <div class="content" v-if="awardInfo.status == 1 || true">
+    <div class="content" v-if="awardInfo.status == 1">
         <img class="img_title" src="../images/pic_success.png" />
         <div class="red_bag">
             <div class="price"><b>{{awardInfo.amount}}</b>元</div>
