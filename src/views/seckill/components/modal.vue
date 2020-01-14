@@ -79,16 +79,6 @@ export default {
       default: () => ({})
     }
   },
-  watch: {
-    value (val) {
-      this.show = val
-      if(val) {
-        this.ScrollNoMove()
-      }else {
-        this.ScrollMove()
-      }
-    }
-  },
   methods: {
     closeModal () {
       this.show = false
