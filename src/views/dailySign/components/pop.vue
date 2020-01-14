@@ -76,7 +76,7 @@ export default {
       width:5.6rem;
       height:8.69rem;
       left:0.8rem;
-      top:1.78rem;
+      top:1.28rem;
       background:url('../images/bg_dialog.png') no-repeat;
       background-size:cover;
       z-index: 4;
