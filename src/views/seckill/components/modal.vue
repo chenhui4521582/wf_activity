@@ -78,7 +78,7 @@ export default {
       type: Object,
       default: () => ({})
     }
-  },
+  },  
   methods: {
     closeModal () {
       this.show = false

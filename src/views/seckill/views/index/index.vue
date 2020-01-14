@@ -47,10 +47,14 @@
             </div>
           </div>
           <div class="btn before" v-if="item.status == 1">即将开始</div>
-          <div class="btn current" v-if="item.status == 0">
+          <div class="btn no-goods" v-if="item.status == 0 && item.awardNum == 0">
+            <span>已抢光</span>
+          </div>
+          <div class="btn current" v-else-if="item.status == 0">
             <span>马上抢</span>
             <img src="./img/right-icon.png" alt="">
           </div>
+   
           <div class="btn end" v-if="item.status == 2">已结束</div>
           
           <div class="icon before" v-if="item.status == 1">{{versionDate(item.startTime, 1)}}开始</div>
@@ -458,6 +462,10 @@ export default {
               width: .11rem;
               height: .19rem;
             }
+          }
+          &.no-goods {
+            border:2px solid #A28573;
+            color: #A28573;
           }
           &.end {
             border:2px solid #A28573;
