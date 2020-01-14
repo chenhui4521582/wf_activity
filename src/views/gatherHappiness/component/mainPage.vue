@@ -222,6 +222,7 @@ export default {
       text-align: center;
       .button-secondrow {
         margin-top: -0.1rem;
+        position: relative;
         &.red-dot::after {
           content: "";
           position: absolute;
