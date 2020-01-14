@@ -16,9 +16,11 @@
           </div>
           <div class="prize happiness-number">{{item.totalNum||0}}</div>
           <div class="prize">
-            <p><span class="awards-number">{{item.awardsName|jdkFilter}}</span>京东卡+</p>
             <p>
-              <span class="awards-number">{{item.awardsName|jyzFilter}}</span><span>金叶子</span>
+              <span class="awards-number">{{item.awardsName|jyzFilter}}</span><span>金叶</span>
+            </p>
+            <p>
+              <span class="awards-number">+{{item.awardsName|jdkFilter}}</span>京东卡
             </p>
           </div>
           <img class="prize-tip" src="../img/second/prize.png" alt />
@@ -27,7 +29,7 @@
     </div>
     <div class="my-rank-info-container">
       <div v-if="myRankInfo.myRank!==1 && activityInfo.state===1" class="information">
-        <span>当前距离{{myRankInfo.myRank&&myRankInfo.myRank<=30?'前一名':'上榜'}}奖励还差{{myRankInfo.nextAwardsDiffBlessing}}福气</span>
+        <span>当前距离{{myRankInfo.myRank&&myRankInfo.myRank<=30?'前一名':'上榜'}}还差{{myRankInfo.nextAwardsDiffBlessing}}福气</span>
       </div>
       <div class="my-rank-info">
         <div>
