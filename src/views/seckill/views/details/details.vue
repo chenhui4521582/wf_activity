@@ -80,7 +80,12 @@
         {{versionDate(detail.startTime)}}开抢
       </div>
       <div class="start btn" v-if="detail.status == 0" @click="_commit">
-        马上抢购
+        <div class="no-goods" v-if="this.detail.awardNum == 0">
+          商品已抢光
+        </div>
+        <div class="has-goods" v-else>
+          马上抢购
+        </div>
       </div>
       <div class="end btn" v-if="detail.status == 2">
         本场秒杀已结束
@@ -200,11 +205,7 @@ export default {
           let {code, data, message} = _get(res, 'data')
           if(code == 200) {
             let {fragment, periodInfo} = _get(res, 'data.data')
-            if(periodInfo.awardNum <= 0) {
-              this.detail = {...{fragment}, ...periodInfo, ... {status: 2}}
-            }else {
-              this.detail = {...{fragment}, ...periodInfo}
-            }
+            this.detail = {...{fragment}, ...periodInfo}
             /** 秒杀进行中 倒计时逻辑 **/
             if(this.detail.status == 0) {
               let start = new Date().getTime()
@@ -235,9 +236,9 @@ export default {
     },
     /** 抢购 **/
     _commit() {
-      if(this.detail.awardNum <= 0) {
-        this.noAwardModal = true
-        return 
+      if(this.detail.seckillPrice > this.detail.fragment) {
+        this.noChargeModal = true
+        return
       }
       if(this.lock) return false
       this.lock = true
@@ -261,7 +262,7 @@ export default {
             },
             bottomLink: {
               text: '看看其他 >',
-              callback: function() {
+              callback: ()=> {
                 this.$router.push({
                   name: 'index'
                 })
@@ -270,9 +271,19 @@ export default {
             }
           }
         }
+        /** 库存不足 **/
         else if (code == 103) {
+          this.noAwardModal = true
+          this.detail.awardNum = 0
+        }
+        /** 碎片不足 **/
+        else if (code == 105) {
           this.noChargeModal = true
-          this.status = 2
+        }
+        /** 已结束 **/
+        else if (code == 106) {
+          this.noTimesModal = true
+          this.detail.status = 2
         }
         else {
           this.$toast.show({
@@ -404,7 +415,7 @@ export default {
        GLOBALS.marchSetsPoint('A_H5PT0237002757')
     },
     closeCallback(){
-      this.detail.status = 2
+      this.detail.awardNum = 0
     },
     /** 秒杀成功 或者 秒杀过的 状态重置成以结束**/
     init() {
@@ -629,7 +640,7 @@ export default {
       height: .42rem;
       line-height: .42rem;
       font-size: .24rem;
-      color: #FF4141;
+      color: #000000;
     }
   }
   .goods-desc {
@@ -661,8 +672,14 @@ export default {
       color: #FF4141;
     }
     .start {
-      background: #FF4141;
-      color: #fff;
+      .no-goods {
+        background: #FBAFAF;
+        color: #fff;
+      }
+      .has-goods {
+        background: #FF4141;
+        color: #fff;
+      }
     }
     .end {
       background: #FBAFAF;
