@@ -421,7 +421,7 @@ export default {
        GLOBALS.marchSetsPoint('A_H5PT0237002757')
     },
     closeCallback(){
-      _getActivityDetail()
+      this._getActivityDetail()
     },
     /** 秒杀成功 或者 秒杀过的 状态重置成以结束**/
     init() {
