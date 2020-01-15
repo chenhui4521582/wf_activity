@@ -94,7 +94,8 @@
           </ul>
         </div>
       </div>
-      <div class="profit-footer">仅30名及以内有奖励</div>
+      <div class="profit-footer">活动期间累计瓜分券前30名有奖励<br>如最终累计的瓜分券一样，则先达成的排名靠前
+      </div>
     </div>
     <div class="loading-wrap" v-if="isLoading">
       <div class="container">
