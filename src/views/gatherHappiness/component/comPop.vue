@@ -23,7 +23,7 @@
                 • 充值随机获福气值，每天达到1万福气值，则次日金叶返利比升级10倍（返利比1%）；
               </p>
               <p>
-                • 为次日返利金叶为整数，当天消耗金叶需达到1千以上。
+                • 次日返利金叶均取整数。返利比为0.1%时，当天消耗金叶需达到1千以上，次日才可返利。
               </p>
             </li>
             <li>
@@ -156,6 +156,7 @@ export default {
   methods: {
     comPopback () {
       clearTimeout(this.timer)
+      this.isShowTips = false
       this.$emit('input', 0)
     },
     async getFindRecord () {
@@ -208,6 +209,7 @@ export default {
   },
   destroyed () {
     clearTimeout(this.timer)
+    this.isShowTips = false
   }
 }
 </script>
@@ -251,6 +253,7 @@ export default {
       overflow-y: scroll;
       color: #fff5ed;
       font-size: 0.22rem;
+      -webkit-overflow-scrolling: touch;
       .rule-header {
         color: #ffcb35;
         font-size: 0.24rem;
