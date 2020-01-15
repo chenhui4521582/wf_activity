@@ -171,7 +171,9 @@
           }
           flag && this.getUserAwardsTips()
         }
-        flag && GLOBALS.marchSetsPoint('P_H5PT0240')
+        flag && GLOBALS.marchSetsPoint('P_H5PT0240',{
+          source_address: GLOBALS.getUrlParam('from') || ''
+        })
       },
       //奖励提示（昨日奖励+开榜）
       async getUserAwardsTips() {
