@@ -5,7 +5,7 @@
         <img class="img_title" src="../images/pic_later.png" />
         <img class="img_sad" src="../images/pic_sad.png" />
         <div class="pnl_awardTime">
-            {{awardInfo.latePeriod}}期奖励瓜分时间：<br/>
+            {{$parent.activityInfo.latePeriod}}期奖励瓜分时间：<br/>
             报名次日 00:00 - 24:00<br/>
             <span>要记得每天来看看哟</span>
         </div>
