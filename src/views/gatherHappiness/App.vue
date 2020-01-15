@@ -125,7 +125,7 @@ export default {
       }
     },
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT02340027') // H5平台-集福气赢大奖页-返回按钮点击
+      GLOBALS.marchSetsPoint('A_H5PT0234002722') // H5平台-集福气赢大奖页-返回按钮点击
       if (this.isMainPage) {
         this.$nextTick(() => {
           history.go(-1)

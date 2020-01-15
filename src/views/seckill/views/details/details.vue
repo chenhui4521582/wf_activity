@@ -665,19 +665,30 @@ export default {
     }
   }
   .commit {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: .9rem;
-    line-height: .9rem;
-    text-align: center;
-    font-size: .24rem;
+
     .before {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      height: .9rem;
+      line-height: .9rem;
+      text-align: center;
+      font-size: .24rem;
       background: #F0F0F0;
       color: #FF4141;
     }
     .start {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      height: .9rem;
+      line-height: .9rem;
+      text-align: center;
+      font-size: .24rem;
       .no-goods {
         background: #FBAFAF;
         color: #fff;
@@ -688,6 +699,15 @@ export default {
       }
     }
     .end {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      height: .9rem;
+      line-height: .9rem;
+      text-align: center;
+      font-size: .24rem;
       background: #FBAFAF;
       color: #fff;
     }

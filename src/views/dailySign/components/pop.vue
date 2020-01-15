@@ -5,11 +5,11 @@
         <img class="img_title" src="../images/pic_later.png" />
         <img class="img_sad" src="../images/pic_sad.png" />
         <div class="pnl_awardTime">
-            {{awardInfo.period}}期奖励瓜分时间：<br/>
+            {{$parent.activityInfo.latePeriod}}期奖励瓜分时间：<br/>
             报名次日 00:00 - 24:00<br/>
             <span>要记得每天来看看哟</span>
         </div>
-        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
+        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply && $parent.activityInfo.state==1">今日已付费，打卡成功！</a>
         <a class="btn_sign" @click="closePop()" v-else-if="$parent.activityInfo.state==2">确认</a>
         <a class="btn_sign" v-else href="/xmWap/#/payment/" @click="event('A_H5PT0238002763')">不服气！马上报名今日打卡</a>
         <div class="btn_close" @click="closePop()"></div>
@@ -19,7 +19,7 @@
         <div class="red_bag">
             <div class="price"><b>{{awardInfo.amount}}</b>元</div>
         </div>
-        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply">今日已付费，打卡成功！</a>
+        <a class="btn_sign" @click="closePop()" v-if="awardInfo.apply && $parent.activityInfo.state==1">今日已付费，打卡成功！</a>
         <a class="btn_sign" @click="closePop()" v-else-if="$parent.activityInfo.state==2">确认</a>
         <a class="btn_sign" v-else @click="event('A_H5PT0238002762')" href="/xmWap/#/payment/">马上报名明日打卡瓜分</a>
         <div class="btn_close" @click="closePop()"></div>

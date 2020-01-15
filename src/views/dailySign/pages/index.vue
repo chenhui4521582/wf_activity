@@ -3,7 +3,7 @@
         <img src="../images/img_float.png" class="img_float" />
         <div class="activity_time">活动时间: {{activityInfo.timeline}}</div>
         <div class="pnl_header">
-            <a href="javascript:history.go(-1)" class="back">< 返回</a>
+            <a href="/xmWap" class="back">< 返回</a>
             <a href="./dailySign.html#/score" class="score"><i class="icon_score"></i>我的战绩</a>
         </div>
         <img src="../images/img_dailyCard.png" class="img_dailyCard" />
