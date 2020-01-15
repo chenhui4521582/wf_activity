@@ -156,6 +156,7 @@ export default {
   methods: {
     comPopback () {
       clearTimeout(this.timer)
+      this.isShowTips = false
       this.$emit('input', 0)
     },
     async getFindRecord () {
@@ -208,6 +209,7 @@ export default {
   },
   destroyed () {
     clearTimeout(this.timer)
+    this.isShowTips = false
   }
 }
 </script>
