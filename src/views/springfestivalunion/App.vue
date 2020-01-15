@@ -183,7 +183,7 @@
       },
       back() {
         GLOBALS.marchSetsPoint('A_H5PT0235002743') // H5平台-活动聚合页-不同时间段TAB点击
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))+'&time='+new Date().getTime()
       },
       setCurrentIndex(index) {
         GLOBALS.marchSetsPoint('A_H5PT0235002744', {
