@@ -4,7 +4,8 @@
       <div class="wf-pop" id="wf-pop">
         <div class="header">
           <div class="h-tx">
-            <img :src="userInfo.head | filter" class="pic-tx pull-fl" v-if="userInfo&&userInfo.head" />
+            <img :src="userInfo.head | filter" class="pic-tx pull-fl"
+              v-if="userInfo&&userInfo.head" />
             <img src="./images/img_photo.png" class="pic-tx pull-fl" v-else />
             <div class="tx-box pull-fl" id="tx-box">
               <img src="./images/icon-leaf.png" class="pic-leaf" />
@@ -31,10 +32,14 @@
           </ul>
         </div>
         <div class="groups g-item1" v-if="curIndex == 0">
-          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask" :newUserTaskobj="newUserTaskobj" :channel="curChannel" @receive="receive" @goFinish="goFinish" @getList="getNewTask" v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
+          <new-user-task :newTaskItems="newTaskItems" :motherTask="motherTask"
+            :newUserTaskobj="newUserTaskobj" :channel="curChannel" @receive="receive"
+            @goFinish="goFinish" @getList="getNewTask"
+            v-if="showNewUserTask && newTaskItems.newVersion"></new-user-task>
           <div class="new-user-task" v-else-if="showNewUserTask && !newTaskItems.newVersion">
             <div class="box">
-              <div class="bg-lines" :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
+              <div class="bg-lines"
+                :class="{'bg-height':motherTask.hasFinishedNum == motherTask.allTaskNum}">
                 <div class="tips">
                   <img src="./img/tips-old.png" alt="">
                 </div>
@@ -47,11 +52,15 @@
                   <span>{{newTaskItems.countDown | formatTime}}</span>
                 </div>
                 <div class="middle">
-                  <div class="finish-title" v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得3元话费</i></div>
+                  <div class="finish-title"
+                    v-if="motherTask.hasFinishedNum != motherTask.allTaskNum">全部完成<i>再得3元话费</i>
+                  </div>
                   <div class="finish-title" v-else>恭喜！完成了新人任务！</div>
                   <div class="probar-wrap">
                     <div class="probar-ball">
-                      <div class="bar" :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }"></div>
+                      <div class="bar"
+                        :style="{width: motherTask.hasFinishedNum/motherTask.allTaskNum * 100 + '%' }">
+                      </div>
                     </div>
                   </div>
                   <div class="probar-text">
@@ -70,7 +79,9 @@
                     <p>{{newUserTaskobj.taskName}}</p>
                     <div class="progress">
                       <div class="progress-bg">
-                        <div class="progress-bar" :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}"></div>
+                        <div class="progress-bar"
+                          :style="{width:newUserTaskobj.finishNum/newUserTaskobj.taskOps * 100 + '%'}">
+                        </div>
                         <span>{{transUint(newUserTaskobj.finishNum,newUserTaskobj.taskOps)}}</span>
                       </div>
                       <div class="num">
@@ -101,8 +112,10 @@
           </div>
           <div v-if="isShowOther">
             <div v-if="cjTaskItems&&cjTaskItems.length || dayTaskItems&&dayTaskItems.length">
-              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">成就任务</h4>
-              <ul class="task-list task-list-margin" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
+              <h4 class="groups-title" v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
+                成就任务</h4>
+              <ul class="task-list task-list-margin"
+                v-if="cjTaskItems&&cjTaskItems.length&&!isCjTaskAllComplete">
                 <li v-for="(item,index) in cjTaskItems">
                   <div class="description">
                     <div class="head-img">
@@ -112,7 +125,8 @@
                       <p v-html="item.taskDescShow"></p>
                       <div class="progress">
                         <div class="progress-bg">
-                          <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                          <div class="progress-bar"
+                            :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
                           <span>{{transUint(item.finishNum,item.taskOps)}}</span>
                         </div>
                         <div class="num">
@@ -122,8 +136,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'cjTask',index)">领取</div>
-                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item,'cjTask',index)">去完成</div>
+                  <div class="btn" v-if="item.taskStatus == 0"
+                    @click="receive(item,'cjTask',index)">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1"
+                    @click="goFinish(item,'cjTask',index)">去完成</div>
                   <div class="btn received" v-if="item.taskStatus == 2">
                     已完成
                   </div>
@@ -142,7 +158,8 @@
                       <p v-html="item.taskDescShow"></p>
                       <div class="progress">
                         <div class="progress-bg">
-                          <div class="progress-bar" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                          <div class="progress-bar"
+                            :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
                           <span>{{transUint(item.finishNum,item.taskOps)}}</span>
                         </div>
                         <div class="num">
@@ -152,8 +169,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="btn" v-if="item.taskStatus == 0" @click="receive(item,'dayTask',index)">领取</div>
-                  <div class="btn play" v-if="item.taskStatus == 1" @click="goFinish(item,'dayTask',index)">去完成</div>
+                  <div class="btn" v-if="item.taskStatus == 0"
+                    @click="receive(item,'dayTask',index)">领取</div>
+                  <div class="btn play" v-if="item.taskStatus == 1"
+                    @click="goFinish(item,'dayTask',index)">去完成</div>
                   <div class="btn received" v-if="item.taskStatus == 2">
                     已完成
                   </div>
@@ -165,13 +184,16 @@
               <p>暂无数据~</p>
             </div>
           </div>
-          <poplog v-if="isPopLog" :awardItem="awardItem" :motherTask="motherTask" :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
+          <poplog v-if="isPopLog" :awardItem="awardItem" :motherTask="motherTask"
+            :masterTask="masterTask" :newUserTaskFinish="newUserTaskFinish" @close="closePopLog">
           </poplog>
         </div>
         <div class="groups g-item1" v-if="curIndex == 1">
           <div>
             <div class="wf-title">
-              <a href="javascript:" class="pull-fr btn-useage" id="btn-useage" @click="handleTabUse">使用方法<em class="icon-ys" :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
+              <a href="javascript:" class="pull-fr btn-useage" id="btn-useage"
+                @click="handleTabUse">使用方法<em class="icon-ys"
+                  :class="isTabUse ? 'icon-sl':'icon-xl' "></em></a>
             </div>
             <div class="useage-methods" :class="isTabUse ? 'useage-tips':'' ">
               <span>复制礼包兑换码，在相应的游戏中找到兑换区域，输入兑换码,即可获得相应道具。</span>
@@ -183,17 +205,20 @@
                   <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
                   <div class="g-exchange">
                     <span>兑换码：<i>{{item.gameCdkeyRsp.cdKey}}</i></span>
-                    <a href="javascript:" class="btn-fz" v-clipboard:copy=item.gameCdkeyRsp.cdKey v-clipboard:success="onCopy" v-clipboard:error="onError">复制兑换码</a>
+                    <a href="javascript:" class="btn-fz" v-clipboard:copy=item.gameCdkeyRsp.cdKey
+                      v-clipboard:success="onCopy" v-clipboard:error="onError">复制兑换码</a>
                   </div>
                 </div>
                 <div v-else>
                   <h4 class="g-title">{{item.gameCdkeyRsp.name}}
-                    <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="getAward(item)" v-if="item.gameCdkeyRsp.remainNum*100 > 0">免费领取</a>
+                    <a href="javascript:" class="btn-normal btn-lq btnLQ" @click="getAward(item)"
+                      v-if="item.gameCdkeyRsp.remainNum*100 > 0">免费领取</a>
                     <a href="javascript:" class="btn-normal btn-gq btnLQ" v-else>已领完</a>
                   </h4>
                   <p class="g-text">{{item.gameCdkeyRsp.description}}</p>
                   <div class="g-percent">
-                    <div class="g-percent-bg" :style="{width: item.gameCdkeyRsp.remainNum*100+'%'}">{{item.gameCdkeyRsp.remainNum*100}}%剩余</div>
+                    <div class="g-percent-bg" :style="{width: item.gameCdkeyRsp.remainNum*100+'%'}">
+                      {{item.gameCdkeyRsp.remainNum*100}}%剩余</div>
                   </div>
                 </div>
               </li>
@@ -206,7 +231,8 @@
         </div>
       </div>
     </div>
-    <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards" @close="isDailyReceivePop=false"></task-award-pop>
+    <task-award-pop v-if="isDailyReceivePop" :awards="receiveAwards"
+      @close="isDailyReceivePop=false"></task-award-pop>
   </div>
 </template>
 <script>
@@ -236,14 +262,14 @@ export default {
       newUserTaskFinish: false,
       isPopLog: false,
       masterTask: false,
-      isDailyReceivePop:false,
-      receiveAwards:null
+      isDailyReceivePop: false,
+      receiveAwards: null
     }
   },
   mounted () {
     this.curChannel = localStorage.getItem('APP_CHANNEL') ? localStorage.getItem('APP_CHANNEL') : this.getUrlParam('channel')
     this.curToken = localStorage.getItem('ACCESS_TOKEN') ? localStorage.getItem('ACCESS_TOKEN') : this.getUrlParam('token')
-    this.cGameType = this.getUrlParam('gameType') || ''
+    this.cGameType = this.getUrlParam('gameType') || localStorage.getItem('wj_gameType') || ''
     let cururl = window.location.href
     this.curlink = this.getUrlParam('wf_cur_link')
     if (this.curChannel && (this.curChannel.indexOf('100') != -1 || this.curChannel.indexOf('700') != -1)) {
@@ -336,45 +362,45 @@ export default {
         taskId: item.taskId,
         taskLogId: item.taskLogId
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          // this.$toast.show({
+          //   message: '领取成功！',
+          //   duration: 1500
+          // })
+          this.receiveAwards = res.data.data
+          this.isDailyReceivePop = true
+          switch (type) {
+            case 'cjTask':
+              GLOBALS.marchSetsPoint('A_H5PT0121001154', {
+                project_id: this.cGameType,
+                position_id: index + 1,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
+              break
+            case 'dayTask':
+              GLOBALS.marchSetsPoint('A_H5PT0121001156', {
+                project_id: this.cGameType,
+                position_id: index + 1,
+                target_project_id: item.gameType,
+                task_id: item.taskId,
+                task_name: item.taskName
+              }) // H5平台-H5游戏内SDK-页面
+              break
+            default:
+              break
           }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            // this.$toast.show({
-            //   message: '领取成功！',
-            //   duration: 1500
-            // })
-            this.receiveAwards=res.data.data;
-            this.isDailyReceivePop=true;
-            switch (type) {
-              case 'cjTask':
-                GLOBALS.marchSetsPoint('A_H5PT0121001154', {
-                  project_id: this.cGameType,
-                  position_id: index + 1,
-                  target_project_id: item.gameType,
-                  task_id: item.taskId,
-                  task_name: item.taskName
-                }) // H5平台-H5游戏内SDK-任务-成就任务-去领取
-                break
-              case 'dayTask':
-                GLOBALS.marchSetsPoint('A_H5PT0121001156', {
-                  project_id: this.cGameType,
-                  position_id: index + 1,
-                  target_project_id: item.gameType,
-                  task_id: item.taskId,
-                  task_name: item.taskName
-                }) // H5平台-H5游戏内SDK-页面
-                break
-              default:
-                break
-            }
-            item.taskStatus = 2
-            this.getPlatTaskByBatch()
-            this.getDayTask()
-          }
-        })
+          item.taskStatus = 2
+          this.getPlatTaskByBatch()
+          this.getDayTask()
+        }
+      })
     },
     goFinish ({ gameType, url, action, taskId, taskName }, type, index) {
       let actionsArr = [39, 35, 34, 32]
@@ -454,13 +480,13 @@ export default {
         from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          this.cjTaskItems = res.data.data
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        this.cjTaskItems = res.data.data
+      })
     },
     getDayTask () {
       this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platTaskByBatch', {
@@ -468,13 +494,13 @@ export default {
         from: 'sdk',
         gameType: this.cGameType || ''
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          this.dayTaskItems = res.data.data
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        this.dayTaskItems = res.data.data
+      })
     },
     tabNav (idx) {
       this.curIndex = idx
@@ -518,18 +544,17 @@ export default {
       if (isxmChannel) {
         top.location.href = 'https://wap.beeplaying.com/xmWap/?channel=' + isxmChannel
       } else {
-        if(APP_CHANNEL!=700002&&APP_CHANNEL!=700001){
+        if (APP_CHANNEL != 700002 && APP_CHANNEL != 700001) {
           top.location.href = window.linkUrl.getBackUrl(this.curChannel)
-        }else{
-          //665e用700002 玩蜂700001
-          if(APP_CHANNEL==700002){
-            top.location.href ='https://www.665e.com/'
-          }else{
-            top.location.href ='https://beeplay123.com/'
+        } else {
+          // 665e用700002 玩蜂700001
+          if (APP_CHANNEL == 700002) {
+            top.location.href = 'https://www.665e.com/'
+          } else {
+            top.location.href = 'https://beeplay123.com/'
           }
         }
       }
-
     },
     onCopy () {
       GLOBALS.marchSetsPoint('A_H5PT0121001159', { project_id: this.cGameType }) // H5平台-H5游戏内SDK-礼包-复制兑换码
@@ -548,21 +573,21 @@ export default {
       this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/getAwards', {
         value: item.gameCdkeyRsp.batchId
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            // this.$toast.show({
-            //   message: '领取成功',
-            //   duration: 1500
-            // })
-            this.receiveAwards=item;
-            this.isDailyReceivePop=true;
-            this.getCdkeyStatus()
-          }
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          // this.$toast.show({
+          //   message: '领取成功',
+          //   duration: 1500
+          // })
+          this.receiveAwards = item
+          this.isDailyReceivePop = true
+          this.getCdkeyStatus()
+        }
+      })
     },
     handleTabUse () {
       this.isTabUse = !this.isTabUse
@@ -586,15 +611,15 @@ export default {
       this.axios.post('//ops-api.beeplaying.com/ops/api/cdkey/status', {
         value: this.curlink
       }, {
-          headers: {
-            'App-Channel': this.curChannel,
-            'Authorization': this.curToken
-          }
-        }).then((res) => {
-          if (res.data.code == 200) {
-            this.cdkArr = res.data.data
-          }
-        })
+        headers: {
+          'App-Channel': this.curChannel,
+          'Authorization': this.curToken
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.cdkArr = res.data.data
+        }
+      })
     },
     getNewTask () {
       this.axios.post('//platform-api.beeplaying.com/task/api/newuser/task',
@@ -610,7 +635,6 @@ export default {
           if (res.data.code == 200) {
             this.newTaskItems = res.data.data
           }
-
         })
     },
     checkTaskStatus (item, type, index) {
