@@ -251,6 +251,7 @@ export default {
       overflow-y: scroll;
       color: #fff5ed;
       font-size: 0.22rem;
+      -webkit-overflow-scrolling: touch;
       .rule-header {
         color: #ffcb35;
         font-size: 0.24rem;
