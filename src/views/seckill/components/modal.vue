@@ -101,6 +101,11 @@ export default {
       document.body.style.overflow = null;
       document.removeEventListener('touchmove', this.move, { passive: false });
     }
+  },
+  watch: {
+    value(newValue) {
+      this.show = newValue
+    }
   }
 }
 </script>
