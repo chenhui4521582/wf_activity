@@ -35,9 +35,9 @@
     <div class="goods-info">
       <div class="price">
         <div class="current-price">
-          <em>秒杀价</em><span>{{parseInt(detail.seckillPrice / 10)}}</span><i>话费券</i> 
+          <em>秒杀价</em><span>{{ parseInt(detail.seckillPrice / 10) || 0}}</span><i>话费券</i> 
         </div>
-        <div class="mask-price">原价:{{parseInt(detail.awardPrice / 10)}}</div>
+        <div class="mask-price">原价:{{ parseInt(detail.awardPrice / 10) || 0}}</div>
       </div>
       <div class="name">
         {{detail.title}}
@@ -79,11 +79,14 @@
       <div class="before btn" v-if="detail.status == 1">
         {{versionDate(detail.startTime)}}开抢
       </div>
-      <div class="start btn" v-if="detail.status == 0" @click="_commit">
-        <div class="no-goods" v-if="this.detail.awardNum == 0">
+      <div class="start btn" v-if="detail.status == 0">
+        <div class="no-goods" v-if="this.detail.awardNum == 0" >
           商品已抢光
         </div>
-        <div class="has-goods" v-else>
+        <div class="no-goods" v-else-if="this.detail.payStatus">
+          该商品限购一次
+        </div>
+        <div class="has-goods" v-else @click="_commit">
           马上抢购
         </div>
       </div>
@@ -229,6 +232,10 @@ export default {
             if(this.detail.status == 1 && this.detail.seckillPrice > this.detail.fragment) {
               this.showTips = true
             }
+            // /** 用户已经买过的按钮变灰 **/
+            // if(this.detail.payStatus) {
+            //   this.detail.awardNum = 0
+            // }
           }
         })
       }
@@ -414,7 +421,7 @@ export default {
        GLOBALS.marchSetsPoint('A_H5PT0237002757')
     },
     closeCallback(){
-      this.detail.awardNum = 0
+      _getActivityDetail()
     },
     /** 秒杀成功 或者 秒杀过的 状态重置成以结束**/
     init() {
