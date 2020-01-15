@@ -112,7 +112,7 @@
       //返回
       back() {
         GLOBALS.marchSetsPoint('A_H5PT0240002786')   // 点击返回
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))+'&time='+new Date().getTime()
       },
       //弹窗
       showPop(type) {
