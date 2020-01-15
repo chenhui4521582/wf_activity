@@ -184,6 +184,7 @@
             if (data.rankTips == 1) {//盈利榜弹窗只弹一次
               this.myRank = data.rankIdx
               this.awardList = data.rankAward || []
+              GLOBALS.marchSetsPoint(this.awardList.length?'A_H5PT0240002793':'A_H5PT0240002794')
               this.showPop(5)//盈利榜发榜弹窗
             }
           } else {//活动中
