@@ -3,37 +3,80 @@
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'plantFrom'">
       <div class="back-home"></div>
-      <div class="rule-btn"></div>
+      <div class="rule-btn" @click="openRule"></div>
     </template>
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'game'">
-      <div class="rule-btn"></div>
-      <div class="close-btn"></div>
+      <div class="rule-btn" @click="openRule"></div>
+      <div class="close-btn" @click="close"></div>
     </template>
     <!-- 导航 -->
     <div class="nav">
-      <div class="item" :class="{'active1': currentIndex == 1}" @click="handleNav(1)">奖池高光时刻</div>
-      <div class="item" :class="{'active2': currentIndex == 2}" @click="handleNav(2)">一杆多球</div>
+      <div class="item" :class="{'active1': currentIndex == 2}" @click="handleNav(2)">奖池高光时刻</div>
+      <div class="item" :class="{'active2': currentIndex == 1}" @click="handleNav(1)">一杆多球</div>
     </div>
     <!-- 列表 -->
     <div class="list">
-      <div class="list-item"></div>
+      <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="index">
+        <list :item="item" :currentIndex="currentIndex"></list>
+      </div>
+      <div class="list-item item" v-for="(item, index) in highlightTimeList" :key="index">
+        <list :item="item" :currentIndex="currentIndex"></list>
+      </div>
     </div>
+    <!-- 规则 -->
+    <rule></rule>
   </div>
+
 </template>
 
 <script>
+import List from './list'
+import Services from './services/services'
+import _get from 'lodash.get'
 export default {
   name: 'lsVideo',
   data: ()=>({
     from: 'plantFrom',
     // from: 'game'
-    currentIndex: 1
+    optimumTimeList: [],
+    highlightTimeList: [],
+    currentIndex: 2,
+    page: 1,
+    pageSize: 20,
+    showRule: false
   }),
+  components: {
+    List
+  },
   methods: {
     handleNav(index) {
       this.currentIndex = index
+    },
+    _getHighlightTimeList() {
+      Services.highlightTimeList({
+        optimumNum: 2,
+        page: this.page,
+        pageSize: this.pageSize,
+        sortRule: 1,
+        type: this.currentIndex
+      }).then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.highlightTimeList = _get(res, 'data.data.highlightTimeList', [])
+          this.optimumTimeList = _get(res, 'data.data.optimumTimeList', [])
+        }
+      })
+    },
+    openRule() {
+      this.showRule = true
+    },
+    close() {
+
     }
+  },
+  created() {
+    this._getHighlightTimeList()
   }
 }
 </script>
@@ -104,9 +147,6 @@ export default {
       height: 2.5rem;
       background: url(./img/list-bg.png) no-repeat center center;
       background-size: 100% 100%
-    }
-    .title {
-
     }
   }
 }
