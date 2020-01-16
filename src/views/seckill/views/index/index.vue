@@ -375,10 +375,9 @@ export default {
           border-radius: .1rem;
           background: #fff;
           img {
-            display: block;
-            margin: .44rem auto;
-            width: 1.38rem;
-            height: .75rem;
+            vertical-align: top;
+            width: 100%;
+            height: 100%;
           }
         }
         .item-text {
