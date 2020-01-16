@@ -31,7 +31,7 @@
             </div>
             <div v-if="activityInfo.state == 0" class="btn_unstart">活动即将开启</div>
             <div v-if="activityInfo.state == 2" class="btn_unstart">活动已结束</div>
-            <a v-if="activityInfo.state == 1 && !activityInfo.apply" @click="event('A_H5PT0238002760')" href="/xmWap/#/payment/" class="btn_start">立即打卡参与瓜分</a>
+            <a v-if="activityInfo.state == 1 && !activityInfo.apply" @click="event('A_H5PT0238002760')" href="/xmWap/#/payment/" class="btn_start">任意付费报名打卡</a>
             <div v-if="activityInfo.state == 1 && activityInfo.apply" class="btn_success">报名成功</div>
             <div class="start_timer" v-if="countTime">
                 {{activityInfo.state==1 ? '本期瓜分倒计时':'打卡开启倒计时'}} {{countTime}}
