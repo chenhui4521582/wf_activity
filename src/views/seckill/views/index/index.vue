@@ -366,15 +366,19 @@ export default {
         border-radius:.24rem;
         display: flex;
         justify-content: flex-start;
+        
         .item-img {
           flex-shrink: 0;
           margin-right: .2rem;
           width: 1.6rem;
           height: 1.6rem;
+          border-radius: .1rem;
+          background: #fff;
           img {
-            vertical-align: top;
-            width: 100%;
-            height: 100%;
+            display: block;
+            margin: .44rem auto;
+            width: 1.38rem;
+            height: .75rem;
           }
         }
         .item-text {
