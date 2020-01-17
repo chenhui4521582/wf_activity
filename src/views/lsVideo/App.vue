@@ -16,21 +16,30 @@
       <div class="item" :class="{'active2': currentIndex == 1}" @click="handleNav(1)">一杆多球</div>
     </div>
     <!-- 列表 -->
-    <div class="list">
-      <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="index">
-        <list :item="item" :currentIndex="currentIndex"></list>
-      </div>
-      <div class="list-item item" v-for="(item, index) in highlightTimeList" :key="index">
-        <list :item="item" :currentIndex="currentIndex"></list>
-      </div>
+    <div class="listWrap" ref="box">
+      <better-scroll ref="scroll" :data="highlightTimeList" :probeType="3" :listenScroll="true" @scroll="onScroll">
+        <div class="list" ref="wrap">
+          <template v-if="showList">
+            <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
+              <list :item="item" :currentIndex="currentIndex"></list>
+            </div>
+            <div class="list-item item" v-for="(item, index) in highlightTimeList" :key="`list${index}`">
+              <list :item="item" :currentIndex="currentIndex"></list>
+            </div>
+          </template>
+          <!-- loading -->
+          <loading v-else :showBar="true"/>
+        </div>
+      </better-scroll>
     </div>
     <!-- 规则 -->
-    <rule></rule>
+    <rule v-model="showRule"></rule>
   </div>
-
 </template>
-
 <script>
+import BetterScroll from './components/betterScroll/betterScroll'
+import Loading from '@/components/common/loading'
+import Rule from './components/rule'
 import List from './list'
 import Services from './services/services'
 import _get from 'lodash.get'
@@ -44,16 +53,56 @@ export default {
     currentIndex: 2,
     page: 1,
     pageSize: 20,
-    showRule: false
+    showRule: false,
+    isBackTop: false,
+    scrollLock: false
   }),
   components: {
-    List
+    Rule,
+    List,
+    Loading,
+    BetterScroll
+  },
+  computed: {
+    showList() {
+      return this.optimumTimeList.concat(this.highlightTimeList).length
+    }
   },
   methods: {
     handleNav(index) {
       this.currentIndex = index
+      this.resetParams()
+      this._getHighlightTimeList()
+    },
+    onScroll ({ y }) {
+      let box = this.$refs.box.clientHeight
+      let scrollBox = this.$refs.wrap.clientHeight
+      let entPosition = scrollBox - box
+      if (-y >= (entPosition - 100)) {
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        this.timer = setTimeout(() => {
+          if(y > 500) {
+            this.isBackTop = true
+          }
+          this.page++
+          this._getHighlightTimeList()
+        }, 200)
+      }
+    },
+    resetParams () {
+      this.page = 1
+      this.pageSize = 20
+      this.scrollLock = false
+      this.optimumTimeList = []
+      this.highlightTimeList = []
     },
     _getHighlightTimeList() {
+      if(this.scrollLock) {
+        return false
+      }
+      this.scrollLock = true
       Services.highlightTimeList({
         optimumNum: 2,
         page: this.page,
@@ -63,13 +112,25 @@ export default {
       }).then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.highlightTimeList = _get(res, 'data.data.highlightTimeList', [])
+          let currentData = _get(res, 'data.data.highlightTimeList', [])
+          if(currentData.length == 20) {
+            this.scrollLock = false
+          }
+          this.highlightTimeList = this.highlightTimeList.concat(currentData)
           this.optimumTimeList = _get(res, 'data.data.optimumTimeList', [])
         }
+      }).catch(error => {
+        this.scrollLock = false
       })
     },
     openRule() {
       this.showRule = true
+    },
+    /** 列表返回顶部 **/
+    backTop() {
+      this.$marchSetsPoint('A_H5PT0025001195')
+      this.$refs.scroll.scrollTo(0, 0)
+      this.isBackTop = false
     },
     close() {
 
@@ -103,7 +164,6 @@ export default {
     background: #481898;
     border-radius: .5rem;
     .item {
-      margin-bottom: .08rem;
       width: 2.1rem;
       height: .62rem;
       background: #170362;
@@ -132,9 +192,13 @@ export default {
   }
   .list {
     padding: .16rem .25rem .16rem;
+    
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    .item {
+      margin-bottom: .08rem;
+    }
     .recommend-item {
       overflow: hidden;
       width: 3.25rem;
@@ -150,6 +214,13 @@ export default {
       background-size: 100% 100%
     }
   }
+}
+.listWrap {
+  position: fixed;
+  top: 3.3rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .in-plantFrom {
   .back-home {
@@ -171,7 +242,6 @@ export default {
     background-size: 100% 100%;
   }
 }
-
 .in-game {
   .close-btn {
     position: absolute;

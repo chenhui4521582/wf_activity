@@ -4,10 +4,13 @@
           {{item.amount}}一杆击中
         </div>
         <div class="title" v-if="currentIndex == 1">
-          一杆{{X}}球
+          一杆{{item.ballNum}}球
         </div>
-        <div class="award">
+        <div class="award" v-if="currentIndex == 2">
           {{item.ratePoolAwards}}万奖励
+        </div>
+        <div class="award" v-if="currentIndex == 1">
+          {{item.oddsResult}}万奖励
         </div>
         <div class="user-info">
           <div class="avatar">
