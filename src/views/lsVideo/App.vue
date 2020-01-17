@@ -103,6 +103,7 @@ export default {
     background: #481898;
     border-radius: .5rem;
     .item {
+      margin-bottom: .08rem;
       width: 2.1rem;
       height: .62rem;
       background: #170362;
