@@ -14,7 +14,6 @@
       class="choose-button">{{buttonText}}</MButton>
     <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen && userInfo && userInfo.leafsPay" class="gold-buy">使用金叶子购买
     </MButton>
-    <Notice :show="showNotice" @close="showNotice=false"/>
     <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
     <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
@@ -25,18 +24,16 @@
 import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
 import VirtualDialog from '../../../../components/virtual-dialog'
-import Notice from '../../../../components/notice'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
 import { Operation, ChangeOne, PayPoint } from '../../../../apis/box'
-import { Pay, isShowNotice } from '../../../../utils'
+import { Pay } from '../../../../utils'
 
 export default {
   data () {
     return {
       isOnChange: false,
       box: null,
-      showNotice: false,
       userInfo: null,
       sort: null,
       type: null,
@@ -73,9 +70,6 @@ export default {
     }
   },
   methods: {
-    openNotice () {
-      this.showNotice = true
-    },
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
@@ -86,10 +80,6 @@ export default {
     // 使用金叶子购买
     leafsBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002685')
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       this.isVirtual = true
     },
     // 使用透视卡
@@ -134,10 +124,6 @@ export default {
     // 点击按钮
     async onConfirm () {
       GLOBALS.marchSetsPoint('A_H5PT0225002552') // H5平台-盲盒页面-选盲盒页面-就选它点击
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       if (this.userInfo && this.userInfo.openBoxTimes) {
         this.openBox()
       } else {
@@ -184,8 +170,7 @@ export default {
   components: {
     SideBar,
     MButton,
-    VirtualDialog,
-    Notice
+    VirtualDialog
   }
 }
 </script>

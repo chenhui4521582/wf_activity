@@ -7,7 +7,6 @@
       <p class="tip" v-if="this.active===2">您的运单号为：{{orderNumber}} <span
           v-clipboard:success="copySuccess" v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
-    <Notice :show="showNotice" @close="showNotice=false" />
     <section class="container">
       <div class="bar" v-for="(item,index) in tabBar" @click="changeTab(item,index)"
         :key="item.label">
@@ -17,10 +16,6 @@
       </div>
     </section>
     <section class="content">
-      <div class="notice">
-        <span>春节期间快递停运通知</span>
-        <span class="view-notice" @click="openNotice">点击查看></span>
-      </div>
       <div v-if="this.goodsList && this.goodsList.length > 0" class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
         <p></p>
@@ -51,17 +46,14 @@
 <script>
 import Goods from '../../../../components/goods'
 import Default from '../../../../components/default'
-import Notice from '../../../../components/notice'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
-import { isShowMyPrizeNotice } from '../../../../utils'
 
 export default {
   data () {
     return {
       show: false,
-      showNotice: false,
       active: 0,
       goodsList: null,
       tabBar: sendStatusMapper,
@@ -103,14 +95,8 @@ export default {
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     this.getTabGoods()
-    if (isShowMyPrizeNotice()) {
-      this.openNotice()
-    }
   },
   methods: {
-    openNotice () {
-      this.showNotice = true
-    },
     /**
      * @des 切换tab
      */
@@ -156,8 +142,7 @@ export default {
   components: {
     Default,
     Goods,
-    Dialog,
-    Notice
+    Dialog
   }
 }
 </script>

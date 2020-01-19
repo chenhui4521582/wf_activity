@@ -29,18 +29,8 @@
       </ul>
     </section>
     <article class="botton-wrapper">
-      <section class="btn-container">
-        <div class="money-buy" @click="buyOne">{{
-          isOpenBox ? "立即开盒" : "开一盒试试"
-        }}</div>
-        <div class="change-btn" @click="changeAll">换一批</div>
-      </section>
-      <section v-if="!isOpenBox" class="btn-container">
-        <div class="leaf-buy" v-if="userInfo.leafsPay" @click="leafsBuy">使用金叶子购买</div>
-        <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
-      </section>
       <!-- 非年货节按钮 begin-->
-      <!-- <section class="btn-container">
+      <section class="btn-container">
         <m-button @confirm="buyOne">{{
           isOpenBox ? "立即开盒" : "开一盒试试"
         }}</m-button>
@@ -49,7 +39,7 @@
       <section v-if="!isOpenBox" class="btn-container">
         <m-button :button-style="buttonStyle" @confirm="leafsBuy">使用金叶子购买</m-button>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
-      </section> -->
+      </section>
       <!-- 非年货节按钮 end -->
     </article>
     <Dialog
@@ -70,7 +60,6 @@
         </div>
       </section>
     </Dialog>
-    <Notice :show="showNotice" @close="showNotice=false"/>
     <TipDialog v-if="showTip" source="index" :show="showTip" @close="showTip=false"/>
     <VirtualDialog :show="isVirtual"
       v-if="isVirtual"
@@ -85,13 +74,12 @@
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
-import {Pay, isShowNotice} from '../../../utils';
+import {Pay} from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
 import TipDialog from './tip-dialog'
 import VirtualDialog from '../../../components/virtual-dialog'
-import Notice from '../../../components/notice'
 
 export default {
   name: '',
@@ -100,8 +88,7 @@ export default {
     Dialog,
     BoxInfo,
     TipDialog,
-    VirtualDialog,
-    Notice
+    VirtualDialog
   },
   data () {
     return {
@@ -110,7 +97,6 @@ export default {
         color: '#fff',
         fontSize: '0.34rem'
       },
-      showNotice: false,
       isVirtual: false,
       // 用户当天是否第一次进入页面
       isFirstIn: true,
@@ -186,10 +172,6 @@ export default {
     // 使用金叶子购买
     leafsBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002683')
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       this.isVirtual = true
     },
     // 获取盒子信息
@@ -271,14 +253,7 @@ export default {
         }) // H5平台-盲盒页面-点击选择盲盒(不计入假状态的盒子点击)
       }
     },
-    openNotice () {
-      this.showNotice = true
-    },
     async buyOne () {
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       if (this.userInfo && this.userInfo.openBoxTimes) {
         GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
         this.isShowPop = true
@@ -351,7 +326,7 @@ export default {
       display: block;
       width: 100%;
       height: 0.18rem;
-      background: #f4d6b0 url(../assets/list-bottom-bg.png) no-repeat center
+      background: #1b1f29 url(../assets/list-bottom-bg.png) no-repeat center
         center / 100% 100%;
       font-size: 0;
     }
@@ -431,7 +406,7 @@ export default {
   }
   .btn-container {
     position: relative;
-    background: #f4d6b0;
+    background: #1b1f29;
     padding: 0.16rem;
     .money-buy {
       margin: 0 auto;
@@ -454,7 +429,7 @@ export default {
       background-size: 100% 100%;
     }
     .buy-tip {
-      color: #7b4913;
+      color: #6F768E;
       font-size: 0.24rem;
       text-align: center;
       padding-top: 0.33rem;
@@ -468,8 +443,8 @@ export default {
       right: 0.36rem;
       width: 1.14rem;
       box-sizing: border-box;
-      color: #DD1914;
-      border: 0.02rem solid #DD1914;
+      color: #fff;
+      border: 0.02rem solid #fff;
       line-height: 0.42rem;
       text-align: center;
       border-radius: 0.22rem;
