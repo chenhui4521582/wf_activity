@@ -24,15 +24,15 @@
         </div>
         <!--活动状态-->
         <div v-else class="pnl_getAwards">
-            <div class="pnl_awards_title">{{activityInfo.period}}期<span>瓜分奖励金总额（话费券）</span></div>
             <div class="pnl_sum_price">
+                <div class="awardsTitle">{{activityInfo.period}}期<span>瓜分奖励金总额（话费券）</span></div>
                 <div class="sumPrice"><b>{{activityInfo.amount}}</b>元</div>
                 <div class="signCount">已有<span>{{activityInfo.applyNum}}</span>人报名</div>
             </div>
             <div v-if="activityInfo.state == 0" class="btn_unstart">活动即将开启</div>
             <div v-if="activityInfo.state == 2" class="btn_unstart">活动已结束</div>
             <a v-if="activityInfo.state == 1 && !activityInfo.apply" @click="event('A_H5PT0238002760')" href="/xmWap/#/payment/" class="btn_start">任意付费报名打卡</a>
-            <div v-if="activityInfo.state == 1 && activityInfo.apply" class="btn_success">报名成功</div>
+            <div v-if="activityInfo.state == 1 && activityInfo.apply" @click="toastSuccess()" class="btn_success">报名成功</div>
             <div class="start_timer" v-if="countTime">
                 {{activityInfo.state==1 ? '本期瓜分倒计时':'打卡开启倒计时'}} {{countTime}}
             </div>
@@ -110,6 +110,12 @@ export default {
     methods:{
         event(id){
             GLOBALS.marchSetsPoint(id)
+        },
+        toastSuccess(){
+            this.$toast.show({
+                message: '您已报名，明天记得来瓜分哟~',
+                duration: 3000
+            });
         },
         doSharing(){
             GLOBALS.marchSetsPoint('A_H5PT0238002761')
@@ -248,14 +254,23 @@ export default {
             background: url('../images/bg_price.png') no-repeat;
             background-size: cover;
             width: 5.23rem;
-            height: 2.08rem;
-            margin: 0.12rem auto 0 auto;
+            height: 2.63rem;
+            margin: 0.56rem auto 0 auto;
             text-align: center;
             box-sizing: border-box;
             padding-top:0.65rem;
 
+            .awardsTitle
+            {
+                margin-top:0.05rem;
+                font-size:0.22rem;
+                color:#FF0000;
+                text-align: center;
+            }
+
             .sumPrice
             {
+                margin-top:0.25rem;
                 font-size:0.3rem;
                 color:#FF0000;
                 b{
@@ -285,7 +300,7 @@ export default {
             font-size:0.32rem;
             color:#555;
             font-weight: bold;
-            margin: 0 auto;
+            margin: 0.03rem auto;
             text-align: center;
             display: block;
 
