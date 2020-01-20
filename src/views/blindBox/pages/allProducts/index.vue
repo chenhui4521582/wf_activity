@@ -1,21 +1,28 @@
 <template>
-  <article class="wrapper">
-    <NavBar @back="$router.go(-1)"
-      title="所有奖品" />
-    <section ref="products"
-      @scroll="getScroll"
-      class="container">
-      <Product v-for="(item,index) in products"
-        :key="index"
-        :product="item" />
-      <p class="over">已经到底了</p>
-      <ShortSwiper class="products-swiper" />
-    </section>
-    <Bottom />
-    <img v-if="scrollTop"
-      @click="back"
-      class="back"
-      src="./assets/button.png">
+  <article>
+    <article class="wrapper">
+      <NavBar @back="$router.go(-1)"
+        title="所有奖品" />
+      <section ref="products"
+        @scroll="getScroll"
+        class="container">
+        <Product @view="viewProduct(item)"
+          v-for="(item,index) in products"
+          :key="index"
+          :product="item" />
+        <p class="over">已经到底了</p>
+        <ShortSwiper class="products-swiper" />
+      </section>
+      <Bottom />
+      <img v-if="scrollTop"
+        @click="back"
+        class="back"
+        src="./assets/button.png">
+    </article>
+    <ProductDialog :goods-detail="goodsDetail"
+      v-if="show"
+      @close="show=false"
+      :show="show" />
   </article>
 </template>
 
@@ -25,13 +32,20 @@ import Product from './components/product'
 import Bottom from './components/bottom'
 import ShortSwiper from '../../components/shortSwiper'
 import { awardsList } from '../../apis/products'
+import ProductDialog from '../../components/productDialog'
 
 export default {
   data () {
     return {
       scrollTop: null,
+      show: false,
       products: [
-      ]
+      ],
+      goodsDetail: {
+        awardsName: null,
+        showAmount: null,
+        remark: null
+      }
     }
   },
   async mounted () {
@@ -55,6 +69,11 @@ export default {
     // 获取滚动距离
     getScroll (e) {
       this.scrollTop = e.target.scrollTop
+    },
+    // 商品弹窗
+    viewProduct (item) {
+      this.goodsDetail = item
+      this.show = true
     }
   },
   watch: {
@@ -64,7 +83,8 @@ export default {
     NavBar,
     Product,
     Bottom,
-    ShortSwiper
+    ShortSwiper,
+    ProductDialog
   }
 }
 </script>

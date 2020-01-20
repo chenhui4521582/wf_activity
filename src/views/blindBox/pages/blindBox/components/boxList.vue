@@ -243,7 +243,7 @@ export default {
           this.$router.push(
             `/chooseBox/${item.color}?sort=${item.sort}${
               item.state === 4
-                ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}`
+                ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}&showAmount=${item.extend.showAmount}&awardsNum=${item.extend.awardsNum}`
                 : ''
             }`
           )

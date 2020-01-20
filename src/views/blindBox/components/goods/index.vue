@@ -9,6 +9,7 @@
         <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
+          <p class="goods-price">价值：¥{{goods.showAmount}}</p>
           <p>数量：1个</p>
           <slot name='left' />
         </div>
@@ -28,7 +29,8 @@ export default {
       default: {
         awardsName: null,
         awardsNum: null,
-        awardsImage: null
+        awardsImage: null,
+        showAmount: null
       }
     }
   }
@@ -84,6 +86,10 @@ export default {
       }
       .goods-count {
         text-align: left;
+        .goods-price {
+          padding: 0.09rem 0;
+          color: #FF5050;
+        }
       }
     }
   }

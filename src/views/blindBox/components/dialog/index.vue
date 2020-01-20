@@ -2,17 +2,15 @@
   <transition name="fade">
     <article v-if="show"
       class="mask">
-      <section class="content">
+      <section class="content" :style="layout">
         <img v-if="close"
           @click.self="$emit('onClose')"
           class="close"
           src="./assets/close.png"
           alt="关闭">
-        <div v-if="title">
-          <slot name='header'>
-            <div class="title">{{title}}</div>
-          </slot>
-        </div>
+        <slot name='header'>
+          <div class="title">{{title}}</div>
+        </slot>
         <slot />
         <slot name='footer'>
           <div v-if="cancel || confirm"
@@ -47,6 +45,9 @@ export default {
     },
     title: {
       type: String
+    },
+    layout: {
+      type: Object
     },
     confirm: {
       type: String
@@ -86,6 +87,7 @@ export default {
   text-align: center;
   position: relative;
   z-index: 999;
+  box-sizing: border-box;
   .close {
     position: absolute;
     z-index: 99999;
