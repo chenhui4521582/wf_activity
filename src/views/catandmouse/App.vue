@@ -112,7 +112,7 @@
                   </template>
                 </div>
                 <div class="superscript">
-                  <span>完成{{index+1}}次</span>
+                  <span>喂满{{index+1}}天</span>
                 </div>
                 <div class="tips"
                   :class="{'tips-1':item.awardsType===6,'tips-2':item.awardsType===7}"
@@ -132,6 +132,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import _get from 'lodash.get'
 import { activityInfo, mouseReceive } from './utils/api'
 export default {
@@ -176,7 +177,7 @@ export default {
           tips = '随机获得优惠券、话费券、金叶子、鱼干奖励中的其中一种'
           break
         case 7:
-          tips = '鼠年限定道具，鱼干加成+5%，持续5天，获得后会再猫房间内显示，可自由挪动位置'
+          tips = '鼠年限定道具，鱼干加成+5%，持续5天，获得后会在猫房间内显示，可自由挪动位置'
           break
 
         default:
@@ -235,7 +236,7 @@ export default {
       this.getActivityInfo()
     },
     openCatFeedPop () {
-      this.currentIndex = 0;
+      this.currentIndex = 0
       GLOBALS.marchSetsPoint('A_ZCM0062002771') // 招财猫-新年活动主界面弹窗-去喂猫点击
       if (parent && parent.GameEval && parent.openCatFeedPop) {
         parent.GameEval('closeweb')
