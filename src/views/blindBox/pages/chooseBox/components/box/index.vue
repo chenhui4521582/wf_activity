@@ -8,13 +8,13 @@
         <img class="box__img--goods" v-if="awardsImage" :src="awardsImage | imgFilter">
       </div>
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
+      <p class="awards-info" v-if="showAmount">价值：¥{{showAmount}}<span>数量：{{awardsNum}}</span></p>
     </div>
     <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
     <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
       class="choose-button">{{buttonText}}</MButton>
     <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen && userInfo && userInfo.leafsPay" class="gold-buy">使用金叶子购买
     </MButton>
-    <Notice :show="showNotice" @close="showNotice=false"/>
     <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
     <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
@@ -25,21 +25,21 @@
 import SideBar from '../sideBar'
 import MButton from '../../../../components/MButton'
 import VirtualDialog from '../../../../components/virtual-dialog'
-import Notice from '../../../../components/notice'
 import { boxGroup } from '../../../../config/box'
 import { UserInfo } from '../../../../apis/user'
 import { Operation, ChangeOne, PayPoint } from '../../../../apis/box'
-import { Pay, isShowNotice } from '../../../../utils'
+import { Pay } from '../../../../utils'
 
 export default {
   data () {
     return {
       isOnChange: false,
       box: null,
-      showNotice: false,
       userInfo: null,
       sort: null,
       type: null,
+      showAmount: null,
+      awardsNum: null,
       boxGroup,
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
@@ -58,6 +58,8 @@ export default {
       this.isTransparent = true
     }
     if (this.$route.query.awardsName) this.awardsName = this.$route.query.awardsName
+    if (this.$route.query.showAmount) this.showAmount = this.$route.query.showAmount
+    if (this.$route.query.awardsNum) this.awardsNum = this.$route.query.awardsNum
     this.type = Number(this.$route.params.type)
     this.box = this.boxGroup.find(res => res.type === this.type)
     this.sort = Number(this.$route.query.sort)
@@ -73,9 +75,6 @@ export default {
     }
   },
   methods: {
-    openNotice () {
-      this.showNotice = true
-    },
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
@@ -86,10 +85,6 @@ export default {
     // 使用金叶子购买
     leafsBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002685')
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       this.isVirtual = true
     },
     // 使用透视卡
@@ -124,6 +119,8 @@ export default {
       this.userInfo.transparentTimes = this.userInfo.transparentTimes - 1
       this.awardsName = data.awardsName
       this.awardsImage = data.awardsImage
+      this.showAmount = data.showAmount
+      this.awardsNum = data.awardsNum
       this.$loading.hide()
     },
     // 无透视次数 购买
@@ -134,10 +131,6 @@ export default {
     // 点击按钮
     async onConfirm () {
       GLOBALS.marchSetsPoint('A_H5PT0225002552') // H5平台-盲盒页面-选盲盒页面-就选它点击
-      if (isShowNotice()) {
-        this.openNotice()
-        return
-      }
       if (this.userInfo && this.userInfo.openBoxTimes) {
         this.openBox()
       } else {
@@ -175,6 +168,8 @@ export default {
         this.isTransparent = false
         this.awardsImage = null
         this.awardsName = null
+        this.showAmount = null
+        this.awardsNum = null
         this.box = this.boxGroup.find(res => res.type === this.type)
         this.isOnChange = false
       }, 700)
@@ -184,8 +179,7 @@ export default {
   components: {
     SideBar,
     MButton,
-    VirtualDialog,
-    Notice
+    VirtualDialog
   }
 }
 </script>
@@ -224,6 +218,15 @@ export default {
     font-size: 0.3rem;
     color: #b8bbcb;
     text-align: center;
+    .awards-info {
+      font-size: 0.24rem;
+      color: #fff;
+      text-align: center;
+      padding-top: .2rem;
+      span {
+        padding-left: 0.3rem;
+      }
+    }
     &__img--box {
       width: 3.2rem;
       height: 3.72rem;
