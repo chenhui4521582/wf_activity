@@ -1,13 +1,10 @@
 <template>
-  <Dialog :show="show" title="快递停运通知"
-    confirm="<span style='color:#000000;font-weight: bold '>我知道了</span>" @onConfirm="close">
+  <Dialog :show="show" title="快递停运通知" confirm="<span style='color:#000000;font-weight: bold '>我知道了</span>" @onConfirm="close">
     <p class="notice-content">
-      1月8号西藏、青海、宁夏、新疆停发 <br>
-      1月11号甘肃、内蒙、黑龙江、吉林、辽宁、云南、海南停发 <br>
-      1月13号贵州、四川、陕西、山西、广西停发 <br>
-      1月14号其他省份停发 <br>
-      <span style="color:#FF3D3D">1月15号开始所有地区停发</span><br>
-      2月3号开始陆续恢复发货 <br>
+      因全力做好配合疫情防控工作，原定2月3日恢复发货延期至2月10日陆续发货（适用于大部分商品，纸品、小家电发货时间待定）。<br>
+      快递发出后因部分地区自发性封路将导致派件异常无法上门，请您理解。<br>
+      感谢您等待，如有任何疑问，请及时联系在线客服。<br>
+      注意：如果疫情继续恶化，发货时间会根据实际情况做出调整，届时将发布新的通知，请及时关注。<br>
       请购买盲盒用户知悉。
     </p>
   </Dialog>
