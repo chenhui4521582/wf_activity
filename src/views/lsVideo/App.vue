@@ -1,8 +1,8 @@
 <template>
-  <div class="ls-video" :class="[from == 'plantFrom' ? 'in-plantFrom' : 'in-game']"> 
+  <div class="ls-video" :class="[from == 'platFrom' ? 'in-platFrom' : 'in-game']"> 
     <!-- 兼容游戏内打开跟平台打开 -->
-    <template v-if="from == 'plantFrom'">
-      <div class="back-home"></div>
+    <template v-if="from == 'platFrom'">
+      <div class="back-home" @click="backHome"></div>
       <div class="rule-btn" @click="openRule"></div>
     </template>
     <!-- 兼容游戏内打开跟平台打开 -->
@@ -21,16 +21,18 @@
         <div class="list" ref="wrap">
           <template v-if="showList">
             <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
-              <list :item="item" :currentIndex="currentIndex"></list>
+              <list :item="item" :currentIndex="currentIndex" :from="from"></list>
             </div>
             <div class="list-item item" v-for="(item, index) in highlightTimeList" :key="`list${index}`">
-              <list :item="item" :currentIndex="currentIndex"></list>
+              <list :item="item" :currentIndex="currentIndex" :from="from"></list>
             </div>
           </template>
           <!-- loading -->
           <loading v-else :showBar="true"/>
         </div>
       </better-scroll>
+      <!-- back-top -->
+      <div v-if="isBackTop" class="back-top" @click="backTop"> </div>
     </div>
     <!-- 规则 -->
     <rule v-model="showRule"></rule>
@@ -42,11 +44,12 @@ import Loading from '@/components/common/loading'
 import Rule from './components/rule'
 import List from './list'
 import Services from './services/services'
+import utils from './components/utils'
 import _get from 'lodash.get'
 export default {
   name: 'lsVideo',
   data: ()=>({
-    from: 'plantFrom',
+    from: 'platFrom',
     // from: 'game'
     optimumTimeList: [],
     highlightTimeList: [],
@@ -73,22 +76,37 @@ export default {
       this.currentIndex = index
       this.resetParams()
       this._getHighlightTimeList()
+      GLOBALS.marchSetsPoint('A_H5PT0232002705', {
+        from_project_id: this.from
+      })
+    },
+    backHome() {
+      window.history.go(-1)
+      GLOBALS.marchSetsPoint('A_H5PT0232002703', {
+        from_project_id: this.from
+      })
+    },
+    backTop() {
+      this.isBackTop = false
     },
     onScroll ({ y }) {
       let box = this.$refs.box.clientHeight
       let scrollBox = this.$refs.wrap.clientHeight
-      let entPosition = scrollBox - box
-      if (-y >= (entPosition - 100)) {
+      let endPosition = scrollBox - box
+      if (Math.abs(Math.round(y)) > endPosition) {
         if (this.timer) {
           clearTimeout(this.timer)
         }
         this.timer = setTimeout(() => {
-          if(y > 500) {
-            this.isBackTop = true
-          }
           this.page++
           this._getHighlightTimeList()
         }, 200)
+      }
+      /** 是否显示返回顶部 **/
+      if (Math.abs(Math.round(y)) > 200) {
+        this.isBackTop = true
+      } else {
+        this.isBackTop = false
       }
     },
     resetParams () {
@@ -125,10 +143,12 @@ export default {
     },
     openRule() {
       this.showRule = true
+      GLOBALS.marchSetsPoint('A_H5PT0232002704', {
+        from_project_id: this.from
+      })
     },
     /** 列表返回顶部 **/
     backTop() {
-      this.$marchSetsPoint('A_H5PT0025001195')
       this.$refs.scroll.scrollTo(0, 0)
       this.isBackTop = false
     },
@@ -138,6 +158,10 @@ export default {
   },
   created() {
     this._getHighlightTimeList()
+    this.from = utils.getUrlParams('from') || 'platFrom'
+    GLOBALS.marchSetsPoint('P_H5PT0232', {
+      from_project_id: this.from
+    })
   }
 }
 </script>
@@ -221,8 +245,17 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  .back-top {
+    position: absolute;
+    right: .24rem;
+    bottom: 2rem;  
+    width: .7rem;
+    height: .7rem;
+    background: url(./img/back-top.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
 }
-.in-plantFrom {
+.in-platFrom {
   .back-home {
     position: absolute;
     left: 0;
