@@ -1,5 +1,5 @@
 /*
-*  name: 高光时刻
+*  name: 情人节活动
 *  auth: chenhui
 */
 import "babel-polyfill";
