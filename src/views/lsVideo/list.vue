@@ -7,10 +7,10 @@
           一杆{{item.ballNum}}球
         </div>
         <div class="award" v-if="currentIndex == 2">
-          {{item.ratePoolAwards}}万奖励
+          {{item.ratePoolAwards}}奖励
         </div>
         <div class="award" v-if="currentIndex == 1">
-          {{item.oddsResult}}万奖励
+          {{item.oddsResult}}奖励
         </div>
         <div class="user-info">
           <div class="avatar">
@@ -42,7 +42,7 @@ export default {
     handleClick() {
       if(this.from == 'game' && parent.playLsVideo) {
         let id = this.item.id
-        parent.palyLsVideo(id, this.currentIndex)
+        parent.playLsVideo(id, this.currentIndex)
       }else {
         let id = this.item.id
         let channel = localStorage.getItem('APP_CHANNEL')
@@ -101,6 +101,11 @@ export default {
     float: right;
     font-size: .18rem;
     color: #fff;
+  }
+}
+.in-game {
+  .user-info {
+    margin-top: .27rem;
   }
 }
 </style>

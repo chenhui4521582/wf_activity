@@ -16,9 +16,9 @@
       <div class="item" :class="{'active2': currentIndex == 1}" @click="handleNav(1)">一杆多球</div>
     </div>
     <!-- 列表 -->
-    <div class="listWrap" ref="box">
+    <div class="listWrap" ref="box" v-if="showList">
       <better-scroll ref="scroll" :data="highlightTimeList" :probeType="3" :listenScroll="true" @scroll="onScroll">
-        <div class="list" ref="wrap">
+        <div class="list" ref="wrap" >
           <template v-if="showList">
             <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
               <list :item="item" :currentIndex="currentIndex" :from="from"></list>
@@ -153,7 +153,9 @@ export default {
       this.isBackTop = false
     },
     close() {
-
+      if(parent && parent.closeWebView) {
+        parent.closeWebView()
+      }
     }
   },
   created() {
@@ -216,7 +218,6 @@ export default {
   }
   .list {
     padding: .16rem .25rem .16rem;
-    
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -276,6 +277,12 @@ export default {
   }
 }
 .in-game {
+  position: fixed;
+  left: .28rem;
+  right: .28rem;
+  bottom: .28rem;
+  top: .28rem;
+  min-height: auto;
   .close-btn {
     position: absolute;
     right: .1rem;
@@ -293,6 +300,31 @@ export default {
     height: .42rem;
     background: url(./img/rule-icon.png) no-repeat left top;
     background-size: 100% 100%;
+  }
+  .listWrap {
+    top: 3.56rem;
+    left: .28rem;
+    right: .28rem;
+    bottom: .28rem;
+  }
+  .list {
+    .item {
+      margin-bottom: .08rem;
+    }
+    .recommend-item {
+      overflow: hidden;
+      width: 3rem;
+      height: 2.33rem;
+      background: url(./img/recommend-bg.png) no-repeat center center;
+      background-size: 100% 100%
+    }
+    .list-item {
+      overflow: hidden;
+      width: 3rem;
+      height: 2.33rem;
+      background: url(./img/list-bg.png) no-repeat center center;
+      background-size: 100% 100%
+    }
   }
 }
 </style>
