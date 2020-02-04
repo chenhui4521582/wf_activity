@@ -1,14 +1,117 @@
 <template>
   <div class="valentines">
-    <!-- 头部 -->
-    <div class="header">
-      <div class="countdown"></div>
-    </div>
-    <!-- 标题图片 -->
+    <!-- pannel1 -->
+    <section class="pannel1">
+      <div class="back" @click="backHome">返回</div>
+      <!-- 倒计时 -->
+      <count-down :time="time"/>
+    </section>
+    <!-- pannel2 -->
+    <section class="pannel2">
+      <img src="./img/icon2.png" alt="">
+      <img src="./img/icon1.png" alt="">
+    </section>
+    <!-- pannel3 -->
+    <section class="pannel3">
+      <!-- 任务 -->
+      <ul class="task">
+        <li>
+          <div class="icon">
+            <img src="./img/award-icon2.png" alt="">
+          </div>
+          <div class="text">
+            <div class="title">每日付费达2元</div>
+            <div class="progress">
+              <div class="progress-wrap" :style="{width: countRechargeWidth()}"></div>
+              <div class="progress-text">{{ info.rechargeAmount || 0 }}/2</div>
+            </div>
+          </div>
+          <div class="btn play-game" v-if="info.rechargeStatus  == 0" @click="gotoPay">去完成</div>
+          <div class="btn" v-if="info.rechargeStatus  == 1">立即领取</div>
+          <div class="btn disable" v-if="info.rechargeStatus  == 2">已领取</div>
+        </li>
+        <li>
+          <div class="icon">
+            <img src="./img/award-icon2.png" alt="">
+          </div>
+          <div class="text">
+            <div class="title">每日游戏消耗金叶达5万</div>
+            <div class="progress">
+              <div class="progress-wrap" :style="{width: countAmountWidtht()}"></div>
+              <div class="progress-text">{{ info.bettingAmount || 0 | amountFilter }}/5</div>
+            </div>
+          </div>
+          <div class="btn play-game" v-if="info.bettingStatus == 0" @click="playGame">去完成</div>
+          <div class="btn" v-if="info.bettingStatus == 1" >立即领取</div>
+          <div class="btn disable" v-if="info.bettingStatus == 2">已领取</div>
+        </li>
+      </ul>
+      <!-- 抽红包 -->
+      <div class="lotter">
+        <!-- 标题 -->
+        <div class="title">
+          <h5>2.18最高抽520元红包</h5>
+          <p class="line"></p>
+        </div>
+        <div class="title1">累计30颗甜心可参与抽红包，甜心还可通过购买礼盒获得哟！</div>
+        <!-- 奖励列表 -->
+        <ul class="lotter-list">
+          <li v-for="(item, index) in lotter" :key="index">
+            <div class="lotter-center" :class="{active: info.sweetHeartNum >= item.number}">
+              <p>{{item.text}}</p>
+              <p>奖励</p>
+            </div>
+            <div class="loveNo">
+              <img src="./img/love-icon.png" alt="" class="love-icon">
+              <div class="love-number">{{item.number}}</div>
+            </div>
+            <div class="right-icon"></div>
+          </li>
+        </ul>
+        <!-- 当前爱心数量 -->
+        <div class="current-loverNo">
+          当前甜心：<span>{{info.sweetHeartNum || 0}}个</span>  
+        </div>
+        <!-- 抽奖按钮 -->
+        <div class="lotter-btn" v-if="info.lottery" @click="getLotter"></div>
+        <div class="lotter-btn disable" v-else></div>
+      </div>
+    </section>
+    <!-- pannel4 -->
+    <section class="pannel4">
+      <ul class="card-list">
+        <div class="item" v-for="(item, index) in cardList" :key="index">
+          <img :src="item.icon | filter" alt="">
+        </div>
+      </ul>
+    </section>
+    <!-- pannel5 -->
+    <section class="pannel5">
+      <div class="title">
+        <img src="./img/rule-title.png" alt="">
+      </div>
+      <div class="text">
+        <h5>①活动时间</h5>
+        <p>2020年2月14日-2月18日，2月18日抽红包</p>
+        <h5>②一重礼：集甜心抽红包</h5>
+        <p>• 活动期间通过完成每日活动任务或购买限定礼盒，即可获得甜心；</p>
+        <p>• 累计甜心达到30颗以上，2月18日可到活动页抽红包。累计甜心越多，红包越大，最高获得520元奖励；</p>
+        <p>• 在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动任务中；</p>
+        <p>• 每日活动任务0点刷新。</p>
+        <h5>③二重礼：限定礼盒买一送一</h5>
+        <p>买限定礼盒，再送小礼盒！优惠多多，并额外获得甜心。</p>
+        <h5>④小提示</h5>
+        <p>• 甜心在活动结束后将清零作废；</p>
+        <p>• 2月18日未抽取的红包，过期不予补偿；</p>
+        <p>• 如有任何疑问，可咨询在线客服。</p>
+      </div>
+    </section>
+    <Popup v-model="showPopup" :popupStatus="popupStatus" :popupType="popupType" :sweetHeartNum="info.sweetHeartNum"/>
   </div>
 </template>
 <script>
 import Loading from '@/components/common/loading'
+import CountDown from './countDown'
 import Popup from './popup'
 import Services from './services/services'
 import utils from './components/utils'
@@ -16,13 +119,33 @@ import _get from 'lodash.get'
 export default {
   name: 'valentinesDay',
   data: ()=>({
+    info: {},
     showPopup: false,
     type: 1,
-    countdownTime: [00,]
+    time: 172400000,
+    lotter: [
+      { text: '最高10元', number: 30 },
+      { text: '最高50元', number: 70 },
+      { text: '最高150元', number: 150 },
+      { text: '最高520元', number: 300 },
+    ],
+    cardList: [],
+    showPopup: true,
+    popupType: 'hfj',
+    popupStatus: 4
   }),
+  filters: {
+    amountFilter(value) {
+      if(value > 10000) {
+        return (value / 10000).toFixed(2)
+      }
+      return parseInt(value / 10000)
+    }
+  },
   components: {
     Loading,
-    Popup
+    Popup,
+    CountDown
   },
   computed: {
     showList() {
@@ -37,53 +160,76 @@ export default {
         from_project_id: this.from
       })
     },
-    /** 返回顶部 **/
-    backTop() {
-      this.isBackTop = false
-    },
-    _getHighlightTimeList() {
-      if(this.scrollLock) {
-        return false
-      }
-      this.scrollLock = true
-      Services.highlightTimeList({
-        optimumNum: 2,
-        page: this.page,
-        pageSize: this.pageSize,
-        sortRule: 1,
-        type: this.currentIndex
-      }).then(res=> {
-        let {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          let currentData = _get(res, 'data.data.highlightTimeList', [])
-          if(currentData.length == 20) {
-            this.scrollLock = false
-          }
-          this.highlightTimeList = this.highlightTimeList.concat(currentData)
-          this.optimumTimeList = _get(res, 'data.data.optimumTimeList', [])
+    countRechargeWidth() {
+      if(this.info.rechargeAmount) {
+        if(this.info.rechargeAmount >= 2) {
+          return '100%'
+        }else {
+          return Math.floor((this.info.rechargeAmount / 2) * 100) + '%'
         }
-      }).catch(error => {
-        this.scrollLock = false
+        return 
+      }
+      return '0%'
+    },
+    countAmountWidtht() {
+      if(this.info.bettingAmount ) {
+        if(this.info.bettingAmount >= 50000) {
+          return '100%'
+        }else {
+          return Math.floor((this.info.rechargeAmount / 50000) * 100) + '%'
+        }
+        return 
+      }
+      return '0%'
+    },
+    gotoPay() {
+      window.location.href="https://wap.beeplaying.com/xmWap/#/payment/"
+    },
+    /** 打开更多游戏弹框 **/
+    playGame() {
+      this.showPopup = true
+      this.popupStatus = 4
+    },
+    /** 获取情人节活动数据 **/
+    _getValentinesInfo() {
+      Services.getValentinesInfo().then(res=> {
+        let {code, message, data} = _get(res, 'data')
+        if(code == 200) {
+          this.info = _get(res, 'data.data', [])
+        }
       })
     },
-    /** 列表返回顶部 **/
-    backTop() {
-      this.$refs.scroll.scrollTo(0, 0)
-      this.isBackTop = false
+    /** 领取爱心接口 **/
+    _getLoveNo() {
+      Services.getLoveNo().then(res=> {
+        let {code, message, data} = _get(res, 'data')
+        if(code == 200) {
+          this.info = _get(res, 'data.data', [])
+        }
+      })
     },
-
-    close() {
-      if(parent && parent.closeWebView) {
-        parent.closeWebView()
-      }
-    }
+    /** 抽红包接口 **/
+    getLotter() {
+      Services._getLotter().then(res=> {
+        let {code, message, data} = _get(res, 'data')
+        if(code == 200) {
+          this.info = _get(res, 'data.data', [])
+        }
+      })
+    },
+    /** 获取礼包列表 **/
+    _getCardList() {
+      Services.getCardList().then(res=> {
+        let {code, message, data} = _get(res, 'data')
+        if(code == 200) {
+          this.cardList = _get(res, 'data.data.leaguePacksList', [])
+        }
+      })
+    },
   },
   created() {
-    this._getHighlightTimeList()
-    this.from = utils.getUrlParams('from') || 'platFrom'
-    GLOBALS.marchSetsPoint('P_H5PT0232', {
-      from_project_id: this.from
-    })
+    this._getValentinesInfo()
+    this._getCardList()
   }
 }
 </script>
@@ -93,5 +239,299 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+.valentines {
+  overflow: hidden;
+  min-height: 100vh;
+  background: #880131;
+  .pannel1 {
+    position: relative;
+    overflow: hidden;
+    height: 6.07rem;
+    background: url(./img/bg1.png) no-repeat center top ;
+    background-size: 100% 100%;
+    .back {
+      position: absolute;
+      left: 0;
+      top: .16rem;
+      width: .64rem;
+      height: .44rem;
+      background: #127C79;
+      text-align: center;
+      line-height: .44rem;
+      font-size: .24rem;
+      color: #fff;
+      border-radius: 0 .24rem .24rem 0;
+    }
+  }
+  .pannel2 {
+    display: flex;
+    justify-content: center;
+    img {
+      height: 2.32rem;
+      &:first-child{
+        margin-right: .1rem;
+        width: 3.2rem;
+      }
+      &:last-child {
+        width: 3.27rem;
+      }
+    }
+  }
+  .pannel3 {
+    overflow: hidden;
+    margin: 0 auto .2rem;
+    width: 6.62rem;
+    height: 8.88rem;
+    background: url(./img/bg2.png) no-repeat center top ;
+    background-size: 100% 100%;
+    .task {
+      margin: 2.1rem auto 0;
+      overflow: hidden;
+      width: 5.32rem;
+      li {
+        position: relative;
+        padding: .14rem;
+        margin-bottom: .2rem;
+        overflow: hidden;
+        height: 1.18rem;
+        background: #FEBDAB;
+        border-radius: .1rem;
+        .icon {
+          float: left;
+          margin-right: .14rem;
+          width: .9rem;
+          height: .9rem;
+          img {
+            vertical-align: top;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .text{
+          height: 100%;
+          float: left;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .title {
+            margin-bottom: .12rem;
+          }
+          .progress {
+            position: relative;
+            overflow: hidden;
+            width: 1.6rem;
+            height: .3rem;
+            background: #FFDDD4;
+            border-radius: .15rem;
+            .progress-wrap {
+              position: absolute;
+              left: 0;
+              top: 0;
+              z-index: 1;
+              width: 50%;
+              height: .3rem;
+              background: #BE013D;
+            }
+            .progress-text {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 2;
+              text-align: center;
+              line-height: .3rem;
+              font-size: .2rem;
+              color: #FEA087;
+            }
+          }
+        }
+        .btn {
+          position: absolute;
+          right: .23rem;
+          top: .33rem;
+          width: 1.13rem;
+          height: .54rem;
+          line-height: .54rem;
+          text-align: center;
+          font-size: .24rem;
+          color: #FFDDD4;
+          background: #D12B50;
+          border-radius: .27rem;
+          &.disable {
+            background: #A09F9F;
+          }
+          &.play-game {
+            background: #017D61;
+          }
+        }
+      }
+    }
+    .lotter {
+      margin: 0 auto;
+      overflow: hidden;
+      width: 5.32rem;
+      .title {
+        margin-bottom: .1rem;
+        position: relative;
+        height: .36rem;
+        line-height: .36rem;
+        text-align: center;
+        h5 {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 2;
+          transform: translate(-50%, -50%);
+          padding: 0 .1rem;
+          font-size: .36rem;
+          white-space: nowrap;
+          color: #FFE57E;
+          background: #CA3354;
+        }
+        .line {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          z-index: 1;
+          width: 100%;
+          height: 1px;
+          transform: translate(0, -50%);
+          background: #FF977C;
+        }
+      }
+      .title1 {
+          margin-bottom: .16rem;
+          white-space: nowrap;
+          font-size: .2rem;
+          color: #FFE57E;
+          text-align: center;
+      }
+      .lotter-list {
+        margin-bottom: .16rem;
+        display: flex;
+        justify-content: center;
+        li {
+          position: relative;
+          width: 1.35rem;
+          .lotter-center {
+            padding-top: .07rem;
+            margin-bottom: .1rem;
+            width: 1.2rem;
+            height: .72rem;
+            background: url(./img/looter-bg.png) no-repeat center center;
+            background-size: 100% 100%;
+            font-size: .22rem;
+            color: #830823;
+            text-align: center;
+            &.active {
+              background: url(./img/looter-bg-active.png) no-repeat center center;
+              background-size: 100% 100%;
+              color: #fff;
+            }
+          }
+          .right-icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: .15rem;
+            height: .64rem;
+            background: url(./img/right-icon.png) no-repeat center center;
+            background-size: .1rem .16rem; 
+          }
+          &:last-child {
+            width: 1.2rem;
+            .right-icon {
+              display: none;
+            }
+          }
+          .loveNo {
+            width: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .love-icon {
+              margin-right: .1rem;
+              display: block;
+              width: .18rem;
+              height: .16rem;
+            }
+            .love-number {
+              font-size: .22rem;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .current-loverNo {
+      margin-bottom: .5rem;
+      text-align: center;
+      color: #FFE57E;
+      font-size: .24rem;
+      span {
+        color: #fff;
+      }
+    }
+    .lotter-btn {
+      margin: 0 auto;
+      width: 3.65rem;
+      height: 1.08rem;
+      background: url(./img/lottery-btn.png) no-repeat center center;
+      background-size: 100% 100%;
+      &.disable {
+        background: url(./img/lottery-btn-diasble.png) no-repeat center center;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .pannel4 {
+    margin: 0 auto .42rem;
+    overflow: hidden;
+    width: 6.62rem;
+    height: 8.78rem;
+    background: url(./img/bg3.png) no-repeat center top ;
+    background-size: 100% 100%;
+    .card-list {
+      margin-top: 2.1rem;
+      .item {
+        margin: 0 auto .16rem;
+        width: 5.39rem;
+        height: 1.97rem;
+        img {
+          vertical-align: top;
+          width: 5.39rem;
+          height: 1.97rem;
+        }
+      }
+    }
+  }
+  .pannel5 {
+    margin: 0 auto .8rem;
+    width: 6.62rem;
+    .title {
+      margin: 0 auto .3rem;
+      width: 3rem;
+      height: .34rem;
+      img {
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text {
+      color: #FF9C7D;
+      h5 {
+        margin-bottom: .2rem;
+        font-size: .28rem;
+        font-weight: bold;
+      }
+      p {
+        margin-bottom: .2rem;
+        font-size: .24rem;
+        line-height: .3rem;
+      }
+    }
+  }
+}
 </style>

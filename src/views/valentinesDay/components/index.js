@@ -1,6 +1,5 @@
 import Header from './header'
 import Modal from './modal'
-import AwardModal from './awardsDialog/awardsDialog'
 import Button from './button'
 import Filters from './Filters'
 import Toast from '../../../plugins/toast';
@@ -10,7 +9,6 @@ const components = [
   Header,
   Modal,
   Button,
-  AwardModal
 ]
 
 const install = function(Vue) {
