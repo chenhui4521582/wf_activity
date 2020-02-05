@@ -7,7 +7,7 @@ const services = {
   },
   /** 领取爱心接口 **/
   getLoveNo: function(params) {
-    let url = '//ops-api.beeplaying.com/ops/valentines/day/get-sweet-heart/'
+    let url = '//ops-api.beeplaying.com/ops/valentines/day/get-sweet-heart/{type}'
     return axios.post(url.replace('{type}', params))
   },
   /** 抽红包接口 **/

@@ -4,7 +4,7 @@
     <section class="pannel1">
       <div class="back" @click="backHome">返回</div>
       <!-- 倒计时 -->
-      <count-down :time="time"/>
+      <count-down :time="info.countdown"/>
     </section>
     <!-- pannel2 -->
     <section class="pannel2">
@@ -26,9 +26,9 @@
               <div class="progress-text">{{ info.rechargeAmount || 0 }}/2</div>
             </div>
           </div>
-          <div class="btn play-game" v-if="info.rechargeStatus  == 0" @click="gotoPay">去完成</div>
-          <div class="btn" v-if="info.rechargeStatus  == 1">立即领取</div>
-          <div class="btn disable" v-if="info.rechargeStatus  == 2">已领取</div>
+          <div class="btn play-game" v-if="info.rechargeStatus == 0" @click="gotoPay">去完成</div>
+          <div class="btn" v-if="info.rechargeStatus == 1" @click="_getLoveNo(1)">立即领取</div>
+          <div class="btn disable" v-if="info.rechargeStatus == 2">已领取</div>
         </li>
         <li>
           <div class="icon">
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="btn play-game" v-if="info.bettingStatus == 0" @click="playGame">去完成</div>
-          <div class="btn" v-if="info.bettingStatus == 1" >立即领取</div>
+          <div class="btn" v-if="info.bettingStatus == 1" @click="_getLoveNo(2)">立即领取</div>
           <div class="btn disable" v-if="info.bettingStatus == 2">已领取</div>
         </li>
       </ul>
@@ -73,14 +73,14 @@
           当前甜心：<span>{{info.sweetHeartNum || 0}}个</span>  
         </div>
         <!-- 抽奖按钮 -->
-        <div class="lotter-btn" v-if="info.lottery" @click="getLotter"></div>
+        <div class="lotter-btn" v-if="info.lottery" @click="_getLotter"></div>
         <div class="lotter-btn disable" v-else></div>
       </div>
     </section>
     <!-- pannel4 -->
     <section class="pannel4">
       <ul class="card-list">
-        <div class="item" v-for="(item, index) in cardList" :key="index">
+        <div class="item" v-for="(item, index) in cardList" :key="index" @click="gotoPayCard(item, index)">
           <img :src="item.icon | filter" alt="">
         </div>
       </ul>
@@ -106,7 +106,7 @@
         <p>• 如有任何疑问，可咨询在线客服。</p>
       </div>
     </section>
-    <Popup v-model="showPopup" :popupStatus="popupStatus" :popupType="popupType" :sweetHeartNum="info.sweetHeartNum"/>
+    <Popup v-model="showPopup" :popupStatus="popupStatus" :award="award" :love="love" :sweetHeartNum="info.sweetHeartNum"/>
   </div>
 </template>
 <script>
@@ -122,7 +122,6 @@ export default {
     info: {},
     showPopup: false,
     type: 1,
-    time: 172400000,
     lotter: [
       { text: '最高10元', number: 30 },
       { text: '最高50元', number: 70 },
@@ -130,14 +129,23 @@ export default {
       { text: '最高520元', number: 300 },
     ],
     cardList: [],
-    showPopup: true,
-    popupType: 'hfj',
-    popupStatus: 4
+    showPopup: false,
+    popupStatus: 0,
+    love: {
+      number: 0,
+      lottery: false,
+      lackNum: 0
+    },
+    award: {
+      awardsName: '' ,
+      awardsNum: 0,
+      awardsType: 'hfj'
+    }
   }),
   filters: {
     amountFilter(value) {
       if(value > 10000) {
-        return (value / 10000).toFixed(2)
+        return parseInt(value / 10000)
       }
       return parseInt(value / 10000)
     }
@@ -156,9 +164,7 @@ export default {
     /** 返回 **/
     backHome() {
       window.history.go(-1)
-      GLOBALS.marchSetsPoint('A_H5PT0232002703', {
-        from_project_id: this.from
-      })
+      GLOBALS.marchSetsPoint('A_H5PT0244002821')
     },
     countRechargeWidth() {
       if(this.info.rechargeAmount) {
@@ -183,39 +189,89 @@ export default {
       return '0%'
     },
     gotoPay() {
-      window.location.href="https://wap.beeplaying.com/xmWap/#/payment/"
+      GLOBALS.marchSetsPoint('A_H5PT0244002822')
+      location.href = '//wap.beeplaying.com/xmWap/#/payment/'
+    },
+    gotoPayCard(item, index) {
+      let channel = localStorage.getItem('APP_CHANNEL')
+      let originDeffer = `//wap.beeplaying.com/activities/valentinesDay.html?channel=${channel}&blindBox=true`
+      localStorage.setItem('payment', JSON.stringify(item))
+      localStorage.setItem('originDeffer', originDeffer)
+      switch(index) {
+        case 0 :
+          GLOBALS.marchSetsPoint('A_H5PT0244002828')
+          break;
+        case 1 :
+          GLOBALS.marchSetsPoint('A_H5PT0244002829')
+          break;
+        case 2 :
+          GLOBALS.marchSetsPoint('A_H5PT0244002830')
+          break;
+      }
+      window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
+
     },
     /** 打开更多游戏弹框 **/
     playGame() {
       this.showPopup = true
       this.popupStatus = 4
+      GLOBALS.marchSetsPoint('A_H5PT0244002824')
     },
     /** 获取情人节活动数据 **/
     _getValentinesInfo() {
       Services.getValentinesInfo().then(res=> {
         let {code, message, data} = _get(res, 'data')
         if(code == 200) {
-          this.info = _get(res, 'data.data', [])
+          this.info = _get(res, 'data.data', {})
+          /** 活动开奖当天弹框 **/
+          if(this.info.popup) {
+            this.showPopup = true
+            this.popupStatus = 3
+            GLOBALS.marchSetsPoint('A_H5PT0244002831')
+          }
         }
       })
     },
     /** 领取爱心接口 **/
-    _getLoveNo() {
-      Services.getLoveNo().then(res=> {
+    _getLoveNo(type) {
+      Services.getLoveNo(type).then(res=> {
         let {code, message, data} = _get(res, 'data')
         if(code == 200) {
-          this.info = _get(res, 'data.data', [])
+          this.love.number = _get(res, 'data.data.receiveNum', 0)
+          this.love.lottery = _get(res, 'data.data.lottery', false)
+          this.love.lackNum = _get(res, 'data.data.lackNum', 0)
+          if(this.love.number > 0) {
+            this.showPopup = true
+            this.popupStatus = 1
+            GLOBALS.marchSetsPoint('A_H5PT0244002826')
+          }
+          this._getValentinesInfo()
+        }else {
+          this.$toast.show({message})
+        }
+        switch(type) {
+          case 1: 
+            GLOBALS.marchSetsPoint('A_H5PT0244002823')
+            break;
+          case 2: 
+            GLOBALS.marchSetsPoint('A_H5PT0244002825')
+            break;
         }
       })
     },
     /** 抽红包接口 **/
-    getLotter() {
-      Services._getLotter().then(res=> {
+    _getLotter() {
+      Services.getLotter().then(res=> {
         let {code, message, data} = _get(res, 'data')
         if(code == 200) {
-          this.info = _get(res, 'data.data', [])
+          this.award = _get(res, 'data.data')
+          this.showPopup = true
+          this.popupStatus = 2
+          this._getValentinesInfo()
+          GLOBALS.marchSetsPoint('A_H5PT0244002832')
         }
       })
+      GLOBALS.marchSetsPoint('A_H5PT0244002827')
     },
     /** 获取礼包列表 **/
     _getCardList() {
@@ -230,6 +286,7 @@ export default {
   created() {
     this._getValentinesInfo()
     this._getCardList()
+    GLOBALS.marchSetsPoint('P_H5PT0244')
   }
 }
 </script>

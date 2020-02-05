@@ -10,7 +10,6 @@ const components = [
   Modal,
   Button,
 ]
-
 const install = function(Vue) {
   if (install.installed) return
   components.map(component => {

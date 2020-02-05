@@ -8,19 +8,23 @@
         <div class="love-icon">
           <img src="./img/love-icon1.png" alt="">
         </div>
-        <div class="love-num">X5</div>
-        <div class="love-explain">甜心越多，红包越大哦！</div>
+        <div class="love-num">X{{love.number}}</div>
+        <div class="love-explain" v-if="love.lottery">甜心越多，红包越大哦！</div>
+        <div class="love-explain" v-else>
+          <p>还差{{love.lackNum}}颗甜心，</p>
+          <p>2月18日就可抽红包大奖啦！</p>
+        </div>
       </template>
       <!-- 领取红包弹框 -->
       <template v-if="popupStatus == 2">
         <div class="title">恭喜获得红包</div>
         <div class="award-icon">
-          <img src="./img/huafei-icon.png" alt="" v-if="popupType == 'hfj'">
-          <img src="./img/leaf-icon.png" alt="" v-if="popupType == 'jyz'">
-          <img src="./img/card-icon.png" alt="" v-if="popupType == 'yhq'">
+          <img src="./img/huafei-icon.png" alt="" v-if="award.awardsType == 'hfj'">
+          <img src="./img/leaf-icon.png" alt="" v-if="award.awardsType == 'jyz'">
+          <img src="./img/card-icon.png" alt="" v-if="award.awardsType == 'yhq'">
         </div>
         <div class="award-num">
-          60000 金叶
+          {{award.awardsName}}
         </div>
         <div class="award-explain">
           奖励可到“我的”页面查看
@@ -30,10 +34,10 @@
       <template v-if="popupStatus == 3">
         <div class="title">恭喜你</div>
         <div class="has-title ok" v-if="sweetHeartNum >= 30">
-          <p>当前累计甜心 {{1}} 颗 </p>
+          <p>当前累计甜心 {{sweetHeartNum}} 颗 </p>
           <p>今日可抽红包！</p>
         </div>
-        <div class="has-title no" v-if="sweetHeartNum <= 30">
+        <div class="has-title no" v-if="sweetHeartNum < 30">
           <p>当前累计甜心 {{sweetHeartNum}} 颗</p>
           <p>还差{{30 - sweetHeartNum}} 颗今日可抽红包！</p>
         </div>
@@ -44,11 +48,11 @@
           <p>完成任务或购买限定礼盒可得更多甜心，</p>
           <p>抽更大红包~</p>
         </div>
-        <div class="has-explain no" v-if="sweetHeartNum <= 30">
+        <div class="has-explain no" v-if="sweetHeartNum < 30">
           <p>完成任务或购买限定礼盒可得甜心哟~</p>
         </div>
         <div class="has-btn ok" v-if="sweetHeartNum >= 30" @click="hidePopup"></div>
-        <div class="has-btn no" v-if="sweetHeartNum <= 30" @click="hidePopup"></div>
+        <div class="has-btn no" v-if="sweetHeartNum < 30" @click="hidePopup"></div>
       </template>
       <!-- 更多游戏弹框 -->
       <template v-if="popupStatus == 4">
@@ -56,7 +60,6 @@
         <ul class="game-list">
           <li v-for="(item, index) in gameList" :key="index" @click="gotoGame(item)">
             <img :src="item.img" alt="">
-            <p class="name">{{item.name}}</p>
           </li>
         </ul>
         <div class="game-btn" @click="moreGame"></div>
@@ -68,6 +71,7 @@
   </div>
 </template>
 <script>
+import utils from './components/utils'
 export default {
   name: 'popup',
   props: {
@@ -75,24 +79,27 @@ export default {
       type: Boolean,
       default: false
     },
-    popupType: {
-      default: 1
+    award: {
+      type: Object
     },
     popupStatus: {
       default: 1
     },
     sweetHeartNum: {
       default: 0
+    },
+    love: {
+      type: Object
     }
   },
   data: ()=> ({
     gameList: [
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/crush/', name: '糖果萌消消乐'},
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/fish/', name: '街机欢乐捕鱼'},
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/billiards/', name: '欢乐竞技台球'},
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/kingdom2/', name: '三国大作战'},
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/square/', name: '众神风云'},
-      {img: require('./img/game-bg.png'), url: '//wap.beeplaying.com/Marbles/', name: '王者弹珠'},
+      {img: require('./img/0.png'), url: '//wap.beeplaying.com/crush/', name: '糖果萌消消乐'},
+      {img: require('./img/3.png'), url: '//wap.beeplaying.com/fish/', name: '街机欢乐捕鱼'},
+      {img: require('./img/2.png'), url: '//wap.beeplaying.com/billiards/', name: '欢乐竞技台球'},
+      {img: require('./img/4.png'), url: '//wap.beeplaying.com/kingdom2/', name: '三国大作战'},
+      {img: require('./img/1.png'), url: '//wap.beeplaying.com/square/', name: '众神风云'},
+      {img: require('./img/5.png'), url: '//wap.beeplaying.com/Marbles/', name: '王者弹珠'},
     ]
   }),
   methods: {
@@ -104,6 +111,15 @@ export default {
     },
     moreGame() {
       window.location.href = '//wap.beeplaying.com/xmWap/#/'
+    }
+  },
+  watch: {
+    value(newValue){
+      if(newValue) {
+        utils.ScrollNoMove()
+      }else {
+        utils.ScrollMove()
+      }
     }
   }
 }
@@ -222,7 +238,7 @@ export default {
         }
       }
       .love-icon {
-        margin: .18rem auto .26rem;
+        margin: 2rem auto .26rem;
         width: 1.96rem;
         height: 1.72rem;
         img {
@@ -232,7 +248,7 @@ export default {
         }
       }
       .love-num {
-        margin-bottom: .73rem;
+        margin-bottom: .3rem;
         font-size: .44rem;
         color: #fff;
         text-align: center;
@@ -241,6 +257,9 @@ export default {
         font-size: .24rem;
         color: #fff;
         text-align: center;
+        p {
+          margin-bottom: .1rem;
+        }
       }
       .award-icon {
         margin: 2rem auto 0;
