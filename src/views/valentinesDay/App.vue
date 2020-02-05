@@ -81,7 +81,7 @@
     <section class="pannel4">
       <ul class="card-list">
         <div class="item" v-for="(item, index) in cardList" :key="index" @click="gotoPayCard(item, index)">
-          <img :src="item.icon | filter" alt="">
+          <img :src="item.productIcon | filter" alt="">
         </div>
       </ul>
     </section>
