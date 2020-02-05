@@ -38,7 +38,7 @@
             <div class="title">每日游戏消耗金叶达5万</div>
             <div class="progress">
               <div class="progress-wrap" :style="{width: countAmountWidtht()}"></div>
-              <div class="progress-text">{{ info.bettingAmount || 0 | amountFilter }}/5</div>
+              <div class="progress-text">{{ info.bettingAmount || 0 | amountFilter }}/5万</div>
             </div>
           </div>
           <div class="btn play-game" v-if="info.bettingStatus == 0" @click="playGame">去完成</div>
@@ -145,9 +145,9 @@ export default {
   filters: {
     amountFilter(value) {
       if(value > 10000) {
-        return parseInt(value / 10000)
+        return (value / 10000).toFixed(2) + '万'
       }
-      return parseInt(value / 10000)
+      return value
     }
   },
   components: {
