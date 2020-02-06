@@ -18,7 +18,7 @@ export default {
   name: 'countDown',
   props: ['time'],
   data: () => ({
-    countdownTime: []
+    countdownTime: ['0','00','00','00']
   }),
   computed: {
     showCountDown () {

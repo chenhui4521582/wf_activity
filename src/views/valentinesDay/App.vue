@@ -144,7 +144,7 @@ export default {
   }),
   filters: {
     amountFilter(value) {
-      if(value > 10000) {
+      if(value >= 10000) {
         return (value / 10000).toFixed(2) + '万'
       }
       return value
@@ -229,6 +229,9 @@ export default {
             this.popupStatus = 3
             GLOBALS.marchSetsPoint('A_H5PT0244002831')
           }
+          if(this.info.state == 2) {
+            this.$toast.show({ message:'当前活动已结束!' })
+          }
         }
       })
     },
@@ -287,6 +290,8 @@ export default {
     this._getValentinesInfo()
     this._getCardList()
     GLOBALS.marchSetsPoint('P_H5PT0244')
+    /** 删除回调地址防止异常 **/
+    localStorage.removeItem('originDeffer')
   }
 }
 </script>
