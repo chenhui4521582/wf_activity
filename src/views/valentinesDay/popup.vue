@@ -152,9 +152,9 @@ export default {
       background: url(./img/popup-bg.png) no-repeat center top;
       background-size: 100% 100%;
       .title {
-        margin: 2.72rem auto .5rem;
+        margin: 2.66rem auto .5rem;
         text-align: center;
-        font-size: .24rem;
+        font-size: .28rem;
         color:#FDB887;
         text-align: center;
       }

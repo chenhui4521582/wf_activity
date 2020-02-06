@@ -74,7 +74,7 @@
         </div>
         <!-- 抽奖按钮 -->
         <div class="lotter-btn" v-if="info.lottery" @click="_getLotter"></div>
-        <div class="lotter-btn disable" v-else></div>
+        <div class="lotter-btn disable" v-else @click="lotteryDisable"></div>
       </div>
     </section>
     <!-- pannel4 -->
@@ -120,7 +120,6 @@ export default {
   name: 'valentinesDay',
   data: ()=>({
     info: {},
-    showPopup: false,
     type: 1,
     lotter: [
       { text: '最高10元', number: 30 },
@@ -210,6 +209,9 @@ export default {
       }
       window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
 
+    },
+    lotteryDisable() {
+      this.$toast.show({ message:'当前不可抽奖' })
     },
     /** 打开更多游戏弹框 **/
     playGame() {
