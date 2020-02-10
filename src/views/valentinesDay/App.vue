@@ -73,7 +73,11 @@
           当前甜心：<span>{{info.sweetHeartNum || 0}}个</span>  
         </div>
         <!-- 抽奖按钮 -->
+<<<<<<< HEAD
         <div class="lotter-btn" v-if="!info.lottery" @click="_getLotter"></div>
+=======
+        <div class="lotter-btn fade" v-if="info.lottery" @click="_getLotter"></div>
+>>>>>>> aeceae1df3b1b8534d7ab747eefd2faf074f5fba
         <div class="lotter-btn disable" v-else @click="lotteryDisable"></div>
       </div>
     </section>
@@ -543,7 +547,13 @@ export default {
       height: 1.08rem;
       background: url(./img/lottery-btn.png) no-repeat center center;
       background-size: 100% 100%;
+<<<<<<< HEAD
       animation: fade 2s infinite;
+=======
+      &.fade {
+        animation: fade 2s infinite;
+      }
+>>>>>>> aeceae1df3b1b8534d7ab747eefd2faf074f5fba
       &.disable {
         background: url(./img/lottery-btn-diasble.png) no-repeat center center;
         background-size: 100% 100%;
