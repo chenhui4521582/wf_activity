@@ -280,8 +280,8 @@ export default {
   position: fixed;
   left: .28rem;
   right: .28rem;
-  bottom: .28rem;
-  top: .28rem;
+  bottom: 1.28rem;
+  top: 1.28rem;
   min-height: auto;
   .close-btn {
     position: absolute;
@@ -302,10 +302,10 @@ export default {
     background-size: 100% 100%;
   }
   .listWrap {
-    top: 3.56rem;
+    top: 4.56rem;
     left: .28rem;
     right: .28rem;
-    bottom: .28rem;
+    bottom: 1.28rem;
   }
   .list {
     .item {
