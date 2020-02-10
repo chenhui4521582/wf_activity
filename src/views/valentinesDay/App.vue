@@ -106,6 +106,10 @@
         <p>• 如有任何疑问，可咨询在线客服。</p>
       </div>
     </section>
+    <!-- 返回顶部 -->
+    <div class="backTop" v-if="showBackTop" @click="handleBackTop">
+      <img src="./img/back-top.png" alt="">
+    </div>
     <Popup v-model="showPopup" :popupStatus="popupStatus" :award="award" :love="love" :sweetHeartNum="info.sweetHeartNum"/>
   </div>
 </template>
@@ -138,8 +142,9 @@ export default {
     award: {
       awardsName: '' ,
       awardsNum: 0,
-      awardsType: 'hfj'
-    }
+      awardsType: ''
+    },
+    showBackTop: false
   }),
   filters: {
     amountFilter(value) {
@@ -162,7 +167,7 @@ export default {
   methods: {
     /** 返回 **/
     backHome() {
-      window.history.go(-1)
+      window.location.href = "//wap.beeplaying.com/xmWap/"
       GLOBALS.marchSetsPoint('A_H5PT0244002821')
     },
     countRechargeWidth() {
@@ -212,6 +217,22 @@ export default {
     },
     lotteryDisable() {
       this.$toast.show({ message:'当前不可抽奖' })
+    },
+    onScroll() {
+      let _this = this
+      window.onscroll = function() {
+        let t = document.documentElement.scrollTop || document.body.scrollTop
+        if(t >= 436) {
+          _this.showBackTop = true
+        }
+        if(t <= 436) {
+          _this.showBackTop = false
+        }
+      }
+    },
+    handleBackTop() {
+      this.showBackTop = false
+      window.scrollTo(0, 0)
     },
     /** 打开更多游戏弹框 **/
     playGame() {
@@ -291,7 +312,9 @@ export default {
   created() {
     this._getValentinesInfo()
     this._getCardList()
+    this.onScroll()
     GLOBALS.marchSetsPoint('P_H5PT0244')
+
     /** 删除回调地址防止异常 **/
     localStorage.removeItem('originDeffer')
   }
@@ -598,6 +621,18 @@ export default {
         font-size: .24rem;
         line-height: .3rem;
       }
+    }
+  }
+  .backTop {
+    position: fixed;
+    right: .3rem;
+    bottom: 2rem;
+    width: .8rem;
+    height: .8rem;
+    img {
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
     }
   }
 }

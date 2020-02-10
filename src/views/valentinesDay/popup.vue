@@ -19,7 +19,7 @@
       <template v-if="popupStatus == 2">
         <div class="title">恭喜获得红包</div>
         <div class="award-icon">
-          <img src="./img/huafei-icon.png" alt="" v-if="award.awardsType == 'hfj'">
+          <img src="./img/huafei-icon.png" alt="" v-if="award.awardsType == 'hfq'">
           <img src="./img/leaf-icon.png" alt="" v-if="award.awardsType == 'jyz'">
           <img src="./img/card-icon.png" alt="" v-if="award.awardsType == 'yhq'">
         </div>
@@ -63,8 +63,8 @@
           </li>
         </ul>
         <div class="game-btn" @click="moreGame"></div>
-        <p class="game-explain">甜心部分游戏消耗金叶不计入活动，</p>
-        <p class="game-explain"> 详见规则越多，红包越大哦！</p>
+        <p class="game-explain">部分游戏消耗金叶不计入活动，</p>
+        <p class="game-explain"> 详见规则。</p>
       </template>
       <div class="close" @click="hidePopup"></div>
     </div>
