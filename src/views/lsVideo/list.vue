@@ -85,6 +85,7 @@ export default {
     float: left;
     width: .36rem;
     height: .36rem;
+    
     img {
       vertical-align: top;
       width: 100%;
@@ -96,6 +97,9 @@ export default {
     font-size: .2rem;
     font-weight: bold;
     color: #fff;
+    width: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .time {
     float: right;
