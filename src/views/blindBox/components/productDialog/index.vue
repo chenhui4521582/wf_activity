@@ -12,9 +12,9 @@
           :options="options">
           <swiper-slide v-for="(item,index) in products"
             :key="index">
-            <img class="content"
-              :src="item.awardsImage | imgFilter"
-              alt="" />
+            <div class="content"
+              :style="{background: `url(${imgFilter(item.awardsImage)})`, backgroundSize: 'cover'}">
+            </div>
           </swiper-slide>
           <div slot="pagination"
             class="swiper-pagination"></div>
@@ -106,6 +106,13 @@ export default {
         name: 'AllProducts'
       })
     },
+    imgFilter (url) {
+      if (url && url.indexOf('http') < 0) {
+        return '//file.beeplaying.com' + url
+      } else {
+        return url
+      }
+    },
     async openBox () {
       GLOBALS.marchSetsPoint('A_H5PT0225002834', {
         awards_id: this.goodsDetail.awardsId,
@@ -152,7 +159,7 @@ export default {
 .wrapper {
   .content {
     width: 4.98rem;
-    // height: 4.98rem;
+    height: 4.98rem;
     border-radius: 0.2rem;
   }
   .img-container {
