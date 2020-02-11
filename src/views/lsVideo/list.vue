@@ -53,11 +53,22 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.recommend-item {
+  .title {
+    margin: .22rem auto 0;
+    width: 1.8rem;
+    height: .34rem;
+    line-height: .39rem;
+    text-align: center;
+    color: #fff;
+    font-size: .22rem;
+  }
+}
 .title {
   margin: .24rem auto 0;
   width: 1.8rem;
-  height: .32rem;
-  line-height: .32rem;
+  height: .34rem;
+  line-height: .39rem;
   text-align: center;
   color: #fff;
   font-size: .22rem;
@@ -88,7 +99,6 @@ export default {
     float: left;
     width: .36rem;
     height: .36rem;
-    
     img {
       vertical-align: top;
       width: 100%;
