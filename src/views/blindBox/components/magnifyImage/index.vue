@@ -64,7 +64,7 @@ export default {
 }
 .content {
   width: 6.1rem;
-  height: 6.1rem;
+  // height: 6.1rem;
   border-radius: 0.32rem;
   background: #fff;
   text-align: center;
@@ -73,7 +73,7 @@ export default {
   box-sizing: border-box;
   .magnify {
     width: 100%;
-    height: 100%;
+    // height: 100%;
     border-radius: 0.2rem;
   }
   .close {

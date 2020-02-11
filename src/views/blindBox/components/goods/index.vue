@@ -6,7 +6,8 @@
         awardsName: goods.awardsName,
         showAmount: goods.showAmount,
         remark:  goods.remark,
-        awardsId:  goods.awardsId
+        awardsId:  goods.awardsId,
+        awardsImage: goods.awardsImage
       })" :src="goods.awardsImage | imgFilter"
           alt="商品">
       </div>
