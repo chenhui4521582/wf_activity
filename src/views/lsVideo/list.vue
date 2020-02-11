@@ -9,8 +9,8 @@
         <div class="award" v-if="currentIndex == 2">
           {{item.ratePoolAwards}}奖励
         </div>
-        <div class="award" v-if="currentIndex == 1">
-          {{item.oddsResult}}奖励
+        <div class="award" :class="{'active': currentIndex == 1}" v-if="currentIndex == 1">
+          {{item.odds}}倍
         </div>
         <div class="user-info">
           <div class="avatar">
@@ -72,6 +72,9 @@ export default {
   font-size: .22rem;
   background:rgba(246,56,89,.9);
   border-radius: .2rem;
+  &.active {
+    background: #DD3DF0;
+  }
 }
 .user-info {
   margin-top: .43rem;
