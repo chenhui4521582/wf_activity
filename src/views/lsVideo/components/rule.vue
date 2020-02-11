@@ -2,9 +2,9 @@
   <div class="rule" v-if="value">
     <div class="mask"></div>
     <div class="center">
-      1.用户在台球里击中奖池时，视频会在“奖池高光时刻”中展示，用户打出一杆多球时（5球及以上),视频会在“一杆多球”中展示。<br>
-      2.视频默认时间排序，最近期的放在前面。<br>
-      3.视频存放数量有限，每个视频有展示时间限制，到期后不再展示。<br>
+      <p>1.用户在台球里击中奖池时，视频会在“奖池高光时刻”中展示，用户打出一杆多球时（5球及以上),视频会在“一杆多球”中展示。</p>
+      <p>2.视频默认时间倒序排序，最新的视频放在最前面。</p>
+      <p>3.视频存放数量有限，每个视频有展示时间限制，到期后不再展示。</p>
       <div class="closed" @click="hide"></div>
     </div>
   </div>
@@ -59,7 +59,9 @@ export default {
     background-size: 100% 100%;
     font-size: .24rem;
     color: #fff;
-    line-height: .34rem;
+    p {
+      line-height: .34rem;
+    }
     .closed {
       position: absolute;
       left: 50%;
