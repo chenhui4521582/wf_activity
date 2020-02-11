@@ -3,11 +3,11 @@
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'platFrom'">
       <div class="back-home" @click="backHome"></div>
-      <div class="rule-btn" @click="openRule"></div>
+      <div class="rule-btn" @click="openRule">规则</div>
     </template>
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'game'">
-      <div class="rule-btn" @click="openRule"></div>
+      <div class="rule-btn" @click="openRule">规则</div>
       <div class="close-btn" @click="close"></div>
     </template>
     <!-- 导航 -->
@@ -20,10 +20,10 @@
       <better-scroll ref="scroll" :data="highlightTimeList" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
           <template v-if="showList">
-            <div class="recommend-item item" v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
+            <div class="recommend-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
               <list :item="item" :currentIndex="currentIndex" :from="from"></list>
             </div>
-            <div class="list-item item" v-for="(item, index) in highlightTimeList" :key="`list${index}`">
+            <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in highlightTimeList" :key="`list${index}`">
               <list :item="item" :currentIndex="currentIndex" :from="from"></list>
             </div>
           </template>
@@ -229,14 +229,22 @@ export default {
       width: 3.25rem;
       height: 2.5rem;
       background: url(./img/recommend-bg.png) no-repeat center center;
-      background-size: 100% 100%
+      background-size: 100% 100%;
+      &.active {
+        background: url(./img/recommend-bg-1.png) no-repeat center center;
+        background-size: 100% 100%
+      }
     }
     .list-item {
       overflow: hidden;
       width: 3.25rem;
       height: 2.5rem;
       background: url(./img/list-bg.png) no-repeat center center;
-      background-size: 100% 100%
+      background-size: 100% 100%;
+      &.active {
+        background: url(./img/list-bg-1.png) no-repeat center center;
+        background-size: 100% 100%;
+      }
     }
   }
 }
@@ -272,8 +280,12 @@ export default {
     top: .37rem;
     width: .8rem;
     height: .42rem;
-    background: url(./img/rule-icon.png) no-repeat left top;
-    background-size: 100% 100%;
+    background: #B437D0;
+    border-radius: .21rem 0 0 .21rem;
+    line-height: .44rem;
+    text-align: center;
+    color: #fff;
+    font-size: .2rem;
   }
 }
 .in-game {
@@ -298,8 +310,12 @@ export default {
     top: .59rem;
     width: .8rem;
     height: .42rem;
-    background: url(./img/rule-icon.png) no-repeat left top;
-    background-size: 100% 100%;
+    background: #B437D0;
+    border-radius: 0 .21rem .21rem 0;
+    line-height: .44rem;
+    text-align: center;
+    color: #fff;
+    font-size: .2rem;
   }
   .listWrap {
     top: 4.56rem;
