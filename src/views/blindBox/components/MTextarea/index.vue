@@ -42,7 +42,7 @@ export default {
   background: #f7f7f7;
   border-radius: 0.16rem;
   font-size: 0.24rem;
-  height: 1.1rem;
+  height: .6rem;
   padding: 0.23rem;
   -webkit-text-size-adjust: none;
   textarea {
