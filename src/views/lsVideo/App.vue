@@ -74,6 +74,7 @@ export default {
   methods: {
     handleNav(index) {
       this.currentIndex = index
+      this.isBackTop = false
       this.resetParams()
       this._getHighlightTimeList()
       GLOBALS.marchSetsPoint('A_H5PT0232002705', {
@@ -295,6 +296,7 @@ export default {
   bottom: 1.28rem;
   top: 1.28rem;
   min-height: auto;
+  border-radius: .2rem;
   .close-btn {
     position: absolute;
     right: .1rem;
