@@ -2,7 +2,12 @@
   <section class="wrapper">
     <div class="des">
       <div class="goods-img">
-        <img :src="goods.awardsImage | imgFilter"
+        <img @click="$emit('viewProduct', {
+        awardsName: goods.awardsName,
+        showAmount: goods.showAmount,
+        remark:  goods.remark,
+        awardsId:  goods.awardsId
+      })" :src="goods.awardsImage | imgFilter"
           alt="商品">
       </div>
       <div class="goods-info">
@@ -30,7 +35,9 @@ export default {
         awardsName: null,
         awardsNum: null,
         awardsImage: null,
-        showAmount: null
+        showAmount: null,
+        remark: null,
+        awardsId: null
       }
     }
   }

@@ -23,7 +23,7 @@
           class="free-shipping">温馨提示: 领取奖品满2件即可包邮哦~</p>
       </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
-        <Goods v-for="(item,index) in goodsList" :key="index" :goods="item">
+        <Goods @viewProduct="viewProduct" v-for="(item,index) in goodsList" :key="index" :goods="item">
           <div slot="left">
             <p class="goods-time">开盒时间：{{item.openTime}}</p>
             <p class="goods-time" v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
@@ -40,6 +40,10 @@
       <img src="./assets/service.png" alt="">
       <p>客服</p>
     </section>
+    <ProductDialog :goods-detail="productDetail"
+      v-if="showProduct"
+      @close="showProduct=false"
+      :show="showProduct" />
   </article>
 </template>
 
@@ -49,13 +53,20 @@ import Default from '../../../../components/default'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
+import ProductDialog from '../../../../components/productDialog'
 
 export default {
   data () {
     return {
       show: false,
+      showProduct: false,
+      productDetail: null,
       active: 0,
-      goodsList: null,
+      goodsList: {
+        awardsName: null,
+        showAmount: null,
+        remark: null
+      },
       tabBar: sendStatusMapper,
       orderNumber: null,
       handelList: [
@@ -97,6 +108,12 @@ export default {
     this.getTabGoods()
   },
   methods: {
+    // 查看商品详情弹窗
+    viewProduct (val) {
+      if (!val.awardsId) return
+      this.productDetail = val
+      this.showProduct = true
+    },
     /**
      * @des 切换tab
      */
@@ -142,7 +159,8 @@ export default {
   components: {
     Default,
     Goods,
-    Dialog
+    Dialog,
+    ProductDialog
   }
 }
 </script>

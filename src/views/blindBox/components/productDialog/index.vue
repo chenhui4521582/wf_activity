@@ -97,12 +97,20 @@ export default {
   },
   methods: {
     toProducts () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002835', {
+        awards_id: this.goodsDetail.awardsId,
+        awards_name: this.goodsDetail.awardsName
+      })
       this.$emit('close')
       this.$router.push({
         name: 'AllProducts'
       })
     },
     async openBox () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002834', {
+        awards_id: this.goodsDetail.awardsId,
+        awards_name: this.goodsDetail.awardsName
+      })
       const { data: { data } } = await ChangeOne()
       this.$router.push({
         name: 'ChooseBox',
@@ -131,6 +139,10 @@ export default {
     ({ data: { data: this.products } } = await ImageList(this.goodsDetail.awardsId))
     // ({ data: { data: this.products } } = await ImageList(47))
     if (this.products.length > 4) this.products = this.products.slice(0, 4)
+    GLOBALS.marchSetsPoint('A_H5PT0225002833', {
+      awards_id: this.goodsDetail.awardsId,
+      awards_name: this.goodsDetail.awardsName
+    })
   }
 }
 </script>
