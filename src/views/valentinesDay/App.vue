@@ -186,7 +186,7 @@ export default {
         if(this.info.bettingAmount >= 50000) {
           return '100%'
         }else {
-          return Math.floor((this.info.rechargeAmount / 50000) * 100) + '%'
+          return Math.floor((this.info.bettingAmount / 50000) * 100) + '%'
         }
         return 
       }

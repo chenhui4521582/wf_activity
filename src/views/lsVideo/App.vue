@@ -125,7 +125,7 @@ export default {
         optimumNum: 2,
         page: this.page,
         pageSize: this.pageSize,
-        sortRule: 1,
+        sortRule: 0,
         type: this.currentIndex
       }).then(res=> {
         let {code, data, message} = _get(res, 'data')
