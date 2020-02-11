@@ -152,7 +152,7 @@ export default {
 .wrapper {
   .content {
     width: 4.98rem;
-    height: 4.98rem;
+    // height: 4.98rem;
     border-radius: 0.2rem;
   }
   .img-container {
