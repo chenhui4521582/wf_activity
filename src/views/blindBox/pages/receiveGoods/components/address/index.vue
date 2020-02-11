@@ -58,7 +58,7 @@ export default {
       if (this.throttle) return
       this.throttle = true
       this.chooseCity.push(item)
-      this.getCityData(this.chooseCity.length, item.code)
+      await this.getCityData(this.chooseCity.length, item.code)
     },
     // 获取省市区列表数据
     async getCityData (length, code) {
@@ -90,14 +90,14 @@ export default {
       this.show = false
     },
     // 点击已选省市区
-    handleChoose (index, item) {
+    async handleChoose (index, item) {
       if (index === 0) {
         this.chooseCity = []
-        this.getCityData(index)
+        await this.getCityData(index)
       }
       if (index === 1) {
         this.chooseCity = [this.chooseCity[0]]
-        this.getCityData(index, this.chooseCity[0].code)
+        await this.getCityData(index, this.chooseCity[0].code)
       }
     },
     // 点击选择城市
