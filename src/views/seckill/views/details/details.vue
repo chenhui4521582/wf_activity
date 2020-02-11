@@ -35,7 +35,7 @@
     <div class="goods-info">
       <div class="price">
         <div class="current-price">
-          <em>秒杀价</em><span>{{ parseInt(detail.seckillPrice / 10) || 0}}</span><i>话费券</i> 
+          <em>秒杀价</em><span>{{ parseInt(detail.seckillPrice / 10) || 0}}</span><i>话费券</i>
         </div>
         <div class="mask-price">原价:{{ parseInt(detail.awardPrice / 10) || 0}}</div>
       </div>
@@ -80,7 +80,7 @@
         {{versionDate(detail.startTime)}}开抢
       </div>
       <div class="start btn" v-if="detail.status == 0">
-        <div class="no-goods" v-if="this.detail.awardNum == 0" >
+        <div class="no-goods" v-if="this.detail.awardNum == 0">
           商品已抢光
         </div>
         <div class="no-goods" v-else-if="this.detail.payStatus">
@@ -95,82 +95,62 @@
       </div>
     </div>
     <!-- 没有库存Modal -->
-    <modal
-      v-model="noAwardModal"
-      title="温馨提示" 
-      :type="2"
-      closeText="看看其他活动"
-      saveText="看看别的秒杀"
-      @on-close="modalClose"
-      @on-save="modalConfirm"
-    >
+    <modal v-model="noAwardModal" title="温馨提示" :type="2" closeText="看看其他活动" saveText="看看别的秒杀"
+      @on-close="modalClose" @on-save="modalConfirm">
       <div class="noAwardModal">
         下手慢了哦，已经抢光了
       </div>
     </modal>
     <!-- 到时间的Modal -->
-    <modal v-model="noTimesModal" 
-      title="温馨提示" 
-      :type="2"
-      closeText="看看其他活动"
-      saveText="看看别的秒杀"
-      @on-close="modalClose"
-      @on-save="modalConfirm"
-    >
+    <modal v-model="noTimesModal" title="温馨提示" :type="2" closeText="看看其他活动" saveText="看看别的秒杀"
+      @on-close="modalClose" @on-save="modalConfirm">
       <div class="noTimeModal">
         抢购截止了，等待下一场吧~
       </div>
     </modal>
     <!-- 秒杀成功的Modal -->
-    <awards-dialog v-model="successModal"
-      :tipsTxt="'恭喜你秒杀成功'"
-      :awards="AwardsData.awards"
-      :explainText="AwardsData.explainText"
-      :bottomLink="AwardsData.bottomLink"
-      :confirmBtnText="'去查看'"
-      @callback="awardsCallback"
-      @closedCallback="closeCallback" />
+    <awards-dialog v-model="successModal" :tipsTxt="'恭喜你秒杀成功'" :awards="AwardsData.awards"
+      :explainText="AwardsData.explainText" :bottomLink="AwardsData.bottomLink"
+      :confirmBtnText="'去查看'" @callback="awardsCallback" @closedCallback="closeCallback" />
     <!-- 话费卷不足的Modal -->
-    <modal v-model="noChargeModal"
-      title="温馨提示" 
-      :type="2"
-      closeText="返回"
-      saveText="去赚话费"
-      @on-close="hideModal"
-      @on-save="goRing"
-    >
-     <div class="noChargeModal">
+    <modal v-model="noChargeModal" title="温馨提示" :type="2" closeText="返回" saveText="去赚话费"
+      @on-close="hideModal" @on-save="goRing">
+      <div class="noChargeModal">
         <img src="./img/noChargeModal-icon.png" alt="">
         <p>您的话费券不足</p>
         <p>快去欢乐套圈快速赚话费吧</p>
       </div>
     </modal>
     <!-- 快递提示 -->
-    <modal v-model="logisticsModal"
-      title="快递停运通知" 
-      :type="2"
-      :saveText="'确认'"
-      :closeButtonShow="false"
-      @on-save="hideModal"
-    >
-     <div class="logisticsModal">
-        <p>1月8号西藏、青海、宁夏、新疆停发</p>
-        <p>1月11号甘肃、内蒙、黑龙江、吉林、辽宁、云南、海南停发</p>
-        <p>1月13号贵州、四川、陕西、山西、广西停发</p>
-        <p>1月14号其他省份停发</p>
-        <p>2月3号开始陆续恢复发货</p>
+    <modal v-model="logisticsModal" title="快递停运通知" :type="2" :saveText="'确认'"
+      :closeButtonShow="false" @on-save="hideModal">
+      <div class="logisticsModal">
+        <p>
+          因疫情暂未好转，平台将全力做好疫情防控工作，最新发货通知如下：
+        </p>
+        <p>
+          湖北全省快递暂时无法发出，其他城市根据当地疫情变化，以快递公司当天揽件情况安排，暂时无法保证发货和到货时间。
+        </p>
+        <p>
+          快递恢复后，我们将第一时间处理订单，请您理解。
+        </p>
+        <p>
+          感谢您等待，如有任何疑问，请及时联系在线客服。
+        </p>
+        <p>
+          注意：如果疫情继续恶化，发货时间会根据实际情况做出调整，届时将发布新的通知，请及时关注。
+        </p>
       </div>
     </modal>
   </div>
 </template>
 <script>
-import Services from "../../services/services"
+import Services from '../../services/services'
 import _get from 'lodash.get'
 import field from './components/field'
-import services from '../../services/services'
 export default {
   name: 'sectillDetails',
-  data: ()=>({
+  data: () => ({
     detail: {},
     showTips: false,
     ringData: null,
@@ -185,14 +165,14 @@ export default {
     field
   },
   computed: {
-    progress() {
-      if(this.detail.status == 1) {
+    progress () {
+      if (this.detail.status == 1) {
         return 0
       }
-      if(this.detail.status == 2) {
+      if (this.detail.status == 2) {
         return 100
       }
-      if(this.detail.status == 0) {
+      if (this.detail.status == 0) {
         let allNo = this.detail.awardNum + this.detail.useNum
         let proportion = (this.detail.useNum / allNo > 1) ? 1 : this.detail.useNum / allNo
         return Math.floor(proportion * 100)
@@ -200,16 +180,16 @@ export default {
     }
   },
   methods: {
-    _getActivityDetail() {
-      let {id} = this.$route.query
-      if(id) {
-        services.getActivityDetail({value: id}).then(res=> {
-          let {code, data, message} = _get(res, 'data')
-          if(code == 200) {
-            let {fragment, periodInfo} = _get(res, 'data.data')
-            this.detail = {...{fragment}, ...periodInfo}
+    _getActivityDetail () {
+      let { id } = this.$route.query
+      if (id) {
+        Services.getActivityDetail({ value: id }).then(res => {
+          let { code, data, message } = _get(res, 'data')
+          if (code == 200) {
+            let { fragment, periodInfo } = _get(res, 'data.data')
+            this.detail = { ...{ fragment }, ...periodInfo }
             /** 秒杀进行中 倒计时逻辑 **/
-            if(this.detail.status == 0) {
+            if (this.detail.status == 0) {
               let start = new Date().getTime()
               let endTime = this.detail.endTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
@@ -219,7 +199,7 @@ export default {
               this.countDownTime(coutDownTime)
             }
             /** 秒杀没开始 倒计时逻辑 **/
-            if(this.detail.status == 1) {
+            if (this.detail.status == 1) {
               let start = new Date().getTime()
               let endTime = this.detail.startTime.replace(/-/g, '/')
               let endTimeStamp = new Date(endTime).getTime()
@@ -229,7 +209,7 @@ export default {
               this.countDownTime(coutDownTime)
             }
             /** 没开始并且用户话费卷不足显示提示框 **/
-            if(this.detail.status == 1 && this.detail.seckillPrice > this.detail.fragment) {
+            if (this.detail.status == 1 && this.detail.seckillPrice > this.detail.fragment) {
               this.showTips = true
             }
             // /** 用户已经买过的按钮变灰 **/
@@ -241,19 +221,19 @@ export default {
       }
     },
     /** 抢购 **/
-    _commit() {
-      if(this.detail.seckillPrice > this.detail.fragment) {
+    _commit () {
+      if (this.detail.seckillPrice > this.detail.fragment) {
         this.noChargeModal = true
         return
       }
-      if(this.lock) return false
+      if (this.lock) return false
       this.lock = true
-      Services.commit({value: this.detail.id}).then(res=> {
+      Services.commit({ value: this.detail.id }).then(res => {
         this.lock = false
-        let {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+        let { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.successModal = true
-          this.AwardsData =  {
+          this.AwardsData = {
             awards: {
               awardsImage: this.detail.icon,
               awardsName: this.detail.title
@@ -268,7 +248,7 @@ export default {
             },
             bottomLink: {
               text: '看看其他 >',
-              callback: ()=> {
+              callback: () => {
                 this.$router.push({
                   name: 'index'
                 })
@@ -290,8 +270,7 @@ export default {
         else if (code == 106) {
           this.noTimesModal = true
           this.detail.status = 2
-        }
-        else {
+        } else {
           this.$toast.show({
             message,
             duration: 3000
@@ -311,33 +290,33 @@ export default {
       })
     },
     /** 关闭Tips **/
-    hideTips() {
+    hideTips () {
       this.showTips = false
     },
     /** 去赚话费 **/
-    goRing() {
+    goRing () {
       let channel = localStorage.getItem('APP_CHANNEL')
-      if(this.ringData.type == 2) {
+      if (this.ringData.type == 2) {
         window.location.href = `https://wap.beeplaying.com/ring2/?channel=${channel}&time=${Date.now}`
-      }else {
+      } else {
         window.location.href = `https://wap.beeplaying.com/ring/?channel=${channel}&time=${Date.now}`
       }
       GLOBALS.marchSetsPoint('A_H5PT0237002754')
     },
     /** 返回首页 **/
-    goHome() {
+    goHome () {
       window.location.href = `https://wap.beeplaying.com/xmWap/`
     },
-    openLogistics() {
+    openLogistics () {
       this.logisticsModal = true
     },
     /** 关闭余额不住modal **/
-    hideModal() {
+    hideModal () {
       this.noChargeModal = false
       this.logisticsModal = false
     },
     /** 时间转换 **/
-    versionDate(time) {
+    versionDate (time) {
       time = time.replace(/-/g, '/')
       let timesTamp = new Date(time)
       let year = timesTamp.getFullYear()
@@ -367,14 +346,14 @@ export default {
       let countMinute = minute >= 10 ? minute : '0' + minute
       let countSecond = second >= 10 ? second : '0' + second
       this.$set(
-          this.detail,
-          'countTime',
-          `${countHour}:${countMinute}:${countSecond}`
+        this.detail,
+        'countTime',
+        `${countHour}:${countMinute}:${countSecond}`
       )
     },
     /** 倒计时 **/
     countDownTime (info) {
-      if (!info  &&  info <= 0) return false
+      if (!info && info <= 0) return false
       let date = info / 1000
       this.timers = window.setInterval(() => {
         date = date - 1
@@ -397,18 +376,18 @@ export default {
       }, 1000)
     },
     /** 清除倒计时 **/
-    cleartTime() {
+    cleartTime () {
       window.clearInterval(this.timers)
     },
     /** 看看其他活动 **/
-    modalClose(){
+    modalClose () {
       this.noAwardModal = false
       this.noTimesModal = false
       window.location.href = 'https://wap.beeplaying.com/activities/springfestivalunion.html'
       GLOBALS.marchSetsPoint('A_H5PT0237002758')
     },
     /** 看看别的秒杀 **/
-    modalConfirm(){
+    modalConfirm () {
       this.noAwardModal = false
       this.noTimesModal = false
       this.$router.push({
@@ -416,55 +395,55 @@ export default {
       })
       GLOBALS.marchSetsPoint('A_H5PT0237002759')
     },
-    awardsCallback() {
-      window.location.href = "https://wap.beeplaying.com/xmWap/#/my/prize"
-       GLOBALS.marchSetsPoint('A_H5PT0237002757')
+    awardsCallback () {
+      window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/prize'
+      GLOBALS.marchSetsPoint('A_H5PT0237002757')
     },
-    closeCallback(){
+    closeCallback () {
       this._getActivityDetail()
     },
     /** 秒杀成功 或者 秒杀过的 状态重置成以结束**/
-    init() {
+    init () {
       this._getActivityDetail()
       this._getRingServerStatus()
     }
   },
-  mounted() {
+  mounted () {
     this.init()
   }
 }
 </script>
 <style lang="less" scoped>
-*{
-  box-sizing: border-box; 
+* {
+  box-sizing: border-box;
 }
 .details {
-  padding: .2rem .24rem 1.1rem;
+  padding: 0.2rem 0.24rem 1.1rem;
   min-height: 100vh;
-  background: #F7F7F7;
+  background: #f7f7f7;
   .header {
-    margin-bottom: .2rem;
-    padding: 0 .2rem;
+    margin-bottom: 0.2rem;
+    padding: 0 0.2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: .6rem;
-    font-size: .24rem;
-    background: #FFECEC;
-    border-radius: .16rem;
+    height: 0.6rem;
+    font-size: 0.24rem;
+    background: #ffecec;
+    border-radius: 0.16rem;
     .left {
-      color: #FF4141;
+      color: #ff4141;
     }
     .right {
-      color: #FF7800;
+      color: #ff7800;
       .iconfont {
-        font-size: .18rem;
+        font-size: 0.18rem;
       }
     }
   }
   .goods-img {
     background: #fff;
-    border-radius: .16rem .16rem 0px 0px;
+    border-radius: 0.16rem 0.16rem 0px 0px;
     height: 2.76rem;
     overflow: hidden;
     img {
@@ -474,16 +453,16 @@ export default {
     }
   }
   .good-status {
-    padding: .08rem .2rem;
+    padding: 0.08rem 0.2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: .6rem;
+    height: 0.6rem;
     background: url(./img/status-bg.png) no-repeat center center / 100% 100%;
-    font-size: .24rem;
+    font-size: 0.24rem;
     .year-icon {
       width: 1.1rem;
-      height: .44rem;
+      height: 0.44rem;
       img {
         vertical-align: top;
         width: 100%;
@@ -491,77 +470,76 @@ export default {
       }
     }
     .before {
-      font-size: .24rem;
+      font-size: 0.24rem;
       color: #fff;
     }
     .start {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: .24rem;
-      color: #fff;  
+      font-size: 0.24rem;
+      color: #fff;
       .count-down {
-        padding-right: .18rem; 
+        padding-right: 0.18rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: .38rem;
+        height: 0.38rem;
         border-right: 1px solid #fff;
       }
       .progress {
-        padding-left: .2rem;
+        padding-left: 0.2rem;
         text-align: center;
-        font-size: .2rem;
+        font-size: 0.2rem;
         color: #fff;
         .wrap {
           position: relative;
-          height: .16rem;
+          height: 0.16rem;
           width: 1.3rem;
-          background: #FFFFFF;
-          border-radius: .08rem;
+          background: #ffffff;
+          border-radius: 0.08rem;
           overflow: hidden;
           .number {
-            margin-bottom: .05rem;
+            margin-bottom: 0.05rem;
           }
           .bg {
             position: absolute;
             left: 0;
             top: 0;
             height: 100%;
-            background: #FFBC00;
+            background: #ffbc00;
           }
         }
       }
     }
   }
   .goods-info {
-    margin-bottom: .2rem;
-    padding: .22rem .2rem;
+    margin-bottom: 0.2rem;
+    padding: 0.22rem 0.2rem;
     border-radius: 0px 0px 16px 16px;
     background: #fff;
     .price {
-      margin-bottom: .16rem;
+      margin-bottom: 0.16rem;
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
-      font-size: .2rem;
-      color: #BBBBBB;
+      font-size: 0.2rem;
+      color: #bbbbbb;
       .current-price {
-        margin-right: .2rem;
+        margin-right: 0.2rem;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        color: #FF4141;
+        color: #ff4141;
         em {
-          margin-right: .05rem;
+          margin-right: 0.05rem;
           font-weight: bold;
-          font-size: .32rem;
-          color: #FF0036;
+          font-size: 0.32rem;
+          color: #ff0036;
         }
         span {
-          font-size: .42rem;
-          line-height: .82;
-          
+          font-size: 0.42rem;
+          line-height: 0.82;
         }
       }
       .mask-price {
@@ -569,19 +547,19 @@ export default {
       }
     }
     .name {
-      font-weight:bold;
-      font-size: .32rem;
+      font-weight: bold;
+      font-size: 0.32rem;
       color: #000;
     }
   }
   .goods-message {
-    margin-bottom: .2rem;
-    padding: .32rem .2rem .28rem;
-    background:#FFFFFF;
-    border-radius: .16rem;
+    margin-bottom: 0.2rem;
+    padding: 0.32rem 0.2rem 0.28rem;
+    background: #ffffff;
+    border-radius: 0.16rem;
     .key {
-      width: .7rem;
-      font-size: .24rem;
+      width: 0.7rem;
+      font-size: 0.24rem;
       color: #888888;
     }
     .value {
@@ -591,93 +569,92 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      margin-bottom: .2rem;
-      height: .42rem;
-      .value { 
+      margin-bottom: 0.2rem;
+      height: 0.42rem;
+      .value {
         width: 1.2rem;
-        height: .42rem;
-        line-height: .42rem;
+        height: 0.42rem;
+        line-height: 0.42rem;
         text-align: center;
-        font-size: .24rem;
+        font-size: 0.24rem;
         color: #fff;
-        background: #FF4141;
-        border-radius: .1rem;
+        background: #ff4141;
+        border-radius: 0.1rem;
       }
     }
     .select {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding-bottom: .2rem;
-      border-bottom: 1px solid #EEEEEE;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid #eeeeee;
       .value {
         width: 1.2rem;
-        height: .42rem;
-        line-height: .42rem;
-        font-size: .24rem;
-        color: #FF4141;
+        height: 0.42rem;
+        line-height: 0.42rem;
+        font-size: 0.24rem;
+        color: #ff4141;
       }
     }
     .number {
-      margin-top: .2rem;
+      margin-top: 0.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
   }
   .goods-explain {
-    margin-bottom: .2rem;
-    padding-left: .2rem;
-    height: .9rem;
-    border-radius: .16rem;
+    margin-bottom: 0.2rem;
+    padding-left: 0.2rem;
+    height: 0.9rem;
+    border-radius: 0.16rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     background: #fff;
-    border-radius: .16rem;
+    border-radius: 0.16rem;
     .key {
-      width: .7rem;
-      font-size: .24rem;
+      width: 0.7rem;
+      font-size: 0.24rem;
       color: #888888;
     }
     .value {
       white-space: nowrap;
       width: 1.2rem;
-      height: .42rem;
-      line-height: .42rem;
-      font-size: .24rem;
+      height: 0.42rem;
+      line-height: 0.42rem;
+      font-size: 0.24rem;
       color: #000000;
     }
   }
   .goods-desc {
-    padding: .26rem .2rem;
+    padding: 0.26rem 0.2rem;
     background: #fff;
-    border-radius: .16rem;
+    border-radius: 0.16rem;
     .title {
-      margin-bottom: .1rem;
-      font-size: .28rem;
+      margin-bottom: 0.1rem;
+      font-size: 0.28rem;
       color: #000000;
     }
     .center {
-      line-height: .4rem;
-      font-size: .24rem;
+      line-height: 0.4rem;
+      font-size: 0.24rem;
       color: #888888;
     }
   }
   .commit {
-
     .before {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       z-index: 5;
-      height: .9rem;
-      line-height: .9rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
       text-align: center;
-      font-size: .24rem;
-      background: #F0F0F0;
-      color: #FF4141;
+      font-size: 0.24rem;
+      background: #f0f0f0;
+      color: #ff4141;
     }
     .start {
       position: fixed;
@@ -685,16 +662,16 @@ export default {
       right: 0;
       bottom: 0;
       z-index: 5;
-      height: .9rem;
-      line-height: .9rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
       text-align: center;
-      font-size: .24rem;
+      font-size: 0.24rem;
       .no-goods {
-        background: #FBAFAF;
+        background: #fbafaf;
         color: #fff;
       }
       .has-goods {
-        background: #FF4141;
+        background: #ff4141;
         color: #fff;
       }
     }
@@ -704,64 +681,65 @@ export default {
       right: 0;
       bottom: 0;
       z-index: 5;
-      height: .9rem;
-      line-height: .9rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
       text-align: center;
-      font-size: .24rem;
-      background: #FBAFAF;
+      font-size: 0.24rem;
+      background: #fbafaf;
       color: #fff;
     }
   }
   .tips {
     position: fixed;
-    left: .24rem;
-    right: .24rem;
+    left: 0.24rem;
+    right: 0.24rem;
     bottom: 1.1rem;
-    padding: 0 .2rem;
-    height: .6rem;
-    line-height: .6rem;
+    padding: 0 0.2rem;
+    height: 0.6rem;
+    line-height: 0.6rem;
     text-align: center;
-    font-size: .2rem;
+    font-size: 0.2rem;
     display: flex;
     justify-content: space-between;
-    background: rgba(0,0,0,.7);
-    border-radius: .16rem;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0.16rem;
     .left {
       color: #fff;
       .iconfont {
-        font-size: .2rem;
+        font-size: 0.2rem;
       }
     }
     .right {
-      color: #FFBC00;
+      color: #ffbc00;
       .iconfont {
-        font-size: .2rem;
+        font-size: 0.2rem;
       }
     }
   }
-  .noAwardModal,.noTimeModal {
-    padding: .35rem 0;
+  .noAwardModal,
+  .noTimeModal {
+    padding: 0.35rem 0;
     text-align: center;
-    font-size: .24rem;
+    font-size: 0.24rem;
     color: #888;
   }
   .noChargeModal {
-    padding: .2rem 0 0;
+    padding: 0.2rem 0 0;
     text-align: center;
     img {
-      margin-bottom: .26rem;
+      margin-bottom: 0.26rem;
       width: 2.2rem;
       height: 1.24rem;
     }
     p {
-      line-height: .4rem;
-      font-size: .24rem;
+      line-height: 0.4rem;
+      font-size: 0.24rem;
       color: #888888;
     }
   }
   .logisticsModal {
-    line-height: .4rem;
-    font-size: .24rem;
+    line-height: 0.4rem;
+    font-size: 0.24rem;
     color: #888888;
   }
 }
