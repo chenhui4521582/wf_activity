@@ -139,6 +139,7 @@ export default {
     ({ data: { data: this.products } } = await ImageList(this.goodsDetail.awardsId))
     // ({ data: { data: this.products } } = await ImageList(47))
     if (this.products.length > 4) this.products = this.products.slice(0, 4)
+    if (this.products.length === 0) this.products = [{ awardsImage: this.goodsDetail.awardsImage }]
     GLOBALS.marchSetsPoint('A_H5PT0225002833', {
       awards_id: this.goodsDetail.awardsId,
       awards_name: this.goodsDetail.awardsName
