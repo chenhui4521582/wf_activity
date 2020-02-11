@@ -93,13 +93,14 @@ export default {
     }
   },
   data: ()=> ({
+    CHANNEL: localStorage.getItem('APP_CHANNEL'),
     gameList: [
-      {img: require('./img/0.png'), url: '//wap.beeplaying.com/crush/', name: '糖果萌消消乐'},
-      {img: require('./img/3.png'), url: '//wap.beeplaying.com/fish/', name: '街机欢乐捕鱼'},
-      {img: require('./img/2.png'), url: '//wap.beeplaying.com/billiards/', name: '欢乐竞技台球'},
-      {img: require('./img/4.png'), url: '//wap.beeplaying.com/kingdom2/', name: '三国大作战'},
-      {img: require('./img/1.png'), url: '//wap.beeplaying.com/square/', name: '众神风云'},
-      {img: require('./img/5.png'), url: '//wap.beeplaying.com/Marbles/', name: '王者弹珠'},
+      {img: require('./img/0.png'), url: `//wap.beeplaying.com/crush/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '糖果萌消消乐'},
+      {img: require('./img/3.png'), url: `//wap.beeplaying.com/fish/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '街机欢乐捕鱼'},
+      {img: require('./img/2.png'), url: `//wap.beeplaying.com/billiards/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '欢乐竞技台球'},
+      {img: require('./img/4.png'), url: `//wap.beeplaying.com/kingdom2/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '三国大作战'},
+      {img: require('./img/1.png'), url: `//wap.beeplaying.com/square/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '众神风云'},
+      {img: require('./img/5.png'), url: `//wap.beeplaying.com/Marbles/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '王者弹珠'},
     ]
   }),
   methods: {
