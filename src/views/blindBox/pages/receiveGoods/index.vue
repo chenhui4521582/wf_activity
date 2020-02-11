@@ -9,7 +9,7 @@
           <div class="edit-info__div">
             <p class="name">{{post.name}}</p>
             <p class="mobile">{{post.mobile}}</p>
-            <p class="address">{{post.address}}</p>
+            <p class="address">{{post.provinceName}}{{post.cityName}}{{post.areaName}}{{post.address}}</p>
           </div>
           <img class="arrow" src="./assets/arrow.png">
         </div>
