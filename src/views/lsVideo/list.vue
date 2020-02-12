@@ -53,6 +53,28 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.in-game {
+  .recommend-item {
+    .title {
+      margin: .22rem auto 0;
+      width: 1.8rem;
+      height: .34rem;
+      line-height: .36rem;
+      text-align: center;
+      color: #fff;
+      font-size: .22rem;
+    }
+  }
+  .title {
+    margin: .24rem auto 0;
+    width: 1.8rem;
+    height: .34rem;
+    line-height: .34rem;
+    text-align: center;
+    color: #fff;
+    font-size: .22rem;
+  }
+}
 .recommend-item {
   .title {
     margin: .22rem auto 0;
@@ -63,21 +85,25 @@ export default {
     color: #fff;
     font-size: .22rem;
   }
+  .award {
+     line-height: .4rem;
+  }
 }
 .title {
   margin: .24rem auto 0;
   width: 1.8rem;
   height: .34rem;
-  line-height: .39rem;
+  line-height: .36rem;
   text-align: center;
   color: #fff;
   font-size: .22rem;
 }
+
 .award {
   margin: .56rem auto 0;
   width: 1.9rem;
   height: .4rem;
-  line-height: .4rem;
+  line-height: .44rem;
   text-align: center;
   color: #fff;
   font-size: .22rem;
