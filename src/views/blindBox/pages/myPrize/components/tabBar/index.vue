@@ -7,7 +7,6 @@
       <p class="tip" v-if="this.active===2">您的运单号为：{{orderNumber}} <span
           v-clipboard:success="copySuccess" v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
-    <Notice :show="showNotice" @close="showNotice=false" />
     <section class="container">
       <div class="bar" v-for="(item,index) in tabBar" @click="changeTab(item,index)"
         :key="item.label">
@@ -17,10 +16,6 @@
       </div>
     </section>
     <section class="content">
-      <div class="notice">
-        <span>春节期间快递停运通知</span>
-        <span class="view-notice" @click="openNotice">点击查看></span>
-      </div>
       <div v-if="this.goodsList && this.goodsList.length > 0" class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
         <p></p>
@@ -28,7 +23,7 @@
           class="free-shipping">温馨提示: 领取奖品满2件即可包邮哦~</p>
       </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
-        <Goods v-for="(item,index) in goodsList" :key="index" :goods="item">
+        <Goods @viewProduct="viewProduct" v-for="(item,index) in goodsList" :key="index" :goods="item">
           <div slot="left">
             <p class="goods-time">开盒时间：{{item.openTime}}</p>
             <p class="goods-time" v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
@@ -45,25 +40,33 @@
       <img src="./assets/service.png" alt="">
       <p>客服</p>
     </section>
+    <ProductDialog :goods-detail="productDetail"
+      v-if="showProduct"
+      @close="showProduct=false"
+      :show="showProduct" />
   </article>
 </template>
 
 <script>
 import Goods from '../../../../components/goods'
 import Default from '../../../../components/default'
-import Notice from '../../../../components/notice'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
 import Dialog from '../../../../components/dialog'
-import { isShowMyPrizeNotice } from '../../../../utils'
+import ProductDialog from '../../../../components/productDialog'
 
 export default {
   data () {
     return {
       show: false,
-      showNotice: false,
+      showProduct: false,
+      productDetail: null,
       active: 0,
-      goodsList: null,
+      goodsList: {
+        awardsName: null,
+        showAmount: null,
+        remark: null
+      },
       tabBar: sendStatusMapper,
       orderNumber: null,
       handelList: [
@@ -103,13 +106,13 @@ export default {
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     this.getTabGoods()
-    if (isShowMyPrizeNotice()) {
-      this.openNotice()
-    }
   },
   methods: {
-    openNotice () {
-      this.showNotice = true
+    // 查看商品详情弹窗
+    viewProduct (val) {
+      if (!val.awardsId) return
+      this.productDetail = val
+      this.showProduct = true
     },
     /**
      * @des 切换tab
@@ -157,7 +160,7 @@ export default {
     Default,
     Goods,
     Dialog,
-    Notice
+    ProductDialog
   }
 }
 </script>

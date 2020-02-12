@@ -1,26 +1,13 @@
 <template>
   <section class="current-product-list">
     <div class="header">
-      <!-- <div class="header-left">
+      <div class="header-left">
         <img src="../assets/box.png" alt="">
         <span>盲盒明星奖品</span>
-      </div> -->
+      </div>
       <div></div>
       <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
     </div>
-    <!-- <section class="product-list-wrapper">
-      <div ref="productDivWraper">
-        <ul ref="productUl" id="productUl" :style="productStyles">
-          <li v-for="(item, index) in products" :key="index" ref="productLi">
-            <div>
-              <img :src="item.awardsImage | imgFilter" alt="" />
-              <span>{{ item.awardsName }}</span>
-            </div>
-          </li>
-        </ul>
-        <ul id="copyProductUl" :style="copyStyles"></ul>
-      </div>
-    </section> -->
     <Swiper />
   </section>
 </template>
@@ -105,11 +92,11 @@ export default {
 
 <style lang="less" scoped>
 .current-product-list {
-  background:url('../assets/bg.png') no-repeat;
+  // background:url('../assets/bg.png') no-repeat;
   background-size: 100% 100%;
   width: 7.05rem;
   padding: 0.18rem;
-  padding-top: 0.38rem;
+  padding-top: 0.3rem;
   margin: 0 auto;
   color: #fff;
   font-size: 0.24rem;
@@ -121,7 +108,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.3rem;
-    padding-left: 0.8rem;
+    padding-left: 0.5rem;
     .header-left {
       display: flex;
       align-items: center;

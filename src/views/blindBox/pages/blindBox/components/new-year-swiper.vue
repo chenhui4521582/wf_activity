@@ -88,7 +88,7 @@ export default {
   color: #B1430C;
   height: 0.52rem;
   line-height: 0.52rem;
-  background: #f4d6b0;
+  background: #1b1f29;
   // border: 2px solid #EF232F;
   border-radius: 0.26rem;
 }
