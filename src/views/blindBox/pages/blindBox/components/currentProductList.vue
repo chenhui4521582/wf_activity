@@ -1,12 +1,14 @@
 <template>
-  <section class="current-product-list">
+  <section class="current-product-list active">
     <div class="header">
       <div class="header-left">
-        <img src="../assets/box.png" alt="">
+        <img src="../assets/gift.gif"
+          alt="">
         <span>盲盒明星奖品</span>
       </div>
       <div></div>
-      <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
+      <a href="#/allProducts"
+        @click="moreAwards()">更多奖品>></a>
     </div>
     <Swiper />
   </section>
@@ -19,7 +21,7 @@ import Swiper from './prodcut-list'
 
 export default {
   name: '',
-  components: {Swiper},
+  components: { Swiper },
   data () {
     return {
       products: [],
@@ -92,8 +94,6 @@ export default {
 
 <style lang="less" scoped>
 .current-product-list {
-  // background:url('../assets/bg.png') no-repeat;
-  background-size: 100% 100%;
   width: 7.05rem;
   padding: 0.18rem;
   padding-top: 0.3rem;
@@ -103,6 +103,11 @@ export default {
   max-width: 100vw;
   box-sizing: border-box;
   overflow: hidden;
+  &.active {
+    background: url("../assets/product-bg.gif") no-repeat;
+    background-position-y: bottom;
+    background-size: 100% 70%;
+  }
   .header {
     display: flex;
     justify-content: space-between;
@@ -123,10 +128,10 @@ export default {
         border-bottom-right-radius: 0.23rem;
       }
       img {
-        width: .22rem;
-        height: .22rem;
-        margin-left: .15rem;
-        margin-right: .06rem;
+        width: 0.22rem;
+        height: 0.22rem;
+        margin-left: 0.15rem;
+        margin-right: 0.06rem;
       }
     }
     a {

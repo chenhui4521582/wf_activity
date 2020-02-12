@@ -2,7 +2,8 @@
   <main>
     <article class="blind-box-wrap">
       <article class="container">
-        <span @click="toPlatform" class="back">返回</span>
+        <span @click="toPlatform"
+          class="back">返回</span>
         <current-product-list></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
@@ -10,6 +11,8 @@
         </div>
       </article>
     </article>
+    <Guide v-if="show"
+      @close="show=false" />
   </main>
 </template>
 
@@ -19,10 +22,12 @@ import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 import { FirstLoad } from '../../apis/box'
+import Guide from './components/guide'
 
 export default {
   data () {
     return {
+      show: true,
       translateY: 0,
       startY: 0,
       endY: 0,
@@ -32,7 +37,7 @@ export default {
     }
   },
   components: {
-    currentProductList, hornAndMore, boxList
+    currentProductList, hornAndMore, boxList, Guide
   },
   computed: {
     toucheMoveY () {
