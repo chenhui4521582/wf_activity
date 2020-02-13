@@ -2,13 +2,16 @@
   <section class="current-product-list">
     <div class="header">
       <div class="header-left">
-        <img src="../assets/box.png" alt="">
+        <img class="gift"
+          src="../assets/box.png"
+          alt="">
         <span>盲盒明星奖品</span>
       </div>
       <div></div>
-      <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
+      <a href="#/allProducts"
+        @click="moreAwards()">更多奖品>></a>
     </div>
-    <Swiper />
+    <Swiper :is-guide="show" />
   </section>
 </template>
 
@@ -19,7 +22,7 @@ import Swiper from './prodcut-list'
 
 export default {
   name: '',
-  components: {Swiper},
+  components: { Swiper },
   data () {
     return {
       products: [],
@@ -33,6 +36,12 @@ export default {
       },
       wrapWidth: 0,
       productTimer: null
+    }
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -91,9 +100,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@keyframes bounce {
+  25% {
+    transform: rotate(-10deg) scale(1.5);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+  75% {
+    transform: rotate(10deg) scale(1.5);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 .current-product-list {
-  // background:url('../assets/bg.png') no-repeat;
-  background-size: 100% 100%;
   width: 7.05rem;
   padding: 0.18rem;
   padding-top: 0.3rem;
@@ -103,6 +125,9 @@ export default {
   max-width: 100vw;
   box-sizing: border-box;
   overflow: hidden;
+  .gift {
+    animation: bounce 0.9s linear infinite;
+  }
   .header {
     display: flex;
     justify-content: space-between;
@@ -123,10 +148,10 @@ export default {
         border-bottom-right-radius: 0.23rem;
       }
       img {
-        width: .22rem;
-        height: .22rem;
-        margin-left: .15rem;
-        margin-right: .06rem;
+        width: 0.22rem;
+        height: 0.22rem;
+        margin-left: 0.15rem;
+        margin-right: 0.06rem;
       }
     }
     a {

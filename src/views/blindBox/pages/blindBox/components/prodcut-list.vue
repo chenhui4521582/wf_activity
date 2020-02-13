@@ -1,5 +1,6 @@
 <template>
-  <article class="wrapper">
+  <article class="wrapper"
+    :class="{'active': !isGuide}">
     <swiper v-if="products"
       :options="options">
       <swiper-slide v-for="(item,index) in products"
@@ -51,6 +52,12 @@ export default {
       }
     }
   },
+  props: {
+    isGuide: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
     detail (item) {
       GLOBALS.marchSetsPoint('A_H5PT0225002749', {
@@ -72,8 +79,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@keyframes load {
+  0% {
+    box-shadow: inset 0px 0px 0.1rem 0.05rem rgba(255, 255, 255, 1),
+      0px 0px 0.05rem 0.03rem #ffebb6;
+  }
+  100% {
+    box-shadow: inset 0px 0px 0.1rem 0.05rem rgba(255, 255, 255, 1),
+      0px 0px 0.1rem 0.1rem #ffebb6;
+  }
+}
+
 .wrapper {
   padding-left: 0.34rem;
+  &.active {
+    border-radius: 0.16rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    // border: 1px dashed #ffebb6;
+    animation: load 0.2s infinite alternate;
+  }
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
