@@ -1,7 +1,7 @@
 <template>
   <section class="horn-and-more">
     <section class="text-btn" @click="showRule"><span>活动规则</span></section>
-    <NewYearSwiper :notice-list="noticeList" v-if="noticeList.length" />
+        <horn-list :notice-list="noticeList" v-if="noticeList.length"></horn-list>
     <section class="text-btn">
       <div v-if="unreceived" class="mark">{{unreceived}}</div>
       <a href="#/myPrize" @click="getAwards">获得奖品</a>
@@ -28,7 +28,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import NewYearSwiper from './new-year-swiper'
+import hornList from './hornList'
 import Dialog from '../../../components/dialog'
 import { NoticeList } from '../../../apis/box'
 import { Unreceived } from '../../../apis/user'
@@ -36,7 +36,7 @@ import { Unreceived } from '../../../apis/user'
 export default {
   name: '',
   components: {
-    Dialog, NewYearSwiper
+    Dialog, hornList
   },
   data () {
     return {
@@ -77,7 +77,7 @@ export default {
 <style lang="less" scoped>
 .horn-and-more {
   height: 1.16rem;
-  background: #f4d6b0 url(../assets/top-btn-wrap.png) no-repeat center top /
+  background: #1b1f29 url(../assets/top-btn-wrap.png) no-repeat center top /
     100% 103%;
   display: flex;
   align-items: center;

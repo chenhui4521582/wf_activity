@@ -2,13 +2,20 @@
   <section class="wrapper">
     <div class="des">
       <div class="goods-img">
-        <img :src="goods.awardsImage | imgFilter"
+        <img @click="$emit('viewProduct', {
+        awardsName: goods.awardsName,
+        showAmount: goods.showAmount,
+        remark:  goods.remark,
+        awardsId:  goods.awardsId,
+        awardsImage: goods.awardsImage
+      })" :src="goods.awardsImage | imgFilter"
           alt="商品">
       </div>
       <div class="goods-info">
         <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
+          <p class="goods-price">价值：¥{{goods.showAmount}}</p>
           <p>数量：1个</p>
           <slot name='left' />
         </div>
@@ -28,7 +35,10 @@ export default {
       default: {
         awardsName: null,
         awardsNum: null,
-        awardsImage: null
+        awardsImage: null,
+        showAmount: null,
+        remark: null,
+        awardsId: null
       }
     }
   }
@@ -84,6 +94,10 @@ export default {
       }
       .goods-count {
         text-align: left;
+        .goods-price {
+          padding: 0.09rem 0;
+          color: #FF5050;
+        }
       }
     }
   }

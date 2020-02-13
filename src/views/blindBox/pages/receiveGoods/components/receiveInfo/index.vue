@@ -16,10 +16,12 @@
         :default="updatePostInfo && updatePostInfo.mobile"
         type="number"
         placeholder="请输入您的手机号" />
+      <Address :default="updatePostInfo"
+        @setPlaceId="setPlaceId" />
       <MTextarea class="my-input"
         @onChange="setAddress"
         :default="updatePostInfo && updatePostInfo.address"
-        placeholder="请输入您的邮寄地址" />
+        placeholder="请输入详细地址（如小区，街道乡镇 村）" />
     </section>
     <section class="post-info-dialog__section">
       <div slot="footer"
@@ -34,6 +36,7 @@
 import Dialog from '../../../../components/dialog'
 import MInput from '../../../../components/MInput'
 import MTextarea from '../../../../components/MTextarea'
+import Address from '../address'
 import { EditPostInfo } from '../../../../apis/user'
 
 export default {
@@ -53,9 +56,14 @@ export default {
           name: '请填写姓名'
         },
         {
+          type: 'placeId',
+          regex: /\S/,
+          name: '请选择省市区'
+        },
+        {
           type: 'address',
           regex: /\S/,
-          name: '请填写邮寄地址'
+          name: '请填写详细地址'
         }
       ]
     }
@@ -79,6 +87,9 @@ export default {
     },
     setAddress (value) {
       this.updatePostInfo.address = value
+    },
+    setPlaceId (value) {
+      this.updatePostInfo = Object.assign(this.updatePostInfo, value)
     },
     async confirm () {
       GLOBALS.marchSetsPoint('A_H5PT0225002584')
@@ -114,7 +125,8 @@ export default {
   components: {
     Dialog,
     MInput,
-    MTextarea
+    MTextarea,
+    Address
   }
 }
 </script>

@@ -1,11 +1,14 @@
 <template>
-  <section class="product">
+  <section @click="$emit('view')" class="product">
     <div class="product-img">
       <img :src="product.awardsImage | imgFilter"
         alt="奖品" />
     </div>
     <div class="product-info">
-      <p class="name">{{ product.awardsName }}</p>
+      <div class="name">
+        {{ product.awardsName }}
+        <p class="recommend">{{product.remark}}</p>
+      </div>
       <p class="des">
         <span class="price">¥{{ product.showAmount }}</span>
         <span></span>
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     product: {
@@ -24,7 +28,8 @@ export default {
         awardsImage: null,
         awardsName: null,
         showAmount: null,
-        showOpenNum: null
+        showOpenNum: null,
+        remark: null
       }
     }
   }
@@ -64,6 +69,16 @@ export default {
       line-height: 0.4rem;
       overflow: hidden;
       word-break: break-all;
+      .recommend {
+        background: #EEEEEE;
+        line-height: 0.3rem;
+        border-radius:0.15rem;
+        padding: 0 0.18rem 0 0.13rem;
+        color: #999999;
+        font-size: 0.18rem;
+        width: fit-content;
+        margin-top: 0.07rem;
+      }
     }
     .des {
       display: flex;

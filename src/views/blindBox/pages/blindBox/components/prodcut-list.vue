@@ -4,7 +4,8 @@
       :options="options">
       <swiper-slide v-for="(item,index) in products"
         :key="index">
-        <section @click="detail(item)" class="content">
+        <section @click="detail(item)"
+          class="content">
           <img :src="item.awardsImage | imgFilter"
             alt="" />
           <p class="des">{{ item.awardsName }}</p>
@@ -12,6 +13,10 @@
         </section>
       </swiper-slide>
     </swiper>
+    <ProductDialog :goods-detail="goodsDetail"
+      v-if="show"
+      @close="show=false"
+      :show="show" />
   </article>
 </template>
 
@@ -19,6 +24,7 @@
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import { hotAwardsList } from '../../../apis/products'
+import ProductDialog from '../../../components/productDialog'
 
 export default {
   data () {
@@ -35,7 +41,14 @@ export default {
         centeredSlides: true,
         speed: 300
       },
-      products: null
+      show: false,
+      products: null,
+      awardsId: null,
+      goodsDetail: {
+        awardsName: null,
+        showAmount: null,
+        remark: null
+      }
     }
   },
   methods: {
@@ -43,10 +56,12 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0225002749', {
         awards_id: item.awardsName
       })
+      this.goodsDetail = item
+      this.show = true
     }
   },
   components: {
-    swiper, swiperSlide
+    swiper, swiperSlide, ProductDialog
   },
   async mounted () {
     const res = await hotAwardsList()
@@ -62,7 +77,7 @@ export default {
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
-    background: rgba(129,131,136,0.73);
+    background: rgba(129, 131, 136, 0.73);
     display: flex;
     position: relative;
     flex-direction: column;
@@ -71,14 +86,14 @@ export default {
       width: 0.7rem;
       line-height: 0.26rem;
       background: #f2db8f;
-      color: #F5000C;
+      color: #f5000c;
       text-align: center;
       font-size: 0.18rem;
       position: absolute;
       right: 0;
       top: 0;
       border-bottom-left-radius: 0.1rem;
-      border-top-right-radius:  0.1rem;
+      border-top-right-radius: 0.1rem;
     }
     img {
       width: 1rem;

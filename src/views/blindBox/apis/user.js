@@ -45,12 +45,14 @@ export const Unreceived = () => client.post('@box/inventory/unreceived')
 export const EditPostInfo = ({
   address,
   mobile,
-  name
+  name,
+  placeId
 }) => {
   return client.post('@box/user/edit-post-info', {
     address,
     mobile,
-    name
+    name,
+    placeId
   })
 }
 
@@ -66,3 +68,12 @@ export const LeafsAccount = () => client.post(`@box/user/leafs-account`)
 
 // 使用金叶子购买
 export const LeafsPay = () => client.post(`@box/leafs-pay`)
+
+// 获取省份
+export const GetProvince = () => client.post('@uci/user/receiver/getProvince')
+
+// 获取市
+export const GetCity = proCode => client.post(`@uci/user/receiver/getCity/${proCode}`)
+
+// 获取区
+export const GetArea = cityCode => client.post(`@uci/user/receiver/getArea/${cityCode}`)

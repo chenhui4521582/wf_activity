@@ -8,3 +8,8 @@ export const awardsList = () => {
 export const hotAwardsList = () => {
   return client.post('@box/awards/hot-list')
 }
+
+// 奖品轮播图
+export const ImageList = awardsId => {
+  return client.post(`@box/awards/image-list/${awardsId}`)
+}
