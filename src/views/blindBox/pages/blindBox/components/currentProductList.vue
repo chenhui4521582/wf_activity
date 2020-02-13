@@ -1,8 +1,9 @@
 <template>
-  <section class="current-product-list active">
+  <section class="current-product-list">
     <div class="header">
       <div class="header-left">
-        <img src="../assets/gift.gif"
+        <img class="gift"
+          src="../assets/box.png"
           alt="">
         <span>盲盒明星奖品</span>
       </div>
@@ -10,7 +11,7 @@
       <a href="#/allProducts"
         @click="moreAwards()">更多奖品>></a>
     </div>
-    <Swiper />
+    <Swiper :is-guide="show" />
   </section>
 </template>
 
@@ -35,6 +36,12 @@ export default {
       },
       wrapWidth: 0,
       productTimer: null
+    }
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -93,6 +100,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@keyframes bounce {
+  25% {
+    transform: rotate(-10deg) scale(1.5);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+  75% {
+    transform: rotate(10deg) scale(1.5);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 .current-product-list {
   width: 7.05rem;
   padding: 0.18rem;
@@ -103,10 +125,8 @@ export default {
   max-width: 100vw;
   box-sizing: border-box;
   overflow: hidden;
-  &.active {
-    background: url("../assets/product-bg.gif") no-repeat;
-    background-position-y: bottom;
-    background-size: 100% 70%;
+  .gift {
+    animation: bounce 0.9s linear infinite;
   }
   .header {
     display: flex;

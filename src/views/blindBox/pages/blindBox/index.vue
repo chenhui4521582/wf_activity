@@ -4,7 +4,7 @@
       <article class="container">
         <span @click="toPlatform"
           class="back">返回</span>
-        <current-product-list></current-product-list>
+        <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
           <box-list></box-list>
@@ -23,11 +23,13 @@ import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 import { FirstLoad } from '../../apis/box'
 import Guide from './components/guide'
+import { setTimeout } from 'timers';
 
 export default {
   data () {
     return {
-      show: true,
+      show: false,
+      isOldUser: true,
       translateY: 0,
       startY: 0,
       endY: 0,
@@ -51,11 +53,18 @@ export default {
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
     }
   },
-  mounted () {
-    FirstLoad()
+  async mounted () {
+    const data = await FirstLoad()
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
     }) // H5平台-盲盒页面加载完成
+    if (data.data.data) {
+      this.isOldUser = false
+      setTimeout(() => {
+        this.isOldUser = true
+        this.show = true
+      }, 2000)
+    }
   },
   beforeDestroy () {
 

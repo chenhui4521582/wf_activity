@@ -1,4 +1,3 @@
-import { clearInterval } from 'timers';
 <template>
   <article @click="handleMask"
     class="guide-wrapper">
@@ -7,13 +6,13 @@ import { clearInterval } from 'timers';
         @click.stop=""
         src="./assets/step1.png"
         alt="">
-      <div class="know">({{count}}s)</div>
+      <div class="know">知道了 <span>({{count}}s)</span></div>
     </section>
     <section v-if="step === 2">
       <img class="step2"
         src="./assets/step2.png"
         alt="">
-      <div class="step2-know">({{count}}s)</div>
+      <div class="step2-know">知道了 <span>({{count}}s)</span></div>
     </section>
   </article>
 </template>
@@ -83,17 +82,15 @@ export default {
   top: 0;
   z-index: 999;
   .step1 {
-    width: 4.64rem;
-    height: 2.43rem;
+    width: 100%;
     position: relative;
-    top: 0.7rem;
-    left: 0.92rem;
+    top: 0.4rem;
   }
   .step2 {
     width: 5.05rem;
     height: 3.8rem;
     position: absolute;
-    bottom: 2.5rem;
+    bottom: 19%;
     left: 1.65rem;
   }
   .know {
@@ -105,6 +102,11 @@ export default {
     position: absolute;
     top: 9.5rem;
     left: 2.7rem;
+    font-size: 0.32rem;
+    padding-left: 0.6rem;
+    span {
+      font-size: 0.24rem;
+    }
   }
   .step2-know {
     background: url("./assets/know.png") no-repeat;
@@ -113,8 +115,13 @@ export default {
     line-height: 0.87rem;
     color: #fff;
     position: absolute;
-    top: 12rem;
-    left: 2.7rem;
+     bottom: 9%;
+    left: 2.3rem;
+    font-size: 0.32rem;
+    padding-left: 0.6rem;
+    span {
+      font-size: 0.24rem;
+    }
   }
 }
 </style>
