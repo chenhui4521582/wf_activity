@@ -17,6 +17,7 @@
       <ul class="task">
         <li>
           <div class="icon">
+            <div class="icon1">5</div>
             <img src="./img/award-icon2.png" alt="">
           </div>
           <div class="text">
@@ -32,6 +33,7 @@
         </li>
         <li>
           <div class="icon">
+            <div class="icon1">5</div>
             <img src="./img/award-icon2.png" alt="">
           </div>
           <div class="text">
@@ -384,6 +386,7 @@ export default {
         background: #FEBDAB;
         border-radius: .1rem;
         .icon {
+          position: relative;
           float: left;
           margin-right: .14rem;
           width: .9rem;
@@ -392,6 +395,19 @@ export default {
             vertical-align: top;
             width: 100%;
             height: 100%;
+          }
+          .icon1 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: .32rem;
+            height: .17rem;
+            line-height: .17rem;
+            text-align: center;
+            background: #D12B50;
+            border-radius: 6px 0 6px 0;
+            font-size: .18rem;
+            color: #fff;
           }
         }
         .text{
