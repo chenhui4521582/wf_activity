@@ -126,7 +126,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   .gift {
-    animation: bounce 0.9s linear infinite;
+    animation: bounce 0.9s linear 2;
   }
   .header {
     display: flex;
