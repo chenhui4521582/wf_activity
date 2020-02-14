@@ -78,8 +78,5 @@ export const GetCity = proCode => client.post(`@uci/user/receiver/getCity/${proC
 // 获取区
 export const GetArea = cityCode => client.post(`@uci/user/receiver/getArea/${cityCode}`)
 
-// 获取是否是新用户
-export const GetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/get-guide-position`, {version: 10})
-
-// 更新用户信息（设置为老用户）
-export const SetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/set-guide-position`, { version: 10 })
+// 新用户是否显示引导A/B测试
+export const GuideTest = () => client.post('//smarteyes-api.beeplaying.com/box/new/user/guide')

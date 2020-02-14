@@ -88,9 +88,9 @@ export default {
   }
   .step2 {
     width: 5.05rem;
-    height: 3.8rem;
+    height: 2.84rem;
     position: absolute;
-    bottom: 19%;
+    bottom: 28%;
     left: 1.65rem;
   }
   .know {
@@ -115,7 +115,7 @@ export default {
     line-height: 0.87rem;
     color: #fff;
     position: absolute;
-     bottom: 9%;
+    bottom: 9%;
     left: 2.3rem;
     font-size: 0.32rem;
     padding-left: 0.6rem;
