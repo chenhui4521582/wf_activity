@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       step: 1,
-      count: 2,
+      count: 4,
       countDown: null
     }
   },
@@ -31,7 +31,7 @@ export default {
       clearInterval(this.countDown)
       this.countDown = null
       this.step++
-      this.count = 2
+      this.count = 4
     },
     clearTimer () {
       if (this.countDown) clearInterval(this.countDown)
@@ -45,7 +45,7 @@ export default {
           if (this.count === 0) {
             clearInterval(this.countDown)
             this.step++
-            this.count = 2
+            this.count = 4
             this.countDown = null
           }
         }, 1000)
@@ -61,7 +61,7 @@ export default {
       if (this.count === 0) {
         clearInterval(this.countDown)
         this.countDown = null
-        this.count = 2
+        this.count = 4
         this.step++
       }
     }, 1000)
