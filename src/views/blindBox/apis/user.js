@@ -83,3 +83,6 @@ export const GetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api
 
 // 更新用户信息（设置为老用户）
 export const SetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/set-guide-position`, { version: 10 })
+
+// 新用户是否显示引导A/B测试
+export const GuideTest = () => client.post('//smarteyes-api.beeplaying.com/box/new/user/guide')

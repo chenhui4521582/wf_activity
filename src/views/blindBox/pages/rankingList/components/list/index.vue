@@ -4,8 +4,9 @@
     <div ref="group">
       <p class="title">以下是在盲盒抽中明星奖品的用户</p>
       <User refs="group"
-        v-for="item in users"
-        :key="item" />
+        v-for="(item, index) in users"
+        :info="item"
+        :key="index" />
       <p v-if="!isLoading && !finished"
         class="load">向上滑动加载更多<img src="./assets/up.png"
           alt=""></p>
@@ -17,6 +18,7 @@
 
 <script>
 import User from '../user'
+import { RankList } from '../../../../apis/rank'
 
 export default {
   components: {
@@ -27,7 +29,9 @@ export default {
       el: null,
       isLoading: false,
       finished: false,
-      users: [1, 2, 3, 4, 5]
+      page: 0,
+      pageSize: 10,
+      users: []
     }
   },
   computed: {
@@ -42,25 +46,38 @@ export default {
       let bottom = this.el.getBoundingClientRect().bottom
       if (bottom - this.$refs.area.offsetHeight < 10) {
         if (!this.isLoading) {
-          this.isLoading = true
-          console.log(1)
-          setTimeout(() => {
-            this.users.push(11)
-            this.users.push(21)
-            this.users.push(31)
-            this.isLoading = false
-            // this.finished = true
-          }, 1000)
+          this.getUsers()
         }
       }
     },
-
+    removeScroll () {
+      this.$refs.area.removeEventListener('touchend', this.onScroll)
+    },
+    async getUsers () {
+      this.isLoading = true
+      this.page++
+      const data = await RankList({
+        page: this.page,
+        pageSize: this.pageSize
+      })
+      if (data.data.data.length === 0) {
+        this.finished = true
+        this.removeScroll()
+      } else {
+        this.users.push(...data.data.data)
+        this.isLoading = false
+      }
+    }
   },
-  mounted () {
+  async mounted () {
+    this.getUsers()
     this.el = this.$refs.group
     this.$nextTick(() => {
       this.$refs.area.addEventListener('touchend', this.onScroll)
     })
+  },
+  beforeDestroy () {
+    this.removeScroll()
   }
 }
 </script>
