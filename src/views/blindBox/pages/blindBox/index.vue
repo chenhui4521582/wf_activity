@@ -23,7 +23,6 @@ import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 import { FirstLoad } from '../../apis/box'
 import Guide from './components/guide'
-import {GuideTest} from '../../apis/user'
 
 export default {
   data () {
@@ -51,6 +50,25 @@ export default {
     toPlatform () {
       GLOBALS.marchSetsPoint('A_H5PT0225002684')
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
+    },
+    // AB测试,是否走新手引导
+    guideTest () {
+      let _token = localStorage.getItem('ACCESS_TOKEN') || getUrlParams('token') || ''
+      let xhr = new XMLHttpRequest()
+      xhr.open('get', '//smarteyes-api.beeplaying.com/box/new/user/guide')
+      xhr.setRequestHeader('Authorization', _token)
+      xhr.send()
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (xhr.getResponseHeader('version') === 'v1') {
+            this.isOldUser = false
+            setTimeout(() => {
+              this.isOldUser = true
+              this.show = true
+            }, 2000)
+          }
+        }
+      }
     }
   },
   async mounted () {
@@ -58,13 +76,8 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
     }) // H5平台-盲盒页面加载完成
-    // await GuideTest()
-    if (data.data.data) {
-      this.isOldUser = false
-      setTimeout(() => {
-        this.isOldUser = true
-        this.show = true
-      }, 2000)
+    if (!data.data.data) {
+      this.guideTest()
     }
   },
   beforeDestroy () {
