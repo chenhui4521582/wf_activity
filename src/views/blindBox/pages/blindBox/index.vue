@@ -60,7 +60,7 @@ export default {
       xhr.send()
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          if (xhr.getResponseHeader('version') === 'v1') {
+          if (xhr.getResponseHeader('version') === 'v2') {
             this.isOldUser = false
             setTimeout(() => {
               this.isOldUser = true
@@ -76,7 +76,7 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
     }) // H5平台-盲盒页面加载完成
-    if (!data.data.data) {
+    if (data.data.data) {
       this.guideTest()
     }
   },
