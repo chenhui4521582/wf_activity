@@ -90,7 +90,7 @@ export default {
     width: 5.05rem;
     height: 2.84rem;
     position: absolute;
-    bottom: 28%;
+    bottom: 26%;
     left: 1.65rem;
   }
   .know {
