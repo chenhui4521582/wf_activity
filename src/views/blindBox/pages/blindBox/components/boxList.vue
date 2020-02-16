@@ -33,7 +33,7 @@
       <section class="btn-container btn-container-top">
         <m-button @confirm="buyOne">{{
           isOpenBox ? `立即开盒` : "20元开一盒"
-        }}<span class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
+        }}<span v-if="isOpenBox" class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
         <div class="change-btn change-btn-left"  @click="showRule">
           <img class="icon" src="../assets/rule.png" alt="">
           活动规则
@@ -45,7 +45,7 @@
       </section>
       <section class="btn-container">
         <m-button v-if="!isOpenBox" :button-style="buttonStyle" @confirm="leafsBuy">55元开3盒</m-button>
-        <p class="leaf-buy" @click="leafsBuy">使用金叶子购买</p>
+        <p class="leaf-buy" v-if="userInfo && userInfo.leafsPay" @click="leafsBuy">使用金叶子购买</p>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
       <!-- 非年货节按钮 end -->
