@@ -25,7 +25,7 @@ export default {
 .wrapper {
   color: #888888;
   font-size: 0.22rem;
-  padding-bottom: 1.73rem;
+  padding-bottom: 2.28rem;
   height: 100vh;
   overflow: scroll;
   background: #eeeeee;
@@ -33,7 +33,8 @@ export default {
   overflow: scroll;
   box-sizing: border-box;
   .footer {
-    padding: .4rem 0 .52rem;
+    padding: .95rem 0 .52rem;
+    background: #eeeeee;
     text-align: center;
     position: absolute;
     bottom: 0;
