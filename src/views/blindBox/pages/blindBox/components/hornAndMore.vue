@@ -43,6 +43,7 @@ export default {
     },
     // 跳转幸运榜单
     jumpRankingList () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002851')
       this.$router.push({
         name: 'RankingList'
       })
