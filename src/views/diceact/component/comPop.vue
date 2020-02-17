@@ -125,7 +125,7 @@
                   <img src="../images/comPop/gameicon.png" alt=""
                        style="width: 1.55rem;height: 1.55rem;margin-bottom: .26rem">
                   <p style="font-size:.36rem;font-weight:bold;color:rgba(169,92,23,1);">{{jinbinum|
-                    filterPrice}}个游戏币</p>
+                    filterPrice}}个幸运币</p>
                   <div class="btn btn_yellow" @click="close">去投骰子</div>
                 </template>
               </template>
@@ -363,19 +363,19 @@
         this.isShowPop = false
       },
       gotoopengame() {
-        //GLOBALS.marchSetsPoint('A_H5PT0229002662')// H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗-去玩游戏点击
+        //GLOBALS.marchSetsPoint('A_H5PT0229002662')// H5平台-双旦活动页-摇一摇点击后幸运币不足弹窗-去玩游戏点击
         this.$emit('opengame')
       },
       gotowave(flag) {
         // A_H5PT0229002664 H5平台-双旦活动页-摇一摇点击后中奖弹窗-再摇一次点击
-        // A_H5PT0229002667 H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-直接投奖点击
+        // A_H5PT0229002667 H5平台-双旦活动页-摇一摇点击后幸运币充足提示弹窗-直接投奖点击
         // let points = ['A_H5PT0229002667', 'A_H5PT0229002664']
         // GLOBALS.marchSetsPoint(points[flag])
         this.isShowPop = false
         this.$emit('gotowavedirect')
       },
       changeGear() {
-        //GLOBALS.marchSetsPoint('A_H5PT0229002666')// H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-切换额度点击
+        //GLOBALS.marchSetsPoint('A_H5PT0229002666')// H5平台-双旦活动页-摇一摇点击后幸运币充足提示弹窗-切换额度点击
         this.isShowPop = false
         this.$emit('close')
       },

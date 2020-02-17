@@ -90,7 +90,7 @@
         isEnd: false,//是否活动结束
         popType: 0,//窗口类型 0 领取昨日幸运币奖励 1 活动规则 2 瓜分记录 3 瓜分攻略 4 大家都在玩 5 开榜 6 任务流水领取弹窗   // 0 规则 1我的奖励 2奖品信息 3抽奖弹窗
         prizeInfoType: 0, // 0 特等奖 1 一等奖 2 二等奖 3 三等奖 4 参与奖
-        wavePrizeInfoType: 0, // 0 游戏币不足 1. 切换投注额度 2中奖弹窗
+        wavePrizeInfoType: 0, // 0 幸运币不足 1. 切换投注额度 2中奖弹窗
         maxCanSelectLimit: null,
         jinbinum: 0, // 点击领取获得金币数
         awardsLevelItem: null, // 选中的档位
@@ -253,7 +253,7 @@
       },
       selectStage(item) {
         this.currentIndex = item.awardsLevel - 1;
-        // GLOBALS.marchSetsPoint('A_H5PT0229002660', {task_id: this.currentIndex}) //H5平台-双旦活动页-消耗游戏币选择按钮点击
+        // GLOBALS.marchSetsPoint('A_H5PT0229002660', {task_id: this.currentIndex}) //H5平台-双旦活动页-消耗幸运币选择按钮点击
         this.up()
       },
       gotowave() {
@@ -263,11 +263,11 @@
         GLOBALS.marchSetsPoint('A_H5PT0245002841', {task_id: item.awardsLevel}) //H5平台-双旦活动页-摇一摇按钮点击
         let maxItems = this.actInfo.stageList.filter(item => item.consumeNum < this.actInfo.remanentNum && item.consumeNum > selectVal)
         if (this.actInfo.remanentNum < selectVal) {
-          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
+          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后幸运币不足弹窗加载完成
           this.gotowavepop({item: item, popType: 3, wavePrizeInfoType: 0})
           this.showLoading = false
-        } else if (maxItems.length > 0) {//拥有的游戏币可支持比当前选中的更高的档位
-          // GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗加载完成
+        } else if (maxItems.length > 0) {//拥有的幸运币可支持比当前选中的更高的档位
+          // GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后幸运币充足提示弹窗加载完成
           this.gotowavepop({
             item: item,
             popType: 3,
@@ -285,7 +285,7 @@
         let self = this
         let {consumeNum, awardsLevel} = this.actInfo.stageList[this.currentIndex]
         if (this.actInfo.remanentNum < consumeNum) {
-          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
+          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后幸运币不足弹窗加载完成
           this.gotowavepop({item: self.actInfo.stageList[self.currentIndex], popType: 3, wavePrizeInfoType: 0})
           this.showLoading = false
         } else {
