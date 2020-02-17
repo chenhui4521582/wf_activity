@@ -51,11 +51,11 @@
                     <span>{{item.name}}<br><i>{{item.value}}</i></span>
                   </div>
                 </div>
-                <h4>摇奖记录</h4>
+                <h4>投奖记录</h4>
                 <div class="bonus-record" :class="{empty:!record.length}">
                   <div class="title_items">
-                    <div class="title">摇奖时间</div>
-                    <div class="title">摇奖奖励</div>
+                    <div class="title">投奖时间</div>
+                    <div class="title">投奖奖励</div>
                   </div>
                   <div class="content" :class="{empty:!record.length}">
                     <scroll :data="record" v-if="record.length">
@@ -92,7 +92,7 @@
                 <template v-if="wavePrizeInfoType==0">
                   <img src="../images/comPop/sad.png" alt="" style="1.49rem;height: 1.59rem;margin-bottom: .13rem">
                   <p style="font-size: .3rem;font-weight:bold;color: #A95C17">当前幸运币不足</p>
-                  <p style="font-size: .3rem;font-weight:bold;color: #A95C17">快去玩游戏获取摇游戏币吧</p>
+                  <p style="font-size: .3rem;font-weight:bold;color: #A95C17">快去玩游戏获取幸运币吧</p>
                   <div class="btn btn_yellow" @click="gotoopengame">去玩游戏</div>
                 </template>
                 <template v-else-if="wavePrizeInfoType==1">
@@ -368,7 +368,7 @@
       },
       gotowave(flag) {
         // A_H5PT0229002664 H5平台-双旦活动页-摇一摇点击后中奖弹窗-再摇一次点击
-        // A_H5PT0229002667 H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-直接摇奖点击
+        // A_H5PT0229002667 H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗-直接投奖点击
         // let points = ['A_H5PT0229002667', 'A_H5PT0229002664']
         // GLOBALS.marchSetsPoint(points[flag])
         this.isShowPop = false
