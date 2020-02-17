@@ -65,7 +65,7 @@
                  @showPop="hitShowPop"></drop-down>
     </template>
     <template v-else>
-      <profit :is-full="true"/>
+      <profit :is-full="true" @showPop="showPop"/>
     </template>
     <com-pop :pop-type="popType" :prize-info-type="prizeInfoType"
              :wave-prize-info-type="wavePrizeInfoType" :rule-time="rulesExplain" :award-data="awardData"
@@ -651,7 +651,6 @@
       }
     }
   }
-
   @keyframes huxi {
     0% {
       transform: scale(0.9);
