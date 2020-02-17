@@ -44,7 +44,7 @@
         </div>
       </section>
       <section class="btn-container">
-        <m-button v-if="!isOpenBox" :button-style="buttonStyle" @confirm="leafsBuy">55元开3盒</m-button>
+        <m-button v-if="!isOpenBox" :button-style="buttonStyle" @confirm="bulkBuy">55元开3盒</m-button>
         <p class="leaf-buy" v-if="userInfo && userInfo.leafsPay" @click="leafsBuy">使用金叶子购买</p>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
@@ -176,6 +176,10 @@ export default {
     this.init()
   },
   methods: {
+    // 开三盒购买
+    bulkBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002849')
+    },
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
