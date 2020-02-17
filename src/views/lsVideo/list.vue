@@ -125,6 +125,8 @@ export default {
     float: left;
     width: .36rem;
     height: .36rem;
+    border-radius: 50%;
+    overflow: hidden;
     img {
       vertical-align: top;
       width: 100%;
