@@ -8,7 +8,8 @@ class shareMiddleware {
             '100061': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
             '110002': 'https://wap.beeplaying.com/payment/#/loginwechat?channel='+this.channel,
             '100060': 'https://wap.beeplaying.com/activities/wfgames.html?channel=' + this.channel,
-            '100000': 'https://wap.beeplaying.com/payment/#/login?channel=' + this.channel,
+            '100000': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
+            '100086': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
             '100058': 'https://wap.beeplaying.com/downddw/',
             'other': 'https://wap.beeplaying.com/loginPages/failureLogon.html'
         }
