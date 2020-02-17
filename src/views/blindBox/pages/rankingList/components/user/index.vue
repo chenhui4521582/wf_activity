@@ -11,9 +11,10 @@
       <p class="name">{{info.awardsName}}</p>
       <p class="time">{{info.createTime}}</p>
     </div>
-    <img class="goods"
-      :src="info.awardsImage | imgUrl"
-      alt="">
+    <div class="goods">
+      <img :src="info.awardsImage | imgUrl"
+        alt="">
+    </div>
   </section>
 </template>
 
@@ -60,8 +61,12 @@ export default {
   .goods {
     width: 1.2rem;
     height: 1.2rem;
+    background: #e3e2e2;
     border-radius: 0.08rem;
     margin-top: -0.11rem;
+    img {
+      width: 100%;
+    }
   }
   .content {
     flex: 1;
