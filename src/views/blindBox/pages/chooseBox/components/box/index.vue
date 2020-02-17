@@ -12,9 +12,10 @@
     </div>
     <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
     <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
-      class="choose-button">{{buttonText}}</MButton>
-    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen && userInfo && userInfo.leafsPay" class="gold-buy">使用金叶子购买
+      class="choose-button"><div v-html="buttonText"></div></MButton>
+    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen" class="gold-buy">55元开3盒
     </MButton>
+    <p v-if="userInfo && userInfo.leafsPay" @click="leafsBuy" class="leafs-buy">使用金叶子购买</p>
     <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
     <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
@@ -70,8 +71,8 @@ export default {
       return this.userInfo && this.userInfo.openBoxTimes
     },
     buttonText () {
-      if (this.isOpen) return '立即开盒'
-      return '开一盒试试'
+      if (this.isOpen) return `立即开盒<span style="padding-left: .2rem">(<span style="color: #FF1520;">${this.userInfo.openBoxTimes}</span>次)</span>`
+      return '20元开一盒'
     }
   },
   methods: {
@@ -185,6 +186,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.leafs-buy {
+  padding-top: .28rem;
+  font-size: .3rem;
+  text-align: center;
+  background: linear-gradient(90deg,#DBBE6F,#FEE9B4);
+  -webkit-background-clip: text;
+  font-weight: bold;
+  color: transparent;
+}
 .box-wrapper {
   box-sizing: border-box;
   height: 6.58rem;
