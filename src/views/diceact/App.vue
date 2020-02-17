@@ -309,7 +309,7 @@
                     icons: self.awardData.numberArray
                   }
                 })
-              }, 100)
+              }, 1000)
             } else {
               this.showLoading = false
               this.showBar = true
