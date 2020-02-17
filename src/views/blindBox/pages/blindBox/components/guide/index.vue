@@ -110,7 +110,7 @@ export default {
     top: 9.5rem;
     left: 2.7rem;
     font-size: 0.32rem;
-    padding-left: 0.6rem;
+    padding-left: 0.9rem;
     span {
       font-size: 0.24rem;
     }
@@ -125,7 +125,7 @@ export default {
     bottom: 9%;
     left: 2.3rem;
     font-size: 0.32rem;
-    padding-left: 0.6rem;
+    padding-left: 0.9rem;
     span {
       font-size: 0.24rem;
     }
