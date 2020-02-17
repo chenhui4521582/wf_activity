@@ -19,6 +19,10 @@
         </template>
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
+        <!--查看我的奖励-->
+        <div class="myprize" @click="showPop(1)" v-if="isFull">
+          我的奖励
+        </div>
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
             <div class="s-tx">
@@ -227,10 +231,7 @@
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
       },
       showPop (type) {
-        this.popType = type
-        setTimeout(() => {
-          this.$refs.comPop.showPop()
-        })
+        this.$emit('showPop',type)
       },
       getCountInfo (dateinfo) {
         let day = Math.floor(dateinfo / 86400)
