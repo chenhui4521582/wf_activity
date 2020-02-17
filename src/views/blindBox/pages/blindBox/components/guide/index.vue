@@ -102,7 +102,7 @@ export default {
   }
   .know {
     background: url("./assets/know.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     width: 2.33rem;
     line-height: 0.87rem;
     color: #fff;
@@ -117,7 +117,7 @@ export default {
   }
   .step2-know {
     background: url("./assets/know.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     width: 2.33rem;
     line-height: 0.87rem;
     color: #fff;
