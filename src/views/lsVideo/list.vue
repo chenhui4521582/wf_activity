@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap" @click="handleClick">
+    <div class="wrap" @click="handleClick()">
         <div class="title" v-if="currentIndex == 2">
           {{item.amount}}一杆击中
         </div>
@@ -27,27 +27,31 @@ export default {
   name: 'list',
   props: {
     item: {
-        type: Object,
-        default: ()=> ({})
+      type: Object,
+      default: ()=> ({})
     },
     currentIndex: {
-        default: ''
+      default: ''
     },
     from: {
       type: String,
       default: 'platFrom'
+    },
+    index: {
+      default: ''
     }
   },
   methods: {
     handleClick() {
-      if(this.from == 'game' && parent.playLsVideo) {
-        let id = this.item.id
-        parent.playLsVideo(id, this.currentIndex)
-      }else {
-        let id = this.item.id
-        let channel = localStorage.getItem('APP_CHANNEL')
-        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&type=${this.currentIndex}&time=1579423372894`
-      }
+      console.log(this.index)
+      // if(this.from == 'game' && parent.playLsVideo) {
+      //   let id = this.item.id
+      //   parent.playLsVideo(id, this.currentIndex, this.index)
+      // }else {
+      //   let id = this.item.id
+      //   let channel = localStorage.getItem('APP_CHANNEL')
+      //   location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${this.index}&type=${this.currentIndex}&time=${Date.now()}`
+      // }
     }
   }
 }

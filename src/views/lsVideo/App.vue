@@ -21,10 +21,10 @@
         <div class="list" ref="wrap" >
           <template v-if="showList">
             <div class="recommend-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
-              <list :item="item" :currentIndex="currentIndex" :from="from"></list>
+              <list :item="item" :currentIndex="currentIndex" :from="from" :index="'recommend'+index"></list>
             </div>
             <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in highlightTimeList" :key="`list${index}`">
-              <list :item="item" :currentIndex="currentIndex" :from="from"></list>
+              <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
             </div>
           </template>
           <!-- loading -->
