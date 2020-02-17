@@ -2,7 +2,7 @@
   <section ref="area"
     class="container">
     <div ref="group">
-      <p class="title">以下是在盲盒抽中明星奖品的用户</p>
+      <p class="title">以下为抽中明星奖品的部分幸运用户</p>
       <User refs="group"
         v-for="(item, index) in users"
         :info="item"
@@ -99,6 +99,11 @@ export default {
   font-size: 0.22rem;
   padding-top: 0.1rem;
   text-align: center;
+  line-height: .2rem;
+  position: fixed;
+  bottom: 1.73rem;
+  z-index: 2;
+  width: 100%;
   img {
     width: 0.15rem;
     margin-left: 0.1rem;

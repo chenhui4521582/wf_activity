@@ -2,7 +2,7 @@
   <section class="current-product-list">
     <div class="header">
       <div class="header-left">
-        <img class="gift"
+        <img :class="{'gift' : !show}"
           src="../assets/box.png"
           alt="">
         <span>盲盒明星奖品</span>
