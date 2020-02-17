@@ -5,7 +5,7 @@
       <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
         <div class="item">
           <p v-if="index==0">每天完成{{item.totalNum}}个每日任务给1个币</p>
-          <p v-else-if="index==1">今日累计充值{{item.totalNum}}元给1个币</p>
+          <p v-else-if="index==1">累计充值{{item.totalNum}}元给1个币</p>
         </div>
         <div class="item">
           <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">去完成</div>
@@ -25,8 +25,8 @@
         </div>
         <div class="g-package-info">
           <ul>
-            <li><span>今日已支持金叶：{{taskProgressInfoData.gameProgress.gameBetting | filterPrice}}</span></li>
-            <li>今日获得幸运币：{{taskProgressInfoData.gameProgress.receiveNum }}个</li>
+            <li><span>已支持金叶：{{taskProgressInfoData.gameProgress.gameBetting | filterPrice}}</span></li>
+            <li>获得幸运币：{{taskProgressInfoData.gameProgress.receiveNum }}个</li>
           </ul>
         </div>
       </div>
@@ -45,21 +45,19 @@
         </div>
         <div class="g-package-info">
           <ul>
-            <li>今日已购买礼包：{{taskProgressInfoData.buyProgress.buyTime}}次</li>
-            <li>今日获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>
+            <li>已购买礼包：{{taskProgressInfoData.buyProgress.buyTime}}次</li>
+            <li>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>
           </ul>
         </div>
       </div>
     </template>
-    <com-pop :pop-type="popType" :award-data="awardData" ref="comPop" @getmore="popType=0"
-             :countTime="countTime"></com-pop>
   </div>
 </template>
 <script type="text/javascript">
   import {showLeaguePacksList, taskProgressInfo, taskReceive} from '../../utils/api'
 
   export default {
-    data () {
+    data() {
       return {
         leaguePacksListArr: [],
         pUserInfo: {},
@@ -70,43 +68,46 @@
     },
     props: {
       countTime: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
       }
     },
     components: {
       hitPercent: () => import('./component/hitPercent/hitPercent.vue'),
-      comPop: () => import('../comPop')
     },
-    mounted () {
+    mounted() {
       this.taskProgressInfo()
       this.getShowLeaguePacksList()
     },
     methods: {
-      gotopay (item) {
+      gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0240002799', {recharge_rmb: item.price, product_id: item.bizId})   // H5平台-砸金蛋-获取幸运币大浮层-点击任意礼包
+        GLOBALS.marchSetsPoint('A_H5PT0245002846', {
+          recharge_rmb: item.price,
+          product_id: item.bizId,
+          awards_name: item.name
+        })   // H5平台-砸金蛋-获取幸运币大浮层-点击任意礼包
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         localStorage.setItem('payment', JSON.stringify(item))
         location.href =
           'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       },
-      async getShowLeaguePacksList () {
+      async getShowLeaguePacksList() {
         const {code, data} = await showLeaguePacksList()
         if (code === 200) {
           this.leaguePacksListArr = data.leaguePacksList
         }
       },
-      async taskProgressInfo () {
+      async taskProgressInfo() {
         const {code, data} = await taskProgressInfo()
         if (code === 200) {
           this.taskProgressInfoData = data
         }
       },
-      gotocomplete (item, index) {
-        GLOBALS.marchSetsPoint('A_H5PT0240002795', {
+      gotocomplete(item, index) {
+        GLOBALS.marchSetsPoint('A_H5PT0245002844', {
           task_id: index + 1,
-          task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个币` : `今日累计充值${item.totalNum}元给1个币`
+          task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个币` : `累计充值${item.totalNum}元给1个币`
         })   // H5平台-元宵活动-获取幸运币-每日任务去完成点击
         if (index == 0) {
           if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
@@ -118,21 +119,21 @@
           location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
         }
       },
-      async gain (item, index) {
-        GLOBALS.marchSetsPoint('A_H5PT0240002796', {
-          task_id: index + 1,
-          task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个币` : `今日累计充值${item.totalNum}元给1个币`
-        })   // H5平台-元宵活动-获取幸运币-每日任务奖励领取点击
+      async gain(item, index) {
+        // GLOBALS.marchSetsPoint('A_H5PT0240002796', {
+        //   task_id: index + 1,
+        //   task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个币` : `累计充值${item.totalNum}元给1个币`
+        // })   // H5平台-元宵活动-获取幸运币-每日任务奖励领取点击
         const {code, data} = await taskReceive({sort: index + 1})
         if (code === 200) {
           this.refresh(data)
         }
       },
-      refresh (num) {
+      refresh(num) {
         this.taskProgressInfo()
         this.$emit('refresh', num)
       },
-      showPop (data) {
+      showPop(data) {
         this.$emit('showPop', data)
       }
     }

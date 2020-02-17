@@ -19,8 +19,6 @@
         </template>
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
-        <!--查看瓜分记录-->
-        <img src="../../imgs/record.png" alt="" class="record" v-if="isFull" @click="showPop(2)">
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">
             <div class="s-tx">
@@ -115,7 +113,6 @@
         </div>
       </div>
     </div>
-    <com-pop :pop-type="popType" :award-data="awardData" ref="comPop"></com-pop>
   </div>
 </template>
 <script type="text/javascript">
@@ -153,12 +150,9 @@
         default: ''
       },
       time: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
       }
-    },
-    components: {
-      comPop: () => import('../comPop')
     },
     mounted () {
       this.getRankList()
@@ -166,13 +160,14 @@
     methods: {
       closeOpenProfit () {
         this.isOpen = true
-        GLOBALS.marchSetsPoint('A_H5PT0240002792')   // H5平台-元宵活动-有奖排行榜-点击展开完整榜单
+        GLOBALS.marchSetsPoint('A_H5PT0245002848')   // 点击展开完整榜单
       },
       async getRankList () {
         this.isLoading = true
         const {code, data} = await rankList()
         if (code === 200) {
-          this.countDown(data.countdown)
+          console.log(this.time)
+          this.countDown(this.time)
           this.myInfo = {
             myRank: data.myRank,
             totalNum: data.totalNum,

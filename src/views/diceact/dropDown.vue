@@ -28,7 +28,7 @@
       <div class="tab get-hammer" @click="outHandleTab(0)">
         <div class="hammer_icon"></div>
         <div class="right">
-          <div class="main-text">今日已得<span>{{toDayUserCouponNum}}</span>个币</div>
+          <div class="main-text">已得<span>{{toDayUserCouponNum|filterPrice}}</span>个币</div>
           <div class="btn">获取幸运币</div>
         </div>
       </div>
@@ -54,8 +54,8 @@
     },
     props: {
       countTime: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
       },
       toDayUserCouponNum: {
         type: Number,
@@ -76,9 +76,9 @@
       },
       outHandleTab(idx) {
         if (idx) {
-          GLOBALS.marchSetsPoint('A_H5PT0240002791')   // H5平台-元宵活动-底部有奖排行点击
+          GLOBALS.marchSetsPoint('A_H5PT0245002847')   // H5平台-元宵活动-底部有奖排行点击
         } else {
-          GLOBALS.marchSetsPoint('A_H5PT0240002790')   // H5平台-元宵活动-底部获取幸运币点击
+          GLOBALS.marchSetsPoint('A_H5PT0245002843')   // H5平台-元宵活动-底部获取幸运币点击
         }
         this.handleTab(idx)
       },

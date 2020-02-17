@@ -20,25 +20,25 @@
         prizeshow: true,
         list: [
           {
-            text: `3粒骰子点数为三个6：特等奖`,
+            text: `3粒骰子点数为三个6`,
             btnText: '查看特等奖',
             btnColor: '#D1415C',
             id: '5'
           },
           {
-            text: `3粒骰子点数相同（不含三个6）：一等奖`,
+            text: `3粒骰子点数相同(不含三个6)`,
             btnText: '查看一等奖',
             btnColor: '#FF9524',
             id: '4'
           },
           {
-            text: `3粒骰子点数总和在11-17点：二等奖`,
+            text: `3粒骰子点数总和在11-17点`,
             btnText: '查看二等奖',
             btnColor: '#24BFFF',
             id: '3'
           },
           {
-            text: `3粒骰子点数总和在4-10点：三等奖`,
+            text: `3粒骰子点数总和在4-10点`,
             btnText: '查看三等奖',
             btnColor: '#96D141',
             id: '2'

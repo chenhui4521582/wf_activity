@@ -51,6 +51,10 @@ let services = {
   getAwardsInfo: function (type) {
     let url = '//ops-api.beeplaying.com/ops/api/christmas/bet-awards/' + type
     return axios.post(url)
+  },
+  getMyRank: function () {
+    let url = '//ops-api.beeplaying.com/ops/api/christmas/my-rank'
+    return axios.post(url)
   }
 }
 

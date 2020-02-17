@@ -21,6 +21,11 @@
             </div>
           </div>
         </div>
+        <div class="dice_annimation" :class="{animation:showLoading&&!showBar}">
+          <div class="item" v-for="item in numberArray"
+               :style="{backgroundImage:`url(${require(`./imgs/dicepics/dice${item}.png`)})`}"
+               v-if="!(showLoading&&!showBar)"></div>
+        </div>
         <div class="prize_consume">
           <div class="pop" v-show="show">
             <div class="pop_inner">
@@ -29,17 +34,15 @@
                   <img src="./imgs/gamecoin.png"><span>消耗{{item.consumeNum}}个幸运币</span>
                 </div>
               </div>
-
             </div>
           </div>
           <div class="prize_consume_bg">
             <img src="./imgs/gamecoin.png" alt/>
-
             <div class="text">消耗{{actInfo.stageList[currentIndex].consumeNum}}个幸运币</div>
             <img src="./imgs/up.png" @click="up"/>
           </div>
         </div>
-        <div class="btn_play" @click="gotowave"></div>
+        <div class="btn_play" :class="{down:showLoading&&!showBar}" @click="gotowave"></div>
       </div>
       <div class="lanternfestival_detail">
         <div class="lanternfestival_detail_info">
@@ -57,27 +60,25 @@
         <span>奖励说明</span>
         <prize @openprize='checkPrizeInfo'></prize>
       </div>
-      <drop-down ref="dropDown" :toDayUserCouponNum="actInfoData.toDayUserCouponNum" :rules-explain="rulesExplain"
-                 @refresh="refresh" :countTime="countTime" :endDate="actInfoData.endDate"
+      <drop-down ref="dropDown" :toDayUserCouponNum="actInfoData.totalNum" :rules-explain="rulesExplain"
+                 @refresh="refresh" :countTime="actInfoData.countdown" :endDate="actInfoData.endDate"
                  @showPop="hitShowPop"></drop-down>
     </template>
     <template v-else>
       <profit :is-full="true"/>
     </template>
-    <!--popType-->
-    <!--<com-pop :pop-type="popType" :rule-time="rulesExplain" :award-data="awardData" ref="comPop" :awardList="awardList"-->
-    <!--:isHasGift="isHasGift" :myRank="myRank" @getYesterDayGift="getYesterDayGift"-->
-    <!--@getCouponAward="getCouponAward" :countTime="countTime"></com-pop>-->
-    <com-pop1 :pop-type="popType" :prize-info-type="prizeInfoType"
-              :wave-prize-info-type="wavePrizeInfoType" :rule-time="rulesExplain" :award-data="awardData" :awardList="awardList" :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum" :myRank="myRank"
-              @close="popType=0" @gotowavedirect="gotowavedirect" @opengame="showPop(5)"></com-pop1>
+    <com-pop :pop-type="popType" :prize-info-type="prizeInfoType"
+             :wave-prize-info-type="wavePrizeInfoType" :rule-time="rulesExplain" :award-data="awardData"
+             :awardList="awardList" :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum"
+             :myRank="myRank"
+             @close="popType=0" @gotowavedirect="gotowavedirect" @opengame="showPop(5)"></com-pop>
+    <loading v-show="showLoading" :showBar="showBar"></loading>
   </div>
 </template>
 
 <script>
   /* eslint-disable */
   import '../../common/js/window.js';
-  import {activityInfo, userAwardsTips, couponAwardReceive} from './utils/api'
   import Services from './services/services'
 
   export default {
@@ -98,24 +99,41 @@
         awardList: [],//开榜奖品
         myRank: 0,//我的发榜排名
         actInfoData: null,//活动信息数据
-        actInfo: {
-          "stageList": [{"awardsLevel": 1, "consumeNum": 1}, {
-            "awardsLevel": 2,
-            "consumeNum": 50
-          }, {"awardsLevel": 3, "consumeNum": 200}, {"awardsLevel": 4, "consumeNum": 500}]
-        },
+        actInfo: null,//活动信息数据
         show: false,
-        currentIndex: 0
+        currentIndex: 0,
+        showBar: true,
+        showLoading: false,
+        numberArray: [1, 1, 1]
       }
     },
     components: {
       dropDown: () => import('./dropDown'),//副页
       profit: () => import('./component/profit'),//排行榜
-      comPop: () => import('./component/comPop'),//弹窗
       prize: () => import('./component/prize'),
-      comPop1: () => import('./component/comPop1'),//弹窗
+      comPop: () => import('./component/comPop'),//弹窗
+      loading: () => import('../../components/common/loading'),
     },
     methods: {
+      getLevelName(showLevel) {
+        switch (showLevel) {
+          case 1:
+            return '参与奖';
+            break;
+          case 2:
+            return '三等奖';
+            break;
+          case 3:
+            return '二等奖';
+            break;
+          case 4:
+            return '一等奖';
+            break;
+          case 5:
+            return '特等奖';
+            break;
+        }
+      },
       getCountInfo(dateinfo) {
         let day = Math.floor(dateinfo / 86400)
         let hour = Math.floor(parseInt(dateinfo / 60 / 60) % 24)
@@ -160,7 +178,7 @@
       },
       //返回
       back() {
-        GLOBALS.marchSetsPoint('A_H5PT0240002786')   // 点击返回
+        GLOBALS.marchSetsPoint('A_H5PT0245002837')   // 点击返回
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
       //弹窗
@@ -168,18 +186,21 @@
         this.popType = type
         let point = ''
         switch (type) {
-          case 1:
-            point = 'A_H5PT0240002787';
+          case 0:
+            point = 'A_H5PT0245002838';
             break;//规则点击
-          case 2:
-            point = 'A_H5PT0240002789';
-            break;//瓜分记录
-          case 3:
-            point = 'A_H5PT0240002788';
+          case 1:
+            point = 'A_H5PT0245002840';
+            break;//我的奖励
+          case 4:
+            point = 'A_H5PT0245002839';
             break;//攻略
         }
         point && GLOBALS.marchSetsPoint(point)
-        if ([0, 5].includes(type)) {
+        setTimeout(() => {
+          this.$refs.comPop.showPop()
+        })
+        if ([0, 6].includes(type)) {
           setTimeout(() => {
             this.$refs.comPop.showPop()
           }, 1000)
@@ -187,23 +208,6 @@
           setTimeout(() => {
             this.$refs.comPop.showPop()
           })
-        }
-      },
-      //开榜弹窗点击领取昨日奖励
-      async getYesterDayGift() {
-        let {code, data} = await userAwardsTips()
-        if (code == 200) {
-          this.isHasGift = !!data.award
-          if (this.isHasGift) {
-            this.awardData = {
-              award: data.award,
-              couponNum: data.couponNum
-            }
-            this.popType = 0
-            setTimeout(() => {
-              this.$refs.comPop.showPop()
-            })
-          }
         }
       },
       //活动信息
@@ -218,50 +222,24 @@
             this.countDown(data.countdown)
           } else {
             this.isEnd = true
+            this.getUserAwardsTips()
           }
         }
-        flag && GLOBALS.marchSetsPoint('P_H5PT0240', {
+        flag && GLOBALS.marchSetsPoint('P_H5PT0245', {
           source_address: GLOBALS.getUrlParam('from') || ''
         })
       },
       //奖励提示（昨日奖励+开榜）
-      async getUserAwardsTips() {
-        let {code, data} = await userAwardsTips()
+      async getUserAwardsTips() {//getMyRank
+        let {code, data} = (await Services.getMyRank()).data
         if (code == 200) {
-          this.isHasGift = !!data.award
-          if (this.isEnd) {//结束
-            if (data.rankTips == 1) {//盈利榜弹窗只弹一次
-              this.myRank = data.rankIdx
-              this.awardList = data.rankAward || []
-              GLOBALS.marchSetsPoint(this.awardList.length ? 'A_H5PT0240002793' : 'A_H5PT0240002794')
-              this.showPop(5)//盈利榜发榜弹窗
-            }
-          } else {//活动中
-            if (this.isHasGift) {//有昨日奖励
-              this.awardData = {
-                award: data.award,
-                couponNum: data.couponNum
-              }
-              this.showPop(0)
-            }
+          if (data.popup) {//盈利榜弹窗只弹一次
+            this.myRank = data.myRank
+            this.awardList = data.awardsList || []
+            //GLOBALS.marchSetsPoint(this.awardList.length ? 'A_H5PT0240002793' : 'A_H5PT0240002794')
+            this.showPop(6)//盈利榜发榜弹窗
           }
         }
-      },
-      //昨日瓜分奖励领取
-      async getCouponAward() {
-        let {code, message} = await couponAwardReceive()
-        if (code == 200) {
-          this.$toast.show({
-            message: '领取成功',
-            duration: 1000
-          })
-        } else {
-          this.$toast.show({
-            message: message,
-            duration: 1000
-          })
-        }
-        this.$refs.comPop.close()
       },
       hitShowPop(data) {
         this.popType = data.type
@@ -282,14 +260,14 @@
         this.showLoading = true
         let item = this.actInfo.stageList[this.currentIndex]
         let selectVal = item.consumeNum
-        GLOBALS.marchSetsPoint('A_H5PT0229002659', {task_id: item.awardsLevel}) //H5平台-双旦活动页-摇一摇按钮点击
+        GLOBALS.marchSetsPoint('A_H5PT0245002841', {task_id: item.awardsLevel}) //H5平台-双旦活动页-摇一摇按钮点击
         let maxItems = this.actInfo.stageList.filter(item => item.consumeNum < this.actInfo.remanentNum && item.consumeNum > selectVal)
         if (this.actInfo.remanentNum < selectVal) {
-          GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
+          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
           this.gotowavepop({item: item, popType: 3, wavePrizeInfoType: 0})
           this.showLoading = false
         } else if (maxItems.length > 0) {//拥有的游戏币可支持比当前选中的更高的档位
-          GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗加载完成
+          // GLOBALS.marchSetsPoint('A_H5PT0229002665') //H5平台-双旦活动页-摇一摇点击后游戏币充足提示弹窗加载完成
           this.gotowavepop({
             item: item,
             popType: 3,
@@ -303,10 +281,11 @@
       },
       async gotowavedirect() {
         this.showLoading = true
+        this.showBar = false
         let self = this
         let {consumeNum, awardsLevel} = this.actInfo.stageList[this.currentIndex]
         if (this.actInfo.remanentNum < consumeNum) {
-          GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
+          // GLOBALS.marchSetsPoint('A_H5PT0229002661') //H5平台-双旦活动页-摇一摇点击后游戏币不足弹窗加载完成
           this.gotowavepop({item: self.actInfo.stageList[self.currentIndex], popType: 3, wavePrizeInfoType: 0})
           this.showLoading = false
         } else {
@@ -314,41 +293,26 @@
           try {
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
-              this.showBar = false
               this.awardData = data
-              // if (data.iconArray.filter(item => this.resArr.includes(item)).length > 1) {
-              this.num = this.num == 1 ? 2 : 1
-              // }
-              this.resArr = data.iconArray
-              let arr = []
-              data.iconArray.map((item, index) => {
-                arr.push(-(this.lotteryawardlist.length * 2 * this.num * 1.73 + (this.resArr[index] - 1) * 1.73) + 'rem')
-                if (arr.length == this.resArr.length) {
-                  this.awardTop = arr
-                  this.showLight = true
-                }
-              })
-              this.$refs.luck4[0].addEventListener("webkitTransitionEnd", function () {
-                if (!self.showBar) {
-                  GLOBALS.marchSetsPoint('A_H5PT0229002663')//H5平台-双旦活动页-摇一摇点击后中奖弹窗加载完成
-                  self.showLight = false
-                  this.gotowavepop({
-                    item: self.actInfo.stageList[self.currentIndex],
-                    popType: 3,
-                    wavePrizeInfoType: 2,
-                    awardData: {
-                      awardType: self.awardData.awardsType,
-                      awardName: self.awardData.awardsName,
-                      levelName: self.getLevelName(self.awardData.showLevel + 1),
-                      icons: self.awardData.iconArray
-                    }
-                  })
-                  self.showLoading = false
-                  self.showBar = true
-                }
-              })
+              setTimeout(() => {
+                self.showLoading = false
+                self.showBar = true
+                self.numberArray = self.awardData.numberArray
+                this.gotowavepop({
+                  item: self.actInfo.stageList[self.currentIndex],
+                  popType: 3,
+                  wavePrizeInfoType: 2,
+                  awardData: {
+                    awardType: self.awardData.awardsType,
+                    awardName: self.awardData.awardsName,
+                    levelName: self.getLevelName(self.awardData.showLevel + 1),
+                    icons: self.awardData.numberArray
+                  }
+                })
+              }, 100)
             } else {
               this.showLoading = false
+              this.showBar = true
               this.$toast.show({
                 message: message,
                 duration: 2000
@@ -366,7 +330,7 @@
         this.maxCanSelectLimit = maxCanSelectLimit
         this.awardData = awardData
         if (wavePrizeInfoType == 2) {
-          this.getUserInfo()
+          this.getActInfo(false)
         }
         setTimeout(() => {
           this.$refs.comPop.showPop()
@@ -375,6 +339,9 @@
       checkPrizeInfo(type) {
         this.popType = 2
         this.prizeInfoType = parseInt(type)
+        GLOBALS.marchSetsPoint('A_H5PT0245002842', {
+          awards_name: type - 1
+        })
         setTimeout(() => {
           this.$refs.comPop.showPop()
         })
@@ -490,6 +457,33 @@
               display: flex;
               align-items: center;
             }
+          }
+        }
+      }
+      .dice_annimation {
+        position: absolute;
+        height: .89rem;
+        top: 3.3rem;
+        left: 2.25rem;
+        right: 2.12rem;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        &.animation {
+          background: url("./imgs/touzi.gif");
+          background-size: 100% 100%;
+        }
+        .item {
+          width: .84rem;
+          height: .89rem;
+          &:nth-child(1) {
+            background-size: 100% 100%;
+          }
+          &:nth-child(2) {
+            background-size: 100% 100%;
+          }
+          &:nth-child(3) {
+            background-size: 100% 100%;
           }
         }
       }
@@ -642,7 +636,7 @@
             width: 1px;
             height: .31rem;
             background: rgba(248, 194, 181, 1);
-            margin: 0 .25rem;
+            margin: 0 .1rem;
           }
           &:nth-child(1) {
             color: rgba(248, 194, 181, 1);

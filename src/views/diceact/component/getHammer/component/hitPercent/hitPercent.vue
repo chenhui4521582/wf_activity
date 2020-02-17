@@ -28,8 +28,6 @@
         </li>
       </ul>
     </div>
-    <com-pop :pop-type="popType" :award-data="awardData" ref="comPop" @getmore="popType=0"
-             :countTime="countTime"></com-pop>
     <loading v-show="showLoading"></loading>
   </div>
 </template>
@@ -55,8 +53,8 @@
         default: 0
       },
       countTime: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
       }
     },
     computed: {
@@ -149,17 +147,17 @@
         }
       },
       gotocomplete (item) {
-        GLOBALS.marchSetsPoint('A_H5PT0240002797', {
+        GLOBALS.marchSetsPoint('A_H5PT0245002845', {
           task_id: item.sort,
           task_name: '消耗金叶' + item.amount
         })   // H5平台-元宵活动-获取幸运币-玩游戏去完成点击
         this.showPop(5, null)
       },
       async gotoact (item) { // 领取
-        GLOBALS.marchSetsPoint('A_H5PT0240002798', {
-          task_id: item.sort,
-          task_name: '消耗金叶' + item.amount
-        })// H5平台-元宵活动-获取幸运币-玩游戏奖励领取点击
+        // GLOBALS.marchSetsPoint('A_H5PT0240002798', {
+        //   task_id: item.sort,
+        //   task_name: '消耗金叶' + item.amount
+        // })// H5平台-元宵活动-获取幸运币-玩游戏奖励领取点击
         this.showLoading = true
         gameReceive(item.sort).then((res) => {
           if (res.code == 200) {
@@ -182,7 +180,6 @@
       }
     },
     components: {
-      comPop: () => import('../../../comPop'),
       loading: () => import('../../../../../../components/common/loading')
     }
   }
