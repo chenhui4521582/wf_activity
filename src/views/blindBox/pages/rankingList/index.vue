@@ -2,7 +2,9 @@
   <article class="wrapper">
     <List />
     <footer class="footer">
-      <img class="open"
+      <img @click="$router.push({
+        name: 'Index'
+      })" class="open"
         src="./assets/open.png"
         alt="">
     </footer>
