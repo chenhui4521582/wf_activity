@@ -13,7 +13,7 @@
     <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
     <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
       class="choose-button"><div v-html="buttonText"></div></MButton>
-    <MButton :button-style="buttonStyle" @confirm="leafsBuy" v-if="!isOpen" class="gold-buy">55元开3盒
+    <MButton :button-style="buttonStyle" @confirm="bulkBuy" v-if="!isOpen" class="gold-buy">55元开3盒
     </MButton>
     <p v-if="userInfo && userInfo.leafsPay" @click="leafsBuy" class="leafs-buy">使用金叶子购买</p>
     <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
@@ -76,6 +76,14 @@ export default {
     }
   },
   methods: {
+    // 开三盒购买
+    async bulkBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002850')
+       const {
+          data: { data: payInfo }
+        } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo[1] })
+    },
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
@@ -127,7 +135,7 @@ export default {
     // 无透视次数 购买
     async payTransparent () {
       const { data: { data: payInfo } } = await PayPoint(2)
-      Pay.toPay({ payInfo })
+      Pay.toPay({ payInfo: payInfo[0] })
     },
     // 点击按钮
     async onConfirm () {
@@ -137,7 +145,7 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0225002552')
         const { data: { data: payInfo } } = await PayPoint(1)
-        Pay.toPay({ payInfo })
+        Pay.toPay({ payInfo: payInfo[0] })
       }
     },
     // 开盒

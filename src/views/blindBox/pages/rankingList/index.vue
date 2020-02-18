@@ -2,9 +2,8 @@
   <article class="wrapper">
     <List />
     <footer class="footer">
-      <img @click="$router.push({
-        name: 'Index'
-      })" class="open"
+      <img @click="toIndex"
+        class="open"
         src="./assets/open.png"
         alt="">
     </footer>
@@ -17,6 +16,17 @@ import List from './components/list'
 export default {
   components: {
     List
+  },
+  mounted () {
+     GLOBALS.marchSetsPoint('A_H5PT0225002852')
+  },
+  methods: {
+    toIndex () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002853')
+      this.$router.push({
+        name: 'Index'
+      })
+    }
   }
 }
 </script>
@@ -25,7 +35,7 @@ export default {
 .wrapper {
   color: #888888;
   font-size: 0.22rem;
-  padding-bottom: 1.73rem;
+  padding-bottom: 2.28rem;
   height: 100vh;
   overflow: scroll;
   background: #eeeeee;
@@ -33,16 +43,17 @@ export default {
   overflow: scroll;
   box-sizing: border-box;
   .footer {
-    padding: .4rem 0 .52rem;
+    padding: 0.95rem 0 0.52rem;
+    background: #eeeeee;
     text-align: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     .open {
       margin: 0 auto;
       width: 3.31rem;
-      height: .81rem;
+      height: 0.81rem;
     }
   }
 }

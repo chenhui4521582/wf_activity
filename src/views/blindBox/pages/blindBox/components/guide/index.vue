@@ -6,13 +6,15 @@
         @click.stop=""
         src="./assets/step1.png"
         alt="">
-      <div class="know">知道了 <span>({{count}}s)</span></div>
+      <div @click="setPoint('A_H5PT0225002855')"
+        class="know">知道了 <span>({{count}}s)</span></div>
     </section>
     <section v-if="step === 2">
       <img class="step2"
         src="./assets/step2.png"
         alt="">
-      <div class="step2-know">知道了 <span>({{count}}s)</span></div>
+      <div @click="setPoint('A_H5PT0225002857')"
+        class="step2-know">知道了 <span>({{count}}s)</span></div>
     </section>
   </article>
 </template>
@@ -35,11 +37,15 @@ export default {
     },
     clearTimer () {
       if (this.countDown) clearInterval(this.countDown)
+    },
+    setPoint (val) {
+      GLOBALS.marchSetsPoint(val)
     }
   },
   watch: {
     step (val) {
       if (val === 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002856')
         this.countDown = setInterval(() => {
           this.count--
           if (this.count === 0) {
@@ -56,6 +62,7 @@ export default {
     }
   },
   mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002854')
     this.countDown = setInterval(() => {
       this.count--
       if (this.count === 0) {
@@ -95,7 +102,7 @@ export default {
   }
   .know {
     background: url("./assets/know.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     width: 2.33rem;
     line-height: 0.87rem;
     color: #fff;
@@ -103,14 +110,14 @@ export default {
     top: 9.5rem;
     left: 2.7rem;
     font-size: 0.32rem;
-    padding-left: 0.6rem;
+    padding-left: 0.9rem;
     span {
       font-size: 0.24rem;
     }
   }
   .step2-know {
     background: url("./assets/know.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     width: 2.33rem;
     line-height: 0.87rem;
     color: #fff;
@@ -118,7 +125,7 @@ export default {
     bottom: 9%;
     left: 2.3rem;
     font-size: 0.32rem;
-    padding-left: 0.6rem;
+    padding-left: 0.9rem;
     span {
       font-size: 0.24rem;
     }

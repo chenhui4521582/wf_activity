@@ -14,7 +14,7 @@
         </div>
         <div class="user-info">
           <div class="avatar">
-            <img v-if="item.headPortrait" :src="item.headPortrait" alt="">
+            <img v-if="item.headPortrait" :src="item.headPortrait | filter" alt="">
             <img v-else src="./img/img_photo.png" alt="">
           </div>
           <div class="name">{{item.userName}}</div>
@@ -43,15 +43,14 @@ export default {
   },
   methods: {
     handleClick() {
-      console.log(this.index)
-      // if(this.from == 'game' && parent.playLsVideo) {
-      //   let id = this.item.id
-      //   parent.playLsVideo(id, this.currentIndex, this.index)
-      // }else {
-      //   let id = this.item.id
-      //   let channel = localStorage.getItem('APP_CHANNEL')
-      //   location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${this.index}&type=${this.currentIndex}&time=${Date.now()}`
-      // }
+      if(this.from == 'game' && parent.playLsVideo) {
+        let id = this.item.id
+        parent.playLsVideo(id, this.currentIndex, this.index)
+      }else {
+        let id = this.item.id
+        let channel = localStorage.getItem('APP_CHANNEL')
+        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${this.index}&type=${this.currentIndex}&time=${Date.now()}`
+      }
     }
   }
 }
