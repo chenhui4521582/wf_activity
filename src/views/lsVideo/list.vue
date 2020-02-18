@@ -14,7 +14,7 @@
         </div>
         <div class="user-info">
           <div class="avatar">
-            <img v-if="item.headPortrait" :src="item.headPortrait" alt="">
+            <img v-if="item.headPortrait" :src="item.headPortrait | filter" alt="">
             <img v-else src="./img/img_photo.png" alt="">
           </div>
           <div class="name">{{item.userName}}</div>
