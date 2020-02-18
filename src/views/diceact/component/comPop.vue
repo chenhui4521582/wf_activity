@@ -186,7 +186,7 @@
                       <div class="prize_info_name">
                         <div class="prize_info_name_item" v-if="item.awardsType">{{getAwardName(item.awardsType)}}</div>
                         <div class="prize_info_name_item" v-if="item.awardsName">
-                          {{item.awardsName.replace}}
+                          {{item.awardsName.replace(getAwardName(item.awardsType),'')}}
                         </div>
                       </div>
                     </div>
