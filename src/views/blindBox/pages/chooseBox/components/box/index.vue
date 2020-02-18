@@ -77,8 +77,12 @@ export default {
   },
   methods: {
     // 开三盒购买
-    bulkBuy () {
+    async bulkBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002850')
+       const {
+          data: { data: payInfo }
+        } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo[1] })
     },
     // 更新用户信息
     async updateUserInfo () {

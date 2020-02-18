@@ -104,6 +104,7 @@ export default {
   bottom: 1.73rem;
   z-index: 2;
   width: 100%;
+  left: 0;
   img {
     width: 0.15rem;
     margin-left: 0.1rem;
