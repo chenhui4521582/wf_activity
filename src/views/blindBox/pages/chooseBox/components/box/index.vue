@@ -131,7 +131,7 @@ export default {
     // 无透视次数 购买
     async payTransparent () {
       const { data: { data: payInfo } } = await PayPoint(2)
-      Pay.toPay({ payInfo })
+      Pay.toPay({ payInfo: payInfo[0] })
     },
     // 点击按钮
     async onConfirm () {
@@ -141,7 +141,7 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0225002552')
         const { data: { data: payInfo } } = await PayPoint(1)
-        Pay.toPay({ payInfo })
+        Pay.toPay({ payInfo: payInfo[0] })
       }
     },
     // 开盒

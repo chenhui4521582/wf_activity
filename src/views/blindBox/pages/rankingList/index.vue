@@ -46,7 +46,7 @@ export default {
     padding: 0.95rem 0 0.52rem;
     background: #eeeeee;
     text-align: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
