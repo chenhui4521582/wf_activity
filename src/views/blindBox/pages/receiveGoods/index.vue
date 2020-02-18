@@ -100,7 +100,7 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0225002588')
       this.show = false
       const { data: { data: payInfo } } = await PayPoint(3)
-      Pay.toPay({ payInfo, originDeffer: '/activities/blindBox.html#/receiveGoods?type=success' })
+      Pay.toPay({ payInfo: payInfo[0], originDeffer: '/activities/blindBox.html#/receiveGoods?type=success' })
     },
     // 确认按钮
     async confirm () {

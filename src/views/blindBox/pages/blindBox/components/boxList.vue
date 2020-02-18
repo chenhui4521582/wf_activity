@@ -300,7 +300,7 @@ export default {
         const {
           data: { data: payInfo }
         } = await PayPoint(1)
-        Pay.toPay({ payInfo })
+        Pay.toPay({ payInfo: payInfo[0] })
         GLOBALS.marchSetsPoint('A_H5PT0225002539') // H5平台-盲盒页面-开一次按钮点击(点击购买)
       }
     },
