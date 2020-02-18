@@ -43,15 +43,14 @@ export default {
   },
   methods: {
     handleClick() {
-      console.log(this.index)
-      // if(this.from == 'game' && parent.playLsVideo) {
-      //   let id = this.item.id
-      //   parent.playLsVideo(id, this.currentIndex, this.index)
-      // }else {
-      //   let id = this.item.id
-      //   let channel = localStorage.getItem('APP_CHANNEL')
-      //   location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${this.index}&type=${this.currentIndex}&time=${Date.now()}`
-      // }
+      if(this.from == 'game' && parent.playLsVideo) {
+        let id = this.item.id
+        parent.playLsVideo(id, this.currentIndex, this.index)
+      }else {
+        let id = this.item.id
+        let channel = localStorage.getItem('APP_CHANNEL')
+        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${this.index}&type=${this.currentIndex}&time=${Date.now()}`
+      }
     }
   }
 }
