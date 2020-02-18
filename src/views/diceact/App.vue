@@ -257,6 +257,7 @@
         this.up()
       },
       gotowave() {
+        this.show=false
         this.showLoading = true
         let item = this.actInfo.stageList[this.currentIndex]
         let selectVal = item.consumeNum

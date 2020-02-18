@@ -186,7 +186,7 @@
                       <div class="prize_info_name">
                         <div class="prize_info_name_item" v-if="item.awardsType">{{getAwardName(item.awardsType)}}</div>
                         <div class="prize_info_name_item" v-if="item.awardsName">
-                          {{item.awardsName.replace}}
+                          {{item.awardsName.replace(getAwardName(item.awardsType),'')}}
                         </div>
                       </div>
                     </div>
@@ -384,6 +384,9 @@
       },
       gotoindex() {
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
+      },
+      move (e) {
+        e.preventDefault()
       }
     },
     watch: {
@@ -403,7 +406,7 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .com_pop {
     position: fixed;
-    top: 0rem;
+    top: -.5rem;
     left: 50%;
     margin-left: -2.94rem;
     .pop-mask {
