@@ -1,28 +1,187 @@
 <template>
   <main class="main">
-    dfsafdsasdf
+    <section class="rule">
+      玩法规则
+    </section>
+    <header class="header">
+      <section class="preview">
+        <div>
+          <p>邀请人数</p>
+          <p class="count">
+            20
+            <span class="unit">人</span>
+          </p>
+        </div>
+        <div>
+          <p>累计金叶</p>
+          <p class="count">
+            10000
+          </p>
+        </div>
+        <div>
+          <p>可提现金叶</p>
+          <p class="count">
+            10000
+          </p>
+          <p class="button">去提现</p>
+        </div>
+      </section>
+    </header>
+    <article class="content">
+      <section class="title">
+        <img src="../../assets/title-left.png"
+          alt="">
+        <div>
+          <p>邀请好友加入平台</p>
+          <p>好友进行充值即可获得好友充值金额返利</p>
+        </div>
+        <img src="../../assets/title-left.png"
+          alt="">
+      </section>
+      <section>
+        <Task />
+      </section>
+    </article>
+    <footer class="footer">
+      <img class="arrow left"
+        src="../../assets/arrow.png"
+        alt="">
+      <img class="arrow right"
+        src="../../assets/arrow.png"
+        alt="">
+    </footer>
   </main>
 </template>
 
 <script>
+import Task from './components/task'
+
 export default {
+  components: {
+    Task
+  },
   mounted () {
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .main {
-    background: url('../../assets/bg.png') no-repeat;
-    background-size: 100% 100%;
-    height: 100vh;
+@keyframes moveLeft {
+  50% {
+    transform: translateX(0.3rem);
   }
-  .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: .94rem;
-    width: 100%;
+  100% {
+    transform: translateX(0);
+  }
+}
 
+@keyframes moveRight {
+  50% {
+    transform: translateX(-0.3rem) rotate(180deg);
   }
+  100% {
+    transform: translateX(0) rotate(180deg);
+  }
+}
+
+.main {
+  height: 100vh;
+  position: relative;
+  .header {
+    height: 4.8rem;
+    padding-top: 3.2rem;
+    background: url("../../assets/bg.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .rule {
+    width: 1.28rem;
+    line-height: 0.4rem;
+    border-radius: 0.2rem;
+    background: rgba(255, 79, 0, 0.73);
+    color: #ffd5b6;
+    font-size: 0.24rem;
+    text-align: center;
+    position: absolute;
+    right: 0.17rem;
+    top: 0.22rem;
+  }
+  .preview {
+    width: 6.4rem;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.24rem;
+    color: #4c4a49;
+    display: flex;
+    & > div {
+      border-right: 1px solid #cbcbcb;
+      flex: 1;
+      position: relative;
+      &:last-child {
+        border: none;
+      }
+      .button {
+        background: #ff5a00;
+        color: #fff;
+        border-radius: 0.15rem;
+        font-size: 0.2rem;
+        font-weight: bold;
+        line-height: 0.3rem;
+        width: 1rem;
+        margin: 0 auto;
+        position: absolute;
+        left: 26%;
+      }
+      .count {
+        color: #000;
+        font-size: 0.42rem;
+        font-weight: bold;
+        padding: 0.1rem 0;
+      }
+      .unit {
+        font-size: 0.2rem;
+        color: #000;
+      }
+    }
+  }
+  .title {
+    padding: 0.23rem 0.9rem 0.35rem;
+    color: #fff;
+    font-size: 0.22rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      width: 0.58rem;
+    }
+  }
+  .content {
+    background: url("../../assets/bg2.png") no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+  }
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 0.94rem;
+  width: 100%;
+  background: url("../../assets/footer.png") no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.39rem 0.9rem 0;
+  .arrow {
+    width: 0.85rem;
+    height: 0.23rem;
+    &.left {
+      animation: moveLeft 0.7s infinite ease-in-out;
+    }
+    &.right {
+      transform: rotate(180deg);
+      animation: moveRight 0.7s infinite ease-in-out;
+    }
+  }
+}
 </style>
