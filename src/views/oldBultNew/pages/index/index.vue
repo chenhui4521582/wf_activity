@@ -17,4 +17,12 @@ export default {
     background-size: 100% 100%;
     height: 100vh;
   }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: .94rem;
+    width: 100%;
+
+  }
 </style>
