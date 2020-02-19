@@ -87,7 +87,7 @@ export default {
   padding: 0 0.3rem;
   box-sizing: border-box;
   overflow: scroll;
-  // height: 100%;
+  height: 100%;
 }
 .title {
   padding-top: 0.32rem;
