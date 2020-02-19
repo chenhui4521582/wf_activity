@@ -78,6 +78,14 @@ const routes = [
         meta: {
           title: '我的奖品'
         }
+      },
+      {
+        path: '/rankingList',
+        name: 'RankingList',
+        component: () => import('../pages/rankingList'),
+        meta: {
+          title: '幸运榜单'
+        }
       }
     ]
   }

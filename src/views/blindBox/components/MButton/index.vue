@@ -35,7 +35,7 @@ export default {
   }
 }
 .button {
-  width: 3.01rem;
+  width: 3.3rem;
   line-height: 0.8rem;
   border-radius: 0.4rem;
   color: #7b4913;
