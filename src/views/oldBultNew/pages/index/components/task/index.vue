@@ -7,8 +7,8 @@
     <p>
       <span class="count">0/3</span>人
     </p>
-    <img class="line" src="./assets/line.png" alt="">
-    <p class="tip">6%好友充值返利</p>
+    <div class="line" />
+    <p class="tip">66%好友充值返利</p>
   </section>
 </template>
 
@@ -26,10 +26,14 @@ export default {
   text-align: center;
   font-size: .2rem;
   color: #000;
-  padding: 0 .22rem .22rem;
+  padding-bottom: 0.22rem;
+  margin-bottom: .2rem;
   .line {
-    width: 100%;
+    width: 100;
+    background: #FFBEA1;
     height: .01rem;
+    transform: scaleY(.5);
+    margin-top: .15rem;
   }
   .title {
     width: 1.26rem;

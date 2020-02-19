@@ -1,8 +1,9 @@
 <template>
   <main class="main">
-    <section class="rule">
+    <section class="rule" @click="show=true">
       玩法规则
     </section>
+    <Rule @onClose="show=false" :show="show" />
     <header class="header">
       <section class="preview">
         <div>
@@ -38,8 +39,13 @@
         <img src="../../assets/title-left.png"
           alt="">
       </section>
-      <section>
+      <section class="wrapper">
         <Task />
+        <Task />
+        <Task />
+        <Task />
+        <Task />
+        <Target />
       </section>
     </article>
     <footer class="footer">
@@ -55,10 +61,17 @@
 
 <script>
 import Task from './components/task'
+import Target from './components/target'
+import Rule from './components/rule'
 
 export default {
+  data () {
+    return {
+      show: false
+    }
+  },
   components: {
-    Task
+    Task, Target, Rule
   },
   mounted () {
   }
@@ -159,6 +172,12 @@ export default {
     background: url("../../assets/bg2.png") no-repeat;
     background-size: 100% 100%;
     height: 100%;
+  }
+  .wrapper {
+    display: flex;
+    padding: 0 0.2rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 }
 .footer {

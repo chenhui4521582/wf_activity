@@ -9,6 +9,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: () => import('../pages/index')
+    },
+    {
+      path: '/share',
+      name: 'share',
+      component: () => import('../pages/share')
     }
   ]
 })

@@ -1,8 +1,9 @@
 <template>
-  <transition name="bounce">
-    <article v-if="show"
-      class="mask">
-      <section class="content"
+  <article v-show="show"
+    class="mask">
+    <transition name="bounce">
+      <section v-if="show"
+        class="content"
         :style="layout">
         <img @click.self="$emit('onClose')"
           class="close"
@@ -10,8 +11,8 @@
           alt="关闭">
         <slot />
       </section>
-    </article>
-  </transition>
+    </transition>
+  </article>
 </template>
 
 <script>
@@ -31,7 +32,7 @@ export default {
 
 <style lang="less" scoped>
 .bounce-enter-active {
-  animation: bounce .5s;
+  animation: bounce 0.5s;
 }
 
 @keyframes bounce {
@@ -58,7 +59,7 @@ export default {
   align-items: center;
 }
 .content {
-  width: 6.1rem;
+  width: 4.7rem;
   border-radius: 0.32rem;
   background: #fff;
   text-align: center;
