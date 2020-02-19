@@ -8,7 +8,7 @@
             <div class="back" @click="back">
               首页
             </div>
-            <div class="rule" @click="showPop(0)">
+            <div class="rule" @click="showPop(7)">
               规则
             </div>
           </div>
@@ -186,7 +186,7 @@
         this.popType = type
         let point = ''
         switch (type) {
-          case 0:
+          case 7:
             point = 'A_H5PT0245002838';
             break;//规则点击
           case 1:
@@ -200,7 +200,7 @@
         setTimeout(() => {
           this.$refs.comPop.showPop()
         })
-        if ([0, 6].includes(type)) {
+        if ([7, 6].includes(type)) {
           setTimeout(() => {
             this.$refs.comPop.showPop()
           }, 1000)

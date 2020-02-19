@@ -1,11 +1,11 @@
 <template>
-  <section class="com_pop" :style="{zIndex:isShowPop?100:99}" :class="{flag0:popType==0}">
-    <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
+  <section class="com_pop" :style="{zIndex:isShowPop?100:99}">
+    <div class="pop-mask" v-if="isShowPop&&popType" @touchmove.prevent></div>
     <transition name="scalc">
-      <div class="pop" v-if="isShowPop">
+      <div class="pop" v-if="isShowPop&&popType">
         <div :class="getClassName('wrap')">
           <div class="title_bg">
-            <div class="img" v-if="[0,1].includes(popType)">
+            <div class="img" v-if="[7,1].includes(popType)">
               {{popType==0?'活动规则':'我的奖励'}}
             </div>
             <div class="img" v-else-if="popType==2">
@@ -26,7 +26,7 @@
           </div>
           <div class="main">
             <div :class="getClassName('container_compop')">
-              <template v-if="popType==0">
+              <template v-if="popType==7">
                 <template v-if="ruleTime">
                   <p>活动时间:</p>
                   <p>{{ruleTime}}</p>
@@ -452,7 +452,7 @@
           top: -.1rem;
           padding: .3rem 0;
           .container_compop {
-            &.flag0 {
+            &.flag7 {
               padding: 0 .3rem;
               color: #A95C17;
               box-sizing: border-box;
