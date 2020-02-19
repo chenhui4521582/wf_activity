@@ -295,10 +295,10 @@
             let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
             if (code == 200) {
               this.awardData = data
+              self.numberArray = self.awardData.numberArray
               setTimeout(() => {
                 self.showLoading = false
                 self.showBar = true
-                self.numberArray = self.awardData.numberArray
                 this.gotowavepop({
                   item: self.actInfo.stageList[self.currentIndex],
                   popType: 3,
