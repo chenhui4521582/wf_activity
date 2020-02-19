@@ -15,7 +15,7 @@
         <p class="goods-name">{{goods.awardsName}}</p>
         <div></div>
         <div class="goods-count">
-          <p class="goods-price">价值：¥{{goods.showAmount}}</p>
+          <p v-if="isPrice" class="goods-price">价值：¥{{goods.showAmount}}</p>
           <p>数量：1个</p>
           <slot name='left' />
         </div>
@@ -40,6 +40,10 @@ export default {
         remark: null,
         awardsId: null
       }
+    },
+    isPrice: {
+      type: Boolean,
+      default: true
     }
   }
 }

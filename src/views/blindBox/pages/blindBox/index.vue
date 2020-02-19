@@ -2,14 +2,17 @@
   <main>
     <article class="blind-box-wrap">
       <article class="container">
-        <span @click="toPlatform" class="back">返回</span>
-        <current-product-list></current-product-list>
+        <span @click="toPlatform"
+          class="back">返回</span>
+        <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
           <box-list></box-list>
         </div>
       </article>
     </article>
+    <Guide v-if="show"
+      @close="show=false" />
   </main>
 </template>
 
@@ -19,10 +22,13 @@ import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 import { FirstLoad } from '../../apis/box'
+import Guide from './components/guide'
 
 export default {
   data () {
     return {
+      show: false,
+      isOldUser: true,
       translateY: 0,
       startY: 0,
       endY: 0,
@@ -32,7 +38,7 @@ export default {
     }
   },
   components: {
-    currentProductList, hornAndMore, boxList
+    currentProductList, hornAndMore, boxList, Guide
   },
   computed: {
     toucheMoveY () {
@@ -44,13 +50,35 @@ export default {
     toPlatform () {
       GLOBALS.marchSetsPoint('A_H5PT0225002684')
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
+    },
+    // AB测试,是否走新手引导
+    guideTest () {
+      let _token = localStorage.getItem('ACCESS_TOKEN') || getUrlParams('token') || ''
+      let xhr = new XMLHttpRequest()
+      xhr.open('get', '//smarteyes-api.beeplaying.com/box/new/user/guide')
+      xhr.setRequestHeader('Authorization', _token)
+      xhr.send()
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (xhr.getResponseHeader('version') === 'v2') {
+            this.isOldUser = false
+            setTimeout(() => {
+              this.isOldUser = true
+              this.show = true
+            }, 2000)
+          }
+        }
+      }
     }
   },
-  mounted () {
-    FirstLoad()
+  async mounted () {
+    const data = await FirstLoad()
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
     }) // H5平台-盲盒页面加载完成
+    if (data.data.data) {
+      this.guideTest()
+    }
   },
   beforeDestroy () {
 

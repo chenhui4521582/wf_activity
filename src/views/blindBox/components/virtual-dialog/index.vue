@@ -126,7 +126,7 @@ export default {
             source_address: this.source
           })
           const { data: { data: payInfo } } = await PayPoint(1)
-          Pay.toPay({ payInfo })
+          Pay.toPay({ payInfo: payInfo[0] })
         }
       }
     }

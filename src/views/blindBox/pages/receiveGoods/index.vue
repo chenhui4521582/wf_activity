@@ -23,13 +23,9 @@
         </div>
       </div>
       <p class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
-      <Goods v-for="(item,index) in goodsList"
-        :key="index"
-        :goods="item">
-        <p class="goods-time"
-          slot="left">获奖时间：{{item.openTime }}</p>
-        <div class="receive-price"
-          slot="right">
+      <Goods :is-price="false" v-for="(item,index) in goodsList" :key="index" :goods="item">
+        <p class="goods-time" slot="left">获奖时间：{{item.openTime }}</p>
+        <div class="receive-price" slot="right">
           <p class="receive-price-amount">¥{{item.showAmount}}</p>
           <p>（价值）</p>
         </div>
@@ -125,7 +121,7 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0225002588')
       this.show = false
       const { data: { data: payInfo } } = await PayPoint(3)
-      Pay.toPay({ payInfo, originDeffer: '/activities/blindBox.html#/receiveGoods?type=success' })
+      Pay.toPay({ payInfo: payInfo[0], originDeffer: '/activities/blindBox.html#/receiveGoods?type=success' })
     },
     // 确认按钮
     async confirm () {
