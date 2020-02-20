@@ -21,10 +21,10 @@
             </div>
           </div>
         </div>
-        <div class="dice_annimation" :class="{animation:showLoading&&!showBar}">
+        <div class="dice_annimation" :class="{animation:!showBar}">
           <div class="item" v-for="item in numberArray"
                :style="{backgroundImage:`url(${require(`./imgs/dicepics/dice${item}.png`)})`}"
-               v-if="!(showLoading&&!showBar)"></div>
+               v-show="showBar"></div>
         </div>
         <div class="prize_consume">
           <div class="pop" v-show="show">
@@ -72,7 +72,7 @@
              :awardList="awardList" :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum"
              :myRank="myRank"
              @close="popType=0" @gotowavedirect="gotowavedirect" @opengame="showPop(5)"></com-pop>
-    <loading v-show="showLoading" :showBar="showBar"></loading>
+    <loading v-show="showLoading" :showBar="false"></loading>
   </div>
 </template>
 
@@ -297,19 +297,21 @@
               this.awardData = data
               self.numberArray = self.awardData.numberArray
               setTimeout(() => {
-                self.showLoading = false
                 self.showBar = true
-                this.gotowavepop({
-                  item: self.actInfo.stageList[self.currentIndex],
-                  popType: 3,
-                  wavePrizeInfoType: 2,
-                  awardData: {
-                    awardType: self.awardData.awardsType,
-                    awardName: self.awardData.awardsName,
-                    levelName: self.getLevelName(self.awardData.showLevel + 1),
-                    icons: self.awardData.numberArray
-                  }
-                })
+                setTimeout(()=>{
+                  self.showLoading = false
+                  this.gotowavepop({
+                    item: self.actInfo.stageList[self.currentIndex],
+                    popType: 3,
+                    wavePrizeInfoType: 2,
+                    awardData: {
+                      awardType: self.awardData.awardsType,
+                      awardName: self.awardData.awardsName,
+                      levelName: self.getLevelName(self.awardData.showLevel + 1),
+                      icons: self.awardData.numberArray
+                    }
+                  })
+                },100)
               }, 1000)
             } else {
               this.showLoading = false
