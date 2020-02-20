@@ -11,7 +11,7 @@ import VueClipboard from 'vue-clipboard2'
 // document.addEventListener('touchmove',function(event){event.preventDefault(); },false);
 Vue.use(Toast)
 Vue.config.productionTip = false
-fastclick.attach(document.body)
+// fastclick.attach(document.body)
 Vue.prototype.axios = axios
 
 // 复制

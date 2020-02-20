@@ -12,8 +12,8 @@ export const activityInfo = async () => {
 }
 
 // 获取话费数量和分享用户的信息
-export const getFragment = async () => {
-  const { data } = await $axios.post(`${HOST}/ops/invite/getFragment`)
+export const getFragment = async userId => {
+  const { data } = await $axios.post(`${HOST}/ops/invite/getFragment/${userId}`)
   return data
 }
 

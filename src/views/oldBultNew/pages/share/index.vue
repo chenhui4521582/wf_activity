@@ -1,14 +1,14 @@
 <template>
   <main class="main">
-    <header>
+    <header v-if="inviter">
       <section class="header">
         <img class="head-img"
-          src=""
+          :src="inviter.headImg | imgUrl"
           alt="">
         <div>
-          <p class="name">我是 树先生</p>
+          <p class="name">我是 {{inviter.nickname}}</p>
           <p>
-            我在多多玩赚到了80元话费<br>
+            我在多多玩赚到了{{inviter.fragment}}元话费<br>
             邀请你加入多多玩游戏平台送你20元话费
           </p>
         </div>
@@ -36,7 +36,7 @@
         <img class="gift"
           src="./assets/gift.png"
           alt="">
-        <div class="confirm">立即下载多多玩APP</div>
+        <div @click="download" class="confirm">立即下载多多玩APP</div>
       </section>
       <section v-else
         class="dialog">
@@ -45,7 +45,7 @@
           你已经是我们的老朋友了<br>
           立即去多多玩APP 邀请用户返利吧
         </p>
-        <div class="confirm">立即下载多多玩APP</div>
+        <div @click="download" class="confirm">立即下载多多玩APP</div>
       </section>
     </Modal>
   </main>
@@ -61,16 +61,30 @@ export default {
       phone: null,
       show: false,
       isNew: null,
-      userInfo: {}
+      userInfo: {},
+      inviter: null
     }
   },
   components: {
     Modal
   },
+  filters: {
+    imgUrl (url) {
+      if (!url) return require('./assets/head.png')
+      if (url && !url.includes('http')) {
+        return '//file.beeplaying.com' + url
+      } else {
+        return url
+      }
+    }
+  },
   async mounted () {
-    const data = await getFragment()
-    console.log(data)
-    this.userInfo = this.$route.query
+    const data = await getFragment(this.$route.query.userId)
+    this.inviter = data.data
+    this.userInfo = {
+      userId: this.$route.query.userId,
+      channelId: this.$route.query.channelId
+    }
   },
   methods: {
     async receive () {
@@ -83,7 +97,17 @@ export default {
         return
       }
       this.userInfo.phone = this.phone
-      await phone(this.userInfo)
+      const { code } = await phone(this.userInfo)
+      if (code === 102) {
+        this.isNew = false
+        this.show = true
+      } else {
+        this.isNew = true
+        this.show = true
+      }
+    },
+    download () {
+      location.href = `https://wap.beeplaying.com/ddwdownload/?channel=100000`
     }
   }
 }
@@ -114,6 +138,7 @@ export default {
         height: 1rem;
         border-radius: 50%;
         margin-right: 0.16rem;
+        margin-left: 0.13rem;
       }
       .name {
         font-weight: bold;
