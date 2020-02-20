@@ -320,7 +320,7 @@ export default {
     },
     goPay (index, val) {
       GLOBALS.marchSetsPoint('A_H5PT0074001435', { product_id: val.bizId })
-      localStorage.setItem('JDD_PARAM', JSON.stringify(val))
+      localStorage.setItem('payment', JSON.stringify(val))
       if (index) {
         this.awardType = 5;
         this.showAwardPop = true
@@ -336,12 +336,7 @@ export default {
     /** 去支付 **/
     gotopay () {
       localStorage.setItem('originDeffer', location.href)
-      if (window.linkUrl.getBackUrlFlag(this.curChannel) == 'bdWap' && this.curChannel != '100001') {
-        //好看、全民小视频
-        top.location.href = 'https://wap.beeplaying.com/payment/#/bdPayment';
-      } else {
-        top.location.href = 'https://wap.beeplaying.com/payment/#/payment';
-      }
+      top.location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist'
     },
     /** 时间转换 **/
     getDateInfo (date) {
