@@ -32,7 +32,7 @@ export default {
 
 <style lang="less" scoped>
 .bounce-enter-active {
-  animation: bounce 0.5s;
+  animation: bounce 0.3s;
 }
 
 @keyframes bounce {

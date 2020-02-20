@@ -9,13 +9,26 @@
       可得<span class="count">1000</span>金叶
     </p>
     <div class="line" />
-    <p class="tip">66%好友充值返利</p>
+    <p class="tip">共获得{{price}}金叶</p>
   </section>
 </template>
 
 <script>
 export default {
-
+  filters: {
+    // 格式化金叶子数量
+    formatAmount (val) {
+      if (!val) return 0
+      if (val < 10000) return val
+      return `${(val / 10000).toFixed(2)}万`
+    }
+  },
+  props: {
+    price: {
+      type: Number,
+      default: null
+    }
+  }
 }
 </script>
 

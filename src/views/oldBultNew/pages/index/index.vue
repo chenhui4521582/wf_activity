@@ -1,30 +1,36 @@
 <template>
-  <main class="main">
-    <section class="rule" @click="show=true">
+  <main v-if="userInfo"
+    class="main">
+    <section class="rule"
+      @click="show=true">
       玩法规则
     </section>
-    <Rule @onClose="show=false" :show="show" />
+    <Rule @onClose="show=false"
+      :begin="userInfo.beginDate"
+      :end="userInfo.endDate"
+      :show="show" />
     <header class="header">
       <section class="preview">
         <div>
           <p>邀请人数</p>
           <p class="count">
-            20
+            {{userInfo.invitedNum}}
             <span class="unit">人</span>
           </p>
         </div>
         <div>
           <p>累计金叶</p>
           <p class="count">
-            10000
+            {{userInfo.totalAmount}}
           </p>
         </div>
         <div>
           <p>可提现金叶</p>
           <p class="count">
-            10000
+            {{userInfo.withdrawAbleAmount}}
           </p>
-          <p class="button">去提现</p>
+          <p class="button"
+            @click="getGoldLeaf">去提现</p>
         </div>
       </section>
     </header>
@@ -40,12 +46,10 @@
           alt="">
       </section>
       <section class="wrapper">
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Target />
+        <Task :info="item"
+          v-for="(item,index) in userInfo.configList"
+          :key="index" />
+        <Target :price="userInfo.taskTotalAmount" />
       </section>
     </article>
     <footer class="footer">
@@ -63,17 +67,41 @@
 import Task from './components/task'
 import Target from './components/target'
 import Rule from './components/rule'
+import { activityInfo, withdraw } from '../../apis/index'
 
 export default {
   data () {
     return {
-      show: false
+      show: false,
+      userInfo: null
     }
   },
   components: {
     Task, Target, Rule
   },
+  methods: {
+    async getGoldLeaf () {
+      if (!this.userInfo.withdrawAbleAmount) {
+        this.$toast.show({
+          message: '暂无可提现金叶子',
+          duration: 1000
+        })
+        return
+      }
+      const data = await withdraw(this.userInfo.withdrawAbleAmount)
+      this.init()
+      this.$toast.show({
+        message: data.message,
+        duration: 1000
+      })
+    },
+    async init () {
+      const data = await activityInfo()
+      this.userInfo = data.data
+    }
+  },
   mounted () {
+    this.init()
   }
 }
 </script>
@@ -100,6 +128,8 @@ export default {
 .main {
   height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
   .header {
     height: 4.8rem;
     padding-top: 3.2rem;
@@ -171,7 +201,7 @@ export default {
   .content {
     background: url("../../assets/bg2.png") no-repeat;
     background-size: 100% 100%;
-    height: 100%;
+    flex: 1;
   }
   .wrapper {
     display: flex;
