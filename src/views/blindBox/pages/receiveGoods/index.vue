@@ -15,11 +15,7 @@
         </div>
       </div>
       <p class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
-<<<<<<< HEAD
       <Goods v-for="(item,index) in goodsList" :key="index" :goods="item">
-=======
-      <Goods :is-price="false" v-for="(item,index) in goodsList" :key="index" :goods="item">
->>>>>>> ywl_biguserCallback
         <p class="goods-time" slot="left">获奖时间：{{item.openTime }}</p>
         <div class="receive-price" slot="right">
           <p class="receive-price-amount">¥{{item.showAmount}}</p>
