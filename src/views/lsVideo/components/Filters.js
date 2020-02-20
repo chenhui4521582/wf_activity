@@ -40,7 +40,7 @@ export default [
       if (date instanceof Date) {
         date = data.getTime()
       } else {
-        date = new Date(date)
+        date = new Date(date.replace(/-/g, '/'))
       }
       let y = date.getFullYear()
       let m = date.getMonth() + 1
