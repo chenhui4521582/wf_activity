@@ -132,7 +132,8 @@ export default {
     // IOS分享测试
     invite (type = 0) {
       let that = this
-      window.GLOBALS.createFun('backShareStatue', async res => {
+
+      window.backShareStatue = function(res){
         if (GLOBALS.channel === 100031) {
           res = JSON.parse(res).shareStatue
         }
@@ -140,12 +141,11 @@ export default {
           message: res === 1 ? '分享成功' : '分享失败',
           duration: 1500
         })
-      })
-      if (GLOBALS.androidPT) {
-        AppCall.shareContent(JSON.stringify({ url: location.href, title: document.title, content: '分享测试', type: type }))
-      } else {
-        AppCall.shareContent({ url: location.href, title: document.title, content: '分享测试', type: type })
       }
+
+      try{
+        AppCall.shareContent(JSON.stringify({ url: location.href, title: document.title, content: '', type: '0' }))
+      }catch(e){}
     }
   },
   mounted () {
