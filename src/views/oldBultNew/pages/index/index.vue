@@ -52,7 +52,23 @@
         <Target :price="userInfo.taskTotalAmount" />
       </section>
     </article>
-    <footer @click="invite"
+    <Drawer :show="isShare">
+      <section class="share-content">
+        <div @click="invite('1')">
+          <img src="./assets/friend.png"
+            alt="">
+          <p>朋友圈</p>
+        </div>
+        <div @click="invite('0')">
+          <img src="./assets/wechat.png"
+            alt="">
+          <p>微信好友</p>
+        </div>
+      </section>
+      <div @click="isShare = false"
+        class="cancel">取消</div>
+    </Drawer>
+    <footer @click="share"
       class="footer">
       <img class="arrow left"
         src="../../assets/arrow.png"
@@ -68,6 +84,7 @@
 import Task from './components/task'
 import Target from './components/target'
 import Rule from './components/rule'
+import Drawer from '../../components/drawer'
 import { activityInfo, withdraw } from '../../apis/index'
 import AppCall from '../../native'
 
@@ -75,11 +92,12 @@ export default {
   data () {
     return {
       show: false,
-      userInfo: null
+      userInfo: null,
+      isShare: false
     }
   },
   components: {
-    Task, Target, Rule
+    Task, Target, Rule, Drawer
   },
   methods: {
     async getGoldLeaf () {
@@ -101,10 +119,13 @@ export default {
       const data = await activityInfo()
       this.userInfo = data.data
     },
+    share () {
+      this.isShare = true
+    },
     // IOS分享测试
-    invite (type = 0) {
+    invite (type) {
       let that = this
-      window.GLOBALS.createFun('backShareStatue', async res => {
+      window.backShareStatue = function (res) {
         if (GLOBALS.channel === 100031) {
           res = JSON.parse(res).shareStatue
         }
@@ -112,12 +133,11 @@ export default {
           message: res === 1 ? '分享成功' : '分享失败',
           duration: 1500
         })
-      })
-      if (GLOBALS.androidPT) {
-        AppCall.shareContent(JSON.stringify({ url: location.href, title: document.title, content: '分享测试', type: type }))
-      } else {
-        AppCall.shareContent({ url: location.href, title: document.title, content: '分享测试', type: type })
       }
+      const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=${localStorage.getItem('APP_CHANNEL')}`
+      try {
+        AppCall.shareContent(JSON.stringify({ url, title: document.title, content: '', type }))
+      } catch (e) { }
     }
   },
   mounted () {
@@ -150,6 +170,24 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
+  .share-content {
+    padding: 0.38rem 0 0.48rem 0.33rem;
+    display: flex;
+    font-size: 0.18rem;
+    &>div {
+      padding-right: .2rem;
+    }
+    img {
+      width: 1rem;
+    }
+  }
+  .cancel {
+    background: #f0f0f0;
+    line-height: 0.9rem;
+    font-size: 0.24rem;
+    color: #ff4141;
+    text-align: center;
+  }
   .header {
     height: 4.8rem;
     padding-top: 3.2rem;
