@@ -52,6 +52,32 @@
         <Target :price="userInfo.taskTotalAmount" />
       </section>
     </article>
+    <Drawer :show="isShare">
+      <section class="share-content">
+        <div>
+          <img src="./assets/friend.png"
+            alt="">
+          <p>朋友圈</p>
+        </div>
+        <div>
+          <img src="./assets/wechat.png"
+            alt="">
+          <p>微信好友</p>
+        </div>
+        <div>
+          <img src="./assets/qq.png"
+            alt="">
+          <p>QQ好友</p>
+        </div>
+        <div>
+          <img src="./assets/zone.png"
+            alt="">
+          <p>QQ空间</p>
+        </div>
+      </section>
+      <div @click="isShare = false"
+        class="cancel">取消</div>
+    </Drawer>
     <footer @click="invite"
       class="footer">
       <img class="arrow left"
@@ -68,6 +94,7 @@
 import Task from './components/task'
 import Target from './components/target'
 import Rule from './components/rule'
+import Drawer from '../../components/drawer'
 import { activityInfo, withdraw } from '../../apis/index'
 import AppCall from '../../native'
 
@@ -75,11 +102,12 @@ export default {
   data () {
     return {
       show: false,
-      userInfo: null
+      userInfo: null,
+      isShare: false
     }
   },
   components: {
-    Task, Target, Rule
+    Task, Target, Rule, Drawer
   },
   methods: {
     async getGoldLeaf () {
@@ -150,6 +178,21 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
+  .share-content {
+    padding: 0.38rem 0 .48rem .33rem;
+    display: flex;
+    font-size: .18rem;
+    img {
+      width: 1rem;
+    }
+  }
+  .cancel {
+    background: #f0f0f0;
+    line-height: 0.9rem;
+    font-size: 0.24rem;
+    color: #ff4141;
+    text-align: center;
+  }
   .header {
     height: 4.8rem;
     padding-top: 3.2rem;
