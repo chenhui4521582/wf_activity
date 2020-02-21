@@ -1,11 +1,11 @@
 <template>
-  <section class="com_pop" :style="{zIndex:isShowPop?100:99}" :class="{flag0:popType==0}">
-    <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
+  <section class="com_pop" :style="{zIndex:isShowPop?100:99}">
+    <div class="pop-mask" v-if="isShowPop&&popType" @touchmove.prevent></div>
     <transition name="scalc">
-      <div class="pop" v-if="isShowPop">
+      <div class="pop" v-if="isShowPop&&popType">
         <div :class="getClassName('wrap')">
           <div class="title_bg">
-            <div class="img" v-if="[0,1].includes(popType)">
+            <div class="img" v-if="[7,1].includes(popType)">
               {{popType==0?'活动规则':'我的奖励'}}
             </div>
             <div class="img" v-else-if="popType==2">
@@ -26,7 +26,7 @@
           </div>
           <div class="main">
             <div :class="getClassName('container_compop')">
-              <template v-if="popType==0">
+              <template v-if="popType==7">
                 <template v-if="ruleTime">
                   <p>活动时间:</p>
                   <p>{{ruleTime}}</p>
@@ -35,7 +35,7 @@
                 <p>1. 玩家在指定游戏中消耗一定的叶子，可领取幸运币，幸运币可以用于掷骰子</p>
                 <p>2. 每次投掷骰子，都会投出3个骰子，玩家根据投出的骰子的点数及形式获得对应的奖励</p>
                 <p>3. 单次消耗幸运币额度越大，越容易中大奖哟</p>
-                <p>4. 活动期间内，玩家累计获得的幸运币券数量会计入排行榜，活动结束后根据7日累计获得的幸运币数量进行排名并发放排行奖励</p>
+                <p>4. 活动期间内，玩家累计获得的幸运币数量会计入排行榜，活动结束后根据7日累计获得的幸运币数量进行排名并发放排行奖励</p>
                 <p>5. 活动结束后，排行榜会展示1天时间，排行榜奖励将直接到账</p>
                 <p>活动结束后:</p>
                 <p>1. 未使用和未领取的幸运币作废,请及时领取使用</p>
@@ -312,7 +312,7 @@
                 value: data.hfqAmount
               }, {
                 awardsType: 'jdk',
-                name: '京东卡',
+                name: '京东券',
                 value: data.jdkAmount
               }, {
                 awardsType: 'jyz',
@@ -452,7 +452,7 @@
           top: -.1rem;
           padding: .3rem 0;
           .container_compop {
-            &.flag0 {
+            &.flag7 {
               padding: 0 .3rem;
               color: #A95C17;
               box-sizing: border-box;
