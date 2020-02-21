@@ -36,7 +36,7 @@ export default {
 <style lang="less" scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: transform 0.4s;
+  transition: transform 0.3s;
 }
 .fade-enter,
 .fade-leave-to {
