@@ -52,7 +52,8 @@
         <Target :price="userInfo.taskTotalAmount" />
       </section>
     </article>
-    <footer class="footer">
+    <footer @click="invite"
+      class="footer">
       <img class="arrow left"
         src="../../assets/arrow.png"
         alt="">
@@ -68,6 +69,7 @@ import Task from './components/task'
 import Target from './components/target'
 import Rule from './components/rule'
 import { activityInfo, withdraw } from '../../apis/index'
+import AppCall from '../../native'
 
 export default {
   data () {
@@ -98,6 +100,24 @@ export default {
     async init () {
       const data = await activityInfo()
       this.userInfo = data.data
+    },
+    // IOS分享测试
+    invite (type = 0) {
+      let that = this
+      window.GLOBALS.createFun('backShareStatue', async res => {
+        if (GLOBALS.channel === 100031) {
+          res = JSON.parse(res).shareStatue
+        }
+        that.$toast.show({
+          message: res === 1 ? '分享成功' : '分享失败',
+          duration: 1500
+        })
+      })
+      if (GLOBALS.androidPT) {
+        AppCall.shareContent(JSON.stringify({ url: location.href, title: document.title, content: '分享测试', type: type }))
+      } else {
+        AppCall.shareContent({ url: location.href, title: document.title, content: '分享测试', type: type })
+      }
     }
   },
   mounted () {
