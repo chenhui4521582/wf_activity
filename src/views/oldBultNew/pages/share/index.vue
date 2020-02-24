@@ -107,7 +107,7 @@ export default {
       }
     },
     download () {
-      location.href = `https://wap.beeplaying.com/ddwdownload/?channel=100000`
+      location.href = `https://wap.beeplaying.com/ddwdownload/?channel=100030`
     }
   }
 }

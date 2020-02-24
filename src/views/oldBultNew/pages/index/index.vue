@@ -137,7 +137,7 @@ export default {
       const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=${localStorage.getItem('APP_CHANNEL')}`
       try {
         AppCall.shareContent(JSON.stringify({ url, title: document.title, content: '', type }))
-      } catch (e) { }
+      } catch (e) {}
     }
   },
   mounted () {
@@ -174,8 +174,8 @@ export default {
     padding: 0.38rem 0 0.48rem 0.33rem;
     display: flex;
     font-size: 0.18rem;
-    &>div {
-      padding-right: .2rem;
+    & > div {
+      padding-right: 0.2rem;
     }
     img {
       width: 1rem;
