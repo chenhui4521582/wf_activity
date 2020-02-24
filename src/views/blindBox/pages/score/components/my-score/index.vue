@@ -10,9 +10,10 @@
       <p class="title">我的积分</p>
       <p class="count">
         <img src="./assets/score.png"
-          alt="">1290
+          alt="">{{score}}
       </p>
       <p class="tip">连续签到得更多积分</p>
+      <SignIn v-if="signInInfo" :signInInfo="signInInfo" />
     </section>
     <img :src="arrow"
       @click="handleArrow"
@@ -22,12 +23,20 @@
 
 <script>
 import { SignInState, Index } from '../../../../apis/score'
+import SignIn from '../sign-in'
 
 export default {
   data () {
     return {
-      isOpen: true
+      isOpen: true,
+      score: null,
+      signInInfo: null,
+      addScoreList: null,
+      awardsList: null
     }
+  },
+  components: {
+    SignIn
   },
   methods: {
     handleArrow () {
@@ -41,9 +50,10 @@ export default {
     }
   },
   async mounted () {
-    await Index()
-    const { data: { data } } = await SignInState()
-    if (data) this.isOpen = false
+    ({ data: { data: {
+      score: this.score, signInInfo: this.signInInfo, addScoreList: this.addScoreList, awardsList: this.awardsList
+    } } } = await Index());
+    ({ data: { data: this.isOpen } } = await SignInState())
   }
 }
 </script>
