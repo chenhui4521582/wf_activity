@@ -7,7 +7,7 @@
         @click="changeBar(item,index)"
         v-for="(item,index) in bar"
         :key="item.name">
-        <img v-if="item.markIcon"
+        <img v-if="item.markIcon && index!==active"
           :src="item.markIcon"
           class="mark">
         <img :src="index===active?item.activeIcon:item.icon">
@@ -36,7 +36,7 @@ export default {
           activeIcon: require('./assets/sign-active.png'),
           markIcon: require('./assets/sign-mark.png'),
           label: '签到',
-          name: 'BlindBox'
+          name: 'Score'
         },
         {
           icon: require('./assets/my.png'),
@@ -62,7 +62,7 @@ export default {
           activeIcon: require('./assets/score-active.png'),
           markIcon: require('./assets/score-mark.png'),
           label: '积分',
-          name: 'BlindBox'
+          name: 'Score'
         },
         {
           icon: require('./assets/my.png'),
