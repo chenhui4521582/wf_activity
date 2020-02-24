@@ -8,7 +8,7 @@
         <div>
           <p class="name">我是 {{inviter.nickname}}</p>
           <p>
-            我在多多玩赚到了{{inviter.fragment}}元话费<br>
+            我在多多玩赚到了<span v-if="inviter.fragment">{{inviter.fragment}}元</span><span v-else>很多</span>话费<br>
             邀请你加入多多玩游戏平台送你20元话费
           </p>
         </div>
