@@ -134,7 +134,7 @@ export default {
           duration: 1500
         })
       }
-      const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=${localStorage.getItem('APP_CHANNEL')}`
+      const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=100030`
       try {
         AppCall.shareContent(JSON.stringify({ url, title: document.title, content: '', type }))
       } catch (e) {}
