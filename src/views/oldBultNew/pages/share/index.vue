@@ -152,6 +152,7 @@ export default {
     background: url("./assets/middle.png") no-repeat;
     background-size: 100% 110%;
     display: flex;
+    min-height: 3.75rem;
     flex-direction: column;
     align-items: center;
     .price {
@@ -179,6 +180,7 @@ export default {
   }
   .button {
     width: 4.8rem;
+    height: .9rem;
     display: block;
     margin: 0.6rem auto 0;
   }
