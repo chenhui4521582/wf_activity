@@ -9,7 +9,7 @@
       <p class="des">{{exchange.remark}}</p>
       <div class="handler">
         <p>{{exchange.score}}<span class="unit">积分</span></p>
-        <span @click="getGoods"
+        <span @click="getGoods(item.score)"
           class="button">兑换</span>
       </div>
     </div>
@@ -21,8 +21,8 @@
 export default {
   props: ['exchange'],
   methods: {
-    async getGoods () {
-      this.$emit('exchange')
+    async getGoods (score) {
+      this.$emit('exchange', score)
     }
   }
 }

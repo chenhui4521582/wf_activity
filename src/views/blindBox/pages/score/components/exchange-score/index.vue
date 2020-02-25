@@ -6,6 +6,7 @@
         v-for="(item, index) in awardsList"
         :key="index"
         :exchange="item"
+        @exchange="exchange"
         :score="score" />
     </div>
     <Dialog :show="show"
@@ -15,12 +16,10 @@
       @onClose="close"
       @onCancel="cancel"
       @onConfirm="show=false"
-      :confirm="`<p style='color:#FF4141'>${userInfo && userInfo.transparentTimes ? '如何获取积分' : '如何获取积分'}</p>`">
-      <p class="subtitle">您有{{userInfo && userInfo.transparentTimes || 0}}张透视卡</p>
-      <p class="des">
-        透视卡能帮你看出盲盒中是否是你
-        心仪的商品哦。
-      </p>
+      :confirm="`<p style='color:#FF4141'>${confirm}</p>`">
+      <p class="subtitle">{{subTitle}}</p>
+      <p class="des">当前可用积分为<span class="count">{{score}}</span></p>
+      <p class="des">兑换需要<span class="count">{{score}}</span>积分</p>
     </Dialog>
   </section>
 </template>
@@ -34,13 +33,32 @@ import Dialog from '../../../../components/dialog'
 export default {
   data () {
     return {
-      show: false
+      show: false,
+      goodsScore: 0
     }
   },
   components: {
     Title,
     Gift,
     Dialog
+  },
+  methods: {
+    exchange (val) {
+      this.goodsScore = val
+    }
+  },
+  computed: {
+    isBalance () {
+      return this.score - this.goodsScore >= 0
+    },
+    subTitle () {
+      if (this.isBalance) return '确认兑换吗？'
+      return '您的积分不足'
+    },
+    confirm () {
+      if (this.isBalance) return '确认'
+      return '如何获取积分'
+    }
   },
   props: {
     awardsList: {
@@ -54,6 +72,20 @@ export default {
 <style lang="less" scoped>
 .exchange-wrapper {
   padding-bottom: 0.25rem;
+  .sbutitle {
+    color: #1A1E28;
+    font-size: .24rem;
+    padding-bottom: .4rem;
+  }
+  .des {
+    color: #888888;
+    font-size: .24rem;
+    line-height: 1.6;
+    .count {
+      color: #FF2828;
+      font-size: .3rem;
+    }
+  }
   .content {
     display: flex;
     padding: 0 0.3rem;
