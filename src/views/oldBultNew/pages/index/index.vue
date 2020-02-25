@@ -138,7 +138,7 @@ export default {
     invite (type) {
       let that = this
       window.backShareStatue = function (res) {
-        alert(JSON.stringify(res))
+        // alert(JSON.stringify(res))
         if (GLOBALS.channel === 100031) {
           res = JSON.parse(res).shareStatue
         }
