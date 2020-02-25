@@ -20,6 +20,7 @@
     </swiper>
     <AddScore :addScoreList="addScoreList" />
     <ExchangeScore ref="shop"
+      @update="update"
       :score="score"
       :awardsList="awardsList" />
   </article>

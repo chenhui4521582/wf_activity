@@ -9,7 +9,7 @@
       <p class="des">{{exchange.remark}}</p>
       <div class="handler">
         <p>{{exchange.score}}<span class="unit">积分</span></p>
-        <span @click="getGoods(item.score)"
+        <span @click="getGoods(exchange.score, exchange.id)"
           class="button">兑换</span>
       </div>
     </div>
@@ -21,8 +21,8 @@
 export default {
   props: ['exchange'],
   methods: {
-    async getGoods (score) {
-      this.$emit('exchange', score)
+    async getGoods (score, id) {
+      this.$emit('exchange', score, id)
     }
   }
 }
@@ -41,8 +41,7 @@ export default {
     align-items: center;
     justify-content: center;
     img {
-      width: 2.23rem;
-      height: 1.25rem;
+      width: 2.8rem;
       border-radius: 0.16rem;
     }
   }

@@ -80,6 +80,9 @@ export default {
   mounted () {
     this.init()
     this.isOpen = !this.signInInfo.todayState
+    this.$eventBus.$on('showRule', () => {
+      this.isRule = true
+    })
   }
 }
 </script>

@@ -1,9 +1,14 @@
 <template>
   <article>
     <Title title="新增积分">
-      <div class="subtitle">查看更多>></div>
+      <div v-if="addScoreList.length > 0"
+        class="subtitle">查看更多>></div>
+      <div v-else
+        class="tip"
+        @click="showRule">怎么赚积分？</div>
     </Title>
-    <section class="add-content">
+    <section v-if="addScoreList.length > 0"
+      class="add-content">
       <div v-for="(item,index) in addScoreList"
         :key="index"
         class="detail">
@@ -11,6 +16,12 @@
         <p class="score">+{{item.score}}</p>
         <p class="time">{{item.createTime}}</p>
       </div>
+    </section>
+    <section v-else align="center"
+      class="default">
+      <img src="./assets/icon.png"
+        alt="">
+      <p>暂无积分</p>
     </section>
   </article>
 </template>
@@ -21,6 +32,11 @@ import Title from '../title'
 export default {
   components: {
     Title
+  },
+  methods: {
+    showRule () {
+      this.$eventBus.$emit('showRule', true)
+    }
   },
   data () {
     return {
@@ -40,6 +56,21 @@ export default {
 .subtitle {
   color: #7f7f7f;
   font-size: 0.24rem;
+}
+.tip {
+  color: #d1ac42;
+  font-size: 0.24rem;
+}
+.default {
+  padding-top: 0.2rem;
+  color: #1b1f29;
+  font-size: 0.24rem;
+  p {
+    padding: 0.15rem 0;
+  }
+  img {
+    width: 1.26rem;
+  }
 }
 .add-content {
   width: 6.6rem;

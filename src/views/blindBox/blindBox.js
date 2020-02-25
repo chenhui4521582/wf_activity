@@ -14,7 +14,7 @@ Vue.use(VueClipboard)
 Vue.use(Toast)
 Vue.config.productionTip = false
 // fastclick.attach(document.body)
-
+Vue.prototype.$eventBus = new Vue()
 Vue.prototype.axios = axios
 Vue.prototype.$loading = Loading
 Vue.filter('imgFilter', url => {

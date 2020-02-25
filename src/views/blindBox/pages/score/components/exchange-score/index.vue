@@ -13,13 +13,13 @@
       title="温馨提示"
       cancel="取消"
       :close="true"
-      @onClose="close"
-      @onCancel="cancel"
-      @onConfirm="show=false"
+      @onClose="onClose"
+      @onCancel="onCancel"
+      @onConfirm="onConfirm"
       :confirm="`<p style='color:#FF4141'>${confirm}</p>`">
       <p class="subtitle">{{subTitle}}</p>
       <p class="des">当前可用积分为<span class="count">{{score}}</span></p>
-      <p class="des">兑换需要<span class="count">{{score}}</span>积分</p>
+      <p class="des bottom">兑换需要<span class="count">{{goodsScore}}</span>积分</p>
     </Dialog>
   </section>
 </template>
@@ -34,7 +34,8 @@ export default {
   data () {
     return {
       show: false,
-      goodsScore: 0
+      goodsScore: 0,
+      id: null
     }
   },
   components: {
@@ -43,9 +44,33 @@ export default {
     Dialog
   },
   methods: {
-    exchange (val) {
+    exchange (val, id) {
       this.goodsScore = val
+      this.id = id
+      this.show = true
+    },
+    onClose () {
+      this.show = false
+    },
+    onCancel () {
+      this.show = false
+    },
+    async onConfirm () {
+      this.show = false
+      if (!this.isBalance) {
+        this.$eventBus.$emit('showRule', true)
+      } else {
+        await Exchange(this.id)
+        this.$toast.show({
+          message: '兑换成功',
+          duration: 2000
+        })
+        this.$emit('update')
+      }
     }
+  },
+  beforeDestroy () {
+    this.$eventBus.$off('showRule')
   },
   computed: {
     isBalance () {
@@ -72,18 +97,21 @@ export default {
 <style lang="less" scoped>
 .exchange-wrapper {
   padding-bottom: 0.25rem;
-  .sbutitle {
-    color: #1A1E28;
-    font-size: .24rem;
-    padding-bottom: .4rem;
+  .subtitle {
+    color: #1a1e28;
+    font-size: 0.24rem;
+    padding-bottom: 0.3rem;
   }
   .des {
     color: #888888;
-    font-size: .24rem;
-    line-height: 1.6;
+    font-size: 0.24rem;
+    line-height: 1.4;
+    &.bottom {
+      padding-bottom: 0.3rem;
+    }
     .count {
-      color: #FF2828;
-      font-size: .3rem;
+      color: #ff2828;
+      font-size: 0.3rem;
     }
   }
   .content {
