@@ -2,7 +2,8 @@
   <article class="main">
     <NavBar title="积分中心"
       @back="$router.go(-1)" />
-    <MyScore @update="update"
+    <MyScore @viewGoods="setPosition"
+      @update="update"
       v-if="scoreInfo"
       :scoreInfo="scoreInfo" />
     <swiper v-if="banners"
@@ -18,7 +19,9 @@
       </swiper-slide>
     </swiper>
     <AddScore :addScoreList="addScoreList" />
-    <ExchangeScore :awardsList="awardsList" />
+    <ExchangeScore ref="shop"
+      :score="score"
+      :awardsList="awardsList" />
   </article>
 </template>
 
@@ -46,22 +49,32 @@ export default {
       banners: null,
       scoreInfo: null,
       addScoreList: [],
-      awardsList: []
+      awardsList: [],
+      score: null
     }
   },
   methods: {
     async init () {
       ({ data: { data: this.scoreInfo } } = await Index())
       this.addScoreList = this.scoreInfo.addScoreList
+      this.score = this.scoreInfo.score
       this.awardsList = this.scoreInfo.awardsList;
       ({ data: { data: this.banners } } = await Banner())
+    },
+    setPosition () {
+      const shop = this.$refs.shop
+      const { top } = shop.$el.getBoundingClientRect()
+      document.documentElement.scrollTop = top
     },
     update () {
       this.init()
     }
   },
-  mounted () {
-    this.init()
+  async mounted () {
+    await this.init()
+    if (this.$route.query.position) {
+      this.setPosition()
+    }
   },
   components: {
     NavBar,

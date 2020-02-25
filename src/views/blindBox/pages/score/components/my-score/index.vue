@@ -1,7 +1,8 @@
 <template>
   <article>
     <section class="wrapper">
-      <div class="float left">
+      <div @click="showRule"
+        class="float left">
         积分攻略
       </div>
       <div class="float right">
@@ -21,6 +22,9 @@
         v-if="signInInfo && isOpen"
         :signInInfo="signInInfo" />
     </section>
+    <Rule @viewGoods="$emit('viewGoods')"
+      @close="isRule=false"
+      :show="isRule" />
     <img :src="arrow"
       @click="handleArrow"
       class="arrow">
@@ -29,10 +33,12 @@
 
 <script>
 import SignIn from '../sign-in'
+import Rule from '../rule'
 
 export default {
   data () {
     return {
+      isRule: false,
       isOpen: true,
       score: null,
       signInInfo: null
@@ -40,7 +46,8 @@ export default {
   },
   props: ['scoreInfo'],
   components: {
-    SignIn
+    SignIn,
+    Rule
   },
   watch: {
     scoreInfo: {
@@ -51,6 +58,9 @@ export default {
     }
   },
   methods: {
+    showRule () {
+      this.isRule = true
+    },
     handleArrow () {
       this.isOpen = !this.isOpen
     },

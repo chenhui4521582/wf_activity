@@ -9,15 +9,22 @@
       <p class="des">{{exchange.remark}}</p>
       <div class="handler">
         <p>{{exchange.score}}<span class="unit">积分</span></p>
-        <span class="button">兑换</span>
+        <span @click="getGoods"
+          class="button">兑换</span>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+
 export default {
-  props: ['exchange']
+  props: ['exchange'],
+  methods: {
+    async getGoods () {
+      this.$emit('exchange')
+    }
+  }
 }
 </script>
 
@@ -60,7 +67,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding-top: .05rem;
+      padding-top: 0.05rem;
       .unit {
         font-size: 0.2rem;
       }
@@ -73,7 +80,7 @@ export default {
       border-radius: 0.1rem;
       color: #fff;
       font-size: 0.24rem;
-      background: #FF4141;
+      background: #ff4141;
     }
   }
 }

@@ -11,3 +11,6 @@ export const SignIn = () => client.post(`@box/score/sign-in`)
 
 // banner
 export const Banner = () => client.get('//platform-api.beeplaying.com/wap/api/fixed/ad/get-list/30')
+
+// 兑换
+export const Exchange = id => client.post(`@box/score/exchange/${id}`)
