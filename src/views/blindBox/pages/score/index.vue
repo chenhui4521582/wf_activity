@@ -1,21 +1,93 @@
 <template>
-  <article>
-    <NavBar title="积分中心"  @back="$router.go(-1)" />
-    <MyScore />
+  <article class="main">
+    <NavBar title="积分中心"
+      @back="$router.go(-1)" />
+    <MyScore @update="update"
+      v-if="scoreInfo"
+      :scoreInfo="scoreInfo" />
+    <swiper v-if="banners"
+      :options="options">
+      <swiper-slide v-for="(item,index) in banners"
+        :key="index">
+        <section @click="detail(item)"
+          class="content">
+          <img class="banner"
+            :src="item.image | imgFilter"
+            alt="" />
+        </section>
+      </swiper-slide>
+    </swiper>
+    <AddScore :addScoreList="addScoreList" />
+    <ExchangeScore :awardsList="awardsList" />
   </article>
 </template>
 
 <script>
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+import { Index, Banner } from '../../apis/score'
+import AddScore from './components/add-score'
 import NavBar from '../../components/navBar'
 import MyScore from './components/my-score'
+import ExchangeScore from './components/exchange-score'
 
 export default {
+  data () {
+    return {
+      options: {
+        autoplay: {
+          disableOnInteraction: false,
+          delay: 2000
+        },
+        loop: true,
+        watchOverflow: true,
+        speed: 300
+      },
+      banners: null,
+      scoreInfo: null,
+      addScoreList: [],
+      awardsList: []
+    }
+  },
+  methods: {
+    async init () {
+      ({ data: { data: this.scoreInfo } } = await Index())
+      this.addScoreList = this.scoreInfo.addScoreList
+      this.awardsList = this.scoreInfo.awardsList;
+      ({ data: { data: this.banners } } = await Banner())
+    },
+    update () {
+      this.init()
+    }
+  },
+  mounted () {
+    this.init()
+  },
   components: {
     NavBar,
-    MyScore
+    MyScore,
+    swiper,
+    swiperSlide,
+    AddScore,
+    ExchangeScore
   }
 }
 </script>
 
 <style lang="less" scoped>
+.main {
+  min-height: 100vh;
+  background: #eeeeee;
+  padding-bottom: 1.1rem;
+}
+.content {
+  border-radius: 0.6rem;
+  width: 6.72rem;
+  margin: 0 auto;
+  margin-top: 0.14rem;
+  img {
+    width: 100%;
+    border-radius: 0.6rem;
+  }
+}
 </style>

@@ -12,8 +12,14 @@
         <img src="./assets/score.png"
           alt="">{{score}}
       </p>
-      <p class="tip">连续签到得更多积分</p>
-      <SignIn v-if="signInInfo" :signInInfo="signInInfo" />
+      <p v-if="signInInfo && signInInfo.todayState"
+        class="tip">已连续签到 <span v-if="signInInfo"
+          class="score-count">{{signInInfo.consecutiveDay }}</span> 天，连续签到得更多积分</p>
+      <p v-else
+        class="tip">连续签到得更多积分</p>
+      <SignIn @update="update"
+        v-if="signInInfo && isOpen"
+        :signInInfo="signInInfo" />
     </section>
     <img :src="arrow"
       @click="handleArrow"
@@ -22,7 +28,6 @@
 </template>
 
 <script>
-import { SignInState, Index } from '../../../../apis/score'
 import SignIn from '../sign-in'
 
 export default {
@@ -30,17 +35,30 @@ export default {
     return {
       isOpen: true,
       score: null,
-      signInInfo: null,
-      addScoreList: null,
-      awardsList: null
+      signInInfo: null
     }
   },
+  props: ['scoreInfo'],
   components: {
     SignIn
+  },
+  watch: {
+    scoreInfo: {
+      deep: true,
+      handler () {
+        this.init()
+      }
+    }
   },
   methods: {
     handleArrow () {
       this.isOpen = !this.isOpen
+    },
+    async init () {
+      ({ score: this.score, signInInfo: this.signInInfo } = this.scoreInfo)
+    },
+    update () {
+      this.$emit('update')
     }
   },
   computed: {
@@ -49,11 +67,9 @@ export default {
       return require('./assets/open.png')
     }
   },
-  async mounted () {
-    ({ data: { data: {
-      score: this.score, signInInfo: this.signInInfo, addScoreList: this.addScoreList, awardsList: this.awardsList
-    } } } = await Index());
-    ({ data: { data: this.isOpen } } = await SignInState())
+  mounted () {
+    this.init()
+    this.isOpen = !this.signInInfo.todayState
   }
 }
 </script>
@@ -116,6 +132,11 @@ export default {
     text-align: center;
     color: #fff;
     font-size: 0.2rem;
+    .score-count {
+      font-size: 0.28rem;
+      color: #eb8967;
+      font-weight: bold;
+    }
   }
 }
 </style>

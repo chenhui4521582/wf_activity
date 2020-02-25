@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section align="center">
     <ul class="sign">
       <li v-for="(item, index) in signInInfo.list"
         :key="index"
@@ -11,15 +11,27 @@
         <p class="time">{{(signInInfo.thisDay === index + 1) ? '今': item.day}}天</p>
       </li>
     </ul>
+    <img @click="signIn"
+      :src="signInInfo.todayState ? require('./assets/active.png') : require('./assets/unactive.png')"
+      class="button">
   </section>
 </template>
 
 <script>
+import { SignIn } from '../../../../apis/score'
 
 export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    async signIn () {
+      if (!this.signInInfo.todayState) {
+        await SignIn()
+        this.$emit('update')
+      }
     }
   },
   props: {
@@ -31,10 +43,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.button {
+  width: 2.8rem;
+  margin-top: 0.2rem;
+}
 .sign {
   display: flex;
   background: linear-gradient(90deg, #fbd890, #f7e5c2);
   padding: 0.28rem 0 0.2rem;
+  border-radius: 0.16rem;
+  width: 6.72rem;
+  margin: 0 auto;
+  justify-content: center;
   .time-line {
     position: relative;
     text-align: center;
