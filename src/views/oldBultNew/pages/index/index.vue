@@ -143,7 +143,7 @@ export default {
           res = JSON.parse(res).shareStatue
         }
         that.$toast.show({
-          message: res === 1 ? '分享成功' : '分享失败',
+          message: res.Code === 1 ? '分享成功' : '分享失败',
           duration: 1500
         })
       }
