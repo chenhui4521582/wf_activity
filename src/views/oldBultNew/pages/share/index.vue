@@ -36,7 +36,8 @@
         <img class="gift"
           src="./assets/gift.png"
           alt="">
-        <div @click="download" class="confirm">立即下载多多玩APP</div>
+        <div @click="download"
+          class="confirm">立即下载多多玩APP</div>
       </section>
       <section v-else
         class="dialog">
@@ -45,7 +46,8 @@
           你已经是我们的老朋友了<br>
           立即去多多玩APP 邀请用户返利吧
         </p>
-        <div @click="download" class="confirm">立即下载多多玩APP</div>
+        <div @click="download"
+          class="confirm">立即下载多多玩APP</div>
       </section>
     </Modal>
   </main>
@@ -177,10 +179,11 @@ export default {
     font-size: 0.24rem;
     padding-left: 0.27rem;
     border: none;
+    outline: none;
   }
   .button {
     width: 4.8rem;
-    height: .9rem;
+    height: 0.9rem;
     display: block;
     margin: 0.6rem auto 0;
   }
