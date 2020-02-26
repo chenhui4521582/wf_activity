@@ -2,7 +2,8 @@
   <article>
     <Title title="新增积分">
       <div v-if="addScoreList.length > 0"
-        class="subtitle">查看更多>></div>
+        class="subtitle"
+        @click="toScoreDetail">查看更多>></div>
       <div v-else
         class="tip"
         @click="showRule">怎么赚积分？</div>
@@ -17,7 +18,8 @@
         <p class="time">{{item.createTime}}</p>
       </div>
     </section>
-    <section v-else align="center"
+    <section v-else
+      align="center"
       class="default">
       <img src="./assets/icon.png"
         alt="">
@@ -36,6 +38,11 @@ export default {
   methods: {
     showRule () {
       this.$eventBus.$emit('showRule', true)
+    },
+    toScoreDetail () {
+      this.$router.push({
+        name: 'ScoreDetail'
+      })
     }
   },
   data () {
@@ -78,20 +85,25 @@ export default {
   margin: 0 auto;
   border-radius: 0.16rem;
   .detail {
-    padding: 0.3rem 0.25rem;
+    padding: 0.3rem 0.25rem 0;
     font-size: 0.28rem;
     color: #1b1f29;
     text-align: left;
+    .time {
+      font-size: 0.2rem;
+      color: #999999;
+      padding-top: 0.02rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid #eeeeee;
+    }
+    &:last-child .time {
+      border: none;
+    }
     .score {
       font-size: 0.32rem;
       color: #ff2828;
       margin-top: -0.04rem;
       text-align: right;
-    }
-    .time {
-      font-size: 0.2rem;
-      color: #999999;
-      padding-top: 0.02rem;
     }
   }
 }

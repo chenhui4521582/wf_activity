@@ -14,3 +14,9 @@ export const Banner = () => client.get('//platform-api.beeplaying.com/wap/api/fi
 
 // 兑换
 export const Exchange = id => client.post(`@box/score/exchange/${id}`)
+
+// 积分获取列表
+export const AddList = ({ page, pageSize }) => client.post(`@box/score/add-list`, { page, pageSize })
+
+// 积分兑换列表
+export const MinusList = ({ page, pageSize }) => client.post(`@box/score/minus-list`, { page, pageSize })

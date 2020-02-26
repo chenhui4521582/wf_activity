@@ -1,43 +1,65 @@
 <template>
   <article class="myprize-wrapper">
-    <Dialog :show="show" title="温馨提示" @onConfirm="onConfirm" confirm="我知道了">
-      <p v-if="this.active===1" class="tip">
+    <Dialog :show="show"
+      title="温馨提示"
+      @onConfirm="onConfirm"
+      confirm="我知道了">
+      <p v-if="this.active===1"
+        class="tip">
         领取成功后，预计1-2个工作日发货,请您耐心等待，并确保通话畅通若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
-      <p class="tip" v-if="this.active===2">您的运单号为：{{orderNumber}} <span
-          v-clipboard:success="copySuccess" v-clipboard:copy="orderNumber">复制</span></p>
+      <p class="tip"
+        v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
+          v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
     <section class="container">
-      <div class="bar" v-for="(item,index) in tabBar" @click="changeTab(item,index)"
+      <div class="bar"
+        v-for="(item,index) in tabBar"
+        @click="changeTab(item,index)"
         :key="item.label">
-        <span class="bar__span" :class="{'active':index===active}">
+        <span class="bar__span"
+          :class="{'active':index===active}">
           {{item.label}}
         </span>
       </div>
     </section>
     <section class="content">
-      <div v-if="this.goodsList && this.goodsList.length > 0" class="total">
+      <div v-if="this.goodsList && this.goodsList.length > 0"
+        class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
         <p></p>
         <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0"
           class="free-shipping">温馨提示: 领取奖品满2件即可包邮哦~</p>
       </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
-        <Goods @viewProduct="viewProduct" v-for="(item,index) in goodsList" :key="index" :goods="item">
+        <Goods @viewProduct="viewProduct"
+          v-for="(item,index) in goodsList"
+          :key="index"
+          :isPrice="active!==3"
+          :goods="item">
           <div slot="left">
             <p class="goods-time">开盒时间：{{item.openTime}}</p>
-            <p class="goods-time" v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
+            <p class="goods-time"
+              v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
           </div>
-          <div @click="handelList[active].handle(item)" class="button"
-            :class="handelList[active].buttonType" slot="right">{{handelList[active].buttonText}}
-          </div>
+          <section slot="right">
+            <div @click="handelList[active].handle(item)"
+              class="button"
+              :class="handelList[active].buttonType">{{handelList[active].buttonText}}
+            </div>
+            <p class="score"
+              v-if="active===0">换积分</p>
+          </section>
         </Goods>
       </section>
       <Default v-if="this.goodsList && this.goodsList.length === 0"
-        :title="`您没有${tabBar[active].label}的盲盒奖品哦~`" @onConfirm="toIndex" />
+        :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
+        @onConfirm="toIndex" />
     </section>
-    <section @click="toOnlineService" class="service">
-      <img src="./assets/service.png" alt="">
+    <section @click="toOnlineService"
+      class="service">
+      <img src="./assets/service.png"
+        alt="">
       <p>客服</p>
     </section>
     <ProductDialog :goods-detail="productDetail"
@@ -92,6 +114,14 @@ export default {
         {
           buttonType: 'button-primary',
           buttonText: '立即查看',
+          handle: item => {
+            GLOBALS.marchSetsPoint('A_H5PT0225002579')
+            this.orderNumber = item.remark
+            this.show = true
+            GLOBALS.marchSetsPoint('A_H5PT0225002699')
+          }
+        },
+        {
           handle: item => {
             GLOBALS.marchSetsPoint('A_H5PT0225002579')
             this.orderNumber = item.remark
@@ -170,6 +200,12 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  .score {
+    padding-top: 0.22rem;
+    color: #ff2828;
+    font-size: 0.24rem;
+    text-align: center;
+  }
   .service {
     width: 0.75rem;
     height: 0.63rem;

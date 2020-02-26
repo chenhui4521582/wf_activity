@@ -32,6 +32,14 @@ const routes = [
         }
       },
       {
+        path: '/scoreDetail',
+        name: 'ScoreDetail',
+        component: () => import('../pages/scoreDetail'),
+        meta: {
+          title: '积分明细'
+        }
+      },
+      {
         path: '/my',
         name: 'My',
         component: () => import('../pages/my'),

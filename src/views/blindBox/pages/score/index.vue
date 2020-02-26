@@ -1,6 +1,7 @@
 <template>
   <article class="main">
-    <NavBar title="积分中心"
+    <NavBar style="background:#fff"
+      title="积分中心"
       @back="$router.go(-1)" />
     <MyScore @viewGoods="setPosition"
       @update="update"

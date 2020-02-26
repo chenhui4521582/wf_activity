@@ -5,7 +5,8 @@
         class="float left">
         积分攻略
       </div>
-      <div class="float right">
+      <div @click="scoreRecord"
+        class="float right">
         兑换记录
       </div>
       <p class="title">我的积分</p>
@@ -60,6 +61,14 @@ export default {
   methods: {
     showRule () {
       this.isRule = true
+    },
+    scoreRecord () {
+      this.$router.push({
+        name: 'ScoreDetail',
+        query: {
+          active: 1
+        }
+      })
     },
     handleArrow () {
       this.isOpen = !this.isOpen
