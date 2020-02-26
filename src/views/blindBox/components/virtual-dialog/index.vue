@@ -98,10 +98,6 @@ export default {
               message,
               duration: 3000
             })
-            this.$toast.show({
-              message: '支付成功',
-              duration: 1000
-            })
             this.$emit('updateUserInfo')
             this.$emit('close')
           },
