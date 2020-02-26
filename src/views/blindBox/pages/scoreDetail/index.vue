@@ -160,6 +160,8 @@ export default {
   background: #eeeeee;
   padding-bottom: 1.7rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   .tabs {
     display: flex;
     background: #fff;
@@ -235,6 +237,8 @@ export default {
   width: 6.6rem;
   margin: 0.33rem auto;
   overflow: hidden;
+  flex: 1;
+  overflow: scroll;
   .record-content {
     padding-top: 0.4rem;
     padding: 0 0.2rem;
@@ -274,6 +278,8 @@ export default {
   }
 }
 .score-container {
+  flex: 1;
+  overflow: scroll;
   border-radius: 0.16rem;
   background: #fff;
   width: 6.6rem;
