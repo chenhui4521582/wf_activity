@@ -1,10 +1,16 @@
 <template>
-  <Dialog :close="true" :show="show" @onClose="dialogText.onClose" @onCancel="dialogText.onCancel"
-    @onConfirm="dialogText.onConfirm" :cancel="dialogText.cancel" :confirm="dialogText.confirm"
+  <Dialog :close="true"
+    :show="show"
+    @onClose="dialogText.onClose"
+    @onCancel="dialogText.onCancel"
+    @onConfirm="dialogText.onConfirm"
+    :cancel="dialogText.cancel"
+    :confirm="dialogText.confirm"
     title="温馨提示">
     <p class="subtitle">{{dialogText.subtitle}}</p>
     <p class="content">当前金叶子账户余额为<span class="count-red">{{formatBalance}}</span></p>
-    <p class="content" v-html="dialogText.des"></p>
+    <p class="content"
+      v-html="dialogText.des"></p>
   </Dialog>
 </template>
 
@@ -87,10 +93,10 @@ export default {
             GLOBALS.marchSetsPoint('A_H5PT0225002696', {
               source_address: this.source
             })
-            await LeafsPay()
+            const { data: { message } } = await LeafsPay()
             this.$toast.show({
-              message: '支付成功',
-              duration: 1000
+              message,
+              duration: 2000
             })
             this.$emit('updateUserInfo')
             this.$emit('close')
