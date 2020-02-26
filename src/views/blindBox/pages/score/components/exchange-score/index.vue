@@ -60,11 +60,18 @@ export default {
       if (!this.isBalance) {
         this.$eventBus.$emit('showRule', true)
       } else {
-        await Exchange(this.id)
-        this.$toast.show({
-          message: '兑换成功',
-          duration: 2000
-        })
+        const { data: { code, message } } = await Exchange(this.id)
+        if (code === 200) {
+          this.$toast.show({
+            message: '兑换成功',
+            duration: 2000
+          })
+        } else {
+          this.$toast.show({
+            message,
+            duration: 2000
+          })
+        }
         this.$emit('update')
       }
     }

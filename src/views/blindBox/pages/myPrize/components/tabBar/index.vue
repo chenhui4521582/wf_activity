@@ -210,6 +210,10 @@ export default {
     async onExchange () {
       await Recycle(this.id)
       this.isExchange = false
+      this.$score.show({
+        message: `+${this.score}积分`,
+        duration: 2000
+      })
     },
     // 去抽盲盒
     toIndex () {
@@ -260,19 +264,19 @@ export default {
     }
   }
   .score-tip {
-    color: #FF2828;
-    font-size: .2rem;
-    padding-bottom: .3rem;
+    color: #ff2828;
+    font-size: 0.2rem;
+    padding-bottom: 0.3rem;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     .icon {
-      width: .18rem;
-      height: .18rem;
-      border: 1px solid #FF2828;
+      width: 0.18rem;
+      height: 0.18rem;
+      border: 1px solid #ff2828;
       border-radius: 50%;
-      margin-right: .02rem;
+      margin-right: 0.02rem;
     }
   }
   .score {

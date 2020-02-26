@@ -29,7 +29,11 @@ export default {
   methods: {
     async signIn () {
       if (!this.signInInfo.todayState) {
-        await SignIn()
+        const { data: { data } } = await SignIn()
+        this.$score.show({
+          message: `+${data}积分`,
+          duration: 2000
+        })
         this.$emit('update')
       }
     }
