@@ -5,6 +5,7 @@ import axios from './http'
 import App from './App'
 // import fastclick from 'fastclick'
 import Toast from '../../plugins/toast'
+import Score from './plugins/score-toast'
 import Loading from './components/loading'
 import '@/common/js/window.js'
 import VueClipboard from 'vue-clipboard2'
@@ -12,6 +13,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
 Vue.use(Toast)
+Vue.use(Score)
 Vue.config.productionTip = false
 // fastclick.attach(document.body)
 Vue.prototype.$eventBus = new Vue()

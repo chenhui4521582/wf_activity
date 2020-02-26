@@ -96,7 +96,7 @@ export default {
             const { data: { message } } = await LeafsPay()
             this.$toast.show({
               message,
-              duration: 3000
+              duration: 2000
             })
             this.$emit('updateUserInfo')
             this.$emit('close')

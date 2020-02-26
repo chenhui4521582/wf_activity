@@ -1,26 +1,22 @@
 <template>
   <section class="box-list-wrapper">
     <section class="box-list-container">
-      <ul
-        class="box-list"
+      <ul class="box-list"
         :class="{ 'all-has-shelf': isRefresh }"
         v-for="(items, key) in boxList"
         :key="'list' + key"
-        :style="{ zIndex: 3 - key }"
-      >
-        <li
-          class="box-item"
+        :style="{ zIndex: 3 - key }">
+        <li class="box-item"
           v-for="(item, index) in items"
           :key="'item' + index"
           :class="{ 'shake-rotate': hasShake(item.state) }"
-          @click="toDetail(item)"
-        >
-          <box-info
-            :class="{ 'has-shelf': hasShelf(item) }"
-            :info="item"
-          ></box-info>
-          <div class="old-box-image box-drop" v-if="item.state === 3">
-            <img :src="item.extend.oldColor | boxImage(item.state)" alt="" />
+          @click="toDetail(item)">
+          <box-info :class="{ 'has-shelf': hasShelf(item) }"
+            :info="item"></box-info>
+          <div class="old-box-image box-drop"
+            v-if="item.state === 3">
+            <img :src="item.extend.oldColor | boxImage(item.state)"
+              alt="" />
             <div class="awards-info">
               <p class="other-people">用户{{ item.extend.nickname }}正在购买</p>
             </div>
@@ -33,24 +29,38 @@
       <section class="btn-container btn-container-top">
         <m-button @confirm="buyOne">{{
           isOpenBox ? `立即开盒` : "20元开一盒"
-        }}<span v-if="isOpenBox" class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
-        <div class="change-btn change-btn-left"  @click="showRule">
-          <img class="icon" src="../assets/rule.png" alt="">
+        }}<span v-if="isOpenBox"
+            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
+        <div class="change-btn change-btn-left"
+          @click="showRule">
+          <img class="icon"
+            src="../assets/rule.png"
+            alt="">
           活动规则
         </div>
-        <div class="change-btn change-btn-right" @click="changeAll">
-          <img class="icon" src="../assets/refresh.png" alt="">
+        <div class="change-btn change-btn-right"
+          @click="changeAll">
+          <img class="icon"
+            src="../assets/refresh.png"
+            alt="">
           换一批
         </div>
       </section>
       <section class="btn-container">
-        <m-button v-if="!isOpenBox" :button-style="buttonStyle" @confirm="bulkBuy">55元开3盒</m-button>
-        <p class="leaf-buy" v-if="userInfo && userInfo.leafsPay" @click="leafsBuy">使用金叶子购买</p>
+        <m-button v-if="!isOpenBox"
+          :button-style="buttonStyle"
+          @confirm="bulkBuy">55元开3盒</m-button>
+        <p class="leaf-buy"
+          v-if="userInfo && userInfo.leafsPay"
+          @click="leafsBuy">使用金叶子购买</p>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
       <!-- 非年货节按钮 end -->
     </article>
-    <Dialog :show="isShowRule" title="活动规则" :close="true" @onClose="closeRule()">
+    <Dialog :show="isShowRule"
+      title="活动规则"
+      :close="true"
+      @onClose="closeRule()">
       <p class="rule-content">
         1.用户支付20元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
         2.购买盲盒可100%开出奖品；<br>
@@ -61,31 +71,37 @@
         7.盲盒购买金额不计入游戏平台的累充活动；<br>
         玩蜂对此具有最终解释权
       </p>
-      <section class="rule-btn-wrapper" slot="footer">
-        <div class="confirm" @click="closeRule()">
+      <section class="rule-btn-wrapper"
+        slot="footer">
+        <div class="confirm"
+          @click="closeRule()">
           我知道了
         </div>
       </section>
     </Dialog>
-    <Dialog
-      :show="isShowPop"
+    <Dialog :show="isShowPop"
       title="支付完成"
       :close="true"
-      @onClose="closePop()"
-    >
+      @onClose="closePop()">
       <p class="pop-content">
         您已付款成功，选一个盲盒吧
       </p>
-      <section class="pop-btn-wrapper" slot="footer">
-        <div class="confirm" @click="closePop(1)">
+      <section class="pop-btn-wrapper"
+        slot="footer">
+        <div class="confirm"
+          @click="closePop(1)">
           好的
         </div>
-        <div class="cancel" @click="closePop(2)">
+        <div class="cancel"
+          @click="closePop(2)">
           不选了，随机开一个
         </div>
       </section>
     </Dialog>
-    <TipDialog v-if="showTip" source="index" :show="showTip" @close="showTip=false"/>
+    <TipDialog v-if="showTip"
+      source="index"
+      :show="showTip"
+      @close="showTip=false" />
     <VirtualDialog :show="isVirtual"
       v-if="isVirtual"
       source="index"
@@ -99,7 +115,7 @@
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
-import {Pay} from '../../../utils';
+import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
@@ -180,8 +196,8 @@ export default {
     async bulkBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002849')
       const {
-          data: { data: payInfo }
-        } = await PayPoint(1)
+        data: { data: payInfo }
+      } = await PayPoint(1)
       Pay.toPay({ payInfo: payInfo[1] })
     },
     async init () {
@@ -202,7 +218,7 @@ export default {
     },
     // 用户点击被透视的盒子是否弹窗
     async isPopup () {
-      ({data: {data: this.isFirstIn}} = await Popup(1))
+      ({ data: { data: this.isFirstIn } } = await Popup(1))
     },
     // 活动规则
     showRule () {
@@ -251,6 +267,12 @@ export default {
       const res = await UserInfo()
       const { data } = res.data
       this.userInfo = data || {}
+      if (this.userInfo.incrScore) {
+        this.$score.show({
+          message: `+${this.userInfo.incrScore}积分`,
+          duration: 2000
+        })
+      }
       if (this.userInfo.openBoxTimes) {
         this.isShowPop = true
         GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
@@ -279,15 +301,15 @@ export default {
         if (this.userInfo.openBoxTimes) {
           this.$router.push(
             `/openBox/${item.color}?sort=${item.sort}${
-              item.state === 4 ? '&isTransparent=true' : ''
+            item.state === 4 ? '&isTransparent=true' : ''
             }`
           )
         } else {
           this.$router.push(
             `/chooseBox/${item.color}?sort=${item.sort}${
-              item.state === 4
-                ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}&showAmount=${item.extend.showAmount}&awardsNum=${item.extend.awardsNum}`
-                : ''
+            item.state === 4
+              ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}&showAmount=${item.extend.showAmount}&awardsNum=${item.extend.awardsNum}`
+              : ''
             }`
           )
         }
@@ -474,35 +496,35 @@ export default {
     background: #1b1f29;
     // padding: 0.16rem;
     .times {
-      padding-left: .2rem;
+      padding-left: 0.2rem;
       span {
-        color: #FF1520;
+        color: #ff1520;
       }
     }
     &-top {
-      padding-top: .32rem;
+      padding-top: 0.32rem;
     }
     .money-buy {
       margin: 0 auto;
       width: 3.07rem;
       line-height: 0.78rem;
-      color: #F5DBBB;
+      color: #f5dbbb;
       font-size: 0.36rem;
       text-align: center;
-      background: url('../assets/button1.png') no-repeat;
+      background: url("../assets/button1.png") no-repeat;
       background-size: 100% 100%;
     }
     .leaf-buy {
-      padding-top: .28rem;
-      font-size: .3rem;
+      padding-top: 0.28rem;
+      font-size: 0.3rem;
       text-align: center;
-      background: linear-gradient(90deg,#DBBE6F,#FEE9B4);
+      background: linear-gradient(90deg, #dbbe6f, #fee9b4);
       -webkit-background-clip: text;
       font-weight: bold;
       color: transparent;
     }
     .buy-tip {
-      color: #6F768E;
+      color: #6f768e;
       font-size: 0.24rem;
       text-align: center;
       padding-top: 0.33rem;
@@ -524,8 +546,8 @@ export default {
       display: flex;
       align-items: center;
       .icon {
-        width: .34rem;
-        margin-right: .1rem;
+        width: 0.34rem;
+        margin-right: 0.1rem;
       }
       &-left {
         left: 0.3rem;

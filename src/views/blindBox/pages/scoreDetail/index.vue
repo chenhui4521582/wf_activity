@@ -44,6 +44,7 @@
         <Card v-for="(item,index) in minusList"
           :key="index"
           :info="item"
+          useType="-"
           :type="minusType" />
       </section>
       <article v-else
@@ -62,6 +63,7 @@
         <Card v-for="(item,index) in addScoreList"
           :key="index"
           :info="item"
+          useType="+"
           :type="scoreType" />
       </section>
       <article v-else

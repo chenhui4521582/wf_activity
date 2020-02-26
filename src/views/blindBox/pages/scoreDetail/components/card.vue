@@ -5,7 +5,7 @@
       alt="">
     <div class="detail">
       <p>{{type[info.type] || info.awardsName}}</p>
-      <p class="score">+{{info.score}}</p>
+      <p class="score">{{useType}}{{info.score}}</p>
       <p class="time">{{info.createTime}}</p>
     </div>
   </section>
@@ -14,7 +14,7 @@
 <script>
 
 export default {
-  props: ['info', 'type']
+  props: ['info', 'type', 'useType']
 }
 </script>
 

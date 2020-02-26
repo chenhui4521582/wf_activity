@@ -12,6 +12,20 @@
         v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
           v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
+    <Dialog :show="isExchange"
+      title="换积分"
+      cancel="取消"
+      @onCancel="onCancel"
+      @onConfirm="onExchange"
+      :confirm="`<p style='color:#FF4141'>立即兑换</p>`">
+      <p class="score-content">
+        积分可以在<span class="score-center"
+          @click="goScore">积分中心</span>兑换盲盒<br>
+        优惠券，透视卡，包邮卡等奖品。<br>
+        此奖品可兑换<span class="score-count">{{score}}</span>积分。
+      </p>
+      <p class="score-tip"><span class="icon">!</span> 兑换后,奖品将无法领取,请谨慎操作</p>
+    </Dialog>
     <section class="container">
       <div class="bar"
         v-for="(item,index) in tabBar"
@@ -43,12 +57,20 @@
               v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
           </div>
           <section slot="right">
-            <div @click="handelList[active].handle(item)"
+            <div v-if="handelList[active]"
+              @click="handelList[active].handle(item)"
               class="button"
               :class="handelList[active].buttonType">{{handelList[active].buttonText}}
             </div>
             <p class="score"
+              @click="getScore(item.id)"
               v-if="active===0">换积分</p>
+            <img v-if="active===3"
+              class="recover"
+              src="./assets/recover.png"
+              alt="">
+            <p v-if="active===3"
+              class="score">{{item.remark}}</p>
           </section>
         </Goods>
       </section>
@@ -74,6 +96,7 @@ import Goods from '../../../../components/goods'
 import Default from '../../../../components/default'
 import { sendStatusMapper } from '../../../../config/enum'
 import { InventoryList } from '../../../../apis/user'
+import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
 
@@ -81,9 +104,12 @@ export default {
   data () {
     return {
       show: false,
+      score: null,
+      isExchange: false,
       showProduct: false,
       productDetail: null,
       active: 0,
+      id: null,
       goodsList: {
         awardsName: null,
         showAmount: null,
@@ -120,14 +146,6 @@ export default {
             this.show = true
             GLOBALS.marchSetsPoint('A_H5PT0225002699')
           }
-        },
-        {
-          handle: item => {
-            GLOBALS.marchSetsPoint('A_H5PT0225002579')
-            this.orderNumber = item.remark
-            this.show = true
-            GLOBALS.marchSetsPoint('A_H5PT0225002699')
-          }
         }
       ]
     }
@@ -143,6 +161,19 @@ export default {
       if (!val.awardsId) return
       this.productDetail = val
       this.showProduct = true
+    },
+    // 积分中心
+    goScore () {
+      this.$router.push({
+        name: 'Score'
+      })
+    },
+    // 换积分
+    async getScore (id) {
+      this.id = id
+      await CalcScore(this.id);
+      ({ data: { data: this.score } } = await CalcScore(this.id))
+      this.isExchange = true
     },
     /**
      * @des 切换tab
@@ -172,6 +203,14 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0225002578')
       this.show = false
     },
+    onCancel () {
+      this.isExchange = false
+    },
+    // 立即兑换
+    async onExchange () {
+      await Recycle(this.id)
+      this.isExchange = false
+    },
     // 去抽盲盒
     toIndex () {
       const addressIndex = this.active
@@ -200,6 +239,42 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  .recover {
+    width: 1.03rem;
+    margin: 0 auto;
+    margin-top: -0.35rem;
+    display: block;
+  }
+  .score-content {
+    color: #888888;
+    font-size: 0.24rem;
+    line-height: 1.4;
+    text-align: center;
+    padding-bottom: 0.36rem;
+    .score-center {
+      color: #d0ab40;
+    }
+    .score-count {
+      color: #ff2828;
+      font-size: 0.3rem;
+    }
+  }
+  .score-tip {
+    color: #FF2828;
+    font-size: .2rem;
+    padding-bottom: .3rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      width: .18rem;
+      height: .18rem;
+      border: 1px solid #FF2828;
+      border-radius: 50%;
+      margin-right: .02rem;
+    }
+  }
   .score {
     padding-top: 0.22rem;
     color: #ff2828;
