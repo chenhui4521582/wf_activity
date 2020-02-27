@@ -40,7 +40,7 @@
               @click="use">点击去使用>></p>
           </section>
         </article>
-        <section v-if="minusList"
+        <section v-if="minusList && minusList.length > 0"
           class="record-content">
           <Card v-for="(item,index) in minusList"
             :key="index"
@@ -59,7 +59,7 @@
       </article>
       <article class=score-container
         v-if="active===0">
-        <section v-if="addScoreList"
+        <section v-if="addScoreList && addScoreList.length > 0"
           class="score-content">
           <Card v-for="(item,index) in addScoreList"
             :key="index"
@@ -67,13 +67,13 @@
             useType="+"
             :type="scoreType" />
         </section>
-        <article v-else
-          align="center"
-          class="default">
-          <img src="../score/components/add-score/assets/icon.png"
-            alt="">
-          <p>暂无积分</p>
-        </article>
+      </article>
+      <article v-if="active===0 && minusList && minusList.length === 0"
+        align="center"
+        class="default">
+        <img src="../score/components/add-score/assets/icon.png"
+          alt="">
+        <p>暂无积分</p>
       </article>
     </article>
     <div @click="viewGoods"
