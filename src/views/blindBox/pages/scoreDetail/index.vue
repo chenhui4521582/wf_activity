@@ -16,62 +16,64 @@
         {{item.title}}
       </div>
     </section>
-    <article v-if="active===1"
-      class="record-container">
-      <article class="header">
-        <section class="info">
-          <div v-if="userInfo"
-            class="card-info">
-            <div>
-              <p class="count">{{userInfo.transparentTimes}}</p>
-              <p>可用透视卡</p>
-            </div>
-            <div>
-              <p class="count">{{userInfo.singlePostTimes}}</p>
-              <p>可用包邮卡</p>
-            </div>
-            <!-- <div>
+    <article class="score-detail-wrapper">
+      <article v-if="active===1"
+        class="record-container">
+        <article class="header">
+          <section class="info">
+            <div v-if="userInfo"
+              class="card-info">
+              <div>
+                <p class="count">{{userInfo.transparentTimes}}</p>
+                <p>可用透视卡</p>
+              </div>
+              <div>
+                <p class="count">{{userInfo.singlePostTimes}}</p>
+                <p>可用包邮卡</p>
+              </div>
+              <!-- <div>
               <p class="count">0</p>
               <p>可用优惠券</p>
             </div> -->
-          </div>
-          <p class="use"
-            @click="use">点击去使用>></p>
+            </div>
+            <p class="use"
+              @click="use">点击去使用>></p>
+          </section>
+        </article>
+        <section v-if="minusList"
+          class="record-content">
+          <Card v-for="(item,index) in minusList"
+            :key="index"
+            :info="item"
+            useType="-"
+            :type="minusType" />
         </section>
+        <article v-else
+          align="center"
+          class="default"
+          style="background:#fff;padding-bottom:1.6rem">
+          <img src="../score/components/add-score/assets/icon.png"
+            alt="">
+          <p>暂无记录</p>
+        </article>
       </article>
-      <section v-if="minusList"
-        class="record-content">
-        <Card v-for="(item,index) in minusList"
-          :key="index"
-          :info="item"
-          useType="-"
-          :type="minusType" />
-      </section>
-      <article v-else
-        align="center"
-        class="default"
-        style="background:#fff;padding-bottom:1.6rem">
-        <img src="../score/components/add-score/assets/icon.png"
-          alt="">
-        <p>暂无记录</p>
-      </article>
-    </article>
-    <article class=score-container
-      v-if="active===0">
-      <section v-if="addScoreList"
-        class="score-content">
-        <Card v-for="(item,index) in addScoreList"
-          :key="index"
-          :info="item"
-          useType="+"
-          :type="scoreType" />
-      </section>
-      <article v-else
-        align="center"
-        class="default">
-        <img src="../score/components/add-score/assets/icon.png"
-          alt="">
-        <p>暂无积分</p>
+      <article class=score-container
+        v-if="active===0">
+        <section v-if="addScoreList"
+          class="score-content">
+          <Card v-for="(item,index) in addScoreList"
+            :key="index"
+            :info="item"
+            useType="+"
+            :type="scoreType" />
+        </section>
+        <article v-else
+          align="center"
+          class="default">
+          <img src="../score/components/add-score/assets/icon.png"
+            alt="">
+          <p>暂无积分</p>
+        </article>
       </article>
     </article>
     <div @click="viewGoods"
@@ -232,18 +234,20 @@ export default {
   border-radius: 0.22rem;
   padding: 0.11rem 0.16rem;
 }
+.score-detail-wrapper {
+  padding: 0.33rem 0.3rem;
+  flex: 1;
+  overflow: scroll;
+}
 .record-container {
   border-radius: 0.16rem;
   width: 6.6rem;
-  margin: 0.33rem auto;
   overflow: hidden;
-  flex: 1;
-  overflow: scroll;
   .record-content {
     padding-top: 0.4rem;
     padding: 0 0.2rem;
     background: #fff;
-    border-radius: 0 0 .16rem .16rem;
+    border-radius: 0 0 0.16rem 0.16rem;
   }
 }
 .header {
@@ -279,13 +283,11 @@ export default {
   }
 }
 .score-container {
-  flex: 1;
-  overflow: scroll;
+  // overflow: scroll;
   border-radius: 0.16rem;
   background: #fff;
   width: 6.6rem;
   box-sizing: border-box;
-  margin: 0.33rem auto;
   padding: 0 0.3rem;
 }
 </style>
