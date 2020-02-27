@@ -144,7 +144,7 @@ export default {
     ({ data: { data: this.addScoreList } } = await AddList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.minusList } } = await MinusList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.userInfo } } = await UserInfo())
-    if (this.$route.query.active) this.active = this.$route.query.active
+    if (this.$route.query.active) this.active = Number(this.$route.query.active)
   },
   components: {
     NavBar,
@@ -243,6 +243,7 @@ export default {
     padding-top: 0.4rem;
     padding: 0 0.2rem;
     background: #fff;
+    border-radius: 0 0 .16rem .16rem;
   }
 }
 .header {
