@@ -1,8 +1,8 @@
 <template>
-  <div class="lanternfestival" :class="{end:isEnd,showDown:$refs.dropDown&&$refs.dropDown.isDropDown}"
+  <div class="viruskill" :class="{end:isEnd,showDown:$refs.dropDown&&$refs.dropDown.isDropDown}"
        v-if="actInfoData">
     <template v-if="!isEnd">
-      <div class="lanternfestival_container">
+      <div class="viruskill_container">
         <div class="clickIcons">
           <div class="item">
             <div class="back" @click="back">
@@ -398,7 +398,7 @@
 <style lang="less" scoped>
   @import '../../common/css/base.css';
 
-  .lanternfestival {
+  .viruskill {
     background: rgb(48, 56, 201);
     height: 100vh;
     position: relative;
@@ -410,7 +410,7 @@
       right: 0;
       top: 0;
     }
-    .lanternfestival_container {
+    .viruskill_container {
       position: relative;
       height: 11.37rem;
       background: url("imgs/bg.png");
