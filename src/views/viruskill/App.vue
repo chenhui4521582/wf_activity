@@ -262,8 +262,10 @@
               //需要移动位置的病毒INDEX
               let killIndex1 = parseInt(this.killIndex % 10); // 个位数
               let killIndex0 = parseInt((this.killIndex % 100) / 10);  // 十位数
+              let arr=[]
               for (let i = 0; i < killIndex0; i++) {
                 this.animateArr.push((i || '') + '' + killIndex1)//需要下移的INDEX
+                arr.push(this.virus[parseInt((i || '') + '' + killIndex1)])
               }
               this.addIndex = killIndex1//需要补位的INDEX
               setTimeout(() => {
@@ -271,7 +273,7 @@
                 this.animateArr = []
                 for (let i = 0; i < killIndex0; i++) {
                   let index = parseInt((i || '') + '' + killIndex1)
-                  this.virus[index + 10] = this.virus[index]
+                  this.virus[index + 10] = arr[i]
                 }
                 this.virus[this.addIndex] = Math.floor(1 + Math.round(2 * Math.random()))
               }, 1000)
