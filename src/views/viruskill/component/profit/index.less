@@ -1,0 +1,438 @@
+.profit-container {
+  text-align: center;
+  padding: 0.9rem 0.25rem 0;
+  width: 100%;
+  height: calc(100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  overflow-y: scroll;
+
+  .ranktitle {
+    display: flex;
+    margin-top: .22rem;
+    &:not(.full) {
+      justify-content: center;
+    }
+    img {
+      &.title {
+        width: 4.69rem;
+        height: .78rem;
+      }
+      &.back {
+        width: .66rem;
+        height: .66rem;
+        margin-left: .18rem;
+        margin-right: .42rem;
+      }
+    }
+  }
+
+  .p-time {
+    font-size: 0.24rem;
+    color: #fff;
+    margin: .2rem 0;
+    height: .24rem;
+    &.nodata {
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  .profit-tx-container {
+    width: 100%;
+    height: 4.44rem;
+    position: relative;
+    margin-bottom: 1.2rem;
+    .myprize {
+      position: absolute;
+      right: 0;
+      width: .447rem;
+      height: 1.39rem;
+      top: -1.5rem;
+      width: .55rem;
+      height: 1.5rem;
+      padding: 0 .13rem;
+      box-sizing: border-box;
+      border-radius: .2rem 0 0 .2rem;
+      background: #FF568E;
+      display: flex;
+      align-items: center;
+      font-size: .3rem;
+      font-weight: bold;
+      color: rgba(255, 254, 254, 1);
+    }
+  }
+
+  .profit-icon {
+    height: 4.3rem;
+    width: 6.4rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    li {
+      width: 1.91rem;
+      height: 3.71rem;
+      position: absolute;
+      .s-tx {
+        width: 100%;
+        height: 1.62rem;
+        position: relative;
+        margin: 0 auto;
+
+        img {
+          border-radius: 50%;
+          position: relative;
+          z-index: 1;
+          border: none;
+          width: 1.07rem;
+          height: 1.1rem;
+          top: 0.5rem;
+        }
+      }
+      .s-text {
+        z-index: 2;
+        width: 1.42rem;
+        line-height: 0.4rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 0.18rem;
+        font-weight: 400;
+        color: #5A80FB;
+        overflow: hidden;
+        position: absolute;
+        top: 1.4rem;
+        background: #fff;
+        border-radius: 20px;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .hammer-number {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 1.93rem;
+        white-space: nowrap;
+        font-size: 0.2rem;
+        font-weight: 500;
+        color: #F0882B;
+        z-index: 2;
+        height: .35rem;
+        line-height: .37rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .award-names {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 2.4rem;
+        height: .8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: .2rem;
+        font-weight: bold;
+        color: #FFFFFF;
+        z-index: 2;
+      }
+      &:nth-child(1) {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: '';
+            width: 1.91rem;
+            height: 3.71rem;
+            background: url(../../imgs/rank1.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+      }
+
+      &:nth-child(2) {
+        left: 0;
+        bottom: 0;
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: '';
+            width: 1.91rem;
+            height: 3.71rem;
+            background: url(../../imgs/rank2.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+      }
+
+      &:nth-child(3) {
+        height: 3.64rem;
+        right: 0;
+        bottom: 0;
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: '';
+            width: 1.91rem;
+            height: 3.64rem;
+            background: url(../../imgs/rank3.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+      }
+    }
+  }
+  .profit-items {
+    width: 6.4rem;
+    box-sizing: border-box;
+    margin: auto;
+    position: relative;
+    .p-header {
+      position: absolute;
+      height: 1.07rem;
+      line-height: 0.3rem;
+      width: 6.4rem;
+      top: -1.07rem;
+      left: 50%;
+      transform: translateX(-50%);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: .2rem .2rem 0 0;
+      ul {
+        width: 100%;
+        height: 0.6rem;
+        line-height: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      li {
+        white-space: nowrap;
+        font-size: 0.2rem;
+
+        span {
+          font-size: 0.24rem;
+        }
+
+        &:nth-child(1) {
+          width: 1.4rem;
+        }
+
+        &:nth-child(2) {
+          width: 2rem;
+          border-left: 0.02rem #944D00 solid;
+          border-right: 0.02rem #944D00 solid;
+        }
+
+        &:nth-child(2) {
+          font-size: 0.2rem;
+        }
+
+        &:nth-child(3) {
+          flex: 1;
+        }
+      }
+
+      h4 {
+        font-size: 0.2rem;
+        color: #74313F;
+        margin-bottom: .1rem;
+      }
+
+      span {
+        font-size: 0.24rem;
+        color: #FFD669;
+        font-weight: bold;
+      }
+    }
+
+    .p-items {
+      background: #FBE5E4;
+      box-sizing: border-box;
+      &.p-items-content {
+        position: relative;
+        height: auto;
+        overflow-y: hidden;
+        font-size: 0.2rem;
+        color: #9D5653;
+        top: -.01rem;
+        border-radius: 0 0 .2rem .2rem;
+        .i-font-style {
+          font-style: normal;
+          color: #999999;
+        }
+      }
+
+      &.p-items-header {
+        width: 100%;
+        color: #C95B56;
+        font-size: 0.18rem;
+
+        li {
+
+          span:nth-child(1):after,
+          span:nth-child(2):after,
+          span:nth-child(3):after {
+            content: '';
+            width: 1px;
+            height: 0.15rem;
+            background: rgba(90, 128, 251, 1);
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin-top: -0.075rem;
+          }
+        }
+      }
+
+      li {
+        height: 0.68rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        position: relative;
+        &:not(:last-child) {
+          &:after {
+            content: '';
+            position: absolute;
+            width: 5.9rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            height: 1px;
+            background: rgba(209, 220, 255, 1);
+          }
+        }
+
+        span {
+          display: inline-block;
+          height: 0.68rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          em.i-ellipsis {
+            display: block;
+            font-style: normal;
+            overflow: hidden;
+            /*超出部分隐藏*/
+            white-space: nowrap;
+            /*不换行*/
+            text-overflow: ellipsis;
+            /*超出部分文字以...显示*/
+            padding: 0 0.02rem;
+            &:not(.awardsName) {
+              line-height: .68rem;
+            }
+          }
+
+          &:nth-child(1) {
+            width: 14.75%;
+            flex: 0 0 14.75%;
+          }
+
+          &:nth-child(2) {
+            width: 21.68%;
+            flex: 0 0 21.68%;
+          }
+
+          &:nth-child(3) {
+            width: 27.41%;
+            flex: 0 0 27.41%;
+          }
+
+          &:nth-child(4) {
+            flex: 1;
+            line-height: 0.34rem;
+          }
+
+        }
+
+        .icon-dot {
+          display: block;
+          width: 0.35rem;
+          height: 0.35rem;
+          line-height: 0.35rem;
+          border-radius: 50%;
+          text-align: center;
+          font-style: normal;
+          margin: 0 auto;
+          font-size: 0.24rem;
+          color: #FF3C3C;
+
+          &.icon-dot4 {
+            background: #F4C64C;
+            color: #fff;
+          }
+
+          &.icon-dot5 {
+            background: #FF8439;
+            color: #fff;
+          }
+
+          &.icon-dot6 {
+            background: #FF3C3C;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .profit-footer {
+    height: 1rem;
+    line-height: 0.4rem;
+    font-size: 0.24rem;
+    font-weight: 400;
+    color: #7b370d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-check-profit {
+    display: block;
+    width: 2.64rem;
+    height: 0.46rem;
+    line-height: 0.46rem;
+    text-align: left;
+    text-indent: 0.19rem;
+    font-size: 0.24rem;
+    color: #8A3606;
+    background: url(../../imgs/btn_expand.png) no-repeat;
+    background-size: 100% 100%;
+    margin: 0.12rem auto;
+  }
+
+  &.full {
+    padding: .22rem 0 0 0;
+  }
+}
