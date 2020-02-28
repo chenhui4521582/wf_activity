@@ -214,6 +214,7 @@ export default {
         message: `+${this.score}积分`,
         duration: 2000
       })
+      this.active = 3
     },
     // 去抽盲盒
     toIndex () {
