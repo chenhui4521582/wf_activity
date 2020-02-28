@@ -104,7 +104,8 @@ export default {
   height: 0.3rem;
 }
 .wrapper {
-  background: url("./assets/bg.png") no-repeat 100% 100%;
+  background: url("./assets/bg.png") no-repeat;
+  background-size: 100% 100%;
   padding-bottom: 0.2rem;
   position: relative;
   .float {
