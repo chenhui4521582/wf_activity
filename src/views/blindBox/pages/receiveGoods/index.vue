@@ -14,8 +14,11 @@
           <img class="arrow" src="./assets/arrow.png">
         </div>
       </div>
-      <p class="total">共<span>{{this.goodsList.length}}件</span>商品</p>
-      <Goods v-for="(item,index) in goodsList" :key="index" :goods="item">
+      <div class="total">
+        <p>共<span>{{this.goodsList.length}}件</span>商品</p>
+        <p v-if="goodsList && goodsList.length < 2 && post.singlePostTimes" class="card-tip">有{{post.singlePostTimes }}张包邮卡可用</p>
+      </div>
+      <Goods :is-price="false" v-for="(item,index) in goodsList" :key="index" :goods="item">
         <p class="goods-time" slot="left">获奖时间：{{item.openTime }}</p>
         <div class="receive-price" slot="right">
           <p class="receive-price-amount">¥{{item.showAmount}}</p>
@@ -222,10 +225,15 @@ export default {
       }
     }
     .total {
+      display: flex;
+      justify-content: space-between;
       font-size: 0.24rem;
       color: #999;
       text-align: left;
-      padding: 0.3rem 0 0.2rem 0.3rem;
+      padding: 0.3rem 0.3rem;
+      .card-tip {
+        color: #FF4141;
+      }
       span {
         color: #d1ac42;
       }

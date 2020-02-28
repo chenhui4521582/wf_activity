@@ -23,7 +23,8 @@ export default {
   display: flex;
   border-bottom: 1px solid #eeeeee;
   img {
-    width: 1.66rem;;
+    width: 1.66rem;
+    height: 1.02rem;
   }
   .detail {
     flex: 1;

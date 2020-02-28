@@ -204,7 +204,7 @@ export default {
   .button {
     position: fixed;
     left: 1.95rem;
-    bottom: 0.9rem;
+    bottom: 0.45rem;
     width: 3.3rem;
     line-height: 0.8rem;
     text-align: center;
