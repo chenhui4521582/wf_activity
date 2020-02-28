@@ -12,7 +12,7 @@ export const sendStatus = {
   [sendStatusEnum.UNCLAIMED]: '未领取',
   [sendStatusEnum.WILLSHIPPED]: '待发货',
   [sendStatusEnum.SHIPPED]: '已发货',
-  [sendStatusEnum.RECOVER]: '已回收'
+  [sendStatusEnum.RECOVER]: '已兑换'
 }
 
 export const sendStatusMapper = MapperList(sendStatus)
