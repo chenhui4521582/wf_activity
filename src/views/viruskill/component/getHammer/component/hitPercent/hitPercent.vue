@@ -16,7 +16,7 @@
           <div class="hb-line">
             <img :src="require(`./images/icon${item.propType}.png`)" alt="">
           </div>
-          <div class="envelopes">{{item.awards}}个</div>
+          <div class="envelopes">{{item.awards}}个{{medicineInfo[item.propType-1]}}</div>
           <div class="btn btn-complete"
                :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}"
                v-if="item.status == 2">完成
@@ -46,7 +46,8 @@
         hbTestData: [],
         popType: 0,
         awardData: null,
-        showLoading: false
+        showLoading: false,
+        medicineInfo: ['药丸', '酒精', '疫苗']
       }
     },
     props: {
@@ -274,7 +275,7 @@
         }
       }
       .envelopes {
-        width: 0.59rem;
+        /*width: 0.59rem;*/
         height: 0.25rem;
         font-weight: 500;
         color: rgba(231, 70, 21, 1);

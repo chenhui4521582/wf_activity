@@ -33,8 +33,10 @@
           <div class="item">剩余病毒</div>
           <div class="item">
             <div class="progress-bar"
-                 :style="{width:(actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100 + '%'}"
-                 :class="{percent100:actInfoData.userInfo.totalVirusNum==actInfoData.userInfo.totalKillNum}"></div>
+                 :style="{width:((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2) + '%'}"
+                 :class="{percent100:actInfoData.userInfo.totalVirusNum==actInfoData.userInfo.totalKillNum}">
+            </div>
+            <div class="progress-bar-text">{{((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2) + '%'}}</div>
           </div>
         </div>
         <div class="alreadyKill">
@@ -658,6 +660,7 @@
             height: .22rem;
             background: rgba(252, 194, 171, 1);
             border-radius: 0 .11rem .11rem 0;
+            position: relative;
             .progress-bar {
               height: .22rem;
               background: rgba(26, 65, 232, 1);
@@ -665,6 +668,19 @@
               &.percent100 {
                 border-radius: 0 .11rem .11rem 0;
               }
+            }
+            .progress-bar-text{
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              margin: auto;
+              text-align: center;
+              line-height: .22rem;
+              font-size:.2rem;
+              font-weight:400;
+              color:rgba(255,255,255,1);
             }
           }
         }
