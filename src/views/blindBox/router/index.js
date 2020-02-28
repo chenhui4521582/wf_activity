@@ -24,6 +24,22 @@ const routes = [
         }
       },
       {
+        path: '/score',
+        name: 'Score',
+        component: () => import('../pages/score'),
+        meta: {
+          title: '积分'
+        }
+      },
+      {
+        path: '/scoreDetail',
+        name: 'ScoreDetail',
+        component: () => import('../pages/scoreDetail'),
+        meta: {
+          title: '积分明细'
+        }
+      },
+      {
         path: '/my',
         name: 'My',
         component: () => import('../pages/my'),

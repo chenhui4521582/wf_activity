@@ -32,7 +32,7 @@ export const phone = async ({
 }
 
 // 提现金叶子
-export const withdraw = async (amount) => {
-  const { data } = await $axios.post(`${HOST}/ops/invite/withdraw/${amount}`)
+export const withdraw = async () => {
+  const { data } = await $axios.post(`${HOST}/ops/invite/withdraw`)
   return data
 }

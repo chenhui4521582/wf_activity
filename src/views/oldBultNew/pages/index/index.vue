@@ -2,7 +2,7 @@
   <main v-if="userInfo"
     class="main">
     <section class="rule"
-      @click="show=true">
+      @click="showRule">
       玩法规则
     </section>
     <Rule @onClose="show=false"
@@ -101,6 +101,9 @@ export default {
   },
   methods: {
     async getGoldLeaf () {
+      GLOBALS.marchSetsPoint('A_H5PT0246002890', {
+        invited_number: this.userInfo.invitedNum
+      })
       if (!this.userInfo.withdrawAbleAmount) {
         this.$toast.show({
           message: '暂无可提现金叶子',
@@ -108,11 +111,17 @@ export default {
         })
         return
       }
-      const data = await withdraw(this.userInfo.withdrawAbleAmount)
+      const data = await withdraw()
       this.init()
       this.$toast.show({
         message: data.message,
         duration: 1000
+      })
+    },
+    showRule () {
+      this.show = true
+      GLOBALS.marchSetsPoint('A_H5PT0246002892', {
+        invited_number: this.userInfo.invitedNum
       })
     },
     async init () {
@@ -120,24 +129,28 @@ export default {
       this.userInfo = data.data
     },
     share () {
+      GLOBALS.marchSetsPoint('A_H5PT0246002891', {
+        invited_number: this.userInfo.invitedNum
+      })
       this.isShare = true
     },
     // IOS分享测试
     invite (type) {
       let that = this
       window.backShareStatue = function (res) {
+        // alert(JSON.stringify(res))
         if (GLOBALS.channel === 100031) {
           res = JSON.parse(res).shareStatue
         }
         that.$toast.show({
-          message: res === 1 ? '分享成功' : '分享失败',
+          message: res.Code == 1 ? '分享成功' : '分享失败',
           duration: 1500
         })
       }
       const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=100030`
       try {
         AppCall.shareContent(JSON.stringify({ url, title: document.title, content: '', type }))
-      } catch (e) {}
+      } catch (e) { }
     }
   },
   mounted () {

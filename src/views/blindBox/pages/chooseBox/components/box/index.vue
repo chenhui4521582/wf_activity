@@ -1,24 +1,42 @@
 <template>
   <section class="box-wrapper">
     <div class="box">
-      <div :class="{'on-change':isOnChange}" class="box__img--box">
+      <div :class="{'on-change':isOnChange}"
+        class="box__img--box">
         <div class="img-wrapper">
           <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
         </div>
-        <img class="box__img--goods" v-if="awardsImage" :src="awardsImage | imgFilter">
+        <img class="box__img--goods"
+          v-if="awardsImage"
+          :src="awardsImage | imgFilter">
       </div>
       <p v-if="awardsName">{{awardsName | textFilter}}</p>
-      <p class="awards-info" v-if="showAmount">价值：¥{{showAmount}}<span>数量：{{awardsNum}}</span></p>
+      <p class="awards-info"
+        v-if="showAmount">价值：¥{{showAmount}}<span>数量：{{awardsNum}}</span></p>
     </div>
-    <p @click="refresh" class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false" @confirm="onConfirm"
-      class="choose-button"><div v-html="buttonText"></div></MButton>
-    <MButton :button-style="buttonStyle" @confirm="bulkBuy" v-if="!isOpen" class="gold-buy">55元开3盒
+    <p @click="refresh"
+      class="refresh"><img src="./assets/refresh.png">换一盒</p>
+    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
+      @confirm="onConfirm"
+      class="choose-button">
+      <div v-html="buttonText"></div>
     </MButton>
-    <p v-if="userInfo && userInfo.leafsPay" @click="leafsBuy" class="leafs-buy">使用金叶子购买</p>
-    <VirtualDialog :show="isVirtual" source="detail" v-if="isVirtual" @close="isVirtual = false"
+    <MButton :button-style="buttonStyle"
+      @confirm="bulkBuy"
+      v-if="!isOpen"
+      class="gold-buy">55元开3盒
+    </MButton>
+    <p v-if="userInfo && userInfo.leafsPay"
+      @click="leafsBuy"
+      class="leafs-buy">使用金叶子购买</p>
+    <VirtualDialog :show="isVirtual"
+      source="detail"
+      v-if="isVirtual"
+      @close="isVirtual = false"
       @updateUserInfo="updateUserInfo" />
-    <Side-Bar @use="useCard" :user-info="userInfo" class="side-bar" />
+    <Side-Bar @use="useCard"
+      :user-info="userInfo"
+      class="side-bar" />
   </section>
 </template>
 
@@ -79,14 +97,20 @@ export default {
     // 开三盒购买
     async bulkBuy () {
       GLOBALS.marchSetsPoint('A_H5PT0225002850')
-       const {
-          data: { data: payInfo }
-        } = await PayPoint(1)
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
       Pay.toPay({ payInfo: payInfo[1] })
     },
     // 更新用户信息
     async updateUserInfo () {
       ({ data: { data: this.userInfo } } = await UserInfo())
+      if (this.userInfo.incrScore) {
+        this.$score.show({
+          message: `+${this.userInfo.incrScore}积分`,
+          duration: 2000
+        })
+      }
       if (this.userInfo && this.userInfo.openBoxTimes) {
         this.openBox()
       }
@@ -195,10 +219,10 @@ export default {
 
 <style lang="less" scoped>
 .leafs-buy {
-  padding-top: .28rem;
-  font-size: .3rem;
+  padding-top: 0.28rem;
+  font-size: 0.3rem;
   text-align: center;
-  background: linear-gradient(90deg,#DBBE6F,#FEE9B4);
+  background: linear-gradient(90deg, #dbbe6f, #fee9b4);
   -webkit-background-clip: text;
   font-weight: bold;
   color: transparent;
@@ -240,7 +264,7 @@ export default {
       font-size: 0.24rem;
       color: #fff;
       text-align: center;
-      padding-top: .2rem;
+      padding-top: 0.2rem;
       span {
         padding-left: 0.3rem;
       }
