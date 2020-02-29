@@ -16,7 +16,7 @@ export const moveInfo = async () => {
  * @return {Object} data
  */
 export const signIn = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL} /ops/api/user/move/signIn`)
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/user/move/signIn`)
   return data
 }
 /**
@@ -48,6 +48,6 @@ export const userMoveNum = async () => {
  * @return {Object} data
  */
 export const userMoveSend = async (value) => {
-  const { data } = await $axios.post(`${TRANS_API_BASE_URL}/trans/api/activity/userMoveSend`, { value: value })
+  const { data } = await $axios.post(`${TRANS_API_BASE_URL}/trans/api/activity/userMoveSend`, { value })
   return data
 }
