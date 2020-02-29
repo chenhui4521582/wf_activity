@@ -139,5 +139,24 @@ export default {
     return item.url +
       '?channel=' +
       channel
+  },
+  isIOS: function () {
+    let U = window.navigator.userAgent
+    return !(U.indexOf('Android') > -1 || U.indexOf('Adr') > -1)
+  },
+  isAndroid: function () {
+    let U = window.navigator.userAgent
+    return !U.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+  },
+  move (e) {
+    e.preventDefault()
+  },
+  ScrollNoMove () {
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('touchmove', this.move, { passive: false })
+  },
+  ScrollMove () {
+    document.body.style.overflow = null
+    document.removeEventListener('touchmove', this.move, { passive: false })
   }
 }
