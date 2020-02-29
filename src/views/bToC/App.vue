@@ -194,6 +194,7 @@ export default {
     buyGift (item) {
       if (this.isDDW && this.beginTime) {
         localStorage.setItem('payment', JSON.stringify(item))
+        localStorage.setItem('originDeffer', location.href)
         location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       } else {
         this.toDDW()
