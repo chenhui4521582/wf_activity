@@ -214,6 +214,11 @@ export default {
         this.openPop(4)
       } else if (code === 102) {
         this.openPop(3)
+      } else if (code === 101) {
+        this.$toast.show({
+          message: '操作频繁,请稍后重试',
+          duration: 2000
+        })
       }
     },
     takeFree (item) {
@@ -250,6 +255,7 @@ export default {
         case 0:
           location.href = 'https://wap.beeplaying.com/ddwdownload/'
           break
+        case 2:
         case 5:
           location.href = 'https://wap.beeplaying.com/ball/'
           break

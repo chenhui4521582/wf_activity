@@ -118,13 +118,13 @@ export default {
         case 0:
           return '去多多玩APP签到'
         case 2:
+        case 5:
+          return '去玩游戏'
         case 3:
         case 6:
           return '去购买礼包'
         case 4:
           return '再试一次'
-        case 5:
-          return '去玩游戏'
 
         default:
           break
