@@ -47,7 +47,7 @@
                 抽免单</div>
             </li>
           </ul>
-          <div v-if="!isDDW" class="sign-btn" @click="toDDW">
+          <div v-if="!isDDW" class="sign-btn" @click="toDDW(true)">
             去多多玩APP抽免单
           </div>
           <p class="other">每进行一次付费即可获得1次抽奖机会</p>
@@ -84,10 +84,14 @@ export default {
   },
   mounted () {
     this.init()
+    GLOBALS.marchSetsPoint('P_H5PT0249', { source_address: this.sourceAddress })// H5平台-现在用户引流活动-渠道活动页面加载完成
   },
   computed: {
     curChannel () {
       return localStorage.getItem('APP_CHANNEL') || utils.getUrlParam('channel')
+    },
+    sourceAddress () {
+      return utils.getUrlParam('from')
     },
     isDDW () { return this.curChannel === '100030' },
     isIOS () { return utils.isIOS() },
@@ -167,6 +171,7 @@ export default {
     },
     async sign () {
       if (this.isDDW && this.beginTime) {
+        GLOBALS.marchSetsPoint('A_H5PT0250002924')// H5平台-现在用户引流活动-C端活动承接页-立即签到点击
         if (this.todaySigned) {
           this.$toast.show({
             message: '请勿重复签到',
@@ -186,6 +191,7 @@ export default {
           })
         }
       } else {
+        GLOBALS.marchSetsPoint('A_H5PT0249002920')// H5平台-现在用户引流活动-渠道活动页-去多多玩APP签到点击
         this.toDDW()
       }
     },
@@ -218,6 +224,7 @@ export default {
       if (this.isDDW && this.beginTime) {
         if (item.num) {
           this.userMoveSend(item.grade)
+          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.grade })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
         } else {
           this.openPop(3)
         }
@@ -225,7 +232,10 @@ export default {
         this.toDDW()
       }
     },
-    toDDW () {
+    toDDW (type) {
+      if (type) {
+        GLOBALS.marchSetsPoint('A_H5PT0249002921')// H5平台-现在用户引流活动-渠道活动页-去多多玩APP抽免单点击
+      }
       if (this.isIOS) {
         this.openPop(2)
         return
