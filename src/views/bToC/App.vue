@@ -138,7 +138,8 @@ export default {
   },
   methods: {
     back () {
-      history.go(-1)
+      // eslint-disable-next-line no-undef
+      location.href = SDK.getBackUrl()
     },
     async init () {
       const res = await moveInfo()
@@ -436,7 +437,7 @@ li {
         li {
           .gift-icon {
             width: 1.64rem;
-            height: 1.96rem;
+            height: 2.16rem;
             &.gift-68 {
               .bg-center("./img/68.png");
             }
@@ -454,7 +455,7 @@ li {
             height: 0.6rem;
             line-height: 0.6rem;
             text-align: center;
-            margin: 0.16rem auto 0.4rem;
+            margin: 0.26rem auto 0.26rem;
             border-radius: 0.3rem;
             font-size: 0.32rem;
             font-weight: bold;
@@ -466,7 +467,7 @@ li {
         }
       }
       .sign-btn {
-        margin: 0.12rem auto 0;
+        margin: 0.08rem auto -0.12rem;
         .bg-center("./img/orange-btn-bg.png");
       }
       .other {
