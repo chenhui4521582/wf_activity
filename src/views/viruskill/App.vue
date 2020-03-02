@@ -33,12 +33,11 @@
           <div class="item">剩余病毒</div>
           <div class="item">
             <div class="progress-bar"
-                 :style="{width:((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2) + '%'}"
-                 :class="{percent100:actInfoData.userInfo.totalVirusNum==actInfoData.userInfo.totalKillNum}">
+                 :style="{width:percentValue}"
+                 :class="{percent100:actInfoData.userInfo.totalKillNum==0}">
             </div>
             <div class="progress-bar-text">
-              {{((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2)
-              + '%'}}
+              {{percentValue}}
             </div>
           </div>
         </div>
@@ -106,7 +105,8 @@
         virus: [],//病毒数组
         animateArr: [],//需要下移的病毒数组
         useVaccine: false,//使用疫苗
-        currentItem: null
+        currentItem: null,
+        percentValue:''
       }
     },
     components: {
@@ -222,6 +222,8 @@
             this.isEnd = false
             this.rulesExplain = data.beginDate + '~' + data.endDate
             this.countDown(data.countdown)
+            let {totalVirusNum,totalKillNum}=this.actInfoData.userInfo
+            this.percentValue=((totalVirusNum>=totalKillNum?(totalVirusNum-totalKillNum):0)/totalVirusNum*100).toFixed(2) + '%'
           } else {
             this.isEnd = true
             this.getUserAwardsTips()
