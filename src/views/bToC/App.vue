@@ -1,56 +1,59 @@
 <template>
-  <main class="b-to-c">
-    <article class="btn-wrapper">
-      <div class="back" @click="back">返回</div>
-      <div class="rule" @click="openPop(1)">规则</div>
-    </article>
-    <article class="activity-time">
-      <template v-if="beginTime&&endTime">
-        活动时间{{beginTime|timeFilter}}至{{endTime|timeFilter}}
-      </template>
-      <template v-else>
-        活动暂未开启
-      </template>
-    </article>
-    <article class="top-activity">
-      <ul class="sign-list">
-        <li v-for="(item,index) in signList" :key="index" :class="{signed:index<signNum}">
-          <div class="icon"></div>
-          <p class="leaf-num">{{item.amount}}</p>
-          <p class="sign-text">
-            <template v-if="index<signNum">
-              已签
-            </template>
-            <template v-else>
-              第{{item.sort}}天
-            </template>
-          </p>
-        </li>
-      </ul>
-      <div class="sign-btn" @click="sign()">
-        <template v-if="isDDW">立即签到</template>
-        <template v-else>去多多玩APP签到</template>
-      </div>
-      <p class="desc">活动期间，去多多玩APP或WAP站可领取签到奖励</p>
-    </article>
-    <article class="bottom-activity">
-      <p class="desc">活动期间购买礼包可在多多玩APP抽取免单机会</p>
-      <section class="gift-wrapper">
-        <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
-        <ul class="gift-list">
-          <li class="gift-item" v-for="(item,index) in giftList">
-            <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)"></div>
-            <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
-              @click.stop="takeFree(item)">
-              抽免单</div>
+  <main class="b-to-c-wrapper">
+    <div class="b-to-c">
+      <article class="btn-wrapper">
+        <div class="back" @click="back">返回</div>
+        <div class="rule" @click="openPop(1)">规则</div>
+      </article>
+      <article class="activity-time">
+        <template v-if="beginTime&&endTime">
+          活动时间{{beginTime|timeFilter}}至{{endTime|timeFilter}}
+        </template>
+        <template v-else>
+          活动暂未开启
+        </template>
+      </article>
+      <article class="top-activity">
+        <ul class="sign-list">
+          <li v-for="(item,index) in signList" :key="index" :class="{signed:index<signNum}">
+            <div class="icon"></div>
+            <p class="leaf-num">{{item.amount}}</p>
+            <p class="sign-text">
+              <template v-if="index<signNum">
+                已签
+              </template>
+              <template v-else>
+                第{{item.sort}}天
+              </template>
+            </p>
           </li>
         </ul>
-        <div v-if="!isDDW" class="sign-btn" @click="toDDW">
-          去多多玩APP抽免单
+        <div class="sign-btn" @click="sign()">
+          <template v-if="isDDW">立即签到</template>
+          <template v-else>去多多玩APP签到</template>
         </div>
-        <p class="other">每进行一次付费即可获得1次抽奖机会</p>
-      </section>
-    </article>
+        <p class="desc">活动期间，去多多玩APP或WAP站可领取签到奖励</p>
+      </article>
+      <article class="bottom-activity">
+        <p class="desc">活动期间购买礼包可在多多玩APP抽取免单机会</p>
+        <section class="gift-wrapper">
+          <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
+          <ul class="gift-list">
+            <li class="gift-item" v-for="(item,index) in giftList">
+              <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)">
+              </div>
+              <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
+                @click.stop="takeFree(item)">
+                抽免单</div>
+            </li>
+          </ul>
+          <div v-if="!isDDW" class="sign-btn" @click="toDDW">
+            去多多玩APP抽免单
+          </div>
+          <p class="other">每进行一次付费即可获得1次抽奖机会</p>
+        </section>
+      </article>
+    </div>
     <popup v-model="isShowPop" :type="popType" :begin-time="beginTime" :end-time="endTime"
       :leaf-num="leafNum" @on-close="closeCallback" @on-confirm="confirmCallback"></popup>
   </main>
@@ -107,27 +110,21 @@ export default {
           this.moveNumArr.forEach(item => {
             if (element.grade === item.grade) {
               element.num = item.num
-              beforelist.push(element)
             }
           })
         }
+        beforelist.push(element)
       })
-      if (beforelist.length <= 0) {
-        beforelist = arr
-      }
       beforelist.forEach(element => {
         if (this.bizList && this.bizList.length > 0) {
           this.bizList.forEach(item => {
             if (Number(element.grade) === item.price) {
               element = { ...element, ...item }
-              afterlist.push(element)
             }
           })
         }
+        afterlist.push(element)
       })
-      if (afterlist.length <= 0) {
-        afterlist = arr
-      }
       return afterlist
     }
   },
@@ -289,8 +286,15 @@ li {
   background-size: 100% 100%;
   background-image: url(@url);
 }
+.b-to-c-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-align: center;
+  -webkit-overflow-scrolling: touch;
+}
 .b-to-c {
-  min-height: 100vh;
   background-color: #3e1648;
   box-sizing: border-box;
   padding-top: 0.3rem;
@@ -300,7 +304,6 @@ li {
   .bg-top("./img/bg.png");
   font-size: 0.24rem;
   font-weight: 400;
-  text-align: center;
   .btn-wrapper {
     font-size: 0.3rem;
     font-weight: 400;
