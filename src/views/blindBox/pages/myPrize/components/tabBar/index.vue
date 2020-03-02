@@ -153,6 +153,7 @@ export default {
   mounted () {
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
+    if (active === 3)  GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
   },
   methods: {
@@ -171,8 +172,10 @@ export default {
     // 换积分
     async getScore (id) {
       this.id = id
+      GLOBALS.marchSetsPoint('A_H5PT0225002958')
       await CalcScore(this.id);
       ({ data: { data: this.score } } = await CalcScore(this.id))
+      GLOBALS.marchSetsPoint('A_H5PT0225002959')
       this.isExchange = true
     },
     /**
@@ -184,6 +187,7 @@ export default {
       if (index === 0) GLOBALS.marchSetsPoint('A_H5PT0225002572')
       if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')
       if (index === 2) GLOBALS.marchSetsPoint('A_H5PT0225002574')
+      if (index === 4) GLOBALS.marchSetsPoint('A_H5PT0225002962')
       this.getTabGoods()
     },
     // 复制成功
@@ -204,10 +208,12 @@ export default {
       this.show = false
     },
     onCancel () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002961')
       this.isExchange = false
     },
     // 立即兑换
     async onExchange () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002960')
       await Recycle(this.id)
       this.isExchange = false
       this.$score.show({

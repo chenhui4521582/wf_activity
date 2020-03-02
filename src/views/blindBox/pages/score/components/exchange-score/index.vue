@@ -48,18 +48,30 @@ export default {
       this.goodsScore = val
       this.id = id
       this.show = true
+      if (!this.isBalance) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002951')
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0225002954')
+      }
     },
     onClose () {
       this.show = false
     },
     onCancel () {
+      if (!this.isBalance) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002953')
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0225002956')
+      }
       this.show = false
     },
     async onConfirm () {
       this.show = false
       if (!this.isBalance) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002952')
         this.$eventBus.$emit('showRule', true)
       } else {
+        GLOBALS.marchSetsPoint('A_H5PT0225002955')
         const { data: { code, message } } = await Exchange(this.id)
         if (code === 200) {
           this.$toast.show({

@@ -68,7 +68,7 @@
             :type="scoreType" />
         </section>
       </article>
-      <article v-if="active===0 && minusList && minusList.length === 0"
+      <article v-if="active===0 && addScoreList && addScoreList.length === 0"
         align="center"
         class="default">
         <img src="../score/components/add-score/assets/icon.png"
@@ -76,7 +76,7 @@
         <p>暂无积分</p>
       </article>
     </article>
-    <div @click="viewGoods"
+    <div @click="viewGoods('button')"
       class="button">积分兑好礼</div>
     <Rule @viewGoods="viewGoods"
       @close="isRule=false"
@@ -95,7 +95,7 @@ export default {
   data () {
     return {
       addScoreList: null,
-      minusList: null,
+      minusList: [],
       userInfo: null,
       isRule: false,
       active: 0,
@@ -123,14 +123,19 @@ export default {
   },
   methods: {
     showRule () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002948')
       this.isRule = true
     },
     use () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002949')
       this.$router.push({
         name: 'Index'
       })
     },
-    viewGoods () {
+    viewGoods (val) {
+      if (val) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002950')
+      }
       this.$router.push({
         name: 'Score',
         query: {

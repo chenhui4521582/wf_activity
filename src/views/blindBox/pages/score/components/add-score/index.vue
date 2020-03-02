@@ -37,9 +37,11 @@ export default {
   },
   methods: {
     showRule () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002941')
       this.$eventBus.$emit('showRule', true)
     },
     toScoreDetail () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002942')
       this.$router.push({
         name: 'ScoreDetail'
       })

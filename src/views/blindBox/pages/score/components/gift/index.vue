@@ -9,7 +9,7 @@
       <p class="des">{{exchange.remark}}</p>
       <div class="handler">
         <p>{{exchange.score}}<span class="unit">积分</span></p>
-        <span @click="getGoods(exchange.score, exchange.id)"
+        <span @click="getGoods(exchange.score, exchange.id, exchange.name)"
           class="button">兑换</span>
       </div>
     </div>
@@ -21,7 +21,11 @@
 export default {
   props: ['exchange'],
   methods: {
-    async getGoods (score, id) {
+    async getGoods (score, id, name) {
+       GLOBALS.marchSetsPoint('A_H5PT0225002943', {
+         awards_id: id,
+         awards_name: name
+       })
       this.$emit('exchange', score, id)
     }
   }
