@@ -83,6 +83,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -159,6 +160,26 @@ export default {
         default:
           break
       }
+    },
+    popTypeText () {
+      switch (this.type) {
+        case 0:
+          return 'B端去多多玩App'
+        case 1:
+          return '活动规则'
+        case 2:
+          return '苹果手机不支持'
+        case 3:
+          return '没有机会'
+        case 4:
+          return '没抽中'
+        case 5:
+          return '没有资格'
+        case 6:
+          return '签到获得金叶子'
+        case 7:
+          return '抽奖获得免单'
+      }
     }
   },
   mounted () {
@@ -167,6 +188,7 @@ export default {
   methods: {
     confirm () {
       this.$emit('input', false)
+      GLOBALS.marchSetsPoint('A_H5PT0249002922', { awards_name: this.popTypeText })// H5平台-现在用户引流活动-弹窗确认按钮点击
       this.$emit('on-confirm')
     },
     close () {
@@ -176,6 +198,9 @@ export default {
   },
   watch: {
     value (val) {
+      if (val) {
+        GLOBALS.marchSetsPoint('A_H5PT0249002923', { awards_name: this.popTypeText }) // H5平台-现在用户引流活动-弹窗显示
+      }
       this.show = val
     },
     show (val) {
