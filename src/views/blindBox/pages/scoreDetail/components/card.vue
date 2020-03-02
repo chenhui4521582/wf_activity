@@ -22,6 +22,7 @@ export default {
 .card {
   display: flex;
   border-bottom: 1px solid #eeeeee;
+  align-items: center;
   img {
     width: 1.66rem;
     height: 1.02rem;
