@@ -1,5 +1,6 @@
 <template>
-  <section align="center">
+  <section class="wrapper"
+    align="center">
     <ul class="sign">
       <li v-for="(item, index) in signInInfo.list"
         :key="index"
@@ -51,13 +52,15 @@ export default {
   width: 2.8rem;
   margin-top: 0.2rem;
 }
-.sign {
-  display: flex;
+.wrapper {
   background: linear-gradient(90deg, #fbd890, #f7e5c2);
   padding: 0.28rem 0 0.2rem;
   border-radius: 0.16rem;
   width: 6.72rem;
   margin: 0 auto;
+}
+.sign {
+  display: flex;
   justify-content: center;
   .time-line {
     position: relative;
