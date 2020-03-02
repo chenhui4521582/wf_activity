@@ -36,7 +36,10 @@
                  :style="{width:((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2) + '%'}"
                  :class="{percent100:actInfoData.userInfo.totalVirusNum==actInfoData.userInfo.totalKillNum}">
             </div>
-            <div class="progress-bar-text">{{((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2) + '%'}}</div>
+            <div class="progress-bar-text">
+              {{((actInfoData.userInfo.totalVirusNum-actInfoData.userInfo.totalKillNum)/actInfoData.userInfo.totalVirusNum*100).toFixed(2)
+              + '%'}}
+            </div>
           </div>
         </div>
         <div class="alreadyKill">
@@ -63,7 +66,7 @@
              :wave-prize-info-type="wavePrizeInfoType" :rule-time="rulesExplain" :award-data="awardData"
              :awardList="awardList" :max-can-select-limit="maxCanSelectLimit" ref="comPop" :jinbinum="jinbinum"
              :myRank="myRank"
-             @close="popType=0" @gotowavedirect="gotowavedirect" @opengame="showPop(5)"></com-pop>
+             @close="popType=0" @gotowavedirect="gotowavedirect" @opengame="showPop(5)" @gotokill="$refs.dropDown.close()"></com-pop>
     <loading v-show="showLoading" :showBar="false"></loading>
   </div>
 </template>
@@ -246,10 +249,10 @@
           this.$refs.comPop.showPop()
         })
       },
-      async gotokill(item,isgotokill) {
-        if(!isgotokill){
-          let points=['A_H5PT0248002905','A_H5PT0248002906','A_H5PT0248002907']
-          GLOBALS.marchSetsPoint(points[item.propType-1])
+      async gotokill(item, isgotokill) {
+        if (!isgotokill) {
+          let points = ['A_H5PT0248002905', 'A_H5PT0248002906', 'A_H5PT0248002907']
+          GLOBALS.marchSetsPoint(points[item.propType - 1])
         }
         this.currentItem = item
         if (item.remnantNum == 0) {
@@ -264,7 +267,7 @@
               //需要移动位置的病毒INDEX
               let killIndex1 = parseInt(this.killIndex % 10); // 个位数
               let killIndex0 = parseInt((this.killIndex % 100) / 10);  // 十位数
-              let arr=[]
+              let arr = []
               for (let i = 0; i < killIndex0; i++) {
                 this.animateArr.push((i || '') + '' + killIndex1)//需要下移的INDEX
                 arr.push(this.virus[parseInt((i || '') + '' + killIndex1)])
@@ -344,7 +347,8 @@
         }
       },
       async gotowavedirect() {
-        this.gotokill(this.currentItem,true)
+        let item = this.actInfoData.userInfo.userPropList.filter(item => item.propType == this.currentItem.propType)[0]
+        item && this.gotokill(item, true)
       },
       gotowavepop({item, popType, wavePrizeInfoType, maxCanSelectLimit, awardData}) {
         this.awardsLevelItem = item
@@ -669,7 +673,7 @@
                 border-radius: 0 .11rem .11rem 0;
               }
             }
-            .progress-bar-text{
+            .progress-bar-text {
               position: absolute;
               top: 0;
               bottom: 0;
@@ -678,9 +682,9 @@
               margin: auto;
               text-align: center;
               line-height: .22rem;
-              font-size:.2rem;
-              font-weight:400;
-              color:rgba(255,255,255,1);
+              font-size: .2rem;
+              font-weight: 400;
+              color: rgba(255, 255, 255, 1);
             }
           }
         }
