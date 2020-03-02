@@ -51,8 +51,8 @@
         <p class="other">每进行一次付费即可获得1次抽奖机会</p>
       </section>
     </article>
-    <popup v-model="isShowPop" :type="popType" :leaf-num="leafNum" @on-close="closeCallback"
-      @on-confirm="confirmCallback"></popup>
+    <popup v-model="isShowPop" :type="popType" :begin-time="beginTime" :end-time="endTime"
+      :leaf-num="leafNum" @on-close="closeCallback" @on-confirm="confirmCallback"></popup>
   </main>
 </template>
 <script>
