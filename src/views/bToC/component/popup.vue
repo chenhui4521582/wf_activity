@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import utils from '@/common/js/utils'
 export default {
   name: '',
   components: {
@@ -181,11 +180,6 @@ export default {
     },
     show (val) {
       this.$emit('input', val)
-      if (val) {
-        utils.ScrollNoMove()
-      } else {
-        utils.ScrollMove()
-      }
     }
   }
 }
