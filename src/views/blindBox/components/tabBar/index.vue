@@ -82,10 +82,12 @@ export default {
      */
     changeBar (item, index) {
       this.active = index
-      if (index) {
+      if (index === 2) {
         GLOBALS.marchSetsPoint('A_H5PT0225002545') // H5平台-盲盒页面-底部我的导航栏点击
-      } else {
+      } else if (index === 0) {
         GLOBALS.marchSetsPoint('A_H5PT0225002546') // H5平台-盲盒页面-底部盲盒导航栏点击
+      } else if (index === 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002937') // H5平台-盲盒页面-底部积分/签到点击
       }
       this.$router.push({ name: item.name })
     }

@@ -68,7 +68,7 @@
             :type="scoreType" />
         </section>
       </article>
-      <article v-if="active===0 && minusList && minusList.length === 0"
+      <article v-if="active===0 && addScoreList && addScoreList.length === 0"
         align="center"
         class="default">
         <img src="../score/components/add-score/assets/icon.png"
@@ -76,7 +76,7 @@
         <p>暂无积分</p>
       </article>
     </article>
-    <div @click="viewGoods"
+    <div @click="viewGoods('button')"
       class="button">积分兑好礼</div>
     <Rule @viewGoods="viewGoods"
       @close="isRule=false"
@@ -95,7 +95,7 @@ export default {
   data () {
     return {
       addScoreList: null,
-      minusList: null,
+      minusList: [],
       userInfo: null,
       isRule: false,
       active: 0,
@@ -123,14 +123,19 @@ export default {
   },
   methods: {
     showRule () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002948')
       this.isRule = true
     },
     use () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002949')
       this.$router.push({
         name: 'Index'
       })
     },
-    viewGoods () {
+    viewGoods (val) {
+      if (val) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002950')
+      }
       this.$router.push({
         name: 'Score',
         query: {
@@ -140,13 +145,24 @@ export default {
     },
     handleTabs (index) {
       this.active = index
+      this.$nextTick(() => {
+        if (index === 0) {
+          GLOBALS.marchSetsPoint('A_H5PT0225002957')
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0225002947')
+        }
+      })
     }
   },
   async mounted () {
     ({ data: { data: this.addScoreList } } = await AddList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.minusList } } = await MinusList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.userInfo } } = await UserInfo())
-    if (this.$route.query.active) this.active = Number(this.$route.query.active)
+    if (this.$route.query.active) {
+      this.active = Number(this.$route.query.active)
+      if (this.active === 0) GLOBALS.marchSetsPoint('A_H5PT0225002957')
+      else GLOBALS.marchSetsPoint('A_H5PT0225002947')
+    }
   },
   components: {
     NavBar,

@@ -38,6 +38,7 @@ import ExchangeScore from './components/exchange-score'
 
 export default {
   data () {
+    const vm = this
     return {
       options: {
         autoplay: {
@@ -46,7 +47,13 @@ export default {
         },
         loop: true,
         watchOverflow: true,
-        speed: 300
+        speed: 300,
+        on: {
+          click: function () {
+            const realIndex = this.realIndex
+            vm.detail(vm.banners[realIndex])
+          }
+        }
       },
       banners: null,
       scoreInfo: null,
@@ -70,9 +77,16 @@ export default {
     },
     update () {
       this.init()
+    },
+    detail (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0225002940', {
+        awards_id: item.id,
+        awards_name: item.name
+      })
     }
   },
   async mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002936')
     await this.init()
     if (this.$route.query.position) {
       this.setPosition()

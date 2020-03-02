@@ -60,9 +60,11 @@ export default {
   },
   methods: {
     showRule () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002938')
       this.isRule = true
     },
     scoreRecord () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002939')
       this.$router.push({
         name: 'ScoreDetail',
         query: {

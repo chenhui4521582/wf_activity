@@ -24,14 +24,19 @@ export default {
   components: {
     Dialog
   },
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225002944')
+  },
   props: ['show'],
   methods: {
     open () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002946')
       this.$router.push({
         name: 'BlindBox'
       })
     },
     viewGoods () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002945')
       this.$emit('close')
       this.$emit('viewGoods')
     }

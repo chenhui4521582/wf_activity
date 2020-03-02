@@ -30,6 +30,7 @@ export default {
   methods: {
     async signIn () {
       if (!this.signInInfo.todayState) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002963')
         const { data: { data } } = await SignIn()
         this.$score.show({
           message: `+${data}积分`,
