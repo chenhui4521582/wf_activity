@@ -65,6 +65,15 @@
               购买礼包更能抽取免单机会
             </p>
           </template>
+          <template v-if="type===7">
+            <div class="img">
+              <img src="../img/coupon-icon.png" alt="">
+            </div>
+            <p class="text">
+              免单奖励将按照金叶子的方式发放<br>
+              免单金额为您最近1次购买礼包等额金叶子
+            </p>
+          </template>
         </div>
         <div v-if="btnText" class="btn" @click="confirm">{{btnText}}</div>
       </div>
@@ -74,7 +83,7 @@
 </template>
 
 <script>
-import utils from '@/common/js/utils'
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -127,6 +136,8 @@ export default {
           return '很遗憾! !'
         case 6:
           return '恭喜您获得'
+        case 7:
+          return '恭喜您抽中免单奖励'
 
         default:
           break
@@ -141,12 +152,33 @@ export default {
           return '去玩游戏'
         case 3:
         case 6:
+        case 7:
           return '去购买礼包'
         case 4:
           return '再试一次'
 
         default:
           break
+      }
+    },
+    popTypeText () {
+      switch (this.type) {
+        case 0:
+          return 'B端去多多玩App'
+        case 1:
+          return '活动规则'
+        case 2:
+          return '苹果手机不支持'
+        case 3:
+          return '没有机会'
+        case 4:
+          return '没抽中'
+        case 5:
+          return '没有资格'
+        case 6:
+          return '签到获得金叶子'
+        case 7:
+          return '抽奖获得免单'
       }
     }
   },
@@ -156,6 +188,7 @@ export default {
   methods: {
     confirm () {
       this.$emit('input', false)
+      GLOBALS.marchSetsPoint('A_H5PT0249002922', { awards_name: this.popTypeText })// H5平台-现在用户引流活动-弹窗确认按钮点击
       this.$emit('on-confirm')
     },
     close () {
@@ -165,15 +198,13 @@ export default {
   },
   watch: {
     value (val) {
+      if (val) {
+        GLOBALS.marchSetsPoint('A_H5PT0249002923', { awards_name: this.popTypeText }) // H5平台-现在用户引流活动-弹窗显示
+      }
       this.show = val
     },
     show (val) {
       this.$emit('input', val)
-      if (val) {
-        utils.ScrollNoMove()
-      } else {
-        utils.ScrollMove()
-      }
     }
   }
 }
@@ -228,7 +259,7 @@ li {
       height: 7.14rem;
       .bg-center("../img/pop-bg.png");
       box-sizing: border-box;
-      padding: 0.5rem;
+      padding: 0.5rem 0;
       position: relative;
       overflow: hidden;
       -webkit-overflow-scrolling: touch;
@@ -280,6 +311,7 @@ li {
         height: 4.84rem;
         overflow-x: hidden;
         overflow-y: scroll;
+        padding: 0 0.5rem;
         .text {
           text-align: justify;
         }
@@ -313,6 +345,14 @@ li {
           color: #8c275c;
           font-size: 0.36rem;
           margin-bottom: 0.4rem;
+        }
+      }
+      .type-7 {
+        .img {
+          width: 2.32rem;
+          height: 2.28rem;
+          margin-top: 1.6rem;
+          margin-bottom: 0.32rem;
         }
       }
     }

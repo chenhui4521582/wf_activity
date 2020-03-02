@@ -1,56 +1,59 @@
 <template>
-  <main class="b-to-c">
-    <article class="btn-wrapper">
-      <div class="back" @click="back">返回</div>
-      <div class="rule" @click="openPop(1)">规则</div>
-    </article>
-    <article class="activity-time">
-      <template v-if="beginTime&&endTime">
-        活动时间{{beginTime|timeFilter}}至{{endTime|timeFilter}}
-      </template>
-      <template v-else>
-        活动暂未开启
-      </template>
-    </article>
-    <article class="top-activity">
-      <ul class="sign-list">
-        <li v-for="(item,index) in signList" :key="index" :class="{signed:index<signNum}">
-          <div class="icon"></div>
-          <p class="leaf-num">{{item.amount}}</p>
-          <p class="sign-text">
-            <template v-if="index<signNum">
-              已签
-            </template>
-            <template v-else>
-              第{{item.sort}}天
-            </template>
-          </p>
-        </li>
-      </ul>
-      <div class="sign-btn" @click="sign()">
-        <template v-if="isDDW">立即签到</template>
-        <template v-else>去多多玩APP签到</template>
-      </div>
-      <p class="desc">活动期间，去多多玩APP或WAP站可领取签到奖励</p>
-    </article>
-    <article class="bottom-activity">
-      <p class="desc">活动期间购买礼包可在多多玩APP抽取免单机会</p>
-      <section class="gift-wrapper">
-        <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
-        <ul class="gift-list">
-          <li class="gift-item" v-for="(item,index) in giftList">
-            <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)"></div>
-            <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
-              @click.stop="takeFree(item)">
-              抽免单</div>
+  <main class="b-to-c-wrapper">
+    <div class="b-to-c">
+      <article class="btn-wrapper">
+        <div class="back" @click="back">返回</div>
+        <div class="rule" @click="openPop(1)">规则</div>
+      </article>
+      <article class="activity-time">
+        <template v-if="beginTime&&endTime">
+          活动时间{{beginTime|timeFilter}}至{{endTime|timeFilter}}
+        </template>
+        <template v-else>
+          活动暂未开启
+        </template>
+      </article>
+      <article class="top-activity">
+        <ul class="sign-list">
+          <li v-for="(item,index) in signList" :key="index" :class="{signed:index<signNum}">
+            <div class="icon"></div>
+            <p class="leaf-num">{{item.amount}}</p>
+            <p class="sign-text">
+              <template v-if="index<signNum">
+                已签
+              </template>
+              <template v-else>
+                第{{item.sort}}天
+              </template>
+            </p>
           </li>
         </ul>
-        <div v-if="!isDDW" class="sign-btn" @click="toDDW">
-          去多多玩APP抽免单
+        <div class="sign-btn" @click="sign()">
+          <template v-if="isDDW">立即签到</template>
+          <template v-else>去多多玩APP签到</template>
         </div>
-        <p class="other">每进行一次付费即可获得1次抽奖机会</p>
-      </section>
-    </article>
+        <p class="desc">活动期间，去多多玩APP或WAP站可领取签到奖励</p>
+      </article>
+      <article class="bottom-activity">
+        <p class="desc">活动期间购买礼包可在多多玩APP抽取免单机会</p>
+        <section class="gift-wrapper">
+          <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
+          <ul class="gift-list">
+            <li class="gift-item" v-for="(item,index) in giftList">
+              <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)">
+              </div>
+              <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
+                @click.stop="takeFree(item)">
+                抽免单</div>
+            </li>
+          </ul>
+          <div v-if="!isDDW" class="sign-btn" @click="toDDW(true)">
+            去多多玩APP抽免单
+          </div>
+          <p class="other">每进行一次付费即可获得1次抽奖机会</p>
+        </section>
+      </article>
+    </div>
     <popup v-model="isShowPop" :type="popType" :begin-time="beginTime" :end-time="endTime"
       :leaf-num="leafNum" @on-close="closeCallback" @on-confirm="confirmCallback"></popup>
   </main>
@@ -81,10 +84,14 @@ export default {
   },
   mounted () {
     this.init()
+    GLOBALS.marchSetsPoint('P_H5PT0249', { source_address: this.sourceAddress })// H5平台-现在用户引流活动-渠道活动页面加载完成
   },
   computed: {
     curChannel () {
       return localStorage.getItem('APP_CHANNEL') || utils.getUrlParam('channel')
+    },
+    sourceAddress () {
+      return utils.getUrlParam('from')
     },
     isDDW () { return this.curChannel === '100030' },
     isIOS () { return utils.isIOS() },
@@ -107,27 +114,21 @@ export default {
           this.moveNumArr.forEach(item => {
             if (element.grade === item.grade) {
               element.num = item.num
-              beforelist.push(element)
             }
           })
         }
+        beforelist.push(element)
       })
-      if (beforelist.length <= 0) {
-        beforelist = arr
-      }
       beforelist.forEach(element => {
         if (this.bizList && this.bizList.length > 0) {
           this.bizList.forEach(item => {
             if (Number(element.grade) === item.price) {
               element = { ...element, ...item }
-              afterlist.push(element)
             }
           })
         }
+        afterlist.push(element)
       })
-      if (afterlist.length <= 0) {
-        afterlist = arr
-      }
       return afterlist
     }
   },
@@ -138,7 +139,8 @@ export default {
   },
   methods: {
     back () {
-      history.go(-1)
+      // eslint-disable-next-line no-undef
+      location.href = SDK.getBackUrl()
     },
     async init () {
       const res = await moveInfo()
@@ -169,6 +171,7 @@ export default {
     },
     async sign () {
       if (this.isDDW && this.beginTime) {
+        GLOBALS.marchSetsPoint('A_H5PT0250002924')// H5平台-现在用户引流活动-C端活动承接页-立即签到点击
         if (this.todaySigned) {
           this.$toast.show({
             message: '请勿重复签到',
@@ -188,6 +191,7 @@ export default {
           })
         }
       } else {
+        GLOBALS.marchSetsPoint('A_H5PT0249002920')// H5平台-现在用户引流活动-渠道活动页-去多多玩APP签到点击
         this.toDDW()
       }
     },
@@ -204,12 +208,7 @@ export default {
       const res = await userMoveSend(value)
       let code = _get(res, 'code', 0)
       if (code === 200) {
-        this.leafNum = _get(res, 'data.awardNum', 0)
-        if (this.leafNum) {
-          this.openPop(6)
-        } else {
-          this.openPop(4)
-        }
+        this.openPop(7)
       } else if (code === 104) {
         this.openPop(4)
       } else if (code === 102) {
@@ -225,6 +224,7 @@ export default {
       if (this.isDDW && this.beginTime) {
         if (item.num) {
           this.userMoveSend(item.grade)
+          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.grade })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
         } else {
           this.openPop(3)
         }
@@ -232,7 +232,10 @@ export default {
         this.toDDW()
       }
     },
-    toDDW () {
+    toDDW (type) {
+      if (type) {
+        GLOBALS.marchSetsPoint('A_H5PT0249002921')// H5平台-现在用户引流活动-渠道活动页-去多多玩APP抽免单点击
+      }
       if (this.isIOS) {
         this.openPop(2)
         return
@@ -293,8 +296,15 @@ li {
   background-size: 100% 100%;
   background-image: url(@url);
 }
+.b-to-c-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-align: center;
+  -webkit-overflow-scrolling: touch;
+}
 .b-to-c {
-  min-height: 100vh;
   background-color: #3e1648;
   box-sizing: border-box;
   padding-top: 0.3rem;
@@ -304,7 +314,6 @@ li {
   .bg-top("./img/bg.png");
   font-size: 0.24rem;
   font-weight: 400;
-  text-align: center;
   .btn-wrapper {
     font-size: 0.3rem;
     font-weight: 400;
@@ -436,7 +445,7 @@ li {
         li {
           .gift-icon {
             width: 1.64rem;
-            height: 1.96rem;
+            height: 2.16rem;
             &.gift-68 {
               .bg-center("./img/68.png");
             }
@@ -454,7 +463,7 @@ li {
             height: 0.6rem;
             line-height: 0.6rem;
             text-align: center;
-            margin: 0.16rem auto 0.4rem;
+            margin: 0.26rem auto 0.26rem;
             border-radius: 0.3rem;
             font-size: 0.32rem;
             font-weight: bold;
@@ -466,7 +475,7 @@ li {
         }
       }
       .sign-btn {
-        margin: 0.12rem auto 0;
+        margin: 0.08rem auto -0.12rem;
         .bg-center("./img/orange-btn-bg.png");
       }
       .other {
