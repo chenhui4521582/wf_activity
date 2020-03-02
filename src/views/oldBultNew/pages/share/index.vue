@@ -103,6 +103,11 @@ export default {
       if (code === 102) {
         this.isNew = false
         this.show = true
+      } else if (code === 101) {
+        this.$toast.show({
+          message: '活动已过期',
+          duration: 2000
+        })
       } else {
         this.isNew = true
         this.show = true
