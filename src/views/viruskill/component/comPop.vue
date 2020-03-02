@@ -122,7 +122,7 @@
                   </div>
                   <p style="font-size:.36rem;font-weight:bold;color:#014D9D;">{{jinbinum.incrNum|
                     filterPrice}}个{{medicineInfo[jinbinum.propType-1]}}</p>
-                  <div class="btn btn_yellow" @click="close">去消灭病毒</div>
+                  <div class="btn btn_yellow" @click="gotokill">去消灭病毒</div>
                 </template>
               </template>
               <!--攻略-->
@@ -390,6 +390,10 @@
       },
       move(e) {
         e.preventDefault()
+      },
+      gotokill(){
+        this.isShowPop = false
+        this.$emit('gotokill')
       }
     },
     watch: {
