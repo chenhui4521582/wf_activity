@@ -145,13 +145,24 @@ export default {
     },
     handleTabs (index) {
       this.active = index
+      this.$nextTick(() => {
+        if (index === 0) {
+          GLOBALS.marchSetsPoint('A_H5PT0225002957')
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0225002947')
+        }
+      })
     }
   },
   async mounted () {
     ({ data: { data: this.addScoreList } } = await AddList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.minusList } } = await MinusList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.userInfo } } = await UserInfo())
-    if (this.$route.query.active) this.active = Number(this.$route.query.active)
+    if (this.$route.query.active) {
+      this.active = Number(this.$route.query.active)
+      if (this.active === 0) GLOBALS.marchSetsPoint('A_H5PT0225002957')
+      else GLOBALS.marchSetsPoint('A_H5PT0225002947')
+    }
   },
   components: {
     NavBar,
