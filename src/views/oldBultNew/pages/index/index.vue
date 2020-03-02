@@ -1,14 +1,9 @@
 <template>
-  <main v-if="userInfo"
-    class="main">
-    <section class="rule"
-      @click="showRule">
+  <main v-if="userInfo" class="main">
+    <section class="rule" @click="showRule">
       玩法规则
     </section>
-    <Rule @onClose="show=false"
-      :begin="userInfo.beginDate"
-      :end="userInfo.endDate"
-      :show="show" />
+    <Rule @onClose="show=false" :begin="userInfo.beginDate" :end="userInfo.endDate" :show="show" />
     <header class="header">
       <section class="preview">
         <div>
@@ -29,53 +24,40 @@
           <p class="count">
             {{userInfo.withdrawAbleAmount}}
           </p>
-          <p class="button"
-            @click="getGoldLeaf">去提现</p>
+          <p class="button" @click="getGoldLeaf">去提现</p>
         </div>
       </section>
     </header>
     <article class="content">
       <section class="title">
-        <img src="../../assets/title-left.png"
-          alt="">
+        <img src="../../assets/title-left.png" alt="">
         <div>
           <p>邀请好友加入平台</p>
           <p>好友进行充值即可获得好友充值金额返利</p>
         </div>
-        <img src="../../assets/title-left.png"
-          alt="">
+        <img src="../../assets/title-left.png" alt="">
       </section>
       <section class="wrapper">
-        <Task :info="item"
-          v-for="(item,index) in userInfo.configList"
-          :key="index" />
+        <Task :info="item" v-for="(item,index) in userInfo.configList" :key="index" />
         <Target :price="userInfo.taskTotalAmount" />
       </section>
     </article>
     <Drawer :show="isShare">
       <section class="share-content">
         <div @click="invite('1')">
-          <img src="./assets/friend.png"
-            alt="">
+          <img src="./assets/friend.png" alt="">
           <p>朋友圈</p>
         </div>
         <div @click="invite('0')">
-          <img src="./assets/wechat.png"
-            alt="">
+          <img src="./assets/wechat.png" alt="">
           <p>微信好友</p>
         </div>
       </section>
-      <div @click="isShare = false"
-        class="cancel">取消</div>
+      <div @click="isShare = false" class="cancel">取消</div>
     </Drawer>
-    <footer @click="share"
-      class="footer">
-      <img class="arrow left"
-        src="../../assets/arrow.png"
-        alt="">
-      <img class="arrow right"
-        src="../../assets/arrow.png"
-        alt="">
+    <footer @click="share" class="footer">
+      <img class="arrow left" src="../../assets/arrow.png" alt="">
+      <img class="arrow right" src="../../assets/arrow.png" alt="">
     </footer>
   </main>
 </template>
@@ -138,7 +120,6 @@ export default {
     invite (type) {
       let that = this
       window.backShareStatue = function (res) {
-        // alert(JSON.stringify(res))
         if (GLOBALS.channel === 100031) {
           res = JSON.parse(res).shareStatue
         }
