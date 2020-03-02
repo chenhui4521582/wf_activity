@@ -205,12 +205,7 @@ export default {
       const res = await userMoveSend(value)
       let code = _get(res, 'code', 0)
       if (code === 200) {
-        this.leafNum = _get(res, 'data.awardNum', 0)
-        if (this.leafNum) {
-          this.openPop(6)
-        } else {
-          this.openPop(4)
-        }
+        this.openPop(7)
       } else if (code === 104) {
         this.openPop(4)
       } else if (code === 102) {
