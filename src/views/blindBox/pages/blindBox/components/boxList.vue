@@ -25,12 +25,14 @@
       </ul>
     </section>
     <article class="botton-wrapper">
+
       <!-- 非年货节按钮 begin-->
       <section class="btn-container btn-container-top">
         <m-button @confirm="buyOne">{{
           isOpenBox ? `立即开盒` : "20元开一盒"
         }}<span v-if="isOpenBox"
             class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
+        <img v-if="isCouponTip" class="coupon-tip" src="../assets/tip.png" alt="">
         <div class="change-btn change-btn-left"
           @click="showRule">
           <img class="icon"
@@ -152,7 +154,8 @@ export default {
       isHasShelf: false,
       isRefresh: false,
       refreshTimer: null,
-      boxTimer: null
+      boxTimer: null,
+      isCouponTip: false
     }
   },
   filters: {
@@ -381,6 +384,12 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+  .coupon-tip {
+    width: 1.56rem;
+    position: absolute;
+    left: 4.24rem;
+    top: -0.2rem;
+  }
   .rule-content {
     font-size: 0.24rem;
     font-weight: 500;
