@@ -1,6 +1,6 @@
 <template>
   <section class="box-list-wrapper">
-    <section class="box-list-container">
+    <section class="box-list-container activity">
       <ul class="box-list"
         :class="{ 'all-has-shelf': isRefresh }"
         v-for="(items, key) in boxList"
@@ -27,30 +27,36 @@
     <article class="botton-wrapper">
 
       <!-- 非年货节按钮 begin-->
-      <section class="btn-container btn-container-top">
+      <section class="btn-container btn-container-top activity">
         <m-button @confirm="buyOne">{{
           isOpenBox ? `立即开盒` : "20元开一盒"
         }}<span v-if="isOpenBox"
             class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
         <img v-if="isCouponTip" class="coupon-tip" src="../assets/tip.png" alt="">
-        <div class="change-btn change-btn-left"
+        <div class="change-btn change-btn-left activity"
           @click="showRule">
-          <img class="icon"
+          <!-- <img class="icon"
             src="../assets/rule.png"
+            alt=""> -->
+          <img class="icon"
+            src="../activity/rule.png"
             alt="">
           活动规则
         </div>
-        <div class="change-btn change-btn-right"
+        <div class="change-btn change-btn-right activity"
           @click="changeAll">
-          <img class="icon"
+          <!-- <img class="icon"
             src="../assets/refresh.png"
+            alt=""> -->
+          <img class="icon"
+            src="../activity/refresh.png"
             alt="">
           换一批
         </div>
       </section>
-      <section class="btn-container">
+      <section class="btn-container activity">
         <m-button v-if="!isOpenBox"
-          :button-style="buttonStyle"
+          :button-style="activityButtonStyle2"
           @confirm="bulkBuy">55元开3盒</m-button>
         <p class="leaf-buy"
           v-if="userInfo && userInfo.leafsPay"
@@ -137,6 +143,19 @@ export default {
     return {
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
+        color: '#fff',
+        fontSize: '0.34rem',
+        marginTop: '0.2rem'
+      },
+      activityButtonStyle1: {
+        background: '',
+        color: '#fff',
+        fontSize: '0.34rem',
+        marginTop: '0.2rem'
+      },
+      activityButtonStyle2: {
+        background: `url('+ ../activity/button1.png +') no-repeat`,
+        backgroundSize: '100% 100%',
         color: '#fff',
         fontSize: '0.34rem',
         marginTop: '0.2rem'
@@ -384,6 +403,9 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+  .botton-wrapper {
+    background: #FEF2DE;
+  }
   .coupon-tip {
     width: 1.56rem;
     position: absolute;
@@ -425,6 +447,9 @@ export default {
       background: #1b1f29 url(../assets/list-bottom-bg.png) no-repeat center
         center / 100% 100%;
       font-size: 0;
+    }
+    &.activity::after {
+      background-color: #FEF2DE;
     }
   }
   .box-list {
@@ -503,6 +528,15 @@ export default {
   .btn-container {
     position: relative;
     background: #1b1f29;
+    &.activity {
+      background:#FEF2DE;
+      .leaf-buy {
+        color:#E9355A;
+      }
+      .buy-tip {
+        color: #7B4913;
+      }
+    }
     // padding: 0.16rem;
     .times {
       padding-left: 0.2rem;
@@ -554,6 +588,9 @@ export default {
       font-size: 0.26rem;
       display: flex;
       align-items: center;
+      &.activity {
+        color:#E9355A;
+      }
       .icon {
         width: 0.34rem;
         margin-right: 0.1rem;
