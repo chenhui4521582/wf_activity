@@ -7,6 +7,9 @@
         @click="changeBar(item,index)"
         v-for="(item,index) in bar"
         :key="item.name">
+        <img v-if="item.markIcon && index!==active"
+          :src="item.markIcon"
+          class="mark">
         <img :src="index===active?item.activeIcon:item.icon">
         <p>{{item.label}}</p>
       </div>
@@ -15,6 +18,8 @@
 </template>
 
 <script>
+import { SignInState } from '../../apis/score'
+
 export default {
   data () {
     return {
@@ -25,6 +30,39 @@ export default {
           activeIcon: require('./assets/box-active.png'),
           label: '盲盒',
           name: 'BlindBox'
+        },
+        {
+          icon: require('./assets/sign.png'),
+          activeIcon: require('./assets/sign-active.png'),
+          markIcon: require('./assets/sign-mark.png'),
+          label: '签到',
+          name: 'Score'
+        },
+        {
+          icon: require('./assets/my.png'),
+          activeIcon: require('./assets/my-active.png'),
+          label: '我的',
+          name: 'My'
+        }
+      ]
+    }
+  },
+  async mounted () {
+    const { data: { data } } = await SignInState()
+    if (data) {
+      this.bar = [
+        {
+          icon: require('./assets/box.png'),
+          activeIcon: require('./assets/box-active.png'),
+          label: '盲盒',
+          name: 'BlindBox'
+        },
+        {
+          icon: require('./assets/score.png'),
+          activeIcon: require('./assets/score-active.png'),
+          markIcon: require('./assets/score-mark.png'),
+          label: '积分',
+          name: 'Score'
         },
         {
           icon: require('./assets/my.png'),
@@ -44,10 +82,12 @@ export default {
      */
     changeBar (item, index) {
       this.active = index
-      if (index) {
+      if (index === 2) {
         GLOBALS.marchSetsPoint('A_H5PT0225002545') // H5平台-盲盒页面-底部我的导航栏点击
-      } else {
+      } else if (index === 0) {
         GLOBALS.marchSetsPoint('A_H5PT0225002546') // H5平台-盲盒页面-底部盲盒导航栏点击
+      } else if (index === 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0225002937') // H5平台-盲盒页面-底部积分/签到点击
       }
       this.$router.push({ name: item.name })
     }
@@ -72,7 +112,7 @@ export default {
 .content {
   width: 100%;
   height: 1.1rem;
-  background: #494B58;
+  background: #494b58;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   position: fixed;
@@ -86,8 +126,16 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 0.24rem;
-    color: #9699AA ;
+    color: #9699aa;
     font-weight: bold;
+    position: relative;
+    .mark {
+      width: 0.86rem;
+      position: absolute;
+      height: 0.47rem;
+      top: -0.3rem;
+      left: 50%;
+    }
     &.active {
       color: #e2c87e;
     }
