@@ -29,7 +29,7 @@
     <section class="container">
       <div class="bar"
         v-for="(item,index) in tabBar"
-        @click="changeTab(item,index)"
+        @click="changeTab(index)"
         :key="item.label">
         <span class="bar__span"
           :class="{'active':index===active}">
@@ -181,13 +181,13 @@ export default {
     /**
      * @des 切换tab
      */
-    changeTab (item, index) {
+    changeTab (index) {
       this.goodsList = null
       this.active = index
       if (index === 0) GLOBALS.marchSetsPoint('A_H5PT0225002572')
       if (index === 1) GLOBALS.marchSetsPoint('A_H5PT0225002573')
       if (index === 2) GLOBALS.marchSetsPoint('A_H5PT0225002574')
-      if (index === 4) GLOBALS.marchSetsPoint('A_H5PT0225002962')
+      if (index === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
       this.getTabGoods()
     },
     // 复制成功
@@ -220,7 +220,7 @@ export default {
         message: `+${this.score}积分`,
         duration: 2000
       })
-      this.active = 3
+      this.changeTab(3)
     },
     // 去抽盲盒
     toIndex () {

@@ -11,7 +11,7 @@
       :options="options">
       <swiper-slide v-for="(item,index) in banners"
         :key="index">
-        <section @click="detail(item)"
+        <section
           class="content">
           <img class="banner"
             :src="item.image | imgFilter"
