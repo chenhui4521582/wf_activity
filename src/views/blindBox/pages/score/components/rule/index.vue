@@ -25,7 +25,12 @@ export default {
     Dialog
   },
   mounted () {
-    GLOBALS.marchSetsPoint('A_H5PT0225002944')
+
+  },
+  watch: {
+    show (val) {
+      if (val) GLOBALS.marchSetsPoint('A_H5PT0225002944')
+    }
   },
   props: ['show'],
   methods: {

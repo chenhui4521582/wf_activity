@@ -160,9 +160,9 @@ export default {
     ({ data: { data: this.userInfo } } = await UserInfo())
     if (this.$route.query.active) {
       this.active = Number(this.$route.query.active)
-      if (this.active === 0) GLOBALS.marchSetsPoint('A_H5PT0225002957')
-      else GLOBALS.marchSetsPoint('A_H5PT0225002947')
     }
+    if (this.active === 0) GLOBALS.marchSetsPoint('A_H5PT0225002957')
+    else GLOBALS.marchSetsPoint('A_H5PT0225002947')
   },
   components: {
     NavBar,
