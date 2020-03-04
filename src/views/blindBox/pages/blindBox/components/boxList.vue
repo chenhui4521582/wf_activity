@@ -154,7 +154,7 @@ export default {
         marginTop: '0.2rem'
       },
       activityButtonStyle2: {
-        background: `url('+ ../activity/button1.png +') no-repeat`,
+        background: 'url(../activity/button1.png) no-repeat',
         backgroundSize: '100% 100%',
         color: '#fff',
         fontSize: '0.34rem',
