@@ -113,7 +113,7 @@
               </div>
               <div class="numer">+13W金叶子</div>
               <div class="btn" v-if="cardList[1].buyFlag == 1" @click="gotoPay(1)">
-                <img src="../img/manure-btn1.png" alt="">
+                <img src="../img/manure-btn2.png" alt="">
               </div>
               <div class="btn no" v-if="cardList[1].buyFlag == 0">
                 <img src="../img/buyend-text.png" alt="">
