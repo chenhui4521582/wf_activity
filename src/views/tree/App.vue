@@ -267,7 +267,7 @@ export default {
     /** 浇水施肥 **/
     _watering(type) {
       let parasm = {
-        num: type == 14 ? this.userInfo.waterNum >= 100 ? 10000 : 10  : 1,
+        num: type == 14 ? this.userInfo.waterNum >= 100 ? 100 : 10  : 1,
         type
       }
       if(this.newUserGuide) {
