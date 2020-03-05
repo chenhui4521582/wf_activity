@@ -15,8 +15,11 @@
             <p>{{signText(index).text}}</p>
           </div>
         </div>
-        <div class="sign-btn" @click="_sign">
+        <div class="sign-btn" v-if="todayIsSign == 0" @click="_sign">
           <img src="../img/sign-btn-text.png" alt="">
+        </div>
+        <div class="sign-btn disable" v-if="todayIsSign == 1" @click="_sign">
+          <img src="../img/signed.png" alt="">
         </div>
       </div>
       <div class="task-items">
@@ -72,19 +75,20 @@ export default {
       return require(`../img/watch${index}-icon.png`)
     },
     signText (index) {
+      let userSignDay = this.userSignDay
       if(this.todayIsSign == 1) {
-        this.userSignDay = this.userSignDay - 1 <= 0 ? 0 : this.userSignDay - 1
+        userSignDay = userSignDay - 1 <= 0 ? 0 : userSignDay - 1
       }
-      if(index > this.userSignDay) {
+      if(index > userSignDay) {
         return {text: `第${index + 1}天`, status: 0}
       }
-      if(this.userSignDay == index) {
+      if(userSignDay == index) {
         if(this.todayIsSign == 1) {
           return {text: `已领取`, status: 2}
         }
         return {text: `待领取`, status: 1}
       }
-      if(index < this.userSignDay) {
+      if(index < userSignDay) {
         return {text: `已领取`, status: 2}
       }
     },
@@ -112,8 +116,8 @@ export default {
         if(code == 200) {
           this.awardText = `获得${data.changeNum}g水滴`
           this.showAwards = true
-          this.todayIsSign = 1
           this.userSignDay++
+          this.todayIsSign = 1
           this.$emit('updateWater', data.changeNum)
           this._getTask()
           GLOBALS.marchSetsPoint('A_H5PT0247002898')
@@ -249,6 +253,10 @@ export default {
           margin: .15rem 0 0 .44rem;
           width: 1.11rem;
           height: .37rem;
+        }
+        &.disable {
+          background: url(../img/btn2.png) no-repeat center center;
+          background-size: 100% 100%; 
         }
       }
 
