@@ -176,6 +176,7 @@ export default {
     },
     checkLog() {
       this.$emit('input', false)
+      this.$emit('refresh', false)
       this.$emit('checkLog')
     }
   },

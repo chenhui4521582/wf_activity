@@ -21,6 +21,7 @@
       <div class="srart-btn" @click="_getTree">
         <img src="../img/start-btn.png" alt="">
       </div>
+      <div class="close" v-if="treeInfo" @click="hide"></div>
     </div>
   </div>
 </template>
@@ -37,6 +38,9 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    treeInfo: {
+      default: null
     }
   },
   data: () => ({
@@ -52,6 +56,7 @@ export default {
       this.currentIndex = index
     },
     hide() {
+      this.$emit('hideCallback')
       this.$emit('input', false)
     },
     /** 开始种树 **/
@@ -149,6 +154,15 @@ export default {
           width: 1.92rem;
           height: .57rem;
         }
+      }
+      .close {
+        position: absolute;
+        right: -.2rem;
+        top: .18rem;
+        width: 1.01rem;
+        height: 1.05rem;
+        background: url(../img/close.png) no-repeat center center;
+        background-size: 100% 100%;
       }
     }
   }
