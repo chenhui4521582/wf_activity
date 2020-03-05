@@ -31,10 +31,10 @@
             <p class="name">{{item.taskName}} ({{item.userTaskProgress}}/{{item.taskFinshNum}})</p>
             <p class="finish">完成得{{item.taskAwardNum}}g水滴</p>
           </div>
-          <div class="btn go-finish" v-if="item.taskStatus == 0" @click="goGame(item)">
+          <div class="btn go-finish" v-if="item.taskStatus == 1" @click="goGame(item)">
             <img src="../img/btn3-text.png" alt="">
           </div>
-          <div class="btn get" v-if="item.taskStatus == 1" @click="_getTaskAward(item)">
+          <div class="btn get" v-if="item.taskStatus == 0" @click="_getTaskAward(item)">
             <img src="../img/btn1-text.png" alt="">
           </div>
           <div class="btn finished" v-if="item.taskStatus == 2"> 
