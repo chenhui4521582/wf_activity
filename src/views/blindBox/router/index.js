@@ -48,6 +48,14 @@ const routes = [
         }
       },
       {
+        path: '/coupon',
+        name: 'Coupon',
+        component: () => import('../pages/coupon'),
+        meta: {
+          title: '优惠券'
+        }
+      },
+      {
         path: '/chooseBox/:type',
         name: 'ChooseBox',
         component: () => import('../pages/chooseBox'),

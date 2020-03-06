@@ -1,12 +1,12 @@
 <template>
-  <section class="current-product-list">
+  <section class="current-product-list activity">
     <div class="header">
-      <div class="header-left">
+      <!-- <div class="header-left">
         <img :class="{'gift' : !show}"
           src="../assets/box.png"
           alt="">
         <span>盲盒明星奖品</span>
-      </div>
+      </div> -->
       <div></div>
       <a href="#/allProducts"
         @click="moreAwards()">更多奖品>></a>
@@ -125,6 +125,18 @@ export default {
   max-width: 100vw;
   box-sizing: border-box;
   overflow: hidden;
+  &.activity {
+    background: #FEF2DE url('../activity/top-bg.png') no-repeat;
+    background-size: 100% 100%;
+    width: 100%;
+    height: 2.5rem;
+    padding-top: 0.5rem;
+    padding-left: 0 ;
+    padding-right: .32rem;
+    .header a {
+      color:#fff;
+    }
+  }
   .gift {
     animation: bounce 0.9s linear 2;
   }

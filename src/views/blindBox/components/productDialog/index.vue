@@ -3,11 +3,14 @@
     <Dialog :layout="layout"
       :show="show"
       v-show="!isMagnify"
+      @mask="closeMask"
       @onClose="$emit('close')"
       :close="true">
-      <div slot="header"
+      <div @click.stop=""
+        slot="header"
         class="title">开盲盒 即有机会抽中</div>
-      <div class="img-container">
+      <div @click.stop=""
+        class="img-container">
         <swiper v-if="products"
           :options="options">
           <swiper-slide v-for="(item,index) in products"
@@ -26,7 +29,8 @@
             class="goods-remark">{{goodsDetail.remark}}</span>
         </p>
       </div>
-      <div slot="footer">
+      <div @click.stop=""
+        slot="footer">
         <p class="open-box"
           @click="openBox">开一个试试</p>
         <p class="view-product"
@@ -96,6 +100,9 @@ export default {
     }
   },
   methods: {
+    closeMask () {
+      this.$emit('close')
+    },
     toProducts () {
       GLOBALS.marchSetsPoint('A_H5PT0225002835', {
         awards_id: this.goodsDetail.awardsId,
