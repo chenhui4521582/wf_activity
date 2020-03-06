@@ -112,6 +112,7 @@ import BScroll from 'better-scroll'
 import _get from "lodash.get";
 import { activityInfo, bet, ratePropState, userAwards } from "./services/api";
 import comPop from "./component/comPop";
+import utils from '../../common/js/utils.js'
 export default {
   data() {
     return {
@@ -214,10 +215,10 @@ export default {
     };
   },
   created() {
-    // this.popType = 0;
-    GLOBALS.marchSetsPoint("P_H5PT0251", {
-      source_address: GLOBALS.getUrlParam("from") || ""
-    });
+    this.popType = 0;
+    // GLOBALS.marchSetsPoint("P_H5PT0251", {
+    //   source_address: GLOBALS.getUrlParam("from") || ""
+    // });
   },
   mounted() {
     this.getActivityInfo();
@@ -248,7 +249,7 @@ export default {
       }
       if (this.activityInfo.incrPropNum > 0) {
         this.popType = 4;
-        GLOBALS.marchSetsPoint("A_H5PT0251002971");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002971");
       }
       console.log(this.prized);
       // this.newlist =  this.activityInfo.wheelAwardsList;
@@ -275,7 +276,7 @@ export default {
         });
       } else if (res.message == "您的宝石不足") {
         this.popType = 5;
-        GLOBALS.marchSetsPoint("A_H5PT0251002970");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
       } else {
         this.startRoll();
@@ -297,7 +298,7 @@ export default {
       }
       if (this.state.rebatePopup) {
         this.popType = 6;
-        GLOBALS.marchSetsPoint("A_H5PT0251002973");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002973");
       }
     },
     // 奖励列表
@@ -308,23 +309,23 @@ export default {
     // 返回上一级
     back() {
       history.go(-1);
-      GLOBALS.marchSetsPoint("A_H5PT0251002964");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
       parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
-      GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002966");
     },
     end() {},
     // 点击规则
     rule() {
       this.popType = 1;
-      GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002965");
     },
     // 中奖记录
     prizerecord() {
       this.popType = 2;
-      GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -430,7 +431,7 @@ export default {
       } else {
         await this.getBet();
         this.click = false;
-        GLOBALS.marchSetsPoint("A_H5PT0251002968");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002968");
         // console.log('bet',this.bet)
         // console.log('bet',this.bet.message)
       }
@@ -471,14 +472,14 @@ export default {
           this.click = true;
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
-            GLOBALS.marchSetsPoint("A_H5PT0251002972");
+            // GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
           } else {
             this.popType = 3;
-            GLOBALS.marchSetsPoint("A_H5PT0251002969", {
-              awards_name: this.prizeshow.awardsName
-            });
+            // GLOBALS.marchSetsPoint("A_H5PT0251002969", {
+            //   awards_name: this.prizeshow.awardsName
+            // });
           }
         }, 800);
         console.log("要传的信息", this.prizeshow);
@@ -538,6 +539,33 @@ export default {
 <style lang="less" scoped>
 *{margin: 0;
 padding: 0}
+ body,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    div,
+    a,
+    em,
+    i,
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+    }
+  
+    ul li {
+      list-style: none;
+    }
+  
+    a {
+      text-decoration: none;
+    }
 section {
   width: 7.2rem;
   height: 100vh;
@@ -644,7 +672,9 @@ section {
         font-family: Alibaba PuHuiTi;
         font-weight: 400;
         color: rgba(77, 49, 28, 1);
-
+display: flex;
+    justify-content: center;
+    align-items: center;
         i {
           font-size: 0.24rem;
           font-family: Alibaba PuHuiTi;

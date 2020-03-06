@@ -93,7 +93,7 @@
            <p class="congra-texts" style="margin-top: 0.2rem;">已获得</p>
           <p class="prize-name">{{state.rebateAmount}}金叶返利</p>
            <p class="tips">奖励可前往“我的”页面查看</p>
-              <div class="iknow" style="margin: 0.2rem auto 0;" @click="close">我知道了</div>
+              <div class="iknow" style="margin: 0.4rem auto 0;" @click="close">我知道了</div>
         </template>
         <!-- 恭喜您，获得超级返利卡 -->
         <template v-if="value==7">
@@ -109,7 +109,7 @@
                     <p><span>返利卡生效后当天游戏消耗金叶总和</span>的1%金叶</p>
                     <p>消耗金叶越多，返利越高</p>
                   </div>
-         <div style="margin-top:0.4rem;" class="iknow" @click="gorule">更多了解返利卡>></div>
+         <div style="margin-top:0.6rem;" class="iknow" @click="gorule">更多了解返利卡>></div>
     
         </template>
       </div>
@@ -149,7 +149,7 @@ export default {
     },
     // 去获取宝石
     goshop(){
-      window.location.href = 'https://wap.beeplaying.com/payment/#/mall'
+      window.location.href = 'https://wap.beeplaying.com/xmWap/#/payment/'
     },
     close() {
       this.$emit("input", 0);
@@ -381,9 +381,11 @@ color:rgba(253,209,152,1);
         font-size: 0.38rem;
         text-align: center;
         white-space: nowrap;
+            margin-top: 0.2rem;
+
       }
       .tips {
-        margin: 0.37rem auto 0rem;
+        margin: 0.7rem auto 0rem;
         text-align: center;
         font-size: 0.3rem;
         font-family: Alibaba PuHuiTi;
@@ -408,6 +410,7 @@ color:rgba(253,209,152,1);
         text-align: center;
         line-height: 0.65rem;
         margin: 0.72rem auto 0;
+        // margin-top: 0.6rem;
       }
       // 恭喜您，获得金叶返利
       .jinyezi{
@@ -434,7 +437,7 @@ position: absolute;
       }
       .fanli-tips{
         text-align: center;
-   margin-top: 0.35rem;
+   margin-top: 0.7rem;
 p{
   color:#FFEBA6;
   font-size:0.22rem;
