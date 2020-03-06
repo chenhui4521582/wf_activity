@@ -115,7 +115,7 @@ export default {
     /** 树木收获奖励数据 **/
     treeFinishAward: {},
     /** 是否需要新手引导 **/
-    newUserGuide: true,
+    newUserGuide: false,
     step: 0,
     /** 礼包数据 **/
     cardList: []
@@ -267,18 +267,18 @@ export default {
     /** 浇水施肥 **/
     _watering(type) {
       let parasm = {
-        num: type == 14 ? this.userInfo.waterNum >= 100 ? 10000 : 10  : 1,
+        num: type == 14 ? this.userInfo.waterNum >= 100 ? 100 : 10  : 1,
         type
       }
       if(this.newUserGuide) {
         this.step = 0
       }
-      if(type == 14 && this.userInfo.waterNum < 10) {
+      if(type == 14 && this.userInfo.waterNum < parasm.num) {
         this.showPopup= true
         this.popupType = 4
         return 
       }
-      if(type == 15 && this.userInfo.fertilizerNum < 1) {
+      if(type == 15 && this.userInfo.fertilizerNum < parasm.num) {
         this._getCardList()
         return
       }
