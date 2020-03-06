@@ -1,5 +1,6 @@
 <template>
   <section @click="$emit('view')" class="product">
+    <img src="./assets/icon.png" class="icon">
     <div class="product-img">
       <img :src="product.awardsImage | imgFilter"
         alt="奖品" />
@@ -44,6 +45,13 @@ export default {
   overflow: hidden;
   margin: 0.15rem;
   background: #fff;
+  position:relative;
+  .icon {
+    width: .88rem;
+    position: absolute;
+    top: 0;
+    left: 0.2rem;
+  }
   .product-img {
     height: 2.7rem;
     background: #e3e2e2;

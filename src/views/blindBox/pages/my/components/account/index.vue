@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container activity">
     <ShortSwiper class="container-swiper" />
     <div v-if="userInfo"
       class="content">
@@ -49,6 +49,10 @@ export default {
   background-size: cover;
   padding-left: 0.23rem;
   position: relative;
+  &.activity {
+    background: url('./assets/bg-activity.png') no-repeat;
+    background-size: cover;
+  }
   .container-swiper {
     position: absolute;
     left: 0.23rem;

@@ -1,6 +1,6 @@
 <template>
   <article>
-    <section class="wrapper">
+    <section :class="{'isOpen': isOpen}" class="wrapper activity">
       <div @click="showRule"
         class="float left">
         积分攻略
@@ -11,7 +11,7 @@
       </div>
       <p class="title">我的积分</p>
       <p class="count">
-        <img src="./assets/score.png"
+        <img src="./assets/score-activity.png"
           alt="">{{score}}
       </p>
       <p v-if="signInInfo && signInInfo.todayState"
@@ -107,9 +107,22 @@ export default {
 }
 .wrapper {
   background: url("./assets/bg.png") no-repeat;
-  background-size: 100% 100%;
+  background-size: 100%;
   padding-bottom: 0.2rem;
   position: relative;
+  &.activity {
+    background: url("./assets/bg-activity.png") no-repeat;
+    background-size: 100%;
+    &.isOpen {
+      background-size: 100% 100%;
+    }
+    .title,.count,.tip {
+      color: #E9355A;
+    }
+    .float.left,.float.right{
+      background: rgba(233,53,90,0.6);
+    }
+  }
   .float {
     width: 1.2rem;
     line-height: 0.44rem;

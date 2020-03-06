@@ -5,8 +5,10 @@
       @click="$emit('jump')"
       :class="border?'border':''">
       <span>{{title}}</span>
-      <span></span>
-      <img src="./assets/arrow.png">
+      <p>
+        <span class="tip" v-if="tip">{{tip}}</span>
+        <img src="./assets/arrow.png">
+      </p>
     </div>
   </section>
 </template>
@@ -18,6 +20,9 @@ export default {
       type: String
     },
     title: {
+      type: String
+    },
+    tip: {
       type: String
     },
     border: {
@@ -37,6 +42,11 @@ export default {
   padding: 0 0 0 0.23rem;
   padding-right: 0.31rem;
   height: 0.85rem;
+  .tip {
+    font-size: .22rem;
+    color: #FF2828;
+    padding-right: .2rem;
+  }
   img {
     width: 0.36rem;
     height: 0.36rem;
