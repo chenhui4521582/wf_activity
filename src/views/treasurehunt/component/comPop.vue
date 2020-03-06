@@ -109,7 +109,7 @@
                     <p><span>返利卡生效后当天游戏消耗金叶总和</span>的1%金叶</p>
                     <p>消耗金叶越多，返利越高</p>
                   </div>
-         <div style="margin-top:0.6rem;" class="iknow" @click="gorule">更多了解返利卡>></div>
+         <div style="margin-top: 0.3rem;" class="iknow" @click="gorule">更多了解返利卡>></div>
     
         </template>
       </div>
@@ -437,11 +437,12 @@ position: absolute;
       }
       .fanli-tips{
         text-align: center;
-   margin-top: 0.7rem;
+   margin-top: 0.6rem;
 p{
   color:#FFEBA6;
   font-size:0.22rem;
   font-weight: bold;
+  line-height: 0.3rem;
   &:last-child{
     margin-top: 0.15rem;
   }

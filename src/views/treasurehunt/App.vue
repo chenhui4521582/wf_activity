@@ -5,8 +5,9 @@
         <p>
           返利卡有效时间：
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
+          <!-- <span >06时30分12秒</span> -->
         </p>
-        <p>明天返利：{{this.state.rebateAmount}}金叶</p>
+        <p style=" margin-top: 0.05rem;">明天返利：{{this.state.rebateAmount}}金叶</p>
       </div>
       <div class="back" @click="back">返回</div>
       <div class="rule" @click="rule">规则</div>
@@ -42,30 +43,30 @@
               <img v-if="item.awardsType=='yhq'" src="./images/yhq.png" alt />
               <img v-if="item.awardsType=='jyz'" src="./images/jyz.png" alt />
 
-              <p v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='jdk'">京东券</p>
+              <p class="text-one" v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='jdk'">京东券</p>
 
-              <p v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
-              <p v-if="item.awardsType=='jyz'">金叶子</p>
+              <p class="text-one" v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
+              <p class="text-two" v-if="item.awardsType=='jyz'">金叶子</p>
 
-              <p v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='hfq'">话费券</p>
+              <p class="text-one" v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='hfq'">话费券</p>
 
-              <p
+              <p class="text-one"
                 style="white-space: normal;
-    text-align: center;"
+    text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[3]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[4]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[5]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[6]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[7]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
 
             <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
@@ -130,7 +131,7 @@ export default {
       timer: 0, // 每次转动定时器
       speed: 200, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 50, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 30, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -215,7 +216,8 @@ export default {
     };
   },
   created() {
-    this.popType = 0;
+    // this.popType = 7;
+    // this.prizeshow.sort=1
     // GLOBALS.marchSetsPoint("P_H5PT0251", {
     //   source_address: GLOBALS.getUrlParam("from") || ""
     // });
@@ -325,6 +327,7 @@ export default {
     // 中奖记录
     prizerecord() {
       this.popType = 2;
+      this.getUserAwards();
       // GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
@@ -738,6 +741,9 @@ display: flex;
         box-sizing: border-box;
         position: relative;
         height: 5.1rem;
+        .absolute{
+          position: absolute;
+        }
         ul {
           li {
             list-style: none;
@@ -749,6 +755,12 @@ display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            .text-one{
+    margin-top: 0.1rem;
+            }
+            .text-two{
+    margin-top: 0.05rem;
+            }
             &.on {
               background: url(./images/current.png) no-repeat;
               background-size: 100% 100%;
