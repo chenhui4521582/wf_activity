@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="awards" v-if="showAwards">
+      <div class="awards" v-if="showAwards" ref="award">
         {{awardText}}
       </div>
       <div class="close" @click="close"></div>
@@ -53,6 +53,7 @@
 import Services from '../services/services'
 import _get from 'lodash.get'
 import utils from '../components/utils'
+import Velocity from 'velocity-animate'
 export default {
   name: 'task',
   props: {
@@ -114,8 +115,13 @@ export default {
       Services.sign().then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.awardText = `获得${data.changeNum}g水滴`
           this.showAwards = true
+          this.$nextTick(res=> {
+            let el = this.$refs.award
+            this.awardText = `获得${data.changeNum}g水滴`
+            Velocity(el, {opacity: 1},{ duretion: 1000})
+            Velocity(el, {opacity: 0},{ duretion: 1000 , delay: 2000,complete: ()=> {this.showAwards = false}})
+          })
           this.userSignDay++
           this.todayIsSign = 1
           this.$emit('updateWater', data.changeNum)
@@ -130,8 +136,13 @@ export default {
       Services.getTaskAward(item.taskId).then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.awardText = `获得${data.changeNum}g水滴`
           this.showAwards = true
+          this.$nextTick(res=> {
+            let el = this.$refs.award
+            this.awardText = `获得${data.changeNum}g水滴`
+            Velocity(el, {opacity: 1},{ duretion: 1000})
+            Velocity(el, {opacity: 0},{ duretion: 1000 , delay: 2000,complete: ()=> {this.showAwards = false}})
+          })
           this.$emit('updateWater', data.changeNum)
           this._getTask()
           GLOBALS.marchSetsPoint('A_H5PT0247002900', {
@@ -370,7 +381,7 @@ export default {
       font-size: .3rem;
       color: #C0622B;
       line-height: 1.2rem;
-      animation: fadeout 2.5s forwards;
+      opacity: 0;
     }
     @keyframes fadeout {
       0% {
