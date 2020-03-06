@@ -5,8 +5,9 @@
         <p>
           返利卡有效时间：
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
+          <!-- <span >06时30分12秒</span> -->
         </p>
-        <p>明天返利：{{this.state.rebateAmount}}金叶</p>
+        <p style=" margin-top: 0.05rem;">明天返利：{{this.state.rebateAmount}}金叶</p>
       </div>
       <div class="back" @click="back">返回</div>
       <div class="rule" @click="rule">规则</div>
@@ -42,30 +43,30 @@
               <img v-if="item.awardsType=='yhq'" src="./images/yhq.png" alt />
               <img v-if="item.awardsType=='jyz'" src="./images/jyz.png" alt />
 
-              <p v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='jdk'">京东券</p>
+              <p class="text-one" v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='jdk'">京东券</p>
 
-              <p v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
-              <p v-if="item.awardsType=='jyz'">金叶子</p>
+              <p class="text-one" v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
+              <p class="text-two" v-if="item.awardsType=='jyz'">金叶子</p>
 
-              <p v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='hfq'">话费券</p>
+              <p class="text-one" v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='hfq'">话费券</p>
 
-              <p
+              <p class="text-one"
                 style="white-space: normal;
-    text-align: center;"
+    text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[3]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[4]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[5]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[6]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[7]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
 
             <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
@@ -112,6 +113,7 @@ import BScroll from 'better-scroll'
 import _get from "lodash.get";
 import { activityInfo, bet, ratePropState, userAwards } from "./services/api";
 import comPop from "./component/comPop";
+import utils from '../../common/js/utils.js'
 export default {
   data() {
     return {
@@ -129,7 +131,7 @@ export default {
       timer: 0, // 每次转动定时器
       speed: 200, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 50, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 30, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -214,10 +216,11 @@ export default {
     };
   },
   created() {
-    // this.popType = 0;
-    GLOBALS.marchSetsPoint("P_H5PT0251", {
-      source_address: GLOBALS.getUrlParam("from") || ""
-    });
+    // this.popType = 7;
+    // this.prizeshow.sort=1
+    // GLOBALS.marchSetsPoint("P_H5PT0251", {
+    //   source_address: GLOBALS.getUrlParam("from") || ""
+    // });
   },
   mounted() {
     this.getActivityInfo();
@@ -248,7 +251,7 @@ export default {
       }
       if (this.activityInfo.incrPropNum > 0) {
         this.popType = 4;
-        GLOBALS.marchSetsPoint("A_H5PT0251002971");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002971");
       }
       console.log(this.prized);
       // this.newlist =  this.activityInfo.wheelAwardsList;
@@ -275,7 +278,7 @@ export default {
         });
       } else if (res.message == "您的宝石不足") {
         this.popType = 5;
-        GLOBALS.marchSetsPoint("A_H5PT0251002970");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
       } else {
         this.startRoll();
@@ -297,7 +300,7 @@ export default {
       }
       if (this.state.rebatePopup) {
         this.popType = 6;
-        GLOBALS.marchSetsPoint("A_H5PT0251002973");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002973");
       }
     },
     // 奖励列表
@@ -308,23 +311,24 @@ export default {
     // 返回上一级
     back() {
       history.go(-1);
-      GLOBALS.marchSetsPoint("A_H5PT0251002964");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
-      parent.location.href = "https://wap.beeplaying.com/payment/#/mall";
-      GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
+      // GLOBALS.marchSetsPoint("A_H5PT0251002966");
     },
     end() {},
     // 点击规则
     rule() {
       this.popType = 1;
-      GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      // GLOBALS.marchSetsPoint("A_H5PT0251002965");
     },
     // 中奖记录
     prizerecord() {
       this.popType = 2;
-      GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      this.getUserAwards();
+      // GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -430,7 +434,7 @@ export default {
       } else {
         await this.getBet();
         this.click = false;
-        GLOBALS.marchSetsPoint("A_H5PT0251002968");
+        // GLOBALS.marchSetsPoint("A_H5PT0251002968");
         // console.log('bet',this.bet)
         // console.log('bet',this.bet.message)
       }
@@ -471,14 +475,14 @@ export default {
           this.click = true;
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
-            GLOBALS.marchSetsPoint("A_H5PT0251002972");
+            // GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
           } else {
             this.popType = 3;
-            GLOBALS.marchSetsPoint("A_H5PT0251002969", {
-              awards_name: this.prizeshow.awardsName
-            });
+            // GLOBALS.marchSetsPoint("A_H5PT0251002969", {
+            //   awards_name: this.prizeshow.awardsName
+            // });
           }
         }, 800);
         console.log("要传的信息", this.prizeshow);
@@ -536,6 +540,35 @@ export default {
 </script>
 
 <style lang="less" scoped>
+*{margin: 0;
+padding: 0}
+ body,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    div,
+    a,
+    em,
+    i,
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+    }
+  
+    ul li {
+      list-style: none;
+    }
+  
+    a {
+      text-decoration: none;
+    }
 section {
   width: 7.2rem;
   height: 100vh;
@@ -642,7 +675,9 @@ section {
         font-family: Alibaba PuHuiTi;
         font-weight: 400;
         color: rgba(77, 49, 28, 1);
-
+display: flex;
+    justify-content: center;
+    align-items: center;
         i {
           font-size: 0.24rem;
           font-family: Alibaba PuHuiTi;
@@ -706,6 +741,9 @@ section {
         box-sizing: border-box;
         position: relative;
         height: 5.1rem;
+        .absolute{
+          position: absolute;
+        }
         ul {
           li {
             list-style: none;
@@ -717,6 +755,12 @@ section {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            .text-one{
+    margin-top: 0.1rem;
+            }
+            .text-two{
+    margin-top: 0.05rem;
+            }
             &.on {
               background: url(./images/current.png) no-repeat;
               background-size: 100% 100%;
@@ -801,6 +845,11 @@ section {
           width: 2.99rem;
           transform: translateX(-50%);
           margin-top: 0.05rem;
+          display: flex;
+    flex-direction: column;
+    /* align-items: baseline; */
+    justify-content: space-around;
+    height: 1.65rem;
           .game-tips {
             text-align: center;
             font-size: 0.18rem;
