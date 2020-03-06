@@ -312,7 +312,7 @@ export default {
     },
     // 黄钻加号 跳转商城
     goshop() {
-      parent.location.href = "https://wap.beeplaying.com/payment/#/mall";
+      parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
       GLOBALS.marchSetsPoint("A_H5PT0251002966");
     },
     end() {},
@@ -803,6 +803,11 @@ section {
           width: 2.99rem;
           transform: translateX(-50%);
           margin-top: 0.05rem;
+          display: flex;
+    flex-direction: column;
+    /* align-items: baseline; */
+    justify-content: space-around;
+    height: 1.65rem;
           .game-tips {
             text-align: center;
             font-size: 0.18rem;
