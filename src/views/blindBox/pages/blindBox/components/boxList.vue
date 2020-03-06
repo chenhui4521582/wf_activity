@@ -28,11 +28,19 @@
 
       <!-- 非年货节按钮 begin-->
       <section class="btn-container btn-container-top activity">
-        <m-button @confirm="buyOne">{{
+        <!-- <m-button @confirm="buyOne">{{
           isOpenBox ? `立即开盒` : "20元开一盒"
         }}<span v-if="isOpenBox"
-            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button>
-        <img v-if="isCouponTip" class="coupon-tip" src="../assets/tip.png" alt="">
+            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
+        <div class="activity-button"
+          @click="buyOne">
+          <p v-if="isOpenBox">立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
+          <p v-else>¥<span class="money">20</span> 开1盒</p>
+        </div>
+        <img v-if="isCouponTip"
+          class="coupon-tip"
+          src="../assets/tip.png"
+          alt="">
         <div class="change-btn change-btn-left activity"
           @click="showRule">
           <!-- <img class="icon"
@@ -55,9 +63,13 @@
         </div>
       </section>
       <section class="btn-container activity">
-        <m-button v-if="!isOpenBox"
-          :button-style="activityButtonStyle2"
-          @confirm="bulkBuy">55元开3盒</m-button>
+        <!-- <m-button v-if="!isOpenBox"
+          @confirm="bulkBuy">55元开3盒</m-button> -->
+        <div v-if="!isOpenBox"
+          class="activity-button batch"
+          @click="bulkBuy">
+          ¥<span class="money">55</span><span></span>开3盒
+        </div>
         <p class="leaf-buy"
           v-if="userInfo && userInfo.leafsPay"
           @click="leafsBuy">使用金叶子购买</p>
@@ -129,6 +141,7 @@ import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
 import TipDialog from './tip-dialog'
 import VirtualDialog from '../../../components/virtual-dialog'
+import { List } from '../../../apis/coupon'
 
 export default {
   name: '',
@@ -143,19 +156,6 @@ export default {
     return {
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
-        color: '#fff',
-        fontSize: '0.34rem',
-        marginTop: '0.2rem'
-      },
-      activityButtonStyle1: {
-        background: '',
-        color: '#fff',
-        fontSize: '0.34rem',
-        marginTop: '0.2rem'
-      },
-      activityButtonStyle2: {
-        background: 'url(../activity/button1.png) no-repeat',
-        backgroundSize: '100% 100%',
         color: '#fff',
         fontSize: '0.34rem',
         marginTop: '0.2rem'
@@ -210,8 +210,10 @@ export default {
       return res
     }
   },
-  mounted () {
+  async mounted () {
     this.init()
+    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
   },
   methods: {
     // 开三盒购买
@@ -403,8 +405,29 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+  background: #fef2de;
+  .activity-button {
+    width: 3.3rem;
+    line-height: 0.8rem;
+    border-radius: 0.4rem;
+    color: #fff3e5;
+    font-size: 0.36rem;
+    text-align: center;
+    margin: 0 auto;
+    background: url("../activity/button1.png") no-repeat;
+    background-size: 100% 100%;
+    .money {
+      font-size: 0.4rem;
+    }
+    &.batch {
+      background: url("../activity/button2.png") no-repeat;
+      color: rgb(255, 255, 255);
+      background-size: 100% 100%;
+      margin-top: 0.2rem;
+    }
+  }
   .botton-wrapper {
-    background: #FEF2DE;
+    background: #fef2de;
   }
   .coupon-tip {
     width: 1.56rem;
@@ -449,7 +472,7 @@ export default {
       font-size: 0;
     }
     &.activity::after {
-      background-color: #FEF2DE;
+      background-color: #fef2de;
     }
   }
   .box-list {
@@ -529,12 +552,12 @@ export default {
     position: relative;
     background: #1b1f29;
     &.activity {
-      background:#FEF2DE;
+      background: #fef2de;
       .leaf-buy {
-        color:#E9355A;
+        color: #e9355a;
       }
       .buy-tip {
-        color: #7B4913;
+        color: #7b4913;
       }
     }
     // padding: 0.16rem;
@@ -542,6 +565,12 @@ export default {
       padding-left: 0.2rem;
       span {
         color: #ff1520;
+      }
+      &.activity {
+        padding-left: 0;
+        span {
+          color: #fff3e5;
+        }
       }
     }
     &-top {
@@ -589,7 +618,7 @@ export default {
       display: flex;
       align-items: center;
       &.activity {
-        color:#E9355A;
+        color: #e9355a;
       }
       .icon {
         width: 0.34rem;
