@@ -52,7 +52,8 @@
               <p class="text-one" v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
               <p class="text-two" v-if="item.awardsType=='hfq'">话费券</p>
 
-              <p class="text-one"
+              <p
+                class="text-one"
                 style="white-space: normal;
     text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
@@ -91,8 +92,14 @@
               <img src="./images/smallyellow.png" alt />
               <span>{{nextConsume}}</span>
             </div>
-            <div class="playgame" >
-              <img   class="goplay" v-if="prized.length!=10" @click="startLottery" src="./images/startbtn.png" alt />
+            <div class="playgame">
+              <img
+                class="goplay"
+                v-if="prized.length!=10"
+                @click="startLottery"
+                src="./images/startbtn.png"
+                alt
+              />
               <img v-if="prized.length==10" @click="notenough" src="./images/blackbtn.png" alt />
             </div>
           </div>
@@ -109,11 +116,11 @@
   </section>
 </template>
 <script>
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
 import _get from "lodash.get";
 import { activityInfo, bet, ratePropState, userAwards } from "./services/api";
 import comPop from "./component/comPop";
-import utils from '../../common/js/utils.js'
+import utils from "../../common/js/utils.js";
 export default {
   data() {
     return {
@@ -218,9 +225,9 @@ export default {
   created() {
     // this.popType = 7;
     // this.prizeshow.sort=1
-    // GLOBALS.marchSetsPoint("P_H5PT0251", {
-    //   source_address: GLOBALS.getUrlParam("from") || ""
-    // });
+    GLOBALS.marchSetsPoint("P_H5PT0251", {
+      source_address: GLOBALS.getUrlParam("from") || ""
+    });
   },
   mounted() {
     this.getActivityInfo();
@@ -251,7 +258,7 @@ export default {
       }
       if (this.activityInfo.incrPropNum > 0) {
         this.popType = 4;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002971");
+        GLOBALS.marchSetsPoint("A_H5PT0251002971");
       }
       console.log(this.prized);
       // this.newlist =  this.activityInfo.wheelAwardsList;
@@ -278,13 +285,15 @@ export default {
         });
       } else if (res.message == "您的宝石不足") {
         this.popType = 5;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002970");
+        GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
       } else {
         this.startRoll();
-        this.remnantNum = this.bet.remnantNum;
-        this.rarePropNum = this.bet.rarePropNum;
-        this.nextConsume = this.bet.nextConsume;
+        if (this.bet) {
+          this.remnantNum = this.bet.remnantNum;
+          this.rarePropNum = this.bet.rarePropNum;
+          this.nextConsume = this.bet.nextConsume;
+        }
       }
 
       console.log("bet1 ", this.bet);
@@ -300,35 +309,35 @@ export default {
       }
       if (this.state.rebatePopup) {
         this.popType = 6;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002973");
+        GLOBALS.marchSetsPoint("A_H5PT0251002973");
       }
     },
     // 奖励列表
     async getUserAwards() {
       const res = await userAwards();
-      this.userAwards = _get(res, "data", {});
+      this.userAwards = _get(res, "data", []);
     },
     // 返回上一级
     back() {
       history.go(-1);
-      // GLOBALS.marchSetsPoint("A_H5PT0251002964");
+      GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
       parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
-      // GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      GLOBALS.marchSetsPoint("A_H5PT0251002966");
     },
     end() {},
     // 点击规则
     rule() {
       this.popType = 1;
-      // GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      GLOBALS.marchSetsPoint("A_H5PT0251002965");
     },
     // 中奖记录
     prizerecord() {
       this.popType = 2;
       this.getUserAwards();
-      // GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -425,37 +434,19 @@ export default {
     // 点击投注
     async startLottery() {
       if (this.message == "您的宝石不足") {
-       this.popType = 5;
+        this.popType = 5;
       } else if (!this.click) {
-         this.$toast.show({
+        this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
       } else {
-        await this.getBet();
         this.click = false;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002968");
-        // console.log('bet',this.bet)
-        // console.log('bet',this.bet.message)
+        await this.getBet();
+
+        GLOBALS.marchSetsPoint("A_H5PT0251002968");
       }
     },
-
-    //       if (!this.click) {
-    //         this.$toast.show({
-    //           message: "正在抽奖",
-    //           duration: 1000
-    //         });
-    //       }else if (this.message== "您的宝石不足"){
-    // this.popType = 5;
-    //       } else {
-    //         await this.getBet();
-    //         this.click=false
-    //           GLOBALS.marchSetsPoint('A_H5PT0251002968')
-    //         // console.log('bet',this.bet)
-    //         // console.log('bet',this.bet.message)
-    //       }
-    //     },
-
     // 开始抽奖
     startRoll() {
       this.times += 1; // 转动次数
@@ -475,14 +466,14 @@ export default {
           this.click = true;
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
-            // GLOBALS.marchSetsPoint("A_H5PT0251002972");
+            GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
           } else {
             this.popType = 3;
-            // GLOBALS.marchSetsPoint("A_H5PT0251002969", {
-            //   awards_name: this.prizeshow.awardsName
-            // });
+            GLOBALS.marchSetsPoint("A_H5PT0251002969", {
+              awards_name: this.prizeshow.awardsName
+            });
           }
         }, 800);
         console.log("要传的信息", this.prizeshow);
@@ -490,11 +481,6 @@ export default {
         this.prize = -1;
         this.times = 0;
         this.speed = 200;
-
-        // var that = this;
-        setTimeout(res => {
-          // that.showToast = true;
-        }, 500);
       } else {
         if (this.times < this.cycle) {
           this.speed -= 15; // 加快转动速度
@@ -538,37 +524,41 @@ export default {
   }
 };
 </script>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+a,
+em,
+i,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
 
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+</style>
 <style lang="less" scoped>
-*{margin: 0;
-padding: 0}
- body,
-    p,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p,
-    div,
-    a,
-    em,
-    i,
-    ul,
-    li {
-      margin: 0;
-      padding: 0;
-      line-height: 1;
-    }
-  
-    ul li {
-      list-style: none;
-    }
-  
-    a {
-      text-decoration: none;
-    }
+
 section {
   width: 7.2rem;
   height: 100vh;
@@ -675,9 +665,9 @@ section {
         font-family: Alibaba PuHuiTi;
         font-weight: 400;
         color: rgba(77, 49, 28, 1);
-display: flex;
-    justify-content: center;
-    align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         i {
           font-size: 0.24rem;
           font-family: Alibaba PuHuiTi;
@@ -741,7 +731,7 @@ display: flex;
         box-sizing: border-box;
         position: relative;
         height: 5.1rem;
-        .absolute{
+        .absolute {
           position: absolute;
         }
         ul {
@@ -755,11 +745,11 @@ display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            .text-one{
-    margin-top: 0.1rem;
+            .text-one {
+              margin-top: 0.1rem;
             }
-            .text-two{
-    margin-top: 0.05rem;
+            .text-two {
+              margin-top: 0.05rem;
             }
             &.on {
               background: url(./images/current.png) no-repeat;
@@ -846,10 +836,10 @@ display: flex;
           transform: translateX(-50%);
           margin-top: 0.05rem;
           display: flex;
-    flex-direction: column;
-    /* align-items: baseline; */
-    justify-content: space-around;
-    height: 1.65rem;
+          flex-direction: column;
+          /* align-items: baseline; */
+          justify-content: space-around;
+          height: 1.65rem;
           .game-tips {
             text-align: center;
             font-size: 0.18rem;
@@ -877,8 +867,8 @@ display: flex;
           }
           .playgame {
             margin-left: 0.05rem;
-            .goplay{
-                // animation: breathe 1s linear infinite alternate;
+            .goplay {
+              // animation: breathe 1s linear infinite alternate;
             }
             img {
               display: block;
@@ -886,7 +876,6 @@ display: flex;
               height: 0.65rem;
               margin: 0 auto;
               &:first-child:active {
-              
                 transform: translateY(0.02rem);
                 transform: scale(0.9);
               }
@@ -901,14 +890,14 @@ display: flex;
   }
 }
 @keyframes breathe {
-  0%{
-transform: scale(1)
+  0% {
+    transform: scale(1);
   }
-  50%{
-transform: scale(0.9)
+  50% {
+    transform: scale(0.9);
   }
-  100%{
-transform: scale(1)
+  100% {
+    transform: scale(1);
   }
 }
 // .big{
