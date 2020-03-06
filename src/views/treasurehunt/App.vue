@@ -536,6 +536,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+*{margin: 0;
+padding: 0}
 section {
   width: 7.2rem;
   height: 100vh;
