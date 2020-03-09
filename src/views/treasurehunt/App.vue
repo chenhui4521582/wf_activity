@@ -226,8 +226,9 @@ export default {
     // this.popType = 7;
     // this.prizeshow.sort=1
     // GLOBALS.marchSetsPoint("P_H5PT0251", {
-    //   source_address: GLOBALS.getUrlParam("from") || ""
+      // source_address: GLOBALS.getUrlParam("from") || ""
     // });
+    // 合并
   },
   mounted() {
     this.getActivityInfo();
