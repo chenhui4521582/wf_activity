@@ -5,8 +5,9 @@
         <p>
           返利卡有效时间：
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
+          <!-- <span >06时30分12秒</span> -->
         </p>
-        <p>明天返利：{{this.state.rebateAmount}}金叶</p>
+        <p style=" margin-top: 0.05rem;">明天返利：{{this.state.rebateAmount}}金叶</p>
       </div>
       <div class="back" @click="back">返回</div>
       <div class="rule" @click="rule">规则</div>
@@ -42,30 +43,31 @@
               <img v-if="item.awardsType=='yhq'" src="./images/yhq.png" alt />
               <img v-if="item.awardsType=='jyz'" src="./images/jyz.png" alt />
 
-              <p v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='jdk'">京东券</p>
+              <p class="text-one" v-if="item.awardsType=='jdk'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='jdk'">京东券</p>
 
-              <p v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
-              <p v-if="item.awardsType=='jyz'">金叶子</p>
+              <p class="text-one" v-if="item.awardsType=='jyz'">{{parseFloat(item.awardsName) }}</p>
+              <p class="text-two" v-if="item.awardsType=='jyz'">金叶子</p>
 
-              <p v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
-              <p v-if="item.awardsType=='hfq'">话费券</p>
+              <p class="text-one" v-if="item.awardsType=='hfq'">{{parseFloat(item.awardsName) }}元</p>
+              <p class="text-two" v-if="item.awardsType=='hfq'">话费券</p>
 
               <p
+                class="text-one"
                 style="white-space: normal;
-    text-align: center;"
+    text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[3]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[4]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[5]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[6]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[7]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
+              <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
 
             <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
@@ -90,8 +92,14 @@
               <img src="./images/smallyellow.png" alt />
               <span>{{nextConsume}}</span>
             </div>
-            <div class="playgame" >
-              <img   class="goplay" v-if="prized.length!=10" @click="startLottery" src="./images/startbtn.png" alt />
+            <div class="playgame">
+              <img
+                class="goplay"
+                v-if="prized.length!=10"
+                @click="startLottery"
+                src="./images/startbtn.png"
+                alt
+              />
               <img v-if="prized.length==10" @click="notenough" src="./images/blackbtn.png" alt />
             </div>
           </div>
@@ -108,10 +116,11 @@
   </section>
 </template>
 <script>
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
 import _get from "lodash.get";
 import { activityInfo, bet, ratePropState, userAwards } from "./services/api";
 import comPop from "./component/comPop";
+import utils from "../../common/js/utils.js";
 export default {
   data() {
     return {
@@ -129,7 +138,7 @@ export default {
       timer: 0, // 每次转动定时器
       speed: 200, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 50, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 30, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -214,7 +223,8 @@ export default {
     };
   },
   created() {
-    // this.popType = 0;
+    // this.popType = 7;
+    // this.prizeshow.sort=1
     GLOBALS.marchSetsPoint("P_H5PT0251", {
       source_address: GLOBALS.getUrlParam("from") || ""
     });
@@ -279,9 +289,11 @@ export default {
         return;
       } else {
         this.startRoll();
-        this.remnantNum = this.bet.remnantNum;
-        this.rarePropNum = this.bet.rarePropNum;
-        this.nextConsume = this.bet.nextConsume;
+        if (this.bet) {
+          this.remnantNum = this.bet.remnantNum;
+          this.rarePropNum = this.bet.rarePropNum;
+          this.nextConsume = this.bet.nextConsume;
+        }
       }
 
       console.log("bet1 ", this.bet);
@@ -303,7 +315,7 @@ export default {
     // 奖励列表
     async getUserAwards() {
       const res = await userAwards();
-      this.userAwards = _get(res, "data", {});
+      this.userAwards = _get(res, "data", []);
     },
     // 返回上一级
     back() {
@@ -324,6 +336,7 @@ export default {
     // 中奖记录
     prizerecord() {
       this.popType = 2;
+      this.getUserAwards();
       GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
@@ -421,37 +434,19 @@ export default {
     // 点击投注
     async startLottery() {
       if (this.message == "您的宝石不足") {
-       this.popType = 5;
+        this.popType = 5;
       } else if (!this.click) {
-         this.$toast.show({
+        this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
       } else {
-        await this.getBet();
         this.click = false;
+        await this.getBet();
+
         GLOBALS.marchSetsPoint("A_H5PT0251002968");
-        // console.log('bet',this.bet)
-        // console.log('bet',this.bet.message)
       }
     },
-
-    //       if (!this.click) {
-    //         this.$toast.show({
-    //           message: "正在抽奖",
-    //           duration: 1000
-    //         });
-    //       }else if (this.message== "您的宝石不足"){
-    // this.popType = 5;
-    //       } else {
-    //         await this.getBet();
-    //         this.click=false
-    //           GLOBALS.marchSetsPoint('A_H5PT0251002968')
-    //         // console.log('bet',this.bet)
-    //         // console.log('bet',this.bet.message)
-    //       }
-    //     },
-
     // 开始抽奖
     startRoll() {
       this.times += 1; // 转动次数
@@ -486,11 +481,6 @@ export default {
         this.prize = -1;
         this.times = 0;
         this.speed = 200;
-
-        // var that = this;
-        setTimeout(res => {
-          // that.showToast = true;
-        }, 500);
       } else {
         if (this.times < this.cycle) {
           this.speed -= 15; // 加快转动速度
@@ -534,10 +524,41 @@ export default {
   }
 };
 </script>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+a,
+em,
+i,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
 
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+</style>
 <style lang="less" scoped>
-*{margin: 0;
-padding: 0}
+
 section {
   width: 7.2rem;
   height: 100vh;
@@ -644,7 +665,9 @@ section {
         font-family: Alibaba PuHuiTi;
         font-weight: 400;
         color: rgba(77, 49, 28, 1);
-
+        display: flex;
+        justify-content: center;
+        align-items: center;
         i {
           font-size: 0.24rem;
           font-family: Alibaba PuHuiTi;
@@ -708,6 +731,9 @@ section {
         box-sizing: border-box;
         position: relative;
         height: 5.1rem;
+        .absolute {
+          position: absolute;
+        }
         ul {
           li {
             list-style: none;
@@ -719,6 +745,12 @@ section {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            .text-one {
+              margin-top: 0.1rem;
+            }
+            .text-two {
+              margin-top: 0.05rem;
+            }
             &.on {
               background: url(./images/current.png) no-repeat;
               background-size: 100% 100%;
@@ -804,10 +836,10 @@ section {
           transform: translateX(-50%);
           margin-top: 0.05rem;
           display: flex;
-    flex-direction: column;
-    /* align-items: baseline; */
-    justify-content: space-around;
-    height: 1.65rem;
+          flex-direction: column;
+          /* align-items: baseline; */
+          justify-content: space-around;
+          height: 1.65rem;
           .game-tips {
             text-align: center;
             font-size: 0.18rem;
@@ -835,8 +867,8 @@ section {
           }
           .playgame {
             margin-left: 0.05rem;
-            .goplay{
-                // animation: breathe 1s linear infinite alternate;
+            .goplay {
+              // animation: breathe 1s linear infinite alternate;
             }
             img {
               display: block;
@@ -844,7 +876,6 @@ section {
               height: 0.65rem;
               margin: 0 auto;
               &:first-child:active {
-              
                 transform: translateY(0.02rem);
                 transform: scale(0.9);
               }
@@ -859,14 +890,14 @@ section {
   }
 }
 @keyframes breathe {
-  0%{
-transform: scale(1)
+  0% {
+    transform: scale(1);
   }
-  50%{
-transform: scale(0.9)
+  50% {
+    transform: scale(0.9);
   }
-  100%{
-transform: scale(1)
+  100% {
+    transform: scale(1);
   }
 }
 // .big{
