@@ -1,7 +1,7 @@
 <template>
-  <section class="horn-and-more">
+  <section class="horn-and-more activity">
     <section class="text-btn" @click="jumpRankingList"><span>幸运榜单</span></section>
-        <horn-list :notice-list="noticeList" v-if="noticeList.length"></horn-list>
+        <horn-list class="activity" :notice-list="noticeList" v-if="noticeList.length"></horn-list>
     <section class="text-btn">
       <div v-if="unreceived" class="mark">{{unreceived}}</div>
       <a href="#/myPrize" @click="getAwards">获得奖品</a>
@@ -67,6 +67,10 @@ export default {
   padding: 0 0.14rem 0.5rem;
   color: #edeef1;
   font-size: 0.24rem;
+  &.activity {
+    background: #FEF2DE url('../activity/top-btn-wrap.png') no-repeat;
+    background-size:100% 90%;
+  }
   .text-btn {
     display: flex;
     font-weight: bold;

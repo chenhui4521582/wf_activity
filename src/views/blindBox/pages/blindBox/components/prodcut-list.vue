@@ -102,7 +102,9 @@ export default {
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
-    background: rgba(129, 131, 136, 0.73);
+    padding-top: 0.2rem;
+    // background: rgba(129, 131, 136, 0.73);
+    background: rgba(254,243,222,.9);
     display: flex;
     position: relative;
     flex-direction: column;

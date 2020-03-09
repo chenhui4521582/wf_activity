@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <article v-if="show"
+    <article @click="$emit('mask')" v-if="show"
       class="mask">
       <section class="content" :style="layout">
         <img v-if="close"

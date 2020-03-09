@@ -7,9 +7,14 @@
     <div class="progress" v-if="treeInfo">
       <div class="wrap" :style="{'width': `${ treeInfo.treeWaterProgress || 0}%`}"></div>
     </div>
-    <div class="tree-status-tips" v-if="treeInfo">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-if="treeInfo && !showTreeFinish">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-else>点击下方按钮领取果实吧</div>
+    <!-- 选种子按钮 -->
+    <div class="tree-send" v-if="treeInfo && treeInfo.awardStatus == 2" @click="_getAwardList">
+      <img src="./img/start-btn.png" alt="">
+    </div>
     <!-- 浇水按钮 -->
-    <div class="run-btn" :class="{'userGuide': guideStep == 2}" v-if="!showTreeFinish" @click="_watering(14)" >
+    <div class="run-btn" :class="{'userGuide': guideStep == 2}" v-else-if="!showTreeFinish" @click="_watering(14)" >
       我的水滴：{{userInfo.waterNum || 0}}g
     </div>
     <!-- 收获按钮 -->
@@ -23,7 +28,7 @@
     <!-- 肥料礼包按钮 -->
     <div class="manure-card" @click="_getCardList"></div>
     <!-- 肥料按钮 -->
-    <div class="manure" v-if="!showTreeFinish" @click="_watering(15)" >
+    <div class="manure" v-if="!showTreeFinish && (treeInfo && treeInfo.awardStatus != 2)" @click="_watering(15)" >
       <span>x{{userInfo.fertilizerNum || 0}}</span>
     </div>
     <!-- 领水滴 -->
@@ -33,7 +38,7 @@
       活动时间: {{userInfo.beginDate | formatTime('y-m-d')}}- {{userInfo.endDate | formatTime('y-m-d')}}
     </div>
     <!-- 浇水动画 -->
-    <transition-group tag="ul" class="water-animation" name="fade" v-on:enter="enter" >
+    <transition-group tag="ul" class="water-animation" v-on:enter="enter" >
       <li v-for="(item, index) in waterAniamtion" :key="index+item" :_index="index">{{item}}</li>
     </transition-group>
     <!-- Slide -->
@@ -49,7 +54,7 @@
       :cardList="cardList"
       @treeUpgrade="treeUpgrade"
       @treeUpgradeAnimation="treeUpgradeAnimation"
-      @tryAgen="_getInfo"
+      @tryAgen="_getAwardList"
       @checkLog="_getLog"
       @refresh="_getInfo"
       @openTask="openTask"
@@ -57,7 +62,7 @@
     <!-- price-log -->
     <price-log v-model="showLog" :logList="logList" />
     <!-- select-seed -->
-    <select-seed v-model="showSeed" :treeList="treeList" @treeCallback="treeCallback"/>
+    <select-seed v-model="showSeed" :treeList="treeList" :treeInfo="treeInfo" @treeCallback="treeCallback" @hideCallback="_getInfo"/>
     <!-- show-rule -->
     <rule v-model="showRule"/>
     <!-- newUserGuide -->
@@ -76,6 +81,7 @@ import Popup from './components/popup'
 import Services from './services/services'
 import utils from './components/utils'
 import _get from 'lodash.get'
+import Velocity from 'velocity-animate'
 export default {
   name: 'tree',
   data: ()=>({
@@ -110,7 +116,7 @@ export default {
     /** 树木收获奖励数据 **/
     treeFinishAward: {},
     /** 是否需要新手引导 **/
-    newUserGuide: true,
+    newUserGuide: false,
     step: 0,
     /** 礼包数据 **/
     cardList: []
@@ -139,7 +145,7 @@ export default {
   },
   methods: {
     backHome() {
-      window.history.go(-1)
+      window.location.href = "//wap.beeplaying.com/xmWap/#/"
     },
     openTask() {
       if(this.newUserGuide) {
@@ -162,14 +168,21 @@ export default {
       this.treeInfo = data
       GLOBALS.marchSetsPoint('A_H5PT0247002893')
     },
-    enter(el) {
+    enter(el, done) {
       let index = el.getAttribute('_index')
       let parent = el.parentNode
-      el.style.zIndex = (10000 - index)
-      setTimeout(()=> {
-        this.waterAniamtion.shift()
-        // parent.removeChild(el);
-      },4000)
+      Velocity(el,{
+        zIndex: 10000 - index,
+        opacity: 0,
+        bottom: '3rem',
+      },{
+        duration: 3000,
+        delay: 500,
+        complete: () => {
+          this.waterAniamtion.shift()
+          done()
+        }
+      })
     },
     /** 更新水滴 **/
     updateWater(data) {
@@ -210,6 +223,8 @@ export default {
           /** 树木收获状态 **/
           if(!!this.treeInfo && this.treeInfo.awardStatus == 1) {
             this.showTreeFinish = true
+          }else {
+            this.showTreeFinish = false
           }
           if(activities_status == 0) {
             this.$toast.show({message: '当前活动尚未开始'})
@@ -245,7 +260,6 @@ export default {
           this.showPopup = true
           this.treeFinishAward = _get(res, 'data.data', {})
           GLOBALS.marchSetsPoint('A_H5PT0247002896')
-          
         }else {
           this.$toast.show({message})
         }
@@ -254,18 +268,18 @@ export default {
     /** 浇水施肥 **/
     _watering(type) {
       let parasm = {
-        num: type == 14 ? 10 : 1,
+        num: type == 14 ? this.userInfo.waterNum >= 100 ? 100 : 10  : 1,
         type
       }
       if(this.newUserGuide) {
         this.step = 0
       }
-      if(type == 14 && this.userInfo.waterNum < 10) {
+      if(type == 14 && this.userInfo.waterNum < parasm.num) {
         this.showPopup= true
         this.popupType = 4
         return 
       }
-      if(type == 15 && this.userInfo.fertilizerNum < 1) {
+      if(type == 15 && this.userInfo.fertilizerNum < parasm.num) {
         this._getCardList()
         return
       }
@@ -292,6 +306,7 @@ export default {
           /** 收获弹框 **/
           if(!!this.treeInfo && this.treeInfo.awardStatus == 1) {
             this.showTreeFinish = true
+            this.treeAnimation()
             return
           }
           /** 意外惊喜 **/
@@ -536,6 +551,23 @@ export default {
     background-size: 100% auto;
     transform: translate(-50%, 0);
   }
+  .tree-send {
+    position: absolute;
+    left: 50%;
+    bottom: 2.4rem;
+    width: 3.52rem;
+    height: 1.3rem;
+    border-radius: .14rem;
+    background: url(./img/sign-btn-bg.png) no-repeat center bottom ;
+    background-size: 100% auto;
+    transform: translate(-50%, 0);
+    img {
+      margin: .21rem 0 0 .8rem;
+      width: 1.92rem;
+      height: .57rem;
+    }
+  }
+  
   .back {
     position: absolute;
     left: .12rem;
@@ -633,8 +665,9 @@ export default {
       background: rgba(0,0,0,.5);
       color: #fff;
       border-radius: .1rem;
-      opacity: 0;
       line-height: 1.1;
+      background: url(./img/tips.png) no-repeat center center;
+      background-size: 100% 100%;
       &.fade-enter {
         opacity: 1;
         transform: translate(0, 0);
