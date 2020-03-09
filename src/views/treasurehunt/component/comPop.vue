@@ -72,14 +72,14 @@
         </template>
         <!-- 太棒了（每次宝石与上次新增时） -->
         <template v-if="value==4">
-          <img class="yellow-rock" src="../images/comPop/yellowrock.png" alt />
+          <img class="yellow-rock" src="../images/compop/yellowrock.png" alt />
           <p class="congra-texts">恭喜您获得</p>
           <p class="prize-name">{{activityInfo.incrPropNum}}颗宝石</p>
           <div class="iknow" @click="close">我知道了</div>
         </template>
         <!-- 很遗憾 宝石数量不够 -->
         <template v-if="value==5">
-          <img class="yellow-rock" src="../images/comPop/yellowrock.png" alt />
+          <img class="yellow-rock" src="../images/compop/yellowrock.png" alt />
           <p class="congra-texts">
             还差一点宝石就
             <span style="font-size:0.38rem;color:'#FFCC5D'">可抽大奖</span>
@@ -232,7 +232,7 @@ export default {
     -webkit-animation: change 0.4s linear;
     -moz-animation: change 0.4s linear;
   .pop-bg {
-    background: url(../images/comPop/compopbg.png) no-repeat;
+    background: url(../images/compop/compopbg.png) no-repeat;
     background-size: 100% 100%;
     width: 5.2rem;
     overflow: hidden;
@@ -240,7 +240,7 @@ export default {
     margin: 1.6rem auto 0;
     // animation: change 0.3s linear;
     &.big-pop-bg{
-          background: url(../images/comPop/bigpopbg.png) no-repeat;
+          background: url(../images/compop/bigpopbg.png) no-repeat;
     background-size: 100% 100%;
     width: 5.2rem;
     height: 7.6rem;
@@ -399,7 +399,7 @@ color:rgba(253,209,152,1);
         margin: 0.4rem auto 0;
       }
       .iknow {
-        background: url(../images/comPop/ikonw-btn.png) no-repeat;
+        background: url(../images/compop/ikonw-btn.png) no-repeat;
         background-size: 100% 100%;
         width: 2.96rem;
         height: 0.65rem;
