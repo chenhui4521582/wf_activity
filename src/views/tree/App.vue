@@ -7,7 +7,8 @@
     <div class="progress" v-if="treeInfo">
       <div class="wrap" :style="{'width': `${ treeInfo.treeWaterProgress || 0}%`}"></div>
     </div>
-    <div class="tree-status-tips" v-if="treeInfo">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-if="treeInfo && !showTreeFinish">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-else>点击下方按钮领取果实吧</div>
     <!-- 选种子按钮 -->
     <div class="tree-send" v-if="treeInfo && treeInfo.awardStatus == 2" @click="_getAwardList">
       <img src="./img/start-btn.png" alt="">
