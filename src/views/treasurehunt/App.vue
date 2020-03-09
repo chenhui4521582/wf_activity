@@ -229,6 +229,7 @@ export default {
       // source_address: GLOBALS.getUrlParam("from") || ""
     // });
     // 合并
+    // 合并
   },
   mounted() {
     this.getActivityInfo();
