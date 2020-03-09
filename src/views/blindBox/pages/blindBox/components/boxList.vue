@@ -1,26 +1,22 @@
 <template>
   <section class="box-list-wrapper">
-    <section class="box-list-container">
-      <ul
-        class="box-list"
+    <section class="box-list-container activity">
+      <ul class="box-list"
         :class="{ 'all-has-shelf': isRefresh }"
         v-for="(items, key) in boxList"
         :key="'list' + key"
-        :style="{ zIndex: 3 - key }"
-      >
-        <li
-          class="box-item"
+        :style="{ zIndex: 3 - key }">
+        <li class="box-item"
           v-for="(item, index) in items"
           :key="'item' + index"
           :class="{ 'shake-rotate': hasShake(item.state) }"
-          @click="toDetail(item)"
-        >
-          <box-info
-            :class="{ 'has-shelf': hasShelf(item) }"
-            :info="item"
-          ></box-info>
-          <div class="old-box-image box-drop" v-if="item.state === 3">
-            <img :src="item.extend.oldColor | boxImage(item.state)" alt="" />
+          @click="toDetail(item)">
+          <box-info :class="{ 'has-shelf': hasShelf(item) }"
+            :info="item"></box-info>
+          <div class="old-box-image box-drop"
+            v-if="item.state === 3">
+            <img :src="item.extend.oldColor | boxImage(item.state)"
+              alt="" />
             <div class="awards-info">
               <p class="other-people">用户{{ item.extend.nickname }}正在购买</p>
             </div>
@@ -29,38 +25,103 @@
       </ul>
     </section>
     <article class="botton-wrapper">
+
       <!-- 非年货节按钮 begin-->
-      <section class="btn-container">
-        <m-button @confirm="buyOne">{{
-          isOpenBox ? "立即开盒" : "开一盒试试"
-        }}</m-button>
-        <div class="change-btn" @click="changeAll">换一批</div>
+      <section class="btn-container btn-container-top activity">
+        <!-- <m-button @confirm="buyOne">{{
+          isOpenBox ? `立即开盒` : "20元开一盒"
+        }}<span v-if="isOpenBox"
+            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
+        <div class="activity-button"
+          @click="buyOne">
+          <p v-if="isOpenBox">立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
+          <p v-else>¥<span class="money">20</span> 开1盒</p>
+        </div>
+        <img v-if="isCouponTip"
+          class="coupon-tip"
+          src="../assets/tip.png"
+          alt="">
+        <div class="change-btn change-btn-left activity"
+          @click="showRule">
+          <!-- <img class="icon"
+            src="../assets/rule.png"
+            alt=""> -->
+          <img class="icon"
+            src="../activity/rule.png"
+            alt="">
+          活动规则
+        </div>
+        <div class="change-btn change-btn-right activity"
+          @click="changeAll">
+          <!-- <img class="icon"
+            src="../assets/refresh.png"
+            alt=""> -->
+          <img class="icon"
+            src="../activity/refresh.png"
+            alt="">
+          换一批
+        </div>
       </section>
-      <section v-if="!isOpenBox" class="btn-container">
-        <m-button :button-style="buttonStyle" @confirm="leafsBuy">使用金叶子购买</m-button>
+      <section class="btn-container activity">
+        <!-- <m-button v-if="!isOpenBox"
+          @confirm="bulkBuy">55元开3盒</m-button> -->
+        <div v-if="!isOpenBox"
+          class="activity-button batch"
+          @click="bulkBuy">
+          ¥<span class="money">55</span><span></span>开3盒
+        </div>
+        <p class="leaf-buy"
+          v-if="userInfo && userInfo.leafsPay"
+          @click="leafsBuy">使用金叶子购买</p>
         <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
       </section>
       <!-- 非年货节按钮 end -->
     </article>
-    <Dialog
-      :show="isShowPop"
+    <Dialog :show="isShowRule"
+      title="活动规则"
+      :close="true"
+      @onClose="closeRule()">
+      <p class="rule-content">
+        1.用户支付20元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
+        2.购买盲盒可100%开出奖品；<br>
+        3.选择一个盲盒，支付5元购买一张透视卡，可查看盲盒内是否是想要的商品；<br>
+        4.盲盒获得的奖品可在“我的奖品”中领取，满2件奖品即可包邮，不满2件需支付8元邮费；<br>
+        5.奖品领取成功后我们会在1-2天内给您发货；如有疑问可联系在线客服； <br>
+        6.盲盒和透视卡购买后不支持退换哦；<br>
+        7.盲盒购买金额不计入游戏平台的累充活动；<br>
+        玩蜂对此具有最终解释权
+      </p>
+      <section class="rule-btn-wrapper"
+        slot="footer">
+        <div class="confirm"
+          @click="closeRule()">
+          我知道了
+        </div>
+      </section>
+    </Dialog>
+    <Dialog :show="isShowPop"
       title="支付完成"
       :close="true"
-      @onClose="closePop()"
-    >
+      @onClose="closePop()">
       <p class="pop-content">
         您已付款成功，选一个盲盒吧
       </p>
-      <section class="pop-btn-wrapper" slot="footer">
-        <div class="confirm" @click="closePop(1)">
+      <section class="pop-btn-wrapper"
+        slot="footer">
+        <div class="confirm"
+          @click="closePop(1)">
           好的
         </div>
-        <div class="cancel" @click="closePop(2)">
+        <div class="cancel"
+          @click="closePop(2)">
           不选了，随机开一个
         </div>
       </section>
     </Dialog>
-    <TipDialog v-if="showTip" source="index" :show="showTip" @close="showTip=false"/>
+    <TipDialog v-if="showTip"
+      source="index"
+      :show="showTip"
+      @close="showTip=false" />
     <VirtualDialog :show="isVirtual"
       v-if="isVirtual"
       source="index"
@@ -74,12 +135,13 @@
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
 import MButton from '../../../components/MButton';
-import {Pay} from '../../../utils';
+import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
 import { boxGroup } from '../../../config/box';
 import TipDialog from './tip-dialog'
 import VirtualDialog from '../../../components/virtual-dialog'
+import { List } from '../../../apis/coupon'
 
 export default {
   name: '',
@@ -95,9 +157,11 @@ export default {
       buttonStyle: {
         background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
         color: '#fff',
-        fontSize: '0.34rem'
+        fontSize: '0.34rem',
+        marginTop: '0.2rem'
       },
       isVirtual: false,
+      isShowRule: false,
       // 用户当天是否第一次进入页面
       isFirstIn: true,
       showTip: false,
@@ -109,7 +173,8 @@ export default {
       isHasShelf: false,
       isRefresh: false,
       refreshTimer: null,
-      boxTimer: null
+      boxTimer: null,
+      isCouponTip: false
     }
   },
   filters: {
@@ -145,10 +210,20 @@ export default {
       return res
     }
   },
-  mounted () {
+  async mounted () {
     this.init()
+    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
   },
   methods: {
+    // 开三盒购买
+    async bulkBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0225002849')
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo[1] })
+    },
     async init () {
       await this.getBoxInfo()
       await this.getUserInfo()
@@ -167,7 +242,15 @@ export default {
     },
     // 用户点击被透视的盒子是否弹窗
     async isPopup () {
-      ({data: {data: this.isFirstIn}} = await Popup(1))
+      ({ data: { data: this.isFirstIn } } = await Popup(1))
+    },
+    // 活动规则
+    showRule () {
+      this.isShowRule = true
+      GLOBALS.marchSetsPoint('A_H5PT0225002543') // H5平台-盲盒页面-活动规则点击
+    },
+    closeRule () {
+      this.isShowRule = false
     },
     // 使用金叶子购买
     leafsBuy () {
@@ -208,6 +291,12 @@ export default {
       const res = await UserInfo()
       const { data } = res.data
       this.userInfo = data || {}
+      if (this.userInfo.incrScore) {
+        this.$score.show({
+          message: `+${this.userInfo.incrScore}积分`,
+          duration: 2000
+        })
+      }
       if (this.userInfo.openBoxTimes) {
         this.isShowPop = true
         GLOBALS.marchSetsPoint('A_H5PT0225002547') // H5平台-盲盒页面-购买盲盒支付成功弹窗加载完成
@@ -236,15 +325,15 @@ export default {
         if (this.userInfo.openBoxTimes) {
           this.$router.push(
             `/openBox/${item.color}?sort=${item.sort}${
-              item.state === 4 ? '&isTransparent=true' : ''
+            item.state === 4 ? '&isTransparent=true' : ''
             }`
           )
         } else {
           this.$router.push(
             `/chooseBox/${item.color}?sort=${item.sort}${
-              item.state === 4
-                ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}&showAmount=${item.extend.showAmount}&awardsNum=${item.extend.awardsNum}`
-                : ''
+            item.state === 4
+              ? `&awardsName=${item.extend.awardsName}&awardsImage=${item.extend.awardsImage}&showAmount=${item.extend.showAmount}&awardsNum=${item.extend.awardsNum}`
+              : ''
             }`
           )
         }
@@ -261,7 +350,7 @@ export default {
         const {
           data: { data: payInfo }
         } = await PayPoint(1)
-        Pay.toPay({ payInfo })
+        Pay.toPay({ payInfo: payInfo[0] })
         GLOBALS.marchSetsPoint('A_H5PT0225002539') // H5平台-盲盒页面-开一次按钮点击(点击购买)
       }
     },
@@ -316,6 +405,58 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+  background: #fef2de;
+  .activity-button {
+    width: 3.3rem;
+    line-height: 0.8rem;
+    border-radius: 0.4rem;
+    color: #fff3e5;
+    font-size: 0.36rem;
+    text-align: center;
+    margin: 0 auto;
+    background: url("../activity/button1.png") no-repeat;
+    background-size: 100% 100%;
+    .money {
+      font-size: 0.4rem;
+    }
+    &.batch {
+      background: url("../activity/button2.png") no-repeat;
+      color: rgb(255, 255, 255);
+      background-size: 100% 100%;
+      margin-top: 0.2rem;
+    }
+  }
+  .botton-wrapper {
+    background: #fef2de;
+  }
+  .coupon-tip {
+    width: 1.56rem;
+    position: absolute;
+    left: 4.24rem;
+    top: -0.2rem;
+  }
+  .rule-content {
+    font-size: 0.24rem;
+    font-weight: 500;
+    color: #888888;
+    line-height: 0.36rem;
+    text-align: left;
+    padding: 0 0.44rem 0.2rem;
+  }
+  .rule-btn-wrapper {
+    padding: 0.2rem 0;
+    .confirm {
+      width: 4.1rem;
+      height: 0.7rem;
+      line-height: 0.7rem;
+      background: #d1ac42;
+      border-radius: 0.16rem;
+      margin: auto;
+      color: #fff;
+      font-size: 0.24rem;
+      font-weight: bold;
+    }
+  }
   .button-wrapper {
     flex: 1;
   }
@@ -329,6 +470,9 @@ export default {
       background: #1b1f29 url(../assets/list-bottom-bg.png) no-repeat center
         center / 100% 100%;
       font-size: 0;
+    }
+    &.activity::after {
+      background-color: #fef2de;
     }
   }
   .box-list {
@@ -407,29 +551,52 @@ export default {
   .btn-container {
     position: relative;
     background: #1b1f29;
-    padding: 0.16rem;
+    &.activity {
+      background: #fef2de;
+      .leaf-buy {
+        color: #e9355a;
+      }
+      .buy-tip {
+        color: #7b4913;
+      }
+    }
+    // padding: 0.16rem;
+    .times {
+      padding-left: 0.2rem;
+      span {
+        color: #ff1520;
+      }
+      &.activity {
+        padding-left: 0;
+        span {
+          color: #fff3e5;
+        }
+      }
+    }
+    &-top {
+      padding-top: 0.32rem;
+    }
     .money-buy {
       margin: 0 auto;
       width: 3.07rem;
       line-height: 0.78rem;
-      color: #F5DBBB;
+      color: #f5dbbb;
       font-size: 0.36rem;
       text-align: center;
-      background: url('../assets/button1.png') no-repeat;
+      background: url("../assets/button1.png") no-repeat;
       background-size: 100% 100%;
     }
     .leaf-buy {
-      margin: 0 auto;
-      width: 3.07rem;
-      line-height: 0.78rem;
-      color: #F4D6B0;
+      padding-top: 0.28rem;
       font-size: 0.3rem;
       text-align: center;
-      background: url('../assets/button2.png') no-repeat;
-      background-size: 100% 100%;
+      background: linear-gradient(90deg, #dbbe6f, #fee9b4);
+      -webkit-background-clip: text;
+      font-weight: bold;
+      color: transparent;
     }
     .buy-tip {
-      color: #6F768E;
+      color: #6f768e;
       font-size: 0.24rem;
       text-align: center;
       padding-top: 0.33rem;
@@ -439,16 +606,30 @@ export default {
     }
     .change-btn {
       position: absolute;
-      top: calc(~"50%" - 0.21rem);
-      right: 0.36rem;
-      width: 1.14rem;
+      top: calc(~"50%" - 0.4rem);
+      // width: 1.14rem;
       box-sizing: border-box;
       color: #fff;
-      border: 0.02rem solid #fff;
+      // border: 0.02rem solid #fff;
       line-height: 0.42rem;
-      text-align: center;
-      border-radius: 0.22rem;
-      font-size: 0.24rem;
+      // text-align: center;
+      // border-radius: 0.22rem;
+      font-size: 0.26rem;
+      display: flex;
+      align-items: center;
+      &.activity {
+        color: #e9355a;
+      }
+      .icon {
+        width: 0.34rem;
+        margin-right: 0.1rem;
+      }
+      &-left {
+        left: 0.3rem;
+      }
+      &-right {
+        right: 0.3rem;
+      }
     }
   }
 

@@ -4,12 +4,14 @@
       :key="item.title"
       :icon="item.icon"
       :title="item.title"
+      :tip="item.tip"
       :border="index !== (row.length-1)"
       @jump="item.jump" />
   </section>
 </template>
 
 <script>
+import { List } from '../../../../apis/coupon'
 import Row from '../row'
 
 export default {
@@ -37,6 +39,16 @@ export default {
           }
         },
         {
+          icon: require('./assets/coupon.png'),
+          title: '我的优惠券',
+          jump: () => {
+            // GLOBALS.marchSetsPoint('A_H5PT0225002570')
+            this.$router.push({
+              name: 'Coupon'
+            })
+          }
+        },
+        {
           icon: require('./assets/service.png'),
           title: '在线客服',
           jump: () => {
@@ -57,6 +69,10 @@ export default {
   },
   components: {
     Row
+  },
+  async mounted () {
+    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    if (data.length > 0) this.$set(this.row[2], 'tip', '有优惠券未使用')
   }
 }
 </script>

@@ -56,5 +56,13 @@ export const Receiver = () => (
   client.post('@box/inventory/receiver')
 )
 
+// 回收奖品
+export const Recycle = id => (
+  client.post(`@box/inventory/recycle/${id}`)
+)
+
 // 首次进入，平台最近在玩显示
 export const FirstLoad = () => client.post('//platform-api.beeplaying.com/wap/api/game/firstLoad/28')
+
+// 计算奖品可以换多少积分
+export const CalcScore = id => client.post(`@box/inventory/calc-score/${id}`)

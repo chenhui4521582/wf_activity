@@ -24,11 +24,35 @@ const routes = [
         }
       },
       {
+        path: '/score',
+        name: 'Score',
+        component: () => import('../pages/score'),
+        meta: {
+          title: '积分'
+        }
+      },
+      {
+        path: '/scoreDetail',
+        name: 'ScoreDetail',
+        component: () => import('../pages/scoreDetail'),
+        meta: {
+          title: '积分明细'
+        }
+      },
+      {
         path: '/my',
         name: 'My',
         component: () => import('../pages/my'),
         meta: {
           title: '我的'
+        }
+      },
+      {
+        path: '/coupon',
+        name: 'Coupon',
+        component: () => import('../pages/coupon'),
+        meta: {
+          title: '优惠券'
         }
       },
       {
@@ -77,6 +101,14 @@ const routes = [
         component: () => import('../pages/myPrize'),
         meta: {
           title: '我的奖品'
+        }
+      },
+      {
+        path: '/rankingList',
+        name: 'RankingList',
+        component: () => import('../pages/rankingList'),
+        meta: {
+          title: '幸运榜单'
         }
       }
     ]

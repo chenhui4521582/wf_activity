@@ -1,5 +1,5 @@
 <template>
-  <section class="horn-list-wrap">
+  <section class="horn-list-wrap activity">
     <div class="horn">
       <div class="horn-list">
         <div ref="hornDivWraper">
@@ -87,8 +87,13 @@ export default {
   width: 3.8rem;
   color: #edeef1;
   height: 0.52rem;
-  line-height: 0.52rem;
+  line-height: 0.53rem;
   background: url(../assets/top-btn-bg.png) no-repeat center bottom / 100% 100%;
+  &.activity {
+    background: url(../activity/top-btn-bg.png) no-repeat;
+    background-size: 100% 100%;
+    color:#BB0A2F;
+  }
 }
 .horn {
   height: 0.52rem;
