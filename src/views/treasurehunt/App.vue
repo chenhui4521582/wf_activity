@@ -9,16 +9,39 @@
         </p>
         <p style=" margin-top: 0.05rem;">明天返利：{{this.state.rebateAmount}}金叶</p>
       </div>
-      <div class="back" @click="back">返回</div>
-      <div class="rule" @click="rule">规则</div>
-      <div class="prize-record" @click="prizerecord">中奖记录</div>
+      <div class="back" @click="back">
+        <span>返回</span>
+      </div>
+      <div class="rule" @click="rule">
+        <span>规则</span>
+      </div>
+      <div class="prize-record" @click="prizerecord">
+        <span>中奖记录</span>
+      </div>
       <!-- 倒计时 -->
       <div class="countdown">
-        <span v-if="countTime">距离结束剩余</span>
-        <span v-else>活动已经结束</span>
+        <div class="countdown-container" v-if="activityInfo.state==1">
+          <span v-if="countTime&&activityInfo.state==1">距离结束剩余</span>
+          <span v-if="activityInfo.state==2">活动已经结束</span>
+          <span v-if="activityInfo.state==0">活动未开始</span>
 
-        <div class="countdown-item" v-for="(item,key) in countTime.split('')" :key="key">
-          <span>{{item}}</span>
+          <div class="countdown-item" v-for="(item,key) in countTime.split('')" :key="key">
+            <span>{{item}}</span>
+          </div>
+        </div>
+        <div
+          class="countdown-container"
+          v-if="activityInfo.state==2"
+          style="justify-content: center;"
+        >
+          <span v-if="activityInfo.state==2">活动已经结束</span>
+        </div>
+        <div
+          class="countdown-container"
+          v-if="activityInfo.state==0"
+          style="justify-content: center;"
+        >
+          <span v-if="activityInfo.state==0">活动未开始</span>
         </div>
       </div>
       <!-- 已有人数 -->
@@ -32,7 +55,18 @@
           <img src="./images/myyellowrock.png" alt />
           <span class="mynum">{{remnantNum}}</span>
           <!-- 跳转商城 -->
-          <img @click="goshop" src="./images/plus.png" alt />
+          <img
+            @click="goshop"
+            v-if="activityInfo.state==1&&prized.length<10"
+            src="./images/plus.png"
+            alt
+          />
+          <img
+            @click="nogoshop"
+            src="./images/nogoshop.png"
+            v-if="prized.length==10||activityInfo.state==0||activityInfo.state==2"
+            alt
+          />
         </div>
         <article>
           <ul v-if="newlist.length>=0">
@@ -95,12 +129,17 @@
             <div class="playgame">
               <img
                 class="goplay"
-                v-if="prized.length!=10"
-                @click="startLottery"
+                v-if="prized.length!=10&&activityInfo.state==1"
+                @click.stop="startLottery"
                 src="./images/startbtn.png"
                 alt
               />
-              <img v-if="prized.length==10" @click="notenough" src="./images/blackbtn.png" alt />
+              <img
+                v-if="prized.length==10||activityInfo.state==2||activityInfo.state==0"
+                @click="notenough"
+                src="./images/blackbtn.png"
+                alt
+              />
             </div>
           </div>
         </article>
@@ -134,11 +173,12 @@ export default {
       // countDown:['1','天','0','1','时','0','0','分','0','0','秒'],
       popType: 0, //1规则 2中奖记录 3探宝成功 4宝石比上次多弹窗 5很遗憾（当前宝石不够抽奖额度） 6充值返利获得金叶 7抽中返利卡
       index: -1, // 当前转动到哪个位置，起点位置
+      newindex: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], //
       count: 10, // 总共有多少个位置
       timer: 0, // 每次转动定时器
       speed: 200, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 30, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 10, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -219,18 +259,19 @@ export default {
       state: {},
       // 奖励列表
       userAwards: [],
-      message: ""
+      message: "",
+      there: ""
     };
   },
   created() {
-    // this.popType = 7;
+    // this.popType = 1;
     // this.prizeshow.sort=1
-    // GLOBALS.marchSetsPoint("P_H5PT0251", {
-      // source_address: GLOBALS.getUrlParam("from") || ""
-    // });
+    GLOBALS.marchSetsPoint("P_H5PT0251", {
+      source_address: GLOBALS.getUrlParam("from") || ""
+    });
     // 合并
     // 合并
-    console.log('更改大小写')
+    console.log("更改大小写");
   },
   mounted() {
     this.getActivityInfo();
@@ -253,23 +294,23 @@ export default {
       this.remnantNum = this.activityInfo.remnantNum;
       this.rarePropNum = this.activityInfo.rarePropNum;
       this.nextConsume = this.activityInfo.nextConsume;
+
       for (var i = 0; i < this.newlist.length; i++) {
         if (this.newlist[i].state == 1) {
           this.prized.push(this.newlist[i].sort - 1);
-          // console.log('newlist',this.newlist[i].sort)
         }
       }
+
       if (this.activityInfo.incrPropNum > 0) {
         this.popType = 4;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002971");
+        GLOBALS.marchSetsPoint("A_H5PT0251002971");
       }
       console.log(this.prized);
       // this.newlist =  this.activityInfo.wheelAwardsList;
       console.log("奖品列表", this.newlist);
-      this.time = this.activityInfo.countdown;
       // 初始化判断已领取奖励
       // this.prized.push(this.activityInfo.);
-      this.countDown(this.time);
+      this.countDown(this.activityInfo.countdown);
 
       const code = _get(res, "code", 0);
     },
@@ -288,7 +329,7 @@ export default {
         });
       } else if (res.message == "您的宝石不足") {
         this.popType = 5;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002970");
+        GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
       } else {
         this.startRoll();
@@ -312,7 +353,7 @@ export default {
       }
       if (this.state.rebatePopup) {
         this.popType = 6;
-        // GLOBALS.marchSetsPoint("A_H5PT0251002973");
+        GLOBALS.marchSetsPoint("A_H5PT0251002973");
       }
     },
     // 奖励列表
@@ -323,24 +364,42 @@ export default {
     // 返回上一级
     back() {
       history.go(-1);
-      // GLOBALS.marchSetsPoint("A_H5PT0251002964");
+      GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
       parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
-      // GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      GLOBALS.marchSetsPoint("A_H5PT0251002966");
+    },
+    nogoshop() {
+      if (this.activityInfo.state == 0) {
+        this.$toast.show({
+          message: "活动未开始",
+          duration: 1000
+        });
+      } else if (this.activityInfo.state == 2) {
+        this.$toast.show({
+          message: "活动已经结束",
+          duration: 1000
+        });
+      } else if (this.prized.length == 10) {
+        this.$toast.show({
+          message: "您已获得所有奖励",
+          duration: 1000
+        });
+      }
     },
     end() {},
     // 点击规则
     rule() {
       this.popType = 1;
-      // GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      GLOBALS.marchSetsPoint("A_H5PT0251002965");
     },
     // 中奖记录
     prizerecord() {
       this.popType = 2;
       this.getUserAwards();
-      // GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      GLOBALS.marchSetsPoint("A_H5PT0251002967");
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -373,13 +432,20 @@ export default {
       let { day, countHour, countMinute, countSecond } = this.getCountInfo(
         date
       );
-      this.countTime = `${countHour}:${countMinute}:${countSecond}`;
+      let self = this;
+
+      doTimer();
+
       this.timer = setInterval(() => {
+        doTimer();
+      }, 1000);
+
+      function doTimer() {
         date = date - 1;
         if (date <= 0) {
           date = 0;
-          clearInterval(this.timer);
-          this.countTime = "";
+          clearInterval(self.timer);
+          self.countTime = "";
           return;
         }
         let day = Math.floor(date / 86400);
@@ -390,12 +456,8 @@ export default {
         let countHour = hour >= 10 ? hour : "0" + hour;
         let countMinute = minute >= 10 ? minute : "0" + minute;
         let countSecond = second >= 10 ? second : "0" + second;
-        if (day >= 0) {
-          this.countTime = `${day}天${countHour}时${countMinute}分${countSecond}秒`;
-        } else {
-          this.countTime = `${countHour}:${countMinute}:${countSecond}`;
-        }
-      }, 1000);
+        self.countTime = `${day}天${countHour}时${countMinute}分${countSecond}秒`;
+      }
     },
     // 返利卡倒计时0
     fanlicountDown(item) {
@@ -438,16 +500,30 @@ export default {
     async startLottery() {
       if (this.message == "您的宝石不足") {
         this.popType = 5;
-      } else if (!this.click) {
+      }
+      // else if(this.countTime==''){
+      //       this.$toast.show({
+      //     message: "活动未开始",
+      //     duration: 1000
+      //   });
+      // }
+      else if (!this.click) {
         this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
-      } else {
+      } 
+      else if(this.prized.length==9){
+             this.popType = 7;
+              this.prizeshow.sort=1
+              this.prized.push(0);
+            GLOBALS.marchSetsPoint("A_H5PT0251002972");
+      }
+      else {
         this.click = false;
         await this.getBet();
 
-        // GLOBALS.marchSetsPoint("A_H5PT0251002968");
+        GLOBALS.marchSetsPoint("A_H5PT0251002968");
       }
     },
     // 开始抽奖
@@ -459,24 +535,27 @@ export default {
       // 如果当前转动次数达到要求 && 目前转到的位置是中奖位置
 
       if (this.times > this.cycle + 10 && this.prize === this.index) {
+        // 抽中返利卡时
         if (this.bet.wheelAwards.state == 1) {
           this.prized.push(this.prize);
         }
 
         // this.prizeshow = this.list[this.prize];
         this.prizeshow = this.bet.wheelAwards;
+        // 删除抽中的位置下标
+        // console.log("删除数组中的抽奖位置", this.newindex);
         setTimeout(() => {
           this.click = true;
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
-            // GLOBALS.marchSetsPoint("A_H5PT0251002972");
+            GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
           } else {
             this.popType = 3;
-            // GLOBALS.marchSetsPoint("A_H5PT0251002969", {
-            //   awards_name: this.prizeshow.awardsName
-            // });
+            GLOBALS.marchSetsPoint("A_H5PT0251002969", {
+              awards_name: this.prizeshow.awardsName
+            });
           }
         }, 800);
         console.log("要传的信息", this.prizeshow);
@@ -486,7 +565,7 @@ export default {
         this.speed = 200;
       } else {
         if (this.times < this.cycle) {
-          this.speed -= 15; // 加快转动速度
+          this.speed -= 20; // 加快转动速度
         } else if (this.times === this.cycle) {
           // const index = parseInt(Math.random() * 10) || 0; // 随机获得一个中奖位置
           this.prize = this.bet.wheelAwards.sort - 1; //中奖位置
@@ -498,13 +577,15 @@ export default {
             this.prize = 9;
           }
         } else if (
-          this.times > this.cycle + 10 &&
-          ((this.prize === 0 && this.index === 9) ||
-            this.prize === this.index + 1)
+          this.times >
+          this.cycle + 5
+          // &&
+          // ((this.prize === 0 && this.index === 9) ||
+          //   this.prize === this.index + 1)
         ) {
-          this.speed += 500;
+          this.speed += 20;
         } else {
-          this.speed += 30;
+          this.speed += 20;
         }
         if (this.speed < 40) {
           this.speed = 40;
@@ -513,13 +594,35 @@ export default {
       }
     },
     oneRoll() {
-      let index = this.index; // 当前转动到哪个位置
-      const count = this.count; // 总共有多少个位置
-      index += 1;
-      if (index > count - 1) {
-        index = 0;
+      let _index = this.index;
+      //获取所有可以选择的index
+      let canSelectIndexs = [];
+      for (var i = 0; i <=9; i++) {
+        // 不匹配      
+        // prized==1时
+        if (this.prized.indexOf(i) == -1) {
+          canSelectIndexs.push(i);
+          console.log('要旋转的数组',canSelectIndexs)
+          // 里面0,2,3,4,5,6,7,8,9
+        }
       }
-      this.index = index;
+      if (_index >= 9) {
+        _index = -1;
+      } else {
+        while (_index < 9) {
+          _index++;
+          // 匹配时
+          if (canSelectIndexs.indexOf(_index) > -1) {
+            break;
+          } else {
+            if (_index >= 9) {
+              _index = -1;
+            }
+          }
+        }
+      }
+
+      this.index = _index;
     }
   },
   components: {
@@ -531,6 +634,7 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 body,
 p,
@@ -561,16 +665,15 @@ a {
 }
 </style>
 <style lang="less" scoped>
-
 section {
-  width: 7.2rem;
+  // width: 7.2rem;
   height: 100vh;
   background-color: #0b0800;
   overflow: hidden;
   .big-bg {
     position: relative;
     overflow: hidden;
-    width: 7.2rem;
+    // width: 7.2rem;
     height: 11.35rem;
     background: url(./images/bg.png) no-repeat;
     background-size: 100% 100%;
@@ -605,20 +708,34 @@ section {
       font-weight: 400;
       color: rgba(245, 194, 103, 1);
       margin-top: 0.32rem;
-      line-height: 0.365rem;
+      // line-height: 0.365rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        line-height: 0.32rem;
+        padding-right: 0.04rem;
+      }
     }
     .rule {
       background: url(./images/left.png) no-repeat;
       background-size: 100% 100%;
       width: 0.47rem;
       height: 0.69rem;
-      line-height: 0.365rem;
+      // line-height: 0.365rem;
+      display: flex;
+      align-items: center;
       text-align: center;
       font-size: 0.24rem;
       font-family: Alibaba PuHuiTi;
       font-weight: 400;
       color: rgba(245, 194, 103, 1);
       margin-top: 0.15rem;
+      span {
+        line-height: 0.32rem;
+        /* display: flex; */
+        padding-right: 0.04rem;
+      }
     }
     .prize-record {
       position: absolute;
@@ -633,10 +750,18 @@ section {
       color: rgba(245, 194, 103, 1);
       top: 0.23rem;
       right: 0;
-      line-height: 0.3rem;
+      // line-height: 0.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        line-height: 0.28rem;
+        /* display: flex; */
+        padding-left: 0.04rem;
+      }
     }
     .countdown {
-      width: 4.58rem;
+      width: 4.8rem;
       height: 0.54rem;
       background: rgba(48, 36, 24, 0.71);
       border: 0.02rem solid rgba(245, 194, 103, 1);
@@ -649,6 +774,14 @@ section {
       font-family: Alibaba PuHuiTi;
       font-weight: 400;
       color: rgba(208, 169, 99, 1);
+      .countdown-container {
+        display: flex;
+
+        width: 4.4rem;
+        justify-content: space-between;
+
+        align-items: center;
+      }
       & span {
       }
       .countdown-item:nth-child(2),
@@ -704,7 +837,7 @@ section {
       margin: 0.2rem auto 0;
       .main-top {
         display: flex;
-        margin-top: 0.1rem;
+        margin-top: 0.15rem;
         height: 0.5rem;
         width: 2.4rem;
         align-items: center;

@@ -6,74 +6,74 @@ const OPS_API_BASE_URL = '//ops-api.beeplaying.com'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-    const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/rebate-wheel/activity-info`)
-    // const data =
-    // {
-    //     "code": 200,
-    //     "data": {
-    //         "state": 1,  //0未开始 1活动进行中 2 活动已结束
-    //         "beginDate": "2020-03-04 00:00:00",
-    //         "endDate": "2020-03-06 23:59:59",
-    //         "timeline": "2020年3月4日-2020年3月6日",
-    //         "countdown": 134022228,  
-    //         "remnantNum": 1234,   //剩余数
-    //         "nextConsume": 50,  //下次消耗
-    //         "rarePropNum": 99999,  //已有人数
-    //         "incrPropNum": 0,
-    //         "wheelAwardsList": [{
-    //             "awardsType": "flk",
-    //             "awardsName": "1%超级返利卡",
-    //             "sort": 1,
-    //             "state": 1
-    //         }, {
-    //             "awardsType": "jdk",
-    //             "awardsName": "100元京东券",
-    //             "sort": 2,
-    //             "state": 1
-    //         }, {
-    //             "awardsType": "hfq",
-    //             "awardsName": "250元话费券",
-    //             "sort": 3,
-    //             "state": 1
-    //         }, {
-    //             "awardsType": "hfq",
-    //             "awardsName": "88元话费券",
-    //             "sort": 4,
-    //             "state": 1
-    //         }, {
-    //             "awardsType": "jdk",
-    //             "awardsName": "150元京东券",
-    //             "sort": 5,
-    //             "state": 0
-    //         }, {
-    //             "awardsType": "hfq",
-    //             "awardsName": "50元话费券",
-    //             "sort": 6,
-    //             "state": 0
-    //         }, {
-    //             "awardsType": "jdk",
-    //             "awardsName": "60元京东券",
-    //             "sort": 7,
-    //             "state": 0
-    //         }, {
-    //             "awardsType": "yhq",
-    //             "awardsName": "300元减35优惠券",
-    //             "sort": 8,
-    //             "state": 1
-    //         }, {
-    //             "awardsType": "jyz",
-    //             "awardsName": "25000金叶子",
-    //             "sort": 9,
-    //             "state": 0
-    //         }, {
-    //             "awardsType": "jdk",
-    //             "awardsName": "12元京东券",
-    //             "sort": 10,
-    //             "state": 1
-    //         }]
-    //     },
-    //     "message": null
-    // }
+    // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/rebate-wheel/activity-info`)
+    const data =
+    {
+        "code": 200,
+        "data": {
+            "state":1,  //0未开始 1活动进行中 2 活动已结束
+            "beginDate": "2020-03-04 00:00:00",
+            "endDate": "2020-03-06 23:59:59",
+            "timeline": "2020年3月4日-2020年3月6日",
+            "countdown": '1321321',  
+            "remnantNum": 1234,   //剩余数
+            "nextConsume": 50,  //下次消耗
+            "rarePropNum": 99999,  //已有人数
+            "incrPropNum": 0,
+            "wheelAwardsList": [{
+                "awardsType": "flk",
+                "awardsName": "1%超级返利卡",
+                "sort": 1,
+                "state": 0
+            }, {
+                "awardsType": "jdk",
+                "awardsName": "100元京东券",
+                "sort": 2,
+                "state": 1
+            }, {
+                "awardsType": "hfq",
+                "awardsName": "250元话费券",
+                "sort": 3,
+                "state": 1
+            }, {
+                "awardsType": "hfq",
+                "awardsName": "88元话费券",
+                "sort": 4,
+                "state": 1
+            }, {
+                "awardsType": "jdk",
+                "awardsName": "150元京东券",
+                "sort": 5,
+                "state": 1
+            }, {
+                "awardsType": "hfq",
+                "awardsName": "50元话费券",
+                "sort": 6,
+                "state": 1
+            }, {
+                "awardsType": "jdk",
+                "awardsName": "60元京东券",
+                "sort": 7,
+                "state": 1
+            }, {
+                "awardsType": "yhq",
+                "awardsName": "300元减35优惠券",
+                "sort": 8,
+                "state": 1
+            }, {
+                "awardsType": "jyz",
+                "awardsName": "25000金叶子",
+                "sort": 9,
+                "state": 1
+            }, {
+                "awardsType": "jdk",
+                "awardsName": "12元京东券",
+                "sort": 10,
+                "state": 1
+            }]
+        },
+        "message": null
+    }
     
 
     return data
@@ -83,23 +83,23 @@ export const activityInfo = async () => {
  * @return {Object} data
  */
 export const bet = async () => {
-    const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/rebate-wheel/bet`)
-    // const data =
-    // {
-    //     "code": 200,
-    //     "data": {
-    //         "remnantNum": 49950,
-    //         "nextConsume": 100,
-    //         "rarePropNum": 99999,
-    //         "wheelAwards": {
-    //             "awardsType": "jyz",
-    //             "awardsName": "25000金叶子",
-    //             "sort": 10,
-    //             "state": 1
-    //         }
-    //     },
-    //     "message": null
-    // }
+    // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/rebate-wheel/bet`)
+    const data =
+    {
+        "code": 200,
+        "data": {
+            "remnantNum": 49950,
+            "nextConsume": 100,
+            "rarePropNum": 99999,
+            "wheelAwards": {
+                "awardsType": "jyz",
+                "awardsName": "25000金叶子",
+                "sort": 10,
+                "state": 1
+            }
+        },
+        "message": null
+    }
     
     
 
