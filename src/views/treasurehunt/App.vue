@@ -230,6 +230,7 @@ export default {
     // });
     // 合并
     // 合并
+    console.log('更改大小写')
   },
   mounted() {
     this.getActivityInfo();
