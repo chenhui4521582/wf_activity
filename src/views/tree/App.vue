@@ -145,7 +145,7 @@ export default {
   },
   methods: {
     backHome() {
-      window.history.go(-1)
+      window.location.href = "//wap.beeplaying.com/xmWap/#/"
     },
     openTask() {
       if(this.newUserGuide) {
