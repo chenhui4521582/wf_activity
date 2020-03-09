@@ -130,7 +130,7 @@ export default {
     background-size: 100% 100%;
     width: 100%;
     height: 2.5rem;
-    padding-top: 0.5rem;
+    padding-top: 0.4rem;
     padding-left: 0 ;
     padding-right: .32rem;
     .header a {
@@ -144,7 +144,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.15rem;
     padding-left: 0.5rem;
     .header-left {
       display: flex;

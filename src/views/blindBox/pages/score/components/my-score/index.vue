@@ -84,8 +84,8 @@ export default {
   },
   computed: {
     arrow () {
-      if (this.isOpen) return require('./assets/close.png')
-      return require('./assets/open.png')
+      if (this.isOpen) return require('./assets/close-activity.png')
+      return require('./assets/open-activity.png')
     }
   },
   mounted () {
