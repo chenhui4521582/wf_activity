@@ -9,7 +9,7 @@
       <div class="pop-title" v-if="value==5">很遗憾!</div>
        
        <div class="pop-title" v-if="value==6||value==7" :style="{marginBottom:value==7?0:''}">恭喜您!</div>
-      <div class="pop-container" :class="[value==7?'super-pop-container':'']">
+      <div class="pop-container" :class="[value==7?'super-pop-container':'',userAwards==''?'scroll-norecord':'']" >
         <!-- 活动规则 -->
         <template v-if="value==1">
           <img class="activity-rule" src="../images/compop/rule.png" alt="">
@@ -50,7 +50,7 @@
               <div class="line"></div>
               <div >奖品名称</div>
             </li>
-            <div class="scroll">
+            <div class="scroll" :class="[userAwards==''?'scroll-norecord':'']">
                 <li class="prize-list" v-for="(item,key) in userAwards" :key="key">
               <div class="left">{{item.createTime}}</div>
               <div class="right">{{item.awardsName}}</div>
@@ -152,6 +152,7 @@ export default {
     // 去获取宝石
     goshop(){
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/payment/'
+      this.$emit("input", 0);
     },
     close() {
       this.$emit("input", 0);
@@ -264,6 +265,9 @@ export default {
       overflow: hidden;
       overflow-y: scroll;
       margin: 0 auto;
+      &.scroll-norecord{
+        overflow-y: hidden;
+      }
       
       &::-webkit-scrollbar{
      width:0.05rem;
@@ -336,6 +340,9 @@ background:rgba(4,3,0,1);
           height: 3.42rem;
     overflow: hidden;
     overflow-y: scroll;
+    &.scroll-norecord{
+      overflow-y: hidden;
+    }
     .norecord{
       display: block;
       width: 1.27rem;
