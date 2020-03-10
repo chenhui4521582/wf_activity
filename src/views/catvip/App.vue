@@ -20,7 +20,7 @@
             <div class="item" v-for="item in actInfoData.awardsConfigList">
               <img :src="item.awardsImage|filter" alt="">
               <div class="info">
-                <div>{{item.awardsName}}</div>
+                <div>{{item.showName}}</div>
                 <div v-if="item.awardsType==1">金叶子</div>
                 <div v-else-if="item.awardsType==32">优惠券</div>
                 <div v-else-if="item.awardsType==10">话费券</div>
@@ -339,7 +339,7 @@
           if (code == 200) {
             this.awardData = {
               type: data.type,
-              awardsName: awardsName,
+              awardsName: data.awardsName,
               info: `可至招财猫查看`,
               popType:2
             }
