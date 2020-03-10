@@ -259,7 +259,6 @@ export default {
           this.popupType = 2
           this.showPopup = true
           this.treeFinishAward = _get(res, 'data.data', {})
-          GLOBALS.marchSetsPoint('A_H5PT0247002896')
         }else {
           this.$toast.show({message})
         }
@@ -336,10 +335,12 @@ export default {
         if(code == 200) {
           this.logList = _get(res, 'data.data', [])
           this.showLog = true
+          
         }else {
           this.$toast.show({message})
         }
       })
+      GLOBALS.marchSetsPoint('A_H5PT0247002896')
     },
     /** 获取新手引导 **/
     _getNewUserGuide() {

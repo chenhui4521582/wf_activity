@@ -70,6 +70,7 @@
           <img class="prize-img" v-if="prizeshow.awardsType=='yhq'" src="../images/compop/yhq.png" alt="">
           <p class="congra-texts">恭喜您获得</p>
           <p class="prize-name">{{prizeshow.awardsName}}</p>
+          <p class="expire-date" v-if="prizeshow.awardsType=='yhq'"  >(有效期截至2020年3月20日)</p>
           <p class="tips">奖励可前往“我的”页面查看</p>
         </template>
         <!-- 太棒了（每次宝石与上次新增时） -->
@@ -400,6 +401,18 @@ color:rgba(253,209,152,1);
         white-space: nowrap;
             margin-top: 0.2rem;
 
+      }
+      .expire-date{
+        text-align: center;
+    font-size: 0.3rem;
+    font-family: Alibaba PuHuiTi;
+    font-weight: 400;
+    color: #e0b57c;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    top: 6.1rem;
       }
       .tips {
         margin: 0.7rem auto 0rem;
