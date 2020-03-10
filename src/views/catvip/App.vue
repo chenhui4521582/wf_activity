@@ -339,7 +339,7 @@
           if (code == 200) {
             this.awardData = {
               type: data.type,
-              awardsName: awardsName,
+              awardsName: data.awardsName,
               info: `可至招财猫查看`,
               popType:2
             }
