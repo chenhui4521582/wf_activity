@@ -264,7 +264,7 @@ export default {
     };
   },
   created() {
-    // this.popType = 1;
+    // this.popType = 7;
     // this.prizeshow.sort=1
     GLOBALS.marchSetsPoint("P_H5PT0251", {
       source_address: GLOBALS.getUrlParam("from") || ""
@@ -331,7 +331,14 @@ export default {
         this.popType = 5;
         GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
-      } else {
+      } 
+      else if(this.bet.wheelAwards.sort==1){
+             this.popType = 7;
+              this.prizeshow.sort=1
+              this.prized.push(0);
+            GLOBALS.marchSetsPoint("A_H5PT0251002972");
+      }
+      else {
         this.startRoll();
         if (this.bet) {
           this.remnantNum = this.bet.remnantNum;
@@ -513,12 +520,7 @@ export default {
           duration: 1000
         });
       } 
-      else if(this.prized.length==9){
-             this.popType = 7;
-              this.prizeshow.sort=1
-              this.prized.push(0);
-            GLOBALS.marchSetsPoint("A_H5PT0251002972");
-      }
+     
       else {
         this.click = false;
         await this.getBet();
@@ -666,7 +668,7 @@ a {
 </style>
 <style lang="less" scoped>
 section {
-  // width: 7.2rem;
+width: 100%;
   height: 100vh;
   background-color: #0b0800;
   overflow: hidden;

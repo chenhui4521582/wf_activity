@@ -55,8 +55,8 @@
               <div class="left">{{item.createTime}}</div>
               <div class="right">{{item.awardsName}}</div>
             </li>
-            <img v-if="userAwards===null" class="norecord" src="../images/compop/norecord.png" alt="">
-            <p v-if="userAwards===null" class='norecord-tips'>无记录</p>
+            <img v-if="userAwards==''" class="norecord" src="../images/compop/norecord.png" alt="">
+            <p v-if="userAwards==''" class='norecord-tips'>无记录</p>
             </div>
           
           </ul>
@@ -115,7 +115,7 @@
         </template>
       </div>
     </div>
-    <div class="close" @click="close">
+    <div class="close" @click.stop="close">
       <img src="../images/close.png" alt />
     </div>
    
