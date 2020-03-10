@@ -92,9 +92,9 @@ export const bet = async () => {
     //         "nextConsume": 100,
     //         "rarePropNum": 99999,
     //         "wheelAwards": {
-    //             "awardsType": "jyz",
-    //             "awardsName": "25000金叶子",
-    //             "sort": 10,
+    //             "awardsType": "yhq",
+    //             "awardsName": "300元减35优惠券",
+    //             "sort": 8,
     //             "state": 1
     //         }
     //     },
