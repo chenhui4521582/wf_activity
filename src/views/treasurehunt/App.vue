@@ -7,7 +7,7 @@
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
           <!-- <span >06时30分12秒</span> -->
         </p>
-        <p style=" margin-top: 0.05rem;">明天返利：{{this.state.rebateAmount}}金叶</p>
+        <p style=" margin-top: 0.05rem;">明天返利：{{state.rebateAmount}}金叶</p>
       </div>
       <div class="back" @click="back">
         <span>返回</span>
@@ -163,6 +163,7 @@ import utils from "../../common/js/utils.js";
 export default {
   data() {
     return {
+      // 头部返利卡开关
       topshow: false,
       time: "",
       fanlitime: "",
@@ -271,6 +272,8 @@ export default {
     });
     // 合并
     // 合并
+    // 3.10 
+    // 14:01
     console.log("更改大小写");
   },
   mounted() {
@@ -336,6 +339,9 @@ export default {
              this.popType = 7;
               this.prizeshow.sort=1
               this.prized.push(0);
+                 this.remnantNum = this.bet.remnantNum;
+          this.rarePropNum = this.bet.rarePropNum;
+          this.nextConsume = this.bet.nextConsume;
             GLOBALS.marchSetsPoint("A_H5PT0251002972");
       }
       else {
@@ -411,10 +417,18 @@ export default {
     // 钻石不够无法抽奖
     notenough() {
       // this.popType = 5;
-      this.$toast.show({
+      if(this.activityInfo.state == 2){
+           this.$toast.show({
+        message: "活动已经结束",
+        duration: 1000
+      });
+      }else{
+         this.$toast.show({
         message: "您已获得所有奖励",
         duration: 1000
       });
+      }
+     
     },
     //倒计时
     getCountInfo(dateinfo) {
@@ -473,13 +487,18 @@ export default {
       let { day, countHour, countMinute, countSecond } = this.getCountInfo(
         date
       );
-      this.newcountTime = `${countHour}:${countMinute}:${countSecond}`;
+      // this.newcountTime = `${countHour}:${countMinute}:${countSecond}`;
+      let that = this;
+      fanliTimer();
       this.timer = setInterval(() => {
-        date = date - 1;
+        fanliTimer();
+      }, 1000);
+      function fanliTimer(){
+               date = date - 1;
         if (date <= 0) {
           date = 0;
-          clearInterval(this.timer);
-          this.newcountTime = "";
+          clearInterval(that.timer);
+          that.newcountTime = "";
           return;
         }
         let day = Math.floor(date / 86400);
@@ -491,11 +510,11 @@ export default {
         let countMinute = minute >= 10 ? minute : "0" + minute;
         let countSecond = second >= 10 ? second : "0" + second;
         if (day >= 0) {
-          this.newcountTime = `${countHour}时${countMinute}分${countSecond}秒`;
+          that.newcountTime = `${countHour}时${countMinute}分${countSecond}秒`;
         } else {
-          this.newcountTime = `${countHour}:${countMinute}:${countSecond}`;
+          that.newcountTime = `${countHour}:${countMinute}:${countSecond}`;
         }
-      }, 1000);
+      }
     },
     // 防止连点
     // stop(){
@@ -547,24 +566,31 @@ export default {
         // 删除抽中的位置下标
         // console.log("删除数组中的抽奖位置", this.newindex);
         setTimeout(() => {
-          this.click = true;
+          
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
             GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
-          } else {
+          } else { 
+            
             this.popType = 3;
             GLOBALS.marchSetsPoint("A_H5PT0251002969", {
               awards_name: this.prizeshow.awardsName
             });
+           setTimeout(()=>{
+             this.click = true;
+           },200)
           }
+         
         }, 800);
+       
         console.log("要传的信息", this.prizeshow);
         clearTimeout(this.timer); // 清除转动定时器，停止转动
         this.prize = -1;
         this.times = 0;
-        this.speed = 200;
+        this.speed = 200; 
+         
       } else {
         if (this.times < this.cycle) {
           this.speed -= 20; // 加快转动速度
