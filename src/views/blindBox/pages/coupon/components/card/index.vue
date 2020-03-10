@@ -1,6 +1,6 @@
 <template>
   <section class="card-wrapper">
-    <img src="" />
+    <img class="img" :src="info.image | imgFilter" />
     <div class="text">
       <p class="title">{{info.name}}</p>
       <p>有效期至 {{info.effectiveEndTime}}</p>
