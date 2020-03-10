@@ -4,11 +4,11 @@
     <div class="pop-bg" :class="[value==7&&prizeshow.sort-1==0?'big-pop-bg':'']">
       <div class="pop-title" v-if="value==1">活动规则</div>
       <div class="pop-title" v-if="value==2">中奖记录</div>
-      <div class="pop-title" v-if="value==3">探宝成功</div>
-      <div class="pop-title" v-if="value==4">太棒了</div>
-      <div class="pop-title" v-if="value==5">很遗憾！</div>
+      <div class="pop-title" v-if="value==3">探宝成功!</div>
+      <div class="pop-title" v-if="value==4">太棒了!</div>
+      <div class="pop-title" v-if="value==5">很遗憾!</div>
        
-       <div class="pop-title" v-if="value==6||value==7" :style="{marginBottom:value==7?0:''}">恭喜您！</div>
+       <div class="pop-title" v-if="value==6||value==7" :style="{marginBottom:value==7?0:''}">恭喜您!</div>
       <div class="pop-container" :class="[value==7?'super-pop-container':'']">
         <!-- 活动规则 -->
         <template v-if="value==1">
@@ -55,6 +55,8 @@
               <div class="left">{{item.createTime}}</div>
               <div class="right">{{item.awardsName}}</div>
             </li>
+            <img v-if="userAwards==''" class="norecord" src="../images/compop/norecord.png" alt="">
+            <p v-if="userAwards==''" class='norecord-tips'>无记录</p>
             </div>
           
           </ul>
@@ -81,18 +83,17 @@
         <template v-if="value==5">
           <img class="yellow-rock" src="../images/compop/yellowrock.png" alt />
           <p class="congra-texts">
-            还差一点宝石就
-            <span style="font-size:0.38rem;color:'#FFCC5D'">可抽大奖</span>
+            还差一点宝石就<span style="font-size:0.38rem;color:'#FFCC5D'">可抽大奖!</span>
           </p>
           <div class="iknow" @click="goshop">去获取宝石</div>
-          <p class="tips" style="margin-top: 0.1rem;">每充值10元就送1颗宝石哟~</p>
+          <p class="tips" style="margin-top: 0.25rem;">每充值10元就送1颗宝石哟~</p>
         </template>
         <!-- 恭喜您，获得金叶返利 -->
         <template v-if="value==6">
           <img class="jinyezi" src="../images/compop/jyz.png" alt="">
            <p class="congra-texts" style="margin-top: 0.2rem;">已获得</p>
           <p class="prize-name">{{state.rebateAmount}}金叶返利</p>
-           <p class="tips">奖励可前往“我的”页面查看</p>
+           <p class="tips" style="margin: 0.28rem auto 0rem;">奖励可前往“我的”页面查看</p>
               <div class="iknow" style="margin: 0.4rem auto 0;" @click="close">我知道了</div>
         </template>
         <!-- 恭喜您，获得超级返利卡 -->
@@ -105,8 +106,8 @@
                   </div>
                   <div class="fanli-tips">
                     <p><span>明天0点-24点</span>返利卡将<span>自动生效！</span></p>
-                    <p>返利卡失效后，平台将单例您在</p>
-                    <p><span>返利卡生效后当天游戏消耗金叶总和</span>的1%金叶</p>
+                    <p>返利卡失效后，平台将返利您在</p>
+                    <p><span>返利卡生效当天游戏消耗金叶总和</span>的1%金叶</p>
                     <p>消耗金叶越多，返利越高</p>
                   </div>
          <div style="margin-top: 0.3rem;" class="iknow" @click="gorule">更多了解返利卡>></div>
@@ -114,7 +115,7 @@
         </template>
       </div>
     </div>
-    <div class="close" @click="close">
+    <div class="close" @click.stop="close">
       <img src="../images/close.png" alt />
     </div>
    
@@ -222,7 +223,7 @@ export default {
   
 }
 .mask {
-  width: 7.2rem;
+  width: 100%;
   height: 12.8rem;
 
   position: absolute;
@@ -253,7 +254,7 @@ export default {
       font-family: Alibaba PuHuiTi;
       font-weight: bold;
       color: rgba(124, 52, 27, 1);
-      margin: 0.35rem auto;
+      margin: 0.42rem auto;
       text-align: center;
     }
     .pop-container {
@@ -274,7 +275,7 @@ background:rgba(220,165,96,1);
 border-radius:0.05rem;
       }
       .activity-rule{
-        width: 4.9rem;
+        width: 4.7rem;
         height: 6rem;
       }
 
@@ -334,6 +335,22 @@ background:rgba(4,3,0,1);
           height: 3.42rem;
     overflow: hidden;
     overflow-y: scroll;
+    .norecord{
+      display: block;
+      width: 1.27rem;
+      height: 1.27rem;
+      margin-top: 0.89rem;
+    }
+    .norecord-tips{
+      // width:0.69rem;
+height:0.22rem;
+font-size:0.24rem;
+font-family:Alibaba PuHuiTi;
+font-weight:400;
+color:rgba(150,69,11,1);
+text-align: center;
+    margin-top: 0.33rem;
+    }
         }
         .prize-list{
           width: 4.51rem;
@@ -409,7 +426,7 @@ color:rgba(253,209,152,1);
         color: rgba(93, 48, 22, 1);
         text-align: center;
         line-height: 0.65rem;
-        margin: 0.72rem auto 0;
+        margin: 0.65rem auto 0;
         // margin-top: 0.6rem;
       }
       // 恭喜您，获得金叶返利
