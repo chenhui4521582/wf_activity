@@ -92,6 +92,10 @@
                  @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab"></drop-down>
     </template>
     <template v-else>
+      <div class="clickIcons">
+        <div class="back" @click="back">返回</div>
+        <div class="rule" @click="showPop(7)">规则</div>
+      </div>
       <profit :is-full="true" @showPop="showPop"/>
     </template>
     <!--popType-->
@@ -198,7 +202,7 @@
         this.popType = type
         let point = ''
         switch (type) {
-          case 1:
+          case 7:
             point = 'A_H5PT0252002982';
             break;//规则点击
           case 2:
@@ -440,6 +444,34 @@
     &.end {
       height: 100vh;
       background: rgb(255, 248, 234);
+      .clickIcons {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        z-index: 11;
+        .back, .rule {
+          width: .59*.8rem;
+          height: 1.2*.8rem;
+          background: rgba(255, 211, 83, 1);
+          border-radius: 0 .2rem .2rem 0;
+          font-size: .36*.8rem;
+          font-weight: 400;
+          color: rgba(196, 94, 19, 1);
+          display: flex;
+          align-items: center;
+          text-align: center;
+          &.rule {
+            border-radius: .2rem 0 0 .2rem;
+            color: rgba(255, 255, 255, 1);
+            background: rgba(145, 116, 252, 1);
+          }
+        }
+      }
     }
     .catvip_container {
       position: relative;
