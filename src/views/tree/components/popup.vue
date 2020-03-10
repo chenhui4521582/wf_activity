@@ -98,7 +98,7 @@
               <div class="icon">
                 <img src="../img/manure-icon1.png" alt="">
               </div>
-              <div class="numer">+5000金叶子</div>
+              <div class="numer">+{{cardList[0].amount}}金叶子</div>
               <div class="btn" v-if="cardList[0].buyFlag == 1" @click="gotoPay(0)">
                 <img src="../img/manure-btn1.png" alt="">
               </div>
@@ -111,7 +111,7 @@
               <div class="icon">
                 <img src="../img/manure-icon2.png" alt="">
               </div>
-              <div class="numer">+13W金叶子</div>
+              <div class="numer">+{{cardList[1].amount}}金叶子</div>
               <div class="btn" v-if="cardList[1].buyFlag == 1" @click="gotoPay(1)">
                 <img src="../img/manure-btn2.png" alt="">
               </div>
