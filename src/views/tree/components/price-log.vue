@@ -59,7 +59,7 @@ export default {
       this.$emit('input', false)
     },
     check() {
-      window.location.href = '//wap.beeplaying.com/xmWap/#/my/prize'
+      window.location.href = '//wap.beeplaying.com/xmWap/#/my'
     }
   }
 }
