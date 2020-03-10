@@ -299,7 +299,7 @@
       async exchange(item) {//exchangeLeaf
         GLOBALS.marchSetsPoint('A_H5PT0252002989')
         this.showLoading = true
-        let {code, data} = await exchangeLeaf(item.level)
+        let {code, data,message} = await exchangeLeaf(item.level)
         if (code == 200) {
           this.awardData = {
             type: 'jyz',
@@ -312,6 +312,10 @@
           this.getActInfo(false)
           this.showLoading = false
         } else {
+          this.$toast.show({
+            message: message,
+            duration: 1000
+          })
           this.showLoading = false
         }
       },
@@ -331,7 +335,7 @@
             task_name:item.taskName
           })
           this.showLoading = true
-          let {code, data} = await taskGain(item.taskId)
+          let {code, data,message} = await taskGain(item.taskId)
           if (code == 200) {
             this.awardData = {
               type: data.type,
@@ -344,6 +348,10 @@
             this.getActInfo(false)
             this.showLoading = false
           } else {
+            this.$toast.show({
+              message: message,
+              duration: 1000
+            })
             this.showLoading = false
           }
         }
@@ -368,7 +376,7 @@
         if (this.actInfoData.lottery == 1) {
           GLOBALS.marchSetsPoint('A_H5PT0252002984')
           this.showLoading = true
-          let {code, data} = await yiyuanlottery()
+          let {code, data,message} = await yiyuanlottery()
           if (code == 200) {
             this.awardData = {
               awardsImg: data.awardsImg,
@@ -381,6 +389,10 @@
             this.getActInfo(false)
             this.showLoading = false
           } else {
+            this.$toast.show({
+              message: message,
+              duration: 1000
+            })
             this.showLoading = false
           }
         }
