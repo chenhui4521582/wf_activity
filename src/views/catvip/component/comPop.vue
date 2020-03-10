@@ -269,8 +269,8 @@
           .img {
             position: absolute;
             top: .7rem;
-            left: 1.1rem;
-            right: 1.4rem;
+            left: 0;
+            right: 0;
             margin: auto;
             font-size: .36rem;
             font-weight: bold;
