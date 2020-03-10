@@ -7,7 +7,7 @@
           <div class="d-tab">
             <div style="position: absolute;width: 100%;left: 0;top: 0;">
               <ul>
-                <li>>>> <span>集鱼干，赢2000元猫币</span> <<<</li>
+                <li>>>> <span>集鱼干 冲榜赢大奖</span> <<<</li>
               </ul>
             </div>
           </div>
