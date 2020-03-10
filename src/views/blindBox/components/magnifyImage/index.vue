@@ -1,6 +1,6 @@
 <template>
   <transition name="bounce">
-    <article v-if="show"
+    <article @click="$emit('onClose')" v-if="show"
       class="mask">
       <section class="content"
         :style="layout">
@@ -8,7 +8,7 @@
           class="close"
           src="./assets/close.png"
           alt="关闭">
-        <img class="magnify"
+        <img @click.stop="" class="magnify"
           :src="img | imgFilter"
           alt="">
       </section>
