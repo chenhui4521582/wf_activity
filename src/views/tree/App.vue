@@ -563,7 +563,7 @@ export default {
     justify-content: center;
     align-items: center;
     img {
-      width: .73rem;
+      width: .8rem;
       height: auto;
     }
   }
