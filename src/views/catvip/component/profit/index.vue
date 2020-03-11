@@ -143,10 +143,16 @@
             this.topthreeData = this.profitData.slice(0, 3)
             this.behindThreeData = this.profitData.slice(0, 3)
           } else {
-            this.isOpen = false
-            this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
+            if (this.profitData.length > 6) {
+              this.lastThreeData = this.profitData.slice(6)
+            }
+            if (this.profitData.length > 12) {
+              this.isOpen = false
+              this.lastThreeData = this.profitData.slice(this.profitData.length - 6)
+              this.otherData = this.profitData.slice(3, this.profitData.length - 6)
+            }
+            this.topthreeData = this.profitData.slice(0, 6)
             this.behindThreeData = this.profitData.slice(0, 6)
-            this.otherData = this.profitData.slice(6, this.profitData.length - 6)
           }
           this.isLoading = false
         }
