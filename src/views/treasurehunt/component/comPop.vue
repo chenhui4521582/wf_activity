@@ -9,7 +9,7 @@
       <div class="pop-title" v-if="value==5">很遗憾!</div>
        
        <div class="pop-title" v-if="value==6||value==7" :style="{marginBottom:value==7?0:''}">恭喜您!</div>
-      <div class="pop-container" :class="[value==7?'super-pop-container':'',userAwards==''?'scroll-norecord':'']" >
+      <div class="pop-container" :class="[value==7?'super-pop-container':'',userAwards==''&&value==2?'scroll-norecord':'']" >
         <!-- 活动规则 -->
         <template v-if="value==1">
           <img class="activity-rule" src="../images/compop/rule.png" alt="">
@@ -332,7 +332,8 @@ border-radius:0.05rem;
             }
           }
           .line{
-            width:0.01rem;
+            width: 1px;
+            // width:0.01rem;
 height:0.31rem;
 background:rgba(4,3,0,1);
           }
