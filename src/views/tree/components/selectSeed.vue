@@ -13,7 +13,7 @@
           :class="{'active': index == currentIndex}"
           v-for="(item, index) in treeList"
           :key="index" class="list" 
-          @click="handClick(index)"
+          @click="handClick(item, index)"
         >
           <img :src="item.awardImage | filter" alt="">
         </div>
@@ -67,6 +67,7 @@ export default {
         if(code == 200) {
           this.hide()
           this.$emit('treeCallback', data)
+          this.$emit('awardUrl', this.treeList[currentIndex].awardImage)
         }
       })
     }

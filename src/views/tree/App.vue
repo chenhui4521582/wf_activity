@@ -9,6 +9,10 @@
     </div>
     <div class="tree-status-tips" v-if="treeInfo && !showTreeFinish">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
     <div class="tree-status-tips" v-else>点击下方按钮领取果实吧</div>
+    <!-- 即将得到的奖品 -->
+    <div class="award" v-if="awardUrl">
+      <img :src="awardUrl | filter" alt="">
+    </div>
     <!-- 选种子按钮 -->
     <div class="tree-send" v-if="treeInfo && treeInfo.awardStatus == 2" @click="_getAwardList">
       <img src="./img/start-btn.png" alt="">
@@ -62,7 +66,7 @@
     <!-- price-log -->
     <price-log v-model="showLog" :logList="logList" />
     <!-- select-seed -->
-    <select-seed v-model="showSeed" :treeList="treeList" :treeInfo="treeInfo" @treeCallback="treeCallback" @hideCallback="_getInfo"/>
+    <select-seed v-model="showSeed" :treeList="treeList" :treeInfo="treeInfo" @treeCallback="treeCallback" @hideCallback="_getInfo" @awardUrl="receiveAwardUrl"/>
     <!-- show-rule -->
     <rule v-model="showRule"/>
     <!-- newUserGuide -->
@@ -119,7 +123,9 @@ export default {
     newUserGuide: false,
     step: 0,
     /** 礼包数据 **/
-    cardList: []
+    cardList: [],
+    /** 奖品图片 **/
+    awardUrl: ''
   }),
   components: {
     Task,
@@ -167,6 +173,9 @@ export default {
       this.userInfo.waterNum = data.userWaterNum
       this.treeInfo = data
       GLOBALS.marchSetsPoint('A_H5PT0247002893')
+    },
+    receiveAwardUrl(data) {
+      this.awardUrl = data
     },
     enter(el, done) {
       let index = el.getAttribute('_index')
@@ -219,6 +228,7 @@ export default {
           this.userInfo = _get(res, 'data.data', {})
           this.treeInfo = _get(res, 'data.data.userTreeInfoRsp')
           this.status = _get(res, 'data.data.userTreeInfoRsp.currTreeGrade', 0)
+          this.awardUrl = _get(res, 'data.data.awardUrl', '')
           let activities_status = _get(res, 'data.data.state')
           /** 树木收获状态 **/
           if(!!this.treeInfo && this.treeInfo.awardStatus == 1) {
@@ -454,7 +464,7 @@ export default {
       width: 5.54rem;
     }
     .userGuide{
-      z-index: 99;
+      z-index: 100;
     }
     img{
       position: absolute;
@@ -538,6 +548,23 @@ export default {
     &.userGuide{
       z-index: 99;
       box-shadow: 0 0 0 999px rgba(0,0,0,.7)
+    }
+  }
+  .award {
+    position: absolute;
+    left:1rem;
+    bottom: 7.6rem;
+    width: 1.51rem;
+    height: 1.26rem;
+    z-index: 10;
+    background: url(./img/award-bg.png) no-repeat center center;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: .73rem;
+      height: auto;
     }
   }
   .tree-finish {
