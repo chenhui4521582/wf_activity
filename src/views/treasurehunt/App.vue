@@ -277,7 +277,7 @@ export default {
     // 3.10 
     // 14:01
     // console.log("更改大小写");
-    console.log('3.11 14:35')
+    console.log('3.11 14:58')
   },
   mounted() {
     this.getActivityInfo();
@@ -377,7 +377,7 @@ export default {
       const res = await userAwards();
       this.userAwards = _get(res, "data", []);
     },
-    // 返回上一级
+    // 返回上一级 返回首页
     back() {
       // history.go(-1);
       window.location.href = `https://wap.beeplaying.com/xmWap/`
