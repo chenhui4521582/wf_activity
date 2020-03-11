@@ -105,22 +105,6 @@
               <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
-
-            <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
-              <img :src="item.img" alt />
-              <p>{{item.text1}}</p>
-              <p>{{item.text2}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
-            </li>-->
           </ul>
           <div class="middle-container">
             <div class="game-tips">每次探宝必得1个奖励，已得奖励不重复抽中，探宝10次获得所有奖励。</div>
@@ -273,12 +257,7 @@ export default {
     GLOBALS.marchSetsPoint("P_H5PT0251", {
       source_address: GLOBALS.getUrlParam("from") || ""
     });
-    // 合并
-    // 合并
-    // 3.10 
-    // 14:01
-    // console.log("更改大小写");
-    console.log('3.11 15:53')
+    // console.log('3.11 15:53')
   },
   mounted() {
     this.getActivityInfo();
@@ -550,24 +529,12 @@ export default {
         }
       }
     },
-    // 防止连点
-    // stop(){
-    //    if(this.click==false){
-
-    //       }
-    // },
     // 点击投注
     async startLottery() {
       console.log(this.click)
       if (this.message == "您的宝石不足") {
         this.popType = 5;
       }
-      // else if(this.countTime==''){
-      //       this.$toast.show({
-      //     message: "活动未开始",
-      //     duration: 1000
-      //   });
-      // }
       else if (!this.click) {
         this.$toast.show({
           message: "正在抽奖",
