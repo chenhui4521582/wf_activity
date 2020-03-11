@@ -92,6 +92,8 @@
     text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
+
+             
               <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
@@ -274,7 +276,8 @@ export default {
     // 合并
     // 3.10 
     // 14:01
-    console.log("更改大小写");
+    // console.log("更改大小写");
+    console.log('3.11 10:33')
   },
   mounted() {
     this.getActivityInfo();
@@ -926,7 +929,15 @@ width: 100%;
               background-size: 100% 100%;
               width: 1.4rem;
               height: 1.55rem;
+              // height: 100%;
+              // width: 100%;
               position: absolute;
+              top: 0rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    margin: auto;
+
             }
             p {
               white-space: nowrap;
