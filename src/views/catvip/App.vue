@@ -87,8 +87,8 @@
           </div>
         </div>
       </div>
-      <drop-down ref="dropDown" :toDayUserCouponNum="actInfoData.toDayUserCouponNum" :rules-explain="rulesExplain"
-                 @refresh="getActInfo" :countTime="countTime" :endDate="actInfoData.endDate"
+      <drop-down ref="dropDown"
+                :countTime="countTime" :endDate="actInfoData.endDate"
                  @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab"></drop-down>
     </template>
     <template v-else>
@@ -221,23 +221,6 @@
           })
         }
       },
-      //开榜弹窗点击领取昨日奖励
-      async getYesterDayGift() {
-        let {code, data} = await userAwardsTips()
-        if (code == 200) {
-          this.isHasGift = !!data.award
-          if (this.isHasGift) {
-            this.awardData = {
-              award: data.award,
-              couponNum: data.couponNum
-            }
-            this.popType = 0
-            setTimeout(() => {
-              this.$refs.comPop.showPop()
-            })
-          }
-        }
-      },
       //活动信息
       async getActInfo(flag) {
         let {code, data} = await activityInfo()
@@ -260,22 +243,28 @@
           })
         }
       },
-      //昨日瓜分奖励领取
-      async getCouponAward() {
-        let {code, message} = await couponAwardReceive()
+      //走马灯接口
+      async getHornList() {
+        let {code, data} = await getNoticeList()
         if (code == 200) {
-          this.$toast.show({
-            message: '领取成功',
-            duration: 1000
-          })
-        } else {
-          this.$toast.show({
-            message: message,
-            duration: 1000
-          })
+          this.hornList = data
         }
-        this.$refs.comPop.close()
       },
+      //排行信息
+      async getRankList() {
+        const {code, data} = await rankList()
+        if (code === 200) {
+          this.myInfo = data.userInfo
+        }
+      },
+      //1元礼包数据
+      async getPackageData() {
+        const {code, data} = await getPackages(235)
+        if (code === 200) {
+          this.packageInfo = data && data.mallBizConfigs && data.mallBizConfigs.length > 0 && data.mallBizConfigs[0]
+        }
+      },
+      //兑换叶子
       exchangeLeaf(item) {
         if (item.purchased < item.limit) {
           GLOBALS.marchSetsPoint('A_H5PT0252002987',{
@@ -290,12 +279,7 @@
           this.showPop(6)
         }
       },
-      async getHornList() {
-        let {code, data} = await getNoticeList()
-        if (code == 200) {
-          this.hornList = data
-        }
-      },
+      //确认兑换
       async exchange(item) {//exchangeLeaf
         GLOBALS.marchSetsPoint('A_H5PT0252002989')
         this.showLoading = true
@@ -319,6 +303,7 @@
           this.showLoading = false
         }
       },
+      //任务 去完成 和领取
       async dotask(item) {
         //去完成
         if (item.status == 0) {
@@ -356,15 +341,8 @@
           }
         }
       },
-      async getRankList() {
-        const {code, data} = await rankList()
-        if (code === 200) {
-          this.myInfo = data.userInfo
-        }
-      },
-      //一元抽奖
+      //一元抽奖 购买和抽奖
       async lottery() {
-        console.log(this.actInfoData.lottery)
         if (this.actInfoData.lottery == 0) {
           localStorage.setItem('originDeffer', window.location.href)
           GLOBALS.marchSetsPoint('A_H5PT0252002983')   // 点击任意礼包
@@ -372,8 +350,7 @@
           localStorage.setItem('payment', JSON.stringify(this.packageInfo))
           location.href =
             'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
-        }
-        if (this.actInfoData.lottery == 1) {
+        }else if (this.actInfoData.lottery == 1) {
           GLOBALS.marchSetsPoint('A_H5PT0252002984')
           this.showLoading = true
           let {code, data,message} = await yiyuanlottery()
@@ -397,6 +374,7 @@
           }
         }
       },
+      //预热、活动中的(无猫、级别不够)
       preheat(dosth, ms = 0) {//预热
         if (this.actInfoData.state == 0 || (this.actInfoData.state == 1 && (!this.actInfoData.catStatus || this.actInfoData.catLevel < 20))) {
           this.actInfoData.state == 0&&GLOBALS.marchSetsPoint('A_H5PT0252002976')   // H5平台-招财猫会员日-预热阶段提示弹窗加载完成
@@ -409,6 +387,7 @@
           dosth()
         }
       },
+      //点击副业tab
       outHandleTab(idx) {
         if (this.actInfoData.state == 0 || (this.actInfoData.state == 1 && (!this.actInfoData.catStatus || this.actInfoData.catLevel < 20))) {
           this.showPop(4)
@@ -416,12 +395,6 @@
           this.preheat(this.$refs.dropDown.handleTab(idx))
         }
       },
-      async getPackageData() {
-        const {code, data} = await getPackages(235)
-        if (code === 200) {
-          this.packageInfo = data && data.mallBizConfigs && data.mallBizConfigs.length > 0 && data.mallBizConfigs[0]
-        }
-      }
     },
     mounted() {
       this.$nextTick(function () {
