@@ -277,7 +277,7 @@ export default {
     // 3.10 
     // 14:01
     // console.log("更改大小写");
-    console.log('3.11 14:58')
+    console.log('3.11 15:03')
   },
   mounted() {
     this.getActivityInfo();
