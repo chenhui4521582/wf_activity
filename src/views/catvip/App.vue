@@ -111,8 +111,6 @@
   import '../../common/js/window.js';
   import {
     activityInfo,
-    userAwardsTips,
-    couponAwardReceive,
     getNoticeList,
     exchangeLeaf,
     taskGain,
