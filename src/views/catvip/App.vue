@@ -362,6 +362,7 @@
             GLOBALS.marchSetsPoint('A_H5PT0252002985')
             this.showPop(3)
             this.getActInfo(false)
+            this.getHornList()
             this.showLoading = false
           } else {
             this.$toast.show({
@@ -390,7 +391,7 @@
         if (this.actInfoData.state == 0 || (this.actInfoData.state == 1 && (!this.actInfoData.catStatus || this.actInfoData.catLevel < 20))) {
           this.showPop(4)
         } else {
-          this.preheat(this.$refs.dropDown.handleTab(idx))
+          this.preheat(()=>this.$refs.dropDown.handleTab(idx))
         }
       },
     },

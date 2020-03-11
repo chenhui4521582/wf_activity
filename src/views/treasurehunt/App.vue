@@ -179,7 +179,7 @@ export default {
       newindex: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], //
       count: 10, // 总共有多少个位置
       timer: 0, // 每次转动定时器
-      speed: 200, // 初始转动速度
+      speed: 300, // 初始转动速度
       times: 0, // 转动次数
       cycle: 10, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
@@ -277,7 +277,7 @@ export default {
     // 3.10 
     // 14:01
     // console.log("更改大小写");
-    console.log('3.11 10:33')
+    console.log('3.11 15:03')
   },
   mounted() {
     this.getActivityInfo();
@@ -377,15 +377,24 @@ export default {
       const res = await userAwards();
       this.userAwards = _get(res, "data", []);
     },
-    // 返回上一级
+    // 返回上一级 返回首页
     back() {
-      history.go(-1);
+      // history.go(-1);
+      window.location.href = `https://wap.beeplaying.com/xmWap/`
       GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
-      parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
+       if(!this.click){
+         this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+         parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
       GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      }
+     
     },
     nogoshop() {
       if (this.activityInfo.state == 0) {
@@ -408,14 +417,30 @@ export default {
     end() {},
     // 点击规则
     rule() {
-      this.popType = 1;
+      if(!this.click){
+         this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+         this.popType = 1;
       GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      }
+     
     },
     // 中奖记录
     prizerecord() {
-      this.popType = 2;
+      if(!this.click){
+          this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+           this.popType = 2;
       this.getUserAwards();
       GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      }
+   
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -592,7 +617,7 @@ export default {
         clearTimeout(this.timer); // 清除转动定时器，停止转动
         this.prize = -1;
         this.times = 0;
-        this.speed = 200; 
+        this.speed = 300; 
          
       } else {
         if (this.times < this.cycle) {
