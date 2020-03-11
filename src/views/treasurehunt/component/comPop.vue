@@ -139,7 +139,8 @@ export default {
          { time: "2020-3-12", name: "112元京东卡" },
         { time: "2020-3-12", name: "112元京东卡" },
         { time: "2020-3-12", name: "112元京东卡" }
-      ]
+      ],
+      click:true,
     };
   },
   created() {},
@@ -156,6 +157,8 @@ export default {
     },
     close() {
       this.$emit("input", 0);
+      // 传父组件click开关 恢复click的值
+      this.$emit('clickshow',this.click)
     }
   },
   props: {
