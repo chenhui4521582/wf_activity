@@ -12,7 +12,7 @@
             </div>
           </div>
           <!-- 排行榜 -->
-          <profit :is-full="false" :endDate="endDate" @showPop="showPop"/>
+          <profit :is-full="false" :endDate="endDate" @showPop="showPop" :countTime="countTime"/>
 
           <!-- 右下角图标 -->
           <img src="./imgs/hide.png" class="icon-back" @click.stop="close">

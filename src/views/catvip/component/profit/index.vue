@@ -77,7 +77,7 @@
   </div>
 </template>
 <script type="text/javascript">
-  import {rankList, activityInfo} from '../../utils/api'
+  import {rankList} from '../../utils/api'
 
   export default {
     data() {
@@ -89,7 +89,6 @@
         otherData: [],
         lastThreeData: [],
         isOpen: true,
-        countTime: null,
         myInfo: {},
         isLoading: false,
         defaultImg: '/cdn/common/images/common/img_photo.png'
@@ -105,6 +104,10 @@
         default: 0
       },
       endDate: {
+        type: String,
+        default: ''
+      },
+      countTime: {
         type: String,
         default: ''
       }
@@ -128,7 +131,6 @@
         this.isLoading = true
         const {code, data} = await rankList()
         if (code === 200) {
-          this.countDown(data.countdown)
           this.myInfo = data.userInfo
           this.profitData = data.rankList
           if (!this.isFull) {
