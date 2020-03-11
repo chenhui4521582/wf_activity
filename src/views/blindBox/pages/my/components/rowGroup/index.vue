@@ -71,7 +71,7 @@ export default {
     Row
   },
   async mounted () {
-    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0) this.$set(this.row[2], 'tip', '有优惠券未使用')
   }
 }
