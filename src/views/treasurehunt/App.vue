@@ -92,6 +92,8 @@
     text-align: center;line-height: 0.28rem;"
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
+
+             
               <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
@@ -150,6 +152,7 @@
         :activityInfo="activityInfo"
         :state="state"
         :userAwards="userAwards"
+        @clickshow="getclick"
       ></comPop>
     </div>
   </section>
@@ -177,9 +180,9 @@ export default {
       newindex: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], //
       count: 10, // 总共有多少个位置
       timer: 0, // 每次转动定时器
-      speed: 200, // 初始转动速度
+      speed: 230, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 10, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 8, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -274,7 +277,8 @@ export default {
     // 合并
     // 3.10 
     // 14:01
-    console.log("更改大小写");
+    // console.log("更改大小写");
+    console.log('3.11 15:53')
   },
   mounted() {
     this.getActivityInfo();
@@ -289,6 +293,10 @@ export default {
   },
   computed: {},
   methods: {
+    // 点击弹窗关闭按钮,恢复click=true的状态
+    getclick(e){
+      this.click=e
+    },
     // 活动信息接口
     async getActivityInfo() {
       const res = await activityInfo();
@@ -374,15 +382,24 @@ export default {
       const res = await userAwards();
       this.userAwards = _get(res, "data", []);
     },
-    // 返回上一级
+    // 返回上一级 返回首页
     back() {
-      history.go(-1);
+      // history.go(-1);
+      window.location.href = `https://wap.beeplaying.com/xmWap/`
       GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
-      parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
+       if(!this.click){
+         this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+         parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
       GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      }
+     
     },
     nogoshop() {
       if (this.activityInfo.state == 0) {
@@ -405,14 +422,31 @@ export default {
     end() {},
     // 点击规则
     rule() {
-      this.popType = 1;
+      if(!this.click){
+         this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+         this.popType = 1;
       GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      }
+     
     },
     // 中奖记录
     prizerecord() {
-      this.popType = 2;
+      console.log('click',this.click)
+      if(!this.click){
+          this.$toast.show({
+          message: "正在抽奖",
+          duration: 1000
+        });
+      }else{
+           this.popType = 2;
       this.getUserAwards();
       GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      }
+   
     },
     // 钻石不够无法抽奖
     notenough() {
@@ -524,6 +558,7 @@ export default {
     // },
     // 点击投注
     async startLottery() {
+      console.log(this.click)
       if (this.message == "您的宝石不足") {
         this.popType = 5;
       }
@@ -555,7 +590,7 @@ export default {
       // 转动过程调用的每一次转动方法，这里是第一次调用初始化
       // 如果当前转动次数达到要求 && 目前转到的位置是中奖位置
 
-      if (this.times > this.cycle + 10 && this.prize === this.index) {
+      if (this.times > this.cycle + 7 && this.prize === this.index) {
         // 抽中返利卡时
         if (this.bet.wheelAwards.state == 1) {
           this.prized.push(this.prize);
@@ -589,11 +624,11 @@ export default {
         clearTimeout(this.timer); // 清除转动定时器，停止转动
         this.prize = -1;
         this.times = 0;
-        this.speed = 200; 
+        this.speed = 230; 
          
       } else {
         if (this.times < this.cycle) {
-          this.speed -= 20; // 加快转动速度
+          this.speed -= 30; // 加快转动速度
         } else if (this.times === this.cycle) {
           // const index = parseInt(Math.random() * 10) || 0; // 随机获得一个中奖位置
           this.prize = this.bet.wheelAwards.sort - 1; //中奖位置
@@ -926,7 +961,15 @@ width: 100%;
               background-size: 100% 100%;
               width: 1.4rem;
               height: 1.55rem;
+              // height: 100%;
+              // width: 100%;
               position: absolute;
+              top: 0rem;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    margin: auto;
+
             }
             p {
               white-space: nowrap;
