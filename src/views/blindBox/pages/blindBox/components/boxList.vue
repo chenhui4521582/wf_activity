@@ -212,7 +212,7 @@ export default {
   },
   async mounted () {
     await this.init()
-    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
     setTimeout(() => {
       this.isCouponTip = false
