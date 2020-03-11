@@ -12,7 +12,7 @@
             </div>
           </div>
           <!-- 排行榜 -->
-          <profit :is-full="false" @refresh="refresh" :endDate="endDate" @showPop="showPop"/>
+          <profit :is-full="false" :endDate="endDate" @showPop="showPop"/>
 
           <!-- 右下角图标 -->
           <img src="./imgs/hide.png" class="icon-back" @click.stop="close">
@@ -52,10 +52,6 @@
         type: String,
         default: ''
       },
-      toDayUserCouponNum: {
-        type: Number,
-        default: 0
-      },
       endDate: {
         type: String,
         default: ''
@@ -82,9 +78,6 @@
       },
       close() {
         this.isDropDown = false
-      },
-      refresh(flag) {
-        this.$emit('refresh', flag)
       },
       showPop(data) {
         console.log(data)

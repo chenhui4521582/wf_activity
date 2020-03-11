@@ -86,12 +86,12 @@
                 <p class="title">1.参与条件</p>
                 <p>猫等级达到<i>Lv.20</i>才可参与会员日各类活动。</p>
                 <p class="title">2.一元抽神券说明</p>
-                <p>在本活动中支付<i>1元</i>即可参与抽券，您需要<i>手动抽取</i>，随机获得奖励池中的任一奖励； 若活动期间内您支付1元但未手动抽取奖励， 活动结束后平台会自动帮您抽取奖励，并通 过站内信告知。
+                <p>在本活动中支付<i>1元</i>即可参与抽券，您需要<i>手动抽取</i>，随机获得奖励池中的任一奖励； 若活动期间内您支付1元但未手动抽取奖励， 活动结束后平台会自动帮您抽取奖励，并通过站内信告知。
                 </p>
                 <p class="title">3.话费券兑换金叶说明</p>
-                <p>本次提供1万金叶子和2万金叶子两个档位的 兑换，活动期间每个档位<i>限兑5次</i></p>
+                <p>本次提供1万金叶子和2万金叶子两个档位的兑换，活动期间每个档位<i>限兑1次</i></p>
                 <p class="title">4.任务及排行榜说明</p>
-                <p>任务完成后奖励限当天领取，若未领取，活 动结束后不给予补偿。 排行榜依据活动当天获得的鱼干量排名，仅<i>前50名</i>可获得猫币奖励，活动次日0点发榜， 奖励自动到账，同时会通过站内信通知</p>
+                <p>任务完成后奖励限当天领取，若未领取，活动结束后不给予补偿。排行榜依据活动当天获得的鱼干量排名，仅<i>前50名</i>可获得猫币奖励，活动次日0点发榜，奖励自动到账，同时会通过站内信通知</p>
               </template>
             </div>
             <div class="footer"></div>
@@ -110,11 +110,6 @@
     data() {
       return {
         isShowPop: false,
-        record: [],
-        toalItems: [],
-        prizeInfoList: [],
-        prizeInfo: ['参与奖', '三等奖', '二等奖', '一等奖', '特等奖'],
-        resultInfo: ['非常抱歉', '温馨提示', '恭喜获得', '恭喜获得'],
         games: [{
           id: 12,
           url: '/crush'
@@ -128,10 +123,7 @@
           id: 18, url: '/square'
         }, {
           id: 21, url: '/Marbles'
-        }],
-        tabs: ['活动攻略', '活动奖励'],
-        tabIndex: 0,
-        medicineInfo: ['药丸', '酒精', '疫苗']
+        }]
       }
     },
     props: {
@@ -188,18 +180,12 @@
           points[data.popType]&& GLOBALS.marchSetsPoint(points[data.popType])
         }
         // this.$emit('close')
-        this.tabIndex = 0
         this.isShowPop = false
       },
       gotoopengame() {
         GLOBALS.marchSetsPoint('A_H5PT0252002991')
         this.isShowPop = false
         this.$emit('opengame')
-      },
-      changeGear() {
-        //GLOBALS.marchSetsPoint('A_H5PT0229002666')// H5平台-双旦活动页-摇一摇点击后幸运币充足提示弹窗-切换额度点击
-        this.isShowPop = false
-        this.$emit('close')
       },
       gotogame({url, id},type) {
         let points=['A_H5PT0252003004','A_H5PT0252002978','A_H5PT0252002980']
@@ -229,9 +215,6 @@
           document.body.style.overflow = null
           document.removeEventListener('touchmove', this.move, {passive: false})
         }
-      },
-      tabIndex(val) {
-        this.$refs.scroll4 && this.$refs.scroll4.scrollTo(0, 0)
       }
     }
   }
