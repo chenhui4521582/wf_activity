@@ -262,8 +262,9 @@ export default {
     .pop-container {
       width: 4.78rem;
       height: 4.66rem;
-      overflow: hidden;
-      overflow-y: scroll;
+      // overflow: hidden;
+      // overflow-y: scroll;
+      overflow: auto;
       margin: 0 auto;
       &.scroll-norecord{
         overflow-y: hidden;
@@ -338,8 +339,9 @@ background:rgba(4,3,0,1);
         }
         .scroll{
           height: 3.42rem;
-    overflow: hidden;
-    overflow-y: scroll;
+    // overflow: hidden;
+    // overflow-y: scroll;
+    overflow: auto;
     &.scroll-norecord{
       overflow-y: hidden;
     }
