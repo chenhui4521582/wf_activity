@@ -7,7 +7,8 @@
     <div class="progress" v-if="treeInfo">
       <div class="wrap" :style="{'width': `${ treeInfo.treeWaterProgress || 0}%`}"></div>
     </div>
-    <div class="tree-status-tips" v-if="treeInfo">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-if="treeInfo && !showTreeFinish">再浇{{ 100 - treeInfo.treeWaterProgress}}%就茂密啦</div>
+    <div class="tree-status-tips" v-else>点击下方按钮领取果实吧</div>
     <!-- 选种子按钮 -->
     <div class="tree-send" v-if="treeInfo && treeInfo.awardStatus == 2" @click="_getAwardList">
       <img src="./img/start-btn.png" alt="">
@@ -144,7 +145,7 @@ export default {
   },
   methods: {
     backHome() {
-      window.history.go(-1)
+      window.location.href = "//wap.beeplaying.com/xmWap/#/"
     },
     openTask() {
       if(this.newUserGuide) {
@@ -258,7 +259,6 @@ export default {
           this.popupType = 2
           this.showPopup = true
           this.treeFinishAward = _get(res, 'data.data', {})
-          GLOBALS.marchSetsPoint('A_H5PT0247002896')
         }else {
           this.$toast.show({message})
         }
@@ -335,10 +335,12 @@ export default {
         if(code == 200) {
           this.logList = _get(res, 'data.data', [])
           this.showLog = true
+          
         }else {
           this.$toast.show({message})
         }
       })
+      GLOBALS.marchSetsPoint('A_H5PT0247002896')
     },
     /** 获取新手引导 **/
     _getNewUserGuide() {

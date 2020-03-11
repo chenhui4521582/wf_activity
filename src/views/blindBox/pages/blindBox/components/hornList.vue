@@ -1,5 +1,5 @@
 <template>
-  <section class="horn-list-wrap activity">
+  <section class="horn-list-wrap">
     <div class="horn">
       <div class="horn-list">
         <div ref="hornDivWraper">

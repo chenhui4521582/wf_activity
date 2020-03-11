@@ -68,7 +68,7 @@
         <div v-if="!isOpenBox"
           class="activity-button batch"
           @click="bulkBuy">
-          ¥<span class="money">55</span><span></span>开3盒
+          ¥<span class="money">55</span> <span class="cost-price">¥60</span> 开3盒
         </div>
         <p class="leaf-buy"
           v-if="userInfo && userInfo.leafsPay"
@@ -211,9 +211,12 @@ export default {
     }
   },
   async mounted () {
-    this.init()
-    const { data: { data } } = await List({ ganmeId: 28, params: true })
+    await this.init()
+    const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
+    setTimeout(() => {
+      this.isCouponTip = false
+    }, 2000)
   },
   methods: {
     // 开三盒购买
@@ -409,7 +412,7 @@ export default {
   .activity-button {
     width: 3.3rem;
     line-height: 0.8rem;
-    border-radius: 0.4rem;
+    // border-radius: 0.4rem;
     color: #fff3e5;
     font-size: 0.36rem;
     text-align: center;
@@ -418,6 +421,12 @@ export default {
     background-size: 100% 100%;
     .money {
       font-size: 0.4rem;
+    }
+    .cost-price {
+      color: #F1430F;
+      font-size: .26rem;
+      font-weight: bold;
+      text-decoration: line-through;
     }
     &.batch {
       background: url("../activity/button2.png") no-repeat;
