@@ -90,6 +90,7 @@ export default {
       this.isRule = true
     },
     useCoupon () {
+      GLOBALS.marchSetsPoint('A_H5PT0225003051')
       this.$router.push({
         name: 'BlindBox'
       })
@@ -115,14 +116,15 @@ export default {
       this.active = index
       this.$nextTick(() => {
         if (index === 0) {
-          GLOBALS.marchSetsPoint('A_H5PT0225002957')
+          GLOBALS.marchSetsPoint('A_H5PT0225003049')
         } else {
-          GLOBALS.marchSetsPoint('A_H5PT0225002947')
+          GLOBALS.marchSetsPoint('A_H5PT0225003050')
         }
       })
     }
   },
   async mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225003048');
     ({ data: { data: this.userInfo } } = await UserInfo());
     ({ data: { data: this.effect } } = await List({ gameId: 28, params: true }));
     ({ data: { data: this.lose } } = await List({ gameId: 28, params: false }))

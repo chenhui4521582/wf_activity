@@ -42,7 +42,7 @@ export default {
           icon: require('./assets/coupon.png'),
           title: '我的优惠券',
           jump: () => {
-            // GLOBALS.marchSetsPoint('A_H5PT0225002570')
+            GLOBALS.marchSetsPoint('A_H5PT0225003047')
             this.$router.push({
               name: 'Coupon'
             })
