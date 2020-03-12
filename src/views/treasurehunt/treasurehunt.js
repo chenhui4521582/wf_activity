@@ -14,16 +14,7 @@ Vue.use(Toast);
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 
-// export default new Router({
-//   routes: [
-//     {
-//       // path: '/',
-//       // name: 'index',
-//       // component: index
-//     },
- 
-//   ]
-// })
+
 
 // 复制
 import VueClipboard from 'vue-clipboard2'
@@ -38,7 +29,7 @@ Vue.filter('filter', function (url) {
   }
 });
 Vue.filter('NumFormat', function(value) {
-  if(!value) return '0.00';
+  if(value==0) return '0';
   var intPart = Number(value).toFixed(0); //获取整数部分
   var intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,'); //将整数部分逢三一断
   // var floatPart = ".00"; //预定义小数部分

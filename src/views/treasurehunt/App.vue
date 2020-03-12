@@ -46,8 +46,7 @@
       </div>
       <!-- 已有人数 -->
       <div class="tips">
-        已有
-        <span>{{rarePropNum|NumFormat}}</span>人获得稀有道具
+        已有<span>{{rarePropNum|NumFormat}}</span>人获得稀有道具
       </div>
       <!-- 抽奖区域 -->
       <main>
@@ -93,7 +92,6 @@
                 v-if="item.awardsType=='yhq'"
               >{{item.awardsName}}</p>
 
-             
               <div class="absolute" :class="[i==prized[0]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[1]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[2]?'end':'']"></div>
@@ -263,18 +261,18 @@ export default {
     this.getActivityInfo();
     this.getState(2);
     this.getUserAwards();
-    console.log("活动倒计时", this.countTime);
-    console.log("返利卡倒计时", this.newcountTime);
+    // console.log("活动倒计时", this.countTime);
+    // console.log("返利卡倒计时", this.newcountTime);
     // 活动信息接口
-    console.log(this.activityInfo);
-    console.log(this.time);
+    // console.log(this.activityInfo);
+    // console.log(this.time);
     //  this.newlist1()
   },
   computed: {},
   methods: {
     // 点击弹窗关闭按钮,恢复click=true的状态
-    getclick(e){
-      this.click=e
+    getclick(e) {
+      this.click = e;
     },
     // 活动信息接口
     async getActivityInfo() {
@@ -295,9 +293,9 @@ export default {
         this.popType = 4;
         GLOBALS.marchSetsPoint("A_H5PT0251002971");
       }
-      console.log(this.prized);
+      // console.log(this.prized);
       // this.newlist =  this.activityInfo.wheelAwardsList;
-      console.log("奖品列表", this.newlist);
+      // console.log("奖品列表", this.newlist);
       // 初始化判断已领取奖励
       // this.prized.push(this.activityInfo.);
       this.countDown(this.activityInfo.countdown);
@@ -310,8 +308,8 @@ export default {
       this.bet = _get(res, "data", {});
       const code = _get(res, "code", 0);
       this.message = _get(res, "message", null);
-      console.log("res", res);
-      console.log("bet", code);
+      // console.log("res", res);
+      // console.log("bet", code);
       if (res.message == "您已获取所有奖励") {
         this.$toast.show({
           message: "您已获取所有奖励",
@@ -321,17 +319,15 @@ export default {
         this.popType = 5;
         GLOBALS.marchSetsPoint("A_H5PT0251002970");
         return;
-      } 
-      else if(this.bet.wheelAwards.sort==1){
-             this.popType = 7;
-              this.prizeshow.sort=1
-              this.prized.push(0);
-                 this.remnantNum = this.bet.remnantNum;
-          this.rarePropNum = this.bet.rarePropNum;
-          this.nextConsume = this.bet.nextConsume;
-            GLOBALS.marchSetsPoint("A_H5PT0251002972");
-      }
-      else {
+      } else if (this.bet.wheelAwards.sort == 1) {
+        this.popType = 7;
+        this.prizeshow.sort = 1;
+        this.prized.push(0);
+        this.remnantNum = this.bet.remnantNum;
+        this.rarePropNum = this.bet.rarePropNum;
+        this.nextConsume = this.bet.nextConsume;
+        GLOBALS.marchSetsPoint("A_H5PT0251002972");
+      } else {
         this.startRoll();
         if (this.bet) {
           this.remnantNum = this.bet.remnantNum;
@@ -340,7 +336,7 @@ export default {
         }
       }
 
-      console.log("bet1 ", this.bet);
+      // console.log("bet1 ", this.bet);
     },
     // 返利卡状态
     async getState(type) {
@@ -364,21 +360,20 @@ export default {
     // 返回上一级 返回首页
     back() {
       // history.go(-1);
-      window.location.href = `https://wap.beeplaying.com/xmWap/`
+      window.location.href = `https://wap.beeplaying.com/xmWap/`;
       GLOBALS.marchSetsPoint("A_H5PT0251002964");
     },
     // 黄钻加号 跳转商城
     goshop() {
-       if(!this.click){
-         this.$toast.show({
+      if (!this.click) {
+        this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
-      }else{
-         parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
-      GLOBALS.marchSetsPoint("A_H5PT0251002966");
+      } else {
+        parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
+        GLOBALS.marchSetsPoint("A_H5PT0251002966");
       }
-     
     },
     nogoshop() {
       if (this.activityInfo.state == 0) {
@@ -401,47 +396,44 @@ export default {
     end() {},
     // 点击规则
     rule() {
-      if(!this.click){
-         this.$toast.show({
+      if (!this.click) {
+        this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
-      }else{
-         this.popType = 1;
-      GLOBALS.marchSetsPoint("A_H5PT0251002965");
+      } else {
+        this.popType = 1;
+        GLOBALS.marchSetsPoint("A_H5PT0251002965");
       }
-     
     },
     // 中奖记录
     prizerecord() {
-      console.log('click',this.click)
-      if(!this.click){
-          this.$toast.show({
+      // console.log("click", this.click);
+      if (!this.click) {
+        this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
-      }else{
-           this.popType = 2;
-      this.getUserAwards();
-      GLOBALS.marchSetsPoint("A_H5PT0251002967");
+      } else {
+        this.popType = 2;
+        this.getUserAwards();
+        GLOBALS.marchSetsPoint("A_H5PT0251002967");
       }
-   
     },
     // 钻石不够无法抽奖
     notenough() {
       // this.popType = 5;
-      if(this.activityInfo.state == 2){
-           this.$toast.show({
-        message: "活动已经结束",
-        duration: 1000
-      });
-      }else{
-         this.$toast.show({
-        message: "您已获得所有奖励",
-        duration: 1000
-      });
+      if (this.activityInfo.state == 2) {
+        this.$toast.show({
+          message: "活动已经结束",
+          duration: 1000
+        });
+      } else {
+        this.$toast.show({
+          message: "您已获得所有奖励",
+          duration: 1000
+        });
       }
-     
     },
     //倒计时
     getCountInfo(dateinfo) {
@@ -506,8 +498,8 @@ export default {
       this.timer = setInterval(() => {
         fanliTimer();
       }, 1000);
-      function fanliTimer(){
-               date = date - 1;
+      function fanliTimer() {
+        date = date - 1;
         if (date <= 0) {
           date = 0;
           clearInterval(that.timer);
@@ -531,18 +523,15 @@ export default {
     },
     // 点击投注
     async startLottery() {
-      console.log(this.click)
+      // console.log(this.click);
       if (this.message == "您的宝石不足") {
         this.popType = 5;
-      }
-      else if (!this.click) {
+      } else if (!this.click) {
         this.$toast.show({
           message: "正在抽奖",
           duration: 1000
         });
-      } 
-     
-      else {
+      } else {
         this.click = false;
         await this.getBet();
 
@@ -568,31 +557,27 @@ export default {
         // 删除抽中的位置下标
         // console.log("删除数组中的抽奖位置", this.newindex);
         setTimeout(() => {
-          
           if (this.prizeshow.sort - 1 == 0) {
             this.popType = 7;
             GLOBALS.marchSetsPoint("A_H5PT0251002972");
             // 添加超级返利
             // this.topshow = true;
-          } else { 
-            
+          } else {
             this.popType = 3;
             GLOBALS.marchSetsPoint("A_H5PT0251002969", {
               awards_name: this.prizeshow.awardsName
             });
-           setTimeout(()=>{
-             this.click = true;
-           },200)
+            setTimeout(() => {
+              this.click = true;
+            }, 200);
           }
-         
         }, 800);
-       
-        console.log("要传的信息", this.prizeshow);
+
+        // console.log("要传的信息", this.prizeshow);
         clearTimeout(this.timer); // 清除转动定时器，停止转动
         this.prize = -1;
         this.times = 0;
-        this.speed = 230; 
-         
+        this.speed = 230;
       } else {
         if (this.times < this.cycle) {
           this.speed -= 30; // 加快转动速度
@@ -600,8 +585,8 @@ export default {
           // const index = parseInt(Math.random() * 10) || 0; // 随机获得一个中奖位置
           this.prize = this.bet.wheelAwards.sort - 1; //中奖位置
 
-          console.log(this.prize);
-          console.log(this.prized);
+          // console.log(this.prize);
+          // console.log(this.prized);
           // console.log(this.prized[0])
           if (this.prize > 9) {
             this.prize = 9;
@@ -627,12 +612,12 @@ export default {
       let _index = this.index;
       //获取所有可以选择的index
       let canSelectIndexs = [];
-      for (var i = 0; i <=9; i++) {
-        // 不匹配      
+      for (var i = 0; i <= 9; i++) {
+        // 不匹配
         // prized==1时
         if (this.prized.indexOf(i) == -1) {
           canSelectIndexs.push(i);
-          console.log('要旋转的数组',canSelectIndexs)
+          // console.log("要旋转的数组", canSelectIndexs);
           // 里面0,2,3,4,5,6,7,8,9
         }
       }
@@ -696,7 +681,7 @@ a {
 </style>
 <style lang="less" scoped>
 section {
-width: 100%;
+  width: 100%;
   height: 100vh;
   background-color: #0b0800;
   overflow: hidden;
@@ -932,11 +917,10 @@ width: 100%;
               // width: 100%;
               position: absolute;
               top: 0rem;
-    left: 0rem;
-    right: 0rem;
-    bottom: 0rem;
-    margin: auto;
-
+              left: 0rem;
+              right: 0rem;
+              bottom: 0rem;
+              margin: auto;
             }
             p {
               white-space: nowrap;
@@ -1074,6 +1058,5 @@ width: 100%;
     transform: scale(1);
   }
 }
-
 </style>
 
