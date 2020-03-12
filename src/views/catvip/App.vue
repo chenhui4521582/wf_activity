@@ -27,9 +27,9 @@
               </div>
             </div>
           </div>
-          <div class="horn">
+          <div class="horn" v-if="hornList.length">
             <img src="./imgs/laba.png" alt="">
-            <horn :horn-list="hornList" v-if="hornList.length"></horn>
+            <horn :horn-list="hornList"></horn>
           </div>
           <div class="pay_btn" :class="{gray:actInfoData.lottery==2}" @click="preheat(lottery)">
             <template v-if="actInfoData.lottery==0">
