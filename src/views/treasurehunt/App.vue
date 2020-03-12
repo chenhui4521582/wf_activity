@@ -105,22 +105,6 @@
               <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
-
-            <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
-              <img :src="item.img" alt />
-              <p>{{item.text1}}</p>
-              <p>{{item.text2}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
-            </li>-->
           </ul>
           <div class="middle-container">
             <div class="game-tips">每次探宝必得1个奖励，已得奖励不重复抽中，探宝10次获得所有奖励。</div>
@@ -273,12 +257,7 @@ export default {
     GLOBALS.marchSetsPoint("P_H5PT0251", {
       source_address: GLOBALS.getUrlParam("from") || ""
     });
-    // 合并
-    // 合并
-    // 3.10 
-    // 14:01
-    // console.log("更改大小写");
-    console.log('3.11 15:53')
+    // console.log('3.11 15:53')
   },
   mounted() {
     this.getActivityInfo();
@@ -550,24 +529,12 @@ export default {
         }
       }
     },
-    // 防止连点
-    // stop(){
-    //    if(this.click==false){
-
-    //       }
-    // },
     // 点击投注
     async startLottery() {
       console.log(this.click)
       if (this.message == "您的宝石不足") {
         this.popType = 5;
       }
-      // else if(this.countTime==''){
-      //       this.$toast.show({
-      //     message: "活动未开始",
-      //     duration: 1000
-      //   });
-      // }
       else if (!this.click) {
         this.$toast.show({
           message: "正在抽奖",
@@ -1107,95 +1074,6 @@ width: 100%;
     transform: scale(1);
   }
 }
-// .big{
-//   background-color: blue;
-//   width: 500px;
-//   height: 400px;
-//   margin: 20px auto;
-//   position: relative;
-//   overflow: hidden;
-//   ul{
-//     margin-top: 10px;
-//     height: 500px;
 
-//     li{
-//       position: absolute;
-//       list-style: none;
-//         height: 100px;
-//         width: 100px;
-//         background-color: white;
-//         &:nth-child(1){
-// left: 10px;
-//         }
-//          &:nth-child(2){
-//           left: 120px;
-//         }
-//          &:nth-child(3){
-//            left: 240px;
-//         }
-//          &:nth-child(4){
-//           left: 360px;
-//         }
-//          &:nth-child(5){
-//           left: 360px;
-//           top: 120px;
-//         }
-//          &:nth-child(6){
-//           left: 360px;
-//           top: 250px;
-//         }
-//          &:nth-child(7){
-//            left: 240px;
-//             top: 250px;
-//         }
-//          &:nth-child(8){
-//             left: 120px;
-//              top: 250px;
-//         }
-//          &:nth-child(9){
-//           left: 10px;
-//           top: 250px;
-//         }
-//              &:nth-child(10){
-//           left: 10px;
-//           top: 120px;
-//         }
-
-//     }
-//     .btn{
-//       width:  100px;
-//       height: 100px;
-//       position: absolute;
-//       background-color: red;
-//       font-size: 20px;
-//       left: 200px;
-//       top: 120px;
-//     }
-//     .on{
-//         background-color: black;
-//         opacity: 0.7;
-//     }
-//   }
-//   .mask{
-//     top: 50%;
-//     transform: translateX(-50%) translateY(-50%);
-//     left: 50%;
-//     width: 200px;
-//     height: 200px;
-//         position: absolute;
-
-//     background-color: red;
-//     font-size: 20px;
-//     text-align: center;
-//     color: white;
-
-//   }
-//   .end{
-// width: 100px;
-// height: 100px;
-//    background-color: black;
-//         opacity: 0.7;
-//   }
-// }
-</style>>
+</style>
 
