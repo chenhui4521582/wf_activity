@@ -19,6 +19,7 @@
 
 <script>
 import { SignInState } from '../../apis/score'
+import { isFirst } from '../../utils'
 
 export default {
   data () {
@@ -71,6 +72,9 @@ export default {
           name: 'My'
         }
       ]
+    }
+    if (!isFirst('todayFirstIn')) {
+      this.$set(this.bar[1], 'markIcon', null)
     }
   },
   methods: {
