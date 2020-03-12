@@ -68,7 +68,7 @@ export default {
         if(code == 200) {
           this.hide()
           this.$emit('treeCallback', data)
-          this.$emit('awardUrl', this.treeList[currentIndex].awardImage)
+          this.$emit('awardUrl', this.treeList[this.currentIndex].awardImage)
         }
       })
     }
