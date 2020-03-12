@@ -13,7 +13,7 @@
           :class="{'active': index == currentIndex}"
           v-for="(item, index) in treeList"
           :key="index" class="list" 
-          @click="handClick(item, index)"
+          @click="handClick(index)"
         >
           <img :src="item.awardImage | filter" alt="">
         </div>
@@ -62,6 +62,7 @@ export default {
     /** 开始种树 **/
     _getTree() {
       let id = this.treeList[this.currentIndex] && this.treeList[this.currentIndex].awardId
+      if(!id) {return}
       Services.getTree(id).then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
