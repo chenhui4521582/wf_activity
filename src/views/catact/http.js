@@ -24,7 +24,7 @@ axios.interceptors.request.use(function (config) {
   // config.headers.Authorization = 'fbae4d71382b42a0b83858d561bc60db'
   // config.headers['App-Channel'] = '100039'
   localStorage.setItem('APP_VERSION', '1.0.0')
-  return config
+  config.headers['App-Version'] = '1.0.0';return config
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error)
