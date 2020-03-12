@@ -13,7 +13,7 @@ export class Pay {
   }
 }
 
-const isFirst = param => {
+export const isFirst = param => {
   const oldDate = localStorage.getItem(param)
   const nowDate = new Date().getTime()
   if (!oldDate || (nowDate - Number(oldDate)) / 1000 > 86400) {
