@@ -143,7 +143,7 @@
 <script>
 import BScroll from "better-scroll";
 import _get from "lodash.get";
-import { activityInfo, bet, ratePropState, userAwards } from "./services/api";
+import { activityInfo, bet, ratePropState, userAwards,ranklist } from "./services/api";
 import comPop from "./component/comPop";
 import utils from "../../common/js/utils.js";
 export default {
@@ -262,6 +262,7 @@ export default {
     this.getActivityInfo();
     this.getState(2);
     this.getUserAwards();
+    this.getRankList();
     // console.log("活动倒计时", this.countTime);
     // console.log("返利卡倒计时", this.newcountTime);
     // 活动信息接口
@@ -271,6 +272,12 @@ export default {
   },
   computed: {},
   methods: {
+        async getRankList() {
+      const res = await ranklist();
+      this.RANKLIST = _get(res, "data", {});
+
+      // this.userAwards = _get(res, "data", []);
+    },
     // 点击弹窗关闭按钮,恢复click=true的状态
     getclick(e) {
       this.click = e;

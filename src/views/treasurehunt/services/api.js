@@ -2,6 +2,22 @@ import $axios from '../../../http'
 
 const OPS_API_BASE_URL = '//ops-api.beeplaying.com'
 /**
+ * @description 奖励列表
+ * @return {Object} data
+ */
+export const ranklist = async () => {
+    const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/monopoly/rank-list`)
+    return data
+}
+
+
+
+
+
+
+
+
+/**
  * @description 活动信息
  * @return {Object} data
  */
