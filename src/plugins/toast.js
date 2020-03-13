@@ -19,7 +19,7 @@ Toast.install = function (Vue, options) { // vue的install方法，用于定义v
  document.body.appendChild(tpl)
  
  Vue.prototype.$toast = { // 在Vue的原型上添加实例方法，以全局调用
-  show(options) { // 控制toast显示的方法
+  show(options, callback) { // 控制toast显示的方法
    if (typeof options === 'string') { // 对参数进行判断
     $vm.text = options // 传入props
    }
@@ -27,6 +27,11 @@ Toast.install = function (Vue, options) { // vue的install方法，用于定义v
     Object.assign($vm, options) // 合并参数与实例
    }
    $vm.show = true // 显示toast
+   clearTimeout(timer)
+   let timer = setTimeout(()=> {
+      $vm.show = false
+      callback && callback()
+   },$vm.duration || 3000)
   },
   hide() { // 控制toast隐藏的方法
    $vm.show = false
