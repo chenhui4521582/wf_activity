@@ -57,13 +57,12 @@
   .message {
     overflow: hidden;
     color: rgba(255, 255, 255, 1);
-    height: 0.18rem;
-    line-height:0.18rem;
+    height: 0.2rem;
     font-size: 0.18rem;
     font-weight:400;
     color:rgba(255,39,28,1);
     .item-move {
-      height: 0.4rem;
+      height: 0.2rem;
       position: relative;
       overflow: hidden;
       transition: all 0.3s;
@@ -71,6 +70,7 @@
         width: 100%;
       }
       li {
+        height: .2rem;
         display: flex;
         align-items: center;
       }
