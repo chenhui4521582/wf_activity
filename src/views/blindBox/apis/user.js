@@ -86,3 +86,6 @@ export const SetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api
 
 // 新用户是否显示引导A/B测试
 export const GuideTest = () => client.post('//smarteyes-api.beeplaying.com/box/new/user/guide')
+
+// 用户获取新优惠券 弹窗提示使用
+export const BoxCoupon = () => client.post('//trans-api.beeplaying.com/trans/api/coupon/confirmBoxCoupon')

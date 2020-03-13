@@ -24,11 +24,17 @@
       </div>
       <div class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
-        <p v-if="goodsList && goodsList.length < 2 && post.singlePostTimes" class="card-tip">有{{post.singlePostTimes }}张包邮卡可用</p>
+        <p v-if="goodsList && goodsList.length < 2 && post.singlePostTimes"
+          class="card-tip">有{{post.singlePostTimes }}张包邮卡可用</p>
       </div>
-      <Goods :is-price="false" v-for="(item,index) in goodsList" :key="index" :goods="item">
-        <p class="goods-time" slot="left">获奖时间：{{item.openTime }}</p>
-        <div class="receive-price" slot="right">
+      <Goods :is-price="false"
+        v-for="(item,index) in goodsList"
+        :key="index"
+        :goods="item">
+        <p class="goods-time"
+          slot="left">获奖时间：{{item.openTime }}</p>
+        <div class="receive-price"
+          slot="right">
           <p class="receive-price-amount">¥{{item.showAmount}}</p>
           <p>（价值）</p>
         </div>
@@ -58,6 +64,9 @@
       :receive="post"
       @onConfirm="updatePostInfo"
       @onClose="isReceiveInfo=false" />
+    <FollowDialog @onConfirm="onConfirm"
+      @onClose="onCloseFollow"
+      :show="showFollow" />
   </article>
 </template>
 
@@ -68,12 +77,15 @@ import Dialog from '../../components/dialog'
 import ReceiveInfo from './components/receiveInfo'
 import { InventoryList, PostInfo } from '../../apis/user'
 import { Receiver, PayPoint } from '../../apis/box'
-import { Pay } from '../../utils/index'
+import { Pay, isFirst } from '../../utils/index'
+import FollowDialog from './components/follow-dialog'
+import { WechatUrl } from '../../global'
 
 export default {
   data () {
     return {
       isLoad: false,
+      showFollow: false,
       show: false,
       isReceiveInfo: false,
       goodsList: [],
@@ -145,12 +157,32 @@ export default {
       await Receiver()
       this.receiveSuccess()
     },
+    // 立即查看公众号
+    onConfirm () {
+      location.href = WechatUrl
+    },
+    // 关闭公众号关注提示弹窗
+    onCloseFollow () {
+      this.showFollow = false
+      setTimeout(() => {
+        this.$router.push({
+          name: 'MyPrize',
+          query: {
+            active: 1
+          }
+        })
+      }, 2000)
+    },
     // 领取成功
     receiveSuccess () {
       this.$toast.show({
         message: '领取成功',
-        duration: 2000
+        duration: 1000
       })
+      if (isFirst('followWechat')) {
+        this.showFollow = true
+        return
+      }
       setTimeout(() => {
         this.$router.push({
           name: 'MyPrize',
@@ -165,7 +197,8 @@ export default {
     NavBar,
     Goods,
     Dialog,
-    ReceiveInfo
+    ReceiveInfo,
+    FollowDialog
   }
 }
 </script>
@@ -253,7 +286,7 @@ export default {
       text-align: left;
       padding: 0.3rem 0.3rem;
       .card-tip {
-        color: #FF4141;
+        color: #ff4141;
       }
       span {
         color: #d1ac42;
