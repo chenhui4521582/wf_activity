@@ -67,7 +67,7 @@
         <div class="nolight-title">
           <img v-if="value===2" src="../images/compop/guide.png" alt />
           <img v-if="value===3" src="../images/compop/coinrecord.png" alt />
-            <img v-if="value===4" src="../images/compop/topedlist.png" alt />
+          <img v-if="value===4" src="../images/compop/topedlist.png" alt />
         </div>
         <!-- 攻略 -->
         <template v-if="value==2">
@@ -120,7 +120,12 @@
         <template v-if="value===4">
           <div class="topedlist-container">
             <div class="topedlist-tab">
-
+              <div class="yesterday-btn">
+                <img src="../images/compop/yesterday-btn.png" alt />
+              </div>
+              <div class="toped-btn">
+                <img src="../images/compop/toped-btn.png" alt />
+              </div>
             </div>
           </div>
         </template>
@@ -151,10 +156,10 @@ export default {
         { time: "3-31 14:05", num: "5010" },
         { time: "3-31 14:05", num: "50220" },
         { time: "3-31 14:05", num: "503330" },
-          { time: "3-31 14:05", num: "50220" },
-            { time: "3-31 14:05", num: "50220" },
-              { time: "3-31 14:05", num: "50220" },
-                { time: "3-31 14:05", num: "50220" },
+        { time: "3-31 14:05", num: "50220" },
+        { time: "3-31 14:05", num: "50220" },
+        { time: "3-31 14:05", num: "50220" },
+        { time: "3-31 14:05", num: "50220" }
       ],
       click: true
     };
@@ -355,9 +360,8 @@ export default {
         width: 90%;
         margin: 0 auto;
         li {
-          
           display: flex;
-          div{
+          div {
             flex: 1;
             text-align: center;
           }
@@ -381,7 +385,7 @@ export default {
         .coin-scroll {
           height: 90%;
           margin-top: 0.31rem;
-    overflow: auto;
+          overflow: auto;
           li {
             height: 0.5rem;
             font-size: 0.22rem;
@@ -393,16 +397,37 @@ export default {
       }
     }
     // 往期榜单
-    .topedlist-container{
-        margin: 0.7rem auto 0;
+    .topedlist-container {
+      margin: 0.7rem auto 0;
       width: 5.38rem;
       height: 4.07rem;
-      .topedlist-tab{
+      .topedlist-tab {
         background: url(../images/compop/topedlist-tab.png);
         background-size: 100% 100%;
         width: 3.3rem;
         height: 0.5rem;
         margin: 0 auto;
+        display: flex;
+        .yesterday-btn {
+          flex: 1;
+          display: flex;
+    align-items: center;
+    justify-content: center;
+          img {
+            width: 0.89rem;
+            height: 0.25rem;
+          }
+        }
+        .toped-btn {
+          flex: 1;
+          display: flex;
+    align-items: center;
+    justify-content: center;
+          img {
+            width: 0.89rem;
+            height: 0.25rem;
+          }
+        }
       }
     }
   }
