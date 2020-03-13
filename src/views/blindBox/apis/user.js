@@ -79,7 +79,7 @@ export const GetCity = proCode => client.post(`@uci/user/receiver/getCity/${proC
 export const GetArea = cityCode => client.post(`@uci/user/receiver/getArea/${cityCode}`)
 
 // 获取是否是新用户
-export const GetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/get-guide-position`, {version: 10})
+export const GetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/get-guide-position`, { version: 10 })
 
 // 更新用户信息（设置为老用户）
 export const SetGuide = () => client.post(`//platform-api.beeplaying.com/wap/api/plat/newUser/set-guide-position`, { version: 10 })
@@ -89,3 +89,10 @@ export const GuideTest = () => client.post('//smarteyes-api.beeplaying.com/box/n
 
 // 用户获取新优惠券 弹窗提示使用
 export const BoxCoupon = () => client.post('//trans-api.beeplaying.com/trans/api/coupon/confirmBoxCoupon')
+
+// 盲盒常见问题
+export const Faq = () => client.post('//platform-api.beeplaying.com/wap/api/problem/issuesHot', {
+  params: 15,
+  page: 1,
+  pageSize: 9999
+})

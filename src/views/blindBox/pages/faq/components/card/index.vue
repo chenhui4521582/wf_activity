@@ -1,13 +1,13 @@
 <template>
   <section>
-    <p class="title">{{}}</p>
-    <p class="content">{{}}</p>
+    <p class="title">{{index}}.Q: {{info.problemTopic}}</p>
+    <p class="content">A: {{info.problemAnswer}}</p>
   </section>
 </template>
 
 <script>
 export default {
-  props: ['info']
+  props: ['info', 'index']
 }
 </script>
 
