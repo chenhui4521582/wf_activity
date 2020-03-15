@@ -411,8 +411,8 @@ export default {
         .yesterday-btn {
           flex: 1;
           display: flex;
-    align-items: center;
-    justify-content: center;
+          align-items: center;
+          justify-content: center;
           img {
             width: 0.89rem;
             height: 0.25rem;
@@ -421,8 +421,8 @@ export default {
         .toped-btn {
           flex: 1;
           display: flex;
-    align-items: center;
-    justify-content: center;
+          align-items: center;
+          justify-content: center;
           img {
             width: 0.89rem;
             height: 0.25rem;
