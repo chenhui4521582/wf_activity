@@ -25,23 +25,9 @@
       </ul>
     </section>
     <article class="botton-wrapper">
-
       <!-- 非年货节按钮 begin-->
-      <section class="btn-container btn-container-top activity">
-        <!-- <m-button @confirm="buyOne">{{
-          isOpenBox ? `立即开盒` : "20元开一盒"
-        }}<span v-if="isOpenBox"
-            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
-        <div class="activity-button"
-          @click="buyOne">
-          <p v-if="isOpenBox">立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
-          <p v-else>¥<span class="money">20</span> 开1盒</p>
-        </div>
-        <img v-if="isCouponTip"
-          class="coupon-tip"
-          src="../assets/tip.png"
-          alt="">
-        <div class="change-btn change-btn-left activity"
+      <section class="handler activity">
+        <div class="change-btn activity"
           @click="showRule">
           <!-- <img class="icon"
             src="../assets/rule.png"
@@ -51,7 +37,7 @@
             alt="">
           活动规则
         </div>
-        <div class="change-btn change-btn-right activity"
+        <div class="change-btn activity"
           @click="changeAll">
           <!-- <img class="icon"
             src="../assets/refresh.png"
@@ -62,19 +48,46 @@
           换一批
         </div>
       </section>
-      <section class="btn-container activity">
-        <!-- <m-button v-if="!isOpenBox"
-          @confirm="bulkBuy">55元开3盒</m-button> -->
-        <div v-if="!isOpenBox"
-          class="activity-button batch"
-          @click="bulkBuy">
-          ¥<span class="money">55</span> <span class="cost-price">¥60</span> 开3盒
+      <section class="btn-container">
+        <img v-if="isCouponTip"
+          class="coupon-tip"
+          src="../assets/tip.png"
+          alt="">
+        <!-- <m-button @confirm="buyOne">{{
+          isOpenBox ? `立即开盒` : "20元开一盒"
+        }}<span v-if="isOpenBox"
+            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
+        <div v-if="isOpenBox"
+          class="activity-button"
+          @click="buyOne">
+          <p>立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
         </div>
-        <p class="leaf-buy"
-          v-if="userInfo && userInfo.leafsPay"
-          @click="leafsBuy">使用金叶子购买</p>
-        <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
+        <img @click="buyOne"
+          v-if="!isOpenBox"
+          src="../activity/button1.png"
+          alt="">
+        <img @click="buyTwo"
+          v-if="!isOpenBox"
+          src="../activity/button2.png"
+          alt="">
+        <img @click="bulkBuy"
+          v-if="!isOpenBox"
+          src="../activity/button3.png"
+          alt="">
+        <!-- <div v-if="!isOpenBox" class="button button1">
+          20元开1盒
+        </div>
+        <div v-if="!isOpenBox" class="button button2">
+          38元开2盒
+        </div>
+        <div v-if="!isOpenBox" class="button">
+          55元开3盒
+        </div> -->
       </section>
+      <p class="leaf-buy activity"
+        v-if="userInfo && userInfo.leafsPay"
+        @click="leafsBuy">使用金叶子购买</p>
+      <p class="buy-tip activity">购买成功后，即可任意选盒开奖</p>
       <!-- 非年货节按钮 end -->
     </article>
     <Dialog :show="isShowRule"
@@ -225,7 +238,7 @@ export default {
       const {
         data: { data: payInfo }
       } = await PayPoint(1)
-      Pay.toPay({ payInfo: payInfo[1] })
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 55) })
     },
     async init () {
       await this.getBoxInfo()
@@ -353,9 +366,15 @@ export default {
         const {
           data: { data: payInfo }
         } = await PayPoint(1)
-        Pay.toPay({ payInfo: payInfo[0] })
+        Pay.toPay({ payInfo: payInfo.find(item => item.price === 20) })
         GLOBALS.marchSetsPoint('A_H5PT0225002539') // H5平台-盲盒页面-开一次按钮点击(点击购买)
       }
+    },
+    async buyTwo () {
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 38) })
     },
     closePop (type) {
       this.isShowPop = false
@@ -409,6 +428,54 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   background: #fef2de;
+  .btn-container {
+    display: flex;
+    padding: 0 0.25rem;
+    position: relative;
+    justify-content: space-around;
+    img {
+      width: 2.05rem;
+    }
+    .button {
+      width: 2.11rem;
+      line-height: 0.81rem;
+      color: #fff;
+      text-align: center;
+      background: url("../activity/bt3.png") no-repeat;
+      background-size: 100% 100%;
+      font-size: 0.36rem;
+      &1 {
+        background: url("../activity/bt1.png") no-repeat;
+        background-size: 100% 100%;
+        color: #7b4913;
+      }
+      &2 {
+        background: url("../activity/bt2.png") no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .leaf-buy {
+    padding-top: 0.28rem;
+    font-size: 0.3rem;
+    text-align: center;
+    background: linear-gradient(90deg, #dbbe6f, #fee9b4);
+    -webkit-background-clip: text;
+    font-weight: bold;
+    color: transparent;
+    &.activity {
+      color: #e9355a;
+    }
+  }
+  .buy-tip {
+    color: #6f768e;
+    font-size: 0.24rem;
+    text-align: center;
+    padding-top: 0.33rem;
+    &.activity {
+      color: #7b4913;
+    }
+  }
   .activity-button {
     width: 3.3rem;
     line-height: 0.8rem;
@@ -417,14 +484,14 @@ export default {
     font-size: 0.36rem;
     text-align: center;
     margin: 0 auto;
-    background: url("../activity/button1.png") no-repeat;
+    background: url("../activity/button-bg.png") no-repeat;
     background-size: 100% 100%;
     .money {
       font-size: 0.4rem;
     }
     .cost-price {
-      color: #F1430F;
-      font-size: .26rem;
+      color: #f1430f;
+      font-size: 0.26rem;
       font-weight: bold;
       text-decoration: line-through;
     }
@@ -438,11 +505,12 @@ export default {
   .botton-wrapper {
     background: #fef2de;
   }
-  .coupon-tip {
+  img.coupon-tip {
     width: 1.56rem;
+    height: .54rem;
     position: absolute;
-    left: 4.24rem;
-    top: -0.2rem;
+    left: 4rem;
+    top: -.54rem;
   }
   .rule-content {
     font-size: 0.24rem;
@@ -557,19 +625,17 @@ export default {
       }
     }
   }
-  .btn-container {
+  .handler {
     position: relative;
     background: #1b1f29;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.3rem;
+    box-sizing: border-box;
+    // padding: 0.16rem;
     &.activity {
       background: #fef2de;
-      .leaf-buy {
-        color: #e9355a;
-      }
-      .buy-tip {
-        color: #7b4913;
-      }
     }
-    // padding: 0.16rem;
     .times {
       padding-left: 0.2rem;
       span {
@@ -582,9 +648,6 @@ export default {
         }
       }
     }
-    &-top {
-      padding-top: 0.32rem;
-    }
     .money-buy {
       margin: 0 auto;
       width: 3.07rem;
@@ -595,27 +658,12 @@ export default {
       background: url("../assets/button1.png") no-repeat;
       background-size: 100% 100%;
     }
-    .leaf-buy {
-      padding-top: 0.28rem;
-      font-size: 0.3rem;
-      text-align: center;
-      background: linear-gradient(90deg, #dbbe6f, #fee9b4);
-      -webkit-background-clip: text;
-      font-weight: bold;
-      color: transparent;
-    }
-    .buy-tip {
-      color: #6f768e;
-      font-size: 0.24rem;
-      text-align: center;
-      padding-top: 0.33rem;
-    }
     .button {
       margin: auto;
     }
     .change-btn {
-      position: absolute;
-      top: calc(~"50%" - 0.4rem);
+      // position: absolute;
+      // top: calc(~"50%" - 0.4rem);
       // width: 1.14rem;
       box-sizing: border-box;
       color: #fff;
@@ -632,12 +680,6 @@ export default {
       .icon {
         width: 0.34rem;
         margin-right: 0.1rem;
-      }
-      &-left {
-        left: 0.3rem;
-      }
-      &-right {
-        right: 0.3rem;
       }
     }
   }
