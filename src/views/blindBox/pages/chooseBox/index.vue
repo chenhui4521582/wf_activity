@@ -63,12 +63,14 @@ export default {
 }
 
 .wrapper {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   background: #2a2d3c;
   padding-top: 0.3rem;
   box-sizing: border-box;
   overflow: hidden;
+  padding-bottom: 3.45rem;
+  box-sizing: border-box;
   .back {
     width: 0.16rem;
     position: absolute;

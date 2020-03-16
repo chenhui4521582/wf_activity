@@ -110,6 +110,14 @@ const routes = [
         meta: {
           title: '幸运榜单'
         }
+      },
+      {
+        path: '/faq',
+        name: 'Faq',
+        component: () => import('../pages/faq'),
+        meta: {
+          title: '常见问题'
+        }
       }
     ]
   }
