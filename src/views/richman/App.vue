@@ -592,6 +592,7 @@ section {
           .countdowntime {
             //           width:379px;
             // height:19px;
+            white-space: nowrap;
             margin: 0 auto;
             height: 0.29rem;
             display: flex;
@@ -1058,7 +1059,7 @@ color:rgba(255,255,255,1);
             }
 
             .userAwards-name {
-              width: 1.16rem;
+              width: 1.18rem;
               // height:19px;
               font-size: 0.2rem;
               font-family: PingFang SC;

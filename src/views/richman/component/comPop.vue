@@ -553,7 +553,8 @@ z-index: 2;
     .rule-container {
       margin: 1.99rem auto 0;
       width: 4.94rem;
-
+height: 8rem;
+    overflow: auto;
       .light-color {
         font-size: 0.2rem;
         font-family: PingFang SC;
