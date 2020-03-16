@@ -159,7 +159,9 @@ export default {
     },
     // 立即查看公众号
     onConfirm () {
-      location.href = WechatUrl
+      this.$router.push({
+        name: 'bindwechat'
+      })
     },
     // 关闭公众号关注提示弹窗
     onCloseFollow () {
