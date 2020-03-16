@@ -42,7 +42,9 @@ export default {
   },
   methods: {
     onConfirm () {
-      location.href = WechatUrl
+      this.$router.push({
+        name: 'bindwechat'
+      })
     }
   },
   components: {
@@ -55,22 +57,22 @@ export default {
 .content {
   font-size: 0.24rem;
   color: #888;
-  padding: 0 .42rem .4rem;
+  padding: 0 0.42rem 0.4rem;
   line-height: 1.6;
 }
 .icon-group {
   font-size: 0.18rem;
   display: flex;
   justify-content: space-between;
-  padding: 0 .1rem;
+  padding: 0 0.1rem;
   margin: 0 auto;
   img {
-    width: .73rem;
+    width: 0.73rem;
   }
   p {
     color: #888888;
-    font-size: .18rem;
-    padding: .24rem 0 .6rem;
+    font-size: 0.18rem;
+    padding: 0.24rem 0 0.6rem;
   }
 }
 </style>

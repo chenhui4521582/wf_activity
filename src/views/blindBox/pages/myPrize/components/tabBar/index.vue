@@ -115,6 +115,7 @@ export default {
     return {
       show: false,
       score: null,
+      isFollow: false,
       isExchange: false,
       showProduct: false,
       productDetail: null,
@@ -160,21 +161,24 @@ export default {
       ]
     }
   },
-  computed: {
-    isFollow () {
-      return isFollowWechat()
-    }
-  },
   mounted () {
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
+    new Promise(resolve => {
+      resolve(isFollowWechat())
+    }).then(resolve => {
+      this.isFollow = resolve
+    })
   },
   methods: {
     // 关注公众号
     follow () {
-      location.href = WechatUrl
+      // location.href = WechatUrl
+      this.$router.push({
+        name: 'bindwechat'
+      })
     },
     // 查看商品详情弹窗
     viewProduct (val) {
