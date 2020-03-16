@@ -1,12 +1,31 @@
 <template>
   <section :style="{height:topfive.length>0&&currentindex==='second'?'14.9rem':''}">
     <div class="big-bg">
+      <!-- 气泡 -->
+      <div class="bubble" v-if="currentindex==='index'&&rankListInfo.popup===true">
+        当前距离上一档奖励
+        <br />
+        还差{{rankListInfo.lessCoinNum}}金币
+      </div>
       <!-- 头部 （排行之上） -->
       <header>
-        <div class="back"></div>
-        <div class="rule" @click="popType=1"></div>
-        <div class="guide" @click="popType=2"></div>
-        <div class="countdown-container"></div>
+        <div class="back" @click="back"></div>
+        <div class="rule" @click="rule"></div>
+        <div class="guide" @click="guide"></div>
+        <div class="countdown-container">
+          <div>
+            <div v-if="activityInfo.countdown>0" class="countdowntime">
+              距离今日榜单结束仅剩&nbsp;
+              <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp; 
+              <div v-if="countTime.length">{{countTime.slice(2,3)}}</div>&nbsp;
+              <div v-if="countTime.length" class="block-bg">{{countTime.slice(3,5)}}</div>&nbsp; 
+              <div v-if="countTime.length">{{countTime.slice(5,6)}}</div>&nbsp;
+              <div v-if="countTime.length" class="block-bg">{{countTime.slice(6,8)}}</div>&nbsp;
+              <div v-if="countTime.length">{{countTime.slice(8,9)}}</div>
+            </div>
+            <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div>
+          </div>
+        </div>
         <!-- tab切换 -->
         <div class="tab-card">
           <div class="index-btn" @click="goindex" :class="[currentindex==='second'?'indexcss':'']">
@@ -27,8 +46,8 @@
       <template v-if="currentindex==='index'">
         <main class=".main">
           <p class="toponeprize">第一名最高赢800元京东卡</p>
-          <div class="rankrecord" @click="popType=4"></div>
-          <div class="coinrecord" @click="popType=3"></div>
+          <div class="rankrecord" @click="rankrecord"></div>
+          <div class="coinrecord" @click="gocoinrecord"></div>
 
           <!-- 中间排行榜 -->
 
@@ -39,13 +58,9 @@
                 :class="[index===1?'top-one':'',index===0?'top-two':'',index===2?'top-three':'']"
                 :key="index"
               >
-                <img
-                  class="rank-icon"
-                  :src="item.rank?require(`./images/rank/${item.rank}.png`):''"
-                  alt
-                />
+                <img class="rank-icon" :src="require(`./images/rank/${index}.png`)" alt />
                 <div class="headpic">
-                  <img :src="item.img || defaultImg |filter" alt />
+                  <img :src="item.profilePhoto || defaultImg |filter" alt />
                 </div>
                 <div
                   class="name"
@@ -58,9 +73,16 @@
                   :class="[index===1?'num-one':'',index===0?'num-two':'',index===2?'num-three':'']"
                 >
                   <img src="./images/coin.png" alt />
-                  <span>&nbsp;{{item.num}}</span>
+                  <span>&nbsp;{{item.coinNum}}</span>
                 </div>
-                <div class="prize-name"></div>
+                <div class="prize-name" :class="index==1?'prize-name-numone':''">
+                 
+                  <p v-if="item.awardsName"><span class="dollar">¥</span>{{item.awardsName.split('元')[0]}}</p>
+                  <p v-if="item.awardsName">{{item.awardsName.split('元')[1]}}</p>
+
+                     <!-- <p><span class="dollar">¥</span>300</p>
+                  <p >话费券</p> -->
+                </div>
               </div>
             </template>
           </div>
@@ -70,16 +92,30 @@
               <ul>
                 <li>
                   <span class="top-one-row">我的排名</span>
-                  <span class="top-two-row">暂未上榜</span>
+                  <span
+                    v-if="rankListInfo.onList===true"
+                    class="top-two-row"
+                  >{{rankListInfo.myRank}}</span>
+                  <span v-if="rankListInfo.onList===false" class="top-two-row">暂未上榜</span>
                 </li>
                 <li>
                   <span class="top-one-row">今日累计金币</span>
-                  <span class="top-two-row">0</span>
+                  <span class="top-two-row">{{rankListInfo.coinNum}}</span>
                 </li>
                 <!-- 获取金币 -->
                 <li>
-                  <img src="./images/gaincoin.png" alt />
-                  <!-- <img src="./images/gaincoin-end.png" alt=""> -->
+                  <img
+                    v-if="activityInfo.state===1"
+                    @click="goshop"
+                    src="./images/gaincoin.png"
+                    alt
+                  />
+                  <img
+                    v-if="activityInfo.state===2"
+                    @click="activityend"
+                    src="./images/gaincoin-end.png"
+                    alt
+                  />
                 </li>
               </ul>
             </div>
@@ -91,7 +127,7 @@
                 <div class="ranklist-title">当前奖励</div>
               </li>
               <div class="ranklist-scroll">
-                <template v-if="true">
+                <template v-if="rankList.length>3">
                   <li v-for="(item,index) in fourStartList" :key="index" class="rank-list">
                     <div
                       class="order"
@@ -99,13 +135,13 @@
                     >{{item.rank}}</div>
                     <div class="nickname">{{item.nickname}}</div>
                     <div class="coin-time">
-                      <span>{{item.num}}</span>
-                      <span>{{item.time}}</span>
+                      <span>{{item.coinNum}}</span>
+                      <span>{{item.updateTime}}</span>
                     </div>
-                    <div class="userAwards-name">{{item.prize}}</div>
+                    <div class="userAwards-name">{{item.awardsName}}</div>
                   </li>
                 </template>
-                <template v-if="false">
+                <template v-if="rankList.length===0">
                   <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
                 </template>
               </div>
@@ -126,7 +162,8 @@
           <div class="black-bg">
             <p>
               您当前累计金币:
-              <img src="./images/consumecoin.png" alt /> 002310
+              <img src="./images/consumecoin.png" alt />
+              {{totalranklist.totalNum}}
             </p>
           </div>
           <!-- 前5名排行榜 -->
@@ -134,7 +171,7 @@
           <ul v-if="topfive.length>0" class="topfive">
             <li v-for="(item,key) in topfive" :key="key">
               <div class="topfive-headpic">
-                <img :src="item.img || defaultImg |filter" alt />
+                <img :src="item.profilePhoto || defaultImg |filter" alt />
               </div>
               <div class="topfiveinfo">
                 <p>
@@ -144,12 +181,12 @@
                 <p>
                   累计金币
                   <img src="./images/small-coin.png" alt />
-                  <span>{{item.num}}</span>
+                  <span>{{item.coinNum}}</span>
                 </p>
               </div>
               <div class="line"></div>
               <div class="prize-img">
-                <img src="./images/5000.png" alt />
+                <img :src="require(`./images/topfiveprize/${key}.png`)" alt />
               </div>
             </li>
           </ul>
@@ -161,212 +198,243 @@
     </div>
     <!-- <footer> -->
 
-    <!-- </footer> -->  
-    <comPop v-model="popType" :currentindex='currentindex' :topfive='topfive'></comPop>
+    <!-- </footer> -->
+    <comPop
+      v-model="popType"
+      :currentindex="currentindex"
+      :topfive="topfive"
+      :activityInfo="activityInfo"
+      :coinrecord="coinrecord"
+    ></comPop>
   </section>
-
 </template>
 
 
 <script>
 import BScroll from "better-scroll";
 import _get from "lodash.get";
-import { ranklist, totalranklist,activityinfo,coinrecord,prerankinfo } from "./services/api";
+import {
+  ranklist,
+  totalranklist,
+  activityinfo,
+  coinrecord,
+  prerankinfo,test
+} from "./services/api";
 import comPop from "./component/comPop";
 import utils from "../../common/js/utils.js";
-
+import { activityInfo } from "../treasurehunt/services/api";
 
 export default {
   data() {
     return {
-      popType:4,  //1规则 2攻略 3金币记录 4往期榜单
+      // 倒计时
+      countTime: "",
+      popType: 0, //1规则 2攻略 3金币记录 4往期榜单 5太棒了（恭喜您获得100个金币）6继续加油（昨日获得金币，暂未上榜哦~）7恭喜您 （昨日富翁榜上榜获得奖品）8恭喜您（终极土豪榜上榜，获得奖品） 9哎呀（富翁榜被反超）
       currentindex: "index",
       defaultIndex: 30,
       defaultImg: "/cdn/common/images/common/img_photo.png",
       rankList: [
-        {
-          headpic: "",
-          nickname: "周某某12321123213321",
-          num: "123",
-          prize: "",
-          rank: "1",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "王某某",
-          num: "400245",
-          prize: "",
-          rank: "2",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "3",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "4",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "5",
-          time: "3-31 15:33",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "这里是名称123",
-          num: "4000",
-          prize: "",
-          rank: "6",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "7",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "8",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "9",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "10",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "11",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "12",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "13",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        },
-        {
-          headpic: "",
-          nickname: "胡魔某",
-          num: "4000",
-          prize: "",
-          rank: "14",
-          time: "3-31 15:33",
-          prize: "300元京东券"
-        }
       ],
       RANKLIST: {},
       //副页前5排行榜
       topfive: [
-        { headpic: "", nickname: "胡112321323213123某", num: "4000", prize: "" },
-        { headpic: "", nickname: "胡魔某", num: "400123210", prize: "" },
-        { headpic: "", nickname: "胡魔某", num: "4000", prize: "" },
-        { headpic: "", nickname: "胡魔某", num: "4000", prize: "" },
-        { headpic: "", nickname: "胡魔某", num: "4000", prize: "" }
-      ]
+     
+      ],
+      countTime: "",
+      // 活动信息
+      activityInfo: {},
+      // 金币记录
+      coinrecord: [],
+      // 往期榜单
+      prerankinfo: {},
+      // 昨日榜单
+      yesterdayList: [],
+      // 往期排名
+      rankingList: [],
+      // 每日排行榜列表信息
+      rankListInfo: {},
+      // 总排行榜信息
+      totalranklist: {}
+      //
     };
   },
   created() {
     // await this.getRankList();
+    GLOBALS.marchSetsPoint("P_H5PT0263", {
+      source_address: GLOBALS.getUrlParam("from") || ""
+    });
   },
-  mounted() {
+   mounted() {
     this.getRankList();
     this.getTotalRankList();
     this.getActivityIngo();
     this.getCoinRecord();
-    this.getPreRankInfo();
-    console.log();
+    // this.getTest();
+    // this.getPreRankInfo();
+    // console.log();
   },
   methods: {
+    // 返回首页
+    back() {
+      window.location.href = `https://wap.beeplaying.com/xmWap/`;
+      GLOBALS.marchSetsPoint("A_H5PT0263003093");
+    },
+    // 规则
+    rule() {
+      this.popType = 1;
+      GLOBALS.marchSetsPoint("A_H5PT0263003094");
+    },
+    // 攻略
+    guide() {
+      this.popType = 2;
+      GLOBALS.marchSetsPoint("A_H5PT0263003095");
+    },
+    // 往期榜单
+    rankrecord() {
+      this.popType = 4;
+      GLOBALS.marchSetsPoint("A_H5PT0263003096");
+    },
+    // 金币记录
+    gocoinrecord() {
+      this.popType = 3;
+      GLOBALS.marchSetsPoint("A_H5PT0263003097");
+    },
+    // 跳转商城
+    goshop() {
+      parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
+      GLOBALS.marchSetsPoint("A_H5PT0263003098");
+    },
+    activityend() {
+      this.$toast.show({
+        message: "活动已经结束",
+        duration: 1000
+      });
+    },
     // 奖励列表
-  
+
     async getRankList() {
       const res = await ranklist();
-      this.RANKLIST = _get(res, "data", {});
+      this.rankListInfo = _get(res, "data", {});
+      this.rankList = this.rankListInfo.rankList;
 
       // this.userAwards = _get(res, "data", []);
     },
     // 总排行榜列表
     async getTotalRankList() {
       const res = await totalranklist();
-      this.RANKLIST = _get(res, "data", {});
-
+      this.totalranklist = _get(res, "data", {});
+      this.topfive = this.totalranklist.rankList;
       // this.userAwards = _get(res, "data", []);
     },
     // 活动信息
-    async getActivityIngo(){
+    async getActivityIngo() {
       const res = await activityinfo();
+      this.activityInfo = _get(res, "data", {});
+
+      // 判断是否首次进入
+      if (this.activityInfo.first === true) {
+        this.popType = 2;
+      }
+      // 判断弹窗类型
+      if (this.activityInfo.popup === true) {
+        // 每日上榜结果
+        if (this.activityInfo.propType === 1) {
+          // 未上榜
+          this.popType = 6;
+          GLOBALS.marchSetsPoint("A_H5PT0263003102");
+        } else if (this.activityInfo.propType === 0) {
+          // 上榜
+          this.popType = 7;
+          GLOBALS.marchSetsPoint("A_H5PT0263003101");
+        } else if (this.activityInfo.propType === 2) {
+          // 金币新增
+          this.popType = 5;
+          GLOBALS.marchSetsPoint("A_H5PT0263003099");
+        } else if (this.activityInfo.propType === 3) {
+          // 排名反超
+          this.popType = 9;
+          GLOBALS.marchSetsPoint("A_H5PT0263003100");
+        } else if (this.activityInfo.propType === 4) {
+          // 终极土豪榜上榜
+          this.popType = 8;
+          GLOBALS.marchSetsPoint("A_H5PT0263003103");
+        }
+      }
+      this.countDown(this.activityInfo.countdown);
+      console.log("倒计时", this.countTime);
     },
     // 金币获取记录
-       async getCoinRecord(){
+    async getCoinRecord() {
       const res = await coinrecord();
+      this.coinrecord = _get(res, "data", {});
+    },
+    // 测试
+        async getTest() {
+      const res = await test();
+      // this.coinrecord = _get(res, "data", {});
     },
     // 往期榜单
-        async getPreRankInfo(){
-      const res = await prerankinfo();
-    },
+    // async getPreRankInfo() {
+    //   const res = await prerankinfo();
+    //  this.prerankinfo = _get(res, "data", {});
+    //  this.yesterdayList = this.prerankinfo.yesterdayList
+    //  this.rankingList = this.prerankinfo.rankingList
+    //  console.log(this.yesterdayList,this.rankingList)
+    // },
     goindex() {
       this.currentindex = "index";
     },
     gosecond() {
       this.currentindex = "second";
+    },
+    getCountInfo(dateinfo) {
+      let day = Math.floor(dateinfo / 86400);
+      let hour = Math.floor(parseInt(dateinfo / 60 / 60) % 24);
+      let minute = Math.floor(parseInt(dateinfo / 60) % 60);
+      let second = Math.floor(dateinfo % 60);
+      // let countDay = day >= 10 ? day : '0' + day
+      let countHour = hour >= 10 ? hour : "0" + hour;
+      let countMinute = minute >= 10 ? minute : "0" + minute;
+      let countSecond = second >= 10 ? second : "0" + second;
+      return {
+        day,
+        countHour,
+        countMinute,
+        countSecond
+      };
+    },
+    countDown(item) {
+      if (!item) return false;
+      let date = item / 1000;
+      let { day, countHour, countMinute, countSecond } = this.getCountInfo(
+        date
+      );
+      let self = this;
+
+      doTimer();
+
+      this.timer = setInterval(() => {
+        doTimer();
+      }, 1000);
+
+      function doTimer() {
+        date = date - 1;
+        if (date <= 0) {
+          date = 0;
+          clearInterval(self.timer);
+          self.countTime = "";
+          return;
+        }
+        let day = Math.floor(date / 86400);
+        let hour = Math.floor(parseInt(date / 60 / 60) % 24);
+        let minute = Math.floor(parseInt(date / 60) % 60);
+        let second = Math.floor(date % 60);
+        let countDay = day >= 10 ? day : "0" + day;
+        let countHour = hour >= 10 ? hour : "0" + hour;
+        let countMinute = minute >= 10 ? minute : "0" + minute;
+        let countSecond = second >= 10 ? second : "0" + second;
+        self.countTime = `${countHour}时${countMinute}分${countSecond}秒`;
+      }
     }
   },
   computed: {
@@ -392,13 +460,10 @@ export default {
       return arr;
     }
   },
-  created() {
-    console.log("天天大富翁");
-  },
-  components:{
+
+  components: {
     comPop
   }
-
 };
 </script>
 <style>
@@ -454,9 +519,28 @@ section {
     // overflow: hidden;
     // width: 7.2rem;
     // height: 13.87rem;
+    // position: relative;
     height: 14rem;
     background: url(./images/bg.png) no-repeat;
     background-size: 100% 100%;
+    .bubble {
+      background: url(./images/bubble.png) no-repeat;
+      background-size: 100% 100%;
+      width: 2.16rem;
+      height: 0.67rem;
+      text-align: center;
+      position: absolute;
+      top: 8.1rem;
+      left: 2.6rem;
+      z-index: 1;
+      // width:177px;
+      // height:43px;
+      font-size: 0.2rem;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: rgba(108, 34, 166, 1);
+      line-height: 0.25rem;
+    }
     // 头部（排行榜之上）
     header {
       overflow: hidden;
@@ -497,6 +581,51 @@ section {
         width: 4.2rem;
         height: 0.73rem;
         margin: 2.28rem auto 0;
+        overflow: hidden;
+        div:nth-child(1) {
+          margin: 0.2rem auto 0;
+          // width: 95%;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .countdowntime {
+            //           width:379px;
+            // height:19px;
+            margin: 0 auto;
+            height: 0.29rem;
+            display: flex;
+            align-items: center;
+            font-size: 0.2rem;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: rgba(255, 233, 171, 1);
+            // line-height:341px;
+
+            // 另一种方法
+            .block-bg {
+              width: 0.3rem;
+              height: 0.32rem;
+              background: rgba(255, 234, 173, 1);
+              border-radius: 0.06rem;
+              margin: 0;
+              // width:22px;
+              // height:24px;
+              font-size: 0.32rem;
+              font-family: DIN Condensed;
+              font-weight: bold;
+              color: rgba(255, 35, 103, 1);
+              line-height: 0.4rem;
+              display: block;
+              // line-height:341px;
+              // display: flex;
+              // align-items: center;
+              // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+            }
+          }
+        }
       }
       .tab-card {
         background: url(./images/tab.png) no-repeat;
@@ -506,6 +635,7 @@ section {
         margin: 0.05rem auto 0;
         display: flex;
         align-items: center;
+        transition: all 1s;
         .index-btn {
           flex: 1;
           display: flex;
@@ -519,10 +649,11 @@ section {
           justify-content: center;
           width: 2.58rem;
           height: 0.56rem;
-          background: rgba(237, 35, 99, 1);
+          background-color: rgba(237, 35, 99, 1);
           border-radius: 0.28rem 0rem 0rem 0.28rem;
           margin-left: 0.08rem;
           transition: all 1s;
+
           &.indexcss {
             // width:118px;
             // height:24px;
@@ -530,7 +661,8 @@ section {
             font-family: PingFang SC;
             font-weight: bold;
             color: rgba(255, 216, 227, 1);
-            background: transparent;
+            background-color: transparent;
+            transition: all 1s;
           }
           img {
             width: 0.41rem;
@@ -538,7 +670,7 @@ section {
           }
         }
         .secondsheets-btn {
-          transition: all 1s;
+          background: transparent;
           height: 0.56rem;
           align-items: center;
           justify-content: center;
@@ -554,10 +686,12 @@ section {
           border-radius: 0px 0.28rem 0.28rem 0px;
 
           margin-right: 0.08rem;
+          transition: all 1s;
+
           &.secondcss {
             // width: 2.58rem;
             // height: 0.56rem;
-            background: rgba(233, 29, 88, 1);
+            background-color: rgba(233, 29, 88, 1);
             border-radius: 0px 0.28rem 0.28rem 0px;
             // width:119px;
             // height:24px;
@@ -565,6 +699,7 @@ section {
             font-family: PingFang SC;
             font-weight: bold;
             color: rgba(255, 255, 255, 1);
+            transition: all 1s;
           }
           img {
             width: 0.46rem;
@@ -610,11 +745,11 @@ section {
     // 排行榜
     main {
       position: relative;
-      animation: tab 1s linear ;
+      animation: tab 1s linear;
       transition: all 1s;
-      &.main{
-         animation: tab 1s linear ;
-      // transition: all 1s;
+      &.main {
+        animation: tab 1s linear;
+        // transition: all 1s;
       }
       .topthree {
         display: flex;
@@ -653,9 +788,13 @@ section {
           .headpic {
             text-align: center;
             margin: 0.18rem auto 0;
+            width: 1.13rem;
+            height: 1.14rem;
+            border-radius: 50%;
+            overflow: hidden;
             img {
-              width: 1.09rem;
-              height: 1.11rem;
+              width: 100%;
+              height: 100%;
             }
           }
           .name {
@@ -742,6 +881,46 @@ section {
             }
           }
           .prize-name {
+            position: absolute;
+            height: 0.5rem;
+            height: 0.85rem;
+            width: 1.2rem;
+            top: 2.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            &.prize-name-numone {
+              top: 2.26rem;
+             
+            } 
+            p:first-child {
+              //       width:54px;
+              // height:30px;
+              font-size: 0.35rem;
+              font-family: Impact;
+              font-weight: 400;
+              color: rgba(255, 255, 255, 1);
+              .dollar{
+                // position: absolute;
+                width:0.13rem;
+height:0.16rem;
+font-size:0.21rem;
+font-family:PingFang SC;
+font-weight:800;
+color:rgba(255,255,255,1);
+              }
+            }
+            p:last-child {
+              //       width:56px;
+              // height:18px;
+              font-size: 0.19rem;
+              font-family: Source Han Sans CN;
+              font-weight: 500;
+              color: rgba(255, 255, 255, 1);
+            }
           }
         }
       }
@@ -764,8 +943,9 @@ section {
           display: flex;
           justify-content: space-around;
           align-items: center;
-
+          position: relative;
           height: 100%;
+
           li {
             display: flex;
             flex-direction: column;
@@ -887,7 +1067,6 @@ section {
               // margin-right: 0.15rem;
             }
           }
-
         }
       }
       // 副页样式
@@ -948,7 +1127,7 @@ section {
           height: 1.6rem;
           display: flex;
           align-items: center;
-             justify-content: space-evenly;
+          justify-content: space-evenly;
           .topfive-headpic {
             width: 1.1rem;
             height: 1.1rem;
@@ -962,19 +1141,18 @@ section {
           .topfiveinfo {
             width: 3rem;
             display: flex;
-    flex-direction: column;
-    height: 55%;
+            flex-direction: column;
+            height: 55%;
 
-    justify-content: space-between;
+            justify-content: space-between;
 
-                // margin-left: -0.5rem;
+            // margin-left: -0.5rem;
             & p:first-child {
               //             width:82px;
               // height:27px;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
-              ;
               font-size: 0.28rem;
               font-family: PingFang SC;
               font-weight: 500;
@@ -988,7 +1166,7 @@ section {
             & p:last-child {
               // width:82px;
               // height:27px;
-               white-space: nowrap;
+              white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               font-size: 0.28rem;
@@ -1023,32 +1201,26 @@ section {
           }
         }
       }
-           .notlist-tips {
-            //             width:465px;
-            // height:36px;
-            font-size: 0.36rem;
-            font-family: PingFang SC;
-            font-weight: 500;
-            color: rgba(255, 247, 183, 1);
-            position: absolute;
-            top: 40%;
-          }
-          .secondnotlist-tips{
-               font-size: 0.36rem;
-            font-family: PingFang SC;
-            font-weight: 500;
-            color: rgba(255, 247, 183, 1);
-            // position: absolute;
-            // top: 40%;
-            margin: 1.11rem auto;
-            text-align: center;
-            
-          }
-
-
-
-
-
+      .notlist-tips {
+        //             width:465px;
+        // height:36px;
+        font-size: 0.36rem;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: rgba(255, 247, 183, 1);
+        position: absolute;
+        top: 40%;
+      }
+      .secondnotlist-tips {
+        font-size: 0.36rem;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: rgba(255, 247, 183, 1);
+        // position: absolute;
+        // top: 40%;
+        margin: 1.11rem auto;
+        text-align: center;
+      }
     }
   }
   // footer{
@@ -1076,7 +1248,7 @@ section {
 }
 @keyframes tab {
   0% {
-    opacity:0 ;
+    opacity: 0;
   }
   50% {
     // transform: scale(0.9);
