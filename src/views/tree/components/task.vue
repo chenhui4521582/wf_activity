@@ -119,8 +119,8 @@ export default {
           this.$nextTick(res=> {
             let el = this.$refs.award
             this.awardText = `获得${data.changeNum}g水滴`
-            Velocity(el, {opacity: 1},{ duretion: 1000})
-            Velocity(el, {opacity: 0},{ duretion: 1000 , delay: 2000,complete: ()=> {this.showAwards = false}})
+            Velocity(el, {opacity: 1},{ duretion: 500})
+            Velocity(el, {opacity: 0},{ duretion: 500 , delay: 1000, complete: ()=> {this.showAwards = false}})
           })
           this.userSignDay++
           this.todayIsSign = 1
@@ -133,6 +133,7 @@ export default {
       })
     },
     _getTaskAward(item) {
+      if(this.showAwards) {return false}
       Services.getTaskAward(item.taskId).then(res=> {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {

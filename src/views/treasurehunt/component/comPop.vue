@@ -139,7 +139,8 @@ export default {
          { time: "2020-3-12", name: "112元京东卡" },
         { time: "2020-3-12", name: "112元京东卡" },
         { time: "2020-3-12", name: "112元京东卡" }
-      ]
+      ],
+      click:true,
     };
   },
   created() {},
@@ -156,6 +157,8 @@ export default {
     },
     close() {
       this.$emit("input", 0);
+      // 传父组件click开关 恢复click的值
+      this.$emit('clickshow',this.click)
     }
   },
   props: {
@@ -188,15 +191,6 @@ export default {
   margin: 0;
 }
 
-// .v-enter-active,.v-leave-active{
-//   transition: all 1s linear;
-// }
-// .v-enter-active{
-//   animation: change 1s linear;
-// }
-// .v-leave-active{
-//  animation: change 1s linear;
-// }
 @keyframes change {
   0%{
      -webkit-transform: scale(0)
@@ -308,7 +302,7 @@ border-radius:0.05rem;
         height: 3.99rem;
         margin-top: 0.1rem;
         display: flex;
-        // justify-content: center;
+     
         flex-direction: column;
             align-items: center;
         & .container-title {
@@ -317,7 +311,7 @@ border-radius:0.05rem;
           background: rgba(230, 162, 54, 1);
           display: flex;
           align-items: center;
-          // justify-content: center;
+        
           div {
             text-align: center;
             font-size: 0.24rem;
@@ -333,15 +327,14 @@ border-radius:0.05rem;
           }
           .line{
             width: 1px;
-            // width:0.01rem;
+       
 height:0.31rem;
 background:rgba(4,3,0,1);
           }
         }
         .scroll{
           height: 3.42rem;
-    // overflow: hidden;
-    // overflow-y: scroll;
+
     overflow: auto;
     &.scroll-norecord{
       overflow-y: hidden;
@@ -353,7 +346,7 @@ background:rgba(4,3,0,1);
       margin-top: 0.89rem;
     }
     .norecord-tips{
-      // width:0.69rem;
+     
 height:0.22rem;
 font-size:0.24rem;
 font-family:Alibaba PuHuiTi;
@@ -450,7 +443,7 @@ color:rgba(253,209,152,1);
         text-align: center;
         line-height: 0.65rem;
         margin: 0.65rem auto 0;
-        // margin-top: 0.6rem;
+   
       }
       // 恭喜您，获得金叶返利
       .jinyezi{

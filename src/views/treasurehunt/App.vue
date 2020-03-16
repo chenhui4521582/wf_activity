@@ -105,22 +105,6 @@
               <div class="absolute" :class="[i==prized[8]?'end':'']"></div>
               <div class="absolute" :class="[i==prized[9]?'end':'']"></div>
             </li>
-
-            <!-- <li v-for="(item,i) in list" :key="i" :class="[i==index?'on':'']">
-              <img :src="item.img" alt />
-              <p>{{item.text1}}</p>
-              <p>{{item.text2}}</p>
-              <div :class="[i==prized[0]?'end':'']"></div>
-              <div :class="[i==prized[1]?'end':'']"></div>
-              <div :class="[i==prized[2]?'end':'']"></div>
-              <div :class="[i==prized[3]?'end':'']"></div>
-              <div :class="[i==prized[4]?'end':'']"></div>
-              <div :class="[i==prized[5]?'end':'']"></div>
-              <div :class="[i==prized[6]?'end':'']"></div>
-              <div :class="[i==prized[7]?'end':'']"></div>
-              <div :class="[i==prized[8]?'end':'']"></div>
-              <div :class="[i==prized[9]?'end':'']"></div>
-            </li>-->
           </ul>
           <div class="middle-container">
             <div class="game-tips">每次探宝必得1个奖励，已得奖励不重复抽中，探宝10次获得所有奖励。</div>
@@ -152,6 +136,7 @@
         :activityInfo="activityInfo"
         :state="state"
         :userAwards="userAwards"
+        @clickshow="getclick"
       ></comPop>
     </div>
   </section>
@@ -179,9 +164,9 @@ export default {
       newindex: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], //
       count: 10, // 总共有多少个位置
       timer: 0, // 每次转动定时器
-      speed: 300, // 初始转动速度
+      speed: 230, // 初始转动速度
       times: 0, // 转动次数
-      cycle: 10, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
+      cycle: 8, // 转动基本次数：即至少需要转动多少次再进入抽奖环节
       prize: -1, // 中奖位置
       prized: [], //已抽中的位置
       click: true,
@@ -272,12 +257,7 @@ export default {
     GLOBALS.marchSetsPoint("P_H5PT0251", {
       source_address: GLOBALS.getUrlParam("from") || ""
     });
-    // 合并
-    // 合并
-    // 3.10 
-    // 14:01
-    // console.log("更改大小写");
-    console.log('3.11 15:03')
+    // console.log('3.11 15:53')
   },
   mounted() {
     this.getActivityInfo();
@@ -292,6 +272,10 @@ export default {
   },
   computed: {},
   methods: {
+    // 点击弹窗关闭按钮,恢复click=true的状态
+    getclick(e){
+      this.click=e
+    },
     // 活动信息接口
     async getActivityInfo() {
       const res = await activityInfo();
@@ -430,6 +414,7 @@ export default {
     },
     // 中奖记录
     prizerecord() {
+      console.log('click',this.click)
       if(!this.click){
           this.$toast.show({
           message: "正在抽奖",
@@ -544,23 +529,12 @@ export default {
         }
       }
     },
-    // 防止连点
-    // stop(){
-    //    if(this.click==false){
-
-    //       }
-    // },
     // 点击投注
     async startLottery() {
+      console.log(this.click)
       if (this.message == "您的宝石不足") {
         this.popType = 5;
       }
-      // else if(this.countTime==''){
-      //       this.$toast.show({
-      //     message: "活动未开始",
-      //     duration: 1000
-      //   });
-      // }
       else if (!this.click) {
         this.$toast.show({
           message: "正在抽奖",
@@ -583,7 +557,7 @@ export default {
       // 转动过程调用的每一次转动方法，这里是第一次调用初始化
       // 如果当前转动次数达到要求 && 目前转到的位置是中奖位置
 
-      if (this.times > this.cycle + 10 && this.prize === this.index) {
+      if (this.times > this.cycle + 7 && this.prize === this.index) {
         // 抽中返利卡时
         if (this.bet.wheelAwards.state == 1) {
           this.prized.push(this.prize);
@@ -617,11 +591,11 @@ export default {
         clearTimeout(this.timer); // 清除转动定时器，停止转动
         this.prize = -1;
         this.times = 0;
-        this.speed = 300; 
+        this.speed = 230; 
          
       } else {
         if (this.times < this.cycle) {
-          this.speed -= 20; // 加快转动速度
+          this.speed -= 30; // 加快转动速度
         } else if (this.times === this.cycle) {
           // const index = parseInt(Math.random() * 10) || 0; // 随机获得一个中奖位置
           this.prize = this.bet.wheelAwards.sort - 1; //中奖位置
@@ -1100,95 +1074,6 @@ width: 100%;
     transform: scale(1);
   }
 }
-// .big{
-//   background-color: blue;
-//   width: 500px;
-//   height: 400px;
-//   margin: 20px auto;
-//   position: relative;
-//   overflow: hidden;
-//   ul{
-//     margin-top: 10px;
-//     height: 500px;
 
-//     li{
-//       position: absolute;
-//       list-style: none;
-//         height: 100px;
-//         width: 100px;
-//         background-color: white;
-//         &:nth-child(1){
-// left: 10px;
-//         }
-//          &:nth-child(2){
-//           left: 120px;
-//         }
-//          &:nth-child(3){
-//            left: 240px;
-//         }
-//          &:nth-child(4){
-//           left: 360px;
-//         }
-//          &:nth-child(5){
-//           left: 360px;
-//           top: 120px;
-//         }
-//          &:nth-child(6){
-//           left: 360px;
-//           top: 250px;
-//         }
-//          &:nth-child(7){
-//            left: 240px;
-//             top: 250px;
-//         }
-//          &:nth-child(8){
-//             left: 120px;
-//              top: 250px;
-//         }
-//          &:nth-child(9){
-//           left: 10px;
-//           top: 250px;
-//         }
-//              &:nth-child(10){
-//           left: 10px;
-//           top: 120px;
-//         }
-
-//     }
-//     .btn{
-//       width:  100px;
-//       height: 100px;
-//       position: absolute;
-//       background-color: red;
-//       font-size: 20px;
-//       left: 200px;
-//       top: 120px;
-//     }
-//     .on{
-//         background-color: black;
-//         opacity: 0.7;
-//     }
-//   }
-//   .mask{
-//     top: 50%;
-//     transform: translateX(-50%) translateY(-50%);
-//     left: 50%;
-//     width: 200px;
-//     height: 200px;
-//         position: absolute;
-
-//     background-color: red;
-//     font-size: 20px;
-//     text-align: center;
-//     color: white;
-
-//   }
-//   .end{
-// width: 100px;
-// height: 100px;
-//    background-color: black;
-//         opacity: 0.7;
-//   }
-// }
-</style>>
+</style>
 
