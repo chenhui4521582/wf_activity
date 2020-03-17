@@ -108,7 +108,7 @@ import { InventoryList } from '../../../../apis/user'
 import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
-import { WechatUrl, isFollowWechat } from '../../../../global'
+import { isWechat } from '../../../../global'
 
 export default {
   data () {
@@ -166,11 +166,7 @@ export default {
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
-    new Promise(resolve => {
-      resolve(isFollowWechat())
-    }).then(resolve => {
-      this.isFollow = resolve
-    })
+    this.isFollow = isWechat
   },
   methods: {
     // 关注公众号

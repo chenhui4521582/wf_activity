@@ -62,7 +62,7 @@ import { InventoryList, PostInfo } from '../../apis/user'
 import { Receiver, PayPoint } from '../../apis/box'
 import { Pay, isFirst } from '../../utils/index'
 import FollowDialog from './components/follow-dialog'
-import { WechatUrl } from '../../global'
+import { isWechat } from '../../global'
 
 export default {
   data () {
@@ -164,7 +164,7 @@ export default {
         message: '领取成功',
         duration: 1000
       })
-      if (isFirst('followWechat')) {
+      if (!isWechat && isFirst('followWechat')) {
         this.showFollow = true
         return
       }
