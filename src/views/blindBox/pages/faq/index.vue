@@ -1,6 +1,6 @@
 <template>
   <article class="wrapper">
-    <NavBar @back="$router.go(-1)"
+    <NavBar :is-back="false"
       title="常见问题Q&A" />
     <Card v-for="(item, index) in list"
       :key="index"

@@ -1,8 +1,10 @@
 <template>
   <section class="header">
     <img @click="$emit('back')"
+      v-if="isBack"
       src="./assets/back.png"
       alt="返回">
+    <span v-else></span>
     <span>{{title}}</span>
     <span></span>
   </section>
@@ -13,6 +15,10 @@ export default {
   props: {
     title: {
       type: String
+    },
+    isBack: {
+      type: Boolean,
+      default: true
     }
   }
 }
