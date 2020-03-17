@@ -43,7 +43,7 @@ export default {
   methods: {
     onConfirm () {
       this.$router.push({
-        name: 'bindwechat'
+        name: 'bindWechat'
       })
     }
   },

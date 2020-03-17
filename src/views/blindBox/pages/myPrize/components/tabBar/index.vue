@@ -177,7 +177,7 @@ export default {
     follow () {
       // location.href = WechatUrl
       this.$router.push({
-        name: 'bindwechat'
+        name: 'bindWechat'
       })
     },
     // 查看商品详情弹窗

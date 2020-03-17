@@ -143,7 +143,7 @@ export default {
     // 立即查看公众号
     onConfirm () {
       this.$router.push({
-        name: 'bindwechat'
+        name: 'bindWechat'
       })
     },
     // 关闭公众号关注提示弹窗
