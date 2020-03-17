@@ -169,10 +169,13 @@ export default {
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
+    if (localStorage.getItem('closeWechatTip')) return
     new Promise(resolve => {
       resolve(isFollowWechat())
     }).then(resolve => {
-      if (!isWechat && !resolve) this.isFollow = false
+      if (!isWechat && !resolve) {
+        this.isFollow = false
+      }
     })
   },
   methods: {
@@ -185,6 +188,7 @@ export default {
     },
     closeWechat () {
       this.isFollow = true
+      localStorage.setItem('closeWechatTip', true)
     },
     // 查看商品详情弹窗
     viewProduct (val) {
