@@ -17,7 +17,7 @@ export default {
         let {code, data, message} = _get(res, 'data', {})
         if(code == 200) {
           localStorage.setItem('ACCESS_TOKEN', data.accessToken)
-          this.$router.push({
+          this.$router.replace({
             name:'BlindBox'
           })
         }else {

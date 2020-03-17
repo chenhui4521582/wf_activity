@@ -24,7 +24,7 @@
     </template>
     <template v-if="step == 2">
       <div class="wechat-title">公众号：幸运盲盒</div>
-      <div class="wechat-title1">长按保存二维码在微信中打开即可关注</div>
+      <div class="wechat-title1">长按或截图保存二维码在微信中打开关注</div>
       <div class="wechat-img">
         <img src="./img/wechat-img.jpg" alt="">
       </div>
