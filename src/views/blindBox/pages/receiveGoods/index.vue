@@ -79,7 +79,7 @@ import { InventoryList, PostInfo } from '../../apis/user'
 import { Receiver, PayPoint } from '../../apis/box'
 import { Pay, isFirst } from '../../utils/index'
 import FollowDialog from './components/follow-dialog'
-import { isWechat } from '../../global'
+import { isWechat, isFollowWechat } from '../../global'
 
 export default {
   data () {
@@ -181,18 +181,22 @@ export default {
         message: '领取成功',
         duration: 1000
       })
-      if (!isWechat && isFirst('followWechat')) {
-        this.showFollow = true
-        return
-      }
-      setTimeout(() => {
-        this.$router.push({
-          name: 'MyPrize',
-          query: {
-            active: 1
-          }
-        })
-      }, 2000)
+      new Promise(resolve => {
+        resolve(isFollowWechat())
+      }).then(resolve => {
+        if (!isWechat && !resolve && isFirst('followWechat')) {
+          this.showFollow = true
+        } else {
+          setTimeout(() => {
+            this.$router.push({
+              name: 'MyPrize',
+              query: {
+                active: 1
+              }
+            })
+          }, 2000)
+        }
+      })
     }
   },
   components: {
