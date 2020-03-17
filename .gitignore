@@ -9,6 +9,7 @@ test/e2e/reports
 selenium-debug.log
 .localConfig.js
 .history
+.cache
 
 # Editor directories and files
 .idea
