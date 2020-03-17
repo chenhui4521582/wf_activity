@@ -69,7 +69,7 @@ export default {
   padding-top: 0.3rem;
   box-sizing: border-box;
   overflow: hidden;
-  padding-bottom: 3.45rem;
+  padding-bottom: 3.2rem;
   box-sizing: border-box;
   .back {
     width: 0.16rem;

@@ -151,7 +151,6 @@
 /* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
-import MButton from '../../../components/MButton';
 import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
@@ -163,7 +162,6 @@ import { List } from '../../../apis/coupon'
 export default {
   name: '',
   components: {
-    MButton,
     Dialog,
     BoxInfo,
     TipDialog,

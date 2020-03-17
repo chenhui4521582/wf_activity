@@ -73,7 +73,6 @@
 /* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
-import MButton from '../../../components/MButton';
 import {Pay} from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
@@ -84,7 +83,6 @@ import VirtualDialog from '../../../components/virtual-dialog'
 export default {
   name: '',
   components: {
-    MButton,
     Dialog,
     BoxInfo,
     TipDialog,
