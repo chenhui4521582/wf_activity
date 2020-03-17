@@ -1,5 +1,5 @@
 <template>
-  <section :style="{height:topfive.length>0&&currentindex==='second'?'14.9rem':''}">
+  <section :style="{height:topfive.length&&currentindex==='second'?'14.9rem':''}">
     <div class="big-bg">
       <!-- 气泡 -->
       <div class="bubble" v-if="currentindex==='index'&&rankListInfo.popup===true">
@@ -14,11 +14,11 @@
         <div class="guide" @click="guide"></div>
         <div class="countdown-container">
           <div>
-            <div v-if="activityInfo.countdown>0" class="countdowntime">
+            <div class="countdowntime">
               距离今日榜单结束仅剩&nbsp;
-              <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp; 
+              <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp;
               <div v-if="countTime.length">{{countTime.slice(2,3)}}</div>&nbsp;
-              <div v-if="countTime.length" class="block-bg">{{countTime.slice(3,5)}}</div>&nbsp; 
+              <div v-if="countTime.length" class="block-bg">{{countTime.slice(3,5)}}</div>&nbsp;
               <div v-if="countTime.length">{{countTime.slice(5,6)}}</div>&nbsp;
               <div v-if="countTime.length" class="block-bg">{{countTime.slice(6,8)}}</div>&nbsp;
               <div v-if="countTime.length">{{countTime.slice(8,9)}}</div>
@@ -45,6 +45,9 @@
       <!-- 首页内容 -->
       <template v-if="currentindex==='index'">
         <main class=".main">
+          <div class="gotop" v-show="gotop" @click="toTop">
+            <img src="./images/gotop.png" alt />
+          </div>
           <p class="toponeprize">第一名最高赢800元京东卡</p>
           <div class="rankrecord" @click="rankrecord"></div>
           <div class="coinrecord" @click="gocoinrecord"></div>
@@ -76,77 +79,83 @@
                   <span>&nbsp;{{item.coinNum}}</span>
                 </div>
                 <div class="prize-name" :class="index==1?'prize-name-numone':''">
-                 
-                  <p v-if="item.awardsName"><span class="dollar">¥</span>{{item.awardsName.split('元')[0]}}</p>
+                  <p v-if="item.awardsName">
+                    <span class="dollar">¥</span>
+                    {{item.awardsName.split('元')[0]}}
+                  </p>
                   <p v-if="item.awardsName">{{item.awardsName.split('元')[1]}}</p>
 
-                     <!-- <p><span class="dollar">¥</span>300</p>
-                  <p >话费券</p> -->
+                  <!-- <p><span class="dollar">¥</span>300</p>
+                  <p >话费券</p>-->
                 </div>
               </div>
             </template>
           </div>
           <!-- 排行榜列表 -->
-          <article>
-            <div class="ranklist-top">
-              <ul>
-                <li>
-                  <span class="top-one-row">我的排名</span>
-                  <span
-                    v-if="rankListInfo.onList===true"
-                    class="top-two-row"
-                  >{{rankListInfo.myRank}}</span>
-                  <span v-if="rankListInfo.onList===false" class="top-two-row">暂未上榜</span>
-                </li>
-                <li>
-                  <span class="top-one-row">今日累计金币</span>
-                  <span class="top-two-row">{{rankListInfo.coinNum}}</span>
-                </li>
-                <!-- 获取金币 -->
-                <li>
-                  <img
-                    v-if="activityInfo.state===1"
-                    @click="goshop"
-                    src="./images/gaincoin.png"
-                    alt
-                  />
-                  <img
-                    v-if="activityInfo.state===2"
-                    @click="activityend"
-                    src="./images/gaincoin-end.png"
-                    alt
-                  />
-                </li>
-              </ul>
-            </div>
-            <ul class="ranklist-inner">
-              <li>
-                <div class="ranklist-title">排名</div>
-                <div class="ranklist-title">玩家昵称</div>
-                <div class="ranklist-title">金币数/更新时间</div>
-                <div class="ranklist-title">当前奖励</div>
-              </li>
-              <div class="ranklist-scroll">
-                <template v-if="rankList.length>3">
-                  <li v-for="(item,index) in fourStartList" :key="index" class="rank-list">
-                    <div
-                      class="order"
-                      :style="{backgroundColor:index>=3?'transparent':'',color:index>=3?'#FFF7B7':'',fontSize:index>=3?'0.24rem':''}"
-                    >{{item.rank}}</div>
-                    <div class="nickname">{{item.nickname}}</div>
-                    <div class="coin-time">
-                      <span>{{item.coinNum}}</span>
-                      <span>{{item.updateTime}}</span>
-                    </div>
-                    <div class="userAwards-name">{{item.awardsName}}</div>
-                  </li>
-                </template>
-                <template v-if="rankList.length===0">
-                  <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
-                </template>
+          <div class="scroll-infinite">
+            <article>
+              <div class="header">
+                <div class="ranklist-top">
+                  <ul>
+                    <li>
+                      <span class="top-one-row">我的排名</span>
+                      <span
+                        v-if="rankListInfo.onList===true"
+                        class="top-two-row"
+                      >{{rankListInfo.myRank}}</span>
+                      <span v-if="rankListInfo.onList===false" class="top-two-row">暂未上榜</span>
+                    </li>
+                    <li>
+                      <span class="top-one-row">今日累计金币</span>
+                      <span class="top-two-row">{{rankListInfo.coinNum}}</span>
+                    </li>
+                    <!-- 获取金币 -->
+                    <li>
+                      <img
+                        v-if="activityInfo.state===1"
+                        @click="goshop"
+                        src="./images/gaincoin.png"
+                        alt
+                      />
+                      <img
+                        v-if="activityInfo.state===2"
+                        @click="activityend"
+                        src="./images/gaincoin-end.png"
+                        alt
+                      />
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </ul>
-          </article>
+              <ul class="ranklist-inner" :style="{height:rankList.length<8?'5rem':''}">
+                <li>
+                  <div class="ranklist-title">排名</div>
+                  <div class="ranklist-title">玩家昵称</div>
+                  <div class="ranklist-title">金币数/更新时间</div>
+                  <div class="ranklist-title">当前奖励</div>
+                </li>
+                <div class="ranklist-scroll">
+                  <template v-if="rankList.length>3">
+                    <li v-for="(item,index) in fourStartList" :key="index" class="rank-list">
+                      <div
+                        class="order"
+                        :style="{backgroundColor:index>=3?'transparent':'',color:index>=3?'#FFF7B7':'',fontSize:index>=3?'0.24rem':''}"
+                      >{{item.rank}}</div>
+                      <div class="nickname">{{item.nickname}}</div>
+                      <div class="coin-time">
+                        <span>{{item.coinNum}}</span>
+                        <span>{{item.updateTime}}</span>
+                      </div>
+                      <div class="userAwards-name">{{item.awardsName}}</div>
+                    </li>
+                  </template>
+                  <template v-if="rankList.length===0">
+                    <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
+                  </template>
+                </div>
+              </ul>
+            </article>
+          </div>
         </main>
       </template>
       <!-- 副页 -->
@@ -155,7 +164,7 @@
           <div class="pink-bg">
             <p class="second-tips">
               · 3月30日-4月3日最终
-              <span>计金币最多的5位玩家</span>累获终极大奖;
+              <span>累计金币最多的5位玩家</span>获终极大奖;
             </p>
             <p class="second-tips">· 4月4日系统自动发放终极奖励。</p>
           </div>
@@ -205,6 +214,13 @@
       :topfive="topfive"
       :activityInfo="activityInfo"
       :coinrecord="coinrecord"
+      :notop="notop"
+      :ontop="ontop"
+      :addcoin="addcoin"
+      :pass="pass"
+      :supertop="supertop"
+      :endlist="endlist"
+      @close-index="closeindex"
     ></comPop>
   </section>
 </template>
@@ -218,7 +234,8 @@ import {
   totalranklist,
   activityinfo,
   coinrecord,
-  prerankinfo,test
+  prerankinfo,
+  test
 } from "./services/api";
 import comPop from "./component/comPop";
 import utils from "../../common/js/utils.js";
@@ -227,19 +244,17 @@ import { activityInfo } from "../treasurehunt/services/api";
 export default {
   data() {
     return {
+      gotop: false,
       // 倒计时
       countTime: "",
       popType: 0, //1规则 2攻略 3金币记录 4往期榜单 5太棒了（恭喜您获得100个金币）6继续加油（昨日获得金币，暂未上榜哦~）7恭喜您 （昨日富翁榜上榜获得奖品）8恭喜您（终极土豪榜上榜，获得奖品） 9哎呀（富翁榜被反超）
       currentindex: "index",
       defaultIndex: 30,
       defaultImg: "/cdn/common/images/common/img_photo.png",
-      rankList: [
-      ],
+      rankList: [],
       RANKLIST: {},
       //副页前5排行榜
-      topfive: [
-     
-      ],
+      topfive: [],
       countTime: "",
       // 活动信息
       activityInfo: {},
@@ -254,8 +269,20 @@ export default {
       // 每日排行榜列表信息
       rankListInfo: {},
       // 总排行榜信息
-      totalranklist: {}
-      //
+      totalranklist: {},
+      //未上榜
+      notop: {},
+      // 上榜
+      ontop: {},
+      // 金币新增
+      addcoin: {},
+      // 排名反超
+      pass: {},
+      // 终极土豪榜上榜
+      supertop: {},
+      continume: false,
+      change: 0,
+      endlist: 0
     };
   },
   created() {
@@ -264,16 +291,111 @@ export default {
       source_address: GLOBALS.getUrlParam("from") || ""
     });
   },
-   mounted() {
+  mounted() {
     this.getRankList();
     this.getTotalRankList();
-    this.getActivityIngo();
+    this.getActivityInfo();
     this.getCoinRecord();
     // this.getTest();
     // this.getPreRankInfo();
     // console.log();
+    window.addEventListener("scroll", this.handleScroll, true);
+  },
+  watch: {
+    change(val) {
+      console.log("this.change", this.change);
+
+      // this.getsecondlist()
+      this.getActivityInfo();
+    }
+  },
+  computed: {
+    topThreeList() {
+      let arr = this.rankList.filter((currentValue, index, arr) => {
+        return index < 3;
+      });
+      if (arr.length < 3) {
+        let emptyArr = [];
+        for (let i = 0; i < 3 - arr.length; i++) {
+          emptyArr.push({});
+        }
+        arr = [...arr, ...emptyArr];
+      }
+      let second = arr.splice(1, 1);
+      arr.unshift(...second);
+      return arr;
+    },
+    fourStartList() {
+      let arr = this.rankList.filter((currentValue, index, arr) => {
+        return index > 2 && index < this.defaultIndex;
+      });
+      return arr;
+    }
   },
   methods: {
+    getsecondlist() {
+      if (this.activityInfo.popupList[1].propType === 1) {
+        // 未上榜
+        this.notop = this.activityInfo.popupList[1];
+        this.popType = 6;
+        GLOBALS.marchSetsPoint("A_H5PT0263003102");
+      } else if (this.activityInfo.popupList[1].propType === 0) {
+        // 上榜
+        this.ontop = this.activityInfo.popupList[1];
+        // this.popType = 7;
+        GLOBALS.marchSetsPoint("A_H5PT0263003101");
+      } else if (this.activityInfo.popupList[1].propType === 2) {
+        // 金币新增
+        this.addcoin = this.activityInfo.popupList[1];
+        this.popType = 5;
+
+        GLOBALS.marchSetsPoint("A_H5PT0263003099");
+      } else if (this.activityInfo.popupList[1].propType === 3) {
+        // 排名反超
+        this.pass = this.activityInfo.popupList[1];
+        this.popType = 9;
+
+        GLOBALS.marchSetsPoint("A_H5PT0263003100");
+      } else if (this.activityInfo.popupList[1].propType === 4) {
+        // 终极土豪榜上榜
+        this.supertop = this.activityInfo.popupList[1];
+        this.popType = 8;
+        GLOBALS.marchSetsPoint("A_H5PT0263003103");
+      }
+    },
+    closeindex(e) {
+      this.change = e;
+    },
+    //    stopScroll(){
+    //     var mo=function(e){e.preventDefault();};
+    //     document.body.style.overflow='hidden';
+    //     document.addEventListener("touchmove",mo,false);
+    //    },
+
+    // canScroll(){
+    //     var mo=function(e){e.preventDefault();};
+    //     document.body.style.overflow='';//出现滚动条
+    //     document.removeEventListener("touchmove",mo,false);
+    // },
+    //禁止页面滑动
+      handleScroll() {
+       let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+      scrolltop > 30 ? (this.gotop = true) : (this.gotop = false);
+    },
+    toTop() {
+      console.log("gotop");
+
+      let top = document.documentElement.scrollTop || document.body.scrollTop;
+      // 实现滚动效果
+
+      const timeTop = setInterval(() => {
+        document.body.scrollTop = document.documentElement.scrollTop = top -= 50;
+
+        if (top <= 0) {
+          clearInterval(timeTop);
+        }
+      }, 10);
+    },
     // 返回首页
     back() {
       window.location.href = `https://wap.beeplaying.com/xmWap/`;
@@ -282,6 +404,7 @@ export default {
     // 规则
     rule() {
       this.popType = 1;
+      // this.stopScroll()
       GLOBALS.marchSetsPoint("A_H5PT0263003094");
     },
     // 攻略
@@ -327,49 +450,143 @@ export default {
       // this.userAwards = _get(res, "data", []);
     },
     // 活动信息
-    async getActivityIngo() {
+    // getcontinume(e){
+    //   this.continume=e
+    // },
+
+    async getActivityInfo() {
       const res = await activityinfo();
       this.activityInfo = _get(res, "data", {});
-
+      // if (this.activityInfo.popupList.length === 3) {
+      //   this.endlist = 2;
+      // }
       // 判断是否首次进入
       if (this.activityInfo.first === true) {
         this.popType = 2;
       }
       // 判断弹窗类型
-      if (this.activityInfo.popup === true) {
-        // 每日上榜结果
-        if (this.activityInfo.propType === 1) {
-          // 未上榜
-          this.popType = 6;
-          GLOBALS.marchSetsPoint("A_H5PT0263003102");
-        } else if (this.activityInfo.propType === 0) {
-          // 上榜
-          this.popType = 7;
-          GLOBALS.marchSetsPoint("A_H5PT0263003101");
-        } else if (this.activityInfo.propType === 2) {
-          // 金币新增
-          this.popType = 5;
-          GLOBALS.marchSetsPoint("A_H5PT0263003099");
-        } else if (this.activityInfo.propType === 3) {
-          // 排名反超
-          this.popType = 9;
-          GLOBALS.marchSetsPoint("A_H5PT0263003100");
-        } else if (this.activityInfo.propType === 4) {
-          // 终极土豪榜上榜
-          this.popType = 8;
-          GLOBALS.marchSetsPoint("A_H5PT0263003103");
+      if (this.change !== 1 && this.change !== 2) {
+        // 第一次
+        if (this.activityInfo.popupList.length) {
+          if (this.activityInfo.popupList[0].propType === 1) {
+            // 未上榜
+            this.notop = this.activityInfo.popupList[0];
+            this.popType = 6;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003102");
+          } else if (this.activityInfo.popupList[0].propType === 0) {
+            // 上榜
+            this.ontop = this.activityInfo.popupList[0];
+            // this.popType = 7;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003101");
+          } else if (this.activityInfo.popupList[0].propType === 2) {
+            // 金币新增
+            this.addcoin = this.activityInfo.popupList[0];
+            this.popType = 5;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003099");
+          } else if (this.activityInfo.popupList[0].propType === 3) {
+            // 排名反超
+            this.pass = this.activityInfo.popupList[0];
+            this.popType = 9;
+            // this.endlist = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003100");
+          } else if (this.activityInfo.popupList[0].propType === 4) {
+            // 终极土豪榜上榜
+            this.supertop = this.activityInfo.popupList[0];
+            this.popType = 8;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003103");
+          }
+          //
+
+          // console.log("倒计时", this.countTime);
         }
+        // 第二次
+      } else {
+        if (this.change === 1) {
+          console.log("change1", this.change);
+          if (this.activityInfo.popupList[1].propType === 1) {
+            // 未上榜
+            this.notop = this.activityInfo.popupList[1];
+            this.popType = 6;
+            // this.index = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003102");
+          } else if (this.activityInfo.popupList[1].propType === 0) {
+            // 上榜
+            this.ontop = this.activityInfo.popupList[1];
+            this.popType = 7;
+            // this.index = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003101");
+          } else if (this.activityInfo.popupList[1].propType === 2) {
+            // 金币新增
+            this.addcoin = this.activityInfo.popupList[1];
+            this.popType = 5;
+            // this.index = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003099");
+          } else if (this.activityInfo.popupList[1].propType === 3) {
+            // 排名反超
+            this.pass = this.activityInfo.popupList[1];
+            this.popType = 9;
+            // this.index = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003100");
+          } else if (this.activityInfo.popupList[1].propType === 4) {
+            // 终极土豪榜上榜
+            this.supertop = this.activityInfo.popupList[1];
+            this.popType = 8;
+            // this.index = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003103");
+          }
+        } 
+           if (this.change === 2) {
+            console.log("change2", this.change);
+            if (this.activityInfo.popupList[2].propType === 1) {
+              // this.endlist = 0;
+              // 未上榜
+              this.notop = this.activityInfo.popupList[2];
+              this.popType = 6;
+              this.change=0
+              GLOBALS.marchSetsPoint("A_H5PT0263003102");
+            } else if (this.activityInfo.popupList[2].propType === 0) {
+              // 上榜
+              // this.endlist = 0;
+              this.ontop = this.activityInfo.popupList[2];
+              this.popType = 7;
+              GLOBALS.marchSetsPoint("A_H5PT0263003101");
+            } else if (this.activityInfo.popupList[2].propType === 2) {
+              // 金币新增
+              this.addcoin = this.activityInfo.popupList[2];
+              this.popType = 5;
+              // this.endlist = 0;
+              GLOBALS.marchSetsPoint("A_H5PT0263003099");
+            } else if (this.activityInfo.popupList[2].propType === 3) {
+              // 排名反超
+              this.pass = this.activityInfo.popupList[2];
+              this.popType = 9;
+              // this.endlist = 0;
+              GLOBALS.marchSetsPoint("A_H5PT0263003100");
+            } else if (this.activityInfo.popupList[2].propType === 4) {
+              // 终极土豪榜上榜
+              // this.endlist = 0;
+              this.supertop = this.activityInfo.popupList[2];
+              this.popType = 8;
+              GLOBALS.marchSetsPoint("A_H5PT0263003103");
+            }
+          }
+        
       }
+
       this.countDown(this.activityInfo.countdown);
-      console.log("倒计时", this.countTime);
     },
+
     // 金币获取记录
     async getCoinRecord() {
       const res = await coinrecord();
       this.coinrecord = _get(res, "data", {});
     },
     // 测试
-        async getTest() {
+    async getTest() {
       const res = await test();
       // this.coinrecord = _get(res, "data", {});
     },
@@ -435,29 +652,6 @@ export default {
         let countSecond = second >= 10 ? second : "0" + second;
         self.countTime = `${countHour}时${countMinute}分${countSecond}秒`;
       }
-    }
-  },
-  computed: {
-    topThreeList() {
-      let arr = this.rankList.filter((currentValue, index, arr) => {
-        return index < 3;
-      });
-      if (arr.length < 3) {
-        let emptyArr = [];
-        for (let i = 0; i < 3 - arr.length; i++) {
-          emptyArr.push({});
-        }
-        arr = [...arr, ...emptyArr];
-      }
-      let second = arr.splice(1, 1);
-      arr.unshift(...second);
-      return arr;
-    },
-    fourStartList() {
-      let arr = this.rankList.filter((currentValue, index, arr) => {
-        return index > 2 && index < this.defaultIndex;
-      });
-      return arr;
     }
   },
 
@@ -612,18 +806,18 @@ section {
               margin: 0;
               // width:22px;
               // height:24px;
-              font-size: 0.32rem;
-              font-family: DIN Condensed;
+              font-size: 0.25rem;
+              // font-family: DIN Condensed;
               font-weight: bold;
               color: rgba(255, 35, 103, 1);
-              line-height: 0.4rem;
+              line-height: 0.35rem;
               display: block;
               // line-height:341px;
               // display: flex;
               // align-items: center;
               // display: flex;
-    // justify-content: space-between;
-    // align-items: center;
+              // justify-content: space-between;
+              // align-items: center;
             }
           }
         }
@@ -748,6 +942,21 @@ section {
       position: relative;
       animation: tab 1s linear;
       transition: all 1s;
+      .gotop {
+        //   background: url(./images/gotop.png) no-repeat;
+        // background-size: 100% 100%;
+        width: 0.45rem;
+        height: 0.45rem;
+        position: fixed;
+        right: 0.3rem;
+        bottom: 2rem;
+        display: flex;
+        z-index: 2;
+        img {
+          width: 0.45rem;
+          height: 0.45rem;
+        }
+      }
       &.main {
         animation: tab 1s linear;
         // transition: all 1s;
@@ -853,7 +1062,7 @@ section {
             transform: translateX(-50%);
             &.num-one {
               position: absolute;
-              top: 1.81rem;
+              top: 1.82rem;
               left: 50%;
               transform: translateX(-50%);
             }
@@ -861,16 +1070,17 @@ section {
             }
             &.num-three {
               position: absolute;
-              top: 1.73rem;
+              top: 1.72rem;
               left: 50%;
               transform: translateX(-50%);
             }
             img {
               width: 0.3rem;
               height: 0.3rem;
+              margin-left: 0.2rem;
             }
             span {
-              text-align: center;
+              // text-align: center;
               width: 0.8rem;
               overflow: hidden;
               white-space: nowrap;
@@ -895,8 +1105,7 @@ section {
             align-items: center;
             &.prize-name-numone {
               top: 2.26rem;
-             
-            } 
+            }
             p:first-child {
               //       width:54px;
               // height:30px;
@@ -904,14 +1113,14 @@ section {
               font-family: Impact;
               font-weight: 400;
               color: rgba(255, 255, 255, 1);
-              .dollar{
+              .dollar {
                 // position: absolute;
-                width:0.13rem;
-height:0.16rem;
-font-size:0.21rem;
-font-family:PingFang SC;
-font-weight:800;
-color:rgba(255,255,255,1);
+                width: 0.13rem;
+                height: 0.16rem;
+                font-size: 0.21rem;
+                font-family: PingFang SC;
+                font-weight: 800;
+                color: rgba(255, 255, 255, 1);
               }
             }
             p:last-child {
@@ -926,13 +1135,24 @@ color:rgba(255,255,255,1);
         }
       }
       // 排行榜列表
+      .scroll-infinite {
+        background-color: #1c044f;
+        position: relative;
+      }
       article {
-        background: url(./images/ranklist-bg.png) no-repeat;
-        background-size: 100% 100%;
-        width: 6.8rem;
-        height: 5.45rem;
+        // background: url(./images/header.png) no-repeat;
+        // background-size: 100% 100%;
+        // width: 6.8rem;
+        // height: 5.45rem;
         margin: 0.2rem auto 0;
         overflow: hidden;
+      }
+      .header {
+        background: url(./images/header.png) no-repeat;
+        background-size: 100% 100%;
+        width: 6.8rem;
+        overflow: hidden;
+        margin: 0 auto;
       }
       .ranklist-top {
         background: url(./images/ranklist-top.png) no-repeat;
@@ -974,11 +1194,20 @@ color:rgba(255,255,255,1);
         }
       }
       .ranklist-inner {
-        height: 2.2rem;
+        // height: 2.2rem;
         margin-top: 0.11rem;
+        background: url(./images/middle.png) no-repeat;
+        background-size: 100% 100%;
+        width: 6.8rem;
+        // height: 0.7rem;
+        margin: 0 auto;
+
         li {
           display: flex;
           justify-content: space-evenly;
+          &:first-child {
+            padding-top: 0.1rem;
+          }
         }
         .ranklist-title {
           font-size: 0.2rem;
@@ -989,9 +1218,9 @@ color:rgba(255,255,255,1);
         .ranklist-scroll {
           margin-top: 0.15rem;
           margin-top: 0.1rem;
-          overflow: hidden;
-          overflow-y: scroll;
-          height: 3.1rem;
+          // overflow: hidden;
+          // overflow-y: scroll;
+          // height: 3.1rem;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -1003,6 +1232,9 @@ color:rgba(255,255,255,1);
             border-bottom: 1px solid #745b7b;
             width: 5.75rem;
             justify-content: space-between;
+            &:last-child {
+              margin-bottom: 1rem;
+            }
             & div {
               text-align: center;
               overflow: hidden;
@@ -1209,8 +1441,9 @@ color:rgba(255,255,255,1);
         font-family: PingFang SC;
         font-weight: 500;
         color: rgba(255, 247, 183, 1);
-        position: absolute;
-        top: 40%;
+        // position: absolute;
+        // top: 40%;
+        margin-top: 0.5rem;
       }
       .secondnotlist-tips {
         font-size: 0.36rem;
