@@ -447,6 +447,7 @@ export default {
     justify-content: space-around;
     img {
       width: 2.05rem;
+      height: 0.76rem;
     }
     .button {
       width: 2.11rem;
