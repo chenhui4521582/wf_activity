@@ -1,6 +1,6 @@
 <template>
-  <div class="share" ref="share">
-    <div class="closed"></div>
+  <div class="share" ref="share" v-if="show" @click="goWechat">
+    <div class="closed" @click="hide"></div>
     <div class="icon">
       <img src="./img/watch-icon.png" alt="">
     </div>
@@ -12,16 +12,30 @@
 </template>
 <script>
 import Velocity from 'velocity-animate'
+import {UserInfo} from '../../apis/user'
+import _get from 'lodash.get'
 export default {
   name: 'share',
   data: () => ({
     open: false,
-    show: true
+    show: false,
+    binding: false
   }),
   methods: {
+    goWechat() {
+      this.$router.push({
+        name: 'bindWechat'
+      })
+    },
+    hide() {
+      this.show = false
+      localStorage.setItem('wechatEntry', true)
+    },
     animation () {
+      let wechatAnimation = localStorage.getItem('wechatAnimation')
       let shareEle = this.$refs.share
       let textEle = this.$refs.text
+      if((!shareEle && !textEle) || wechatAnimation) return
       Velocity(shareEle,{
         right: 0
       },{
@@ -44,13 +58,31 @@ export default {
             shareEle.style=""
             textEle.style=""
             textEle.classList.remove('active')
+            localStorage.setItem('wechatAnimation', true)
           }, 4000)
+        }
+      })
+    },
+    init() {
+      let wechatEntry = localStorage.getItem('wechatEntry')
+      UserInfo().then(res=> {
+        let {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          let binding = _get(res, 'data.data.binding', false)
+          let wechatEntry = localStorage.getItem('wechatEntry')
+          let channel = localStorage.getItem('APP_CHANNEL')
+          if(!binding && !wechatEntry && channel != '110005001') {
+            this.show = true
+            this.$nextTick(res=> {
+              this.animation()
+            })
+          }
         }
       })
     }
   },
   mounted() {
-    this.animation()
+    this.init()
   }
 }
 </script>
@@ -97,12 +129,12 @@ export default {
   }
   .closed {
     position: absolute;
-    width: .18rem;
-    height: .18rem;
+    width: .3rem;
+    height: .3rem;
     right: 0;
-    top: -.2rem;
+    top: -.4rem;
     background: url(./img/closed.png) no-repeat center center;
-    background-size: 100% 100%;
+    background-size: .29rem .29rem;
   }
 }
 </style>

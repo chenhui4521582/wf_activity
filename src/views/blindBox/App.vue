@@ -16,8 +16,16 @@ export default {
   methods: {
 
   },
-  mounted () {
+  async mounted () {
 
+  },
+  watch: {
+    $route (to, from) {
+      /* 路由发生变化修改页面title */
+      if (to.meta.title) {
+        document.title = to.meta.title
+      }
+    }
   }
 }
 </script>

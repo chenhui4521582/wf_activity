@@ -135,13 +135,13 @@ export default {
     }
   },
   async mounted () {
-    const data = await FirstLoad()
-    GLOBALS.marchSetsPoint('P_H5PT0225', {
-      source_address: GLOBALS.getUrlParam('from') || null
-    }) // H5平台-盲盒页面加载完成
-    if (data.data.data) {
-      this.guideTest()
-    }
+    // const data = await FirstLoad()
+    // GLOBALS.marchSetsPoint('P_H5PT0225', {
+    //   source_address: GLOBALS.getUrlParam('from') || null
+    // }) // H5平台-盲盒页面加载完成
+    // if (data.data.data) {
+    //   this.guideTest()
+    // }
   },
   beforeDestroy () {
     this.removeToucheListener()

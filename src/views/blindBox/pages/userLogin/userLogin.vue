@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import {getRequestToken, sendCode, getAccessToken} from '../../apis/bindPhone'
+import {sendCode, getAccessToken, bindWechat, getWechatConfig} from '../../apis/bindPhone'
 import navBar from '../../components/navBar/'
 import _get from 'lodash.get'
 export default {
@@ -84,7 +84,7 @@ export default {
       }, 1000)
     },
     /** 获取token **/
-    _getAccessToken(requestToken) {
+    _getAccessToken(requestToken, isBind) {
       getAccessToken({
         token: requestToken,
         type: 1
@@ -92,13 +92,25 @@ export default {
         let {code, data, message} = _get(res, 'data', {})
         if(code == 200) {
           localStorage.setItem('ACCESS_TOKEN', data.accessToken)
-          this.$toast.show({message: '登录成功',duration: 2000},()=> {
-            this.$router.push({
-              name: 'BlindBox'
-            })
-          })
+          this._getWechatConfig(data.accessToken, isBind)
         }else {
-          this.$Toast.show({message})
+          this.$toast.show({message})
+        }
+      })
+    },
+    /** 获取微信配置文件 **/
+    _getWechatConfig(accessToken, isBind) {
+      getWechatConfig({
+        value: encodeURIComponent(window.location.host)
+      }).then(res=> {
+        let {code, message} = _get(res, 'data')
+        if(code == 200) {
+          let auth = _get(res, 'data.data.auth', '')
+          if(auth) {
+            location.href = `${auth}default?accessToken=${accessToken}&act=bind`
+          }else {
+            this.$toast.show({message})
+          }
         }
       })
     },
@@ -112,14 +124,16 @@ export default {
         this.$toast.show({message: '请输入验证码'})
         return false
       }
-      getRequestToken({
-        smsCode: this.code,
+      bindWechat({
         username: this.mobile,
-        visitorToken: ""
+        smsCode: this.code,
+        type: "4"
       }).then(res=> {
         let {code, data, message} = _get(res, 'data', {})
         if(code === 200) {
-          this._getAccessToken(data)
+          let requestToken = _get(res, 'data.data.requestToken', '')
+          let isBinding = _get(res, 'data.data.isBinding', false)
+          this._getAccessToken(requestToken, isBinding);
         }else {
           this.$toast.show({message})
         }
@@ -157,6 +171,7 @@ export default {
       height: .64rem;
       color: #CCCCCC;
       font-size: .3rem;
+      background: none;
     }
     .send-code {
       flex-shrink: 0;

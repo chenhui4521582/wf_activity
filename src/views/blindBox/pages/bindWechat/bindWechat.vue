@@ -1,6 +1,6 @@
 <template>
   <div class="code-login">
-    <nav-bar title="关注公众号"/>
+    <nav-bar title="关注公众号" @back="goBack"/>
     <!-- 步骤 -->
     <step :bindPhone="bindPhone"/>
     <!-- 绑定手机号 -->
@@ -21,7 +21,6 @@
       </div>
       <div v-if="isSubmit" class="code-submit" @click="codeSubmit">立即绑定</div>
       <div v-else class="code-submit disable" @click="codeSubmit">立即绑定</div>
-
     </template>
     <template v-if="step == 2">
       <div class="wechat-title">公众号：幸运盲盒</div>
@@ -62,10 +61,11 @@
         </div>
       </div>
     </div>
+    <button @click="clear">清除</button>
   </div>
 </template>
 <script>
-import {bindPhone, sendCode, getUserBind} from '../../apis/bindPhone'
+import {bindPhone, getSendCode, getUserBind} from '../../apis/bindPhone'
 import navBar from '../../components/navBar/'
 import step from './components/step'
 import _get from 'lodash.get'
@@ -85,7 +85,7 @@ export default {
     },
     step() {
       if(this.bindPhone) {
-        return 1
+        return 2
       }
       return 1
     }
@@ -95,6 +95,13 @@ export default {
     step
   },
   methods: {
+    clear() {
+      localStorage.removeItem('wechatAnimation')
+      localStorage.removeItem('wechatEntry')
+    },
+    goBack() {
+      this.$router.go(-1)
+    },
     onCopy() {
       this.$toast.show({message: '复制成功'})
     },
@@ -114,9 +121,8 @@ export default {
         this.$toast.show({message: '手机号码有误'})
         return false
       }
-      sendCode({
-        receiveRange: 1,
-        username: this.mobile
+      getSendCode({
+        phone: this.mobile
       }).then(res => {
         let {code, data, message} = _get(res, 'data', {})
         if(code === 200) {
@@ -157,7 +163,9 @@ export default {
       }).then(res=> {
         let {code, data, message} = _get(res, 'data', {})
         if(code === 200) {
-          this._getAccessToken(data)
+          this.$toast.show({message: '绑定成功'}, () => {
+            this.bindPhone = this.mobile
+          })
         }else {
           this.$toast.show({message})
         }
@@ -180,6 +188,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .code-login {
+  padding-bottom: .5rem;
   .logo {
     margin: 1.13rem auto .6rem;
     width: 1.5rem;
@@ -207,6 +216,7 @@ export default {
       height: .64rem;
       color: #CCCCCC;
       font-size: .3rem;
+      background: none;
     }
     .send-code {
       flex-shrink: 0;
@@ -279,7 +289,6 @@ export default {
         text-align: center;
         color: #999999;
         font-size: .24rem;
-        background: #fff;
       }
       .line {
         position: absolute;
@@ -318,7 +327,7 @@ export default {
   }
   .wechat-title1 {
     padding: 0 0 .36rem;
-    font-size: .36rem;
+    font-size: .24rem;
     color: #D1AC42;
     text-align: center;
   }

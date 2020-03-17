@@ -126,6 +126,14 @@ const routes = [
         meta: {
           title: '关注公众号'
         }
+      },
+      {
+        path: '/loading',
+        name: 'loading',
+        component: () => import('../pages/loading/loading'),
+        meta: {
+          title: ''
+        }
       }
     ]
   }
