@@ -17,6 +17,45 @@ export const activityinfo = async () => {
     //         "endDate": "3月18日",
     //         "releaseDate": "3月19日",
     //         "batchId": "20200315",
+    //         "countdown": 42365000,
+    //         "popupList": [
+    //             {
+    //                 "awardsNum": 12,
+    //                 "awardsType": "jdk",
+    //                 "propAwardsName": "100元京东券",
+    //                 "propType": 1
+    //               },
+    //               {
+    //                 "awardsNum": 15,
+    //                 "awardsType": "jdk",
+    //                 "propAwardsName": "120元京东券",
+    //                 "propType": 0
+    //               },
+    //               {
+    //                 "awardsNum": 5,
+    //                 "awardsType": "hfq",
+    //                 "propAwardsName": "120元京东券",
+    //                 "propType": 4
+    //               }
+    //             //   {
+    //             //     "awardsNum": 12,
+    //             //     "awardsType": "jdk",
+    //             //     "propAwardsName": "100元京东券",
+    //             //     "propType": 0
+    //             //   },
+    //         ],
+    //         "state": 1,
+    //         "first": false
+    //     },
+    //     "message": null
+    // }
+    // {
+    //     "code": 200,
+    //     "data": {
+    //         "beginDate": "3月15日",
+    //         "endDate": "3月18日",
+    //         "releaseDate": "3月19日",
+    //         "batchId": "20200315",
     //         "countdown": 26309000,
     //         "popup": false,
     //         "first": false,
@@ -27,7 +66,6 @@ export const activityinfo = async () => {
     //         "state": 1 //活动状态 0预热 1开始 2结束
     //     },
     //     "message": null
-
     // }
     return data
 }
@@ -41,13 +79,13 @@ export const coinrecord = async () => {
 
     //     "code": 200,
     //     "data": [
-    //         {
-    //         "date": "3-15 14:07",
-    //         "coinNum": 1000
-    //     }, {
-    //         "date": "3-15 14:10",
-    //         "coinNum": 200
-    //     }
+    //     //     {
+    //     //     "date": "3-15 14:07",
+    //     //     "coinNum": 1000
+    //     // }, {
+    //     //     "date": "3-15 14:10",
+    //     //     "coinNum": 200
+    //     // }
     // ],
     //     "message": null
 
@@ -76,122 +114,122 @@ export const prerankinfo = async () => {
     //                 "nickname": "这里是昵称",
     //                 "ranking": 2
     //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 3
-    //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 4
-    //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 5
-    //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 6
-    //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 7
-    //               },
-    //               {
-    //                 "awardsName": "800元京东券",
-    //                 "coinNum": 5550,
-    //                 "nickname": "这里是昵称",
-    //                 "ranking": 8
-    //               },
-    //             //   {
-    //             //     "awardsName": "800元京东券",
-    //             //     "coinNum": 5550,
-    //             //     "nickname": "这里是昵称",
-    //             //     "ranking": 9
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "800元京东券",
-    //             //     "coinNum": 5550,
-    //             //     "nickname": "这里是昵称",
-    //             //     "ranking": 10
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "800元京东券",
-    //             //     "coinNum": 5550,
-    //             //     "nickname": "这里是昵称",
-    //             //     "ranking": 11
-    //             //   },
-    //         ],
-    //         "rankingList": [
-    //             // {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "1-13",
-    //             //     "ranking": 1
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-21",
-    //             //     "ranking": 10
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "3-31",
-    //             //     "ranking": 30
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 1
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5000元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
-    //             //   {
-    //             //     "awardsName": "5元京东券",
-    //             //     "coinNum": 8,
-    //             //     "date": "2-31",
-    //             //     "ranking": 12
-    //             //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 3
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 4
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 5
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 6
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 7
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 8
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 9
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 10
+                //   },
+                //   {
+                //     "awardsName": "800元京东券",
+                //     "coinNum": 5550,
+                //     "nickname": "这里是昵称",
+                //     "ranking": 11
+                //   },
+            // ],
+            // "rankingList": [
+                // {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "1-13",
+                //     "ranking": 1
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-21",
+                //     "ranking": 10
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "3-31",
+                //     "ranking": 30
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 1
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
+                //   {
+                //     "awardsName": "5000元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
+                //   {
+                //     "awardsName": "5元京东券",
+                //     "coinNum": 8,
+                //     "date": "2-31",
+                //     "ranking": 12
+                //   },
 
     //         ]
     //     },
@@ -244,6 +282,287 @@ export const ranklist = async () => {
     //             "updateTime": "3-15 14:10",
     //             "level": 7
     //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+    //         , {
+    //             "rank": 3,
+    //             "userId": 10010782,
+    //             "nickname": "166****0003",
+    //             "coinNum": 1200,
+    //             "awardsName": "10元话费券",
+    //             "profilePhoto": null,
+    //             "updateTime": "3-15 14:10",
+    //             "level": 7
+    //         }
+
             
     //     ]
     //     },
