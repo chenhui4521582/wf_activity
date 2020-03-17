@@ -252,7 +252,7 @@ export default {
 .button-container {
   display: flex;
   padding: 0 0.25rem;
-  padding-top: 0.6rem;
+  padding-top: 0.9rem;
   position: relative;
   justify-content: space-around;
   widows: 100%;
