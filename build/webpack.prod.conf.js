@@ -8,6 +8,12 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -31,11 +37,20 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   },
+    //   sourceMap: true
+    // }),
+    new ParallelUglifyPlugin({
+      cacheDir: '.cache/',
+      uglifyJS:{
+        output: {
+          comments: false
+        },
         warnings: false
-      },
-      sourceMap: true
+      }
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -48,25 +63,6 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
-    // new HtmlWebpackPlugin({
-    //   filename: process.env.NODE_ENV === 'testing'
-    //     ? 'index.html'
-    //     : config.build.index,
-    //   template: 'index.html',
-    //   inject: true,
-    //   minify: {
-    //     removeComments: true,
-    //     collapseWhitespace: true,
-    //     removeAttributeQuotes: true
-    //     // more options:
-    //     // https://github.com/kangax/html-minifier#options-quick-reference
-    //   },
-    //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-    //   chunksSortMode: 'dependency'
-    // }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -114,11 +110,6 @@ if (config.build.productionGzip) {
       minRatio: 0.8
     })
   )
-}
-
-if (config.build.bundleAnalyzerReport) {
-  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
 module.exports = webpackConfig
