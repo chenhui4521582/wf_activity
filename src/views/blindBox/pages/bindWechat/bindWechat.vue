@@ -1,5 +1,5 @@
 <template>
-  <div class="code-login">
+  <div class="code-login" v-if="show">
     <nav-bar title="关注公众号" @back="goBack"/>
     <!-- 步骤 -->
     <step :bindPhone="bindPhone"/>
@@ -76,7 +76,8 @@ export default {
     code: '',
     countTime: '',
     bindPhone: '',
-    wechatName: 'luckybox2020'
+    wechatName: 'luckybox2020',
+    show: false
   }),
   computed: {
     isSubmit () {
@@ -178,6 +179,9 @@ export default {
         if(code == 200) {
           this.bindPhone = _get(res, 'data.data.phone', '')
         }
+        this.show = true
+      }).catch(error => {
+        this.show = true
       })
     }
   },
