@@ -40,6 +40,9 @@
     <section class="content">
       <p v-if="!isFollow"
         class="wechat">
+        <img @click="closeWechat"
+          src="./assets/icon.png"
+          alt="">
         <span>
           关注公众号 及时跟踪物流
         </span>
@@ -108,14 +111,14 @@ import { InventoryList } from '../../../../apis/user'
 import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
-import { isWechat } from '../../../../global'
+import { isWechat, isFollowWechat } from '../../../../global'
 
 export default {
   data () {
     return {
       show: false,
       score: null,
-      isFollow: false,
+      isFollow: true,
       isExchange: false,
       showProduct: false,
       productDetail: null,
@@ -166,7 +169,11 @@ export default {
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
-    this.isFollow = isWechat
+    new Promise(resolve => {
+      resolve(isFollowWechat())
+    }).then(resolve => {
+      if (!isWechat && !resolve) this.isFollow = false
+    })
   },
   methods: {
     // 关注公众号
@@ -175,6 +182,9 @@ export default {
       this.$router.push({
         name: 'bindWechat'
       })
+    },
+    closeWechat () {
+      this.isFollow = true
     },
     // 查看商品详情弹窗
     viewProduct (val) {
@@ -360,6 +370,13 @@ export default {
       width: 6.8rem;
       line-height: 0.6rem;
       margin: 0 auto 0.3rem;
+      position: relative;
+      img {
+        position: absolute;
+        right: -0.15rem;
+        top: -0.15rem;
+        width: 0.3rem;
+      }
       span:last-child {
         color: #ff7800;
       }
