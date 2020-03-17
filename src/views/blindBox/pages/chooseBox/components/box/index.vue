@@ -21,7 +21,12 @@
       class="choose-button">
       <div v-html="buttonText"></div>
     </MButton>
-    <MButton :button-style="buttonStyle"
+    <MButton :button-style="buttonStyle[0]"
+      @confirm="buyTwo"
+      v-if="!isOpen"
+      class="gold-buy">38元开2盒
+    </MButton>
+    <MButton :button-style="buttonStyle[1]"
       @confirm="bulkBuy"
       v-if="!isOpen"
       class="gold-buy">55元开3盒
@@ -60,11 +65,18 @@ export default {
       showAmount: null,
       awardsNum: null,
       boxGroup,
-      buttonStyle: {
-        background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
-        color: '#fff',
-        fontSize: '0.34rem'
-      },
+      buttonStyle: [
+        {
+          background: 'linear-gradient(90deg,#d8a3cf,#f441a2)',
+          color: '#fff',
+          fontSize: '0.34rem'
+        },
+        {
+          background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
+          color: '#fff',
+          fontSize: '0.34rem'
+        }
+      ],
       isVirtual: false,
       awardsImage: null,
       awardsName: null,
@@ -100,7 +112,7 @@ export default {
       const {
         data: { data: payInfo }
       } = await PayPoint(1)
-      Pay.toPay({ payInfo: payInfo[1] })
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 55) })
     },
     // 更新用户信息
     async updateUserInfo () {
@@ -169,8 +181,14 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0225002552')
         const { data: { data: payInfo } } = await PayPoint(1)
-        Pay.toPay({ payInfo: payInfo[0] })
+        Pay.toPay({ payInfo: payInfo.find(item => item.price === 20) })
       }
+    },
+    async buyTwo () {
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 38) })
     },
     // 开盒
     openBox () {
