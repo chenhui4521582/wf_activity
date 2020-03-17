@@ -95,14 +95,18 @@
       :close="true"
       @onClose="closeRule()">
       <p class="rule-content">
-        1.用户支付20元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
-        2.购买盲盒可100%开出奖品；<br>
-        3.选择一个盲盒，支付5元购买一张透视卡，可查看盲盒内是否是想要的商品；<br>
-        4.盲盒获得的奖品可在“我的奖品”中领取，满2件奖品即可包邮，不满2件需支付8元邮费；<br>
-        5.奖品领取成功后我们会在1-2天内给您发货；如有疑问可联系在线客服； <br>
-        6.盲盒和透视卡购买后不支持退换哦；<br>
-        7.盲盒购买金额不计入游戏平台的累充活动；<br>
-        玩蜂对此具有最终解释权
+        1.盲盒规则：用户支付20元后可选择任意一个盲盒，打开盲盒即可获得惊喜奖品，购买盲盒可100%开出奖品，奖品价值15元到5499元不等。<span @click="viewGift"
+          class="view-gift">点击查看全部奖品></span><br>
+        2.透视卡规则：选择一个盲盒，支付5元获得一张透视卡，可查看该盲盒内是否是您想要的奖品。如果被查看的盲盒内是您想要的奖品，您可支付20元购买该盲盒并获得奖品；如果被查看的盲盒内不是您想要的奖品，您可放弃购买，但已支付的透视卡5元不予退还。<br>
+        3.领取奖品方式：用户从盲盒中获得的奖品可在【我的奖品】中领取，请您填写真实的收货人及收货信息。<br>
+        4.奖品领取成功后我们会在1-2个工作日内为您安排发货，如有疑问可联系在线客服（【我的】-【联系客服】）。受疫情影响，部分疫情严重地区的物流会受影响，请您耐心等待。<br>
+        5.活动中的奖品图片仅供参考，请以具体实物为准。所有奖品均由正规第三方提供（即商品生产和销售商家）。<br>
+        6.请您收到奖品后，及时检查获得奖品是否有问题、外观是否完好等。收到的奖品如非质量、运输损坏问题，不支持换货或退款。如若奖品质量存在问题，请通过在线客服尽快与我们反馈，收货后2日内无反馈，视为您已确认奖品无误。<br>
+        7.非因奖品质量存在问题，您完成盲盒购买后概不支持退款哦。<br>
+        8.盲盒购买金额不计入多多玩游戏平台的累充活动。<br>
+        9.如出现不可抗力或情势变更的情况(包括但不限于重大灾害事件、活动受政府机关指令需要停止举办或调整的、活动遭受严重网络攻击或因系统故障需要暂停举办的),则多多玩可依相关法律法规的规定主张免责。<br>
+        10.多多玩提醒您注意以上活动规则，参与活动即视为您已阅读并认可本活动规则，理解并愿意接受本活动规则的约束。<br>
+        11.在法律允许范围内，多多玩对本次活动享有解释权。
       </p>
       <section class="rule-btn-wrapper"
         slot="footer">
@@ -239,6 +243,11 @@ export default {
         data: { data: payInfo }
       } = await PayPoint(1)
       Pay.toPay({ payInfo: payInfo.find(item => item.price === 55) })
+    },
+    viewGift () {
+      this.$router.push({
+        name: 'AllProducts'
+      })
     },
     async init () {
       await this.getBoxInfo()
@@ -428,6 +437,9 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   background: #fef2de;
+  .view-gift {
+    color: #ff2828;
+  }
   .btn-container {
     display: flex;
     padding: 0 0.25rem;
@@ -507,17 +519,20 @@ export default {
   }
   img.coupon-tip {
     width: 1.56rem;
-    height: .54rem;
+    height: 0.54rem;
     position: absolute;
     left: 4rem;
-    top: -.54rem;
+    top: -0.54rem;
   }
   .rule-content {
     font-size: 0.24rem;
     font-weight: 500;
     color: #888888;
-    line-height: 0.36rem;
+    line-height: 0.38rem;
     text-align: left;
+    height: 50vh;
+    overflow: scroll;
+    box-sizing: border-box;
     padding: 0 0.44rem 0.2rem;
   }
   .rule-btn-wrapper {
