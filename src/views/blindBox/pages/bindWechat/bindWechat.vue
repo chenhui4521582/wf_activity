@@ -76,7 +76,7 @@ export default {
     code: '',
     countTime: '',
     bindPhone: '',
-    wechatName: 'lockybox2020'
+    wechatName: 'luckybox2020'
   }),
   computed: {
     isSubmit () {
