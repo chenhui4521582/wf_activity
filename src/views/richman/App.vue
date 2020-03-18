@@ -33,7 +33,6 @@
                 <div class="block-bg">00</div>&nbsp;
                 <div>秒</div>
               </div>
-              <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div>
             </div>
           </div>
           <!-- tab切换 -->
@@ -159,7 +158,7 @@
                       </li>
                       <li v-if="rankList.length>=8" class="already">已经到底了</li>
                     </template>
-                    <template v-if="rankList.length===0">
+                    <template v-if="rankList.length===0&&countTime!=''">
                       <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
                     </template>
                   </div>
@@ -305,7 +304,7 @@ export default {
   },
   watch: {
     change(val) {
-      console.log("this.change", this.change);
+      // console.log("this.change", this.change);
 
       // this.getsecondlist()
       // this.getActivityInfo();
@@ -465,7 +464,7 @@ export default {
     // 监听弹窗关闭按钮传回的值，变化时执行（用于有多个弹窗时，再次触发下一个弹窗）
     getpop() {
       if (this.change === 1) {
-        console.log("change1", this.change);
+        // console.log("change1", this.change);
         if (this.activityInfo.popupList[1].propType === 1) {
           // 未上榜
           this.notop = this.activityInfo.popupList[1];
@@ -500,7 +499,7 @@ export default {
       }
       // 如果弹窗有3个，第二个关闭按钮传回change===2，弹第3个弹窗
       if (this.change === 2) {
-        console.log("change2", this.change);
+        // console.log("change2", this.change);
         if (this.activityInfo.popupList[2].propType === 1) {
           // this.endlist = 0;
           // 未上榜
