@@ -89,7 +89,7 @@
         5.奖品领取成功后我们会在1-2天内给您发货；如有疑问可联系在线客服； <br>
         6.盲盒和透视卡购买后不支持退换哦；<br>
         7.盲盒购买金额不计入游戏平台的累充活动；<br>
-        玩蜂对此具有最终解释权
+      {{$companyInfo.alias}}对此具有最终解释权
       </p>
       <section class="rule-btn-wrapper"
         slot="footer">
