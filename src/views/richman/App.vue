@@ -307,6 +307,7 @@ export default {
     countTime(val){
       if(val===''){
         this.getActivityInfo()
+        this.getRankList()
       }
     }
   },
