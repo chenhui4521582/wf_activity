@@ -448,7 +448,7 @@ export default {
   },
   created() {},
   mounted() {
-    GLOBALS.marchSetsPoint("A_H5PT0263003092");
+
     this.getRankList();
   },
   computed: {},
