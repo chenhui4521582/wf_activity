@@ -70,9 +70,6 @@
         <p>6. 特殊情况：若未在48小时内完成任务，停留在活动页中通过跳转及返回完成任务，不予以计算奖励。</p>
       </section>
     </section>
-    <section class="bottom-wrapper">
-      · 玩蜂科技出品 ·
-    </section>
   </section>
 </template>
 

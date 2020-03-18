@@ -16,9 +16,6 @@
         <p>
           4.参与活动的用户即有机会获得奖品，此活动为概率中奖；
         </p>
-        <p>
-          5.在法律允许的范围内最终解释权归玩蜂所有。
-        </p>
         <div class="btn" @click="close(1)"></div>
       </div>
       <div class="close" @click="close()"></div>
