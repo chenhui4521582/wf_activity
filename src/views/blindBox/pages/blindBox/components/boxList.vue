@@ -25,23 +25,9 @@
       </ul>
     </section>
     <article class="botton-wrapper">
-
       <!-- 非年货节按钮 begin-->
-      <section class="btn-container btn-container-top activity">
-        <!-- <m-button @confirm="buyOne">{{
-          isOpenBox ? `立即开盒` : "20元开一盒"
-        }}<span v-if="isOpenBox"
-            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
-        <div class="activity-button"
-          @click="buyOne">
-          <p v-if="isOpenBox">立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
-          <p v-else>¥<span class="money">20</span> 开1盒</p>
-        </div>
-        <img v-if="isCouponTip"
-          class="coupon-tip"
-          src="../assets/tip.png"
-          alt="">
-        <div class="change-btn change-btn-left activity"
+      <section class="handler activity">
+        <div class="change-btn activity"
           @click="showRule">
           <!-- <img class="icon"
             src="../assets/rule.png"
@@ -51,7 +37,7 @@
             alt="">
           活动规则
         </div>
-        <div class="change-btn change-btn-right activity"
+        <div class="change-btn activity"
           @click="changeAll">
           <!-- <img class="icon"
             src="../assets/refresh.png"
@@ -62,19 +48,46 @@
           换一批
         </div>
       </section>
-      <section class="btn-container activity">
-        <!-- <m-button v-if="!isOpenBox"
-          @confirm="bulkBuy">55元开3盒</m-button> -->
-        <div v-if="!isOpenBox"
-          class="activity-button batch"
-          @click="bulkBuy">
-          ¥<span class="money">55</span> <span class="cost-price">¥60</span> 开3盒
+      <section class="btn-container">
+        <img v-if="isCouponTip"
+          class="coupon-tip"
+          src="../assets/tip.png"
+          alt="">
+        <!-- <m-button @confirm="buyOne">{{
+          isOpenBox ? `立即开盒` : "20元开一盒"
+        }}<span v-if="isOpenBox"
+            class="times">(<span>{{isOpenBox}}</span>次)</span></m-button> -->
+        <div v-if="isOpenBox"
+          class="activity-button"
+          @click="buyOne">
+          <p>立即开盒<span class="times activity">(<span>{{isOpenBox}}</span>次)</span></p>
         </div>
-        <p class="leaf-buy"
-          v-if="userInfo && userInfo.leafsPay"
-          @click="leafsBuy">使用金叶子购买</p>
-        <p class="buy-tip">购买成功后，即可任意选盒开奖</p>
+        <img @click="buyOne"
+          v-if="!isOpenBox"
+          src="../activity/button1.png"
+          alt="">
+        <img @click="buyTwo"
+          v-if="!isOpenBox"
+          src="../activity/button2.png"
+          alt="">
+        <img @click="bulkBuy"
+          v-if="!isOpenBox"
+          src="../activity/button3.png"
+          alt="">
+        <!-- <div v-if="!isOpenBox" class="button button1">
+          20元开1盒
+        </div>
+        <div v-if="!isOpenBox" class="button button2">
+          38元开2盒
+        </div>
+        <div v-if="!isOpenBox" class="button">
+          55元开3盒
+        </div> -->
       </section>
+      <p class="leaf-buy activity"
+        v-if="userInfo && userInfo.leafsPay"
+        @click="leafsBuy">使用金叶子购买</p>
+      <p class="buy-tip activity">购买成功后，即可任意选盒开奖</p>
       <!-- 非年货节按钮 end -->
     </article>
     <Dialog :show="isShowRule"
@@ -82,14 +95,18 @@
       :close="true"
       @onClose="closeRule()">
       <p class="rule-content">
-        1.用户支付20元即可购买一个盲盒，选择想要的盲盒打开，即可获得惊喜奖品；<br>
-        2.购买盲盒可100%开出奖品；<br>
-        3.选择一个盲盒，支付5元购买一张透视卡，可查看盲盒内是否是想要的商品；<br>
-        4.盲盒获得的奖品可在“我的奖品”中领取，满2件奖品即可包邮，不满2件需支付8元邮费；<br>
-        5.奖品领取成功后我们会在1-2天内给您发货；如有疑问可联系在线客服； <br>
-        6.盲盒和透视卡购买后不支持退换哦；<br>
-        7.盲盒购买金额不计入游戏平台的累充活动；<br>
-      {{$companyInfo.alias}}对此具有最终解释权
+        1.盲盒规则：用户支付20元后可选择任意一个盲盒，打开盲盒即可获得惊喜奖品，购买盲盒可100%开出奖品，奖品价值15元到5499元不等。<span @click="viewGift"
+          class="view-gift">点击查看全部奖品></span><br>
+        2.透视卡规则：选择一个盲盒，支付5元获得一张透视卡，可查看该盲盒内是否是您想要的奖品。如果被查看的盲盒内是您想要的奖品，您可支付20元购买该盲盒并获得奖品；如果被查看的盲盒内不是您想要的奖品，您可放弃购买，但已支付的透视卡5元不予退还。<br>
+        3.领取奖品方式：用户从盲盒中获得的奖品可在【我的奖品】中领取，请您填写真实的收货人及收货信息。<br>
+        4.奖品领取成功后我们会在1-2个工作日内为您安排发货，如有疑问可联系在线客服（【我的】-【联系客服】）。受疫情影响，部分疫情严重地区的物流会受影响，请您耐心等待。<br>
+        5.活动中的奖品图片仅供参考，请以具体实物为准。所有奖品均由正规第三方提供（即商品生产和销售商家）。<br>
+        6.请您收到奖品后，及时检查获得奖品是否有问题、外观是否完好等。收到的奖品如非质量、运输损坏问题，不支持换货或退款。如若奖品质量存在问题，请通过在线客服尽快与我们反馈，收货后2日内无反馈，视为您已确认奖品无误。<br>
+        7.非因奖品质量存在问题，您完成盲盒购买后概不支持退款哦。<br>
+        8.盲盒购买金额不计入多多玩游戏平台的累充活动。<br>
+        9.如出现不可抗力或情势变更的情况(包括但不限于重大灾害事件、活动受政府机关指令需要停止举办或调整的、活动遭受严重网络攻击或因系统故障需要暂停举办的),则多多玩可依相关法律法规的规定主张免责。<br>
+        10.多多玩提醒您注意以上活动规则，参与活动即视为您已阅读并认可本活动规则，理解并愿意接受本活动规则的约束。<br>
+        11.在法律允许范围内，多多玩对本次活动享有解释权。
       </p>
       <section class="rule-btn-wrapper"
         slot="footer">
@@ -134,7 +151,6 @@
 /* eslint-disable no-undef */
 import { BoxList, ChangeAll, PayPoint } from '../../../apis/box';
 import { UserInfo, Popup } from '../../../apis/user';
-import MButton from '../../../components/MButton';
 import { Pay } from '../../../utils';
 import Dialog from '../../../components/dialog';
 import BoxInfo from './boxInfo';
@@ -146,7 +162,6 @@ import { List } from '../../../apis/coupon'
 export default {
   name: '',
   components: {
-    MButton,
     Dialog,
     BoxInfo,
     TipDialog,
@@ -225,7 +240,12 @@ export default {
       const {
         data: { data: payInfo }
       } = await PayPoint(1)
-      Pay.toPay({ payInfo: payInfo[1] })
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 55) })
+    },
+    viewGift () {
+      this.$router.push({
+        name: 'AllProducts'
+      })
     },
     async init () {
       await this.getBoxInfo()
@@ -353,9 +373,15 @@ export default {
         const {
           data: { data: payInfo }
         } = await PayPoint(1)
-        Pay.toPay({ payInfo: payInfo[0] })
+        Pay.toPay({ payInfo: payInfo.find(item => item.price === 20) })
         GLOBALS.marchSetsPoint('A_H5PT0225002539') // H5平台-盲盒页面-开一次按钮点击(点击购买)
       }
+    },
+    async buyTwo () {
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 38) })
     },
     closePop (type) {
       this.isShowPop = false
@@ -409,6 +435,58 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   background: #fef2de;
+  .view-gift {
+    color: #ff2828;
+  }
+  .btn-container {
+    display: flex;
+    padding: 0 0.25rem;
+    position: relative;
+    justify-content: space-around;
+    img {
+      width: 2.05rem;
+      height: 0.76rem;
+    }
+    .button {
+      width: 2.11rem;
+      line-height: 0.81rem;
+      color: #fff;
+      text-align: center;
+      background: url("../activity/bt3.png") no-repeat;
+      background-size: 100% 100%;
+      font-size: 0.36rem;
+      &1 {
+        background: url("../activity/bt1.png") no-repeat;
+        background-size: 100% 100%;
+        color: #7b4913;
+      }
+      &2 {
+        background: url("../activity/bt2.png") no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .leaf-buy {
+    padding-top: 0.28rem;
+    font-size: 0.3rem;
+    text-align: center;
+    background: linear-gradient(90deg, #dbbe6f, #fee9b4);
+    -webkit-background-clip: text;
+    font-weight: bold;
+    color: transparent;
+    &.activity {
+      color: #e9355a;
+    }
+  }
+  .buy-tip {
+    color: #6f768e;
+    font-size: 0.24rem;
+    text-align: center;
+    padding-top: 0.33rem;
+    &.activity {
+      color: #7b4913;
+    }
+  }
   .activity-button {
     width: 3.3rem;
     line-height: 0.8rem;
@@ -417,14 +495,14 @@ export default {
     font-size: 0.36rem;
     text-align: center;
     margin: 0 auto;
-    background: url("../activity/button1.png") no-repeat;
+    background: url("../activity/button-bg.png") no-repeat;
     background-size: 100% 100%;
     .money {
       font-size: 0.4rem;
     }
     .cost-price {
-      color: #F1430F;
-      font-size: .26rem;
+      color: #f1430f;
+      font-size: 0.26rem;
       font-weight: bold;
       text-decoration: line-through;
     }
@@ -438,18 +516,22 @@ export default {
   .botton-wrapper {
     background: #fef2de;
   }
-  .coupon-tip {
+  img.coupon-tip {
     width: 1.56rem;
+    height: 0.54rem;
     position: absolute;
-    left: 4.24rem;
-    top: -0.2rem;
+    left: 4rem;
+    top: -0.54rem;
   }
   .rule-content {
     font-size: 0.24rem;
     font-weight: 500;
     color: #888888;
-    line-height: 0.36rem;
+    line-height: 0.38rem;
     text-align: left;
+    height: 50vh;
+    overflow: scroll;
+    box-sizing: border-box;
     padding: 0 0.44rem 0.2rem;
   }
   .rule-btn-wrapper {
@@ -557,19 +639,17 @@ export default {
       }
     }
   }
-  .btn-container {
+  .handler {
     position: relative;
     background: #1b1f29;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.3rem;
+    box-sizing: border-box;
+    // padding: 0.16rem;
     &.activity {
       background: #fef2de;
-      .leaf-buy {
-        color: #e9355a;
-      }
-      .buy-tip {
-        color: #7b4913;
-      }
     }
-    // padding: 0.16rem;
     .times {
       padding-left: 0.2rem;
       span {
@@ -582,9 +662,6 @@ export default {
         }
       }
     }
-    &-top {
-      padding-top: 0.32rem;
-    }
     .money-buy {
       margin: 0 auto;
       width: 3.07rem;
@@ -595,27 +672,12 @@ export default {
       background: url("../assets/button1.png") no-repeat;
       background-size: 100% 100%;
     }
-    .leaf-buy {
-      padding-top: 0.28rem;
-      font-size: 0.3rem;
-      text-align: center;
-      background: linear-gradient(90deg, #dbbe6f, #fee9b4);
-      -webkit-background-clip: text;
-      font-weight: bold;
-      color: transparent;
-    }
-    .buy-tip {
-      color: #6f768e;
-      font-size: 0.24rem;
-      text-align: center;
-      padding-top: 0.33rem;
-    }
     .button {
       margin: auto;
     }
     .change-btn {
-      position: absolute;
-      top: calc(~"50%" - 0.4rem);
+      // position: absolute;
+      // top: calc(~"50%" - 0.4rem);
       // width: 1.14rem;
       box-sizing: border-box;
       color: #fff;
@@ -632,12 +694,6 @@ export default {
       .icon {
         width: 0.34rem;
         margin-right: 0.1rem;
-      }
-      &-left {
-        left: 0.3rem;
-      }
-      &-right {
-        right: 0.3rem;
       }
     }
   }

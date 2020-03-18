@@ -1,15 +1,18 @@
 <template>
   <main>
-    <article class="blind-box-wrap activity" :style="{'padding-top': `${bannerHeight + translateY}px`}">
-    <!-- <article class="blind-box-wrap"> -->
-    <section ref="banner"
+    <article class="blind-box-wrap activity"
+      :style="{'padding-top': `${bannerHeight + translateY}px`}">
+      <!-- <article class="blind-box-wrap"> -->
+      <section ref="banner"
         :style="{'transform': `translateY(${translateY}px)`}"
         class="banner">
         <div class="time"></div>
-    </section>
-      <article class="container" :class="{'active': (bannerHeight + translateY)}">
-      <!-- <article class="container"> -->
+      </section>
+      <article class="container"
+        :class="{'active': (bannerHeight + translateY)}">
+        <!-- <article class="container"> -->
         <span @click="toPlatform"
+          v-if="!isWechat"
           class="back">返回</span>
         <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
@@ -20,6 +23,10 @@
     </article>
     <Guide v-if="show"
       @close="show=false" />
+    <CouponDialog @onConfirm="onCouponConfirm"
+    @onClose="onCouponClose"
+      :coupon-info = "couponInfo"
+      :show="showCoupon" />
   </main>
 </template>
 
@@ -29,13 +36,18 @@ import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
 import { FirstLoad } from '../../apis/box'
+import { BoxCoupon } from '../../apis/user'
 import Guide from './components/guide'
+import { isWechat } from '../../global'
+import CouponDialog from '../../components/coupon-dialog'
 
 export default {
   data () {
     return {
       show: false,
+      showCoupon: false,
       isOldUser: true,
+      couponInfo: null,
       translateY: 0,
       startY: 0,
       endY: 0,
@@ -45,11 +57,14 @@ export default {
     }
   },
   components: {
-    currentProductList, hornAndMore, boxList, Guide
+    currentProductList, hornAndMore, boxList, Guide, CouponDialog
   },
   computed: {
     toucheMoveY () {
       return this.endY - this.startY
+    },
+    isWechat () {
+      return isWechat
     }
   },
   methods: {
@@ -57,6 +72,12 @@ export default {
     toPlatform () {
       GLOBALS.marchSetsPoint('A_H5PT0225002684')
       location.href = 'https://wap.beeplaying.com/xmWap/#/'
+    },
+    onCouponConfirm () {
+      this.showCoupon = false
+    },
+    onCouponClose () {
+      this.showCoupon = false
     },
     initToucheListener () {
       // if (!this.isFirst) this.translateY = 0
@@ -135,13 +156,18 @@ export default {
     }
   },
   async mounted () {
-    // const data = await FirstLoad()
-    // GLOBALS.marchSetsPoint('P_H5PT0225', {
-    //   source_address: GLOBALS.getUrlParam('from') || null
-    // }) // H5平台-盲盒页面加载完成
-    // if (data.data.data) {
-    //   this.guideTest()
-    // }
+    const data = await FirstLoad()
+    const coupon = await BoxCoupon()
+    if (coupon.data.data) {
+      this.couponInfo = coupon.data.data
+      this.showCoupon = true
+    }
+    GLOBALS.marchSetsPoint('P_H5PT0225', {
+      source_address: GLOBALS.getUrlParam('from') || null
+    }) // H5平台-盲盒页面加载完成
+    if (data.data.data) {
+      this.guideTest()
+    }
   },
   beforeDestroy () {
     this.removeToucheListener()
@@ -162,9 +188,9 @@ export default {
   position: relative;
   z-index: 2;
   &.activity {
-    background:#FEF2DE;
+    background: #fef2de;
     .back {
-      background:#ED4263;
+      background: #ed4263;
     }
   }
   .main-wrapper {
@@ -194,10 +220,10 @@ export default {
     // border-bottom-left-radius: 0.1rem;
     // border-bottom-right-radius: 0.1rem;
     width: 1.95rem;
-    height: .59rem;
+    height: 0.59rem;
     margin: 0 auto;
     text-align: center;
-    background: url('./activity/time.png') no-repeat;
+    background: url("./activity/time.png") no-repeat;
     background-size: 100% 100%;
   }
 }

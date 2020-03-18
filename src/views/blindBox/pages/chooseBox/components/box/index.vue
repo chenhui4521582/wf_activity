@@ -1,43 +1,50 @@
 <template>
-  <section class="box-wrapper">
-    <div class="box">
-      <div :class="{'on-change':isOnChange}"
-        class="box__img--box">
-        <div class="img-wrapper">
-          <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
+  <article>
+    <section class="box-wrapper">
+      <div class="box">
+        <div :class="{'on-change':isOnChange}"
+          class="box__img--box">
+          <div class="img-wrapper">
+            <img :src="awardsImage? box && box.boxTransparent:box &&box.box">
+          </div>
+          <img class="box__img--goods"
+            v-if="awardsImage"
+            :src="awardsImage | imgFilter">
         </div>
-        <img class="box__img--goods"
-          v-if="awardsImage"
-          :src="awardsImage | imgFilter">
+        <p v-if="awardsName">{{awardsName | textFilter}}</p>
+        <p class="awards-info"
+          v-if="showAmount">价值：¥{{showAmount}}<span>数量：{{awardsNum}}</span></p>
       </div>
-      <p v-if="awardsName">{{awardsName | textFilter}}</p>
-      <p class="awards-info"
-        v-if="showAmount">价值：¥{{showAmount}}<span>数量：{{awardsNum}}</span></p>
-    </div>
-    <p @click="refresh"
-      class="refresh"><img src="./assets/refresh.png">换一盒</p>
-    <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
-      @confirm="onConfirm"
-      class="choose-button">
-      <div v-html="buttonText"></div>
-    </MButton>
-    <MButton :button-style="buttonStyle"
-      @confirm="bulkBuy"
-      v-if="!isOpen"
-      class="gold-buy">55元开3盒
-    </MButton>
+      <p @click="refresh"
+        class="refresh"><img src="./assets/refresh.png">换一盒</p>
+      <VirtualDialog :show="isVirtual"
+        source="detail"
+        v-if="isVirtual"
+        @close="isVirtual = false"
+        @updateUserInfo="updateUserInfo" />
+      <Side-Bar @use="useCard"
+        :user-info="userInfo"
+        class="side-bar" />
+    </section>
+    <section class="button-container">
+      <MButton :breathe="userInfo&&userInfo.openBoxTimes?true:false"
+        @confirm="onConfirm"
+        :button-style="userInfo&&userInfo.openBoxTimes?{}:{width: '2.11rem'}">
+        <div v-html="buttonText"></div>
+      </MButton>
+      <MButton :button-style="buttonStyle[0]"
+        @confirm="buyTwo"
+        v-if="!isOpen">38元开2盒
+      </MButton>
+      <MButton :button-style="buttonStyle[1]"
+        @confirm="bulkBuy"
+        v-if="!isOpen">55元开3盒
+      </MButton>
+    </section>
     <p v-if="userInfo && userInfo.leafsPay"
       @click="leafsBuy"
       class="leafs-buy">使用金叶子购买</p>
-    <VirtualDialog :show="isVirtual"
-      source="detail"
-      v-if="isVirtual"
-      @close="isVirtual = false"
-      @updateUserInfo="updateUserInfo" />
-    <Side-Bar @use="useCard"
-      :user-info="userInfo"
-      class="side-bar" />
-  </section>
+  </article>
 </template>
 
 <script>
@@ -60,11 +67,20 @@ export default {
       showAmount: null,
       awardsNum: null,
       boxGroup,
-      buttonStyle: {
-        background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
-        color: '#fff',
-        fontSize: '0.34rem'
-      },
+      buttonStyle: [
+        {
+          background: 'linear-gradient(90deg,#d8a3cf,#f441a2)',
+          color: '#fff',
+          fontSize: '0.34rem',
+          width: '2.11rem'
+        },
+        {
+          background: 'linear-gradient(90deg,#A3A9C0,#646B84)',
+          color: '#fff',
+          fontSize: '0.34rem',
+          width: '2.11rem'
+        }
+      ],
       isVirtual: false,
       awardsImage: null,
       awardsName: null,
@@ -90,7 +106,7 @@ export default {
     },
     buttonText () {
       if (this.isOpen) return `立即开盒<span style="padding-left: .2rem">(<span style="color: #FF1520;">${this.userInfo.openBoxTimes}</span>次)</span>`
-      return '20元开一盒'
+      return '20元开1盒'
     }
   },
   methods: {
@@ -100,7 +116,7 @@ export default {
       const {
         data: { data: payInfo }
       } = await PayPoint(1)
-      Pay.toPay({ payInfo: payInfo[1] })
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 55) })
     },
     // 更新用户信息
     async updateUserInfo () {
@@ -169,8 +185,14 @@ export default {
       } else {
         GLOBALS.marchSetsPoint('A_H5PT0225002552')
         const { data: { data: payInfo } } = await PayPoint(1)
-        Pay.toPay({ payInfo: payInfo[0] })
+        Pay.toPay({ payInfo: payInfo.find(item => item.price === 20) })
       }
+    },
+    async buyTwo () {
+      const {
+        data: { data: payInfo }
+      } = await PayPoint(1)
+      Pay.toPay({ payInfo: payInfo.find(item => item.price === 38) })
     },
     // 开盒
     openBox () {
@@ -219,13 +241,21 @@ export default {
 
 <style lang="less" scoped>
 .leafs-buy {
-  padding-top: 0.28rem;
+  padding-top: 0.4rem;
   font-size: 0.3rem;
   text-align: center;
   background: linear-gradient(90deg, #dbbe6f, #fee9b4);
   -webkit-background-clip: text;
   font-weight: bold;
   color: transparent;
+}
+.button-container {
+  display: flex;
+  padding: 0 0.25rem;
+  padding-top: 1.1rem;
+  position: relative;
+  justify-content: space-around;
+  widows: 100%;
 }
 .box-wrapper {
   box-sizing: border-box;
@@ -235,14 +265,6 @@ export default {
   padding-right: 0.34rem;
   position: relative;
   z-index: 2;
-  .choose-button {
-    margin: 0 auto;
-    margin-top: 0.5rem;
-  }
-  .gold-buy {
-    margin: 0 auto;
-    margin-top: 0.2rem;
-  }
   .note {
     color: #b5b9cb;
     font-size: 0.22rem;

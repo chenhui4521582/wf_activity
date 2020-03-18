@@ -112,6 +112,14 @@ const routes = [
         }
       },
       {
+        path: '/faq',
+        name: 'Faq',
+        component: () => import('../pages/faq'),
+        meta: {
+          title: '常见问题'
+        }
+      },
+      {
         path: '/userlogin',
         name: 'userLogin',
         component: () => import('../pages/userLogin/userLogin'),
