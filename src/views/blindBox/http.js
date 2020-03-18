@@ -11,9 +11,8 @@ import utils from '../../common/js/utils'
 axios.defaults.timeout = 5000
 
 let channel = utils.getUrlParam('channel') ? utils.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL'),
-  token = utils.getUrlParam('token') ? utils.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN'),
   version = localStorage.getItem('APP_VERSION')
-
+  localStorage.setItem('APP_CHANNEL', channel)
 if (localStorage.getItem('APP_CHANNEL') === '100001') {
   localStorage.setItem('APP_VERSION', '1.0.0')
 } else {
@@ -23,6 +22,7 @@ if (localStorage.getItem('APP_CHANNEL') === '100001') {
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
+  let token = localStorage.getItem('ACCESS_TOKEN')
   config.headers.Authorization = token
   config.headers['App-Channel'] = channel && /\d+/.exec(channel) && /\d+/.exec(channel)[0]
   config.headers['App-Version'] = version
@@ -41,12 +41,6 @@ axios.interceptors.response.use(
         case 400:
           Vue.prototype.$toast.show({
             message: '请求处理失败',
-            duration: 1500
-          })
-          break
-        case 401:
-          Vue.prototype.$toast.show({
-            message: '未授权，请登录！',
             duration: 1500
           })
           break
@@ -106,10 +100,6 @@ axios.interceptors.response.use(
               break
             }
           }
-          Vue.prototype.$toast.show({
-            message: res.message,
-            duration: 1500
-          })
       }
     }
     return response
