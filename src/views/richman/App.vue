@@ -15,7 +15,7 @@
           <div class="guide" @click="guide"></div>
           <div class="countdown-container">
             <div>
-              <div class="countdowntime" v-if="countTime">
+              <div class="countdowntime" v-if="countTime&&activityInfo.state!=2">
                 距离今日榜单结束仅剩&nbsp;
                 <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp;
                 <div v-if="countTime.length">{{countTime.slice(2,3)}}</div>&nbsp;
@@ -24,14 +24,8 @@
                 <div v-if="countTime.length" class="block-bg">{{countTime.slice(6,8)}}</div>&nbsp;
                 <div v-if="countTime.length">{{countTime.slice(8,9)}}</div>
               </div>
-              <div class="countdowntime" v-if="countTime==''">
-                距离今日榜单结束仅剩&nbsp;
-                <div class="block-bg">00</div>&nbsp;
-                <div>时</div>&nbsp;
-                <div class="block-bg">00</div>&nbsp;
-                <div>分</div>&nbsp;
-                <div class="block-bg">00</div>&nbsp;
-                <div>秒</div>
+              <div class="countdowntime" v-if="activityInfo.state==2||countTime==''">
+          活动已经结束
               </div>
             </div>
           </div>
@@ -185,7 +179,7 @@
               </p>
             </div>
             <!-- 前5名排行榜 -->
-            <p v-if="!topfive.length" class="secondnotlist-tips">充值送金币，等你上榜赢大奖</p>
+            <p v-if="!topfive.length&&countTime!=''" class="secondnotlist-tips">充值送金币，等你上榜赢大奖</p>
             <ul v-if="topfive.length>0" class="topfive">
               <li v-for="(item,key) in topfive" :key="key">
                 <div class="topfive-headpic">
@@ -309,6 +303,11 @@ export default {
       // this.getsecondlist()
       // this.getActivityInfo();
       this.getpop();
+    },
+    countTime(val){
+      if(val===''){
+        this.getActivityInfo()
+      }
     }
   },
   computed: {
@@ -580,7 +579,10 @@ export default {
         }
       }
   // 获取接口活动时间倒计时，传入ms执行函数
-      this.countDown(this.activityInfo.countdown);
+  if(this.activityInfo.state!=2){
+    this.countDown(this.activityInfo.countdown);
+  }
+      
     },
 
     // 金币获取记录
