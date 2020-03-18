@@ -1,17 +1,20 @@
 <template>
-  <div
-    class="mask"
-    @touchmove.prevent
-    v-if="value"
-    :style="{height:currentindex==='second'&&topfive.length>0?'14.9rem':''} "
-  >
+  <div class="mask-container" v-if="value"  >
+    <div
+      class="mask"
+      @touchmove.prevent
+      
+      :style="{height:currentindex==='second'&&topfive.length>0?'14.9rem':''} "
+    ></div>
     <!-- 规则 -->
+      <!-- <div class="mask-mask" > -->
     <template v-if="value===1">
-      <div class="mask-one">
-        <div class="rule-bg">
+    
+        <div class="rule-bg" >
           <div class="rule-container">
             <p class="light-color">
-              <span class="dark-color">① 活动时间</span>：3月30日-4月3日，共5天
+              <span class="dark-color">① 活动时间</span>
+              ：{{activityInfo.beginDate}}-{{activityInfo.endDate}}，共5天
             </p>
             <p class="dark-color">② 活动期间，单笔充值每满5元送1个金币，累计金币上榜有奖;</p>
             <p class="dark-color">③ 每日富翁榜</p>
@@ -62,19 +65,20 @@
             <p class="dark-color">⑥ 如有问题，请联系在线客服。</p>
           </div>
         </div>
-      </div>
+     
     </template>
     <!-- 攻略,金币记录,往期榜单(无光背景) -->
     <!-- 太棒了（有光背景） -->
     <template
-      
       v-if="value===2||value===3||value===4||value===5||value===6||value===7||value===8||value===9"
     >
       <div
         v-if="value===2||value===3||value===4||value===5||value===6||value===7||value===8||value===9"
         class="nolight-bg"
         :class="value===5||value===6||value===7||value===8||value===9?'light-bg':''"
+       
       >
+      <div>
         <div class="nolight-title">
           <img v-if="value===2" src="../images/compop/guide.png" alt />
           <img v-if="value===3" src="../images/compop/coinrecord.png" alt />
@@ -146,7 +150,7 @@
               <div
                 class="yesterday-btn"
                 @click="currenttoplist='yesterday'"
-                :style="{backgroundColor:currenttoplist==='toped'?'transparent':''}"
+                :style="{backgroundColor:currenttoplist==='toped'?'#ff5b57':''}"
               >
                 <img src="../images/compop/yesterday-btn.png" alt />
               </div>
@@ -154,7 +158,7 @@
               <div
                 class="toped-btn"
                 @click="currenttoplist='toped'"
-                :style="{backgroundColor:currenttoplist==='toped'?'#FF5B57':''}"
+                :style="{backgroundColor:currenttoplist==='toped'?'transparent':''}"
               >
                 <img src="../images/compop/toped-btn.png" alt />
               </div>
@@ -296,15 +300,13 @@
             </template>
           </div>
         </template>
+        </div>
       </div>
     </template>
-
-    <!-- <div class="pop-bg" :class="[value==7&&prizeshow.sort-1==0?'big-pop-bg':'']">
-
-    </div>-->
-    <div class="close" @click="close">
+    <div class="close" @click="close" :style="{top:value===1?'10.5rem':''}">
       <img src="../images/compop/close.png" alt />
     </div>
+     <!-- </div> -->
   </div>
 </template>
 <script>
@@ -443,12 +445,12 @@ export default {
       otherData: [],
       yesterdayList: [],
       rankingList: [],
-      ontop1:{},
-      addcoin1:{},
-      pass1:{},
-      supertop1:{},
-      index:1,
-      endlist:2,
+      ontop1: {},
+      addcoin1: {},
+      pass1: {},
+      supertop1: {},
+      index: 1,
+      endlist: 2
     };
   },
   created() {},
@@ -475,13 +477,11 @@ export default {
     //       // 金币新增
     //       this.addcoin=this.activityInfo.popupList[1];
     //       this.popType = 5;
-          
     //       GLOBALS.marchSetsPoint("A_H5PT0263003099");
     //     }else if (this.activityInfo.popupList[1].propType === 3) {
     //       // 排名反超
     //       this.pass=this.activityInfo.popupList[1];
     //       this.popType = 9;
-          
     //       GLOBALS.marchSetsPoint("A_H5PT0263003100");
     //     }else if (this.activityInfo.popupList[1].propType === 4) {
     //       // 终极土豪榜上榜
@@ -504,10 +504,10 @@ export default {
     //   document.body.style.overflow = ""; //出现滚动条
     //   document.removeEventListener("touchmove", mo, false);
     // },
-      // async getActivityInfo() {
-      // const res = await activityinfo();
-      // this.activityInfo = _get(res, "data", {});
-      //           },
+    // async getActivityInfo() {
+    // const res = await activityinfo();
+    // this.activityInfo = _get(res, "data", {});
+    //           },
     goshop() {
       parent.location.href = "https://wap.beeplaying.com/xmWap/#/payment/";
     },
@@ -528,10 +528,10 @@ export default {
       this.yesterdayList = this.prerankinfo.yesterdayList;
       this.rankingList = this.prerankinfo.rankingList;
       console.log(this.yesterdayList, this.rankingList);
-      if (this.yesterdayList&&this.yesterdayList.length > 3) {
+      if (this.yesterdayList && this.yesterdayList.length > 3) {
         this.lastTwoData = this.yesterdayList.slice(3);
       }
-      if (this.yesterdayList&&this.yesterdayList.length > 6) {
+      if (this.yesterdayList && this.yesterdayList.length > 6) {
         this.isOpen = false;
         this.lastTwoData = this.yesterdayList.slice(
           this.yesterdayList.length - 2
@@ -560,27 +560,25 @@ export default {
     },
     close() {
       this.$emit("input", 0);
-      if(this.activityInfo.popupList.length>=2&&this.index===1){
+      if (this.activityInfo.popupList.length >= 2 && this.index === 1) {
         setTimeout(() => {
-          this.$emit('close-index',this.index)
-               if(this.activityInfo.popupList.length===3){
-          this.index=2
-        }
-        }, 300); 
-     
+          this.$emit("close-index", this.index);
+          if (this.activityInfo.popupList.length === 3) {
+            this.index = 2;
+          }
+        }, 300);
       }
-      if(this.activityInfo.popupList.length===3&&this.index===2){
+      if (this.activityInfo.popupList.length === 3 && this.index === 2) {
         setTimeout(() => {
-           this.$emit('close-index',this.endlist)
+          this.$emit("close-index", this.endlist);
           //  this.endlist=0
           //  this.index=0
         }, 300);
       }
-      
+
       // this.canScroll();
       // 传父组件click开关 恢复click的值
       // this.$emit("continume", this.continume);
-
     }
   },
   props: {
@@ -628,7 +626,7 @@ export default {
     supertop: {
       type: Object,
       default: {}
-    },
+    }
     // endlist:{
     //   type:Number,
     //   default:0
@@ -675,7 +673,26 @@ export default {
     -webkit-transform: scale(1);
   }
 }
+.mask-container{
+  // animation: change 0.4s linear;
+  // -webkit-animation: change 0.4s linear;
+  // -moz-animation: change 0.4s linear;
+
+        position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+    .mask-mask{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 11;
+    }
+}
 .mask {
+
   width: 100%;
   // height: 12.8rem;
   // height: 14rem;
@@ -686,11 +703,12 @@ export default {
   top: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  animation: change 0.4s linear;
-  -webkit-animation: change 0.4s linear;
-  -moz-animation: change 0.4s linear;
+
+
+}
   // 规则弹窗
   .rule-bg {
+    
     background: url(../images/compop/rule-bg.png);
     background-size: 100% 100%;
     width: 6.11rem;
@@ -698,6 +716,16 @@ export default {
     margin: 0.15rem auto 0;
     position: relative;
     overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // left: 50%;
+    // -webkit-transform: translateX(-50%);
+    // transform: translateX(-50%);
+    animation: change 0.5s linear;
+    z-index: 5;
     .rule-container {
       margin: 1.8rem auto 0;
       width: 4.94rem;
@@ -746,7 +774,13 @@ export default {
     height: 6.83rem;
     margin: 1.8rem auto 0;
     overflow: hidden;
-
+    position: fixed;
+    top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;              
+    z-index: 5;
+    animation: change 0.5s linear;
     .nolight-title {
       display: flex;
       margin: 0.78rem auto 0;
@@ -882,7 +916,7 @@ export default {
           align-items: center;
           justify-content: center;
           // background: url(../images/compop/pink-bg.png);
-          background-color: #ff5b57;
+          //
           border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
           background-size: 100% 100%;
           width: 1.5rem;
@@ -895,6 +929,7 @@ export default {
         }
         .toped-btn {
           transition: all 0.5s;
+          background-color: #ff5b57;
           border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
           flex: 1;
           display: flex;
@@ -1052,6 +1087,14 @@ export default {
     height: 6.83rem;
     margin: 1.8rem auto 0;
     overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // left: 50%;
+    // transform: translateX(-50%);
+    z-index: 5;
     // 太棒了（恭喜您获得金币 有光背景）
     .light-container {
       margin: 0.43rem auto 0;
@@ -1130,13 +1173,18 @@ export default {
     width: 0.5rem;
     height: 0.5rem;
     margin: 0.36rem auto 0;
+    position: absolute;
+    top: 9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
     img {
       display: block;
       width: 0.6rem;
       height: 0.6rem;
     }
   }
-}
+
 @keyframes tab {
   0% {
     opacity: 0;
