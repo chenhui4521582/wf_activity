@@ -111,7 +111,7 @@ import { InventoryList } from '../../../../apis/user'
 import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
-import { isWechat, isFollowWechat } from '../../../../global'
+import { isWechat, isFollowWechat, toService, createService } from '../../../../global'
 
 export default {
   data () {
@@ -164,7 +164,11 @@ export default {
       ]
     }
   },
+  created () {
+    createService()
+  },
   mounted () {
+    toService()
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
@@ -266,7 +270,7 @@ export default {
     // 在线客服
     toOnlineService () {
       GLOBALS.marchSetsPoint('A_H5PT0225002577')
-      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+      location.href = ysf('url')
     }
   },
   components: {
