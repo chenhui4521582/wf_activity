@@ -107,7 +107,7 @@ export default {
         if(code == 200) {
           let auth = _get(res, 'data.data.auth', '')
           if(auth) {
-            location.href = `${auth}default?accessToken=${accessToken}&act=bind`
+            window.location.replace(`${auth}default?accessToken=${accessToken}&act=bind`)
           }else {
             this.$toast.show({message})
           }

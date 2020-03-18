@@ -340,7 +340,7 @@ export default {
     padding-left: 0.1rem;
     position: fixed;
     right: 0;
-    top: 9rem;
+    bottom: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
