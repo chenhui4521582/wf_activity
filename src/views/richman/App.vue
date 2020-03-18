@@ -1,6 +1,10 @@
 <template>
   <section :style="{height:topfive.length&&currentindex==='second'?'14.9rem':''}">
-    <div class="big-bg">
+    <div class="stopprevent" :style="{overflow:popType?'hidden':'',height:popType?'100%':''}">
+    <div class="big-bg" :style="{}">
+      
+
+      
       <!-- 气泡 -->
       <div class="bubble" v-if="currentindex==='index'&&rankListInfo.popup===true">
         当前距离上一档奖励
@@ -14,7 +18,7 @@
         <div class="guide" @click="guide"></div>
         <div class="countdown-container">
           <div>
-            <div class="countdowntime">
+            <div class="countdowntime" v-if="countTime" >
               距离今日榜单结束仅剩&nbsp;
               <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp;
               <div v-if="countTime.length">{{countTime.slice(2,3)}}</div>&nbsp;
@@ -22,6 +26,15 @@
               <div v-if="countTime.length">{{countTime.slice(5,6)}}</div>&nbsp;
               <div v-if="countTime.length" class="block-bg">{{countTime.slice(6,8)}}</div>&nbsp;
               <div v-if="countTime.length">{{countTime.slice(8,9)}}</div>
+            </div>
+              <div class="countdowntime" v-if="countTime==''" >
+              距离今日榜单结束仅剩&nbsp;
+              <div  class="block-bg">00</div>&nbsp;
+              <div >时</div>&nbsp;
+              <div  class="block-bg">00</div>&nbsp;
+              <div >分</div>&nbsp;
+              <div class="block-bg">00</div>&nbsp;
+              <div >秒</div>
             </div>
             <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div>
           </div>
@@ -112,13 +125,13 @@
                     <!-- 获取金币 -->
                     <li>
                       <img
-                        v-if="activityInfo.state===1"
+                        v-if="activityInfo.state===1&&countTime!=''"
                         @click="goshop"
                         src="./images/gaincoin.png"
                         alt
                       />
                       <img
-                        v-if="activityInfo.state===2"
+                        v-if="countTime===''"
                         @click="activityend"
                         src="./images/gaincoin-end.png"
                         alt
@@ -129,10 +142,10 @@
               </div>
               <ul class="ranklist-inner" :style="{height:rankList.length<8?'5rem':''}">
                 <li>
-                  <div class="ranklist-title">排名</div>
-                  <div class="ranklist-title">玩家昵称</div>
-                  <div class="ranklist-title">金币数/更新时间</div>
-                  <div class="ranklist-title">当前奖励</div>
+                  <div class="ranklist-title rank">排名</div>
+                  <div class="ranklist-title nickname">玩家昵称</div>
+                  <div class="ranklist-title coinnum">金币数/更新时间</div>
+                  <div class="ranklist-title currentprize">当前奖励</div>
                 </li>
                 <div class="ranklist-scroll">
                   <template v-if="rankList.length>3">
@@ -148,6 +161,7 @@
                       </div>
                       <div class="userAwards-name">{{item.awardsName}}</div>
                     </li>
+                    <li v-if="rankList.length>=8" class="already">已经到底了</li>
                   </template>
                   <template v-if="rankList.length===0">
                     <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
@@ -204,6 +218,7 @@
 
       <div class="bottom-left"></div>
       <div class="bottom-right"></div>
+    </div>
     </div>
     <!-- <footer> -->
 
@@ -306,7 +321,8 @@ export default {
       console.log("this.change", this.change);
 
       // this.getsecondlist()
-      this.getActivityInfo();
+      // this.getActivityInfo();
+      this.getpop()
     }
   },
   computed: {
@@ -415,12 +431,15 @@ export default {
     // 往期榜单
     rankrecord() {
       this.popType = 4;
+      
       GLOBALS.marchSetsPoint("A_H5PT0263003096");
     },
     // 金币记录
     gocoinrecord() {
+    
       this.popType = 3;
-      GLOBALS.marchSetsPoint("A_H5PT0263003097");
+        this.getCoinRecord()
+      // GLOBALS.marchSetsPoint("A_H5PT0263003097");
     },
     // 跳转商城
     goshop() {
@@ -453,59 +472,9 @@ export default {
     // getcontinume(e){
     //   this.continume=e
     // },
-
-    async getActivityInfo() {
-      const res = await activityinfo();
-      this.activityInfo = _get(res, "data", {});
-      // if (this.activityInfo.popupList.length === 3) {
-      //   this.endlist = 2;
-      // }
-      // 判断是否首次进入
-      if (this.activityInfo.first === true) {
-        this.popType = 2;
-      }
-      // 判断弹窗类型
-      if (this.change !== 1 && this.change !== 2) {
-        // 第一次
-        if (this.activityInfo.popupList.length) {
-          if (this.activityInfo.popupList[0].propType === 1) {
-            // 未上榜
-            this.notop = this.activityInfo.popupList[0];
-            this.popType = 6;
-
-            GLOBALS.marchSetsPoint("A_H5PT0263003102");
-          } else if (this.activityInfo.popupList[0].propType === 0) {
-            // 上榜
-            this.ontop = this.activityInfo.popupList[0];
-            // this.popType = 7;
-
-            GLOBALS.marchSetsPoint("A_H5PT0263003101");
-          } else if (this.activityInfo.popupList[0].propType === 2) {
-            // 金币新增
-            this.addcoin = this.activityInfo.popupList[0];
-            this.popType = 5;
-
-            GLOBALS.marchSetsPoint("A_H5PT0263003099");
-          } else if (this.activityInfo.popupList[0].propType === 3) {
-            // 排名反超
-            this.pass = this.activityInfo.popupList[0];
-            this.popType = 9;
-            // this.endlist = 0;
-            GLOBALS.marchSetsPoint("A_H5PT0263003100");
-          } else if (this.activityInfo.popupList[0].propType === 4) {
-            // 终极土豪榜上榜
-            this.supertop = this.activityInfo.popupList[0];
-            this.popType = 8;
-
-            GLOBALS.marchSetsPoint("A_H5PT0263003103");
-          }
-          //
-
-          // console.log("倒计时", this.countTime);
-        }
-        // 第二次
-      } else {
-        if (this.change === 1) {
+// 循环弹窗
+  getpop(){
+          if (this.change === 1) {
           console.log("change1", this.change);
           if (this.activityInfo.popupList[1].propType === 1) {
             // 未上榜
@@ -574,6 +543,127 @@ export default {
               GLOBALS.marchSetsPoint("A_H5PT0263003103");
             }
           }
+  },
+    async getActivityInfo() {
+      const res = await activityinfo();
+      this.activityInfo = _get(res, "data", {});
+      // if (this.activityInfo.popupList.length === 3) {
+      //   this.endlist = 2;
+      // }
+      // 判断是否首次进入
+      if (this.activityInfo.first === true) {
+        this.popType = 2;
+      }
+      // 判断弹窗类型
+      if (this.change !== 1 && this.change !== 2) {
+        // 第一次
+        if (this.activityInfo.popupList.length) {
+          if (this.activityInfo.popupList[0].propType === 1) {
+            // 未上榜
+            this.notop = this.activityInfo.popupList[0];
+            this.popType = 6;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003102");
+          } else if (this.activityInfo.popupList[0].propType === 0) {
+            // 上榜
+            this.ontop = this.activityInfo.popupList[0];
+            this.popType = 7;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003101");
+          } else if (this.activityInfo.popupList[0].propType === 2) {
+            // 金币新增
+            this.addcoin = this.activityInfo.popupList[0];
+            this.popType = 5;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003099");
+          } else if (this.activityInfo.popupList[0].propType === 3) {
+            // 排名反超
+            this.pass = this.activityInfo.popupList[0];
+            this.popType = 9;
+            // this.endlist = 0;
+            GLOBALS.marchSetsPoint("A_H5PT0263003100");
+          } else if (this.activityInfo.popupList[0].propType === 4) {
+            // 终极土豪榜上榜
+            this.supertop = this.activityInfo.popupList[0];
+            this.popType = 8;
+
+            GLOBALS.marchSetsPoint("A_H5PT0263003103");
+          }
+          //
+
+          // console.log("倒计时", this.countTime);
+        }
+        // 第二次
+      // } else {
+        // if (this.change === 1) {
+        //   console.log("change1", this.change);
+        //   if (this.activityInfo.popupList[1].propType === 1) {
+        //     // 未上榜
+        //     this.notop = this.activityInfo.popupList[1];
+        //     this.popType = 6;
+        //     // this.index = 0;
+        //     GLOBALS.marchSetsPoint("A_H5PT0263003102");
+        //   } else if (this.activityInfo.popupList[1].propType === 0) {
+        //     // 上榜
+        //     this.ontop = this.activityInfo.popupList[1];
+        //     this.popType = 7;
+        //     // this.index = 0;
+        //     GLOBALS.marchSetsPoint("A_H5PT0263003101");
+        //   } else if (this.activityInfo.popupList[1].propType === 2) {
+        //     // 金币新增
+        //     this.addcoin = this.activityInfo.popupList[1];
+        //     this.popType = 5;
+        //     // this.index = 0;
+        //     GLOBALS.marchSetsPoint("A_H5PT0263003099");
+        //   } else if (this.activityInfo.popupList[1].propType === 3) {
+        //     // 排名反超
+        //     this.pass = this.activityInfo.popupList[1];
+        //     this.popType = 9;
+        //     // this.index = 0;
+        //     GLOBALS.marchSetsPoint("A_H5PT0263003100");
+        //   } else if (this.activityInfo.popupList[1].propType === 4) {
+        //     // 终极土豪榜上榜
+        //     this.supertop = this.activityInfo.popupList[1];
+        //     this.popType = 8;
+        //     // this.index = 0;
+        //     GLOBALS.marchSetsPoint("A_H5PT0263003103");
+        //   }
+        // } 
+        //    if (this.change === 2) {
+        //     console.log("change2", this.change);
+        //     if (this.activityInfo.popupList[2].propType === 1) {
+        //       // this.endlist = 0;
+        //       // 未上榜
+        //       this.notop = this.activityInfo.popupList[2];
+        //       this.popType = 6;
+        //       this.change=0
+        //       GLOBALS.marchSetsPoint("A_H5PT0263003102");
+        //     } else if (this.activityInfo.popupList[2].propType === 0) {
+        //       // 上榜
+        //       // this.endlist = 0;
+        //       this.ontop = this.activityInfo.popupList[2];
+        //       this.popType = 7;
+        //       GLOBALS.marchSetsPoint("A_H5PT0263003101");
+        //     } else if (this.activityInfo.popupList[2].propType === 2) {
+        //       // 金币新增
+        //       this.addcoin = this.activityInfo.popupList[2];
+        //       this.popType = 5;
+        //       // this.endlist = 0;
+        //       GLOBALS.marchSetsPoint("A_H5PT0263003099");
+        //     } else if (this.activityInfo.popupList[2].propType === 3) {
+        //       // 排名反超
+        //       this.pass = this.activityInfo.popupList[2];
+        //       this.popType = 9;
+        //       // this.endlist = 0;
+        //       GLOBALS.marchSetsPoint("A_H5PT0263003100");
+        //     } else if (this.activityInfo.popupList[2].propType === 4) {
+        //       // 终极土豪榜上榜
+        //       // this.endlist = 0;
+        //       this.supertop = this.activityInfo.popupList[2];
+        //       this.popType = 8;
+        //       GLOBALS.marchSetsPoint("A_H5PT0263003103");
+        //     }
+        //   }
         
       }
 
@@ -600,9 +690,12 @@ export default {
     // },
     goindex() {
       this.currentindex = "index";
+      this.getRankList()
+
     },
     gosecond() {
       this.currentindex = "second";
+      this.getTotalRankList()
     },
     getCountInfo(dateinfo) {
       let day = Math.floor(dateinfo / 86400);
@@ -1207,6 +1300,8 @@ section {
           justify-content: space-evenly;
           &:first-child {
             padding-top: 0.1rem;
+            width: 5.75rem;
+    margin: 0 auto;
           }
         }
         .ranklist-title {
@@ -1214,6 +1309,24 @@ section {
           font-family: PingFang SC;
           font-weight: 500;
           color: rgba(122, 247, 255, 1);
+          
+              text-align: center;
+    
+    &.rank{
+      width: 0.5rem;
+    }
+    &.nickname{
+width: 2rem;
+text-align: center;
+    }
+    &.coinnum{
+      width: 1.6rem;
+    text-align: center;
+    }
+    &.currentprize{
+    width: 1.5rem;
+    text-align: center;
+    }
         }
         .ranklist-scroll {
           margin-top: 0.15rem;
@@ -1231,7 +1344,7 @@ section {
             height: 0.7rem;
             border-bottom: 1px solid #745b7b;
             width: 5.75rem;
-            justify-content: space-between;
+            // justify-content: space-between;
             &:last-child {
               margin-bottom: 1rem;
             }
@@ -1242,7 +1355,7 @@ section {
               text-overflow: ellipsis;
             }
             .order {
-              margin-left: 0.15rem;
+              
               width: 0.36rem;
               height: 0.36rem;
               background: rgba(255, 247, 183, 1);
@@ -1257,15 +1370,16 @@ section {
               line-height: 0.36rem;
             }
             .nickname {
-              width: 1.1rem;
+              width: 2rem;
               // height:21px;
               font-size: 0.22rem;
               font-family: PingFang SC;
               font-weight: 500;
               color: rgba(255, 247, 183, 1);
-              margin-left: -0.1rem;
+          
             }
             .coin-time {
+              width: 1.49rem;
               display: flex;
               flex-direction: column;
               align-items: center;
@@ -1291,7 +1405,7 @@ section {
             }
 
             .userAwards-name {
-              width: 1.18rem;
+              width: 1.5rem;
               // height:19px;
               font-size: 0.2rem;
               font-family: PingFang SC;
@@ -1299,6 +1413,16 @@ section {
               color: rgba(255, 247, 183, 1);
               // margin-right: 0.15rem;
             }
+          }
+          .already{
+//             width:109px;
+// height:19px;
+font-size:0.20rem;
+font-family:Source Han Sans CN;
+font-weight:400;
+color:rgba(255,247,183,1);
+margin: 0.2rem auto;
+// line-height:34px;
           }
         }
       }
