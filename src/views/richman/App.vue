@@ -33,7 +33,7 @@
                 <div class="block-bg">00</div>&nbsp;
                 <div>秒</div>
               </div>
-              <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div>
+              <!-- <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div> -->
             </div>
           </div>
           <!-- tab切换 -->
@@ -159,7 +159,7 @@
                       </li>
                       <li v-if="rankList.length>=8" class="already">已经到底了</li>
                     </template>
-                    <template v-if="rankList.length===0">
+                    <template v-if="rankList.length===0&&countTime!=''">
                       <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
                     </template>
                   </div>
