@@ -308,6 +308,7 @@ export default {
       if(val===''){
         this.getActivityInfo()
         this.getRankList()
+        console.log('再次调用接口')
       }
     }
   },
@@ -426,7 +427,7 @@ export default {
     gocoinrecord() {
       this.popType = 3;
       this.getCoinRecord();
-      // GLOBALS.marchSetsPoint("A_H5PT0263003097");
+      GLOBALS.marchSetsPoint("A_H5PT0263003097");
     },
     // 跳转商城
     goshop() {
@@ -611,6 +612,7 @@ export default {
     },
      // 首页终极富翁榜按钮（副页tab切换）
     gosecond() {
+          GLOBALS.marchSetsPoint("A_H5PT0263003092");
       this.currentindex = "second";
       this.getTotalRankList();
     },
