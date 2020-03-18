@@ -450,8 +450,6 @@ export default {
   mounted() {
     GLOBALS.marchSetsPoint("A_H5PT0263003092");
     this.getRankList();
-    console.log(this.otherData);
-    console.log(this.lastTwoData);
   },
   computed: {},
 
@@ -467,7 +465,7 @@ export default {
       this.prerankinfo = _get(res, "data", {});
       this.yesterdayList = this.prerankinfo.yesterdayList;
       this.rankingList = this.prerankinfo.rankingList;
-      console.log(this.yesterdayList, this.rankingList);
+      // console.log(this.yesterdayList, this.rankingList);
       // 如果超出一屏高度，排行榜则用展开按钮分割，点击时展开所有排行榜
       if (this.yesterdayList && this.yesterdayList.length > 3) {
         this.lastTwoData = this.yesterdayList.slice(3);
