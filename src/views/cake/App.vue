@@ -5,8 +5,8 @@
       <div class="add"></div>
       <div class="record"></div>
       <div class="sub-title"></div>
-      <section class="cake-bg">
-
+      <section class="cake-bg" :class="`state-000`">
+        <div class=""></div>
       </section>
     </article>
     <article class="cake-rule">
@@ -57,6 +57,7 @@
 
 <script>
 import utils from '@/common/js/utils'
+import { activityInfo } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -155,23 +156,20 @@ export default {
       &.state-111 {
         .bg-center("./img/state-111.png");
       }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
+      &.state-200 {
+        .bg-center("./img/state-200.png");
       }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
+      &.state-210 {
+        .bg-center("./img/state-210.png");
       }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
+      &.state-220 {
+        .bg-center("./img/state-220.png");
       }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
+      &.state-221 {
+        .bg-center("./img/state-221.png");
       }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
-      }
-      &.state-000 {
-        .bg-center("./img/state-000.png");
+      &.state-222 {
+        .bg-center("./img/state-222.png");
       }
     }
   }
