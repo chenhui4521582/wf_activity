@@ -33,7 +33,6 @@
                 <div class="block-bg">00</div>&nbsp;
                 <div>秒</div>
               </div>
-              <!-- <div class="countdowntime" v-if="activityInfo.countdown===0">活动已经结束</div> -->
             </div>
           </div>
           <!-- tab切换 -->
