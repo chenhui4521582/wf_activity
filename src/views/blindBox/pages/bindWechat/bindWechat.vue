@@ -53,15 +53,14 @@
         </div>
         <div class="item">
           <img src="./img/icon2.png" alt="">
-          <p>追踪发货物流</p>
+          <p>获取优惠信息</p>
         </div>
         <div class="item">.
           <img src="./img/icon3.png" alt="">
-          <p>追踪发货物流</p>
+          <p>专属售后保障</p>
         </div>
       </div>
     </div>
-    <button @click="clear">清除</button>
   </div>
 </template>
 <script>
@@ -96,10 +95,6 @@ export default {
     step
   },
   methods: {
-    clear() {
-      localStorage.removeItem('wechatAnimation')
-      localStorage.removeItem('wechatEntry')
-    },
     goBack() {
       this.$router.go(-1)
     },
