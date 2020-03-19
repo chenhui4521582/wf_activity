@@ -136,8 +136,8 @@
                     <div class="ranklist-title coinnum">金币数/更新时间</div>
                     <div class="ranklist-title currentprize">当前奖励</div>
                   </li>
-                  <div class="ranklist-scroll">
-                    <template v-if="rankList.length>3">
+                  <div class="ranklist-scroll" :class="[rankList.length===0&&countTime!=''?'ranklist-scroll-new':'']" >
+                    <template v-if="rankList.length>3" >
                       <li v-for="(item,index) in fourStartList" :key="index" class="rank-list">
                         <div
                           class="order"
@@ -153,7 +153,7 @@
                       <li v-if="rankList.length>=8" class="already">已经到底了</li>
                     </template>
                     <template v-if="rankList.length===0&&countTime!=''">
-                      <p class="notlist-tips">充值送金币,等你上榜赢大奖</p>
+                      <p class="notlist-tips" style="margin:0.5rem auto 0;text-align:center ">充值送金币,等你上榜赢大奖</p>
                     </template>
                   </div>
                 </ul>
@@ -797,12 +797,13 @@ section {
             color: rgba(255, 233, 171, 1);
             // 另一种方法
             .block-bg {
+              text-align:center;
               width: 0.3rem;
               height: 0.32rem;
               background: rgba(255, 234, 173, 1);
               border-radius: 0.06rem;
               margin: 0;
-              font-size: 0.25rem;
+              font-size: 0.21rem;
               font-weight: bold;
               color: rgba(255, 35, 103, 1);
               line-height: 0.35rem;
@@ -1124,7 +1125,11 @@ section {
             flex-direction: column;
             align-items: center;
             height: 100%;
-            justify-content: space-evenly;
+            justify-content: space-between;
+            &::before,&::after{
+              content: '';
+              display: block;
+            }
             .top-one-row {
               font-size: 0.22rem;
               font-family: PingFang SC;
@@ -1153,7 +1158,11 @@ section {
         margin: 0 auto;
         li {
           display: flex;
-          justify-content: space-evenly;
+          justify-content: space-between;
+          &::before,&::after{
+            content: '';
+            display: block;
+          }
           &:first-child {
             padding-top: 0.1rem;
             width: 5.75rem;
@@ -1183,12 +1192,15 @@ section {
           }
         }
         .ranklist-scroll {
-          margin-top: 0.15rem;
+        
           margin-top: 0.1rem;
           display: flex;
           flex-direction: column;
           align-items: center;
           position: relative;
+          &.ranklist-scroll-new{
+            display: block;
+          }
           .rank-list {
             flex-shrink: 0;
             align-items: center;
@@ -1229,7 +1241,11 @@ section {
               flex-direction: column;
               align-items: center;
               height: 100%;
-              justify-content: space-evenly;
+              justify-content: space-between;
+              &::before,&::after{
+                content: '';
+                display: block;
+              }
               span:first-child {
                 width: 1.08rem;
                 font-size: 0.22rem;
@@ -1273,7 +1289,11 @@ section {
         margin: 0.25rem auto 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: space-between;
+        &::before,&::after{
+          content: '';
+          display: block;
+        }
         .second-tips {
           margin-left: 0.33rem;
           font-size: 0.22rem;
@@ -1318,7 +1338,11 @@ section {
           height: 1.6rem;
           display: flex;
           align-items: center;
-          justify-content: space-evenly;
+          justify-content: space-between;
+          &::before,&::after{
+            content: '';
+            display: block;
+          }
           .topfive-headpic {
             width: 1.1rem;
             height: 1.1rem;
