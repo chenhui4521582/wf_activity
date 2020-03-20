@@ -1,57 +1,69 @@
 <template>
   <main class="cake-wrapper">
-    <article class="cake-container" v-if="isPeriod">
-      <div class="back" @click="back"></div>
-      <div class="add"></div>
-      <div class="record"></div>
-      <div class="sub-title"></div>
-      <section class="cake-bg" :class="`state-000`">
-        <div class=""></div>
-      </section>
-    </article>
-    <article class="cake-rule">
-      <h2>活动规则</h2>
-      <section>
-        <p>
-          1. 活动时间：2020-03-20 10:00 -2020-03-23 22:00
-        </p>
-        <p>
-          2. 瓜分条件（蛋糕顺序为从上至下）：<br>
-          &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费可解锁参与瓜分。<br>
-          &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日任意付费满10元可解锁参与<br>瓜分第1层和第2层蛋糕。<br>
-          &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止3.23&nbsp;&nbsp;22:00）累计<br>付费满88元可解锁参与瓜分。<br>
-        </p>
-        <p>
-          3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕3.23&nbsp;&nbsp;22:00开启瓜分。<br>
-          注意：第1层和第2层蛋糕为每日瓜分，瓜分截止时间为解锁次日10：00前，若用户未领取，则奖励自动失效，请及时参与瓜分。
-        </p>
-        <p>
-          4. 瓜分规则：有资格参与瓜分的用户随机获得奖励，奖励随付费金额增加而变大。
-        </p>
-        <p>
-          5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
-        </p>
-        <p>
-          6. 活动结束后，奖励领取截止时间: 3.24&nbsp;&nbsp;22:00。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
-        </p>
-        <p class="bottom">
-          活动最终解释权归平台所有
-        </p>
-      </section>
-    </article>
-    <article class="cake-btn">
-      <section class="period" v-if="isPeriod">
-        <div class="arrow"></div>
-        <div class="middle">
-          <p>继续解锁</p>
-          <p class="sub">今日已有2000人参与瓜分</p>
-        </div>
-        <div class="arrow right"></div>
-      </section>
-      <section class="normal" v-else>
-        <span>活动已结束</span>
-      </section>
-    </article>
+    <template v-if="!isShowRank">
+      <article class="cake-container" v-if="isPeriod">
+        <div class="back" @click="back"></div>
+        <div class="add"></div>
+        <div class="record" @click="showRank"></div>
+        <div class="sub-title"></div>
+        <section class="cake-bg" :class="`state-${cakeState}`">
+          <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
+            v-for="(item,index) in configList">
+            <div class="lock"></div>
+            <div class="line"></div>
+            <div class="desc">
+              <p>瓜分<span>{{item.amount}}</span>话费券</p>
+              <p>{{item.recharge|rechargeFilter}}</p>
+            </div>
+          </div>
+        </section>
+      </article>
+      <article class="cake-rule">
+        <h2>活动规则</h2>
+        <section>
+          <p>
+            1. 活动时间：{{activityInfo.timeline}}
+          </p>
+          <p>
+            2. 瓜分条件（蛋糕顺序为从上至下）：<br>
+            &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费可解锁参与瓜分。<br>
+            &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日任意付费满10元可解锁参与<br>瓜分第1层和第2层蛋糕。<br>
+            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{activityInfo.endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
+          </p>
+          <p>
+            3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕3.23&nbsp;&nbsp;22:00开启瓜分。<br>
+            注意：第1层和第2层蛋糕为每日瓜分，瓜分截止时间为解锁次日10:00前，若用户未领取，则奖励自动失效，请及时参与瓜分。
+          </p>
+          <p>
+            4. 瓜分规则：有资格参与瓜分的用户随机获得奖励，奖励随付费金额增加而变大。
+          </p>
+          <p>
+            5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
+          </p>
+          <p>
+            6. 活动结束后，奖励领取截止时间: 3.24&nbsp;&nbsp;22:00。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+          </p>
+          <p class="bottom">
+            活动最终解释权归平台所有
+          </p>
+        </section>
+      </article>
+      <article class="cake-btn">
+        <section class="period" v-if="isPeriod">
+          <div class="arrow"></div>
+          <div class="middle">
+            <p>继续解锁</p>
+            <p class="sub">今日已有2000人参与瓜分</p>
+          </div>
+          <div class="arrow right"></div>
+        </section>
+        <section class="normal" v-else>
+          <span>活动已结束</span>
+        </section>
+      </article>
+    </template>
+    <rank v-if="isShowRank" @on-back="closeRank"></rank>
+    <pop-up v-if="isShowPopUp" :type="popType"></pop-up>
   </main>
 </template>
 
@@ -59,14 +71,22 @@
 import utils from '@/common/js/utils'
 import { activityInfo } from './services/api'
 import _get from 'lodash.get'
+import Rank from './component/rank'
+import PopUp from './component/popup'
 export default {
   name: '',
   components: {
-
+    Rank,
+    PopUp
   },
   data () {
     return {
-      isPeriod: true
+      isPeriod: true,
+      activityInfo: {},
+      configList: [],
+      isShowRank: false,
+      isShowPopUp: true,
+      popType: 0
     }
   },
   computed: {
@@ -75,14 +95,51 @@ export default {
     },
     sourceAddress () {
       return utils.getUrlParam('from')
+    },
+    cakeState () {
+      if (this.configList.length === 3) {
+        return this.configList.map(ele => ele.status).join('')
+      } else {
+        return '000'
+      }
+    }
+  },
+  filters: {
+    rechargeFilter (recharge) {
+      switch (recharge) {
+        case 10:
+          return '付费满10元解锁'
+        case 88:
+          return '活动期间累计付费满88元解锁'
+        default:
+          return '任意付费解锁'
+      }
     }
   },
   mounted () {
-
+    this.getActivityInfo()
   },
   methods: {
     back () {
       history.go(-1)
+    },
+    async getActivityInfo () {
+      const res = await activityInfo()
+      this.activityInfo = _get(res, 'data', {})
+      this.configList = _get(res, 'data.configList', [])
+    },
+    showRank () {
+      this.isShowRank = true
+    },
+    closeRank () {
+      this.isShowRank = false
+    },
+    showPopup (type) {
+      this.popType = type
+      this.isShowPopUp = true
+    },
+    closePopup () {
+      this.isShowPopUp = false
     }
   }
 }
@@ -99,6 +156,7 @@ export default {
   background: #320e12 no-repeat center top;
   background-size: 100% auto;
   font-family: aAlibaba PuHuiTil;
+  font-size: 0.2rem;
   .cake-container {
     width: 100%;
     min-height: 580px;
@@ -147,8 +205,17 @@ export default {
       &.state-000 {
         .bg-center("./img/state-000.png");
       }
+      &.state-001 {
+        .bg-center("./img/state-001.png");
+      }
+      &.state-002 {
+        .bg-center("./img/state-002.png");
+      }
       &.state-100 {
         .bg-center("./img/state-100.png");
+      }
+      &.state-101 {
+        .bg-center("./img/state-101.png");
       }
       &.state-110 {
         .bg-center("./img/state-110.png");
@@ -158,6 +225,9 @@ export default {
       }
       &.state-200 {
         .bg-center("./img/state-200.png");
+      }
+      &.state-202 {
+        .bg-center("./img/state-202.png");
       }
       &.state-210 {
         .bg-center("./img/state-210.png");
@@ -170,6 +240,133 @@ export default {
       }
       &.state-222 {
         .bg-center("./img/state-222.png");
+      }
+      .cake-item {
+        width: 100%;
+        position: relative;
+        .lock {
+          width: 0.12rem;
+          height: 0.12rem;
+          background: #fff;
+          border-radius: 50%;
+          position: absolute;
+        }
+        .desc {
+          color: #ffdb6e;
+          font-size: 0.2rem;
+          width: 1.9rem;
+          border-radius: 0.2rem;
+          background-color: rgba(0, 0, 0, 0.4);
+          padding: 0.1rem;
+          position: absolute;
+          bottom: 0.6rem;
+          line-height: 0.24rem;
+          span {
+            color: #d33124;
+            font-size: 0.28rem;
+          }
+        }
+        .line {
+          background: #fff;
+          height: 0.01rem;
+          position: absolute;
+        }
+        &.level-1 {
+          height: 2.6rem;
+          .lock {
+            bottom: 0.6rem;
+            left: 1.5rem;
+          }
+          .desc {
+            left: -1rem;
+          }
+          .line {
+            width: 0.5rem;
+            left: 1.08rem;
+            bottom: 0.74rem;
+            transform-origin: center center;
+            transform: rotateZ(15deg);
+          }
+        }
+        &.level-2 {
+          height: 1.8rem;
+          .lock {
+            bottom: 0.64rem;
+            right: 0.7rem;
+          }
+          .desc {
+            right: -1rem;
+            bottom: 0.84rem;
+          }
+          .line {
+            width: 0.5rem;
+            right: 0.22rem;
+            bottom: 0.76rem;
+            transform-origin: center center;
+            transform: rotateZ(-15deg);
+          }
+        }
+        &.level-3 {
+          height: 2.16rem;
+          .lock {
+            bottom: 0.7rem;
+            left: 1.5rem;
+          }
+          .desc {
+            left: -1rem;
+          }
+          .line {
+            width: 0.5rem;
+            left: 1.08rem;
+            bottom: 0.82rem;
+            transform-origin: center center;
+            transform: rotateZ(15deg);
+          }
+        }
+
+        &.status-0 {
+          .lock {
+            width: 0.54rem;
+            height: 0.54rem;
+            .bg-center("./img/lock-icon.png");
+            position: absolute;
+            bottom: 0.4rem;
+            left: 50%;
+            margin-left: -0.27rem;
+          }
+          &.level-1 {
+            .line {
+              width: 1.2rem;
+              bottom: 0.8rem;
+              transform-origin: center center;
+              transform: rotateZ(10deg);
+            }
+          }
+          &.level-2 {
+            .lock {
+              bottom: 0.5rem;
+              right: 1.5rem;
+            }
+            .line {
+              width: 1.2rem;
+              right: 1.08rem;
+              bottom: 0.94rem;
+              transform-origin: center center;
+              transform: rotateZ(-10deg);
+            }
+          }
+          &.level-3 {
+            .lock {
+              bottom: 0.6rem;
+            }
+            .line {
+              width: 1.2rem;
+              bottom: 1rem;
+              transform-origin: center center;
+              transform: rotateZ(10deg);
+            }
+          }
+        }
       }
     }
   }

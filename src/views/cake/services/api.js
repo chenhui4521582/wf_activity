@@ -15,16 +15,16 @@ export const activityInfo = async () => {
  * @description 瓜分
  * @return {Object} data
  */
-export const divide = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/divide`)
+export const divide = async (time) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/divide/${time}`)
   return data
 }
 /**
  * @description 瓜分榜单
  * @return {Object} data
  */
-export const recordList = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/record-list`)
+export const rankList = async (params) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/rank-list`, params)
   return data
 }
 /**
@@ -32,7 +32,7 @@ export const recordList = async () => {
  * @return {Object} data
  */
 export const useMarkup = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/use-markup/${id}`)
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/use-markup`)
   return data
 }
 /**
@@ -43,14 +43,14 @@ export const userRecord = async () => {
   const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/user-record`)
   return data
 }
-/**
- * @description 查询瓜分类活动状态
- * @return {Object} data
- */
-export const divideState = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/activity/divide-state`)
-  return data
-}
+// /**
+//  * @description 查询瓜分类活动状态
+//  * @return {Object} data
+//  */
+// export const divideState = async () => {
+//   const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/activity/divide-state`)
+//   return data
+// }
 /**
  * @description 礼包接口地址
  * @return {Object} data
