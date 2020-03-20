@@ -69,7 +69,7 @@
 
 <script>
 import utils from '@/common/js/utils'
-import { activityInfo } from './services/api'
+import { ActivityInfo } from './services/api'
 import _get from 'lodash.get'
 import Rank from './component/rank'
 import PopUp from './component/popup'
@@ -124,7 +124,7 @@ export default {
       history.go(-1)
     },
     async getActivityInfo () {
-      const res = await activityInfo()
+      const res = await ActivityInfo()
       this.activityInfo = _get(res, 'data', {})
       this.configList = _get(res, 'data.configList', [])
     },

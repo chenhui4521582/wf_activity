@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { rankList, userRecord } from '../services/api'
+import { RankList, UserRecord } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: 'rank',
@@ -146,7 +146,7 @@ export default {
     async getRankList () {
       this.isLoading = true
       this.page++
-      const res = await rankList({ page: this.page, pageSize: this.pageSize })
+      const res = await RankList({ page: this.page, pageSize: this.pageSize })
       let data = _get(res, 'data', [])
       if (data.length < this.pageSize) {
         this.finished = true
@@ -156,7 +156,7 @@ export default {
       this.isLoading = false
     },
     async getUserRecord () {
-      const res = await userRecord()
+      const res = await UserRecord()
       this.userRecord = _get(res, 'data', [])
     },
     back () {

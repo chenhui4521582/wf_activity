@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { GetMallProductList } from '../services/api'
+import _get from 'lodash.get'
 export default {
   name: '',
   components: {
@@ -23,14 +25,19 @@ export default {
   },
   data () {
     return {
-
+      productList: []
     }
   },
   mounted () {
-
+    if (this.type === 0) {
+      this.getMallProductList()
+    }
   },
   methods: {
-
+    async getMallProductList () {
+      const res = await GetMallProductList()
+      this.productList = _get(res, 'data.mallBizConfigs', [])
+    }
   }
 }
 </script>
