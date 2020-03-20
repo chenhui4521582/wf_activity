@@ -31,9 +31,9 @@
       <div class="wechat-name">
         微信号：
         <span>{{wechatName}}</span>
-        <span class="copy" 
-          v-clipboard:copy="wechatName" 
-          v-clipboard:success="onCopy" 
+        <span class="copy"
+          v-clipboard:copy="wechatName"
+          v-clipboard:success="onCopy"
           v-clipboard:error="onError"
         >复制</span>
       </div>
@@ -53,15 +53,14 @@
         </div>
         <div class="item">
           <img src="./img/icon2.png" alt="">
-          <p>追踪发货物流</p>
+          <p>获取优惠信息</p>
         </div>
         <div class="item">.
           <img src="./img/icon3.png" alt="">
-          <p>追踪发货物流</p>
+          <p>专属售后保障</p>
         </div>
       </div>
     </div>
-    <button @click="clear">清除</button>
   </div>
 </template>
 <script>
@@ -96,10 +95,6 @@ export default {
     step
   },
   methods: {
-    clear() {
-      localStorage.removeItem('wechatAnimation')
-      localStorage.removeItem('wechatEntry')
-    },
     goBack() {
       this.$router.go(-1)
     },
@@ -185,7 +180,15 @@ export default {
       })
     }
   },
+  watch: {
+    step (val) {
+      if (val === 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0225003140')
+      }
+    }
+  },
   mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225003139')
     this._getUserBind()
   }
 }
@@ -318,7 +321,7 @@ export default {
         p {
           white-space: nowrap;
           text-align: center;
-        } 
+        }
       }
     }
   }
