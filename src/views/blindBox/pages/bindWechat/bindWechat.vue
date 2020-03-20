@@ -1,5 +1,5 @@
 <template>
-  <div class="code-login">
+  <div class="code-login" v-if="show">
     <nav-bar title="关注公众号" @back="goBack"/>
     <!-- 步骤 -->
     <step :bindPhone="bindPhone"/>
@@ -53,15 +53,14 @@
         </div>
         <div class="item">
           <img src="./img/icon2.png" alt="">
-          <p>追踪发货物流</p>
+          <p>获取优惠信息</p>
         </div>
         <div class="item">.
           <img src="./img/icon3.png" alt="">
-          <p>追踪发货物流</p>
+          <p>专属售后保障</p>
         </div>
       </div>
     </div>
-    <button @click="clear">清除</button>
   </div>
 </template>
 <script>
@@ -76,7 +75,8 @@ export default {
     code: '',
     countTime: '',
     bindPhone: '',
-    wechatName: 'luckybox2020'
+    wechatName: 'luckybox2020',
+    show: false
   }),
   computed: {
     isSubmit () {
@@ -95,10 +95,6 @@ export default {
     step
   },
   methods: {
-    clear() {
-      localStorage.removeItem('wechatAnimation')
-      localStorage.removeItem('wechatEntry')
-    },
     goBack() {
       this.$router.go(-1)
     },
@@ -178,6 +174,9 @@ export default {
         if(code == 200) {
           this.bindPhone = _get(res, 'data.data.phone', '')
         }
+        this.show = true
+      }).catch(error => {
+        this.show = true
       })
     }
   },

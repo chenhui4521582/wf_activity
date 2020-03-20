@@ -21,18 +21,26 @@
     </div>
     <div v-if="isSubmit" class="code-submit" @click="codeSubmit">立即登录</div>
     <div v-else class="code-submit disable" @click="codeSubmit">立即登录</div>
+    <Dialog :show="showDialog" title="温馨提示" confirm="立即登录" @onConfirm="onConfirm">
+      <div class="center">
+        <p>您的微信已被其他账户绑定</p>
+        <p>是否登录该账号</p>
+      </div>
+    </Dialog>
   </div>
 </template>
 <script>
 import {sendCode, getAccessToken, bindWechat, getWechatConfig} from '../../apis/bindPhone'
-import navBar from '../../components/navBar/'
+import Dialog from '../../components/dialog/'
+import NavBar from '../../components/navBar/'
 import _get from 'lodash.get'
 export default {
   name: 'bindPhone',
   data: () => ({
     mobile: '',
     code: '',
-    countTime: ''
+    countTime: '',
+    showDialog: false
   }),
   computed: {
     isSubmit () {
@@ -41,9 +49,13 @@ export default {
     }
   },
   components: {
-    navBar
+    NavBar,
+    Dialog
   },
   methods: {
+    onConfirm() {
+      window.location.replace('https://wap.beeplaying.com/activities/blindBox.html#/blindBox')
+    },
     clearMobile() {
       this.mobile = ""
     },
@@ -107,7 +119,8 @@ export default {
         if(code == 200) {
           let auth = _get(res, 'data.data.auth', '')
           if(auth) {
-            location.href = `${auth}default?accessToken=${accessToken}&act=bind`
+            localStorage.setItem('wxBind', true)
+            window.location.replace(`${auth}default?accessToken=${accessToken}&act=bind`)
           }else {
             this.$toast.show({message})
           }
@@ -133,11 +146,21 @@ export default {
         if(code === 200) {
           let requestToken = _get(res, 'data.data.requestToken', '')
           let isBinding = _get(res, 'data.data.isBinding', false)
-          this._getAccessToken(requestToken, isBinding);
+          /** 防止返回 **/
+          if(!isBinding) {
+            this._getAccessToken(requestToken, isBinding)
+            localStorage.setItem('wxBind', true)
+          }
         }else {
           this.$toast.show({message})
         }
       })
+    }
+  },
+  created() {
+    let wxBind = localStorage.getItem('wxBind')
+    if(wxBind) {
+      this.showDialog = true
     }
   }
 }
@@ -224,6 +247,13 @@ export default {
     color: #fff;
     &.disable {
       background:#E2E2E2;
+    }
+  }
+  .center {
+    padding: .2rem 0 .1rem;
+    p {
+      margin-bottom: .2rem;
+      color: #999;
     }
   }
 }
