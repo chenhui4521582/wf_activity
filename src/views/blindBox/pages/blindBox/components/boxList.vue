@@ -378,6 +378,7 @@ export default {
       }
     },
     async buyTwo () {
+      GLOBALS.marchSetsPoint('A_H5PT0225003132')
       const {
         data: { data: payInfo }
       } = await PayPoint(1)

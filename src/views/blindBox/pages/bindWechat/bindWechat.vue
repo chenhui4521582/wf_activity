@@ -31,9 +31,9 @@
       <div class="wechat-name">
         微信号：
         <span>{{wechatName}}</span>
-        <span class="copy" 
-          v-clipboard:copy="wechatName" 
-          v-clipboard:success="onCopy" 
+        <span class="copy"
+          v-clipboard:copy="wechatName"
+          v-clipboard:success="onCopy"
           v-clipboard:error="onError"
         >复制</span>
       </div>
@@ -180,7 +180,15 @@ export default {
       })
     }
   },
+  watch: {
+    step (val) {
+      if (val === 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0225003140')
+      }
+    }
+  },
   mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0225003139')
     this._getUserBind()
   }
 }
@@ -313,7 +321,7 @@ export default {
         p {
           white-space: nowrap;
           text-align: center;
-        } 
+        }
       }
     }
   }
