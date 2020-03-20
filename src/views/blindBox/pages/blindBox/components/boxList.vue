@@ -226,6 +226,7 @@ export default {
     }
   },
   async mounted () {
+    alert(1)
     await this.init()
     const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
@@ -378,6 +379,7 @@ export default {
       }
     },
     async buyTwo () {
+      GLOBALS.marchSetsPoint('A_H5PT0225003132')
       const {
         data: { data: payInfo }
       } = await PayPoint(1)
