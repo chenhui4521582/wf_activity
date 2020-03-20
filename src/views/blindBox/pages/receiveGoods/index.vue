@@ -142,6 +142,7 @@ export default {
     },
     // 立即查看公众号
     onConfirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225003136')
       this.$router.push({
         name: 'bindWechat'
       })
@@ -168,6 +169,7 @@ export default {
         resolve(isFollowWechat())
       }).then(resolve => {
         if (!isWechat && !resolve && isFirst('followWechat')) {
+          GLOBALS.marchSetsPoint('A_H5PT0225003135')
           this.showFollow = true
         } else {
           setTimeout(() => {

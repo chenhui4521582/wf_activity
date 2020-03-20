@@ -23,6 +23,7 @@ export default {
   }),
   methods: {
     goWechat() {
+      GLOBALS.marchSetsPoint('A_H5PT0225003138')
       this.$router.push({
         name: 'bindWechat'
       })
@@ -116,7 +117,7 @@ export default {
     overflow: hidden;
     padding-top: .07rem;
     margin-left: .28rem;
-    
+
     width: 0;
     height: .56rem;
     font-size: .18rem;
