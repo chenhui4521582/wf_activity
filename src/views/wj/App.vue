@@ -547,7 +547,7 @@ export default {
         if (APP_CHANNEL != 700002 && APP_CHANNEL != 700001) {
           top.location.href = window.linkUrl.getBackUrl(this.curChannel)
         } else {
-          // 665e用700002 玩蜂700001
+          // 665e用700002
           if (APP_CHANNEL == 700002) {
             top.location.href = 'https://www.665e.com/'
           } else {
