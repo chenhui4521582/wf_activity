@@ -186,6 +186,7 @@ export default {
     // 关注公众号
     follow () {
       // location.href = WechatUrl
+      GLOBALS.marchSetsPoint('A_H5PT0225003134')
       this.$router.push({
         name: 'bindWechat'
       })
