@@ -3,7 +3,7 @@
     <template v-if="!isShowRank">
       <article class="cake-container" v-if="isPeriod">
         <div class="back" @click="back"></div>
-        <div class="add"></div>
+        <div class="add" @click="showPopup(0)"></div>
         <div class="record" @click="showRank"></div>
         <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`">
@@ -63,7 +63,7 @@
       </article>
     </template>
     <rank v-if="isShowRank" @on-back="closeRank"></rank>
-    <pop-up v-if="isShowPopUp" :type="popType"></pop-up>
+    <pop-up v-if="isShowPopUp" :type="popType" @on-close="closePopup"></pop-up>
   </main>
 </template>
 
@@ -85,7 +85,7 @@ export default {
       activityInfo: {},
       configList: [],
       isShowRank: false,
-      isShowPopUp: true,
+      isShowPopUp: false,
       popType: 0
     }
   },
@@ -127,6 +127,15 @@ export default {
       const res = await ActivityInfo()
       this.activityInfo = _get(res, 'data', {})
       this.configList = _get(res, 'data.configList', [])
+      let applyPopup = _get(res, 'data.applyPopup', false)
+      let forgetPopup = _get(res, 'data.forgetPopup', false)
+      if (applyPopup) {
+        this.popType = 1
+        this.isShowPopUp = true
+      } else if (!forgetPopup) {
+        this.popType = 2
+        this.isShowPopUp = true
+      }
     },
     showRank () {
       this.isShowRank = true
