@@ -101,7 +101,7 @@ export default {
       isShowRank: false,
       isShowPopUp: false,
       isShake: false,
-      popType: 0,
+      popType: null,
       endDate: '',
       overDate: '',
       countTime: '',
@@ -109,7 +109,7 @@ export default {
       applyPopTimer: null,
       changeTypeTimer: null,
       openCakeTimer: null,
-      cakelevelTimer: null,
+      cakeLevelTimer: null,
       divideInfo: {},
       divideDateStr: '',
       currentOpenCakeIndex: 0,
@@ -248,13 +248,13 @@ export default {
           let number = 0
           this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
           this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
-          this.cakelevelTimer = setInterval(() => {
+          this.cakeLevelTimer = setInterval(() => {
             if (number < length) {
               number++
               this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
               this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
             } else {
-              clearInterval(this.cakelevelTimer)
+              clearInterval(this.cakeLevelTimer)
             }
           }, 3000)
           this.openCakeTimer = setTimeout(() => {
@@ -282,6 +282,8 @@ export default {
       this.isShowPopUp = true
     },
     closePopup () {
+      this.popType = null
+      this.divideInfo = {}
       this.isShowPopUp = false
       this.getActivityInfo()
     },
@@ -365,10 +367,12 @@ export default {
     clearTimeout(this.changeTypeTimer)
     clearInterval(this.countDownTimer)
     clearTimeout(this.openCakeTimer)
+    clearTimeout(this.cakeLevelTimer)
     this.this.applyPopTimer = null
     this.changeTypeTimer = null
     this.countDownTimer = null
     this.openCakeTimer = null
+    this.cakeLevelTimer = null
   }
 }
 </script>

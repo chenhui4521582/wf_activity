@@ -75,7 +75,7 @@ export default {
   props: {
     type: {
       type: Number,
-      default: 0
+      default: null
     },
     divideInfo: {
       type: Object,
@@ -114,9 +114,6 @@ export default {
     }
   },
   mounted () {
-    if (this.type === 0) {
-      this.getMallProductList()
-    }
   },
   methods: {
     async getMallProductList () {
@@ -158,6 +155,15 @@ export default {
     },
     closePop () {
       this.$emit('on-close')
+    }
+  },
+  watch: {
+    type: {
+      handler (val, oldVal) {
+        if (val === 0) {
+          this.getMallProductList()
+        }
+      }
     }
   }
 }
