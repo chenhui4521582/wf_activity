@@ -1,15 +1,17 @@
 <template>
   <main class="cake-wrapper">
     <template v-if="!isShowRank">
-      <article class="cake-container" v-if="isPeriod">
+      <article class="cake-container" v-if="actStateInfo.state!==4">
         <div class="back" @click="back"></div>
         <div class="add" @click="showPopup(0)"></div>
         <div class="record" @click="showRank"></div>
         <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`">
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
-            v-for="(item,index) in configList">
-            <div class="lock"></div>
+            v-for="(item,index) in configList" :key="index">
+            <div class="lock"
+              :class="{shake:item.status===0&&isShake&&(index+1)%2,'shake-deff':item.status===0&&isShake&&index%2}">
+            </div>
             <div class="line"></div>
             <div class="desc">
               <p>瓜分<span>{{item.amount}}</span>话费券</p>
@@ -28,7 +30,7 @@
             2. 瓜分条件（蛋糕顺序为从上至下）：<br>
             &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费可解锁参与瓜分。<br>
             &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日任意付费满10元可解锁参与<br>瓜分第1层和第2层蛋糕。<br>
-            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{activityInfo.endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
+            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{this.endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
           </p>
           <p>
             3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕3.23&nbsp;&nbsp;22:00开启瓜分。<br>
@@ -41,35 +43,44 @@
             5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
           </p>
           <p>
-            6. 活动结束后，奖励领取截止时间: 3.24&nbsp;&nbsp;22:00。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+            6. 活动结束后，奖励领取截止时间: {{this.overDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
           </p>
           <p class="bottom">
             活动最终解释权归平台所有
           </p>
         </section>
       </article>
-      <article class="cake-btn">
-        <section class="period" v-if="isPeriod">
-          <div class="arrow"></div>
-          <div class="middle">
-            <p>继续解锁</p>
-            <p class="sub">今日已有2000人参与瓜分</p>
+      <article class="cake-btn" @click="handleClick(actStateInfo.state)">
+        <section :class="{period:actStateInfo.state!==3,last:actStateInfo.state===3}"
+          v-if="actStateInfo.state!==4">
+          <div class="middle" v-if="actStateInfo.state===3">
+            <p>{{actStateInfo.btn}}</p>
+            <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
           </div>
-          <div class="arrow right"></div>
+          <template v-else>
+            <div class="left-arrow" v-if="!countTime"></div>
+            <div class="middle">
+              <p>{{countTime}}{{actStateInfo.btn}}</p>
+              <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
+            </div>
+            <div class="right-arrow" v-if="!countTime"></div>
+          </template>
         </section>
         <section class="normal" v-else>
-          <span>活动已结束</span>
+          <span>{{actStateInfo.btn}}</span>
         </section>
       </article>
     </template>
     <rank v-if="isShowRank" @on-back="closeRank"></rank>
-    <pop-up v-if="isShowPopUp" :type="popType" @on-close="closePopup"></pop-up>
+    <pop-up v-show="isShowPopUp" :divideInfo="divideInfo" :type="popType" @change-type="changeType"
+      @on-close="closePopup">
+    </pop-up>
   </main>
 </template>
 
 <script>
 import utils from '@/common/js/utils'
-import { ActivityInfo } from './services/api'
+import { ActivityInfo, Divide } from './services/api'
 import _get from 'lodash.get'
 import Rank from './component/rank'
 import PopUp from './component/popup'
@@ -81,12 +92,20 @@ export default {
   },
   data () {
     return {
-      isPeriod: true,
       activityInfo: {},
       configList: [],
       isShowRank: false,
       isShowPopUp: false,
-      popType: 0
+      isShake: false,
+      popType: 0,
+      endDate: '',
+      overDate: '',
+      countTime: '',
+      countDownTimer: null,
+      applyPopTimer: null,
+      changeTypeTimer: null,
+      divideInfo: {},
+      divideDateStr: ''
     }
   },
   computed: {
@@ -96,11 +115,64 @@ export default {
     sourceAddress () {
       return utils.getUrlParam('from')
     },
+    isLastDay () {
+      let current = new Date()
+      let currentYear = current.getFullYear()
+      let currentMonth = current.getMonth()
+      let currentDate = current.getDate()
+      let lastDay = new Date(this.activityInfo.endDate)
+      let lastYear = lastDay.getFullYear()
+      let lastMonth = lastDay.getMonth()
+      let lastDate = lastDay.getDate()
+      return currentYear === lastYear && currentMonth === lastMonth && currentDate === lastDate
+    },
     cakeState () {
       if (this.configList.length === 3) {
         return this.configList.map(ele => ele.status).join('')
       } else {
         return '000'
+      }
+    },
+    // 0 正常情况 1 最后一天最后一层 待瓜分 2 活动结束
+    actStateInfo () {
+      // 常规情况
+      //    非最后一天
+      //    000 任意付费参与
+      //    100 瓜分蛋糕
+      //    200 继续解锁下一层（当前付费2/10）
+      //    210 瓜分蛋糕
+      //    220 继续解锁下一层（累计付费x/x）
+      //    221 倒计时后继续参与
+      //    最后一天
+      //    221 （活动结束前）3月23日 22：00开启奖池
+      //    221 （活动已结束）瓜分蛋糕
+      //    220， 222 （活动已结束） 活动已结束
+
+      let lockedIndex = this.cakeState.indexOf('0')
+      let unopenedIndex = this.cakeState.indexOf('1')
+      let openedIndex = this.cakeState.indexOf('2')
+      if (this.activityInfo.state === 2) {
+        if (unopenedIndex >= 0) {
+          return { state: 1, btn: '瓜分蛋糕' }
+        } else {
+          return { state: 4, btn: '活动已结束' }
+        }
+      } else if (lockedIndex === 0) {
+        return { state: 0, btn: '任意付费参与' }
+      } else if (this.isLastDay && unopenedIndex === 2) {
+        return { state: 3, btn: `${this.endDate}开启奖池` }
+      } else {
+        if (unopenedIndex >= 0 && unopenedIndex < 2) {
+          return { state: 1, btn: '瓜分蛋糕' }
+        } else if (openedIndex === 0 && lockedIndex === 1) {
+          return { state: 0, btn: `继续解锁(当前支付 ${this.activityInfo.todayRecharge}/${this.configList[1].recharge})` }
+        } else if (openedIndex === 0 && lockedIndex === 2) {
+          return { state: 0, btn: `继续解锁(累计支付 ${this.activityInfo.totalRecharge}/${this.configList[2].recharge})` }
+        } else if (unopenedIndex === 2) {
+          return { state: 2, btn: `后继续参与` }
+        } else {
+          return {}
+        }
       }
     }
   },
@@ -126,15 +198,41 @@ export default {
     async getActivityInfo () {
       const res = await ActivityInfo()
       this.activityInfo = _get(res, 'data', {})
+      this.endDate = _get(res, 'data.endDate', '')
+      if (this.endDate) {
+        this.endDate = this.endDate.slice(5, -3)
+        this.overDate = this.endDate.split(' ')[0].split('-')[0] + '-' + (parseInt(this.endDate.split(' ')[0].split('-')[1]) + 1) + ' ' + this.endDate.split(' ')[1]
+      }
       this.configList = _get(res, 'data.configList', [])
+      this.divideDateStr = _get(res, 'data.divideDateStr', '')
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
       if (applyPopup) {
-        this.popType = 1
-        this.isShowPopUp = true
-      } else if (!forgetPopup) {
+        this.isShake = true
+        this.applyPopTimer = setTimeout(() => {
+          this.isShake = false
+          this.popType = 1
+          this.isShowPopUp = true
+          clearTimeout(this.applyPopTimer)
+        }, 1200)
+      } else if (forgetPopup) {
         this.popType = 2
         this.isShowPopUp = true
+      }
+    },
+    async divide () {
+      const res = await Divide(this.divideDateStr)
+      let code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.popType = 3
+        this.isShowPopUp = true
+        this.divideInfo = _get(res, 'data', {})
+      } else {
+        this.$toast.show({
+          message: '正在结算中，请稍后再试',
+          isOneLine: true,
+          duration: 3000
+        })
       }
     },
     showRank () {
@@ -149,7 +247,90 @@ export default {
     },
     closePopup () {
       this.isShowPopUp = false
+      this.getActivityInfo()
+    },
+    changeType (type) {
+      this.isShowPopUp = false
+      this.changeTypeTimer = setTimeout(() => {
+        clearTimeout(this.changeTypeTimer)
+        this.isShowPopUp = true
+        this.popType = type
+      }, 200)
+    },
+    handleClick (state) {
+      switch (state) {
+        case 1:
+          this.divide()
+          break
+        case 2:
+          this.$toast.show({
+            message: '今日已瓜分, 明天再来吧～～',
+            isOneLine: true,
+            duration: 3000
+          })
+          break
+        case 3:
+          this.$toast.show({
+            message: '还没到瓜分时间哦～～',
+            isOneLine: true,
+            duration: 3000
+          })
+          break
+        case 4:
+          this.$toast.show({
+            message: '活动已结束',
+            isOneLine: true,
+            duration: 3000
+          })
+          break
+
+        default:
+          this.showPopup(0)
+          break
+      }
+    },
+    countDown () {
+      let nowDate = new Date().setMilliseconds(0)
+      let nextDate = new Date().setHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000
+      let date = (nextDate - nowDate) / 1000
+      this.countDownTimer = setInterval(() => {
+        date = date - 1
+        if (date <= 0) {
+          date = 0
+          clearInterval(this.countDownTimer)
+        }
+        let hour = Math.floor(parseInt(date / 60 / 60) % 24)
+        let minute = Math.floor(parseInt(date / 60) % 60)
+        let second = Math.floor(date % 60)
+        let countHour = hour >= 10 ? hour : '0' + hour
+        let countMinute = minute >= 10 ? minute : '0' + minute
+        let countSecond = second >= 10 ? second : '0' + second
+        this.countTime = `${countHour}:${countMinute}:${countSecond}`
+        console.log(this.countTime)
+      }, 1000)
     }
+  },
+  watch: {
+    actStateInfo: {
+      deep: true,
+      handler (val, oldVal) {
+        clearInterval(this.countDownTimer)
+        this.countTime = ''
+        if (val.state === 2) {
+          this.$nextTick(() => {
+            this.countDown()
+          })
+        }
+      }
+    }
+  },
+  destroyed () {
+    clearTimeout(this.applyPopTimer)
+    clearTimeout(this.changeTypeTimer)
+    clearInterval(this.countDownTimer)
+    this.this.applyPopTimer = null
+    this.changeTypeTimer = null
+    this.countDownTimer = null
   }
 }
 </script>
@@ -235,11 +416,17 @@ export default {
       &.state-200 {
         .bg-center("./img/state-200.png");
       }
+      &.state-201 {
+        .bg-center("./img/state-201.png");
+      }
       &.state-202 {
         .bg-center("./img/state-202.png");
       }
       &.state-210 {
         .bg-center("./img/state-210.png");
+      }
+      &.state-211 {
+        .bg-center("./img/state-211.png");
       }
       &.state-220 {
         .bg-center("./img/state-220.png");
@@ -419,28 +606,126 @@ export default {
       background-image: url(./img/bottom-normal-btn-bg.png);
       color: #fff;
     }
-    .period {
-      background-image: url(./img/bottom-period-btn-bg.png);
-      color: #cf3600;
+    .period,
+    .last {
       .middle {
         text-align: center;
-        width: 3rem;
+        min-width: 3rem;
         line-height: 0.34rem;
-        margin: auto 0.14rem;
+        margin: auto 0.4rem;
         .sub {
           font-size: 0.2rem;
           color: #cf7500;
         }
       }
-      .arrow {
+      .left-arrow {
+        width: 0.84rem;
+        height: 0.22rem;
+        animation: sway 1s infinite;
+        .bg-center("./img/arrow.png");
+      }
+      .right-arrow {
         width: 0.84rem;
         height: 0.22rem;
         .bg-center("./img/arrow.png");
-        &.right {
-          transform: rotateY(180deg);
+        animation: swayDeff 1s infinite;
+      }
+    }
+    .period {
+      background-image: url(./img/bottom-period-btn-bg.png);
+      color: #cf3600;
+    }
+    .last {
+      background-image: url(./img/bottom-last-btn-bg.png);
+      color: #cf3600;
+      .middle {
+        .sub {
+          color: #ffd631;
         }
       }
     }
   }
+}
+@keyframes shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(-0.1rem, 0, 0);
+  }
+  20% {
+    transform: translate3d(0.1rem, 0, 0);
+  }
+  30% {
+    transform: translate3d(-0.04rem, 0, 0);
+  }
+  40% {
+    transform: translate3d(0.04rem, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  70% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  80% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  90% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes sway {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  20% {
+    transform: translate3d(-0.3rem, 0, 0) scale(1.1);
+  }
+  40% {
+    transform: translate3d(0.3rem, 0, 0) scale(1.1);
+  }
+  60% {
+    transform: translate3d(-0.1rem, 0, 0) scale(0.9);
+  }
+  80% {
+    transform: translate3d(0.1rem, 0, 0) scale(0.9);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes swayDeff {
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(180deg) scale(1);
+  }
+  20% {
+    transform: translate3d(0.3rem, 0, 0) rotateY(180deg) scale(1.1);
+  }
+  40% {
+    transform: translate3d(-0.3rem, 0, 0) rotateY(180deg) scale(1.1);
+  }
+  60% {
+    transform: translate3d(0.1rem, 0, 0) rotateY(180deg) scale(0.9);
+  }
+  80% {
+    transform: translate3d(-0.1rem, 0, 0) rotateY(180deg) scale(0.9);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(180deg) scale(1);
+  }
+}
+
+.shake {
+  animation: shake 1s;
+}
+.shake-deff {
+  animation: shake 1s reverse;
 }
 </style>

@@ -1,46 +1,71 @@
 <template>
-  <article class="popup-wrapper">
-    <section class="mask"></section>
-    <section class="content" :class="`type-${type}`">
-      <template v-if="type === 0">
-        <ul class="awards-list">
-          <li v-for="(item,index) in productList">
-            <div class="award-icon"><img :src="item.productIcon|filter" alt=""></div>
-            <div class="award-content" v-html="contentText(item.content)"></div>
-            <div class="btn award-btn" @click="toPay(item)">¥ {{item.price}}</div>
-          </li>
-        </ul>
-        <p class="to-mall" @click="toMall">点击前往 更多礼包>>></p>
-        <ul class="other-desc">
-          <li>
-            加成卡获得瓜分奖励后可立即获得随机加成,购买礼包金额越高，加成金额越高哦
-          </li>
-          <li>
-            注意：加油包每日仅限购买一个哦（三选一，不可叠加购买）
-          </li>
-        </ul>
-      </template>
-      <template v-if="type === 1">
-        <div class="cake-unlocked"></div>
-        <div class="tips">小提示：任意付费即可解锁蛋糕</div>
-        <div class="btn">马上瓜分</div>
-      </template>
-      <template v-if="type === 2">
-        <div class="crying-face"></div>
-        <div class="tips">
-          温馨提示<br>
-          瓜分时间为参与当日-次日10:00<br>
-          再试一下吧
-        </div>
-        <div class="btn">参与活动</div>
-      </template>
-      <div class="close-icon" @click="closePop"></div>
-    </section>
-  </article>
+  <transition name="scalc">
+    <article class="popup-wrapper">
+      <section class="mask"></section>
+      <section class="content" :class="`type-${type}`">
+        <template v-if="type === 0">
+          <ul class="awards-list">
+            <li v-for="(item,index) in productList">
+              <div class="award-icon"><img :src="item.productIcon|filter" alt=""></div>
+              <div class="award-content" v-html="contentText(item.content)"></div>
+              <div class="btn award-btn" @click="toPay(item)">¥ {{item.price}}</div>
+            </li>
+          </ul>
+          <p class="to-mall" @click="toMall">点击前往 更多礼包>>></p>
+          <ul class="other-desc">
+            <li>
+              加成卡获得瓜分奖励后可立即获得随机加成,购买礼包金额越高，加成金额越高哦
+            </li>
+            <li>
+              注意：加油包每日仅限购买一个哦（三选一，不可叠加购买）
+            </li>
+          </ul>
+        </template>
+        <template v-if="type === 1">
+          <div class="cake-unlocked"></div>
+          <div class="tips">小提示：任意付费即可解锁蛋糕</div>
+          <div class="btn" @click="closePop">马上瓜分</div>
+        </template>
+        <template v-if="type === 2">
+          <div class="crying-face"></div>
+          <div class="tips">
+            温馨提示<br>
+            瓜分时间为参与当日-次日10:00<br>
+            再试一下吧
+          </div>
+          <div class="btn" @click="closePop">参与活动</div>
+        </template>
+        <template v-if="type === 3">
+          <ul class="top">
+            <template v-for="(item,key) in divideList">
+              <li v-if="item.status===1" :key="key">
+                <span>第{{item.level|numberToText}}层蛋糕</span>
+                <em>x{{item.awardsName}}</em>
+              </li>
+            </template>
+          </ul>
+          <div class="bottom">
+            <p class="add-card-info">
+              <img src="../img/add-img.png" alt="">
+              <span class="has-card" v-if="haveAddCard" @click="useMarkup">点击使用加成卡 >></span>
+              <span v-else>暂无加成卡</span>
+            </p>
+            <div class="btn" @click="closePop">继续参与瓜分</div>
+            <p>{{applyDate}}场次瓜分</p>
+          </div>
+        </template>
+        <template v-if="type === 4">
+          <p>{{awardInfo.awardsName}}</p>
+          <div class="btn" @click="closePop">继续参与瓜分</div>
+        </template>
+        <div class="close-icon" @click="closePop"></div>
+      </section>
+    </article>
+  </transition>
 </template>
 
 <script>
-import { GetMallProductList } from '../services/api'
+import { GetMallProductList, UseMarkup } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -51,22 +76,67 @@ export default {
     type: {
       type: Number,
       default: 0
+    },
+    divideInfo: {
+      type: Object,
+      default: () => { }
     }
   },
   data () {
     return {
-      productList: []
+      productList: [],
+      awardInfo: {}
+    }
+  },
+  filters: {
+    numberToText (number) {
+      switch (number) {
+        case 1:
+          return '一'
+        case 2:
+          return '二'
+        case 3:
+          return '三'
+        default:
+          return number
+      }
+    }
+  },
+  computed: {
+    applyDate () {
+      return _get(this.divideInfo, 'applyDate', '')
+    },
+    divideList () {
+      return _get(this.divideInfo, 'divideList', {})
+    },
+    haveAddCard () {
+      return !!_get(this.divideInfo, 'markupNum', false)
     }
   },
   mounted () {
     if (this.type === 0) {
-      this.getMallProductList()
+      // this.getMallProductList()
     }
   },
   methods: {
     async getMallProductList () {
       const res = await GetMallProductList()
       this.productList = _get(res, 'data.mallBizConfigs', [])
+    },
+    async useMarkup () {
+      const res = await UseMarkup()
+      let code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.awardInfo = _get(res, 'data', {})
+        this.$emit('change-type', 4)
+      } else {
+        this.closePop()
+        this.$toast.show({
+          message: '正在结算中，请稍后再试',
+          isOneLine: true,
+          duration: 3000
+        })
+      }
     },
     contentText (content) {
       if (content) {
@@ -235,6 +305,89 @@ export default {
       color: #ffd941;
       margin-bottom: 0.3rem;
     }
+  }
+  &.type-3 {
+    height: 6.08rem;
+    margin-top: 2.38rem;
+    .bg-center("../img/pop-type-3-bg.png");
+    padding: 2.4rem 0.6rem 0;
+    .close-icon {
+      top: 1.7rem;
+    }
+    .top {
+      width: 100%;
+      height: 1.28rem;
+      display: flex;
+      justify-content: center;
+      align-content: space-around;
+      flex-wrap: wrap;
+      margin-bottom: 0.28rem;
+      li {
+        width: 100%;
+        text-align: center;
+        span {
+          color: #bc7571;
+        }
+        em {
+          color: #ffd941;
+          font-style: normal;
+          margin-left: 0.1rem;
+        }
+      }
+    }
+    .bottom {
+      height: 2.08rem;
+      border-top: 0.01rem #7a3432 solid;
+      text-align: center;
+      color: #8d6664;
+      font-size: 0.2rem;
+      line-height: 0.26rem;
+      .add-card-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.22rem;
+        color: #b8cd0a;
+        margin: 0.14rem auto;
+        img {
+          width: 0.56rem;
+          height: 0.56rem;
+          margin-right: 0.1rem;
+        }
+        .has-card {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  &.type-4 {
+    height: 3.26rem;
+    margin-top: 2.38rem;
+    .bg-center("../img/pop-type-4-bg.png");
+    padding: 1.26rem 0.6rem 0;
+    .close-icon {
+      top: 0.1rem;
+    }
+    p {
+      color: #ffd941;
+      font-size: 0.24rem;
+      margin-bottom: 0.54rem;
+      text-align: center;
+    }
+  }
+}
+.scalc-enter-active {
+  animation: fadeAnimation 0.3s ease-in-out;
+}
+@keyframes fadeAnimation {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
