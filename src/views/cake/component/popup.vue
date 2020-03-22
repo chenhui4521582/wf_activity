@@ -115,7 +115,7 @@ export default {
   },
   mounted () {
     if (this.type === 0) {
-      // this.getMallProductList()
+      this.getMallProductList()
     }
   },
   methods: {
@@ -174,6 +174,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 9;
 }
 .mask {
   position: fixed;

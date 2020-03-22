@@ -17,6 +17,10 @@
               <p>瓜分<span>{{item.amount}}</span>话费券</p>
               <p>{{item.recharge|rechargeFilter}}</p>
             </div>
+            <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
+            <div class="cake-img"
+              :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
+              v-if="item.status === 2"></div>
           </div>
         </section>
       </article>
@@ -104,8 +108,12 @@ export default {
       countDownTimer: null,
       applyPopTimer: null,
       changeTypeTimer: null,
+      openCakeTimer: null,
+      cakelevelTimer: null,
       divideInfo: {},
-      divideDateStr: ''
+      divideDateStr: '',
+      currentOpenCakeIndex: 0,
+      alreadyOpenedCakes: []
     }
   },
   computed: {
@@ -221,12 +229,40 @@ export default {
       }
     },
     async divide () {
+      this.alreadyOpenedCakes = []
       const res = await Divide(this.divideDateStr)
       let code = _get(res, 'code', 0)
       if (code === 200) {
-        this.popType = 3
-        this.isShowPopUp = true
         this.divideInfo = _get(res, 'data', {})
+        let openCakeLevelArr = []
+        this.divideInfo.divideList.forEach(element => {
+          this.configList.forEach(item => {
+            if (item.level === element.level) {
+              openCakeLevelArr.push(item.level)
+              item.status = 2
+            }
+          })
+        })
+        let length = openCakeLevelArr.length
+        if (length > 0) {
+          let number = 0
+          this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+          this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
+          this.cakelevelTimer = setInterval(() => {
+            if (number < length) {
+              number++
+              this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+              this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
+            } else {
+              clearInterval(this.cakelevelTimer)
+            }
+          }, 3000)
+          this.openCakeTimer = setTimeout(() => {
+            clearTimeout(this.openCakeTimer)
+            this.popType = 3
+            this.isShowPopUp = true
+          }, 3000 * length + 200)
+        }
       } else {
         this.$toast.show({
           message: '正在结算中，请稍后再试',
@@ -328,9 +364,11 @@ export default {
     clearTimeout(this.applyPopTimer)
     clearTimeout(this.changeTypeTimer)
     clearInterval(this.countDownTimer)
+    clearTimeout(this.openCakeTimer)
     this.this.applyPopTimer = null
     this.changeTypeTimer = null
     this.countDownTimer = null
+    this.openCakeTimer = null
   }
 }
 </script>
@@ -440,6 +478,12 @@ export default {
       .cake-item {
         width: 100%;
         position: relative;
+        .knife {
+          width: 1.37rem;
+          height: 0.6rem;
+          position: absolute;
+          .bg-center("./img/knife.png");
+        }
         .lock {
           width: 0.12rem;
           height: 0.12rem;
@@ -467,8 +511,12 @@ export default {
           height: 0.01rem;
           position: absolute;
         }
+        .cake-fade-out {
+          animation: cakeFadeOut 1s forwards ease-in 2s;
+        }
         &.level-1 {
           height: 2.6rem;
+          z-index: 2;
           .lock {
             bottom: 0.6rem;
             left: 1.5rem;
@@ -483,9 +531,23 @@ export default {
             transform-origin: center center;
             transform: rotateZ(15deg);
           }
+          .cake-img {
+            position: absolute;
+            bottom: 0.03rem;
+            right: 1.62rem;
+            width: 1.22rem;
+            height: 1.46rem;
+            .bg-center("./img/cake-1.png");
+          }
+          .knife {
+            right: 0rem;
+            bottom: 1.2rem;
+            animation: knife1 2s forwards ease-in;
+          }
         }
         &.level-2 {
           height: 1.8rem;
+          z-index: 1;
           .lock {
             bottom: 0.64rem;
             right: 0.7rem;
@@ -500,6 +562,19 @@ export default {
             bottom: 0.76rem;
             transform-origin: center center;
             transform: rotateZ(-15deg);
+          }
+          .cake-img {
+            position: absolute;
+            bottom: 0.06rem;
+            right: 1.26rem;
+            width: 1.64rem;
+            height: 1.9rem;
+            .bg-center("./img/cake-2.png");
+          }
+          .knife {
+            right: -0.1rem;
+            bottom: 1.1rem;
+            animation: knife2 2s forwards ease-in;
           }
         }
         &.level-3 {
@@ -517,6 +592,19 @@ export default {
             bottom: 0.82rem;
             transform-origin: center center;
             transform: rotateZ(15deg);
+          }
+          .cake-img {
+            position: absolute;
+            bottom: 0rem;
+            right: 0.8rem;
+            width: 1.98rem;
+            height: 2.32rem;
+            .bg-center("./img/cake-3.png");
+          }
+          .knife {
+            right: -0.5rem;
+            bottom: 1.5rem;
+            animation: knife3 2s forwards ease-in;
           }
         }
 
@@ -541,7 +629,7 @@ export default {
           &.level-2 {
             .lock {
               bottom: 0.5rem;
-              right: 1.5rem;
+              right: 1.8rem;
             }
             .line {
               width: 1.2rem;
@@ -646,6 +734,12 @@ export default {
     }
   }
 }
+.shake {
+  animation: shake 1s;
+}
+.shake-deff {
+  animation: shake 1s reverse;
+}
 @keyframes shake {
   0% {
     transform: translate3d(0, 0, 0);
@@ -721,11 +815,224 @@ export default {
     transform: translate3d(0, 0, 0) rotateY(180deg) scale(1);
   }
 }
-
-.shake {
-  animation: shake 1s;
+@keyframes knife1 {
+  0% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  10% {
+    transform: translate3d(-1.1rem, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  15% {
+    transform: translate3d(-1.1rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translate3d(-0.6rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translate3d(-1.1rem, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate3d(0, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  41% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(-2.8rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(-2.8rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate3d(-2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-2rem, 0.6rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(-2.4rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  85% {
+    transform: translate3d(-2rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translate3d(-2.8rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  91% {
+    transform: translate3d(-2.8rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-2.8rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
 }
-.shake-deff {
-  animation: shake 1s reverse;
+@keyframes knife2 {
+  0% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  10% {
+    transform: translate3d(-0.8rem, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  15% {
+    transform: translate3d(-0.8rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translate3d(-0.6rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translate3d(-0.8rem, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate3d(0, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  41% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate3d(-2.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-2.2rem, 0.6rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(-2.6rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  85% {
+    transform: translate3d(-2.2rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translate3d(-3.2rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  91% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+}
+@keyframes knife3 {
+  0% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  10% {
+    transform: translate3d(-0.8rem, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  15% {
+    transform: translate3d(-0.8rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translate3d(-0.4rem, 0.6rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translate3d(-0.8rem, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate3d(0, 1.2rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  41% {
+    transform: translate3d(0, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate3d(-2.5rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-2.5rem, 0.6rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(-2.9rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  85% {
+    transform: translate3d(-2.5rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translate3d(-3.2rem, 1.2rem, 0) rotateY(180deg);
+    opacity: 1;
+  }
+  91% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-3.2rem, 0.1rem, 0) rotateY(180deg);
+    opacity: 0;
+  }
+}
+@keyframes cakeFadeOut {
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(3rem, -1.2rem, 0) rotateY(0deg);
+    opacity: 0;
+  }
 }
 </style>
