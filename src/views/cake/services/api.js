@@ -29,19 +29,19 @@ export const ActivityInfo = async () => {
   //           'level': 2,
   //           'recharge': 10,
   //           'amount': 2288,
-  //           'status': 1
+  //           'status': 0
   //         },
   //         {
   //           'level': 3,
   //           'recharge': 88,
   //           'amount': 3000,
-  //           'status': 1
+  //           'status': 0
   //         }
   //       ],
   //       'todayRecharge': 100,
   //       'totalRecharge': 100,
   //       'todayApplyNum': 2,
-  //       'applyPopup': false,
+  //       'applyPopup': true,
   //       'forgetPopup': false,
   //       'divideDateStr': '20200320'
   //     },
@@ -55,33 +55,33 @@ export const ActivityInfo = async () => {
  * @return {Object} data
  */
 export const Divide = async (time) => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/divide/${time}`)
-  // const { data } = {
-  //   data: {
-  //     code: 200,
-  //     data: {
-  //       applyDate: '2020-03-21',
-  //       divideList: [
-  //         {
-  //           awardsName: '2元话费券',
-  //           level: 2,
-  //           status: 1
-  //         },
-  //         {
-  //           awardsName: '1元话费券',
-  //           level: 1,
-  //           status: 1
-  //         },
-  //         {
-  //           awardsName: '3元话费券',
-  //           level: 3,
-  //           status: 1
-  //         }
-  //       ],
-  //       markupNum: 1123
-  //     }
-  //   }
-  // }
+  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/divide/${time}`)
+  const { data } = {
+    data: {
+      code: 200,
+      data: {
+        applyDate: '2020-03-21',
+        divideList: [
+          {
+            awardsName: '2元话费券',
+            level: 2,
+            status: 1
+          },
+          {
+            awardsName: '1元话费券',
+            level: 1,
+            status: 1
+          }
+          // {
+          //   awardsName: '3元话费券',
+          //   level: 3,
+          //   status: 2
+          // }
+        ],
+        markupNum: 1123
+      }
+    }
+  }
   return data
 }
 /**
