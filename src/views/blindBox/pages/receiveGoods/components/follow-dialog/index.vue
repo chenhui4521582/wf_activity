@@ -42,6 +42,7 @@ export default {
   },
   methods: {
     onConfirm () {
+      GLOBALS.marchSetsPoint('A_H5PT0225003136')
       this.$router.push({
         name: 'bindWechat'
       })
