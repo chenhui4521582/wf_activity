@@ -402,7 +402,7 @@ export default {
   }
   &.type-4 {
     height: 3.26rem;
-    margin-top: 2.38rem;
+    margin-top: 3.38rem;
     .bg-center("../img/pop-type-4-bg.png");
     padding: 1.26rem 0.6rem 0;
     .close-icon {
