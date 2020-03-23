@@ -431,41 +431,32 @@ export default {
   }
 }
 .shake {
-  animation: shake 1s infinite;
+  animation: shake 0.5s infinite;
 }
 @keyframes shake {
   0% {
-    transform: translate3d(0, 0, 0);
-  }
-  10% {
-    transform: translate3d(-0.1rem, 0, 0);
+    transform-origin: center center;
+    transform: rotateZ(0deg);
   }
   20% {
-    transform: translate3d(0.1rem, 0, 0);
-  }
-  30% {
-    transform: translate3d(-0.04rem, 0, 0);
+    transform-origin: center center;
+    transform: rotateZ(10deg);
   }
   40% {
-    transform: translate3d(0.04rem, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, 0, 0);
+    transform-origin: center center;
+    transform: rotateZ(-10deg);
   }
   60% {
-    transform: translate3d(0, 0.1rem, 0);
-  }
-  70% {
-    transform: translate3d(0, -0.1rem, 0);
+    transform-origin: center center;
+    transform: rotateZ(5deg);
   }
   80% {
-    transform: translate3d(0, 0.04rem, 0);
-  }
-  90% {
-    transform: translate3d(0, -0.04rem, 0);
+    transform-origin: center center;
+    transform: rotateZ(-5deg);
   }
   100% {
-    transform: translate3d(0, 0, 0);
+    transform-origin: center center;
+    transform: rotateZ(0deg);
   }
 }
 </style>

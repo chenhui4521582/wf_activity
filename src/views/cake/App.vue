@@ -250,12 +250,12 @@ export default {
             } else {
               clearInterval(this.cakeLevelTimer)
             }
-          }, 3000)
+          }, 4000)
           this.openCakeTimer = setTimeout(() => {
             clearTimeout(this.openCakeTimer)
             this.popType = 3
             this.isShowPopUp = true
-          }, 3000 * length + 200)
+          }, 4000 * length + 200)
         }
       } else {
         this.$toast.show({
@@ -511,7 +511,7 @@ export default {
           position: absolute;
         }
         .desc {
-          color: #ffdb6e;
+          color: #ac7f61;
           font-size: 0.2rem;
           width: 1.9rem;
           border-radius: 0.2rem;
@@ -531,7 +531,7 @@ export default {
           position: absolute;
         }
         .cake-fade-out {
-          animation: cakeFadeOut 1s forwards ease-in 2s;
+          animation: cakeFadeOut 1s forwards ease-in 3s;
         }
         &.level-1 {
           height: 2.6rem;
@@ -561,7 +561,7 @@ export default {
           .knife {
             right: 0rem;
             bottom: 1.2rem;
-            animation: knife1 2s forwards ease-in;
+            animation: knife1 3s forwards ease-in;
           }
         }
         &.level-2 {
@@ -593,7 +593,7 @@ export default {
           .knife {
             right: -0.1rem;
             bottom: 1.1rem;
-            animation: knife2 2s forwards ease-in;
+            animation: knife2 3s forwards ease-in;
           }
         }
         &.level-3 {
@@ -623,7 +623,7 @@ export default {
           .knife {
             right: -0.5rem;
             bottom: 1.5rem;
-            animation: knife3 2s forwards ease-in;
+            animation: knife3 3s forwards ease-in;
           }
         }
 
@@ -638,7 +638,10 @@ export default {
             margin-left: -0.27rem;
           }
           .desc {
-            animation: verticalShake 1s infinite;
+            color: #ffdb6e;
+            span {
+              color: #d33124;
+            }
           }
           &.level-1 {
             .line {
@@ -646,6 +649,9 @@ export default {
               bottom: 0.8rem;
               transform-origin: center center;
               transform: rotateZ(10deg);
+            }
+            .desc {
+              animation: verticalShake 3s infinite;
             }
           }
           &.level-2 {
@@ -660,6 +666,9 @@ export default {
               transform-origin: center center;
               transform: rotateZ(-10deg);
             }
+            .desc {
+              animation: verticalShake 3s infinite 0.4s;
+            }
           }
           &.level-3 {
             .lock {
@@ -670,6 +679,9 @@ export default {
               bottom: 1rem;
               transform-origin: center center;
               transform: rotateZ(10deg);
+            }
+            .desc {
+              animation: verticalShake 3s infinite 0.8s;
             }
           }
         }
@@ -766,17 +778,14 @@ export default {
   0% {
     transform: translate3d(0, 0, 0);
   }
-  20% {
-    transform: translate3d(0, 0.1rem, 0);
-  }
-  40% {
+  25% {
     transform: translate3d(0, -0.1rem, 0);
   }
-  60% {
-    transform: translate3d(0, 0.04rem, 0);
+  50% {
+    transform: translate3d(0, 0, 0);
   }
-  80% {
-    transform: translate3d(0, -0.04rem, 0);
+  75% {
+    transform: translate3d(0, -0.1rem, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
