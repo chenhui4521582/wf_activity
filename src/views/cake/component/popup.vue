@@ -151,7 +151,7 @@ export default {
         location.href = url
       } else {
         this.$toast.show({
-          message: '该礼包今日已购买了哦～～',
+          message: '今日已购买，明天再来吧～',
           isOneLine: true,
           duration: 3000
         })
