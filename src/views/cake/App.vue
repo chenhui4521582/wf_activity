@@ -187,6 +187,7 @@ export default {
   },
   mounted () {
     this.getActivityInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0253', { 'source_address': GLOBALS.getUrlParam('from') || null }) // H5平台-蛋糕瓜分活动-页面加载完成
   },
   methods: {
     back () {
@@ -291,6 +292,7 @@ export default {
     handleClick (state) {
       switch (state) {
         case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0253003021') // H5平台-蛋糕瓜分活动-瓜分蛋糕按钮点击
           this.divide()
           break
         case 2:
@@ -316,6 +318,9 @@ export default {
           break
 
         default:
+          if (this.actStateInfo.state === 0 && this.actStateInfo.btn === '任意付费参与') {
+            GLOBALS.marchSetsPoint('A_H5PT0253003018') // H5平台-蛋糕瓜分活动-任意付费按钮点击
+          }
           this.showPopup(0)
           break
       }

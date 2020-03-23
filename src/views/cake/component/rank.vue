@@ -102,7 +102,6 @@ export default {
         case 0:
           return '待瓜分'
         case 1:
-        // return '中奖'
         case 2:
           // return '未中奖'
           return '已瓜分'
@@ -117,6 +116,7 @@ export default {
       this.$refs.area.addEventListener('touchend', this.onScroll)
     })
     this.getRankList()
+    GLOBALS.marchSetsPoint('A_H5PT0253003024') // H5平台-蛋糕瓜分活动-瓜分记录页加载完成
   },
   methods: {
     onScroll () {
@@ -136,10 +136,12 @@ export default {
       switch (this.currentNav) {
         case 'rank':
           this.getRankList()
+          GLOBALS.marchSetsPoint('A_H5PT0253003024') // H5平台-蛋糕瓜分活动-瓜分记录页加载完成
           break
 
         default:
           this.getUserRecord()
+          GLOBALS.marchSetsPoint('A_H5PT0253003025') // H5平台-蛋糕瓜分活动-瓜分记录-我的记录点击
           break
       }
     },
