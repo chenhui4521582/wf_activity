@@ -6,7 +6,8 @@
         <div class="add" @click="showPopup(0)"></div>
         <div class="record" @click="showRank"></div>
         <div class="sub-title"></div>
-        <section class="cake-bg" :class="`state-${cakeState}`">
+        <section class="cake-bg" :class="`state-${cakeState}`"
+          @click="handleClick(actStateInfo.state)">
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
             v-for="(item,index) in configList" :key="index">
             <div class="lock"
@@ -393,7 +394,7 @@ export default {
   font-size: 0.2rem;
   .cake-container {
     width: 100%;
-    min-height: 580px;
+    min-height: 530px;
     background: #320e12 url(./img/bg.png) no-repeat center -0.02rem;
     background-size: 100% auto;
     position: relative;
