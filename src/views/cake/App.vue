@@ -6,7 +6,8 @@
         <div class="add" @click="showPopup(0)"></div>
         <div class="record" @click="showRank"></div>
         <div class="sub-title"></div>
-        <section class="cake-bg" :class="`state-${cakeState}`">
+        <section class="cake-bg" :class="`state-${cakeState}`"
+          @click="handleClick(actStateInfo.state)">
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
             v-for="(item,index) in configList" :key="index">
             <div class="lock"
@@ -20,7 +21,7 @@
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
               :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
-              v-if="item.status === 2"></div>
+              v-if="item.status === 2 && isNeedOpen"></div>
           </div>
         </section>
       </article>
@@ -34,10 +35,10 @@
             2. 瓜分条件（蛋糕顺序为从上至下）：<br>
             &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费可解锁参与瓜分。<br>
             &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日任意付费满10元可解锁参与<br>瓜分第1层和第2层蛋糕。<br>
-            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{this.endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
+            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
           </p>
           <p>
-            3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕3.23&nbsp;&nbsp;22:00开启瓜分。<br>
+            3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕{{endDate}}开启瓜分。<br>
             注意：第1层和第2层蛋糕为每日瓜分，瓜分截止时间为解锁次日10:00前，若用户未领取，则奖励自动失效，请及时参与瓜分。
           </p>
           <p>
@@ -47,7 +48,7 @@
             5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
           </p>
           <p>
-            6. 活动结束后，奖励领取截止时间: {{this.overDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+            6. 活动结束后，奖励领取截止时间: {{showEndDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
           </p>
           <p class="bottom">
             活动最终解释权归平台所有
@@ -103,7 +104,7 @@ export default {
       isShake: false,
       popType: null,
       endDate: '',
-      overDate: '',
+      showEndDate: '',
       countTime: '',
       countDownTimer: null,
       applyPopTimer: null,
@@ -113,7 +114,8 @@ export default {
       divideInfo: {},
       divideDateStr: '',
       currentOpenCakeIndex: 0,
-      alreadyOpenedCakes: []
+      alreadyOpenedCakes: [],
+      isNeedOpen: false
     }
   },
   computed: {
@@ -201,20 +203,17 @@ export default {
   },
   methods: {
     back () {
-      history.go(-1)
+      location.href = window.SDK.getBackUrl()
     },
     async getActivityInfo () {
       const res = await ActivityInfo()
-      this.activityInfo = _get(res, 'data', {})
-      this.endDate = _get(res, 'data.endDate', '')
-      if (this.endDate) {
-        this.endDate = this.endDate.slice(5, -3)
-        this.overDate = this.endDate.split(' ')[0].split('-')[0] + '-' + (parseInt(this.endDate.split(' ')[0].split('-')[1]) + 1) + ' ' + this.endDate.split(' ')[1]
-      }
-      this.configList = _get(res, 'data.configList', [])
-      this.divideDateStr = _get(res, 'data.divideDateStr', '')
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
+      this.activityInfo = _get(res, 'data', {})
+      this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
+      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
+      this.configList = _get(res, 'data.configList', [])
+      this.divideDateStr = _get(res, 'data.divideDateStr', '')
       if (applyPopup) {
         this.isShake = true
         this.applyPopTimer = setTimeout(() => {
@@ -238,6 +237,7 @@ export default {
         this.divideInfo.divideList.forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
+              this.isNeedOpen = true
               openCakeLevelArr.push(item.level)
               item.status = 2
             }
@@ -391,7 +391,7 @@ export default {
   font-size: 0.2rem;
   .cake-container {
     width: 100%;
-    min-height: 580px;
+    min-height: 530px;
     background: #320e12 url(./img/bg.png) no-repeat center -0.02rem;
     background-size: 100% auto;
     position: relative;
