@@ -198,8 +198,8 @@ export default {
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
       this.activityInfo = _get(res, 'data', {})
-      this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
-      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
+      this.endDate = _get(res, 'data.endDate', '').slice(5)
+      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5)
       let configList = _get(res, 'data.configList', [])
       this.divideDateStr = _get(res, 'data.divideDateStr', '')
       if (applyPopup) {
@@ -228,7 +228,7 @@ export default {
       if (code === 200) {
         this.divideInfo = _get(res, 'data', {})
         let openCakeLevelArr = []
-        this.divideInfo.divideList.forEach(element => {
+        this.divideInfo.divideList.sort((a, b) => a.level - b.level).forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
               this.isNeedOpen = true
@@ -653,9 +653,6 @@ export default {
               bottom: 0.5rem;
               right: 1.8rem;
             }
-            .desc {
-              animation: horizontalShake 1s infinite;
-            }
             .line {
               width: 1.2rem;
               right: 1.08rem;
@@ -780,26 +777,6 @@ export default {
   }
   80% {
     transform: translate3d(0, -0.04rem, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes horizontalShake {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  20% {
-    transform: translate3d(0.1rem, 0, 0);
-  }
-  40% {
-    transform: translate3d(-0.1rem, 0, 0);
-  }
-  60% {
-    transform: translate3d(0.04rem, 0, 0);
-  }
-  80% {
-    transform: translate3d(-0.04rem, 0, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
