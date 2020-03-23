@@ -341,7 +341,7 @@
             task_id: item.taskId,
             task_name: item.taskName
           })
-          this.awardData = {title: '温馨提示', tips: `你有未使用的万能碎片<br>确认重置未完成的任务吗？`, item, btn1Name: '再想想', btn2Name: '确认'}
+          this.awardData = {title: '温馨提示', tips: `确认使用万能碎片<br>解锁此拼图吗？`, item, btn1Name: '再想想', btn2Name: '确认'}
           this.showPop(6)
         } else if (confirmtype == 1) {
           if (!this.isTaskAllComplete && item.buyFlag == 1) {
