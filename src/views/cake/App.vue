@@ -48,7 +48,7 @@
             5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
           </p>
           <p>
-            6. 活动结束后，奖励领取截止时间: {{this.overDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+            6. 活动结束后，奖励领取截止时间: {{this.showEndDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
           </p>
           <p class="bottom">
             活动最终解释权归平台所有
@@ -104,7 +104,7 @@ export default {
       isShake: false,
       popType: null,
       endDate: '',
-      overDate: '',
+      showEndDate: '',
       countTime: '',
       countDownTimer: null,
       applyPopTimer: null,
@@ -208,11 +208,8 @@ export default {
     async getActivityInfo () {
       const res = await ActivityInfo()
       this.activityInfo = _get(res, 'data', {})
-      this.endDate = _get(res, 'data.endDate', '')
-      if (this.endDate) {
-        this.endDate = this.endDate.slice(5, -3)
-        this.overDate = this.endDate.split(' ')[0].split('-')[0] + '-' + (parseInt(this.endDate.split(' ')[0].split('-')[1]) + 1) + ' ' + this.endDate.split(' ')[1]
-      }
+      this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
+      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
       this.configList = _get(res, 'data.configList', [])
       this.divideDateStr = _get(res, 'data.divideDateStr', '')
       let applyPopup = _get(res, 'data.applyPopup', false)
