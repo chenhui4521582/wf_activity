@@ -5,7 +5,7 @@ import $axios from '../../../http'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/activity-info')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/activity-info')
   return data
 }
 /**
@@ -13,7 +13,7 @@ export const activityInfo = async () => {
  * @return {Object} data
  */
 export const myAwards = async () => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/my-award')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/my-award')
   return data
 }
 /**
@@ -22,7 +22,7 @@ export const myAwards = async () => {
  */
 
 export const myBeauty = async () => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/my-beauty')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/my-beauty')
   return data
 }
 /**
@@ -31,7 +31,7 @@ export const myBeauty = async () => {
  */
 
 export const getNoticeList = async () => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/notice-list')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/notice-list')
   return data
 }
 /**
@@ -39,7 +39,7 @@ export const getNoticeList = async () => {
  * @return {Object} data
  */
 export const gameComposeReceive = async (id) => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/receive-compose-award/' + id)
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/receive-compose-award/' + id)
   return data
 }
 /**
@@ -47,7 +47,7 @@ export const gameComposeReceive = async (id) => {
  * @return {Object} data
  */
 export const taskAutoComplete = async (id) => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/task-auto-completed/' + id)
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/task-auto-completed/' + id)
   return data
 }
 /**
@@ -55,7 +55,7 @@ export const taskAutoComplete = async (id) => {
  * @return {Object} data
  */
 export const taskReceive = async (id) => {
-  const {data} = await $axios.post("//10.33.80.62:5080/ops/api/beauty/task-receive/" + id)
+  const {data} = await $axios.post("//ops-api.beeplaying.com/ops/api/beauty/task-receive/" + id)
   return data
 }
 /**
@@ -63,7 +63,7 @@ export const taskReceive = async (id) => {
  * @return {Object} data
  */
 export const taskReset = async () => {
-  const {data} = await $axios.post('//10.33.80.62:5080/ops/api/beauty/task-reset')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/beauty/task-reset')
   return data
 }
 /**
