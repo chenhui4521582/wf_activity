@@ -20,7 +20,7 @@
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
               :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
-              v-if="item.status === 2"></div>
+              v-if="item.status === 2 && isNeedOpen"></div>
           </div>
         </section>
       </article>
@@ -113,7 +113,8 @@ export default {
       divideInfo: {},
       divideDateStr: '',
       currentOpenCakeIndex: 0,
-      alreadyOpenedCakes: []
+      alreadyOpenedCakes: [],
+      isNeedOpen: false
     }
   },
   computed: {
@@ -238,6 +239,7 @@ export default {
         this.divideInfo.divideList.forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
+              this.isNeedOpen = true
               openCakeLevelArr.push(item.level)
               item.status = 2
             }
