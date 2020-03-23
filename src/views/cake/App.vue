@@ -11,7 +11,7 @@
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
             v-for="(item,index) in configList" :key="index">
             <div class="lock"
-              :class="{shake:item.status===0&&isShake&&(index+1)%2,'shake-deff':item.status===0&&isShake&&index%2}">
+              :class="{shake:item.isShake&&(index+1)%2,'shake-deff':item.isShake&&index%2}">
             </div>
             <div class="line"></div>
             <div class="desc">
@@ -101,7 +101,6 @@ export default {
       configList: [],
       isShowRank: false,
       isShowPopUp: false,
-      isShake: false,
       popType: null,
       endDate: '',
       showEndDate: '',
@@ -200,12 +199,17 @@ export default {
       this.activityInfo = _get(res, 'data', {})
       this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
       this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
-      this.configList = _get(res, 'data.configList', [])
+      let configList = _get(res, 'data.configList', [])
       this.divideDateStr = _get(res, 'data.divideDateStr', '')
       if (applyPopup) {
-        this.isShake = true
+        configList = configList.map(item => {
+          if (item.status === 1) {
+            item.status = 0
+            item.isShake = true
+          }
+          return item
+        })
         this.applyPopTimer = setTimeout(() => {
-          this.isShake = false
           this.popType = 1
           this.isShowPopUp = true
           clearTimeout(this.applyPopTimer)
@@ -214,6 +218,7 @@ export default {
         this.popType = 2
         this.isShowPopUp = true
       }
+      this.configList = configList
     },
     async divide () {
       this.alreadyOpenedCakes = []
@@ -391,6 +396,7 @@ export default {
   background-size: 100% auto;
   font-family: aAlibaba PuHuiTil;
   font-size: 0.2rem;
+  overflow-x: hidden;
   .cake-container {
     width: 100%;
     min-height: 530px;
