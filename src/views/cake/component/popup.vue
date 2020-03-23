@@ -46,7 +46,7 @@
           </ul>
           <div class="bottom">
             <p class="add-card-info">
-              <img src="../img/add-img.png" alt="">
+              <img :class="{shake:haveAddCard}" src="../img/add-img.png" alt="">
               <span class="has-card" v-if="haveAddCard" @click="useMarkup">点击使用加成卡 >></span>
               <span v-else>暂无加成卡</span>
             </p>
@@ -188,6 +188,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
   z-index: 9;
 }
 .mask {
@@ -403,6 +404,44 @@ export default {
   }
   100% {
     transform: scale(1);
+  }
+}
+.shake {
+  animation: shake 1s infinite;
+}
+@keyframes shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(-0.1rem, 0, 0);
+  }
+  20% {
+    transform: translate3d(0.1rem, 0, 0);
+  }
+  30% {
+    transform: translate3d(-0.04rem, 0, 0);
+  }
+  40% {
+    transform: translate3d(0.04rem, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  70% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  80% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  90% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>
