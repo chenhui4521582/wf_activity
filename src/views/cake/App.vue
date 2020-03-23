@@ -60,13 +60,13 @@
           v-if="actStateInfo.state!==4">
           <div class="middle" v-if="actStateInfo.state===3">
             <p>{{actStateInfo.btn}}</p>
-            <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
+            <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与</p>
           </div>
           <template v-else>
             <div class="left-arrow" v-if="!countTime"></div>
             <div class="middle">
               <p>{{countTime}}{{actStateInfo.btn}}</p>
-              <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
+              <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与</p>
             </div>
             <div class="right-arrow" v-if="!countTime"></div>
           </template>
@@ -637,6 +637,9 @@ export default {
             left: 50%;
             margin-left: -0.27rem;
           }
+          .desc {
+            animation: verticalShake 1s infinite;
+          }
           &.level-1 {
             .line {
               width: 1.2rem;
@@ -649,6 +652,9 @@ export default {
             .lock {
               bottom: 0.5rem;
               right: 1.8rem;
+            }
+            .desc {
+              animation: horizontalShake 1s infinite;
             }
             .line {
               width: 1.2rem;
@@ -758,6 +764,66 @@ export default {
 }
 .shake-deff {
   animation: shake 1s reverse;
+}
+@keyframes verticalShake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  40% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  80% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes horizontalShake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(0.1rem, 0, 0);
+  }
+  40% {
+    transform: translate3d(-0.1rem, 0, 0);
+  }
+  60% {
+    transform: translate3d(0.04rem, 0, 0);
+  }
+  80% {
+    transform: translate3d(-0.04rem, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes Shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  40% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  80% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 @keyframes shake {
   0% {
