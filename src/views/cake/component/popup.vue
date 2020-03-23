@@ -36,14 +36,16 @@
           <div class="btn" @click="closePop(1)">参与活动</div>
         </template>
         <template v-if="type === 3">
-          <ul class="top">
-            <template v-for="(item,key) in divideList">
-              <li v-if="item.status===1" :key="key">
-                <span>第{{item.level|numberToText}}层蛋糕</span>
-                <em>x{{item.awardsName}}</em>
-              </li>
-            </template>
-          </ul>
+          <div class="top">
+            <ul>
+              <template v-for="(item,key) in divideList">
+                <li v-if="item.status===1" :key="key">
+                  <span>第{{item.level|numberToText}}层蛋糕</span>
+                  <em>x{{item.awardsName}}</em>
+                </li>
+              </template>
+            </ul>
+          </div>
           <div class="bottom">
             <p class="add-card-info">
               <img :class="{shake:haveAddCard}" src="../img/add-img.png" alt="">
@@ -348,14 +350,18 @@ export default {
     .top {
       width: 100%;
       height: 1.28rem;
-      display: flex;
-      justify-content: center;
-      align-content: space-around;
-      flex-wrap: wrap;
       margin-bottom: 0.28rem;
+      position: relative;
+      ul {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+      }
       li {
         width: 100%;
         text-align: center;
+        margin-bottom: 0.2rem;
         span {
           color: #bc7571;
         }
@@ -363,6 +369,9 @@ export default {
           color: #ffd941;
           font-style: normal;
           margin-left: 0.1rem;
+        }
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }

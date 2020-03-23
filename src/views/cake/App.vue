@@ -3,8 +3,8 @@
     <template v-if="!isShowRank">
       <article class="cake-container" v-if="actStateInfo.state!==4">
         <div class="back" @click="back"></div>
-        <div class="add" @click="showPopup(0)"></div>
-        <div class="record" @click="showRank"></div>
+        <div class="add" @click.stop="showPopup(0)"></div>
+        <div class="record" @click.stop="showRank"></div>
         <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`"
           @click="handleClick(actStateInfo.state)">
@@ -60,13 +60,13 @@
           v-if="actStateInfo.state!==4">
           <div class="middle" v-if="actStateInfo.state===3">
             <p>{{actStateInfo.btn}}</p>
-            <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
+            <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与</p>
           </div>
           <template v-else>
             <div class="left-arrow" v-if="!countTime"></div>
             <div class="middle">
               <p>{{countTime}}{{actStateInfo.btn}}</p>
-              <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与瓜分</p>
+              <p class="sub">今日已有{{activityInfo.todayApplyNum}}人参与</p>
             </div>
             <div class="right-arrow" v-if="!countTime"></div>
           </template>
@@ -198,8 +198,8 @@ export default {
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
       this.activityInfo = _get(res, 'data', {})
-      this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
-      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
+      this.endDate = _get(res, 'data.endDate', '').slice(5)
+      this.showEndDate = _get(res, 'data.showEndDate', '').slice(5)
       let configList = _get(res, 'data.configList', [])
       this.divideDateStr = _get(res, 'data.divideDateStr', '')
       if (applyPopup) {
@@ -228,7 +228,7 @@ export default {
       if (code === 200) {
         this.divideInfo = _get(res, 'data', {})
         let openCakeLevelArr = []
-        this.divideInfo.divideList.forEach(element => {
+        this.divideInfo.divideList.sort((a, b) => a.level - b.level).forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
               this.isNeedOpen = true
@@ -425,6 +425,7 @@ export default {
       position: absolute;
       right: 0.1rem;
       top: 1.54rem;
+      z-index: 3;
     }
     .record {
       width: 0.92rem;
@@ -433,6 +434,7 @@ export default {
       position: absolute;
       right: 0.1rem;
       top: 2.46rem;
+      z-index: 3;
     }
     .sub-title {
       width: 1.56rem;
@@ -635,6 +637,9 @@ export default {
             left: 50%;
             margin-left: -0.27rem;
           }
+          .desc {
+            animation: verticalShake 1s infinite;
+          }
           &.level-1 {
             .line {
               width: 1.2rem;
@@ -756,6 +761,46 @@ export default {
 }
 .shake-deff {
   animation: shake 1s reverse;
+}
+@keyframes verticalShake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  40% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  80% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes Shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  40% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  80% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 @keyframes shake {
   0% {
