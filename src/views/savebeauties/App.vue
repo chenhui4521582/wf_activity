@@ -74,10 +74,10 @@
                 <div class="right">
                   <div class="price">{{item.price}}元</div>
                   <!--立即购买 无法购买 已购买-->
-                  <div class="buy" v-if="!isTaskAllComplete&&item.buyStatus==0">
+                  <div class="buy" v-if="!isTaskAllComplete&&item.buyFlag==1">
                     立即购买
                   </div>
-                  <div class="buy gray" v-else>{{item.buyStatus?'已购买':'无法购买'}}</div>
+                  <div class="buy gray" v-else>{{!item.buyFlag?'已购买':'无法购买'}}</div>
                 </div>
               </div>
             </div>
@@ -182,7 +182,9 @@
         isTaskAllComplete: false,
         showLoading: false,
         showBar: true,
-        currentItem: null
+        currentItem: null,
+        currentDate: new Date().toLocaleDateString(),
+        beautyDay: localStorage.getItem('beautyDay')
       }
     },
     components: {
@@ -274,9 +276,19 @@
             this.actDay = data.activityDay
             this.hasReset = data.hasResetCard == 1
             this.isTaskAllComplete = data.userTaskInfoRsps.filter(item => item.taskStatus == 1).length == 0
+            let surplusDay = Math.floor(data.countdown / 1000 / 86400)
+            if (surplusDay != this.beautyDay) {
+              this.beautyDay = surplusDay
+              localStorage.setItem('beautyDay', Math.floor(data.countdown / 1000 / 86400))
+            }
             this.countDown(data.countdown)
             if (flag) {
-              data.beautyIsRescue == 0 && this.showPop(1);
+              if (data.beautyIsRescue == 0) {
+                if (this.currentDate != localStorage.getItem('beautyDate')) {
+                  localStorage.setItem('beautyDate', new Date().toLocaleDateString())
+                  this.showPop(1);
+                }
+              }
               this.showLeaguePacksList()
               this.myBeauty()
               this.getHornList()
@@ -284,6 +296,9 @@
                 source_address: GLOBALS.getUrlParam('from') || ''
               })
             }
+          } else {
+            localStorage.removeItem('beautyDate')
+            localStorage.removeItem('beautyDay')
           }
         }
       },
@@ -329,7 +344,7 @@
           this.awardData = {title: '温馨提示', tips: `你有未使用的万能碎片<br>确认重置未完成的任务吗？`, item, btn1Name: '再想想', btn2Name: '确认'}
           this.showPop(6)
         } else if (confirmtype == 1) {
-          if (!this.isTaskAllComplete && item.buyStatus == 0) {
+          if (!this.isTaskAllComplete && item.buyFlag == 1) {
             GLOBALS.marchSetsPoint(index == 0 ? 'A_H5PT0265003124' : 'A_H5PT0265003125')
             this.awardData = {
               title: index == 0 ? '英雄救美' : '真正男子汉',
@@ -478,6 +493,11 @@
         if (!val) {
           this.getActInfo(true)
         }
+      },
+      beautyDay(value, old) {
+        if (old != null) {
+          this.getActInfo(true)
+        }
       }
     }
   }
@@ -578,6 +598,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        z-index: 1;
         .task_container {
           width: 5.86rem;
           height: 8.38rem;
@@ -723,7 +744,7 @@
             width: 3.48rem;
             height: .45rem;
             text-align: center;
-            line-height: .45rem;
+            line-height: .47rem;
             background: rgba(218, 141, 90, 1);
             border-radius: .23rem;
             font-size: .26rem;
@@ -811,6 +832,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 1;
         .btn {
           width: 3.62rem;
           height: .6rem;
@@ -900,6 +922,7 @@
               height: .8rem;
               background: url("./images/helpicon.png");
               background-size: 100% 100%;
+              z-index: 1;
             }
             &.torrowSave:after {
               content: '';
@@ -959,6 +982,16 @@
           color: rgba(81, 37, 34, 1);
           text-align: center;
         }
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        top: 2.25rem;
+        left: 0;
+        width: 4.7rem;
+        height: 7.55rem;
+        background: url("./images/light.png");
+        background-size: 100% 100%;
       }
     }
   }
