@@ -3,8 +3,8 @@
     <template v-if="!isShowRank">
       <article class="cake-container" v-if="actStateInfo.state!==4">
         <div class="back" @click="back"></div>
-        <div class="add" @click="showPopup(0)"></div>
-        <div class="record" @click="showRank"></div>
+        <div class="add" @click.stop="showPopup(0)"></div>
+        <div class="record" @click.stop="showRank"></div>
         <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`"
           @click="handleClick(actStateInfo.state)">
@@ -425,6 +425,7 @@ export default {
       position: absolute;
       right: 0.1rem;
       top: 1.54rem;
+      z-index: 3;
     }
     .record {
       width: 0.92rem;
@@ -433,6 +434,7 @@ export default {
       position: absolute;
       right: 0.1rem;
       top: 2.46rem;
+      z-index: 3;
     }
     .sub-title {
       width: 1.56rem;
