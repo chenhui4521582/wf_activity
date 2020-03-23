@@ -36,17 +36,6 @@ export default {
     }
   },
   mounted () {
-  },
-  watch: {
-    show (val) {
-      if (val) {
-        clearTimeout(this.Timeout)
-        this.Timeout = setTimeout(() => {
-          clearTimeout(this.Timeout)
-          this.show = false
-        }, this.duration || 3000)
-      }
-    }
   }
 }
 </script>

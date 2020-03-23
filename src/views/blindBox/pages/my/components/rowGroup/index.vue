@@ -12,6 +12,7 @@
 
 <script>
 import { List } from '../../../../apis/coupon'
+import { toService, createService } from '../../../../global'
 import Row from '../row'
 
 export default {
@@ -53,7 +54,8 @@ export default {
           title: '在线客服',
           jump: () => {
             GLOBALS.marchSetsPoint('A_H5PT0225002577')
-            location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+            location.href = ysf('url')
+            // location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
           }
         },
         {
@@ -70,7 +72,11 @@ export default {
   components: {
     Row
   },
+  created () {
+    createService()
+  },
   async mounted () {
+    toService()
     const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0) this.$set(this.row[2], 'tip', '有优惠券未使用')
   }

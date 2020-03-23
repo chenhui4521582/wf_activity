@@ -31,10 +31,10 @@
                 <p class="count">{{userInfo.singlePostTimes}}</p>
                 <p>可用包邮卡</p>
               </div>
-              <!-- <div>
-              <p class="count">0</p>
+              <div>
+              <p class="count">{{coupon}}</p>
               <p>可用优惠券</p>
-            </div> -->
+            </div>
             </div>
             <p class="use"
               @click="use">点击去使用>></p>
@@ -90,6 +90,7 @@ import Rule from '../score/components/rule'
 import { AddList, MinusList } from '../../apis/score'
 import { UserInfo } from '../../apis/user'
 import Card from './components/card'
+import { List } from '../../apis/coupon'
 
 export default {
   data () {
@@ -99,6 +100,7 @@ export default {
       userInfo: null,
       isRule: false,
       active: 0,
+      coupon: 0,
       tabs: [
         {
           title: '获取积分'
@@ -157,7 +159,9 @@ export default {
   async mounted () {
     ({ data: { data: this.addScoreList } } = await AddList({ page: 1, pageSize: 9999 }));
     ({ data: { data: this.minusList } } = await MinusList({ page: 1, pageSize: 9999 }));
-    ({ data: { data: this.userInfo } } = await UserInfo())
+    ({ data: { data: this.userInfo } } = await UserInfo());
+    const { data: { data } } = await List({ gameId: 28, params: true })
+    this.coupon = data.length
     if (this.$route.query.active) {
       this.active = Number(this.$route.query.active)
     }

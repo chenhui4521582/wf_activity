@@ -110,6 +110,38 @@ const routes = [
         meta: {
           title: '幸运榜单'
         }
+      },
+      {
+        path: '/faq',
+        name: 'Faq',
+        component: () => import('../pages/faq'),
+        meta: {
+          title: '常见问题'
+        }
+      },
+      {
+        path: '/userlogin',
+        name: 'userLogin',
+        component: () => import('../pages/userLogin/userLogin'),
+        meta: {
+          title: '开盲盒 100%中奖'
+        }
+      },
+      {
+        path: '/bindwechat',
+        name: 'bindWechat',
+        component: () => import('../pages/bindWechat/bindWechat'),
+        meta: {
+          title: '关注公众号'
+        }
+      },
+      {
+        path: '/loading',
+        name: 'loading',
+        component: () => import('../pages/loading/loading'),
+        meta: {
+          title: ''
+        }
       }
     ]
   }

@@ -19,6 +19,8 @@ Vue.config.productionTip = false
 Vue.prototype.$eventBus = new Vue()
 Vue.prototype.axios = axios
 Vue.prototype.$loading = Loading
+Vue.prototype.__defineGetter__('$companyInfo', function(){return linkUrl.companyInfo || {}});
+
 Vue.filter('imgFilter', url => {
   if (url && url.indexOf('http') < 0) {
     return '//file.beeplaying.com' + url

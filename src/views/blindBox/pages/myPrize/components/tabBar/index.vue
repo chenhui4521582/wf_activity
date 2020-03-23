@@ -38,6 +38,18 @@
       </div>
     </section>
     <section class="content">
+      <p v-if="!isFollow"
+        class="wechat">
+        <img @click="closeWechat"
+          src="./assets/icon.png"
+          alt="">
+        <span>
+          关注公众号 及时跟踪物流
+        </span>
+        <span @click="follow">
+          点击关注>
+        </span>
+      </p>
       <div v-if="this.goodsList && this.goodsList.length > 0"
         class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
@@ -99,12 +111,14 @@ import { InventoryList } from '../../../../apis/user'
 import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
+import { isWechat, isFollowWechat, toService, createService } from '../../../../global'
 
 export default {
   data () {
     return {
       show: false,
       score: null,
+      isFollow: true,
       isExchange: false,
       showProduct: false,
       productDetail: null,
@@ -150,13 +164,37 @@ export default {
       ]
     }
   },
+  created () {
+    createService()
+  },
   mounted () {
+    toService()
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
-    if (active === 3)  GLOBALS.marchSetsPoint('A_H5PT0225002962')
+    if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
     this.getTabGoods()
+    if (localStorage.getItem('closeWechatTip')) return
+    new Promise(resolve => {
+      resolve(isFollowWechat())
+    }).then(resolve => {
+      if (!isWechat && !resolve) {
+        this.isFollow = false
+      }
+    })
   },
   methods: {
+    // 关注公众号
+    follow () {
+      // location.href = WechatUrl
+      GLOBALS.marchSetsPoint('A_H5PT0225003134')
+      this.$router.push({
+        name: 'bindWechat'
+      })
+    },
+    closeWechat () {
+      this.isFollow = true
+      localStorage.setItem('closeWechatTip', true)
+    },
     // 查看商品详情弹窗
     viewProduct (val) {
       if (!val.awardsId) return
@@ -233,7 +271,7 @@ export default {
     // 在线客服
     toOnlineService () {
       GLOBALS.marchSetsPoint('A_H5PT0225002577')
-      location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
+      location.href = ysf('url')
     }
   },
   components: {
@@ -303,7 +341,7 @@ export default {
     padding-left: 0.1rem;
     position: fixed;
     right: 0;
-    top: 9rem;
+    bottom: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -329,6 +367,29 @@ export default {
     padding-top: 0.31rem;
     background: rgb(238, 238, 238);
     overflow: scroll;
+    .wechat {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 0.2rem;
+      box-sizing: border-box;
+      background: #fddfdf;
+      color: #ff4141;
+      font-size: 0.24rem;
+      border-radius: 0.16rem;
+      width: 6.8rem;
+      line-height: 0.6rem;
+      margin: 0 auto 0.3rem;
+      position: relative;
+      img {
+        position: absolute;
+        right: -0.15rem;
+        top: -0.15rem;
+        width: 0.3rem;
+      }
+      span:last-child {
+        color: #ff7800;
+      }
+    }
     .button {
       width: 1.27rem;
       height: 0.52rem;
