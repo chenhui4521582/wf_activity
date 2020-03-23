@@ -203,7 +203,7 @@ export default {
   },
   methods: {
     back () {
-      history.go(-1)
+      location.href = window.SDK.getBackUrl()
     },
     async getActivityInfo () {
       const res = await ActivityInfo()
