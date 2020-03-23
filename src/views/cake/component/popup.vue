@@ -143,14 +143,22 @@ export default {
       }
     },
     toPay (payInfo) {
-      localStorage.setItem('originDeffer', location.href)
-      localStorage.setItem('JDD_PARAM', JSON.stringify(payInfo))
-      localStorage.setItem('payment', JSON.stringify(payInfo))
-      let url = '//wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
-      location.href = url
+      if (payInfo.buyFlag) {
+        localStorage.setItem('originDeffer', location.href)
+        localStorage.setItem('JDD_PARAM', JSON.stringify(payInfo))
+        localStorage.setItem('payment', JSON.stringify(payInfo))
+        let url = '//wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        location.href = url
+      } else {
+        this.$toast.show({
+          message: '该礼包今日已购买了哦～～',
+          isOneLine: true,
+          duration: 3000
+        })
+      }
     },
     toMall () {
-      let url = 'xmWap/#/payment'
+      let url = '/xmWap/#/payment'
       location.href = url
     },
     closePop () {
