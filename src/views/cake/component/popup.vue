@@ -146,7 +146,7 @@ export default {
       localStorage.setItem('originDeffer', location.href)
       localStorage.setItem('JDD_PARAM', JSON.stringify(payInfo))
       localStorage.setItem('payment', JSON.stringify(payInfo))
-      let url = '/xmWap/#/payment/paymentlist?isBack=true'
+      let url = '//wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       location.href = url
     },
     toMall () {
