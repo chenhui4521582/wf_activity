@@ -24,7 +24,7 @@
         <template v-if="type === 1">
           <div class="cake-unlocked"></div>
           <div class="tips">小提示：任意付费即可解锁蛋糕</div>
-          <div class="btn" @click="closePop">马上瓜分</div>
+          <div class="btn" @click="closePop(1)">马上瓜分</div>
         </template>
         <template v-if="type === 2">
           <div class="crying-face"></div>
@@ -33,7 +33,7 @@
             瓜分时间为参与当日-次日10:00<br>
             再试一下吧
           </div>
-          <div class="btn" @click="closePop">参与活动</div>
+          <div class="btn" @click="closePop(1)">参与活动</div>
         </template>
         <template v-if="type === 3">
           <ul class="top">
@@ -46,19 +46,19 @@
           </ul>
           <div class="bottom">
             <p class="add-card-info">
-              <img src="../img/add-img.png" alt="">
+              <img :class="{shake:haveAddCard}" src="../img/add-img.png" alt="">
               <span class="has-card" v-if="haveAddCard" @click="useMarkup">点击使用加成卡 >></span>
               <span v-else>暂无加成卡</span>
             </p>
-            <div class="btn" @click="closePop">继续参与瓜分</div>
+            <div class="btn" @click="closePop(1)">继续参与瓜分</div>
             <p>{{applyDate}}场次瓜分</p>
           </div>
         </template>
         <template v-if="type === 4">
           <p>{{awardInfo.awardsName}}</p>
-          <div class="btn" @click="closePop">继续参与瓜分</div>
+          <div class="btn" @click="closePop(1)">继续参与瓜分</div>
         </template>
-        <div class="close-icon" @click="closePop"></div>
+        <div class="close-icon" @click="closePop()"></div>
       </section>
     </article>
   </transition>
@@ -143,6 +143,7 @@ export default {
       }
     },
     toPay (payInfo) {
+      GLOBALS.marchSetsPoint('A_H5PT0253003019', { 'product_id': payInfo.bizId, 'product_name': payInfo.name }) // H5平台-蛋糕瓜分活动-加油包-礼包点击
       if (payInfo.buyFlag) {
         localStorage.setItem('originDeffer', location.href)
         localStorage.setItem('JDD_PARAM', JSON.stringify(payInfo))
@@ -151,17 +152,31 @@ export default {
         location.href = url
       } else {
         this.$toast.show({
-          message: '该礼包今日已购买了哦～～',
+          message: '今日已购买，明天再来吧～',
           isOneLine: true,
           duration: 3000
         })
       }
     },
     toMall () {
+      GLOBALS.marchSetsPoint('A_H5PT0253003020') // H5平台-蛋糕瓜分活动-加油包-更多礼包点击
       let url = '/xmWap/#/payment'
       location.href = url
     },
-    closePop () {
+    closePop (isNotClosed) {
+      if (isNotClosed) {
+        switch (this.type) {
+          case 2:
+            GLOBALS.marchSetsPoint('A_H5PT0253003023') // H5平台-蛋糕瓜分活动-错过瓜分-参与活动按钮点击
+            break
+          case 3:
+            GLOBALS.marchSetsPoint('A_H5PT0253003022') // H5平台-蛋糕瓜分活动-瓜分弹窗-继续参与按钮点击
+            break
+
+          default:
+            break
+        }
+      }
       this.$emit('on-close')
     }
   },
@@ -188,6 +203,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
   z-index: 9;
 }
 .mask {
@@ -403,6 +419,44 @@ export default {
   }
   100% {
     transform: scale(1);
+  }
+}
+.shake {
+  animation: shake 1s infinite;
+}
+@keyframes shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(-0.1rem, 0, 0);
+  }
+  20% {
+    transform: translate3d(0.1rem, 0, 0);
+  }
+  30% {
+    transform: translate3d(-0.04rem, 0, 0);
+  }
+  40% {
+    transform: translate3d(0.04rem, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0, 0);
+  }
+  60% {
+    transform: translate3d(0, 0.1rem, 0);
+  }
+  70% {
+    transform: translate3d(0, -0.1rem, 0);
+  }
+  80% {
+    transform: translate3d(0, 0.04rem, 0);
+  }
+  90% {
+    transform: translate3d(0, -0.04rem, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>

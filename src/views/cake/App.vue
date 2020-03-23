@@ -11,12 +11,12 @@
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
             v-for="(item,index) in configList" :key="index">
             <div class="lock"
-              :class="{shake:item.status===0&&isShake&&(index+1)%2,'shake-deff':item.status===0&&isShake&&index%2}">
+              :class="{shake:item.isShake&&(index+1)%2,'shake-deff':item.isShake&&index%2}">
             </div>
             <div class="line"></div>
             <div class="desc">
               <p>瓜分<span>{{item.amount}}</span>话费券</p>
-              <p>{{item.recharge|rechargeFilter}}</p>
+              <p>{{rechargeFilter(item.recharge)}}</p>
             </div>
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
@@ -101,7 +101,6 @@ export default {
       configList: [],
       isShowRank: false,
       isShowPopUp: false,
-      isShake: false,
       popType: null,
       endDate: '',
       showEndDate: '',
@@ -186,20 +185,9 @@ export default {
       }
     }
   },
-  filters: {
-    rechargeFilter (recharge) {
-      switch (recharge) {
-        case 10:
-          return '付费满10元解锁'
-        case 88:
-          return '活动期间累计付费满88元解锁'
-        default:
-          return '任意付费解锁'
-      }
-    }
-  },
   mounted () {
     this.getActivityInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0253', { 'source_address': GLOBALS.getUrlParam('from') || null }) // H5平台-蛋糕瓜分活动-页面加载完成
   },
   methods: {
     back () {
@@ -212,12 +200,17 @@ export default {
       this.activityInfo = _get(res, 'data', {})
       this.endDate = _get(res, 'data.endDate', '').slice(5, -3)
       this.showEndDate = _get(res, 'data.showEndDate', '').slice(5, -3)
-      this.configList = _get(res, 'data.configList', [])
+      let configList = _get(res, 'data.configList', [])
       this.divideDateStr = _get(res, 'data.divideDateStr', '')
       if (applyPopup) {
-        this.isShake = true
+        configList = configList.map(item => {
+          if (item.status === 1) {
+            item.status = 0
+            item.isShake = true
+          }
+          return item
+        })
         this.applyPopTimer = setTimeout(() => {
-          this.isShake = false
           this.popType = 1
           this.isShowPopUp = true
           clearTimeout(this.applyPopTimer)
@@ -226,6 +219,7 @@ export default {
         this.popType = 2
         this.isShowPopUp = true
       }
+      this.configList = configList
     },
     async divide () {
       this.alreadyOpenedCakes = []
@@ -298,11 +292,12 @@ export default {
     handleClick (state) {
       switch (state) {
         case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0253003021') // H5平台-蛋糕瓜分活动-瓜分蛋糕按钮点击
           this.divide()
           break
         case 2:
           this.$toast.show({
-            message: '今日已瓜分, 明天再来吧～～',
+            message: `${this.endDate}开启瓜分`,
             isOneLine: true,
             duration: 3000
           })
@@ -323,6 +318,9 @@ export default {
           break
 
         default:
+          if (this.actStateInfo.state === 0 && this.actStateInfo.btn === '任意付费参与') {
+            GLOBALS.marchSetsPoint('A_H5PT0253003018') // H5平台-蛋糕瓜分活动-任意付费按钮点击
+          }
           this.showPopup(0)
           break
       }
@@ -346,6 +344,20 @@ export default {
         this.countTime = `${countHour}:${countMinute}:${countSecond}`
         console.log(this.countTime)
       }, 1000)
+    },
+    rechargeFilter (recharge) {
+      switch (recharge) {
+        case 10:
+          return '付费满10元解锁'
+        case 88:
+          if (this.configList[2].state === 1) {
+            return `${this.endDate}开启瓜分`
+          } else {
+            return '活动期间累计付费满88元解锁'
+          }
+        default:
+          return '任意付费解锁'
+      }
     }
   },
   watch: {
@@ -389,6 +401,7 @@ export default {
   background-size: 100% auto;
   font-family: aAlibaba PuHuiTil;
   font-size: 0.2rem;
+  overflow-x: hidden;
   .cake-container {
     width: 100%;
     min-height: 530px;
