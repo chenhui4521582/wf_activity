@@ -356,9 +356,11 @@
             this.showPop(6)
           }
         } else {
-          GLOBALS.marchSetsPoint('A_H5PT0265003126')
-          this.awardData = {title: '温馨提示', tips: `确认重置未完成的任务吗？`, item, btn1Name: '再想想', btn2Name: '确认'}
-          this.showPop(6)
+          if(!this.isTaskAllComplete){
+            GLOBALS.marchSetsPoint('A_H5PT0265003126')
+            this.awardData = {title: '温馨提示', tips: `确认重置未完成的任务吗？`, item, btn1Name: '再想想', btn2Name: '确认'}
+            this.showPop(6)
+          }
         }
       },
       async confrimsure(item) {
