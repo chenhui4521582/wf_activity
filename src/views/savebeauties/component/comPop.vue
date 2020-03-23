@@ -211,9 +211,10 @@
   .com_pop {
     position: fixed;
     left: 50%;
-    top: 2rem;
-    margin-left: -1.96rem;
+    top: 1rem;
+    margin-left: -1.96*1.3rem;
     &.flag1 {
+      top: 2rem;
       margin-left: -1.735rem;
     }
     .pop-mask {
@@ -231,14 +232,14 @@
         margin: 0 auto;
         box-sizing: border-box;
         .title_bg {
-          width: 3.92rem;
-          height: 1.714rem;
+          width: 3.92*1.3rem;
+          height: 1.714*1.3rem;
           background: url("../images/comPop/top.png") no-repeat center
             center / 100% 100%;
           position: relative;
           .img {
             position: absolute;
-            top: 1.05rem;
+            top: 1.4rem;
             left: 0;
             right: 0;
             margin: auto;
@@ -249,10 +250,10 @@
           }
         }
         .main {
-          width: 3.92rem;
+          width: 3.92*1.3rem;
           font-size: 0.2rem;
           background: url("../images/comPop/bgline.png");
-          background-size: 3.92rem .329rem;
+          background-size: 3.92*1.3rem .329*1.3rem;
           color: #fff;
           position: relative;
           top: -.1rem;
@@ -327,7 +328,7 @@
               box-sizing: border-box;
               font-size: .2rem;
               font-weight: bold;
-              height: 5rem;
+              height: 6.5rem;
               position: relative;
               p {
                 line-height: .3rem;
@@ -528,12 +529,12 @@
                 height: .7rem;
                 line-height: .7rem;
                 text-align: center;
-                border: 2px solid rgba(255, 255, 255, 1);
+                border: .02rem solid #ffcab0;
                 box-sizing: border-box;
                 border-radius: .35rem;
                 font-size: .3rem;
                 font-weight: bold;
-                color: rgba(255, 241, 241, 1);
+                color: #ffcab0;
               }
               .sad {
                 display: block;
@@ -544,12 +545,12 @@
             }
           }
           .footer {
-            width: 3.92rem;
-            height: .369rem;
+            width: 3.92*1.3rem;
+            height: .369*1.3rem;
             background: url("../images/comPop/bottom.png") no-repeat center
               center / 100% 100%;
             position: absolute;
-            bottom: -.35rem;
+            bottom: -.35*1.3rem;
             left: 0;
             margin: auto;
           }
@@ -559,7 +560,7 @@
           height: 0.6rem;
           background: url("../images/close.png") no-repeat center
             center / 100% 100%;
-          margin: 0.4rem auto 0;
+          margin: 0.6rem auto 0;
           &.flag1 {
             margin: 0.2rem auto 0;
           }
