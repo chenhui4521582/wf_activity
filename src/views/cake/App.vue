@@ -16,7 +16,7 @@
             <div class="line"></div>
             <div class="desc">
               <p>瓜分<span>{{item.amount}}</span>话费券</p>
-              <p>{{item.recharge|rechargeFilter}}</p>
+              <p>{{rechargeFilter(item.recharge)}}</p>
             </div>
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
@@ -186,18 +186,6 @@ export default {
       }
     }
   },
-  filters: {
-    rechargeFilter (recharge) {
-      switch (recharge) {
-        case 10:
-          return '付费满10元解锁'
-        case 88:
-          return '活动期间累计付费满88元解锁'
-        default:
-          return '任意付费解锁'
-      }
-    }
-  },
   mounted () {
     this.getActivityInfo()
   },
@@ -302,7 +290,7 @@ export default {
           break
         case 2:
           this.$toast.show({
-            message: '今日已瓜分, 明天再来吧～～',
+            message: `${this.endDate}开启瓜分`,
             isOneLine: true,
             duration: 3000
           })
@@ -346,6 +334,20 @@ export default {
         this.countTime = `${countHour}:${countMinute}:${countSecond}`
         console.log(this.countTime)
       }, 1000)
+    },
+    rechargeFilter (recharge) {
+      switch (recharge) {
+        case 10:
+          return '付费满10元解锁'
+        case 88:
+          if (this.configList[2].state === 1) {
+            return `${this.endDate}开启瓜分`
+          } else {
+            return '活动期间累计付费满88元解锁'
+          }
+        default:
+          return '任意付费解锁'
+      }
     }
   },
   watch: {
