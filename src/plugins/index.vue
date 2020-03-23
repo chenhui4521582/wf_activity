@@ -2,7 +2,7 @@
   <transition name="fadeIn">
     <div class="alertBox" v-show="show">
       <div class="alert-mask" v-show="isShowMask"></div>
-      <div class="box" v-show="show">
+      <div class="box" :class="{oneline:isOneLine}" v-show="show">
         {{message}}
       </div>
     </div>
@@ -29,6 +29,10 @@ export default {
     duration: { // 显示时间
       type: Number,
       default: 3000
+    },
+    isOneLine: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -52,6 +56,9 @@ export default {
   color: #fff;
   font-size: 16px;
   z-index: 5000;
+}
+.oneline {
+  white-space: nowrap;
 }
 .alert-mask {
   position: fixed;
