@@ -188,7 +188,8 @@ export default {
   right: 0;
   background: #350d16;
   padding: 0.46rem 0.24rem 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   color: #c8b9b8;
   .back {
     width: 0.62rem;

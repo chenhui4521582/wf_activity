@@ -194,6 +194,8 @@ export default {
       location.href = window.SDK.getBackUrl()
     },
     async getActivityInfo () {
+      this.isNeedOpen = false
+      this.alreadyOpenedCakes = []
       const res = await ActivityInfo()
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
