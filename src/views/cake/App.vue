@@ -350,10 +350,10 @@ export default {
         case 10:
           return '付费满10元解锁'
         case 88:
-          if (this.configList[2].state === 1) {
-            return `${this.endDate}开启瓜分`
-          } else {
+          if (this.configList[2].state === 0) {
             return '活动期间累计付费满88元解锁'
+          } else {
+            return `${this.endDate}开启瓜分`
           }
         default:
           return '任意付费解锁'
