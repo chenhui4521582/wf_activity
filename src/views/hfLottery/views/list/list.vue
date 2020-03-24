@@ -75,6 +75,8 @@ export default {
         if(code == 200) {
           this.list = _get(res, 'data.data.productList', [])
           this.activityInfo = _get(res, 'data.data')
+        }else {
+          this.$toast.show({message})
         }
       })
     },
@@ -85,6 +87,8 @@ export default {
         if(code == 200) {
           this.log = _get(res, 'data.data')
           this.openLotteryLog()
+        }else {
+          this.$toast.show({message})
         }
       })
     },
