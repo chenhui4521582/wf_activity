@@ -226,7 +226,6 @@ export default {
     }
   },
   async mounted () {
-    alert(1)
     await this.init()
     const { data: { data } } = await List({ gameId: 28, params: true })
     if (data.length > 0 && !this.isOpenBox) this.isCouponTip = true
