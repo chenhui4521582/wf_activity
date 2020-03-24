@@ -117,7 +117,8 @@ export default {
       divideDateStr: '',
       currentOpenCakeIndex: 0,
       alreadyOpenedCakes: [],
-      isNeedOpen: false
+      isNeedOpen: false,
+      inAnimation: false
     }
   },
   computed: {
@@ -216,17 +217,16 @@ export default {
           return item
         })
         this.applyPopTimer = setTimeout(() => {
-          this.popType = 1
-          this.isShowPopUp = true
+          this.showPopup(1)
           clearTimeout(this.applyPopTimer)
         }, 1200)
       } else if (forgetPopup) {
-        this.popType = 2
-        this.isShowPopUp = true
+        this.showPopup(2)
       }
       this.configList = configList
     },
     async divide () {
+      this.inAnimation = true
       this.alreadyOpenedCakes = []
       const res = await Divide(this.divideDateStr)
       let code = _get(res, 'code', 0)
@@ -257,12 +257,15 @@ export default {
             }
           }, 4000)
           this.openCakeTimer = setTimeout(() => {
+            this.inAnimation = false
             clearTimeout(this.openCakeTimer)
-            this.popType = 3
-            this.isShowPopUp = true
+            this.showPopup(3)
           }, 4000 * length + 200)
+        } else {
+          this.inAnimation = false
         }
       } else {
+        this.inAnimation = false
         this.$toast.show({
           message: '正在结算中，请稍后再试',
           isOneLine: true,
@@ -271,12 +274,14 @@ export default {
       }
     },
     showRank () {
+      if (this.inAnimation) return
       this.isShowRank = true
     },
     closeRank () {
       this.isShowRank = false
     },
     showPopup (type) {
+      if (this.inAnimation) return
       this.popType = type
       this.isShowPopUp = true
     },
@@ -290,8 +295,7 @@ export default {
       this.isShowPopUp = false
       this.changeTypeTimer = setTimeout(() => {
         clearTimeout(this.changeTypeTimer)
-        this.isShowPopUp = true
-        this.popType = type
+        this.showPopup(type)
       }, 200)
     },
     handleClick (state) {
