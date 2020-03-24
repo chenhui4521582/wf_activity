@@ -1,5 +1,5 @@
 <template>
-  <div class="list-info">
+  <div class="list-info" @click="goDetail(info)">
     <div class="corner">
       <img :src="info.cornerImg | filter" alt="">
     </div>
@@ -7,7 +7,7 @@
       <img :src="info.picture | filter" alt="">
     </div>
     <div class="goods-name">{{info.name}}</div>
-    <div class="btn" @click="goDetail(info)">{{info.purchasePrice}}话费券抽奖</div>
+    <div class="btn">{{info.purchasePrice}}话费券抽奖</div>
   </div>
 </template>
 <script>

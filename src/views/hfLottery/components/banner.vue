@@ -21,7 +21,7 @@ export default {
       loop: true,
       autoplay: true,
       direction: 'vertical',
-      height: parseInt(document.documentElement.style.fontSize) * .61
+      height: parseInt(document.documentElement.style.fontSize) * .61 - 4
     }
   }),
   computed: {
@@ -46,7 +46,7 @@ export default {
   .swiper-slide {
     text-align: center;
     font-size: .24rem;
-    line-height: .63rem;
+    line-height: .67rem;
     color: #F6F7E1;
   }
 }

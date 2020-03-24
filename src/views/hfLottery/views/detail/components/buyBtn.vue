@@ -44,13 +44,14 @@ export default {
   height: .9rem;
   line-height: .9rem;
   text-align: center;
-  
   font-size: .24rem;
   color: #fff;
   .lottery-btn {
+    height: 100%;
     background: #FF4141;
   }
   .disable {
+    height: 100%;
     background: #FF4141;
     opacity: .7;
   }

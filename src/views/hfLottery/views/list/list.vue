@@ -75,6 +75,8 @@ export default {
         if(code == 200) {
           this.list = _get(res, 'data.data.productList', [])
           this.activityInfo = _get(res, 'data.data')
+        }else {
+          this.$toast.show({message})
         }
       })
     },
@@ -85,6 +87,8 @@ export default {
         if(code == 200) {
           this.log = _get(res, 'data.data')
           this.openLotteryLog()
+        }else {
+          this.$toast.show({message})
         }
       })
     },
@@ -118,7 +122,7 @@ img {
   background-size: 100% auto;
   .back {
     position: absolute;
-    left: 0;
+    left: -.1rem;
     top: .3rem;
     width: .68rem;
     height: .46rem;
