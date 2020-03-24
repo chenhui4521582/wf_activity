@@ -1,7 +1,7 @@
 <template>
   <main class="cake-wrapper">
     <template v-if="!isShowRank">
-      <article class="cake-container" v-if="actStateInfo.state!==4">
+      <article class="cake-container" v-if="actStateInfo.state!==4 || isNeedOpen">
         <div class="back" @click="back"></div>
         <div class="add" @click.stop="showPopup(0)"></div>
         <div class="record" @click.stop="showRank"></div>
@@ -21,7 +21,8 @@
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
               :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
-              v-if="item.status === 2 && isNeedOpen"></div>
+              v-if="item.status === 2 && isNeedOpen && (alreadyOpenedCakes.includes(item.level)|| openCakeLevelArr.includes(item.level))">
+            </div>
           </div>
         </section>
       </article>
@@ -117,6 +118,7 @@ export default {
       divideDateStr: '',
       currentOpenCakeIndex: 0,
       alreadyOpenedCakes: [],
+      openCakeLevelArr: [],
       isNeedOpen: false,
       inAnimation: false
     }
@@ -200,6 +202,7 @@ export default {
     async getActivityInfo () {
       this.isNeedOpen = false
       this.alreadyOpenedCakes = []
+      this.openCakeLevelArr = []
       const res = await ActivityInfo()
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
@@ -228,29 +231,29 @@ export default {
     async divide () {
       this.inAnimation = true
       this.alreadyOpenedCakes = []
+      this.openCakeLevelArr = []
       const res = await Divide(this.divideDateStr)
       let code = _get(res, 'code', 0)
       if (code === 200) {
         this.divideInfo = _get(res, 'data', {})
-        let openCakeLevelArr = []
         this.divideInfo.divideList.sort((a, b) => a.level - b.level).forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
               this.isNeedOpen = true
-              openCakeLevelArr.push(item.level)
+              this.openCakeLevelArr.push(item.level)
               item.status = 2
             }
           })
         })
-        let length = openCakeLevelArr.length
+        let length = this.openCakeLevelArr.length
         if (length > 0) {
           let number = 0
-          this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+          this.$set(this, 'currentOpenCakeIndex', this.openCakeLevelArr.shift())
           this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
           this.cakeLevelTimer = setInterval(() => {
             if (number < length) {
               number++
-              this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+              this.$set(this, 'currentOpenCakeIndex', this.openCakeLevelArr.shift())
               this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
             } else {
               clearInterval(this.cakeLevelTimer)
