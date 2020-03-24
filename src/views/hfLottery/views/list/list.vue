@@ -53,15 +53,18 @@ export default {
   methods: {
     /** 返回 **/
     backHome() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003117')
       window.location.href = "//wap.beeplaying.com/xmWap/"
     },
     /** 打开规则 **/
     openRule() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003119')
       this.showPopup = true;
       this.popupType = 1
     },
     /** 打开抽奖记录 **/
     openLotteryLog() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003118')
       this.showPopup = true;
       this.popupType = 2
     },

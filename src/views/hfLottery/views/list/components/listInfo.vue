@@ -1,6 +1,8 @@
 <template>
   <div class="list-info">
-    <div class="corner"></div>
+    <div class="corner">
+      <img :src="info.cornerImg | filter" alt="">
+    </div>
     <div class="goods-img">
       <img :src="info.picture | filter" alt="">
     </div>
@@ -44,8 +46,11 @@ export default {
     z-index: 2;
     width: 1.07rem;
     height: .65rem;
-    background: url(../../../img/lotter-list-icon.png) no-repeat center center;
-    background-size: 100% 100%
+    img {
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
   }
   .goods-img {
     margin: .2rem auto 0;

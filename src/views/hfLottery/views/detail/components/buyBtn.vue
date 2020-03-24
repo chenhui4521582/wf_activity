@@ -18,12 +18,18 @@ export default {
   },
   methods: {
     getLottry() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003108', {
+        awards_id: this.info.id,
+        awards_name: this.info.name
+      })
       this.$emit('getLottery')
     },
     goTask() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003109')
       window.location.href = "https://wap.beeplaying.com/xmWap/#/task"
     },
     goHome() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003110')
       window.location.href = "https://wap.beeplaying.com/xmWap/#/"
     }
   }

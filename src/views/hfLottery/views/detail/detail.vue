@@ -69,6 +69,10 @@ export default {
           this.popupType = 3
           this.showPopup = true
           this._getGoodsDetail()
+        }else {
+          this.$toast.show({
+            message
+          })
         }
       }).catch(error=> {
         this.lock = false

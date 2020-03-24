@@ -186,7 +186,9 @@ export default {
         index = 0
         if(this.lotterySuccess) {
           this.animationStep2()
+          GLOBALS.marchSetsPoint('A_H5PT0264003113')
         }else {
+          GLOBALS.marchSetsPoint('A_H5PT0264003115')
           this.animation.show = false
           this.lotteryEnd = true
         }
@@ -209,12 +211,15 @@ export default {
       }, 2000);
     },
     goMyPrice() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003114')
       window.location.href = "https://wap.beeplaying.com/xmWap/#/my/prize"
     },
     lotteryContinue() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003116')
       this.$emit('lotteryContinue')
     },
     lottery() {
+      GLOBALS.marchSetsPoint('A_H5PT0264003112')
       this.$emit('lottery')
     }
   },
@@ -222,6 +227,9 @@ export default {
     popupType (newVlue) {
       if(newVlue && this.popupType == 3) {
         this.animationStep1()
+      }
+      if(newVlue && this.popupType == 4) {
+         GLOBALS.marchSetsPoint('A_H5PT0264003111')
       }
     }
   }

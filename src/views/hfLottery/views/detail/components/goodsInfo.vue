@@ -3,7 +3,7 @@
     <div class="goods-img">
       <img :src="info.detailPicture | filter" alt="">
       <div class="corner">
-        <img src="../../../img/lotter-list-icon1.png" alt="">
+        <img :src="info.cornerImg | filter" alt="">
       </div>
     </div>
     <div class="info">
