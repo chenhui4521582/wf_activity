@@ -48,7 +48,7 @@
             <div class="item" v-for="(item, index) in log" :key="index">
               <div class="name">{{item.name}}</div>
               <div class="time">{{item.date | formatTime('y.m.d')}}</div>
-              <div class="check">立即查看>></div>
+              <div class="check" @click="goMyPrice">立即查看>></div>
             </div>
           </div>
           <div class="no-list" v-else>
@@ -427,8 +427,8 @@ export default {
           justify-self: space-beween;
           font-size: .20rem;
           color: #fff;
-          line-height: .48rem;
-          height: .46rem;
+          line-height: .6rem;
+          height: .6rem;
           background: #110097;
           &:nth-child(even) {
             background: none;

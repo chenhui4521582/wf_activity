@@ -122,7 +122,7 @@ img {
   background-size: 100% auto;
   .back {
     position: absolute;
-    left: 0;
+    left: -.1rem;
     top: .3rem;
     width: .68rem;
     height: .46rem;
