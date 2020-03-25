@@ -1,7 +1,7 @@
 <template>
   <main class="cake-wrapper">
     <template v-if="!isShowRank">
-      <article class="cake-container" v-if="actStateInfo.state!==4 || isNeedOpen">
+      <article class="cake-container">
         <div class="back" @click="back"></div>
         <div class="add" @click.stop="showPopup(0)"></div>
         <div class="record" @click.stop="showRank"></div>
@@ -21,7 +21,7 @@
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
               :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
-              v-if="item.status === 2 && isNeedOpen && (alreadyOpenedCakes.includes(item.level)|| openCakeLevelArr.includes(item.level))">
+              v-if="item.status === 2 && (alreadyOpenedCakes.includes(item.level)|| openCakeLevelArr.includes(item.level))">
             </div>
           </div>
         </section>
@@ -240,7 +240,6 @@ export default {
         this.divideInfo.divideList.sort((a, b) => a.level - b.level).forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
-              this.isNeedOpen = true
               this.openCakeLevelArr.push(item.level)
               item.status = 2
             }

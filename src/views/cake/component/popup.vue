@@ -41,7 +41,7 @@
               <template v-for="(item,key) in divideList">
                 <li v-if="item.status===1" :key="key">
                   <span>第{{item.level|numberToText}}层蛋糕</span>
-                  <em>x{{item.awardsName}}</em>
+                  <em>{{item.awardsName}}</em>
                 </li>
               </template>
             </ul>
