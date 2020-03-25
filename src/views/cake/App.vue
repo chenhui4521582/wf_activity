@@ -167,7 +167,7 @@ export default {
       let unopenedIndex = this.cakeState.indexOf('1')
       let openedIndex = this.cakeState.indexOf('2')
       if (this.activityInfo.state === 2) {
-        if (unopenedIndex >= 0) {
+        if (unopenedIndex >= 0 || this.isNeedOpen) {
           return { state: 1, btn: '瓜分蛋糕' }
         } else {
           return { state: 4, btn: '活动已结束' }
@@ -214,6 +214,7 @@ export default {
       if (applyPopup) {
         configList = configList.map(item => {
           if (item.status === 1) {
+            this.isNeedOpen = true
             item.status = 0
             item.isShake = true
           }
