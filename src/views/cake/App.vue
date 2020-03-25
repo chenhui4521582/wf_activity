@@ -1,7 +1,7 @@
 <template>
   <main class="cake-wrapper">
     <template v-if="!isShowRank">
-      <article class="cake-container" v-if="actStateInfo.state!==4">
+      <article class="cake-container" v-if="actStateInfo.state!==4 || isNeedOpen">
         <div class="back" @click="back"></div>
         <div class="add" @click.stop="showPopup(0)"></div>
         <div class="record" @click.stop="showRank"></div>
@@ -21,7 +21,8 @@
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
               :class="{'cake-fade-out':currentOpenCakeIndex===item.level || alreadyOpenedCakes.includes(item.level)}"
-              v-if="item.status === 2 && isNeedOpen"></div>
+              v-if="item.status === 2 && isNeedOpen && (alreadyOpenedCakes.includes(item.level)|| openCakeLevelArr.includes(item.level))">
+            </div>
           </div>
         </section>
       </article>
@@ -45,10 +46,13 @@
             4. 瓜分规则：有资格参与瓜分的用户随机获得奖励，奖励随付费金额增加而变大。
           </p>
           <p>
-            5.奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
+            5. 奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
           </p>
           <p>
-            6. 活动结束后，奖励领取截止时间: {{showEndDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+            6. 瓜分记录-我的记录：列表展示参与时间为每层蛋糕解锁时间，若使用加成卡，则加成卡的参与时间为使用加成卡的时间（即瓜分时间）。
+          </p>
+          <p>
+            7. 活动结束后，奖励领取截止时间: {{showEndDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
           </p>
           <p class="bottom">
             活动最终解释权归平台所有
@@ -114,7 +118,9 @@ export default {
       divideDateStr: '',
       currentOpenCakeIndex: 0,
       alreadyOpenedCakes: [],
-      isNeedOpen: false
+      openCakeLevelArr: [],
+      isNeedOpen: false,
+      inAnimation: false
     }
   },
   computed: {
@@ -194,6 +200,9 @@ export default {
       location.href = window.SDK.getBackUrl()
     },
     async getActivityInfo () {
+      this.isNeedOpen = false
+      this.alreadyOpenedCakes = []
+      this.openCakeLevelArr = []
       const res = await ActivityInfo()
       let applyPopup = _get(res, 'data.applyPopup', false)
       let forgetPopup = _get(res, 'data.forgetPopup', false)
@@ -211,53 +220,55 @@ export default {
           return item
         })
         this.applyPopTimer = setTimeout(() => {
-          this.popType = 1
-          this.isShowPopUp = true
+          this.showPopup(1)
           clearTimeout(this.applyPopTimer)
         }, 1200)
       } else if (forgetPopup) {
-        this.popType = 2
-        this.isShowPopUp = true
+        this.showPopup(2)
       }
       this.configList = configList
     },
     async divide () {
+      this.inAnimation = true
       this.alreadyOpenedCakes = []
+      this.openCakeLevelArr = []
       const res = await Divide(this.divideDateStr)
       let code = _get(res, 'code', 0)
       if (code === 200) {
         this.divideInfo = _get(res, 'data', {})
-        let openCakeLevelArr = []
         this.divideInfo.divideList.sort((a, b) => a.level - b.level).forEach(element => {
           this.configList.forEach(item => {
             if (item.level === element.level) {
               this.isNeedOpen = true
-              openCakeLevelArr.push(item.level)
+              this.openCakeLevelArr.push(item.level)
               item.status = 2
             }
           })
         })
-        let length = openCakeLevelArr.length
+        let length = this.openCakeLevelArr.length
         if (length > 0) {
           let number = 0
-          this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+          this.$set(this, 'currentOpenCakeIndex', this.openCakeLevelArr.shift())
           this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
           this.cakeLevelTimer = setInterval(() => {
             if (number < length) {
               number++
-              this.$set(this, 'currentOpenCakeIndex', openCakeLevelArr.shift())
+              this.$set(this, 'currentOpenCakeIndex', this.openCakeLevelArr.shift())
               this.alreadyOpenedCakes.push(this.currentOpenCakeIndex)
             } else {
               clearInterval(this.cakeLevelTimer)
             }
-          }, 3000)
+          }, 4000)
           this.openCakeTimer = setTimeout(() => {
+            this.inAnimation = false
             clearTimeout(this.openCakeTimer)
-            this.popType = 3
-            this.isShowPopUp = true
-          }, 3000 * length + 200)
+            this.showPopup(3)
+          }, 4000 * length + 200)
+        } else {
+          this.inAnimation = false
         }
       } else {
+        this.inAnimation = false
         this.$toast.show({
           message: '正在结算中，请稍后再试',
           isOneLine: true,
@@ -266,12 +277,14 @@ export default {
       }
     },
     showRank () {
+      if (this.inAnimation) return
       this.isShowRank = true
     },
     closeRank () {
       this.isShowRank = false
     },
     showPopup (type) {
+      if (this.inAnimation) return
       this.popType = type
       this.isShowPopUp = true
     },
@@ -285,8 +298,7 @@ export default {
       this.isShowPopUp = false
       this.changeTypeTimer = setTimeout(() => {
         clearTimeout(this.changeTypeTimer)
-        this.isShowPopUp = true
-        this.popType = type
+        this.showPopup(type)
       }, 200)
     },
     handleClick (state) {
@@ -350,10 +362,10 @@ export default {
         case 10:
           return '付费满10元解锁'
         case 88:
-          if (this.configList[2].state === 1) {
-            return `${this.endDate}开启瓜分`
-          } else {
+          if (this.configList[2].state === 0) {
             return '活动期间累计付费满88元解锁'
+          } else {
+            return `${this.endDate}开启瓜分`
           }
         default:
           return '任意付费解锁'
@@ -511,7 +523,7 @@ export default {
           position: absolute;
         }
         .desc {
-          color: #ffdb6e;
+          color: #ac7f61;
           font-size: 0.2rem;
           width: 1.9rem;
           border-radius: 0.2rem;
@@ -531,7 +543,7 @@ export default {
           position: absolute;
         }
         .cake-fade-out {
-          animation: cakeFadeOut 1s forwards ease-in 2s;
+          animation: cakeFadeOut 1s forwards ease-in 3s;
         }
         &.level-1 {
           height: 2.6rem;
@@ -561,7 +573,7 @@ export default {
           .knife {
             right: 0rem;
             bottom: 1.2rem;
-            animation: knife1 2s forwards ease-in;
+            animation: knife1 3s forwards ease-in;
           }
         }
         &.level-2 {
@@ -593,7 +605,7 @@ export default {
           .knife {
             right: -0.1rem;
             bottom: 1.1rem;
-            animation: knife2 2s forwards ease-in;
+            animation: knife2 3s forwards ease-in;
           }
         }
         &.level-3 {
@@ -623,7 +635,7 @@ export default {
           .knife {
             right: -0.5rem;
             bottom: 1.5rem;
-            animation: knife3 2s forwards ease-in;
+            animation: knife3 3s forwards ease-in;
           }
         }
 
@@ -638,7 +650,10 @@ export default {
             margin-left: -0.27rem;
           }
           .desc {
-            animation: verticalShake 1s infinite;
+            color: #ffdb6e;
+            span {
+              color: #d33124;
+            }
           }
           &.level-1 {
             .line {
@@ -646,6 +661,9 @@ export default {
               bottom: 0.8rem;
               transform-origin: center center;
               transform: rotateZ(10deg);
+            }
+            .desc {
+              animation: verticalShake 3s infinite;
             }
           }
           &.level-2 {
@@ -660,6 +678,9 @@ export default {
               transform-origin: center center;
               transform: rotateZ(-10deg);
             }
+            .desc {
+              animation: verticalShake 3s infinite 0.4s;
+            }
           }
           &.level-3 {
             .lock {
@@ -670,6 +691,9 @@ export default {
               bottom: 1rem;
               transform-origin: center center;
               transform: rotateZ(10deg);
+            }
+            .desc {
+              animation: verticalShake 3s infinite 0.8s;
             }
           }
         }
@@ -766,17 +790,14 @@ export default {
   0% {
     transform: translate3d(0, 0, 0);
   }
-  20% {
-    transform: translate3d(0, 0.1rem, 0);
-  }
-  40% {
+  25% {
     transform: translate3d(0, -0.1rem, 0);
   }
-  60% {
-    transform: translate3d(0, 0.04rem, 0);
+  50% {
+    transform: translate3d(0, 0, 0);
   }
-  80% {
-    transform: translate3d(0, -0.04rem, 0);
+  75% {
+    transform: translate3d(0, -0.1rem, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
