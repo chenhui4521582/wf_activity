@@ -3,7 +3,7 @@
     <template v-if="!isShowRank">
       <article class="cake-container">
         <div class="back" @click="back"></div>
-        <div class="add" @click.stop="showPopup(0)"></div>
+        <div class="add" v-if="activityInfo.state!==2" @click.stop="showPopup(0)"></div>
         <div class="record" @click.stop="showRank"></div>
         <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`"
