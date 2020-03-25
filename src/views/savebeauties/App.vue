@@ -637,18 +637,24 @@
             background-size: 100% 100%;
             border-radius: .2rem;
             .content-item {
+              width: 100%;
               height: 20%;
-              background: rgba(44, 15, 40, 1);
-              opacity: 0.92;
+              background: rgba(44, 15, 40, 0.92);
               padding: 0 .3rem;
               box-sizing: border-box;
               display: flex;
               justify-content: space-between;
+              border: 1px solid rgba(44, 15, 40, 0.92);
               border-bottom: 1px solid rgba(174, 142, 131, 0.22);
               &:nth-child(1) {
                 border-radius: .2rem .2rem 0 0;
               }
+              &:nth-child(2),&:nth-child(3),&:nth-child(4){
+                border-top:0;
+              }
               &:nth-child(5) {
+                border-top:0;
+                border-bottom: 0;
                 border-radius: 0 0 .2rem .2rem;
               }
               &.animation {
