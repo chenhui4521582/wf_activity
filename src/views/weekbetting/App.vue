@@ -3,35 +3,54 @@
     <section class="after" id="after">
       <div class="container">
         <img src="./images/back.png" class="e-back" @click.stop="back">
+        <!-- 规则按钮 -->
         <div class="rule-icon" @click="showrule">规则</div>
-        <rule ref="rule" :ruleMain="myInfo.activityStartTime+'~'+myInfo.activityEndTime" v-if="myInfo&&myInfo.openFlag"></rule>
+        <!-- 规则组件 -->
+        <rule ref="rule" :ruleMain="myInfo.activityStartTime+'~'+myInfo.activityEndTime" />
         <div class="text">
           <div class="item">每日任务大升级</div>
           <div class="item">海量话费任性送</div>
         </div>
-        <div class="tabs" :class="{tab1:tabIndex==0,tab2:tabIndex==1}" v-if="myInfo&&myInfo.openFlag">
-          <div class="item" :class="{selected:tabIndex==0}" @click="settabIndex(0)">单日奖励</div>
-          <div class="item" :class="{selected:tabIndex==1}" @click="settabIndex(1)">7日奖励</div>
+        <!-- 第七天领取奖励 -->
+        <div class="getAward" v-if="myInfo.activityState == 2">
+          <img src="./images/get-award.png" alt="">
         </div>
+        <!-- 导航条 -->
+        <div 
+          class="tabs" 
+          v-if="myInfo && myInfo.activityState == 1"
+          :class="{ tab1: tabIndex == 0 ,tab2: tabIndex == 1 }"
+        >
+          <div class="item" :class="{ selected: tabIndex == 0 }" @click="settabIndex(0)">单日奖励</div>
+          <div class="item" :class="{ selected: tabIndex == 1 }" @click="settabIndex(1)">7日奖励</div>
+        </div>
+
       </div>
-      <div class="container1" v-if="myInfo&&myInfo.openFlag">
-        <div class="total-num" v-if="tabIndex==1">累计勋章个数:{{myInfo.totalMedals}}个</div>
-        <div class="total-num" v-else>今日获得勋章个数:{{myInfo.todayMedals}}个</div>
+      <div class="container1">
+        <template v-if="myInfo && myInfo.activityState == 2">
+          <div class="total-num">活动期间累计勋章:{{myInfo.totalMedals}}个</div>
+        </template>
+        <template v-else>
+          <div class="total-num" v-if="tabIndex == 1">累计勋章个数:{{myInfo.totalMedals}}个</div>
+          <div class="total-num" v-else>今日获得勋章个数:{{myInfo.todayMedals}}个</div>
+        </template>
         <div class="container1_container">
           <div class="title"><i></i>用勋章换奖励</div>
-          <template v-if="tabIndex==0">
+          <template v-if="tabIndex == 0">
             <div class="awards">
-              <div class="item" v-for="(item,index) in myInfo.dayAwards" :class="{surplus:(myInfo.dayAwards.length%3==1&&myInfo.dayAwards.length-index==1)||(myInfo.dayAwards.length%3==2&&myInfo.dayAwards.length-index<=2),tabIndex:!tabIndex}">
-                <!--<img src="./images/singleday/20元@2x.png" alt="">-->
+              <div class="item" 
+                v-for="(item,index) in myInfo.dayAwards" 
+                :class="{ 'surplus': isSurplus(index), tabIndex: !tabIndex }" 
+                :key="index"  
+              >
                 <img :src="item.awardsImg|filter" alt="">
-                <div class="btn" v-if="item.status!=2"  @click="gain(item)">{{item.cost}}勋章领取</div>
+                <div class="btn" v-if="item.status != 2"  @click="gain(item)">{{item.cost}}勋章领取</div>
                 <div class="btn btn-gray" v-else>今日已领取</div>
               </div>
             </div>
             <div class="title"><i></i>获取更多勋章</div>
             <div class="game_tasks" id="moretask">
-              <div class="item" v-for="(item,index) in taskInfo">
-                <!--<img src="./images/sevendays/去玩斗地主@2x.png" alt="">-->
+              <div class="item" v-for="(item,index) in taskInfo" :key="index">
                 <div class="icon" :class="{star:item.star}">
                   <img :src="item.icon|filter" alt="">
                 </div>
@@ -51,17 +70,29 @@
           </template>
           <template v-else>
             <div class="awards">
-              <div class="item" v-for="(item,index) in myInfo.weekAwards" :class="{surplus:(myInfo.weekAwards.length%3==1&&myInfo.weekAwards.length-index==1)||(myInfo.weekAwards.length%3==2&&myInfo.weekAwards.length-index<=2),tabIndex:!tabIndex}">
-                <!--<img src="./images/singleday/20元@2x.png" alt="">-->
-                <img :src="item.awardsImg|filter" alt="">
-                <div class="btn" v-if="item.status!=2" @click="gain(item)">{{item.cost}}勋章领取</div>
+              <div class="item" 
+                v-for="(item, index) in myInfo.weekAwards"
+                :class="{ 'surplus': isSurplus1(index), tabIndex: !tabIndex }" 
+                :key="index"
+              >
+                <img :src="item.awardsImg | filter" alt="">
+                <div class="btn" v-if="item.status !=2 " @click="gain(item)">{{item.cost}}勋章领取</div>
                 <div class="btn btn-gray" v-else>今日已领取</div>
               </div>
             </div>
           </template>
         </div>
       </div>
-      <common-pop :is-show-pop="isShowPop" :fail="fail"  :surplus='surplus' :awardData="awardData" @close-pop="isShowPop=false" @gototask="gototask"></common-pop>
+      <!-- 弹框 -->
+      <common-pop 
+        :is-show-pop="isShowPop"
+        :myInfo="myInfo"
+        :fail="fail"
+        :surplus='surplus'
+        :awardData="awardData"
+        @close-pop="isShowPop=false"
+        @gototask="gototask"
+      />
     </section>
   </div>
 </template>
@@ -74,7 +105,7 @@
     name: 'App',
     data() {
       return {
-        tabIndex:0,
+        tabIndex: 0,
         isShowPop: false,
         awardsList: [],
         myInfo: {},
@@ -88,7 +119,28 @@
       rule: () => import('./components/rule'),
       commonPop: () => import('./components/commonPop')
     },
+    conputed: {
+ 
+    },
     methods:{
+      isSurplus (index) {
+        if(
+          (this.myInfo.dayAwards.length % 3 == 1 && this. myInfo.dayAwards.length - index == 1) || 
+          (this.myInfo.dayAwards.length % 3 == 2 && this.myInfo.dayAwards.length-index <= 2)
+        ) {
+          return true
+        }
+        return false
+      },
+      isSurplus1 (index) {
+        if(
+          (this.myInfo.weekAwards.length % 3 == 1 && this. myInfo.weekAwards.length - index == 1) || 
+          (this.myInfo.weekAwards.length % 3 == 2 && this.myInfo.weekAwards.length-index <= 2)
+        ) {
+          return true
+        }
+        return false
+      },
       showrule(){
         GLOBALS.marchSetsPoint('A_H5PT0199002025')
         this.$refs.rule.showPop()
@@ -112,14 +164,18 @@
         }
         return this.axios.post(url, params, {})
       },//请求封装方法
-      async getActInfo(flag){
-        let {data,code}=(await this.fetch('/task/api/activity/week/task/info')).data
-        if(code==200){
-          this.myInfo=data
-          if(this.myInfo.openFlag){
+      async getActInfo(){
+        let {data, code}=(await this.fetch('/task/api/activity/week/task/info')).data
+        if(code == 200){
+          this.myInfo = data
+          console.log(this.myInfo)
+          if(this.myInfo.activityState == 2) {
+            this.tabIndex = 1
+          } 
+          if(this.myInfo.show){
             GLOBALS.marchSetsPoint('P_H5PT0199')
             GLOBALS.marchSetsPoint('A_H5PT0199002017')
-            flag&&this.getTaskInfo()
+            this.getTaskInfo()
           }
         }
       },
@@ -146,25 +202,26 @@
           task_id:item.id,
           task_name:`${item.cost}勋章领取${item.awardsName}`
         })
-        this.awardData=item;
-        if(item.status==1){
-          this.fail=false;
-          this.surplus=0;
-          let {code}=(await this.fetch('/task/api/activity/week/exchange',{
-            value:item.id,source:this.tabIndex
+        this.awardData = item;
+        if(item.status == 1){
+          this.fail = false;
+          this.surplus = 0;
+          let {code} = (await this.fetch('/task/api/activity/week/exchange',{
+            value: item.id,
+            source: this.tabIndex
           })).data
           if(code==200){
-            this.isShowPop=true
+            this.isShowPop = true
             GLOBALS.marchSetsPoint('A_H5PT0199002020',{
-              task_id:item.id,
+              task_id: item.id,
               task_name:`${item.cost}勋章领取${item.awardsName}`
             })
-            this.getActInfo(false)
+            this.getActInfo( false )
           }
         }else{
-          this.fail=true
-          this.surplus=Math.abs((this.tabIndex==0?this.myInfo.todayMedals:this.myInfo.totalMedals)-item.cost)
-          this.isShowPop=true
+          this.fail = true
+          this.surplus = Math.abs((this.tabIndex==0?this.myInfo.todayMedals:this.myInfo.totalMedals)-item.cost)
+          this.isShowPop = true
           GLOBALS.marchSetsPoint('A_H5PT0199002022',{
             task_id:item.id,
             task_name:`${item.cost}勋章领取${item.awardsName}`
@@ -188,10 +245,10 @@
         // }else{
           document.getElementById('after').scrollTop = document.getElementById(name).offsetTop - parseFloat(document.querySelector('html').style.fontSize || 0) * 0.76
         // }
-      },
+      }
     },
     created(){
-      this.getActInfo(true)
+      this.getActInfo()
     }
   }
 </script>
@@ -279,6 +336,18 @@
         &.tab2{
           background: url("images/sevendays/tabs.png");
           background-size: 100% 100%;
+        }
+      }
+      .getAward {
+        position: absolute;
+        top: 3.26rem;
+        left: .32rem;
+        height: 1.1rem;
+        width: 6.58rem;
+        img {
+          vertical-align: top;
+          width: 100%;
+          height: 100%;
         }
       }
     }
