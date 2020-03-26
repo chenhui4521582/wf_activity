@@ -4,7 +4,7 @@
       <div class="container">
         <img src="./images/back.png" class="e-back" @click.stop="back">
         <div class="rule-icon" @click="showrule">规则</div>
-        <rule ref="rule" :ruleMain="myInfo.activityStartTime+'~'+myInfo.activityEndTime" v-if="myInfo&&myInfo.openFlag"></rule>
+        
         <div class="text">
           <div class="item">每日任务大升级</div>
           <div class="item">海量话费任性送</div>
@@ -61,7 +61,21 @@
           </template>
         </div>
       </div>
-      <common-pop :is-show-pop="isShowPop" :fail="fail"  :surplus='surplus' :awardData="awardData" @close-pop="isShowPop=false" @gototask="gototask"></common-pop>
+      <!-- 公共弹框 -->
+      <common-pop 
+        :is-show-pop="isShowPop" 
+        :fail="fail"  
+        :surplus='surplus' 
+        :awardData="awardData" 
+        @close-pop="isShowPop=false" 
+        @gototask="gototask"
+      />
+      <!-- 规则 -->
+      <rule 
+        v-if="myInfo&&myInfo.openFlag"
+        ref="rule" 
+        :ruleMain="myInfo.activityStartTime+'~'+myInfo.activityEndTime"
+      />
     </section>
   </div>
 </template>
