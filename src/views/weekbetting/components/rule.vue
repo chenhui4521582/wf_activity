@@ -1,19 +1,25 @@
 <template>
-  <section class="rule" :style="{zIndex:isShowPop?2:1}">
-    <!--<img src="../images/rule/icon.png" alt="" @click="showPop">-->
-    <!--<div class="icon" @click="showPop">规则</div>-->
+  <section class="rule" :style="{zIndex: isShowPop ? 2 : 1}">
     <div class="pop-mask" v-if="isShowPop" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
           <div class="title">勋章领取规则</div>
           <div class="main">
-            <p>1. 活动时间：{{ruleMain}}</p>
-            <p>2. 部分任务每天可多次完成，且每个任务每天都有最大完成次数限制</p>
-            <p>3. 玩家每完成一个任务，都可以获得一定的勋章奖励，当勋章达到一定数量要求即可领取对应奖励</p>
-            <p>4. 奖励分为每日奖励及7日累计奖励</p>
-            <p>5. 活动期间，每日奖励会在当日24点清零，次日重新累计。7日奖励在活动期间内不清零</p>
-            <p>6. 兑换奖励后，勋章数量不会被消耗</p>
+            <p>活动时间：{{ruleMain}}</p>
+            <br>
+            <p>完成任务：</p>
+            <p>1. 玩家可以通过完成任务获得活动勋章，勋章达到一定数量可以领取对应奖励</p>
+            <p>2. 部分任务每天可以完成多次，每完成一次就可以获得一定数量的活动勋章</p>
+            <p>3. 每个任务每天都有最大完成次数限制，达到最大次数则当日无法继续完成，次日重置</p>
+            <br>
+            <p>奖励领取：</p>
+            <p>1. 奖励分为每日奖励和7日累计奖励，玩家勋章达到数量即可领取对应奖励</p>
+            <p>2. 每日勋章奖励会在次日0点清零，次日重新累计</p>
+            <p>3. 7日奖励在活动期间不清零</p>
+            <p>4. 玩家兑换奖励后，勋章数量不会被消耗</p>
+            <p>注意：</p>
+            <p>活动期间奖励请及时兑换，逾期不领视为放弃奖励</p>
           </div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
@@ -82,13 +88,13 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
+      padding: .5rem 0.2rem .2rem;
       width: 6rem;
       height: 6rem;
       background:rgba(255,255,255,1);
       border-radius:.16rem;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: .5rem 0.2rem 0;
       .title{
         font-size:.32rem;
         font-weight:bold;
@@ -97,12 +103,17 @@ export default {
         margin-bottom: .4rem;
       }
       .main {
+        height: 4.5rem;
         font-size: 0.24rem;
         letter-spacing: 0.02rem;
         font-weight: bold;
         color: #fff;
+        
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
         p {
-          line-height: 0.32rem;
+          line-height: 0.35rem;
           color:#60586A;
         }
       }

@@ -11,7 +11,7 @@
                 <img :src="awardData.awardsImg|filter" alt="" style="width: 2.98rem;height: 1.86rem">
                 <template v-if="fail">
                   <div class="awardsname">您还差{{surplus}}勋章就可以领取<br>{{awardData.awardsName}}啦~</div>
-                  <div class="info">快去完成任务吧！</div>
+                  <div class="info" v-if="myInfo.activityState != 2">快去完成任务吧！</div>
                 </template>
                 <template v-else>
                   <div class="awardsname">{{awardData.awardsName}}</div>
@@ -19,7 +19,8 @@
               </li>
             </ul>
           </div>
-          <div class="hit-egg-btn" @click="closePop(1)">{{fail?'去完成':'领取'}}</div>
+          <div class="hit-egg-btn" v-if="myInfo.activityState != 2 && fail" @click="closePop(1)">去完成</div>
+          <div class="hit-egg-btn" v-if="!fail" @click="closePop(1)">领取</div>
         </div>
         <div class="close-icon" :class="{fail:fail}" @click="closePop(0)"></div>
       </div>
@@ -55,6 +56,10 @@ export default {
     tabIndex: {
       type: Number,
       default: 0
+    },
+    myInfo: {
+      type: Object,
+      default: () => {}
     }
   },
   methods: {
@@ -66,7 +71,7 @@ export default {
         })
       }
       this.$emit('close-pop')
-      if(this.fail){
+      if(this.myInfo.activityState != 2 && this.fail){
         this.$emit('gototask')
       }
     },
