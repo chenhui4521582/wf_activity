@@ -1,13 +1,15 @@
 <template>
   <div class="detail">
     <Header title="商品详情" class="header"/>
-    <goods-info :info="info"/>
-    <specifications :info="info" />
-    <div class="good-quality">
-      <span>保障</span>
-      <span>正品保障·全国联保·售后无忧</span>
+    <div class="content">
+      <goods-info :info="info"/>
+      <specifications :info="info" />
+      <div class="good-quality">
+        <span>保障</span>
+        <span>正品保障·全国联保·售后无忧</span>
+      </div>
+      <goods-descript :info="info" />
     </div>
-    <goods-descript :info="info" />
     <buy-btn 
       :info="info"
       @getLottery="openLotteryComfirm"

@@ -37,21 +37,28 @@ export default {
 </script>
 <style lang="less" scoped>
 .wrap {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: .9rem;
-  line-height: .9rem;
-  text-align: center;
-  font-size: .24rem;
-  color: #fff;
   .lottery-btn {
-    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: .9rem;
+    line-height: .9rem;
+    text-align: center;
+    font-size: .24rem;
+    color: #fff;
     background: #FF4141;
   }
   .disable {
-    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: .9rem;
+    line-height: .9rem;
+    text-align: center;
+    font-size: .24rem;
+    color: #fff;
     background: #FF4141;
     opacity: .7;
   }
