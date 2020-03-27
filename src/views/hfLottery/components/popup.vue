@@ -10,7 +10,7 @@
           <div class="title">抽奖规则</div>
           <div class="content">
             请您仔细阅读以下活动规则，参与活动即视为您已阅读并认可本活动规则。<br>
-            1. 活动时间：2020年4月8日-2020年4月15日。<br>
+            1. 活动时间：{{info.beginDate}}-{{info.endDate}}<br>
             2. 抽奖说明：点击【马上抽奖】会扣除选择商品抽奖所需话费券，话费券不退还，每日抽奖上限20次。<br>
             3.奖品发放：奖品将在中奖后发放至我的奖品，请至我的奖品领取。<br>
             4. 奖品图片仅供参考，请以具体实物为准。<br>
@@ -81,7 +81,11 @@
               <img :src="awards.img | filter" alt="">
             </div>
             <div class="award-name">{{awards.name}}</div>
-            <div class="award-btn" @click="goMyPrice">
+            <!-- 优惠券,金叶子显示收入囊中按钮 -->
+            <div class="award-btn" v-if="showPrizeBtn" @click="hidePopup">
+              <img src="../img/popup-btn5.png" alt="">
+            </div>
+            <div class="award-btn" v-else @click="goMyPrice">
               <img src="../img/popup-btn4.png" alt="">
             </div>
           </div>
@@ -142,6 +146,9 @@ export default {
         return true
       }
       return false
+    },
+    showPrizeBtn() {
+      return [1,32].indexOf(this.awards.phAwardsType) > -1
     }
   },
   methods: {

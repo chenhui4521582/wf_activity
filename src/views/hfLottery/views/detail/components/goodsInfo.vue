@@ -10,7 +10,7 @@
       <div class="group">
         <span class="price">{{info.purchasePrice}}</span>
         <span class="unit">话费券</span>
-        <span class="market-price">京东价：￥{{info.marketPrice}}</span>
+        <span class="market-price">价值：￥{{info.marketPrice | unit}}</span>
       </div>
       <div class="group1">
         <span class="name">
@@ -30,6 +30,15 @@ export default {
     info: {
       type: Object,
       default: () => {}
+    }
+  },
+  filters: {
+    unit(value) {
+      if(value) {
+        return value.toFixed(2)
+      }else {
+        return value
+      }
     }
   }
 }
