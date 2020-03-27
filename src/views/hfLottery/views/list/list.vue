@@ -23,6 +23,7 @@
     <!-- popUp -->
     <popup 
       v-model="showPopup" 
+      :info="activityInfo"
       :list="list"
       :popupType="popupType" 
       :log="log" 

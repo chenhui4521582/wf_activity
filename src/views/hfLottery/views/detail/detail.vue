@@ -38,7 +38,8 @@ export default {
     awards: {
       img: '',
       name: '',
-      win: false
+      win: false,
+      phAwardsType: ''
     },
     info: {}
   }),
@@ -66,6 +67,7 @@ export default {
           this.awards.img = _get(res, 'data.data.picture', '')
           this.awards.name = _get(res, 'data.data.name', '')
           this.awards.win = _get(res, 'data.data.win', false)
+          this.awards.phAwardsType = _get(res, 'data.data.phAwardsType', '')
           this.popupType = 3
           this.showPopup = true
           this._getGoodsDetail()
