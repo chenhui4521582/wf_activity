@@ -253,6 +253,7 @@ export default {
       this.tabIndex = 0;
     },
     gotopay (item, canBuy) {
+      console.log(item)
       let points = {
         '6': "A_H5PT0224002527",//H5平台-限购商城页-限购礼包页-6元抢购点击
         '18': 'A_H5PT0224002528',//H5平台-限购商城页-限购礼包页-18元抢购点击

@@ -22,8 +22,7 @@
                   <template v-if="awardData[0].awardsNum==0">
                     <div class="nojinbi">
                       <div class="item" v-for="(item,index) in awardData.slice(1)" :key="index">
-                        <img :src="item.awardsImage|filter" v-if="index==0">
-                        <img src="../images/pop/leaf.png" v-if="index==1">
+                        <img :src="item.awardsImage|filter">
                         <div class="info" :class="{success:!fail}">{{item.awardsDesc}}</div>
                       </div>
                     </div>
@@ -32,8 +31,7 @@
                     <div class="jinbi">
                       <div class="item" v-for="(item,index) in awardData" :key="index">
                         <img src="../images/jinbi.png" alt="" v-if="index==0">
-                        <img :src="item.awardsImage|filter" v-if="index==1">
-                        <img src="../images/pop/leaf.png" v-if="index==2">
+                        <img :src="item.awardsImage | filter" v-else>
                         <div class="info" :class="{success:!fail}">{{item.awardsDesc}}</div>
                       </div>
                     </div>
@@ -159,11 +157,12 @@ export default {
               }
             }
             .jinbi{
-               margin: .3rem auto .4rem;
-               display: flex;
-               flex-wrap: wrap;
-               justify-content: space-between;
-               align-items: flex-end;
+              margin: .3rem auto .4rem;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between;
+              align-items: flex-end;
+              width: 3.5rem;
                .item{
                  text-align: center;
                  &:nth-child(1){
@@ -188,7 +187,7 @@ export default {
                  }
                  &:nth-child(2){
                    img{
-                     margin-top: .15rem;
+                     margin: .15rem 0;
                      width: 1.38rem;
                      height: 1.38rem;
                    }
@@ -196,7 +195,7 @@ export default {
                  &:nth-child(3){
                    position: relative;
                    img{
-                     margin-top: .15rem;
+                      margin: .15rem 0;
                      width: 1.38rem;
                      height: 1.38rem;
                    }
@@ -205,7 +204,7 @@ export default {
              }
             .nojinbi{
               width: 3.5rem;
-              margin: .3rem auto .9rem;
+              margin: .45rem auto .9rem;
               display: flex;
               flex-wrap: wrap;
               justify-content: space-between;
@@ -214,15 +213,15 @@ export default {
                 text-align: center;
                 &:nth-child(1){
                   img{
-                    margin-top: .15rem;
-                    width: 1.27rem;
+                    margin-bottom: .15rem;
+                    width: 1.23rem;
                   }
                 }
                 &:nth-child(2){
                   position: relative;
                   img{
-                    width: 1.22rem;
-                    margin:0 auto .23rem;
+                    margin-bottom: .15rem;
+                    width: 1.23rem;
                   }
                 }
               }
