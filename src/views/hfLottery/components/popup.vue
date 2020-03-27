@@ -28,7 +28,8 @@
                 <div class="td probability">{{item.rate}}%</div>
               </div>
             </div>
-            7. 据苹果公司免责条款特此声明：本活动与苹果公司无关。
+            
+            <p v-if="isIos">7. 据苹果公司免责条款特此声明：本活动与苹果公司无关。</p>
             <div class="bottom">
               活动解释权归平台所有
             </div>
@@ -126,6 +127,7 @@
 <script>
 import Services from '../services/services'
 import _get from 'lodash.get'
+import utils from '../components/utils'
 export default {
   name: 'popup',
   props: ['popupType', 'value', 'log', 'awards', 'info', 'list'],
@@ -149,6 +151,9 @@ export default {
     },
     showPrizeBtn() {
       return [1,32].indexOf(this.awards.phAwardsType) > -1
+    },
+    isIos() {
+      return utils.isIOS()
     }
   },
   methods: {
