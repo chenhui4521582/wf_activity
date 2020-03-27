@@ -302,6 +302,7 @@ export default {
   position: relative;
   font-size: 0.28rem;
   color: rgba(21, 0, 43, 1);
+  min-height: 100vh;
   .container {
     padding-bottom: .5rem;
     position: absolute;
