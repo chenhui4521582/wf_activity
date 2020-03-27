@@ -38,7 +38,7 @@
               <div class="award-wrap">
                 <div 
                   class="sec1"
-                  v-for="(item1,index1) in item.awardsList.sort((a,b)=>(b.awardsType-a.awardsType))"
+                  v-for="(item1,index1) in item.awardsList.slice().sort((a,b)=>(b.awardsType-a.awardsType))"
                   :key="index1"
                 >
                   <img src="./images/fudai.png" alt="" v-if="item1.awardsType==28">
@@ -62,7 +62,7 @@
               class="btn-all" 
               :class="{ gray: item.buyFlag == 0 }"
               @click="gotopay(item, item.buyFlag != 0)">
-            {{ item.price }}元全部抢购
+              <div class="tips">每日限1次</div>
             </div>
           </template>
         </div>
@@ -139,9 +139,6 @@ export default {
   computed: {
     channel () {
       return localStorage.getItem('APP_CHANNEL') || ''
-    },
-    showCard () {
-
     },
     showExchange () {
       return this.coinInfo && this.coinInfo.limitedTimePackageExchangeAwardsList.length
@@ -264,11 +261,11 @@ export default {
       }
       if (canBuy) {
         points[item.price] && GLOBALS.marchSetsPoint(points[item.price])
-        localStorage.setItem('originDeffer', window.location.href)
-        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+        let channel = localStorage.getItem('APP_CHANNEL')
+        let originDeffer = `//wap.beeplaying.com/activities/dailypackage.html?channel=${channel}&blindBox=true`
+        localStorage.setItem('originDeffer', originDeffer)
         localStorage.setItem('payment', JSON.stringify(item))
-        location.href =
-          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
       } else {
         //当日已购买
         GLOBALS.marchSetsPoint('A_H5PT0224002533')//H5平台-限购商城页-限购礼包页-礼包不能购买弹窗加载完成
@@ -301,20 +298,16 @@ export default {
   top: 1.3rem;
   left: 0.1rem;
 }
-
 .after {
-  height: 100vh;
   position: relative;
-  background: #fff;
-  padding: 0.26rem 0;
-  box-sizing: border-box;
   font-size: 0.28rem;
   color: rgba(21, 0, 43, 1);
   .container {
+    padding-bottom: .5rem;
     position: absolute;
     top: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     background: url("./images/bg.png") center top no-repeat #6945CE;
     background-size: 100% auto;
     .text {
@@ -384,8 +377,8 @@ export default {
   }
   .wrap {
     position: absolute;
-    width: 100%;
     top: 3.91rem;
+    width: 100%;
     .explain {
       margin-bottom: .25rem;
       padding-left: .35rem;
@@ -580,9 +573,29 @@ export default {
  
       }
       .btn-all {
+        position: relative;
         margin: 0 auto;
         width: 3.59rem;
         height: 1.17rem;
+        background: url(./images/buy-all-btn.png) no-repeat center center;
+        background-size: 100% 100%;
+        &.gray {
+          background: url(./images/buy-all-disable.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
+        .tips {
+          position: absolute;
+          right: -1.01rem;
+          top: -.1rem;
+          width: 1.25rem;
+          height: .45rem;
+          background: url(./images/tips1.png) no-repeat center top;
+          background-size: 100% 100%;
+          font-size: .2rem;
+          color: #fff;
+          line-height: .36rem;
+          text-align: center;
+        }
       }
     }
   }
