@@ -48,7 +48,7 @@
             <div class="item" v-for="(item, index) in log" :key="index">
               <div class="name">{{item.name}}</div>
               <div class="time">{{item.date | formatTime('y.m.d')}}</div>
-              <div class="check" @click="goMyPrice">立即查看>></div>
+              <div class="check" v-if="[1,32].indexOf(item.phAwardsType) == -1" @click="goMyPrice">立即查看>></div>
             </div>
           </div>
           <div class="no-list" v-else>
