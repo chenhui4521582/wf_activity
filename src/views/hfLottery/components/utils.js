@@ -27,6 +27,14 @@ class utils {
     document.body.style.overflow = null
     document.removeEventListener('touchmove', this.move, { passive: false })
   }
+  isIOS () {
+    let U = window.navigator.userAgent
+    return !(U.indexOf('Android') > -1 || U.indexOf('Adr') > -1)
+  }
+  isAndroid () {
+    let U = window.navigator.userAgent
+    return !U.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+  }
 }
 
 let newUtils = new utils()
