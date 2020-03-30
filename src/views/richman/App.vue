@@ -166,10 +166,10 @@
           <main>
             <div class="pink-bg">
               <p class="second-tips">
-                · 3月30日-4月3日最终
+                · {{activityInfo.beginDate}}-{{activityInfo.endDate}}最终
                 <span>累计金币最多的5位玩家</span>获终极大奖;
               </p>
-              <p class="second-tips">· 4月4日系统自动发放终极奖励。</p>
+              <p class="second-tips">· {{activityInfo.releaseDate}}系统自动发放终极奖励。</p>
             </div>
             <div class="black-bg">
               <p>
