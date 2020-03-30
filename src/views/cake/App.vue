@@ -362,7 +362,7 @@ export default {
         case 10:
           return '付费满10元解锁'
         case 88:
-          if (this.configList[2].state === 0) {
+          if (this.configList[2].status === 0) {
             return '活动期间累计付费满88元解锁'
           } else {
             return `${this.endDate}开启瓜分`
@@ -409,16 +409,14 @@ export default {
 .cake-wrapper {
   min-height: 100vh;
   width: 100%;
-  background: #320e12 no-repeat center top;
+  background: #320e12 url(./img/bg.png) no-repeat center -0.2rem;
   background-size: 100% auto;
   font-family: aAlibaba PuHuiTil;
   font-size: 0.2rem;
   overflow-x: hidden;
   .cake-container {
     width: 100%;
-    min-height: 530px;
-    background: #320e12 url(./img/bg.png) no-repeat center -0.02rem;
-    background-size: 100% auto;
+    min-height: 10rem;
     position: relative;
     padding: 0.1rem 0 0;
     box-sizing: border-box;
