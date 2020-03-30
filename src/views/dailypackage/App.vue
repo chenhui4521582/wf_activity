@@ -423,20 +423,23 @@ export default {
             position: absolute;
             left: .1rem;
             top: .1rem;
+            z-index: 3;
             width: .89rem;
             height: 0.61rem;
             background: url("./images/hot.png");
             background-size: 100% 100%;
           }
           .award-img {
-            margin: .39rem auto 0;
             display: block;
-            position: relative;
+            position: absolute;
+            left: -.02rem;
+            top: -.25rem;
             z-index: 2;
-            width: 1.68rem;
-            height: .98rem;
+            width: 2.2rem;
+            height: 2.2rem;
           }
           .award-name {
+            margin-top: 1.38rem;
             font-size: 0.24rem;
             font-weight: 500;
             color: #fff;
