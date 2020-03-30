@@ -7,9 +7,16 @@ import axios from 'axios'
 // import router from './router'
 import Vue from 'vue'
 import utils from '../../common/js/utils'
+let token = utils.getUrlParam('token') ? utils.getUrlParam('token') : localStorage.getItem('ACCESS_TOKEN'),
+channel = utils.getUrlParam('channel') ? utils.getUrlParam('channel') : localStorage.getItem('APP_CHANNEL')
+if (token) {
+  localStorage.setItem('ACCESS_TOKEN', token)
+}
+if (channel) {
+  localStorage.setItem('APP_CHANNEL', channel)
+}
 // axios 配置
 axios.defaults.timeout = 10000
-
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89

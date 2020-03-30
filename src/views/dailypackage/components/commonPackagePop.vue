@@ -8,33 +8,30 @@
           <div class="main">
             <ul class="awards-list">
               <li>
-                <div class="title" style="font-size: 0.48rem; font-weight: 400; color: rgb(169, 92, 23); height: .9rem; line-height: .8rem; padding-bottom: .1rem; box-sizing: border-box;font-weight: bold;">
+                <div class="title" style="font-size: 0.48rem; font-weight: 400; color: #fff; height: .9rem; line-height: .8rem; padding-bottom: .1rem; box-sizing: border-box;font-weight: bold;">
                   <template v-if="fail">很遗憾</template>
                   <template v-else>
                     恭喜获得
                   </template>
                 </div>
                 <template v-if="fail">
-                  <img src="../images/sad.png" alt="" style="width: 1.73rem;height: 1.85rem;margin-top: .35rem">
+                  <img src="../images/sad.png" alt="" style="width: 2.2rem;height: 2.2rem;">
                   <div class="info">该礼包每天限购一次，请明天再来</div>
                 </template>
                 <template v-else>
                   <template v-if="awardData[0].awardsNum==0">
                     <div class="nojinbi">
-                      <div class="item" v-for="(item,index) in awardData.slice(1)">
-                        <img :src="item.awardsImage|filter" v-if="index==0">
-                        <img src="../images/pop/leaf.png" v-if="index==1">
+                      <div class="item" v-for="(item,index) in awardData.slice(1)" :key="index">
+                        <img :src="item.awardsImage|filter">
                         <div class="info" :class="{success:!fail}">{{item.awardsDesc}}</div>
                       </div>
                     </div>
-                    <p style="color:rgba(169,92,23,1);margin-bottom:.3rem">很遗憾，幸运币与您失之交臂~</p>
                   </template>
                   <template v-else>
                     <div class="jinbi">
-                      <div class="item" v-for="(item,index) in awardData">
+                      <div class="item" v-for="(item,index) in awardData" :key="index">
                         <img src="../images/jinbi.png" alt="" v-if="index==0">
-                        <img :src="item.awardsImage|filter" v-if="index==1">
-                        <img src="../images/pop/leaf.png" v-if="index==2">
+                        <img :src="item.awardsImage | filter" v-else>
                         <div class="info" :class="{success:!fail}">{{item.awardsDesc}}</div>
                       </div>
                     </div>
@@ -123,7 +120,7 @@ export default {
       background-image: url("../images/pop/pop.png");
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 2.35rem 0.26rem 0;
+      padding: 2.41rem 0.26rem 0;
       .main {
         font-size: 0.24rem;
         line-height: 0.3rem;
@@ -151,7 +148,7 @@ export default {
             .info{
               font-size:.24rem;
               font-weight:bold;
-              color:rgba(169,92,23,1);
+              color:#fff;
               margin-top: .28rem;
               margin-bottom: .5rem;
               &.success{
@@ -160,20 +157,22 @@ export default {
               }
             }
             .jinbi{
-               margin: .3rem auto;
-               display: flex;
-               flex-wrap: wrap;
-               justify-content: space-between;
-               align-items: flex-end;
+              margin: .3rem auto .4rem;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between;
+              align-items: flex-end;
+              width: 3.5rem;
                .item{
                  text-align: center;
                  &:nth-child(1){
                    width: 100%;
                    position: relative;
                    img{
-                     width: 1.28rem;
-                     display: block;
-                     margin:0 auto .23rem;
+                    margin:0 auto .23rem;
+                    display: block;
+                    width: 1.28rem;
+                    height: 1.28rem;
                    }
                    text-align: center;
                    &:before{
@@ -188,30 +187,24 @@ export default {
                  }
                  &:nth-child(2){
                    img{
-                     margin-top: .15rem;
-                     width: 1.27rem;
+                     margin: .15rem 0;
+                     width: 1.38rem;
+                     height: 1.38rem;
                    }
                  }
                  &:nth-child(3){
                    position: relative;
                    img{
-                     width: 1.22rem;
-                     margin:0 auto .23rem;
-                   }
-                   &:before{
-                     content: '';
-                     position: absolute;
-                     width: .46rem;
-                     height: .46rem;
-                     background: no-repeat center center / 100% 100%;
-                     background-image: url("../images/pop/plus.png");
+                      margin: .15rem 0;
+                     width: 1.38rem;
+                     height: 1.38rem;
                    }
                  }
                }
              }
             .nojinbi{
               width: 3.5rem;
-              margin: .3rem auto .5rem;
+              margin: .45rem auto .9rem;
               display: flex;
               flex-wrap: wrap;
               justify-content: space-between;
@@ -220,23 +213,15 @@ export default {
                 text-align: center;
                 &:nth-child(1){
                   img{
-                    margin-top: .15rem;
-                    width: 1.27rem;
+                    margin-bottom: .15rem;
+                    width: 1.23rem;
                   }
                 }
                 &:nth-child(2){
                   position: relative;
                   img{
-                    width: 1.22rem;
-                    margin:0 auto .23rem;
-                  }
-                  &:before{
-                    content: '';
-                    position: absolute;
-                    width: .46rem;
-                    height: .46rem;
-                    background: no-repeat center center / 100% 100%;
-                    background-image: url("../images/pop/plus.png");
+                    margin-bottom: .15rem;
+                    width: 1.23rem;
                   }
                 }
               }
