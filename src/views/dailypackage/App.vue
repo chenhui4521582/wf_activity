@@ -73,7 +73,7 @@
             :class="{tabIndex: !tabIndex}"
             :key="index"
           >
-            <div class="content">
+            <div class="content" :class="{hot: item.corner}">
               <div class="light">
                 <img src="./images/light.png" alt="">
               </div>
@@ -421,8 +421,10 @@ export default {
           &.hot:before {
             content: "";
             position: absolute;
-            width: 0.5rem;
-            height: 0.56rem;
+            left: .1rem;
+            top: .1rem;
+            width: .89rem;
+            height: 0.61rem;
             background: url("./images/hot.png");
             background-size: 100% 100%;
           }
