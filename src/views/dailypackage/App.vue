@@ -109,7 +109,7 @@
         @exchange="exchange"
       />
       <!-- 规则 -->
-      <rule ref="rule" :ruleMain="myInfo.startTime+'~'+myInfo.endTime"></rule>
+      <rule ref="rule" :info="myInfo"></rule>
       <!-- loading -->
       <loading v-show="isLoading"></loading>
     </section>
@@ -253,7 +253,6 @@ export default {
       this.tabIndex = 0;
     },
     gotopay (item, canBuy) {
-      console.log(item)
       let points = {
         '6': "A_H5PT0224002527",//H5平台-限购商城页-限购礼包页-6元抢购点击
         '18': 'A_H5PT0224002528',//H5平台-限购商城页-限购礼包页-18元抢购点击
@@ -300,18 +299,15 @@ export default {
   left: 0.1rem;
 }
 .after {
+  padding-bottom: .5rem;
+  overflow: hidden;
   position: relative;
   font-size: 0.28rem;
   color: rgba(21, 0, 43, 1);
   min-height: 100vh;
+  background: url("./images/bg.png") center top no-repeat #6945CE;
+  background-size: 100% auto;
   .container {
-    padding-bottom: .5rem;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    min-height: 100vh;
-    background: url("./images/bg.png") center top no-repeat #6945CE;
-    background-size: 100% auto;
     .text {
       position: absolute;
       top: 0.75rem;
@@ -378,8 +374,7 @@ export default {
     }
   }
   .wrap {
-    position: absolute;
-    top: 3.91rem;
+    margin-top: 3.91rem;
     width: 100%;
     .explain {
       margin-bottom: .25rem;

@@ -8,10 +8,10 @@
         <div class="wrap">
           <div class="title">活动规则</div>
           <div class="main">
-            <p>①活动时间：{{ruleMain}}，共7天。</p>
+            <p>①活动时间：{{info.startTime | formatTime('m-d')}} 至 {{info.endTime | formatTime('m-d')}}，共7天。</p>
             <p>②幸运币是限购礼包内的特有货币，用于兑换对应奖品； </p>
-            <p>③礼包共有6元、26元、46元3种，单个礼包购买不限次数； </p>
-            <p>④75元为全部礼包抢购价，每天限购1次，每天0点刷新购买机会； </p>
+            <p>③75元为全部礼包抢购价，每天限购1次，每天0点刷新购买机会； </p>
+            <p>④礼包共有6元、26元、46元3种，单个礼包购买不限次数； </p>
             <p>⑤购买礼包可获得对应金叶，并有概率获得超级幸运币； </p>
             <p>⑥幸运币累计一定数量可在兑换页中换取各类奖品，奖品兑换不限次数； </p>
             <p>⑦活动结束后，幸运币清零，且无法兑换奖品； </p>
@@ -33,10 +33,48 @@ export default {
     };
   },
   props: {
-    ruleMain: {
-      type: String,
-      default: ""
+    info: {
+      type: Object,
+      default: () => {}
     },
+  },
+  filters: {
+    formatTime (date, type) {
+      if(!date) {
+        return
+      }
+      if (date instanceof Date) {
+        date = data.getTime()
+      } else {
+        date = new Date(date.replace(/-/g, '/'))
+      }
+      let y = date.getFullYear()
+      let m = date.getMonth() + 1
+      let d = date.getDate()
+      let h = date.getHours()
+      let minute = date.getMinutes()
+      let second = date.getSeconds()
+      m = m < 10 ? `0${m}` : m
+      d = d < 10 ? `0${d}` : d
+      h = h < 10 ? `0${h}` : h
+      minute = minute < 10 ? `0${minute}` : minute
+      second = second < 10 ? `0${second}` : second
+      if (type === 'y-m-d h:m:s') {
+        return `${y}-${m}-${d} ${h}:${minute}:${second}`
+      } else if (type === 'y-m-d') {
+        return `${y}-${m}-${d}`
+      } else if (type === 'm-d') {
+        return `${m}-${d}`
+      } else if (type === 'y.m.d') {
+        return `${y}.${m}.${d}`
+      } else if (type === 'm.d') {
+        return `${m}.${d}`
+      } else if (type === 'm-d h:f') {
+        return `${m}-${d} ${h}:${minute}`
+      } else {
+        return `${y}-${m}-${d} ${h}:${minute}:${second}`
+      }
+    }
   },
   methods: {
     showPop () {
@@ -97,7 +135,6 @@ export default {
       .main {
         font-size: 0.24rem;
         letter-spacing: 0.02rem;
-        font-weight: bold;
         color: #fff;
         p {
           line-height: 0.4rem;
