@@ -104,6 +104,7 @@ export default {
     }
   },
   mounted () {
+    GLOBALS.marchSetsPoint('P_H5PT0264')
     this._getNoticeList()
     this._getActivityInfo()
   }
