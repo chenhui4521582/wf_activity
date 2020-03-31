@@ -321,6 +321,7 @@ export default {
               text-align: center;
             }
             .name {
+              
               width: 40%;
               height: .5rem;
               line-height: .5rem;
@@ -344,7 +345,7 @@ export default {
               text-align: center;
               float: left;
               &.name {
-                padding: 0 .1rem;
+                font-size: .2rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 width: 40%;
