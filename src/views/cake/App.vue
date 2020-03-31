@@ -5,13 +5,12 @@
         <div class="back" @click="back"></div>
         <div class="add" v-if="activityInfo.state!==2" @click.stop="showPopup(0)"></div>
         <div class="record" @click.stop="showRank"></div>
-        <div class="sub-title"></div>
         <section class="cake-bg" :class="`state-${cakeState}`"
           @click="handleClick(actStateInfo.state)">
           <div class="cake-item" :class="[`level-${item.level}`,`status-${item.status}`]"
             v-for="(item,index) in configList" :key="index">
-            <div class="lock"
-              :class="{shake:item.isShake&&(index+1)%2,'shake-deff':item.isShake&&index%2}">
+            <div class="lock">
+              <div class="lock-content"></div>
             </div>
             <div class="line"></div>
             <div class="desc">
@@ -34,25 +33,25 @@
           </p>
           <p>
             2. 瓜分条件（蛋糕顺序为从上至下）：<br>
-            &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费可解锁参与瓜分。<br>
-            &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日任意付费满10元可解锁参与<br>瓜分第1层和第2层蛋糕。<br>
-            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{endDate}}）累计<br>付费满88元可解锁参与瓜分。<br>
+            &nbsp;&nbsp;&nbsp;① 第1层蛋糕：每日任意付费即可参与瓜分（盲盒不参与）。<br>
+            &nbsp;&nbsp;&nbsp;② 第2层蛋糕：每日累计付费满10元可参与瓜分第1层和第2层蛋糕。<br>
+            &nbsp;&nbsp;&nbsp;③ 第3层蛋糕：活动期间（截止{{endDate}}）累计付费满88元可参与瓜分。
           </p>
           <p>
             3. 瓜分时间：第1层和第2层蛋糕解锁后即可瓜分，<br>第3层蛋糕{{endDate}}开启瓜分。<br>
-            注意：第1层和第2层蛋糕为每日瓜分，瓜分截止时间为解锁次日10:00前，若用户未领取，则奖励自动失效，请及时参与瓜分。
+            注意：第1层蛋糕和第2层蛋糕为每日瓜分，每日瓜分截止时间为次日10:00前，若用户未领取，则奖励自动失效，请及时参与瓜分。
           </p>
           <p>
             4. 瓜分规则：有资格参与瓜分的用户随机获得奖励，奖励随付费金额增加而变大。
           </p>
           <p>
-            5. 奖品发放：奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将发放至我的资产。
+            5. 奖品发放：红包奖励可能为话费券/优惠券/未中奖。瓜分所得奖励将直接发放至我的资产。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
           </p>
           <p>
-            6. 瓜分记录-我的记录：列表展示参与时间为每层蛋糕解锁时间，若使用加成卡，则加成卡的参与时间为使用加成卡的时间（即瓜分时间）。
+            6. 瓜分记录-我的记录：列表展示参与时间为每层蛋糕瓜分时间，若使用奖励加成卡，则奖励加成卡的参与时间为使用奖励加成卡的时间（即瓜分时间）。
           </p>
           <p>
-            7. 活动结束后，奖励领取截止时间: {{showEndDate}}。活动期间所得奖励，若用户在活动结束后仍未领取，则自动失效。
+            7. 活动结束后，奖励领取截止时间: {{showEndDate}}。
           </p>
           <p class="bottom">
             活动最终解释权归平台所有
@@ -173,16 +172,16 @@ export default {
           return { state: 4, btn: '活动已结束' }
         }
       } else if (lockedIndex === 0) {
-        return { state: 0, btn: '任意付费参与' }
+        return { state: 0, btn: '任意付费瓜分蛋糕' }
       } else if (this.isLastDay && unopenedIndex === 2) {
         return { state: 3, btn: `${this.endDate}开启奖池` }
       } else {
         if (unopenedIndex >= 0 && unopenedIndex < 2) {
           return { state: 1, btn: '瓜分蛋糕' }
         } else if (openedIndex === 0 && lockedIndex === 1) {
-          return { state: 0, btn: `继续解锁(当前支付 ${this.activityInfo.todayRecharge}/${this.configList[1].recharge})` }
+          return { state: 0, btn: `继续瓜分(今日付费 ${this.activityInfo.todayRecharge}元/${this.configList[1].recharge}元)` }
         } else if (openedIndex === 0 && lockedIndex === 2) {
-          return { state: 0, btn: `继续解锁(累计支付 ${this.activityInfo.totalRecharge}/${this.configList[2].recharge})` }
+          return { state: 0, btn: `继续瓜分(累计付费 ${this.activityInfo.totalRecharge}元/${this.configList[2].recharge}元)` }
         } else if (unopenedIndex === 2) {
           return { state: 2, btn: `后继续参与` }
         } else {
@@ -216,14 +215,13 @@ export default {
           if (item.status === 1) {
             this.isNeedOpen = true
             item.status = 0
-            item.isShake = true
           }
           return item
         })
         this.applyPopTimer = setTimeout(() => {
           this.showPopup(1)
           clearTimeout(this.applyPopTimer)
-        }, 1200)
+        }, 200)
       } else if (forgetPopup) {
         this.showPopup(2)
       }
@@ -360,12 +358,20 @@ export default {
     rechargeFilter (recharge) {
       switch (recharge) {
         case 10:
-          return '付费满10元解锁'
-        case 88:
-          if (this.configList[2].status === 0) {
-            return '活动期间累计付费满88元解锁'
+          if (this.configList[1].status === 1) {
+            return `点击蛋糕瓜分奖励`
+          } else if (this.configList[1].status === 0 && this.configList[0].status > 0) {
+            return `再充值${10 - this.activityInfo.todayRecharge}元即可参与瓜分`
           } else {
+            return '今日累计付费10元瓜分奖励'
+          }
+        case 88:
+          if (this.configList[2].status === 1) {
             return `${this.endDate}开启瓜分`
+          } else if (this.configList[2].status === 0 && this.configList[0].status > 0) {
+            return `再充值${88 - this.activityInfo.totalRecharge}元即可参与瓜分`
+          } else {
+            return '活动期间累计付费满88元解锁'
           }
         default:
           return '任意付费解锁'
@@ -392,7 +398,7 @@ export default {
     clearInterval(this.countDownTimer)
     clearTimeout(this.openCakeTimer)
     clearTimeout(this.cakeLevelTimer)
-    this.this.applyPopTimer = null
+    this.applyPopTimer = null
     this.changeTypeTimer = null
     this.countDownTimer = null
     this.openCakeTimer = null
@@ -430,7 +436,7 @@ export default {
     }
     .add {
       width: 0.92rem;
-      height: 0.8rem;
+      height: 1.02rem;
       .bg-center("./img/add-icon.png");
       position: absolute;
       right: 0.1rem;
@@ -443,16 +449,8 @@ export default {
       .bg-center("./img/record-icon.png");
       position: absolute;
       right: 0.1rem;
-      top: 2.46rem;
+      top: 2.68rem;
       z-index: 3;
-    }
-    .sub-title {
-      width: 1.56rem;
-      height: 0.8rem;
-      .bg-center("./img/subtitle.png");
-      position: absolute;
-      top: 1.7rem;
-      left: 2.84rem;
     }
     .cake-bg {
       width: 4.98rem;
@@ -514,22 +512,35 @@ export default {
           .bg-center("./img/knife.png");
         }
         .lock {
-          width: 0.12rem;
-          height: 0.12rem;
-          background: #fff;
-          border-radius: 50%;
           position: absolute;
+          .lock-content {
+            width: 0.2rem;
+            height: 0.2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: relative;
+            &::after {
+              content: "";
+              position: absolute;
+              width: 0.12rem;
+              height: 0.12rem;
+              background: #fff;
+              border-radius: 50%;
+              left: 0.04rem;
+              top: 0.04rem;
+            }
+          }
         }
         .desc {
           color: #ac7f61;
           font-size: 0.2rem;
-          width: 1.9rem;
           border-radius: 0.2rem;
           background-color: rgba(0, 0, 0, 0.4);
           padding: 0.1rem;
           position: absolute;
           bottom: 0.6rem;
           line-height: 0.24rem;
+          white-space: nowrap;
           span {
             color: #d33124;
             font-size: 0.28rem;
@@ -547,16 +558,17 @@ export default {
           height: 2.6rem;
           z-index: 2;
           .lock {
-            bottom: 0.6rem;
-            left: 1.5rem;
+            bottom: 0.5rem;
+            left: 1.8rem;
           }
           .desc {
-            left: -1rem;
+            left: -0.5rem;
+            bottom: 0.3rem;
           }
           .line {
             width: 0.5rem;
-            left: 1.08rem;
-            bottom: 0.74rem;
+            left: 1.3rem;
+            bottom: 0.68rem;
             transform-origin: center center;
             transform: rotateZ(15deg);
           }
@@ -579,16 +591,16 @@ export default {
           z-index: 1;
           .lock {
             bottom: 0.64rem;
-            right: 0.7rem;
+            right: 0.86rem;
           }
           .desc {
-            right: -1rem;
-            bottom: 0.84rem;
+            left: 3.7rem;
+            bottom: 0.9rem;
           }
           .line {
             width: 0.5rem;
-            right: 0.22rem;
-            bottom: 0.76rem;
+            right: 0.4rem;
+            bottom: 0.84rem;
             transform-origin: center center;
             transform: rotateZ(-15deg);
           }
@@ -609,16 +621,17 @@ export default {
         &.level-3 {
           height: 2.16rem;
           .lock {
-            bottom: 0.7rem;
-            left: 1.5rem;
+            bottom: 0.8rem;
+            left: 2rem;
           }
           .desc {
-            left: -1rem;
+            right: 3.3rem;
+            bottom: 0.7rem;
           }
           .line {
             width: 0.5rem;
-            left: 1.08rem;
-            bottom: 0.82rem;
+            left: 1.64rem;
+            bottom: 0.96rem;
             transform-origin: center center;
             transform: rotateZ(15deg);
           }
@@ -638,15 +651,6 @@ export default {
         }
 
         &.status-0 {
-          .lock {
-            width: 0.54rem;
-            height: 0.54rem;
-            .bg-center("./img/lock-icon.png");
-            position: absolute;
-            bottom: 0.4rem;
-            left: 50%;
-            margin-left: -0.27rem;
-          }
           .desc {
             color: #ffdb6e;
             span {
@@ -654,44 +658,48 @@ export default {
             }
           }
           &.level-1 {
-            .line {
-              width: 1.2rem;
-              bottom: 0.8rem;
-              transform-origin: center center;
-              transform: rotateZ(10deg);
+            .lock {
+              bottom: 0.5rem;
+              left: 2.14rem;
             }
             .desc {
+              left: -0.16rem;
+              bottom: 0.3rem;
               animation: verticalShake 3s infinite;
+            }
+            .line {
+              left: 1.64rem;
+              bottom: 0.68rem;
             }
           }
           &.level-2 {
             .lock {
-              bottom: 0.5rem;
-              right: 1.8rem;
+              bottom: 0.7rem;
+              right: 2.3rem;
             }
             .line {
-              width: 1.2rem;
-              right: 1.08rem;
-              bottom: 0.94rem;
-              transform-origin: center center;
-              transform: rotateZ(-10deg);
+              right: 1.86rem;
+              bottom: 0.9rem;
+              transform: rotateZ(-20deg);
             }
             .desc {
+              left: 3.1rem;
+              bottom: 0.6rem;
               animation: verticalShake 3s infinite 0.4s;
             }
           }
           &.level-3 {
             .lock {
-              bottom: 0.6rem;
-            }
-            .line {
-              width: 1.2rem;
-              bottom: 1rem;
-              transform-origin: center center;
-              transform: rotateZ(10deg);
+              bottom: 0.8rem;
+              left: 2.2rem;
             }
             .desc {
+              right: 3.1rem;
               animation: verticalShake 3s infinite 0.8s;
+            }
+            .line {
+              left: 1.84rem;
+              bottom: 0.96rem;
             }
           }
         }
@@ -699,7 +707,7 @@ export default {
     }
   }
   .cake-rule {
-    color: #ac7f61;
+    color: rgba(172, 127, 97, 0.5);
     font-size: 0.24rem;
     padding: 0.24rem 0.42rem 0.32rem;
     h2 {

@@ -8,46 +8,46 @@ const SHOP_API_BASE_URL = '//shop-api.beeplaying.com'
  * @return {Object} data
  */
 export const ActivityInfo = async () => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/activity-info`)
-  // const { data } = {
-  //   data: {
-  //     'code': 200,
-  //     'data': {
-  //       'state': 1,
-  //       'beginDate': '2020-03-19 00:00:00',
-  //       'endDate': '2020-03-23 23:59:59',
-  //       'timeline': '2020年3月19日-2020年3月23日',
-  //       'countdown': 277450832,
-  //       'configList': [
-  //         {
-  //           'level': 1,
-  //           'recharge': 1,
-  //           'amount': 1588,
-  //           'status': 1
-  //         },
-  //         {
-  //           'level': 2,
-  //           'recharge': 10,
-  //           'amount': 2288,
-  //           'status': 0
-  //         },
-  //         {
-  //           'level': 3,
-  //           'recharge': 88,
-  //           'amount': 3000,
-  //           'status': 0
-  //         }
-  //       ],
-  //       'todayRecharge': 100,
-  //       'totalRecharge': 100,
-  //       'todayApplyNum': 2,
-  //       'applyPopup': true,
-  //       'forgetPopup': false,
-  //       'divideDateStr': '20200320'
-  //     },
-  //     'message': null
-  //   }
-  // }
+  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/cake/activity-info`)
+  const { data } = {
+    data: {
+      'code': 200,
+      'data': {
+        'state': 1,
+        'beginDate': '2020-03-19 00:00:00',
+        'endDate': '2020-04-01 23:59:59',
+        'timeline': '2020年3月19日-2020年3月23日',
+        'countdown': 277450832,
+        'configList': [
+          {
+            'level': 1,
+            'recharge': 1,
+            'amount': 1588,
+            'status': 2
+          },
+          {
+            'level': 2,
+            'recharge': 10,
+            'amount': 2288,
+            'status': 1
+          },
+          {
+            'level': 3,
+            'recharge': 88,
+            'amount': 3000,
+            'status': 0
+          }
+        ],
+        'todayRecharge': 1,
+        'totalRecharge': 1,
+        'todayApplyNum': 2,
+        'applyPopup': false,
+        'forgetPopup': false,
+        'divideDateStr': '20200320'
+      },
+      'message': null
+    }
+  }
   return data
 }
 /**
