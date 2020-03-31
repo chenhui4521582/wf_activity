@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <template v-if="detailData">
+  <div id="app" v-if="detailData" :style="{backgroundImage:`url(${getImgUrl('bg')})`}">
+    <template>
       <!--返回按钮-->
       <div class="back" :style="{background:detailData.icons&&detailData.icons.back}" @click="back">返回</div>
       <!--回到顶部-->
@@ -135,8 +135,10 @@ export default {
       appointmentday: 0,
       timeline: '',
       icons:{
+        'bgColor':'#371469',//背景补色
         'back':'#480f99',//返回按钮背景色值
         'rule':'#b73bd0',//规则按钮背景色值
+        'bg':'/group1/M00/43/2C/CmcEHV6DGaeAetxNAAK-_28SSqQ535.jpg',//背景图
         'tab00':'/group1/M00/43/2B/CmcEHV6CqoWAIe6YAABBLN7sUvY485.png',//第一个TAB未选中
         'tab11':'/group1/M00/43/2B/CmcEHV6CqseAB6SRAABgyKFugys745.png',//第二个TAB选中
         'tab01':'/group1/M00/43/2B/CmcEHV6CqquAOmDBAABaHb0X8rM751.png',//第一个TAB选中
@@ -158,7 +160,7 @@ export default {
     await this.myDetails()
 
     // 后端告知是否弹框
-    if (this.detailData.applyPopup) {
+    if (this.detailData&&this.detailData.applyPopup) {
       this.flag = 3
     }
     await this.bonusListClick()
@@ -273,6 +275,7 @@ export default {
         const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
         if (res.data.code == 200 && res.data.data) {
           this.detailData = res.data.data
+          document.body.style.background=this.detailData&&this.detailData.icons&&this.detailData.icons.bgColor||this.icons.bgColor
           // 千元红包结束，终极大奖还有资格瓜分 默认选中终极大奖
           // if (this.detailData.normalState == 6 && (this.detailData.ultimateState == 3||this.detailData.ultimateState == 2)) {
           //   this.tabIndex = 1
