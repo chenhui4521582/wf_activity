@@ -527,8 +527,10 @@ export default {
       .award {
         position: absolute;
         top: 0;
-        left: 1.3rem;
+        left: 50%;
+        width: 3.2rem;
         height: 2rem;
+        margin-left: -1.6rem;
         transform: scale(0);
         z-index: 5;
         text-align: center;
