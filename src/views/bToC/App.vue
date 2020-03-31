@@ -39,7 +39,7 @@
         <section class="gift-wrapper">
           <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
           <ul class="gift-list">
-            <li class="gift-item" v-for="(item,index) in giftList">
+            <li class="gift-item" v-for="(item,index) in giftList" :key="index">
               <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)">
               </div>
               <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
@@ -56,6 +56,27 @@
     </div>
     <popup v-model="isShowPop" :type="popType" :begin-time="beginTime" :end-time="endTime"
       :leaf-num="leafNum" @on-close="closeCallback" @on-confirm="confirmCallback"></popup>
+    <modal 
+      v-model="showModal"
+      @on-close="modalClose"
+      title="下载方式"
+    >
+      <div class="modal-container">
+        下载链接：<br>
+        <span
+          v-clipboard:copy="downLoadUrl"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError"
+        >{{downLoadUrl}}</span><br>
+        复制链接， <br>
+        在浏览器打开即可下载啦~
+      </div>
+      <div class="btn" slot="footer" 
+          v-clipboard:copy="downLoadUrl"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError"
+      >复制链接</div>
+    </modal>
   </main>
 </template>
 <script>
@@ -63,10 +84,12 @@ import utils from '@/common/js/utils'
 import { moveInfo, signIn, signInfo, getMallProductListByType, userMoveNum, userMoveSend } from './services/api'
 import _get from 'lodash.get'
 import popup from './component/popup'
+import modal from './component/modal/modal'
 export default {
   name: '',
   components: {
-    popup
+    popup,
+    modal
   },
   data () {
     return {
@@ -79,7 +102,9 @@ export default {
       bizList: [],
       isShowPop: false,
       popType: 0,
-      leafNum: 0
+      leafNum: 0,
+      showModal: false,
+      downLoadUrl: 'http://t.cn/A6ZJFebP'
     }
   },
   mounted () {
@@ -138,6 +163,15 @@ export default {
     }
   },
   methods: {
+    modalClose() {
+      this.showModal = false
+    },
+    onCopy() {
+      this.$toast.show({message: '复制成功'})
+    },
+    onError() {
+      this.$toast.show({message: '复制失败'})
+    },
     back () {
       // eslint-disable-next-line no-undef
       location.href = SDK.getBackUrl()
@@ -236,14 +270,10 @@ export default {
       if (type) {
         GLOBALS.marchSetsPoint('A_H5PT0249002921')// H5平台-现在用户引流活动-渠道活动页-去多多玩APP抽免单点击
       }
-      if (this.isIOS) {
-        this.openPop(2)
-        return
-      } else if (!this.beginTime) {
+      if (!this.beginTime) {
         this.openPop(5)
-        return
-      } else if (this.isAndroid) {
-        this.openPop(0)
+      } else{
+        this.showModal = true
       }
     },
     openPop (type) {
@@ -262,7 +292,6 @@ export default {
         case 5:
           location.href = 'https://wap.beeplaying.com/ball/'
           break
-
         default:
           break
       }
@@ -483,5 +512,21 @@ li {
       }
     }
   }
+}
+.modal-container {
+  padding: .37rem 0 .33rem;
+  font-size: .24rem;
+  span {
+    color: #FF7800;
+  }
+}
+.btn {
+  width: 4.1rem;
+  height: .7rem;
+  line-height: .7rem;
+  font-size: .24rem;
+  color: #fff;
+  background: #FF4141;
+  border-radius: .16rem;
 }
 </style>
