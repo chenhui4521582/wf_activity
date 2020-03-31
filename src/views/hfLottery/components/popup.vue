@@ -302,7 +302,7 @@ export default {
         font-size: .32rem;
       }
       .content {
-        margin: .4rem .47rem;
+        margin: .4rem .4rem;
         font-size: .22rem; 
         color: #fff;
         line-height: .35rem;
@@ -321,22 +321,26 @@ export default {
               text-align: center;
             }
             .name {
-              width: 40%;
+              width: 44%;
               height: .5rem;
               line-height: .5rem;
               border-right: 1px solid #fff;
+              white-space: nowrap;
             }
             .price {
-              width: 30%;
+              width: 28%;
               height: .5rem;
               line-height: .5rem;
+              white-space: nowrap;
               border-right: 1px solid #fff;
             }
             .probability {
-              width: 30%;
+              width: 28%;
               height: .5rem;
               line-height: .5rem;
+              white-space: nowrap;
             }
+            
           }
           .tr {
             overflow: hidden;
@@ -344,10 +348,10 @@ export default {
               text-align: center;
               float: left;
               &.name {
-                padding: 0 .1rem;
+                font-size: .2rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                width: 40%;
+                width: 44%;
                 height: .5rem;
                 line-height: .5rem;
                 border-right: 1px solid #fff;
@@ -355,14 +359,14 @@ export default {
                 white-space: nowrap;
               }
               &.price {
-                width: 30%;
+                width: 28%;
                 height: .5rem;
                 line-height: .5rem;
                 border-right: 1px solid #fff;
                 border-top: 1px solid #fff;
               }
               &.probability {
-                width: 30%;
+                width: 28%;
                 height: .5rem;
                 line-height: .5rem;
                 border-top: 1px solid #fff;
@@ -527,8 +531,10 @@ export default {
       .award {
         position: absolute;
         top: 0;
-        left: 1.3rem;
+        left: 50%;
+        width: 3.2rem;
         height: 2rem;
+        margin-left: -1.6rem;
         transform: scale(0);
         z-index: 5;
         text-align: center;
