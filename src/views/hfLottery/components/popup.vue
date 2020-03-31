@@ -302,7 +302,7 @@ export default {
         font-size: .32rem;
       }
       .content {
-        margin: .4rem .47rem;
+        margin: .4rem .4rem;
         font-size: .22rem; 
         color: #fff;
         line-height: .35rem;
@@ -321,22 +321,24 @@ export default {
               text-align: center;
             }
             .name {
-              
-              width: 40%;
+              width: 44%;
               height: .5rem;
               line-height: .5rem;
               border-right: 1px solid #fff;
+              white-space: nowrap;
             }
             .price {
-              width: 30%;
+              width: 28%;
               height: .5rem;
               line-height: .5rem;
               border-right: 1px solid #fff;
+              white-space: nowrap;
             }
             .probability {
-              width: 30%;
+              width: 28%;
               height: .5rem;
               line-height: .5rem;
+              white-space: nowrap;
             }
           }
           .tr {
@@ -348,7 +350,7 @@ export default {
                 font-size: .2rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                width: 40%;
+                width: 44%;
                 height: .5rem;
                 line-height: .5rem;
                 border-right: 1px solid #fff;
@@ -356,14 +358,14 @@ export default {
                 white-space: nowrap;
               }
               &.price {
-                width: 30%;
+                width: 28%;
                 height: .5rem;
                 line-height: .5rem;
                 border-right: 1px solid #fff;
                 border-top: 1px solid #fff;
               }
               &.probability {
-                width: 30%;
+                width: 28%;
                 height: .5rem;
                 line-height: .5rem;
                 border-top: 1px solid #fff;
