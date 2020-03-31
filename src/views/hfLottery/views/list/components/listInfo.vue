@@ -16,6 +16,11 @@ export default {
   props: ['info'],
   methods: {
     goDetail(item) {
+      console.log(item)
+      GLOBALS.marchSetsPoint('A_H5PT0264003107', {
+        awards_id: item.id,
+        awards_name: item.name 
+      })
       this.$router.push({
         name: 'lotteryDetail',
         query:{
