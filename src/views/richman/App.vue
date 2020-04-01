@@ -24,7 +24,7 @@
                 <div v-if="countTime.length" class="block-bg">{{countTime.slice(6,8)}}</div>&nbsp;
                 <div v-if="countTime.length">{{countTime.slice(8,9)}}</div>
               </div>
-              <div class="countdowntime" v-if="activityInfo.state==2||countTime==''">
+              <div class="countdowntime" v-if="activityInfo.state==2&&countTime==''">
           活动已经结束
               </div>
             </div>
@@ -307,6 +307,7 @@ export default {
     countTime(val){
       if(val===''){
         this.getActivityInfo()
+        // this.activityInfo.state=2
         this.getRankList()
         console.log('再次调用接口')
       }
