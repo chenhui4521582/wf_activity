@@ -83,7 +83,6 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
