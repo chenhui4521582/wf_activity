@@ -211,7 +211,7 @@
   .com_pop {
     position: fixed;
     left: 50%;
-    top: .8rem;
+    top: .5rem;
     margin-left: -1.96*1.3rem;
     &.flag1 {
       top: 2rem;
