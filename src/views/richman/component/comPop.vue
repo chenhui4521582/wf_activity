@@ -296,7 +296,7 @@
         </div>
       </div>
     </template>
-    <div class="close" @click="close" :style="{top:value===1?'10.5rem':''}">
+    <div class="close" :class="value===1?'close-up':''" @click="close" :style="{top:value===1?'10.5rem':''}">
       <img src="../images/compop/close.png" alt />
     </div>
     <!-- </div> -->
@@ -629,10 +629,10 @@ export default {
   background: url(../images/compop/rule-bg.png);
   background-size: 100% 100%;
   width: 6.11rem;
-  height: 10.49rem;
-  margin: 0.15rem auto 0;
+  height: 9.1rem;
+  margin: 0.7rem auto 0;
   position: relative;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -643,9 +643,9 @@ export default {
   .rule-container {
     margin: 1.8rem auto 0;
     width: 4.94rem;
-    height: 8rem;
-    overflow-y: scroll;
-    height: 8.3rem;
+    
+    overflow: auto;
+    height: 6.9rem;
     .light-color {
       font-size: 0.2rem;
       font-family: PingFang SC;
@@ -1079,6 +1079,10 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
+  &.close-up{
+    margin: 0 auto;
+    top: 9.9rem!important;
+  }
   img {
     display: block;
     width: 0.6rem;
