@@ -639,12 +639,12 @@
             .content-item {
               width: 100%;
               height: 20%;
-              background: rgba(44, 15, 40, 0.92);
+              background: rgba(44, 15, 40, 0.85);
               padding: 0 .3rem;
               box-sizing: border-box;
               display: flex;
               justify-content: space-between;
-              border: 1px solid rgba(44, 15, 40, 0.92);
+              border: 1px solid rgba(44, 15, 40, 0.85);
               border-bottom: 1px solid rgba(174, 142, 131, 0.22);
               &:nth-child(1) {
                 border-radius: .2rem .2rem 0 0;
