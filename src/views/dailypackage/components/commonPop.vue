@@ -8,8 +8,8 @@
           <div class="main">
             <ul class="awards-list">
               <li>
-                <div class="title" style="font-size: 0.48rem; font-weight: 400; color: rgb(169, 92, 23); height: .9rem; line-height: .8rem; padding-bottom: .1rem; box-sizing: border-box;font-weight: bold;">
-                  <template v-if="fail&&surplus">很遗憾</template>
+                <div class="title" style="font-size: 0.48rem; font-weight: 400; color: #FFFFFF; height: .9rem; line-height: .9rem; box-sizing: border-box;font-weight: bold;">
+                  <template v-if="fail && surplus">很遗憾</template>
                   <template v-else>
                     <template v-if="fail">
                       是否兑换？
@@ -19,22 +19,32 @@
                     </template>
                   </template>
                 </div>
-                <template v-if="fail&&surplus">
-                  <img src="../images/sad.png" alt="" style="width: 1.73rem;height: 1.85rem;margin-top: .35rem">
-                  <!--<div class="awardsname">您还差{{surplus}}勋章就可以领取<br>{{awardData.awardsName}}啦~</div>-->
+                <template v-if="fail && surplus">
+                  <img src="../images/sad.png" alt="" style="width: 2.2rem;height: 2.2rem;margin-top: .1rem">
                   <div class="info">幸运币不足</div>
                 </template>
                 <template v-else>
-                  <img :src="awardData.awardsImg|filter" alt="" style="width: 2.7rem;">
-                  <div class="info" :class="{success:!fail}">{{awardData.awardsName}}</div>
-                  <p v-if="!fail" style="margin-bottom: .2rem;color:rgba(169,92,23,1);">请前往我的页面查询使用~</p>
+                  <img :src="awardData.awardsImg | filter" alt="" style="width: 2.2rem;height:2.2rem">
+                  <div v-if="!fail" class="info" :class="{success:!fail}">{{awardData.awardsName}}</div>
+                  <div v-else class="info" :class="{success:!fail}">本次兑换消耗幸运币x{{awardData.costCoin}}</div>
+                  <p v-if="!fail" style="margin-bottom: .5rem;color:#fff">请前往我的页面查询使用~</p>
                 </template>
               </li>
             </ul>
           </div>
-          <div class="hit-egg-btn" @click="closePop(1)">{{fail&&surplus?'获取幸运币':'确定'}}</div>
+          <template v-if="fail && surplus">
+            <div class="hit-egg-btn" @click="closePop(1)">获取幸运币</div>
+          </template>
+          <tempalte v-else>
+            <template v-if="fail">
+              <div class="excheck-wrap">
+                <div class="excheck-btn disable"  @click="closePop(0)">取消</div>
+                <div class="excheck-btn" v-lese @click="closePop(1)">确定</div>
+              </div>
+            </template>
+          </tempalte>
+          <div class="close-icon" @click="closePop(0)"></div>
         </div>
-        <div class="close-icon" @click="closePop(0)"></div>
       </div>
     </transition>
   </section>
@@ -125,7 +135,7 @@ export default {
       background-image: url("../images/pop/pop.png");
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 2.35rem 0.26rem 0;
+      padding: 2.4rem 0.26rem 0;
       .main {
         font-size: 0.24rem;
         line-height: 0.3rem;
@@ -153,28 +163,44 @@ export default {
             .info{
               font-size:.24rem;
               font-weight:bold;
-              color:rgba(169,92,23,1);
-              /*margin-top: .28rem;*/
-              margin-bottom: .5rem;
-              &.success{
-                margin-bottom: .3rem;
-              }
+              color:#FFFFFF;
+              margin: .2rem 0 .5rem;
             }
           }
         }
       }
       .get-cz-btn,
       .hit-egg-btn {
-        width:2.96rem;
-        height:.8rem;
+        width: 3.2rem;
+        height:.78rem;
         background:linear-gradient(0deg,rgba(249,104,48,1) 0%,rgba(234,62,98,1) 0%,rgba(254,160,117,1) 99%);
         border-radius:.4rem;
-        line-height: 0.8rem;
+        line-height: 0.78rem;
         font-weight:bold;
         color:#fff;
         font-size: 0.32rem;
         text-align: center;
         margin: auto;
+      }
+      .excheck-wrap {
+        display: flex;
+        justify-content: center;
+        .excheck-btn {
+          width: 2.1rem;
+          height: .78rem;
+          line-height: .78rem;
+          text-align: center;
+          background: linear-gradient(0deg,rgba(255,74,118,1) 0%,rgba(255,152,165,1) 100%);
+          border-radius: .39rem;
+          font-size: .32rem;
+          font-weight:bold;
+          color: #fff;
+        }
+        .disable {
+          margin-right: .23rem;
+          background: linear-gradient(0deg,rgba(248,244,245,1) 0%,rgba(247,175,203,1) 100%);
+          color: #FF4E78;
+        }
       }
     }
     .close-icon {
@@ -182,7 +208,7 @@ export default {
       height: 0.57rem;
       background: url("../images/close.png") no-repeat center
         center / 100% 100%;
-      margin:.2rem auto;
+      margin:.8rem auto;
     }
   }
   .scalc-enter-active {
