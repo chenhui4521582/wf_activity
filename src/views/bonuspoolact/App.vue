@@ -1,33 +1,25 @@
 <template>
-  <div id="app">
-    <!--返回按钮-->
-    <div class="back" @click="back">返回</div>
-    <template v-if="detailData">
+  <div id="app" v-if="detailData" :style="{backgroundImage:`url(${getImgUrl('bg')})`}">
+    <template>
+      <!--返回按钮-->
+      <div class="back" :style="{background:detailData.icons&&detailData.icons.back}" @click="back">返回</div>
       <!--回到顶部-->
-      <div class="rule" @click="showrule">规则</div>
+      <div class="rule" :style="{background:detailData.icons&&detailData.icons.rule}" @click="showrule">规则</div>
       <!--日期-->
       <div class="date">{{detailData.timeline}}</div>
-      <div class="display" v-if="tabIndex">
+      <div class="display">
         <div class="item" @click="qianghongbaoclick(0)">
-          <img src="./images/qianyuanbonus.png" alt="">
+          <img :src="(detailData.icons&&detailData.icons[`tab0${tabIndex==0?1:0}`]||icons[`tab0${tabIndex==0?1:0}`])|filter" alt="">
         </div>
         <div class="item" @click="qianghongbaoclick(1)">
-          <img src="./images/zhongjidajiang.png" alt="">
-        </div>
-      </div>
-      <div class="display1" v-else>
-        <div class="item">
-          <img src="./images/qianyuanbonus1.png" alt="" @click="qianghongbaoclick(0)">
-        </div>
-        <div class="item">
-          <img src="./images/zhongjidajiang1.png" alt="" @click="qianghongbaoclick(1)">
+          <img :src="(detailData.icons&&detailData.icons[`tab1${tabIndex||0}`]||icons[`tab1${tabIndex||0}`])|filter" alt="">
         </div>
       </div>
       <div class="gif" :class="{giftmove:detailData.ultimateState==1||detailData.ultimateState==4}"
         v-show="tabIndex==1"
         @click="zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
         <template v-if="detailData.ultimateState==1||detailData.ultimateState==4">
-          <img src="./images/yure_gif.png" alt="">
+          <img :src="(detailData.icons&&detailData.icons.divideyure||icons.divideyure)|filter" alt="">
           <div class="bonus_content">
             <div class="price">{{detailData.ultimateAmount}}元</div>
             <div class="text">
@@ -37,33 +29,33 @@
           </div>
           <!-- <div class="info">任意报名3天即可瓜分</div> -->
         </template>
-        <img src="./images/openprize.gif" alt="" v-else>
+        <img :src="(detailData.icons&&detailData.icons.divideopenprize||icons.divideopenprize)|filter" alt="" v-else>
       </div>
       <div class="gif" v-show="tabIndex==0" @click="qianyuanbonusImgClick(detailData.normalState)">
-        <img src="./images/qianyuanbonusopen.gif" alt="" v-if="detailData.normalState==5">
-        <img src="./images/qianyuanbonus.gif" alt="" v-else>
+        <img :src="(detailData.icons&&detailData.icons.qianyuanbonusopen||icons.qianyuanbonusopen)|filter" alt="" v-if="detailData.normalState==5">
+        <img :src="(detailData.icons&&detailData.icons.qianyuanbonus||icons.qianyuanbonus)|filter" alt="" v-else>
       </div>
       <!--瓜分记录入口-->
-      <div class="record" @click="showrecord" v-if="bonusListData.length"></div>
+      <img :src="(detailData.icons&&detailData.icons.divideRecord||icons.divideRecord)|filter" class="record" @click="showrecord" v-if="bonusListData.length">
       <!--正常奖池状态normalState 1=活动预热 2=用户未报名 3=用户已报名 4=报名截止 5=奖池开启 6=已结束 ,-->
       <!--千元红包-->
       <template v-if="tabIndex==0">
-        <div class="btn bonus_pre" v-if="detailData.normalState==1">
+        <div class="btn bonus_pre" v-if="detailData.normalState==1" :style="{backgroundImage:`url(${getImgUrl('bonusPre')})`}">
           活动开启倒计时{{countdown.time}}
         </div>
         <div class="btn bonus_hot" @click="appointmentBonus(false,tabIndex)"
-          v-if="detailData.normalState==2">
+          v-if="detailData.normalState==2" :style="{backgroundImage:`url(${getImgUrl('bonusHot')})`}">
           马上报名瓜分红包
         </div>
         <div class="btn bonus_hot bonus_signed" @click="showToast('今晚22:00来瓜分吧~')"
-          v-if="detailData.normalState==3">
+          v-if="detailData.normalState==3" :style="{backgroundImage:`url(${getImgUrl('bonusHot')})`}">
           本场已报名<br />
           {{countdown.time}}后瓜分红包
         </div>
-        <div class="btn bonus_pre pre" v-if="detailData.normalState==4">
+        <div class="btn bonus_pre pre" v-if="detailData.normalState==4" :style="{backgroundImage:`url(${getImgUrl('bonusPre')})`}">
           <span>本场报名已截止<br>下场开启倒计时：{{countdown.time}}</span>
         </div>
-        <div class="btn bonus_divide" @click="divideBonus(0)" v-if="detailData.normalState==5">
+        <div class="btn bonus_divide" @click="divideBonus(0)" v-if="detailData.normalState==5" :style="{backgroundImage:`url(${getImgUrl('bonusDivide')})`}">
           立即瓜分
         </div>
         <div class="btn bonus_end" v-if="detailData.normalState==6">
@@ -73,18 +65,18 @@
       <!--终极大奖ultimateState (integer, optional): 终极奖池状态 1=未开启 2=开启 3=已结束-->
       <template v-else>
         <template v-if="detailData.ultimateState==1">
-          <div class="btn bonus_pre" v-if="detailData.normalState==1">
+          <div class="btn bonus_pre" v-if="detailData.normalState==1" :style="{backgroundImage:`url(${getImgUrl('bonusPre')})`}">
             活动开启倒计时{{countdown.time}}
           </div>
           <div class="btn bonus_pre pre" v-if="[2,3,4,5].includes(detailData.normalState)"
-            @click="qianghongbaoclick(undefind,false);zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)">
+            @click="qianghongbaoclick(undefind,false);zhongjidajiangImgClick(detailData.normalState,detailData.ultimateState)" :style="{backgroundImage:`url(${getImgUrl('bonusPre')})`}">
             <span>已报名<i>{{detailData.userApplyTime}}</i>天<br>快去抢红包吧</span>
           </div>
         </template>
-        <div class="btn bonus_hot" v-if="detailData.ultimateState==2">
+        <div class="btn bonus_hot" v-if="detailData.ultimateState==2" :style="{backgroundImage:`url(${getImgUrl('bonusHot')})`}">
           {{countdown.time}}后免费瓜分
         </div>
-        <div class="btn bonus_divide" @click="divideBonus(1)" v-if="detailData.ultimateState==3">
+        <div class="btn bonus_divide" @click="divideBonus(1)" v-if="detailData.ultimateState==3" :style="{backgroundImage:`url(${getImgUrl('bonusDivide')})`}">
           立即瓜分
         </div>
         <div class="btn bonus_end" v-if="detailData.ultimateState==4">
@@ -141,7 +133,25 @@ export default {
       makeupData: null,
       makeupPackageData: null,
       appointmentday: 0,
-      timeline: ''
+      timeline: '',
+      icons:{
+        'bgColor':'#371469',//背景补色
+        'back':'#480f99',//返回按钮背景色值
+        'rule':'#b73bd0',//规则按钮背景色值
+        'bg':'/group1/M00/43/2C/CmcEHV6DGaeAetxNAAK-_28SSqQ535.jpg',//背景图
+        'tab00':'/group1/M00/43/2B/CmcEHV6CqoWAIe6YAABBLN7sUvY485.png',//第一个TAB未选中
+        'tab11':'/group1/M00/43/2B/CmcEHV6CqseAB6SRAABgyKFugys745.png',//第二个TAB选中
+        'tab01':'/group1/M00/43/2B/CmcEHV6CqquAOmDBAABaHb0X8rM751.png',//第一个TAB选中
+        'tab10':'/group1/M00/43/2B/CmcEHV6CqrmAQxLXAABF7QhQBno932.png',//第二个TAB未选中
+        'bonusPre':'/group1/M00/42/47/CmcEHF6B6UqAMFBdAABQBQTtB3Q998.png',//预热按钮
+        'bonusHot':'/group1/M00/42/47/CmcEHF6B6TaAQayQAABPaNfX34k322.png',//活动中按钮
+        'bonusDivide':'/group1/M00/42/47/CmcEHF6B6R6AMVs6AABPyldAp-4691.png',//瓜分按钮
+        'divideRecord':'/group1/M00/42/47/CmcEHF6B6XuAPNq7AAAt8i88H6E305.png',//瓜分记录
+        'qianyuanbonus':'/group1/M00/42/47/CmcEHF6B6aaAWvPnAA0QcIc12vU001.gif',//千元红包GIF
+        'qianyuanbonusopen':'/group1/M00/42/47/CmcEHF6B6beAQlpzAAx9Dg0NFfE280.gif',//千元红包开启GIF
+        'divideyure':'/group1/M00/42/47/CmcEHF6B6Y-AXg6iAAlEzKqRyt0337.png',//终极大奖预热
+        'divideopenprize':'/group1/M00/42/47/CmcEHF6B6V2AN15nAAqEFFxeVqc254.gif'//终极奖池开启GIF
+      }
     }
   },
   async mounted () {
@@ -150,7 +160,7 @@ export default {
     await this.myDetails()
 
     // 后端告知是否弹框
-    if (this.detailData.applyPopup) {
+    if (this.detailData&&this.detailData.applyPopup) {
       this.flag = 3
     }
     await this.bonusListClick()
@@ -265,6 +275,7 @@ export default {
         const res = await this.fetch('/ops/api/jackpot/getActivityInfo')
         if (res.data.code == 200 && res.data.data) {
           this.detailData = res.data.data
+          document.body.style.background=this.detailData&&this.detailData.icons&&this.detailData.icons.bgColor||this.icons.bgColor
           // 千元红包结束，终极大奖还有资格瓜分 默认选中终极大奖
           // if (this.detailData.normalState == 6 && (this.detailData.ultimateState == 3||this.detailData.ultimateState == 2)) {
           //   this.tabIndex = 1
@@ -372,6 +383,14 @@ export default {
       if (state == 3) {
         this.divideBonus(1)
       }
+    },
+    getImgUrl(typename){
+      let url=this.detailData&&this.detailData.icons&&this.detailData.icons[typename]||this.icons[typename]
+      if (url && !url.includes('http')) {
+        return '//file.beeplaying.com' + url
+      } else {
+        return url
+      }
     }
   },
   components: {
@@ -465,56 +484,15 @@ export default {
     position: relative;
     z-index: 1;
     img {
-      /*width: 1.33rem;*/
-      height: 0.38rem;
+      width: 100%;
+      height: 100%;
       position: absolute;
       left: 50%;
       top: 40%;
       transform: translate(-50%, -40%);
     }
-    &:nth-child(1) {
-      background: url("./images/tip_btn_blue.png");
-      background-size: 100% 100%;
-    }
-    &:nth-child(2) {
-      background: url("./images/tip_btn_red.png");
-      background-size: 100% 100%;
-    }
   }
 }
-
-.display1 {
-  position: absolute;
-  top: 2.5rem;
-  height: 1.33rem;
-  left: 0.54rem;
-  right: 0.54rem;
-  display: flex;
-  justify-content: space-around;
-  .item {
-    width: 3.12rem;
-    height: 1.33rem;
-    position: relative;
-    z-index: 1;
-    img {
-      /*width: 1.33rem;*/
-      height: 0.38rem;
-      position: absolute;
-      left: 50%;
-      top: 40%;
-      transform: translate(-50%, -40%);
-    }
-    &:nth-child(1) {
-      background: url("./images/tip_btn_red.png");
-      background-size: 100% 100%;
-    }
-    &:nth-child(2) {
-      background: url("./images/tip_btn_blue.png");
-      background-size: 100% 100%;
-    }
-  }
-}
-
 .gif {
   position: absolute;
   top: 3.6rem;
@@ -573,8 +551,6 @@ export default {
   right: 0;
   width: 1.6rem;
   height: 0.62rem;
-  background: url("./images/record_icon.png");
-  background-size: 100% 100%;
   z-index: 2;
 }
 
