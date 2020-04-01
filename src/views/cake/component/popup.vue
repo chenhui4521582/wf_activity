@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { GetMallProductList, UseMarkup } from '../services/api'
+import { UseMarkup } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -78,12 +78,15 @@ export default {
     },
     divideInfo: {
       type: Object,
-      default: () => { }
+      default: () => ({})
+    },
+    productList: {
+      type: Array,
+      default: () => ([])
     }
   },
   data () {
     return {
-      productList: [],
       awardInfo: {}
     }
   },
@@ -115,10 +118,6 @@ export default {
   mounted () {
   },
   methods: {
-    async getMallProductList () {
-      const res = await GetMallProductList()
-      this.productList = _get(res, 'data.mallBizConfigs', [])
-    },
     async useMarkup () {
       const res = await UseMarkup()
       let code = _get(res, 'code', 0)
@@ -177,15 +176,6 @@ export default {
         }
       }
       this.$emit('on-close')
-    }
-  },
-  watch: {
-    type: {
-      handler (val, oldVal) {
-        if (val === 0) {
-          this.getMallProductList()
-        }
-      }
     }
   }
 }

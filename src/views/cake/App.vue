@@ -80,15 +80,15 @@
       </article>
     </template>
     <rank v-if="isShowRank" @on-back="closeRank"></rank>
-    <pop-up v-show="isShowPopUp" :divideInfo="divideInfo" :type="popType" @change-type="changeType"
-      @on-close="closePopup">
+    <pop-up v-show="isShowPopUp" :productList="productList" :divideInfo="divideInfo" :type="popType"
+      @change-type="changeType" @on-close="closePopup">
     </pop-up>
   </main>
 </template>
 
 <script>
 import utils from '@/common/js/utils'
-import { ActivityInfo, Divide } from './services/api'
+import { ActivityInfo, Divide, GetMallProductList } from './services/api'
 import _get from 'lodash.get'
 import Rank from './component/rank'
 import PopUp from './component/popup'
@@ -102,6 +102,7 @@ export default {
     return {
       activityInfo: {},
       configList: [],
+      productList: [],
       isShowRank: false,
       isShowPopUp: false,
       popType: null,
@@ -119,7 +120,8 @@ export default {
       alreadyOpenedCakes: [],
       openCakeLevelArr: [],
       isNeedOpen: false,
-      inAnimation: false
+      inAnimation: false,
+      buyFlag: true
     }
   },
   computed: {
@@ -226,6 +228,7 @@ export default {
         this.showPopup(2)
       }
       this.configList = configList
+      this.getMallProductList()
     },
     async divide () {
       this.inAnimation = true
@@ -273,6 +276,12 @@ export default {
           duration: 3000
         })
       }
+    },
+    async getMallProductList () {
+      const res = await GetMallProductList()
+      this.productList = _get(res, 'data.mallBizConfigs', [])
+      let buyFlagArr = this.productList.filter(item => item.buyFlag)
+      this.buyFlag = !!buyFlagArr.length
     },
     showRank () {
       if (this.inAnimation) return
@@ -331,7 +340,11 @@ export default {
           if (this.actStateInfo.state === 0 && this.actStateInfo.btn === '任意付费参与') {
             GLOBALS.marchSetsPoint('A_H5PT0253003018') // H5平台-蛋糕瓜分活动-任意付费按钮点击
           }
-          this.showPopup(0)
+          if (this.buyFlag) {
+            this.showPopup(0)
+          } else {
+            location.href = '//wap.beeplaying.com/xmWap/#/payment/'
+          }
           break
       }
     },
