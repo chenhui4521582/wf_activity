@@ -62,12 +62,12 @@
       title="下载方式"
     >
       <div class="modal-container">
-        下载链接：<br>
-        <span
+        下载链接：<br>  
+        <p
           v-clipboard:copy="downLoadUrl"
           v-clipboard:success="onCopy"
           v-clipboard:error="onError"
-        >{{downLoadUrl}}</span><br>
+        >{{downLoadUrl}}</p>
         复制链接， <br>
         在浏览器打开即可下载啦~
       </div>
@@ -516,7 +516,9 @@ li {
 .modal-container {
   padding: .37rem 0 .33rem;
   font-size: .24rem;
-  span {
+  p {
+    margin: .1rem 0 .2rem;
+    font-size: .28rem;
     color: #FF7800;
   }
 }
