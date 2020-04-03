@@ -47,30 +47,51 @@
                 <horn :horn-list="hornList"></horn>
               </div>
             </div>
-            <div class="pay_btn" :class="{gray:actInfoData.lottery==2}" @click="preheat(lottery)">
-              <template v-if="actInfoData.lottery==0">
-                支付{{this.currentAwardType}}元抽奖<br><i
-                  v-if="actInfoData.lotteryNum>=200">{{actInfoData.lotteryNum}}人已抽奖</i>
-              </template>
-              <template v-else-if="actInfoData.lottery==1">
-                立即开奖
-              </template>
-              <template v-else>
-                已参与
-              </template>
-            </div>
+            <template v-if="currentAwardType===10">
+              <div class="pay_btn" :class="{gray:actInfoData.seniorLottery==2}"
+                @click="preheat(lottery('seniorLottery'))">
+                <template v-if="actInfoData.seniorLottery === 0">
+                  支付{{currentAwardType}}元抽奖<br><i
+                    v-if="actInfoData.seniorLotteryNum>=200">{{actInfoData.seniorLotteryNum}}人已抽奖</i>
+                </template>
+                <template v-else-if="actInfoData.seniorLottery==1">
+                  立即开奖
+                </template>
+                <template v-else>
+                  已参与
+                </template>
+              </div>
+            </template>
+            <template v-else>
+              <div class="pay_btn" :class="{gray:actInfoData.juniorLottery==2}"
+                @click="preheat(lottery('juniorLottery'))">
+                <template v-if="actInfoData.juniorLottery === 0">
+                  支付{{currentAwardType}}元抽奖<br><i
+                    v-if="actInfoData.juniorLotteryNum>=200">{{actInfoData.juniorLotteryNum}}人已抽奖</i>
+                </template>
+                <template v-else-if="actInfoData.juniorLottery==1">
+                  立即开奖
+                </template>
+                <template v-else>
+                  已参与
+                </template>
+              </div>
+            </template>
           </div>
         </div>
       </div>
-      <div class="exchangeLeaf">
+      <div class="exchangeLeaf" v-if="actInfoData.leafConvertConfig">
         <div class="title"></div>
+        <div class="bill_wrapper">
+          <div>当前话费券：{{actInfoData.hfqNum}}</div>
+          <p @click="showPop(8)">提升限购次数></p>
+        </div>
         <div class="list">
-          <div class="list-item" v-for="item in actInfoData.leafConvertConfigList"
-            @click="preheat(()=>exchangeLeaf(item))">
+          <div class="list-item" @click="preheat(()=>exchangeLeaf(item))">
             <div class="left">
               <div class="item">
                 <img src="./imgs/hfq.png" alt="">
-                <div>{{item.hfqName}}</div>
+                <div>{{actInfoData.leafConvertConfig.hfqName}}</div>
               </div>
               <div class="item">
                 <div class="shape"></div>
@@ -78,12 +99,15 @@
               </div>
               <div class="item">
                 <img src="./imgs/packagepic.png" alt="">
-                <div>{{item.leafs}}金叶子</div>
+                <div>{{actInfoData.leafConvertConfig.leafs}}金叶子</div>
               </div>
             </div>
-            <div class="right" :class="{gray:item.purchased>=item.limit}">
+            <div class="right"
+              :class="{gray:actInfoData.leafConvertConfig.purchased>=actInfoData.leafConvertConfig.limit}">
               <div>立即<br>兑换</div>
-              <div>限购 {{item.purchased>item.limit?item.limit:item.purchased}}/{{item.limit}}</div>
+              <div>限购
+                {{actInfoData.leafConvertConfig.purchased>actInfoData.leafConvertConfig.limit?actInfoData.leafConvertConfig.limit:actInfoData.leafConvertConfig.purchased}}/{{actInfoData.leafConvertConfig.limit}}
+              </div>
             </div>
           </div>
         </div>
@@ -118,8 +142,9 @@
       <profit :is-full="true" @showPop="showPop" />
     </template>
     <!--popType-->
-    <com-pop :pop-type="popType" :award-data="awardData" ref="comPop" :countTime="countTime"
-      :leafItem="leafItem" @exchange="exchange" @opengame="showPop(5)" :actInfoData="actInfoData">
+    <com-pop :pop-type="popType" :award-data="awardData" :package-info="packageInfo" ref="comPop"
+      :countTime="countTime" :leafItem="leafItem" @exchange="exchange" @opengame="showPop(5)"
+      :actInfoData="actInfoData">
     </com-pop>
     <loading v-if="showLoading"></loading>
   </div>
@@ -134,7 +159,7 @@ import {
   exchangeLeaf,
   taskGain,
   rankList,
-  yiyuanlottery,
+  levelLottery,
   getPackages
 } from './utils/api'
 import Loading from "../../components/common/loading"
@@ -279,7 +304,7 @@ export default {
     async getPackageData () {
       const { code, data } = await getPackages(235)
       if (code === 200) {
-        this.packageInfo = data && data.mallBizConfigs && data.mallBizConfigs.length > 0 && data.mallBizConfigs[0]
+        this.packageInfo = data && data.mallBizConfigs
       }
     },
     //兑换叶子
@@ -364,18 +389,22 @@ export default {
       }
     },
     //一元抽奖 购买和抽奖
-    async lottery () {
-      if (this.actInfoData.lottery == 0) {
+    async lottery (lotteryType) {
+      if (this.actInfoData[lotteryType] == 0) {
         localStorage.setItem('originDeffer', window.location.href)
         GLOBALS.marchSetsPoint('A_H5PT0252002983')   // 点击任意礼包
-        localStorage.setItem('JDD_PARAM', JSON.stringify(this.packageInfo))
-        localStorage.setItem('payment', JSON.stringify(this.packageInfo))
-        location.href =
-          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        let packageInfo = this.packageInfo.filter(item => item.price === this.currentAwardType)
+        if (packageInfo && packageInfo.length > 0) {
+          packageInfo = packageInfo[0]
+          localStorage.setItem('JDD_PARAM', JSON.stringify(packageInfo))
+          localStorage.setItem('payment', JSON.stringify(packageInfo))
+          location.href =
+            'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        }
       } else if (this.actInfoData.lottery == 1) {
         GLOBALS.marchSetsPoint('A_H5PT0252002984')
         this.showLoading = true
-        let { code, data, message } = await yiyuanlottery()
+        let { code, data, message } = await levelLottery({ level: this.currentAwardType })
         if (code == 200) {
           this.awardData = {
             awardsImg: data.awardsImg,
@@ -550,9 +579,23 @@ export default {
       margin: 0.2rem auto 0;
       &.bg-1 {
         background-image: url("./imgs/bg-1.png");
+        .pay_btn {
+          background-image: url("./imgs/btnlight.png");
+          color: #fff8ef;
+          i {
+            color: #ffdb79;
+          }
+        }
       }
       &.bg-10 {
         background-image: url("./imgs/bg-10.png");
+        .pay_btn {
+          background-image: url("./imgs/btnyellow.png");
+          color: #a05103;
+          i {
+            color: #ff4f78;
+          }
+        }
       }
       .petal_bg {
         position: absolute;
@@ -660,11 +703,9 @@ export default {
           bottom: 0.42rem;
           width: 2.6rem;
           height: 0.71rem;
-          background: url("./imgs/btnlight.png");
           background-size: 100% 100%;
           font-size: 0.3rem;
           font-weight: 400;
-          color: rgba(255, 248, 239, 1);
           padding: 0.04rem 0 0.08rem;
           box-sizing: border-box;
           display: flex;
@@ -675,7 +716,6 @@ export default {
             margin-top: 0.02rem;
             font-size: 0.18rem;
             font-weight: bold;
-            color: rgba(255, 219, 121, 1);
           }
           &.gray {
             background: url("./imgs/btngray.png");
@@ -693,6 +733,26 @@ export default {
       background: url("./imgs/exchangetitle.png");
       background-size: 100% 100%;
       margin: auto;
+    }
+    .bill_wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ff635e;
+      width: 6.48rem;
+      height: 0.46rem;
+      background: rgba(216, 192, 161, 1);
+      box-shadow: 0 0.02rem 0px 0px rgba(255, 243, 226, 0.53),
+        0px 0.02rem 0.02rem 0px rgba(184, 150, 107, 0.9);
+      border-radius: 0.23rem;
+      margin: 0.18rem auto;
+      padding: 0 0.2rem 0 0.26rem;
+      box-sizing: border-box;
+      font-weight: bold;
+      font-size: 0.26rem;
+      p {
+        color: #26944c;
+      }
     }
     .list {
       .list-item {

@@ -5,7 +5,7 @@ import $axios from '../http'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/activityInfo')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/activityInfo')
   return data
 }
 /**
@@ -14,7 +14,7 @@ export const activityInfo = async () => {
  */
 
 export const rankList = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/rankList')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/rankList')
   return data
 }
 /**
@@ -22,7 +22,7 @@ export const rankList = async () => {
  * @return {Object} data
  */
 export const gameReceive = async (sort) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/game-receive/' + sort)
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/game-receive/' + sort)
   return data
 }
 /**
@@ -30,7 +30,7 @@ export const gameReceive = async (sort) => {
  * @return {Object} data
  */
 export const taskProgressInfo = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/activity-detail-info')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/activity-detail-info')
   return data
 }
 /**
@@ -38,7 +38,7 @@ export const taskProgressInfo = async () => {
  * @return {Object} data
  */
 export const taskReceive = async (params) => {
-  const {data} = await $axios.post("//petcat-api.beeplaying.com/ops/api/kill-virus/task-receive/" + params.sort)
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/task-receive/' + params.sort)
   return data
 }
 /**
@@ -47,7 +47,7 @@ export const taskReceive = async (params) => {
  */
 
 export const gameReceiveRecord = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-coupon-awards')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-coupon-awards')
   return data
 }
 
@@ -57,7 +57,7 @@ export const gameReceiveRecord = async () => {
  */
 
 export const userAwardsTips = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-awards-tips')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-awards-tips')
   return data
 }
 
@@ -67,7 +67,7 @@ export const userAwardsTips = async () => {
  */
 
 export const couponAwardReceive = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/coupon-award-receive')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/coupon-award-receive')
   return data
 }
 /**
@@ -76,7 +76,7 @@ export const couponAwardReceive = async () => {
  */
 
 export const getNoticeList = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/notice-list')
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/notice-list')
   return data
 }
 
@@ -86,7 +86,7 @@ export const getNoticeList = async () => {
  */
 
 export const exchangeLeaf = async (level) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/leafConvert/' + level)
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/leafConvert/' + level)
   return data
 }
 /**
@@ -94,15 +94,15 @@ export const exchangeLeaf = async (level) => {
  * @return {Object} data
  */
 export const taskGain = async (id) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/task/' + id)
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/task/' + id)
   return data
 }
 /**
- * @description 一元抽奖
+ * @description 付费抽奖
  * @return {Object} data
  */
-export const yiyuanlottery = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/lottery')
+export const levelLottery = async (params) => {
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/lottery', params)
   return data
 }
 
@@ -111,6 +111,6 @@ export const yiyuanlottery = async () => {
  * @return {Object} data
  */
 export const getPackages = async (flag) => {
-  const {data} = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/' + flag)
+  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/' + flag)
   return data
 }
