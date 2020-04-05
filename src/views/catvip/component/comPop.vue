@@ -15,7 +15,7 @@
               恭喜获得
             </div>
             <div class="img" v-else-if="[4,6].includes(popType)">
-              {{actInfoData.state===1?actInfoData.catStatus?'':actInfoData.catLevel>20?'':'':'温馨提示'}}
+              {{actInfoData.state===1?actInfoData.catStatus?actInfoData.catLevel>20?'温馨提示':'等级不足':'未领取猫':'温馨提示'}}
             </div>
             <div class="img" v-else-if="popType==5">
               大神们都在玩
@@ -25,6 +25,12 @@
             </div>
             <div class="img" v-else-if="popType==8">
               限购次数说明
+            </div>
+            <div class="img" v-else-if="popType==9">
+              直升礼包
+            </div>
+            <div class="img" v-else-if="popType==10">
+              等级提升
             </div>
           </div>
           <div class="main">
@@ -54,11 +60,22 @@
                 </template>
                 <template v-else-if="actInfoData.state==1">
                   <template v-if="actInfoData.catStatus">
-                    当前未满足参与条件，招财猫等级达<i>Lv.20</i>即可立即参与，快去喂食升级吧
-                    <div class="btnred" @click="gotogame({id:0,url:'/petcat'},2)">喂食升级</div>
+                    <p>
+                      招财猫等级达Lv.20 <br> 即可参与。
+                    </p>
+                    <p class="sub-desc">
+                      *升级至Lv.20可解锁2项特权
+                    </p>
+                    <div class="btnred" @click="buyGiftClick()">等级直升</div>
+                    <div class="btnline" @click="gotogame({id:0,url:'/petcat'},2)">喂食升级</div>
                   </template>
                   <template v-else>
-                    当前您不可参与会员日活动哦，领取招财猫并升级至<i>Lv.20</i>，即可立即参加
+                    <p>
+                      领取猫并升级到Lv.20 <br> 即可参与
+                    </p>
+                    <p class="sub-desc">
+                      *领猫升等级，可获取多种特权
+                    </p>
                     <div class="btnred" @click="gotogame({id:0,url:'/petcat'},1)">去领养猫</div>
                   </template>
                 </template>
@@ -118,6 +135,35 @@
                   <p>Lv.40及以上，限购3次</p>
                 </div>
                 <div class="btnred" @click="gotogame({id:0,url:'/petcat'},3)">喂食升级</div>
+              </template>
+              <!-- 直升礼包 -->
+              <template v-else-if="popType==9">
+                <div class="desc">
+                  （当前猫等级：Lv.{{actInfoData.catLevel}}）
+                  <div class="sub-desc">*升级至Lv.20可解锁2项特权</div>
+                </div>
+                <ul class="gift-wrapper">
+                  <li v-for="(item,index) in packageList" @click="buyGift(item)">
+                    <div class="tag">礼包{{index===0?'一':'二'}}</div>
+                    <div class="img"><img :src="item.icon&&item.productIcon | filter" alt=""></div>
+                    <div>
+                      <p>{{item.content}}</p>
+                      <div class="btn">{{item.price}}元购买</div>
+                    </div>
+                  </li>
+                </ul>
+              </template>
+              <!-- 等级提升 -->
+              <template v-else-if="popType==10">
+                <div class="cat-img">
+                  <img src="../imgs/cat-img.png" alt="">
+                </div>
+                <p>
+                  招财猫已升级至Lv.20，<br>
+                  可参加会员日
+                </p>
+                <div class="btnred" @click="close">我知道了</div>
+                <p class="sub-desc">10000金叶子已发放，可在“我的”查看</p>
               </template>
             </div>
             <div class="footer"></div>
@@ -194,16 +240,12 @@ export default {
       switch (awardType) {
         case 'jyz':
           return '金叶子'
-          break
         case 'yg':
           return '鱼干'
-          break
         case 'jdk':
           return '京东券'
-          break
         case 'hfq':
           return '话费券'
-          break
       }
     },
     async showPop () {
@@ -239,6 +281,16 @@ export default {
     exchange (item) {
       this.isShowPop = false
       this.$emit('exchange', item)
+    },
+    buyGiftClick () {
+      this.isShowPop = false
+      this.$emit('buy-gift')
+    },
+    buyGift (item) {
+      localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+      localStorage.setItem('payment', JSON.stringify(item))
+      location.href =
+        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     }
   },
   watch: {
@@ -304,9 +356,10 @@ export default {
         color: #fff;
         position: relative;
         top: -0.1rem;
-        padding: 0.3rem 0.4rem 0;
+        padding: 0.3rem 0.4rem 0.01rem;
         box-sizing: border-box;
         .container_compop {
+          .btnline,
           .btnred {
             width: 3rem;
             height: 0.9rem;
@@ -323,6 +376,13 @@ export default {
             align-items: center;
             margin: 0.4rem auto 0;
             font-weight: bold;
+          }
+          .btnline {
+            background: none;
+            border: 0.02rem #fdb106 solid;
+            border-radius: 0.45rem;
+            color: #fdb106;
+            margin-bottom: 0.1rem;
           }
           &.flag7 {
             color: rgba(196, 94, 19, 1);
@@ -379,8 +439,20 @@ export default {
             i {
               color: #f8212c;
             }
-            line-height: 0.5rem;
             text-align: center;
+            p {
+              line-height: 0.5rem;
+              margin-top: 0.4rem;
+            }
+            .sub-desc {
+              font-size: 0.24rem;
+              font-weight: 500;
+              color: #db986f;
+            }
+            .btnred,
+            .btnline {
+              margin-top: 0.2rem;
+            }
           }
           &.flag5 {
             .gamelist {
@@ -441,6 +513,103 @@ export default {
             text-align: center;
             p {
               line-height: 0.4rem;
+            }
+          }
+          &.flag9 {
+            text-align: center;
+            .desc {
+              color: #c45e13;
+              font-size: 0.3rem;
+              line-height: 0.48rem;
+              .sub-desc {
+                color: #db986f;
+                font-size: 0.24rem;
+              }
+            }
+            ul {
+              text-align: left;
+              li {
+                margin-top: 0.16rem;
+                background: #ffcfa1;
+                border-radius: 0.2rem;
+                height: 1.64rem;
+                display: flex;
+                align-items: center;
+                align-content: center;
+                padding: 0 0.45rem 0 0.4rem;
+                color: #bb6f28;
+                font-size: 0.3rem;
+                font-weight: bold;
+                position: relative;
+                .img {
+                  position: relative;
+                  min-width: 1.28rem;
+                  max-width: 1.28rem;
+                  height: 1.38rem;
+                  margin-right: 0.28rem;
+                  img {
+                    width: 100%;
+                    height: 100%;
+                  }
+                }
+                .tag {
+                  position: absolute;
+                  background: #05a4db;
+                  border-radius: 0.2rem 0 0.2rem 0;
+                  height: 0.3rem;
+                  line-height: 0.3rem;
+                  left: 0;
+                  top: 0;
+                  padding: 0 0.1rem;
+                  color: #fff;
+                  font-size: 0.18rem;
+                }
+                .btn {
+                  margin-top: 0.28rem;
+                  background: #ff5253;
+                  width: 1.38rem;
+                  height: 0.44rem;
+                  border-radius: 0.22rem;
+                  text-align: center;
+                  font-size: 0.24rem;
+                  font-weight: bold;
+                  color: #fff;
+                  line-height: 0.44rem;
+                }
+              }
+            }
+          }
+          &.flag10 {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            .cat-img {
+              width: 2.18rem;
+              height: 1.9rem;
+              font-size: 0;
+              margin: 0 auto 0.1rem;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            p {
+              font-size: 0.3rem;
+              color: #c45e13;
+              font-weight: bold;
+              line-height: 0.48rem;
+            }
+            .btnred {
+              margin-top: 0.2rem;
+              margin-bottom: 0.2rem;
+            }
+            .sub-desc {
+              position: absolute;
+              bottom: -0.6rem;
+              width: 100%;
+              color: #d3844d;
+              font-size: 0.24rem;
+              font-weight: 500;
             }
           }
         }

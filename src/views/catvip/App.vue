@@ -8,6 +8,11 @@
             <div class="back" @click="back">返回</div>
             <div class="rule" @click="showPop(7)">规则</div>
           </div>
+          <div class="gift" @click="showPop(9)"
+            v-if="actInfoData.catStatus&&actInfoData.catLevel<20">
+            <img src="./imgs/gift-icon.png" alt="">
+            <span>升等级</span>
+          </div>
         </div>
         <div class="catvip_countdown" v-if="actInfoData.state==1">
           剩余
@@ -144,7 +149,7 @@
     <!--popType-->
     <com-pop :pop-type="popType" :award-data="awardData" :package-info="packageInfo" ref="comPop"
       :countTime="countTime" :leafItem="leafItem" @exchange="exchange" @opengame="showPop(5)"
-      :actInfoData="actInfoData">
+      @buy-gift="showPop(9)" :actInfoData="actInfoData">
     </com-pop>
     <loading v-if="showLoading"></loading>
   </div>
@@ -272,12 +277,16 @@ export default {
         if (data.state == 1 || data.state == 0) {
           this.isEnd = false
           this.rulesExplain = data.beginDate + '~' + data.endDate
+          this.currentAwardType = data.lastRechargeAmount ? data.lastRechargeAmount : data.rechargeAmount > 1000 ? 10 : 1
           this.countDown(data.countdown)
           flag && data.state == 1 && this.getHornList()
           flag && this.preheat(() => {
             this.getRankList()
-            this.getPackageData()
           }, 1000)
+          if (data.popup) {
+            this.showPop(10)
+          }
+          this.getPackageData()
         } else {
           this.isEnd = true
         }
@@ -544,6 +553,28 @@ export default {
             color: rgba(255, 255, 255, 1);
             background: rgba(145, 116, 252, 1);
           }
+        }
+      }
+      .gift {
+        width: 0.54rem;
+        height: 1.9rem;
+        color: #fff;
+        font-size: 0;
+        background: #ff635e;
+        border-radius: 0.2rem 0 0 0.2rem;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        text-align: center;
+        img {
+          width: 0.42rem;
+          height: 0.34rem;
+          margin-bottom: 0.1rem;
+        }
+        span {
+          font-size: 0.36rem;
         }
       }
     }
