@@ -32,20 +32,30 @@
       <span class="icon"></span>
       <span>{{countdownTime}}开始夺宝</span>
     </div>  
-    <div class="goods-name">
-      <div class="name">
-        奖品：{{details.title}}
+    <div class="goods-desc">
+      <div class="lottery-num">
+        <span>{{details.cardAmount}}</span>
+        话费券/次
       </div>
-      <div class="purchased">
-        已有<span>{{details.participantsNumber || 0}}</span>人参与此次夺宝
+      <div class="goods-name">
+        <div class="name">
+          奖品：{{details.title}}
+        </div>
+        <div class="purchased">
+          已有<span>{{details.participantsNumber || 0}}</span>人参与此次夺宝
+        </div>
       </div>
     </div>
+
     <Modal title="规则说明" v-model="ruleModal" type="2" :saveText="'知道了'" :closeButtonShow=false @on-save="hideRule">
       <div class="center">
-        为了感谢广大玩家一直以来对我们的支持与厚爱，特推出福利夺宝活动。<br>
-        1.在参与活动期间，玩家可以消耗夺宝卡参与活动，每次参与获得一个夺宝码，每期夺宝码从100001起递增，每个用户每期可参与次数详见场次规则描述。<br>
-        2.达到开奖条件后，系统随机抽取一个号码作为幸运码，持有该幸运码的用户获得当期奖品。<br>
-        3.若该商品到达开奖时间后仍未达到最低开奖人数，则该场次取消，退还本期所参与的夺宝卡。
+        1. 天天夺宝是为感谢广大玩家一直以来对我们的支持和厚爱推出的回馈送福利活动。<br>
+        2. 夺宝参与方式：使用话费券换取“夺宝码”（在夺宝记录中查看）。每期夺宝码从100001起递增，每投入1次，号码递增1位，达到开奖条件后，系统会从已产生的夺宝码中随机抽取1给成为本期“幸运码”，持有与幸运码匹配号码用户获得当期奖励！投入越多，中奖机会越大哟！<br>
+        3. 夺宝开奖方式：<br>
+        （1）【满人次开奖】每期达到指定次数即可开奖；<br>
+        （2）【定时开奖】达到指定的开奖时间即可开奖。需注意：若本期未达到最低的夺宝次数，则本期奖品流拍，已投入的话费券将自动返还。<br>
+        温馨提示：【满人次开奖】或【定时开奖】只要达到其中一个开奖条件就会立即开奖。<br>
+        4. 平台保证夺宝抽奖绝对公平公正。
       </div>
     </Modal>
   </div>
@@ -225,25 +235,46 @@ export default {
       }
     }
   }
-  .goods-name {
-    padding: 0 .2rem;
+  .goods-desc {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: .9rem;
-    font-size: .24rem;
-    background: #fff;
-    .name {
-      font-size: .32rem;
-      color: #000000;
-      font-weight:bold;
-    }
-    .purchased {
-      font-size: .24rem;
-      color: #888888;
-      line-height: 1.2;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 .2rem;
+    height: 1.4rem;
+    .lottery-num {
+      margin-bottom: .15rem;
+      font-size: .2rem;
+      color: #FF4141;
+      display: flex;
+      align-items: flex-end;
       span {
-        color: #FF4141;
+        margin-right: .1rem;
+        font-size: .42rem;
+        font-weight: 800;
+        line-height: .4rem;
+      }
+      em {
+        line-height: .8rem;
+      }
+    }
+    .goods-name {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      font-size: .24rem;
+      background: #fff;
+      .name {
+        font-size: .32rem;
+        color: #000000;
+        font-weight:bold;
+      }
+      .purchased {
+        font-size: .24rem;
+        color: #888888;
+        line-height: 1.2;
+        span {
+          color: #FF4141;
+        }
       }
     }
   }

@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="explain">
-      本期夺宝每次参与需{{details.cardAmount}}夺宝卡，每人最多参与{{details.currentUserInfo.allowBuyNumber}}次
+      本期夺宝每次参与需{{details.cardAmount}}话费卷，每人最多参与{{details.currentUserInfo.allowBuyNumber}}次
     </div>
     <div class="people" v-if="status == 0">
       您已经参与：<span>{{bettingCodesLength}}</span>次

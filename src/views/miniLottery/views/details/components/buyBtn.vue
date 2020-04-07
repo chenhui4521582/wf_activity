@@ -12,10 +12,10 @@
       </div>
     </div>
     <div class="buy" @click="submit" v-if="status == 0">
-      <P><span>{{details.cardAmount * inputValue}}  </span>夺宝卡</P>
-      <P>去夺宝</P>
+      <P><span>{{details.cardAmount * inputValue}}  </span>话费卷</P>
+      <P>参与夺宝</P>
     </div>
-    <div class="buy disable" v-if="status == 3">去夺宝</div>
+    <div class="buy disable" v-if="status == 3">参与夺宝</div>
     <Modal v-model="modal.show" 
       :title="modal.title"  
       :type="2" 
@@ -95,12 +95,7 @@ export default {
     hide() {
       let {status} = this.modal
       if(status == 1) {
-        let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
-        if(['100069','100070','100073','100075','100080','100055','100068','100045'].includes(APP_CHANNEL)) {
-          window.location.href = `https://wap.beeplaying.com/xmWap/#/mall/details?accountBalance=0.2&phyAwardsType=46&phyAwardsId=836&name=50%E5%A4%BA%E5%AE%9D%E5%8D%A1%E5%88%B8&channel=${localStorage.getItem('APP_CHANNEL')}`
-        }else {
-          window.location.href = `https://wap.beeplaying.com/activities/billshop.html#/detail?from=bdWap&source=bdWap&phyAwardsType=46&phyAwardsId=836&showOut=1&channel=${localStorage.getItem('APP_CHANNEL')}`
-        }
+        window.location.href = `https://wap.beeplaying.com/xmWap/#/task?channel=${localStorage.getItem('APP_CHANNEL')}`
         GLOBALS.marchSetsPoint('A_H5PT0202002100', {
           task_id: this.details.currentPeriodStatus,
           task_name: this.details.currentPeriodStatus
@@ -153,9 +148,9 @@ export default {
           this.modal = {
             show: true,
             status: 1,
-            message: '您的夺宝卡不足',
+            message: '您的话费卷不足',
             title: '温馨提示',
-            saveText: '去兑换夺宝卡',
+            saveText: '去赚话费',
             closeButtonShow: true
           }
           GLOBALS.marchSetsPoint('A_H5PT0202002099', {
