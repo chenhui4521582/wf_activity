@@ -334,10 +334,10 @@ export default {
       }
     },
     //确认兑换
-    async exchange (item) {//exchangeLeaf
+    async exchange () {//exchangeLeaf
       GLOBALS.marchSetsPoint('A_H5PT0252002989')
       this.showLoading = true
-      let { code, data, message } = await exchangeLeaf(item.level)
+      let { code, data, message } = await exchangeLeaf()
       if (code == 200) {
         this.awardData = {
           type: 'jyz',
@@ -412,7 +412,7 @@ export default {
           location.href =
             'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
         }
-      } else if (this.actInfoData.lottery == 1) {
+      } else if (this.actInfoData[lotteryType] == 1) {
         GLOBALS.marchSetsPoint('A_H5PT0252002984')
         this.showLoading = true
         let { code, data, message } = await levelLottery({ level: this.currentAwardType })
