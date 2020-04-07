@@ -3,7 +3,6 @@
     <!-- <Header title="夺宝活动"/> -->
     <div class="bg">
       <img src="./img/bg1.png" alt="">
-      <img src="./img/bg2.png" alt="">
     </div>
     <div class="container">
       <div class="btns">
@@ -27,9 +26,13 @@
           <img src="./img/rule-title-1.png" alt="">
         </div>
         <div class="center">
-          参与方式：<br>
-          点击夺宝卡旁边+，使用话费券购买夺宝卡，打开感兴趣的奖品，点击底部“去夺宝”，等待开奖！
-          祝大家好运气！
+          活动时间：2020.04.10 00:00:00-2020.04.17 23:59:59<br>
+          参与方式：消耗话费券换取夺宝码参与夺宝，每日夺宝商品参与次数的上限根据商品不同而不同，详情见夺宝商品详情页面。<br>
+          话费券和夺宝码换取比例：1话费券=1夺宝码。<br>
+          开奖条件：到达夺宝商品的开奖时间且夺宝商品参与人数满足最低开奖条件。<br>
+          开奖规则：系统随机抽取一个夺宝码作为幸运码，用户拥有的夺宝码中有幸运码的用户即为中奖用户。<br>
+          奖品发放规则：所得奖品将发放至我的资产，可至【我的夺宝记录】查看发放记录。<br>
+          活动解释权归平台所有。
         </div>
       </div>
     </div>
@@ -119,7 +122,7 @@ export default {
 .index {
   min-height: 100vh;
   position: relative;
-  background: #f03e50;
+  background: #fb5a46;
   .bg {
     position: absolute;
     z-index: 1;
@@ -127,9 +130,6 @@ export default {
     img {
       width: 100%;
       vertical-align: top;
-      &:last-child{
-        margin-top: .5rem;
-      }
     }
   }
   .container {

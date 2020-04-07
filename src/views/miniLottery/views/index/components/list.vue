@@ -34,32 +34,34 @@
               <br>
                后即将开始
             </div>
-            <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
+            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费卷夺宝</div>
           </div>
         </li>
         <li v-else :key="index" class="item" @click="goDetail(item)">
           <div class="count-down" v-if="item.underway">
             开奖剩余时间 {{item.countDownTime}}
           </div>
-          <div class="count-down no" v-if="!item.underway">
-            {{item.countDownTime}} 后即将开始
-          </div>
-          <div class="img">
-            <img :src="item.picture | filter" alt="">
-          </div>
-          <div class="title">{{item.title}}</div>
-          <div class="edit">
-            已抢<span>{{item.participantsNumber || 0}}</span>次
-          </div>
-          <div class="progress">
-            <div class="wrap">
-              <div class="bg" :style="{width: countProgress(item)}"></div>
+          <div class="item-wrap">
+            <div class="count-down no" v-if="!item.underway">
+              {{item.countDownTime}} 后即将开始
             </div>
-            <div class="num">
-              {{item.participantsNumber}}/{{item.limitTotalAmount}}
+            <div class="img">
+              <img :src="item.picture | filter" alt="">
             </div>
+            <div class="title">{{item.title}}</div>
+            <div class="edit">
+              已抢<span>{{item.participantsNumber || 0}}</span>次
+            </div>
+            <div class="progress">
+              <div class="wrap">
+                <div class="bg" :style="{width: countProgress(item)}"></div>
+              </div>
+              <div class="num">
+                {{item.participantsNumber}}/{{item.limitTotalAmount}}
+              </div>
+            </div>
+            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费卷夺宝</div>
           </div>
-          <div class="btn" :class="{'no': !item.underway}">立即夺宝</div>
         </li>
       </template>
     </ul>
@@ -170,13 +172,11 @@ export default {
       border-radius: .16rem;
       margin-bottom: .21rem;
       &.hot {
-        
         display: flex;
         justify-content: flex-start;
         padding: .33rem .1rem .26rem;
         width: 100%;
         flex: 1;
-
         .img {
           position: relative;
           flex-shrink: 0;
@@ -266,16 +266,15 @@ export default {
           }
           .btn {
             position: absolute;
-            left: 2.2rem;
+            right: 0;
             bottom: 0;
-            width: 1.4rem;
             height: .56rem;
             line-height: .56rem;
             background: #FF4141;
             text-align: center;
             line-height: .56rem;
             border-radius: .1rem;
-            font-size: .24rem;
+            font-size: .20rem;
             color: #fff;
             &.no {
               background: #C0C0C0;
@@ -285,7 +284,7 @@ export default {
       }
       &.item {
         margin-right: .19rem;
-        padding: .16rem .24rem;
+        padding: .16rem 0;
         width: 3.1rem;
         &:nth-of-type(odd) {
           margin-right: 0;
@@ -300,72 +299,76 @@ export default {
             color: #FF7800;
           }
         }
-        .img {
-          margin: 0 auto .2rem;
-          padding-bottom: .06rem;
-          width: 2.4rem;
-          height: 1.8rem;
-          border-bottom: 1px solid #e8e2e2;
-          text-align: center;
-          img {
-            vertical-align: top;
-            width: 100%;
-            height: 100%;
-          }
-        }
-        .title {
-          margin-bottom: .14rem;
-          font-size: .32rem;
-          color: #404040;
-          font-weight: Bold;
-        }
-        .edit {
-          margin-bottom: .08rem;
-          text-align: left;
-          font-size: .22rem;
-          color: #818181;
-          span {
-            color: #FF4141;
-          }
-        }
-        .progress {
-          margin-bottom: .15rem;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          .wrap {
-            position: relative;
-            overflow: hidden;
-            margin-right: .17rem;
-            width: 1.5rem;
-            height: .16rem;
-            background: #FFFFFF;
-            border-radius: .08rem;
-            .bg {
-              position: absolute;
-              width: 0;
+        .item-wrap {
+          padding: 0 .24rem;
+          .img {
+            margin: 0 auto .2rem;
+            padding-bottom: .06rem;
+            width: 2.4rem;
+            height: 1.8rem;
+            border-bottom: 1px solid #e8e2e2;
+            text-align: center;
+            img {
+              vertical-align: top;
+              width: 100%;
               height: 100%;
-              background: #FF5400
             }
           }
-          .num {
-            font-size: .2rem;
-            color: #818181
+          .title {
+            margin-bottom: .14rem;
+            font-size: .32rem;
+            color: #404040;
+            font-weight: Bold;
           }
-        }
-        .btn {
-          margin: 0 auto;
-          width: 1.4rem;
-          height: .56rem;
-          line-height: .56rem;
-          background: #FF4141;
-          text-align: center;
-          line-height: .56rem;
-          border-radius: .1rem;
-          font-size: .24rem;
-          color: #fff;
-          &.no {
-            background: #C0C0C0;
+          .edit {
+            margin-bottom: .08rem;
+            text-align: left;
+            font-size: .22rem;
+            color: #818181;
+            span {
+              color: #FF4141;
+            }
+          }
+          .progress {
+            margin-bottom: .15rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .wrap {
+              position: relative;
+              overflow: hidden;
+              margin-right: .17rem;
+              width: 1.5rem;
+              height: .16rem;
+              background: #FFFFFF;
+              border-radius: .08rem;
+              .bg {
+                position: absolute;
+                width: 0;
+                height: 100%;
+                background: #FF5400
+              }
+            }
+            .num {
+              font-size: .2rem;
+              color: #818181
+            }
+          }
+          .btn {
+            margin: 0 auto;
+            width: 1.8rem;
+            height: .56rem;
+            line-height: .56rem;
+            background: #FF4141;
+            text-align: center;
+            line-height: .56rem;
+            border-radius: .1rem;
+            font-size: .20rem;
+            color: #fff;
+            white-space: nowrap;
+            &.no {
+              background: #C0C0C0;
+            }
           }
         }
       }
