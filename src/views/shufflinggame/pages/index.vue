@@ -21,7 +21,7 @@
             <div>
               <div class="countdowntime" v-if="countTime&&state!=2">
                 距离活动结束剩余&nbsp;
-                <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,1)}}</div>&nbsp;
+                <div v-if="countTime.length" class="block-bg">{{countTime.slice(0,2)}}</div>&nbsp;
                 <div v-if="countTime.length">{{countTime.slice(2,3)}}</div>&nbsp;
                 <div v-if="countTime.length" class="block-bg">{{countTime.slice(3,5)}}</div>&nbsp;
                 <div v-if="countTime.length">{{countTime.slice(5,6)}}</div>&nbsp;
