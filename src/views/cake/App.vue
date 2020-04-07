@@ -14,8 +14,8 @@
             </div>
             <div class="line"></div>
             <div class="desc">
-              <p>瓜分<span>{{item.amount}}</span>话费券</p>
               <p>{{rechargeFilter(item.recharge)}}</p>
+              <p>瓜分<span>{{item.amount}}</span>话费券</p>
             </div>
             <div class="knife" v-if="item.status === 2 && currentOpenCakeIndex===item.level"></div>
             <div class="cake-img"
@@ -29,7 +29,8 @@
         <h2>活动规则</h2>
         <section>
           <p>
-            1. 活动时间：{{activityInfo.timeline}}
+            1.
+            活动时间：{{activityInfo.beginDate&&activityInfo.beginDate.slice(5)}}至{{activityInfo.endDate&&activityInfo.endDate.slice(5)}}
           </p>
           <p>
             2. 瓜分条件（蛋糕顺序为从上至下）：<br>
@@ -315,8 +316,9 @@ export default {
           this.divide()
           break
         case 2:
+          let msg = this.isLastDay ? `${this.endDate}开启瓜分` : "今天蛋糕已瓜分，明天继续参加吧～"
           this.$toast.show({
-            message: `${this.endDate}开启瓜分`,
+            message: msg,
             isOneLine: true,
             duration: 3000
           })
@@ -374,20 +376,20 @@ export default {
           if (this.configList[1].status === 1) {
             return `点击蛋糕瓜分奖励`
           } else if (this.configList[1].status === 0 && this.configList[0].status > 0) {
-            return `再充值${10 - this.activityInfo.todayRecharge}元即可参与瓜分`
+            return `再充值${10 - this.activityInfo.todayRecharge}元即可`
           } else {
-            return '今日累计付费10元瓜分奖励'
+            return '今日累计付费10元'
           }
         case 88:
           if (this.configList[2].status === 1) {
-            return `${this.endDate}开启瓜分`
+            return `${this.endDate}`
           } else if (this.configList[2].status === 0 && this.configList[0].status > 0) {
-            return `再充值${88 - this.activityInfo.totalRecharge}元即可参与瓜分`
+            return `再充值${88 - this.activityInfo.totalRecharge}元即可`
           } else {
-            return '活动期间累计付费满88元解锁'
+            return '活动期间累计付费满88元'
           }
         default:
-          return '任意付费解锁'
+          return '任意付费'
       }
     }
   },
@@ -548,7 +550,7 @@ export default {
           color: #ac7f61;
           font-size: 0.2rem;
           border-radius: 0.2rem;
-          background-color: rgba(0, 0, 0, 0.4);
+          background-color: rgba(0, 0, 0, 0.8);
           padding: 0.1rem;
           position: absolute;
           bottom: 0.6rem;
