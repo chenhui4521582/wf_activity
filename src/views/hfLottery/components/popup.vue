@@ -333,6 +333,7 @@ export default {
               line-height: .5rem;
               white-space: nowrap;
               border-right: 1px solid #fff;
+              white-space: nowrap;
             }
             .probability {
               width: 28%;
