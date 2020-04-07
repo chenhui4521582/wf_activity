@@ -976,7 +976,7 @@ export default {
                 top: 0;
                 width: 100%;
                 height: 100%;
-                line-height: 0.3rem;
+                line-height: 0.32rem;
                 text-align: center;
                 color: #fff;
               }
