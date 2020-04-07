@@ -163,7 +163,7 @@
                   可参加会员日
                 </p>
                 <div class="btnred" @click="close">我知道了</div>
-                <p class="sub-desc">10000金叶子已发放，可在“我的”查看</p>
+                <!-- <p class="sub-desc">10000金叶子已发放，可在“我的”查看</p> -->
               </template>
             </div>
             <div class="footer"></div>
