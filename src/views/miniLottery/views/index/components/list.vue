@@ -34,7 +34,7 @@
               <br>
                后即将开始
             </div>
-            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费卷夺宝</div>
+            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费券夺宝</div>
           </div>
         </li>
         <li v-else :key="index" class="item" @click="goDetail(item)">
@@ -60,7 +60,7 @@
                 {{item.participantsNumber}}/{{item.limitTotalAmount}}
               </div>
             </div>
-            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费卷夺宝</div>
+            <div class="btn" :class="{'no': !item.underway}">{{item.cardAmount}}话费券夺宝</div>
           </div>
         </li>
       </template>
@@ -270,6 +270,7 @@ export default {
             bottom: 0;
             height: .56rem;
             line-height: .56rem;
+            padding: 0 .2rem;
             background: #FF4141;
             text-align: center;
             line-height: .56rem;
