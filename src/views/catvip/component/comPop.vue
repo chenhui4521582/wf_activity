@@ -246,25 +246,26 @@ export default {
     close (data) {
       let points = ['A_H5PT0252002986', 'A_H5PT0252002993']
       if (this.popType == 3) {
-        points[data.popType] && GLOBALS.marchSetsPoint(points[data.popType])
+        points[data.popType] && GLOBALS.marchSetsPoint(points[data.popType], { role_level: this.actInfoData.catLevel })
       }
       // this.$emit('close')
       this.isShowPop = false
     },
     gotoopengame () {
-      GLOBALS.marchSetsPoint('A_H5PT0252002991')
+      GLOBALS.marchSetsPoint('A_H5PT0252002991', { role_level: this.actInfoData.catLevel })
       this.isShowPop = false
       this.$emit('opengame')
     },
     gotogame ({ url, id }, type) {
       let points = ['A_H5PT0252003004', 'A_H5PT0252002978', 'A_H5PT0252002980']
       GLOBALS.marchSetsPoint(points[type], {
-        target_project_id: id
+        target_project_id: id,
+        role_level: this.actInfoData.catLevel
       })
       GLOBALS.jumpOutsideGame(url)
     },
     gotoindex () {
-      GLOBALS.marchSetsPoint('A_H5PT0252003005')
+      GLOBALS.marchSetsPoint('A_H5PT0252003005', { role_level: this.actInfoData.catLevel })
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     move (e) {
@@ -276,9 +277,11 @@ export default {
     },
     buyGiftClick () {
       this.isShowPop = false
+      GLOBALS.marchSetsPoint('A_H5PT0252003227', { role_level: this.actInfoData.catLevel })
       this.$emit('buy-gift')
     },
     buyGift (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0252003230', { recharge_rmb: item.price, product_id: item.bizId, role_level: this.actInfoData.catLevel })
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
