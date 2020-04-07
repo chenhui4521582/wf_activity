@@ -1,15 +1,25 @@
 <template>
   <div class="get-hammer">
-    <div class="s-title"><em></em>购买礼包得翻牌点</div>
+    <div class="s-title">
+      <em></em>购买礼包得翻牌点
+    </div>
     <span class="info">礼包可不限次购买，重复获取翻牌点</span>
     <div class="g-package">
       <div class="g-package-container g1">
         <ul>
           <li v-for="(item,index) in leaguePacksListArr" @click="gotopay(item)">
-            <img :src="`${require(`../../../images/bottom/package${index+1}.png`)}`" alt=""
-              class="img">
-            <span
-              class="item-text">{{item.content.split('+')[0]}}<br />+{{item.content.split('+')[1]}}</span>
+            <!-- 礼包右上角标签 -->
+            <div class="package-tag">赠{{parseFloat(item.content.split('+')[1])}}翻牌点</div>
+            <img
+              :src="`${require(`../../../images/bottom/package${index+1}.png`)}`"
+              alt
+              class="img"
+            />
+            <span class="item-text">
+              {{item.content.split('+')[0]}}
+              <br />
+              +{{item.content.split('+')[1]}}
+            </span>
             <a href="javascript:" class="btn-price">￥{{item.price}}</a>
           </li>
         </ul>
@@ -21,12 +31,13 @@
         </ul>
       </div>
     </div>
-    <h4 class="s-title"><em></em>玩游戏获得翻牌点</h4>
+    <h4 class="s-title">
+      <em></em>玩游戏获得翻牌点
+    </h4>
     <span class="info">活动期间在游戏中累计支持金叶子达到一定值即可获得翻牌点</span>
     <div class="g-package">
       <div class="g-package-container g2">
-        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo" @gotoplay="gotoplay">
-        </hit-percent>
+        <hit-percent :detail-data="pUserInfo" @refresh="getUserInfo" @gotoplay="gotoplay"></hit-percent>
       </div>
       <div class="g-package-info">
         <ul>
@@ -38,13 +49,13 @@
   </div>
 </template>
 <script type="text/javascript">
-import { showLeaguePacksList, userInfo } from '../../../utils/api'
+import { showLeaguePacksList, userInfo } from "../../../utils/api";
 
 export default {
-  data () {
+  data() {
     return {
       leaguePacksListArr: []
-    }
+    };
   },
   props: {
     pUserInfo: {
@@ -53,51 +64,54 @@ export default {
     }
   },
   computed: {
-    channel () {
-      return localStorage.getItem('APP_CHANNEL') || ''
+    channel() {
+      return localStorage.getItem("APP_CHANNEL") || "";
     }
   },
   components: {
-    hitPercent: () => import('./component/hitPercent/hitPercent.vue')
+    hitPercent: () => import("./component/hitPercent/hitPercent.vue")
   },
-  mounted () {
-    this.getShowLeaguePacksList()
+  mounted() {
+    this.getShowLeaguePacksList();
   },
   filters: {
-    filterPrice: function (value) {
+    filterPrice: function(value) {
       if (value) {
-        return value > 10000 ? value / 10000 + '万' : value
+        return value > 10000 ? value / 10000 + "万" : value;
       } else {
-        return 0
+        return 0;
       }
     }
   },
   methods: {
-    gotopay (item) {
-      localStorage.setItem('originDeffer', window.location.href)
-      GLOBALS.marchSetsPoint('A_H5PT0156001776', { recharge_rmb: item.price, product_id: item.bizId })   // H5平台-翻牌活动-底部弹窗-礼包点击
-      localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-      localStorage.setItem('payment', JSON.stringify(item))
+    gotopay(item) {
+      localStorage.setItem("originDeffer", window.location.href);
+      GLOBALS.marchSetsPoint("A_H5PT0156001776", {
+        recharge_rmb: item.price,
+        product_id: item.bizId
+      }); // H5平台-翻牌活动-底部弹窗-礼包点击
+      localStorage.setItem("JDD_PARAM", JSON.stringify(item));
+      localStorage.setItem("payment", JSON.stringify(item));
       location.href =
-        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        "https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true";
     },
-    async getShowLeaguePacksList () {
-      const { code, data } = await showLeaguePacksList()
+    async getShowLeaguePacksList() {
+      const { code, data } = await showLeaguePacksList();
       if (code === 200) {
-        this.leaguePacksListArr = data.leaguePacksList
+        this.leaguePacksListArr = data.leaguePacksList;
       }
     },
-    async getUserInfo () {
-      this.$emit('getUserInfo')
+    async getUserInfo() {
+      this.$emit("getUserInfo");
     },
-    isGoBDPayment () {
-      return window.linkUrl.getBackUrlFlag(this.channel) == 'bdWap'
+    isGoBDPayment() {
+      return window.linkUrl.getBackUrlFlag(this.channel) == "bdWap";
     },
-    gotoplay () {
-      this.$emit('gotoplay')
+    gotoplay() {
+      this.$emit("gotoplay");
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 @import "../../../../../common/css/base.css";
@@ -107,47 +121,67 @@ export default {
   box-sizing: border-box;
   position: absolute;
   left: 0;
-  top: 0.76rem;
+  top: 0.8rem;
   bottom: 0;
   overflow-y: scroll;
-  background: url("../../../images/bottom/bg1.png");
+  // background: url("../../../images/bottom/bg1.png");
+  background-color: #a60533;
   background-size: 100% 1.03rem;
   .s-title {
     font-size: 0.24rem;
-    color: #5d2b19;
+
     display: flex;
     align-items: center;
     margin-bottom: 0.12rem;
     font-weight: bold;
     margin-top: 0.2rem;
+
+    color: rgba(250, 224, 227, 1);
     em {
       display: inline-block;
       width: 0.12rem;
       height: 0.12rem;
       border-radius: 50%;
-      background: rgba(93, 43, 25, 1);
+      background: rgba(250, 224, 227, 1);
       margin-right: 0.05rem;
     }
   }
   .info {
     font-size: 0.2rem;
     font-weight: 400;
-    color: rgba(93, 43, 25, 1);
     padding-left: 0.17rem;
     line-height: 0.28rem;
+
+    color: rgba(250, 224, 227, 1);
   }
 }
 
 .g-package {
   width: 100%;
-  background: rgba(93, 43, 25, 1);
+  background: #f5c996;
   border-radius: 0.15rem;
   margin-top: 0.13rem;
   .g-package-container {
-    background: rgba(255, 233, 217, 1);
+    background: #ffffff;
     border-radius: 0.15rem 0.15rem 0 0;
     &.g1 {
       height: 2.94rem;
+      .package-tag {
+        background: url(../../../images/bottom/package-tag.png) no-repeat;
+        background-size: 100% 100%;
+        width: 1.5rem;
+        height: 0.3rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+  text-align: center;
+  line-height: 0.3rem;
+        font-size: 0.2rem;
+        font-family: PingFang SC;
+        font-weight: 800;
+        color: rgba(255, 241, 203, 1);
+        z-index: 2;
+      }
     }
     &.g2 {
       height: 2.24rem;
@@ -163,7 +197,7 @@ export default {
       height: 2.48rem;
       text-align: center;
       position: relative;
-      background: rgba(234, 181, 155, 1);
+      background: rgba(245, 201, 150, 1);
       border-radius: 0.1rem;
       &:nth-child(2) {
         margin: 0 0.26rem;
@@ -173,7 +207,7 @@ export default {
       width: 1.35rem;
       height: 1.14rem;
       position: relative;
-      top: 0.12rem;
+      top: 0.2rem;
     }
     .item-text {
       font-size: 0.2rem;
@@ -198,7 +232,7 @@ export default {
       text-align: center;
       margin: 0 auto;
       position: absolute;
-      bottom: 0.17rem;
+      bottom: 0.1rem;
       left: 50%;
       margin-left: -0.48rem;
     }
@@ -217,7 +251,7 @@ export default {
         line-height: 0.52rem;
         position: relative;
         font-size: 0.24rem;
-        color: rgba(228, 169, 125, 1);
+        color: #7c2244;
         text-indent: 0.27rem;
         &:nth-child(1):before {
           content: "";

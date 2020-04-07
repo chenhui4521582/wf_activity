@@ -1,33 +1,50 @@
+.fill{
+  width: 100%;
+  height: 100vh;
+  background: #BD2222;
+  overflow: auto;
+  &.fill1{
+    background: #BD2222;
+  }
+  &.fill2{
+    background: #800D76;
+  }
+  &.fill3{
+    background: #BD0D59;
+  }
+}
 .eggs-container {
   width: 100%;
-  height: 12.8rem;
-   overflow-y: hidden;
+  height: 11.36rem;
+  
   overflow-x: hidden;
+  
   /*-webkit-overflow-scrolling: touch;
-		-webkit-user-select: none;*/
+		-webkit-user-select         : none;*/
   position: relative;
-
   &.header1 {
     background: url(../../images/level1/bg.png) center top;
     background-size: 100% 100%;
+    width: 100%;
+    // height: 11.36rem;
   }
-
   &.header2 {
     background: url(../../images/level2/bg.png) center top;
     background-size: 100% 100%;
+    width: 100%;
+    // height: 11.36rem;
   }
-
   &.header3 {
     background: url(../../images/level3/bg.png) center top;
     background-size: 100% 100%;
+    width: 100%;
+    // height: 11.36rem;
   }
-
   .header-title {
     width: 5.95rem;
     display: block;
     margin: 0 auto;
   }
-
   .e-time {
     width: 100%;
     font-size: 0.26rem;
@@ -38,50 +55,83 @@
     top: 1.08rem;
     text-align: center;
   }
-  .top_container{
+  .top_container {
     display: flex;
-    margin: .1rem auto 0;
-    width: 5.39*0.9rem;
-    height: 1.98*0.9rem;
+    margin: .1rem auto 0; // width       : 5.39*0.9rem;
+    // height      : 1.98*0.9rem;
+    width: 5.33rem;
+    height: 2.45rem;
     background: url("../../images/case_bg.png") no-repeat;
     background-size: 100% 100%;
     position: relative;
-    .time{
+    .time {
       position: absolute;
+      display: flex;
+    justify-content: center;
       left: 0;
       right: 0;
-      bottom: .2rem;
+      bottom: .95rem;
       margin: auto;
       text-align: center;
-      font-size:.18rem;
-      font-weight:bold;
-      color:rgba(255,231,134,1);
+      font-size: .18rem;
+      font-weight: bold;
+      color: rgba(255, 231, 134, 1);
+      .countdowntime{
+        white-space: nowrap;
+        margin: 0 auto;
+        height: 0.29rem;
+        display: flex;
+        align-items: center;
+        font-size: 0.2rem;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: rgba(255, 233, 171, 1);
+        .block-bg {
+          text-align:center;
+          width: 0.3rem;
+          height: 0.32rem;
+          background: rgba(255, 234, 173, 1);
+          border-radius: 0.06rem;
+          margin: 0;
+          font-size: 0.21rem;
+          font-weight: bold;
+          color: rgba(255, 35, 103, 1);
+          line-height: 0.32rem;
+          display: block;
+        }
+      }
     }
   }
-  .tabs{
+  .tabs {
     width: 3.53rem;
     height: .92rem;
     margin: auto;
     position: absolute;
     left: 0;
     right: 0;
-    top: 1.65rem;
-    &.header1{
+    top: 2.4rem;
+    &.header1 {
       background: url("../../images/level1/tab.png");
       background-size: 100% 100%;
+      width: 4.9rem;
+      height: 0.68rem;
     }
-    &.header2{
+    &.header2 {
       background: url("../../images/level2/tab.png");
       background-size: 100% 100%;
+      width: 4.9rem;
+      height: 0.82rem;
     }
-    &.header3{
+    &.header3 {
       background: url("../../images/level3/tab.png");
       background-size: 100% 100%;
+      width: 4.9rem;
+      height: 0.82rem;
     }
     display: flex;
     padding: .3rem;
     box-sizing: border-box;
-    .item{
+    .item {
       flex: 1;
     }
   }
@@ -101,44 +151,44 @@
     top: 1.78rem;
     z-index: 2;
   }
-  .index_info{
+  .index_info {
     position: absolute;
-    top:8.7rem;
+    top: 8.7rem;
     left: 1.81rem;
     text-align: center;
-    font-size:.18rem;
-    font-weight:400;
-    color:rgba(241,112,116,1);
+    font-size: .18rem;
+    font-weight: 400;
+    color: rgba(241, 112, 116, 1);
   }
-  .reset{
+  .reset {
     width: .87rem;
     height: 0.66rem;
     position: absolute;
-    right:-.06rem;
-    top: 8.5rem;
+    right: -.06rem;
+    top: 9.5rem;
     background: url("../../images/level1/reset.png");
     background-size: 100% 100%;
-    &.header2{
+    &.header2 {
       background: url("../../images/level2/reset.png");
       background-size: .87rem .66rem;
     }
-    &.header3{
+    &.header3 {
       background: url("../../images/level3/reset.png");
       background-size: .87rem .66rem;
     }
-    &:before{
-      content: '洗牌';
-      line-height:0.66rem;
-      text-align: center;
-      position: absolute;
-      left: 0;
-      right: 0;
-      font-size:.26rem;
-      font-weight:bold;
-      color:rgba(62,5,45,1);
-    }
+    // &:before {
+    //   content: '洗牌';
+    //   line-height: 0.66rem;
+    //   text-align: center;
+    //   position: absolute;
+    //   left: 0;
+    //   right: 0;
+    //   font-size: .26rem;
+    //   font-weight: bold;
+    //   color: rgba(62, 5, 45, 1);
+    // }
   }
-  .grade_btn{
+  .grade_btn {
     width: 3.53rem;
     height: 0.68rem;
     position: absolute;
@@ -146,49 +196,65 @@
     left: 1.85rem;
     background: url("../../images/level1/btn.png");
     background-size: 100% 100%;
-    &.header2{
+    &.header2 {
       background: url("../../images/level2/btn.png");
       background-size: 100% 100%;
     }
-    &.header3{
+    &.header3 {
       background: url("../../images/level3/btn.png");
       background-size: 100% 100%;
     }
-    .txt{
-      line-height:0.68rem;
+    .txt {
+      line-height: 0.68rem;
       text-align: center;
       position: absolute;
       left: 0;
       right: 0;
-      font-size:.24rem;
-      font-weight:bold;
-      color:rgba(255,255,255,1);
-      i{
+      font-size: .24rem;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 1);
+      i {
         color: #FFDC51;
       }
     }
   }
-  .record{
-    width: 1.3rem;
-    height: 0.5rem;
+  .record {
+    // width        : 1.3rem;
+    // height       : 0.5rem;
+    width: 1.06rem;
+    height: 0.58rem;
     position: absolute;
-    left:0;
-    top: 8.6rem;
-    border:.02rem solid;
-    border-radius:0px .25rem .25rem 0px;
-    //border-image:linear-gradient(0deg, rgba(232, 185, 91, 0.84), rgba(255, 255, 244, 0.84)) 2 2;
-    background:linear-gradient(0deg,rgba(241,82,1,1),rgba(131,14,1,1));
-    line-height:0.5rem;
-    text-align: center;
-    font-size:.22rem;
-    font-weight:bold;
-    color:rgba(255,231,134,1);
+    left: -0.05rem;
+    top: 9.5rem; 
+    // border       :.02rem solid;
+    // border-radius:0px .25rem .25rem 0px;
+    //border-image  :linear-gradient(0deg, rgba(232, 185, 91, 0.84), rgba(255, 255, 244, 0.84)) 2 2;
+    // background   :linear-gradient(0deg,rgba(241,82,1,1),rgba(131,14,1,1));
+    // line-height  :0.5rem;
+    // text-align   : center;
+    // font-size    :.22rem;
+    // font-weight  :bold;
+    // color        :rgba(255,231,134,1);
     z-index: 2;
-    &.header2{
-      background:linear-gradient(0deg,rgba(238,4,105,1),rgba(144,0,83,1));
+    &.header1 {
+      background: url("../../images/gained-level1.png") no-repeat;
+      background-size: 100% 100%;
+      width: 1.06rem;
+      height: 0.58rem;
     }
-    &.header3{
-      background:linear-gradient(0deg,rgba(88,25,7,1),rgba(198,104,32,1));
+    &.header2 {
+      // background  :linear-gradient(0deg,rgba(238,4,105,1),rgba(144,0,83,1));
+      background: url("../../images/gained-level2.png") no-repeat;
+      background-size: 100% 100%;
+      width: 1.06rem;
+      height: 0.58rem;
+    }
+    &.header3 {
+      // background  :linear-gradient(0deg,rgba(88,25,7,1),rgba(198,104,32,1));
+      background: url("../../images/gained-level3.png") no-repeat;
+      background-size: 100% 100%;
+      width: 1.06rem;
+      height: 0.58rem;
     }
   }
 }
@@ -200,120 +266,116 @@
   left: 50%;
   margin-left: -2.925rem;
   top: 2.8rem;
-
   li {
     position: absolute;
   }
-
   .e-item1 {
     left: 3.06rem;
     bottom: 0.56rem;
   }
-
   .e-item2 {
     left: 4.3rem;
     bottom: 1.12rem;
   }
-
   .e-item3 {
     left: 5.46rem;
     bottom: 1.66rem;
   }
-
   .e-item4 {
     left: 4.26rem;
     bottom: 2.36rem;
   }
-
   .e-item5 {
     left: 2.36rem;
     bottom: 2.18rem;
   }
-
   .e-item6 {
     left: 1.12rem;
     bottom: 2.8rem;
   }
-
   .e-item7 {
     left: 1.8rem;
     bottom: 3.84rem;
   }
-
   .e-item8 {
     left: 3rem;
     bottom: 4.4rem;
   }
-
   .e-item9 {
     left: 4.14rem;
     bottom: 4.24rem;
   }
-
   .e-item10 {
     left: 5.46rem;
     bottom: 4.78rem;
   }
-
   .e-item11 {
     left: 4.26rem;
     bottom: 5.4rem;
   }
-
   .e-item12 {
     left: 3.1rem;
     bottom: 6.02rem;
   }
-
   .e-item13 {
     left: 1.84rem;
     bottom: 5.68rem;
   }
-
   .e-item14 {
     left: 0.66rem;
     bottom: 6.4rem;
   }
-
   .e-item15 {
     left: 2.4rem;
     top: -0.4rem;
   }
 }
+
 .eggs-info {
-  width: 1.34rem;
+  width: 1.15rem;
   position: fixed;
   left: 0;
-  top: 2.2rem;
-  overflow-y: hidden;
+  top: 3.2rem; // overflow-y   : hidden;
   font-weight: bold;
-  background: rgba(32,14,21,.76rem);
-  border-radius: 0 0.32rem 0.32rem 0;
+  background: rgba(32, 14, 21, .76rem); // border-radius: 0 0.32rem 0.32rem 0;
   z-index: 2;
   text-align: center;
   transition: left 0.2s;
-  height: 5rem;
+  height: 2.8rem;
   &.show {
     left: 0
   }
-
-  h4 {
-    width: 100%;
-    height: 0.4rem;
-    line-height: 0.46rem;
-    background:#BF631E;
-    font-size: 0.22rem;
-    color:rgba(255,231,134,1);
-  }
-  .container{
+  .h4 {
+     left: -0.1rem;
     position: absolute;
-    top:0.5rem;
-    bottom:0.4rem;
+    top: -0.55rem; 
+    &.h4_1{
+      background: url(../../images/current-level1.png) no-repeat;
+      background-size: 100% 100%;
+      width: 1.2rem;
+      height: 0.58rem;
+    }
+    &.h4_2{
+       background: url(../../images/current-level2.png) no-repeat;
+      background-size: 100% 100%;
+      width: 1.2rem;
+      height: 0.58rem;
+    }
+    &.h4_3{
+      background: url(../../images/current-level3.png) no-repeat;
+      background-size: 100% 100%;
+      width: 1.2rem;
+      height: 0.58rem;
+    }
+  }
+  .container {
+    position: absolute;
+    top: 0.05rem;
+    // bottom: 0.4rem;
     width: 100%;
-    height: 4.3rem;
+    height: 2.7rem;
   }
-  ul{
-  }
+  ul {}
   li {
     font-size: 0.18rem;
     color: #fff;

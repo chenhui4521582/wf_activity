@@ -4,9 +4,12 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
-          <div class="title">翻牌礼包</div>
+          <div class="title">
+            <img class="package-title" src="../images/pop/package-title.png" alt="">
+          </div>
           <div class="main"
-            style="background: #750503;border-radius:0px 0px .16rem .16rem;padding:.5rem .1rem;color:#fff;box-sizing: border-box">
+            style="background: #A80631;border-radius:0px 0px .16rem .16rem;width: 80%;
+    margin: 0.9rem 0px 0px 0.4rem;color:#fff;box-sizing: border-box">
             <div class="packages">
               <div class="item" v-for="(item,index) in leaguePacksListArr" @click="gotopay(item)">
                 <div class="txt">{{item.content.split('+')[0]}}+{{item.content.split('+')[1]}}</div>
@@ -76,7 +79,8 @@ export default {
   position: fixed;
   top: 0;
   left: 50%;
-  margin-left: -2.86 * 1.125rem;
+  // margin-left: -2.86 * 1.125rem;
+      margin-left: -3.55rem;
   img {
     width: 0.88rem;
     height: 0.88rem;
@@ -97,7 +101,8 @@ export default {
     position: relative;
     z-index: 10;
     .wrap {
-      width: 5.722 * 1.125rem;
+      // width: 5.722 * 1.125rem;
+      width: 7.1rem;
       height: 8.68 * 1.125rem;
       background: url("../images/pop/rule/bg.png") no-repeat center center /
         100% 100%;
@@ -105,6 +110,7 @@ export default {
       box-sizing: border-box;
       padding: 1.3rem 0.75rem 0.6rem 1rem;
       .title {
+        margin-top: 0.5rem;
         font-size: 0.54rem;
         height: 1 * 1.125rem;
         line-height: 1 * 1.125rem;
@@ -118,6 +124,11 @@ export default {
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        .package-title{
+          position: static;
+          width: 2.58rem;
+          height: 0.76rem;
+        }
       }
       .main {
         font-size: 0.2rem;
@@ -128,7 +139,7 @@ export default {
           margin-bottom: 0.13rem;
           .item {
             height: 1.32rem;
-            padding: 0.32rem 0.1rem 0 1.5rem;
+            padding: 0.32rem 0rem 0 1.5rem;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
