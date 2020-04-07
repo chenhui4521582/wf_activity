@@ -15,10 +15,10 @@
           <p class="to-mall" @click="toMall">点击前往 更多礼包>>></p>
           <ul class="other-desc">
             <li>
-              加成卡功能：除瓜分蛋糕奖励外，还可获得额外的奖励。奖励加成包金额越高，获得额外奖励金额越高哦。
+              奖励加成卡功能：除瓜分蛋糕奖励外，还可获得额外的奖励。奖励加成包金额越高，获得额外奖励金额越高哦。
             </li>
             <li>
-              注意：加油包每日仅限购买一个哦（三选一，不可叠加购买）
+              注意：奖励加成包每日仅限购买一个哦（三选一，不可叠加购买）
             </li>
           </ul>
         </template>
@@ -230,7 +230,7 @@ export default {
   }
 
   &.type-0 {
-    height: 8rem;
+    height: 8.2rem;
     margin-top: 1.42rem;
     .bg-center("../img/pop-type-0-bg.png");
     padding: 1.6rem 0.34rem 0;
