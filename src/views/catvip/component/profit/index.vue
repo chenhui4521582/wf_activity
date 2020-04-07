@@ -113,6 +113,10 @@ export default {
     countTime: {
       type: String,
       default: ''
+    },
+    actInfoData: {
+      type: Object,
+      default: null
     }
   },
   components: {
@@ -123,7 +127,7 @@ export default {
   },
   methods: {
     closeOpenProfit () {
-      GLOBALS.marchSetsPoint('A_H5PT0252003001')
+      GLOBALS.marchSetsPoint('A_H5PT0252003001', { role_level: this.actInfoData.catLevel })
       this.isOpen = true
       setTimeout(() => {
         this.$refs.scroll.scrollTo(0, 0)// 滑到顶部
@@ -212,7 +216,7 @@ export default {
       }
     },
     showPop (type) {
-      GLOBALS.marchSetsPoint(type == 1 ? 'A_H5PT0252003002' : 'A_H5PT0252003003')
+      GLOBALS.marchSetsPoint(type == 1 ? 'A_H5PT0252003002' : 'A_H5PT0252003003', { role_level: this.actInfoData.catLevel })
       this.$emit('showPop', type)
     }
   }
