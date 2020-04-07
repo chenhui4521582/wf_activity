@@ -69,7 +69,7 @@
     border-radius: 0.4rem;
     box-sizing: border-box;
     padding: 0 0.2rem;
-    top: 7.6rem;
+    top: 8rem;
     left:0;
     z-index: 2;
     .item-move {

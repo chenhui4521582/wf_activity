@@ -6,7 +6,7 @@
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
         </div>
-        <div class="close-icon" @click="isShowPop = false"></div>
+        <div class="close-icon" @click="closeguide"></div>
       </div>
     </transition>
   </section>
@@ -21,6 +21,13 @@
         isShowPop: false,
         data:[]
       };
+      
+    },
+    created(){
+      this.isShowPop=this.guidePop
+      },
+    mounted(){
+
     },
     props: {
       ruleMain: {
@@ -30,6 +37,10 @@
       from: {
         type: Number,
         default: 0
+      },
+      guidePop:{
+        type:Boolean,
+        default:false
       }
     },
     components:{
@@ -45,8 +56,15 @@
       async showPop () {
         await this.getBetAwards()
         this.isShowPop = true
+        this.$emit('closeguide',this.guidePop)
         GLOBALS.marchSetsPoint('A_H5PT0156001772')//H5平台-翻牌活动-中间区域-攻略按钮点击
+      },
+      closeguide(){
+        this.isShowPop = false
+        // this.guidePop=false
+        // this.$emit('closeguide',this.guidePop)
       }
+
     }
   };
 </script>
@@ -54,10 +72,10 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .rule1 {
     position: fixed;
-    top: 40%;
+    // top: 40%;
     left: 50%;
-    margin-left: -2.86rem;
-    margin-top:-3.94rem;
+    margin-left: -3.55rem;
+    // margin-top:-3.94rem;
     img.icon {
       width: 0.84rem;
       height: 0.84rem;
@@ -78,8 +96,8 @@
       position: relative;
       z-index: 10;
       .wrap {
-        width: 5.72rem;
-        height:7.88rem;
+         width: 7.1rem;
+    height: 9.34rem;
         background: url("../images/pop/gonglue/bg.png") no-repeat center center /
         100% 100%;
         margin: 0 auto;
