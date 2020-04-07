@@ -106,24 +106,16 @@
               <template v-else-if="popType==7">
                 <p class="title">1.参与条件</p>
                 <p>猫等级达到<i>Lv.20</i>才可参与会员日各类活动。</p>
-                <p class="title">2.一元抽神券说明</p>
-                <p>在本活动中支付<i>1元</i>即可参与抽券，您需要<i>手动抽取</i>，随机获得奖励池中的任一奖励； 若活动期间内您支付1元但未手动抽取奖励，
-                  活动结束后平台会自动帮您抽取奖励，并通过站内信告知。
-                </p>
-                <template
-                  v-if="actInfoData&&actInfoData.leafConvertConfigList&&actInfoData.leafConvertConfigList.length">
-                  <p class="title">3.话费券兑换金叶说明</p>
-                  <p>
-                    本次提供{{actInfoData.leafConvertConfigList.map(item=>item.leafName).join('和')}}<template
-                      v-if="actInfoData.leafConvertConfigList.length>1">{{actInfoData.leafConvertConfigList.length}}个</template>档位的兑换，活动期间<template
-                      v-if="actInfoData.leafConvertConfigList.length>1">每个档位</template><i>限兑{{actInfoData.leafConvertConfigList[0].limit}}次</i>
-                  </p>
-                </template>
-                <p class="title">
-                  {{actInfoData&&actInfoData.leafConvertConfigList&&actInfoData.leafConvertConfigList.length?4:3}}.任务及排行榜说明
-                </p>
+                <p class="title">2.抽神券说明</p>
                 <p>
-                  任务完成后奖励限当天领取，若未领取，活动结束后不给予补偿。排行榜依据活动当天获得的鱼干量排名，仅<i>前50名</i>可获得猫币奖励，活动次日0点发榜，奖励自动到账，同时会通过站内信通知
+                  抽神券分为1元初级场和10元高级场，每个场次限参与1次，支付后需<i>手动抽取</i>，随机获得奖励池中任一奖励；若活动期间内您支付但未抽取奖励，活动结束后平台会自动帮您抽取奖励，并通过站内信告知。
+                </p>
+                <p class="title">3.话费券兑换金叶说明</p>
+                <p>本次提供2万金叶子档位的兑换，猫等级越高，可兑换次数越多。</p>
+                <p class="title">4.任务及排行榜说明</p>
+                <p>
+                  任务完成后奖励限当天领取，若未领取，活动结束后不给予补偿。<br>
+                  排行榜依据活动当天<i>喂养的鱼干量</i>排名，仅前50名可获得猫币奖励，活动次日0点发榜，奖励自动到账，同时会通过站内信通知。
                 </p>
               </template>
               <!-- 限购次数说明 -->
