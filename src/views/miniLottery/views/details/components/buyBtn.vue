@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="buy" @click="submit" v-if="status == 0">
-      <P><span>{{details.cardAmount * inputValue}}  </span>话费卷</P>
+      <P><span>{{details.cardAmount * inputValue}}  </span>话费券</P>
       <P>参与夺宝</P>
     </div>
     <div class="buy disable" v-if="status == 3">参与夺宝</div>
@@ -148,7 +148,7 @@ export default {
           this.modal = {
             show: true,
             status: 1,
-            message: '您的话费卷不足',
+            message: '您的话费券不足',
             title: '温馨提示',
             saveText: '去赚话费',
             closeButtonShow: true
@@ -175,11 +175,7 @@ export default {
     getAward() {
       let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
       let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      if(['100069','100070','100073','100075','100080'].indexOf(APP_CHANNEL) > -1) {
-        parent.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
-      }else {
-        parent.location.href = `https://wap.beeplaying.com/bdWap/#/schedule?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
-      }
+      parent.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
       GLOBALS.marchSetsPoint('A_H5PT0202002095', {
         task_id: this.details.currentPeriodStatus,
         task_name: this.details.currentPeriodStatus
