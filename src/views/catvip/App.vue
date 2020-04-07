@@ -45,6 +45,7 @@
                     <div v-else-if="item.awardsType==32">优惠券</div>
                     <div v-else-if="item.awardsType==10">话费券</div>
                   </div>
+                  <div class="star-icon" v-if="!item.star"></div>
                 </div>
               </div>
               <div class="horn" v-if="hornList.length">
@@ -54,7 +55,7 @@
             </div>
             <template v-if="currentAwardType===10">
               <div class="pay_btn" :class="{gray:actInfoData.seniorLottery==2}"
-                @click="preheat(lottery('seniorLottery'))">
+                @click="preheat(()=>lottery('seniorLottery'))">
                 <template v-if="actInfoData.seniorLottery === 0">
                   支付{{currentAwardType}}元抽奖<br><i
                     v-if="actInfoData.seniorLotteryNum>=200">{{actInfoData.seniorLotteryNum}}人已抽奖</i>
@@ -69,7 +70,7 @@
             </template>
             <template v-else>
               <div class="pay_btn" :class="{gray:actInfoData.juniorLottery==2}"
-                @click="preheat(lottery('juniorLottery'))">
+                @click="preheat(()=>lottery('juniorLottery'))">
                 <template v-if="actInfoData.juniorLottery === 0">
                   支付{{currentAwardType}}元抽奖<br><i
                     v-if="actInfoData.juniorLotteryNum>=200">{{actInfoData.juniorLotteryNum}}人已抽奖</i>
@@ -92,7 +93,7 @@
           <p @click="showPop(8)">提升限购次数></p>
         </div>
         <div class="list">
-          <div class="list-item" @click="preheat(()=>exchangeLeaf(item))">
+          <div class="list-item" @click="preheat(()=>exchangeLeaf(actInfoData.leafConvertConfig))">
             <div class="left">
               <div class="item">
                 <img src="./imgs/hfq.png" alt="">
@@ -280,13 +281,14 @@ export default {
           this.currentAwardType = data.lastRechargeAmount ? data.lastRechargeAmount : data.rechargeAmount > 1000 ? 10 : 1
           this.countDown(data.countdown)
           flag && data.state == 1 && this.getHornList()
-          flag && this.preheat(() => {
-            this.getRankList()
-          }, 1000)
+          flag && (
+            this.getRankList(),
+            this.getPackageData()
+          )
+
           if (data.popup) {
             this.showPop(10)
           }
-          this.getPackageData()
         } else {
           this.isEnd = true
         }
@@ -332,10 +334,10 @@ export default {
       }
     },
     //确认兑换
-    async exchange (item) {//exchangeLeaf
+    async exchange () {//exchangeLeaf
       GLOBALS.marchSetsPoint('A_H5PT0252002989')
       this.showLoading = true
-      let { code, data, message } = await exchangeLeaf(item.level)
+      let { code, data, message } = await exchangeLeaf()
       if (code == 200) {
         this.awardData = {
           type: 'jyz',
@@ -410,7 +412,7 @@ export default {
           location.href =
             'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
         }
-      } else if (this.actInfoData.lottery == 1) {
+      } else if (this.actInfoData[lotteryType] == 1) {
         GLOBALS.marchSetsPoint('A_H5PT0252002984')
         this.showLoading = true
         let { code, data, message } = await levelLottery({ level: this.currentAwardType })
@@ -698,6 +700,7 @@ export default {
               flex-shrink: 0;
               justify-content: center;
               align-items: center;
+              position: relative;
               img {
                 width: 0.89rem;
                 height: 0.51rem;
@@ -711,6 +714,15 @@ export default {
                   line-height: 0.2rem;
                   text-align: center;
                 }
+              }
+              .star-icon {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0.48rem;
+                height: 0.48rem;
+                background: url("./imgs/star-icon.png") no-repeat center center;
+                background-size: 100% 100%;
               }
             }
           }

@@ -24,7 +24,7 @@
           <div
             class="info"
             style="font-size: .2rem;color: #FAD366;font-weight: bold;line-height: .3rem;text-align: center;padding: 0 .5rem"
-          >小贴士：在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入任务中</div>
+          >部分游戏支持金叶不计入活动，详见规则</div>
         </div>
         <div class="close-icon" @click="isShowPop = false"></div>
       </div>

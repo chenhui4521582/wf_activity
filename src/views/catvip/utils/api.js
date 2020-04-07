@@ -324,8 +324,8 @@ export const getNoticeList = async () => {
  * @return {Object} data
  */
 
-export const exchangeLeaf = async (level) => {
-  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/leafConvert/' + level)
+export const exchangeLeaf = async () => {
+  const { data } = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/leafConvert')
   return data
 }
 /**
