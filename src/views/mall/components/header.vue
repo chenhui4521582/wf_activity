@@ -8,55 +8,55 @@
 </template>
 <script>
 export default {
-  name: "Header",
+  name: 'Header',
   props: {
     title: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   methods: {
     returnPage () {
       this.$router.go(-1)
-      this.$emit("on-back")
+      this.$emit('on-back')
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .header-wap {
-  height: .9rem;
+  height: 0.9rem;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 10;
   box-sizing: border-box;
-  padding: 0 .3rem;
+  padding: 0 0.3rem;
   color: #000;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #F7F7F7;
+  background: #f7f7f7;
   .return-img {
     position: absolute;
     top: 0;
-    left: .3rem;
+    left: 0.3rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     width: 1rem;
-    height: .94rem;
+    height: 0.94rem;
     box-sizing: border-box;
     z-index: 10;
     .iconfont {
-      font-size: .3rem;
+      font-size: 0.3rem;
     }
   }
   .title {
     text-align: center;
-    font-size: .32rem;
+    font-size: 0.32rem;
     font-weight: bold;
   }
 }
