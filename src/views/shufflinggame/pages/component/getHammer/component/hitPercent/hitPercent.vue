@@ -181,7 +181,7 @@ export default {
   .percent-box {
     width: 5.86rem;
     height: 0.15rem;
-    background:rgba(255,171,129,1);
+    background:rgba(212,127,159,1);
     border-radius: 0.05rem;
     position: absolute;
     left: 0.3rem;
@@ -192,7 +192,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
-      background:rgba(220,50,42,1);
+      background:rgba(255,163,82,1);
       border-radius: 0.08rem;
       &:after {
         content: "";
@@ -214,7 +214,7 @@ export default {
     h2 {
       font-size: 0.2rem;
       font-weight: 500;
-      color:rgba(181,106,79,1);
+      color:#FF4330;
       padding-top: 0.28rem;
     }
     h4 {
@@ -224,7 +224,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color:rgba(181,106,79,1);
+      color:rgba(255,67,48,1);
     }
     &:last-child h4 {
       max-width: 1.2rem;
@@ -259,7 +259,7 @@ export default {
         display: inline-block;
         width: 0.06rem;
         height: 0.06rem;
-        background: #A15B42;
+        background:rgba(255,67,48,1);
         border-radius: 50%;
         &:nth-child(2) {
           margin: 0 0.04rem;
@@ -272,7 +272,7 @@ export default {
     .envelopes {
       width: 0.59rem;
       height: 0.25rem;
-      color:rgba(220,50,42,1);
+     color:rgba(231,70,21,1);
       text-align: center;
       white-space: nowrap;
     }
@@ -297,7 +297,7 @@ export default {
       }
       &.btn-complete {
         font-size: 0.24rem;
-        color:rgba(192,112,2,1);
+        color:rgba(237,98,79,1);
       }
     }
   }

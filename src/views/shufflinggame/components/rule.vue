@@ -5,11 +5,11 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop">
         <div class="wrap">
-          <div class="title">活动规则</div>
+          <div class="title"><img src="../images/pop/rule/rule-title.png" alt=""></div>
           <div class="main">
             <div class="text" v-if="ruleMain">1、活动时间：{{ruleMain}}大奖发榜；</div>
             <div class="text"><span>2、共有初、中、高级3个场次，玩家可通过消耗翻牌点进行翻牌，100%有奖；活动期间累计翻牌点最高可赢35000元大奖；</span></div>
-            <div class="text"><span>3、翻牌点可通过玩游戏和购买活动页礼包获得，在斗地主、麻将、跑得快、枪火英雄、套圈中消耗金叶不计入活动内；</span></div>
+            <div class="text"><span>3、翻牌点可通过玩游戏和购买活动页礼包获得，在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动内；</span></div>
             <div class="text"><span>4、单场次翻牌次数越多，所需要的翻牌点越多；</span></div>
             <div class="text"><span>5、初级场消耗翻牌点最少，中级场其次，随机加赠翻倍卡。翻倍卡只能在所得场次使用，使下次翻牌奖励X2；高级场最多，奖励最高，随机加赠翻倍卡或翻牌点（赠送的翻牌点不计入排行榜中）；</span>
             </div>
@@ -51,7 +51,8 @@
     position: fixed;
     top: 0;
     left: 50%;
-    margin-left: -2.86*1.125rem;
+    // margin-left: -2.86*1.125rem;
+    margin-left: -3.55rem;
     img:not(.game) {
       width: 0.84rem;
       height: 0.84rem;
@@ -72,30 +73,48 @@
       position: relative;
       z-index: 10;
       .wrap {
-        width: 5.72*1.125rem;
+        width: 7.1rem;
         height: 8.68*1.125rem;
         background: url("../images/pop/rule/bg.png") no-repeat center center /
         100% 100%;
         margin: 0 auto;
         box-sizing: border-box;
         padding: 1.15*1.125rem .75rem .6rem 1rem;
+
+        position: relative;
         .title {
-          font-size: 0.54rem;
-          height: 1*1.125rem;
-          line-height: 1*1.125rem;
-          text-align: center;
-          font-weight: 400;
-          color: rgba(255, 230, 173, 1);
-          background: linear-gradient(0deg, rgba(254, 222, 87, 1) 0%, rgba(254, 252, 201, 1) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          position: absolute;
+          width: 2.57rem;
+          height: 0.72rem;
+          top: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+          img{
+              width: 2.57rem;
+          height: 0.72rem;
+          position: static;
+          }
+        
+          // font-size: 0.54rem;
+          // height: 1*1.125rem;
+          // line-height: 1*1.125rem;
+          // text-align: center;
+          // font-weight: 400;
+          // color: rgba(255, 230, 173, 1);
+          // background: linear-gradient(0deg, rgba(254, 222, 87, 1) 0%, rgba(254, 252, 201, 1) 100%);
+          // -webkit-background-clip: text;
+          // -webkit-text-fill-color: transparent;
         }
         .main {
-          font-size: 0.2rem;
-          background: #750503;
+          font-size: 0.22rem;
+          // background: #750503;
           border-radius: 0px 0px .16rem .16rem;
-          padding: .2rem;
-          color: #fff;
+          padding: 0rem 0.1rem 0rem 0;
+          color:rgba(255,247,226,1);
+          width: 80%;
+    margin: 2.1rem auto;
+    height: 5.8rem;
+    overflow: auto;
           .text {
             display: flex;
             i {

@@ -1,5 +1,11 @@
 <template>
-  <div class="profit">
+  <div class="profit" :style="{marginTop:current==1?'0.8rem':''}">
+    <!-- 标题 -->
+    <div class="rank-title" ></div>
+    <!-- 榜单截至提示 -->
+    <div class="rank-endtime">
+      榜单统计截止{{rankEndTime.split(' ')[0]}}
+    </div>
     <div class="profit-container" :class="{full:false}">
       <div v-if="!isLoading" class="profit-inner-container">
         <div class="profit-tx-container">
@@ -111,7 +117,8 @@
         endTime: '',
         myInfo: {},
         isLoading: false,
-        defaultImg: '/cdn/common/images/common/img_photo.png'
+        defaultImg: '/cdn/common/images/common/img_photo.png',
+        rankEndTime:''
       }
     },
     props: {
@@ -122,11 +129,16 @@
       from: {
         type: Number,
         default: 0
+      },
+      current:{
+        type:Number,
+       default:0 
       }
     },
     mounted() {
       this.getRankList()
       this.getUserRanking()
+      this.getActivityInfo()
     },
     methods: {
       closeOpenProfit() {
@@ -160,6 +172,12 @@
           }
         }
       },
+      async getActivityInfo(){
+        const {code, data} = (await this.axios.post('//ops-api.beeplaying.com/ops/api/open-card/activity-info')).data
+        if(code===200){
+          this.rankEndTime=data.endDate
+        }
+      }
     }
   }
 </script>
