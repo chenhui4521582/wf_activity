@@ -128,7 +128,7 @@
               <div class="info_title">{{item.taskName}}</div>
               <div class="info_content">
                 <div class="percent-wrap">
-                  <div class="percent" :style="{width:item.progress/item.total+'%'}"></div>
+                  <div class="percent" :style="{width:item.progress/item.total*100+'%'}"></div>
                   <div class="percent-text">{{item.progress}}/{{item.total}}</div>
                 </div>
                 <div class="awardsname">{{item.awardsName}}</div>
