@@ -300,7 +300,9 @@ export default {
           )
 
           if (data.popup) {
-            this.showPop(10)
+            setTimeout(() => {
+              this.showPop(10)
+            }, 100)
           }
         } else {
           this.isEnd = true
