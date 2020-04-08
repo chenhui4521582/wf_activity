@@ -15,7 +15,7 @@ export const ActivityInfo = async () => {
   //     'data': {
   //       'state': 1,
   //       'beginDate': '2020-03-19 00:00:00',
-  //       'endDate': '2020-03-23 23:59:59',
+  //       'endDate': '2020-04-01 23:59:59',
   //       'timeline': '2020年3月19日-2020年3月23日',
   //       'countdown': 277450832,
   //       'configList': [
@@ -23,13 +23,13 @@ export const ActivityInfo = async () => {
   //           'level': 1,
   //           'recharge': 1,
   //           'amount': 1588,
-  //           'status': 1
+  //           'status': 2
   //         },
   //         {
   //           'level': 2,
   //           'recharge': 10,
   //           'amount': 2288,
-  //           'status': 0
+  //           'status': 1
   //         },
   //         {
   //           'level': 3,
@@ -38,10 +38,10 @@ export const ActivityInfo = async () => {
   //           'status': 0
   //         }
   //       ],
-  //       'todayRecharge': 100,
-  //       'totalRecharge': 100,
+  //       'todayRecharge': 1,
+  //       'totalRecharge': 1,
   //       'todayApplyNum': 2,
-  //       'applyPopup': true,
+  //       'applyPopup': false,
   //       'forgetPopup': false,
   //       'divideDateStr': '20200320'
   //     },

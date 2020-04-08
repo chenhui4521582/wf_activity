@@ -4,6 +4,7 @@
       <section class="mask"></section>
       <section class="content" :class="`type-${type}`">
         <template v-if="type === 0">
+          <p class="sub-title">任意付费瓜分蛋糕奖励</p>
           <ul class="awards-list">
             <li v-for="(item,index) in productList">
               <div class="award-icon"><img :src="item.productIcon|filter" alt=""></div>
@@ -14,17 +15,17 @@
           <p class="to-mall" @click="toMall">点击前往 更多礼包>>></p>
           <ul class="other-desc">
             <li>
-              加成卡获得瓜分奖励后可立即获得随机加成,购买礼包金额越高，加成金额越高哦
+              奖励加成卡功能：除瓜分蛋糕奖励外，还可获得额外的奖励。奖励加成包金额越高，获得额外奖励金额越高哦。
             </li>
             <li>
-              注意：加油包每日仅限购买一个哦（三选一，不可叠加购买）
+              注意：奖励加成包每日仅限购买一个哦（三选一，不可叠加购买）
             </li>
           </ul>
         </template>
         <template v-if="type === 1">
           <div class="cake-unlocked"></div>
-          <div class="tips">小提示：任意付费即可解锁蛋糕</div>
-          <div class="btn" @click="closePop(1)">马上瓜分</div>
+          <div class="tips">参与方式：任意付费即可参与哦</div>
+          <div class="btn" @click="closePop(1)">立即查看</div>
         </template>
         <template v-if="type === 2">
           <div class="crying-face"></div>
@@ -47,12 +48,8 @@
             </ul>
           </div>
           <div class="bottom">
-            <p class="add-card-info">
-              <img :class="{shake:haveAddCard}" src="../img/add-img.png" alt="">
-              <span class="has-card" v-if="haveAddCard" @click="useMarkup">点击使用加成卡 >></span>
-              <span v-else>暂无加成卡</span>
-            </p>
-            <div class="btn" @click="closePop(1)">继续参与瓜分</div>
+            <div v-if="haveAddCard" class="btn" @click="useMarkup()">使用奖励加成卡</div>
+            <div v-else class="btn" @click="closePop(1)">继续瓜分</div>
             <p>{{applyDate}}场次瓜分</p>
           </div>
         </template>
@@ -67,7 +64,7 @@
 </template>
 
 <script>
-import { GetMallProductList, UseMarkup } from '../services/api'
+import { UseMarkup } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -81,12 +78,15 @@ export default {
     },
     divideInfo: {
       type: Object,
-      default: () => { }
+      default: () => ({})
+    },
+    productList: {
+      type: Array,
+      default: () => ([])
     }
   },
   data () {
     return {
-      productList: [],
       awardInfo: {}
     }
   },
@@ -118,10 +118,6 @@ export default {
   mounted () {
   },
   methods: {
-    async getMallProductList () {
-      const res = await GetMallProductList()
-      this.productList = _get(res, 'data.mallBizConfigs', [])
-    },
     async useMarkup () {
       const res = await UseMarkup()
       let code = _get(res, 'code', 0)
@@ -181,15 +177,6 @@ export default {
       }
       this.$emit('on-close')
     }
-  },
-  watch: {
-    type: {
-      handler (val, oldVal) {
-        if (val === 0) {
-          this.getMallProductList()
-        }
-      }
-    }
   }
 }
 </script>
@@ -222,6 +209,7 @@ export default {
   margin: 0 auto;
   z-index: 1;
   box-sizing: border-box;
+  font-size: 0.26rem;
   .close-icon {
     width: 0.76rem;
     height: 0.76rem;
@@ -242,12 +230,19 @@ export default {
   }
 
   &.type-0 {
-    height: 7.28rem;
+    height: 8.2rem;
     margin-top: 1.42rem;
     .bg-center("../img/pop-type-0-bg.png");
     padding: 1.6rem 0.34rem 0;
+    font-size: 0.2rem;
     .close-icon {
       top: 1rem;
+    }
+    .sub-title {
+      color: #dcbdba;
+      font-size: 0.26rem;
+      text-align: center;
+      margin-bottom: 0.2rem;
     }
     .awards-list {
       li {
@@ -311,11 +306,11 @@ export default {
       width: 2.14rem;
       height: 1.88rem;
       .bg-center("../img/cake-unlocked.png");
-      margin: 0 auto 0.24rem;
+      margin: 0 auto 0.2rem;
     }
     .tips {
       text-align: center;
-      color: #8d6664;
+      color: #dcbdba;
       margin-bottom: 0.24rem;
     }
   }
@@ -331,12 +326,12 @@ export default {
       width: 1.22rem;
       height: 1.22rem;
       .bg-center("../img/crying-face.png");
-      margin: 0 auto 0.2rem;
+      margin: 0 auto 0.1rem;
     }
     .tips {
       text-align: center;
       color: #ffd941;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
   }
   &.type-3 {
@@ -349,7 +344,7 @@ export default {
     }
     .top {
       width: 100%;
-      height: 1.28rem;
+      height: 2rem;
       margin-bottom: 0.28rem;
       position: relative;
       ul {
@@ -363,7 +358,7 @@ export default {
         text-align: center;
         margin-bottom: 0.2rem;
         span {
-          color: #bc7571;
+          color: #dcbdba;
         }
         em {
           color: #ffd941;
@@ -376,27 +371,12 @@ export default {
       }
     }
     .bottom {
-      height: 2.08rem;
-      border-top: 0.01rem #7a3432 solid;
       text-align: center;
       color: #8d6664;
       font-size: 0.2rem;
       line-height: 0.26rem;
-      .add-card-info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.22rem;
-        color: #b8cd0a;
-        margin: 0.14rem auto;
-        img {
-          width: 0.56rem;
-          height: 0.56rem;
-          margin-right: 0.1rem;
-        }
-        .has-card {
-          text-decoration: underline;
-        }
+      .btn {
+        margin-bottom: 0.1rem;
       }
     }
   }
@@ -410,7 +390,6 @@ export default {
     }
     p {
       color: #ffd941;
-      font-size: 0.24rem;
       margin-bottom: 0.54rem;
       text-align: center;
     }
