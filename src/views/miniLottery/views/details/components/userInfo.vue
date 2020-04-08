@@ -9,10 +9,6 @@
         <img src="../img/phone-icon.png" alt="">
         {{userInfo.phoneScrap / 10 | amountComputen}}
       </div>
-      <div class="lottery">
-        <img src="../img/lottery-card.png" alt="">
-        {{userInfo.cardAccount | amountComputen}}
-      </div>
     </div>
     <div class="my-log" @click="goLog">
       我的夺宝记录
