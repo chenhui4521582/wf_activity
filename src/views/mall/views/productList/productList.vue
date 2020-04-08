@@ -10,7 +10,7 @@
       <img src="./img/back.png" alt="">
     </div>
     <!-- rule 按钮 -->
-    <div class="rule-btn">购买须知</div>
+    <div class="rule-btn" @click="openRule">购买须知</div>
     <!-- order 按钮 -->
     <div class="order-btn">
       <img src="./img/order-btn.png" alt="">
@@ -35,10 +35,13 @@
         />
       </div>
     </div>
+    <!-- rule -->
+    <rule v-model="showRule"/>
   </div>
 </template>
 <script>
 import ListItem from './components/listItem'
+import Rule from './components/rule'
 export default {
   name: 'productList',
   data: () => ({
@@ -80,14 +83,19 @@ export default {
         price: '5632'
       },
     ],
-    currentIndex: 0
+    currentIndex: 0,
+    showRule: false
   }),
   components: {
-    ListItem
+    ListItem,
+    Rule
   },
   methods: {
     handerClick(index) {
       this.currentIndex = index
+    },
+    openRule() {
+      this.showRule = true
     }
   }
 }
