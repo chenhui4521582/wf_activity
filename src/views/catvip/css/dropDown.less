@@ -4,16 +4,19 @@
   bottom: 0;
   width: 100vw;
   height: 1.38rem;
-  background: url('../imgs/down.png') center center / 100% 100%;
+  background: url("../imgs/down.png") center center / 100% 100%;
   display: flex;
   box-sizing: border-box;
+  box-shadow: 0px -4px 8px 0px rgba(223, 180, 137, 0.8),
+    0px 6px 2px 0px rgba(255, 245, 225, 1);
+  border-radius: 0.4rem 0.4rem 0 0;
   .tab {
     flex: 1;
     display: flex;
     align-items: center;
     font-size: 0.22rem;
     font-weight: bold;
-    color: #FFECDD;
+    color: #ffecdd;
     .hammer_icon {
       margin-left: 0.24rem;
       width: 0.6rem;
@@ -24,7 +27,7 @@
       height: 100%;
       flex: 1;
       text-align: center;
-      padding: .3rem 0.1rem .15rem;
+      padding: 0.3rem 0.1rem 0.15rem;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -32,26 +35,19 @@
       align-items: center;
       img {
         width: 2rem;
-        height: .08rem;
+        height: 0.08rem;
       }
       .main-text {
-        font-size: .3rem;
+        font-size: 0.3rem;
         line-height: 0.44rem;
         color: rgba(250, 45, 53, 1);
       }
       .btn {
         font-size: 0.24rem;
         width: 100%;
-        white-space: nowrap;
-        color: #C45E13;
-        display: flex;
-        .item {
-          flex: 1;
-          text-align: center;
-          &:nth-child(1){
-            border-right: 1px solid #C45E13;
-          }
-        }
+        color: #c45e13;
+        text-align: center;
+        font-weight: 400;
       }
     }
   }
@@ -91,7 +87,7 @@
   border-radius: 0.4rem 0.4rem 0 0;
   font-size: 0.2rem;
   z-index: 12;
-  padding-top: .11rem;
+  padding-top: 0.11rem;
   box-sizing: border-box;
   .d-tab {
     border-radius: 0.4rem 0.4rem 0 0;
@@ -111,7 +107,7 @@
     li {
       text-align: center;
       font-size: 0.3rem;
-      color: #FA2D35;
+      color: #fa2d35;
       font-weight: bold;
       &:nth-child(2) {
         font-size: 0.2rem;
