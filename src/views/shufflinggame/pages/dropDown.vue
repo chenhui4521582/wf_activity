@@ -3,7 +3,7 @@
   <div>
     <div class="pop-mask" v-if="isDropDown" @touchmove.prevent></div>
     <transition name="fade">
-      <div class="drop-down" v-if="isDropDown" >
+      <div class="drop-down" v-if="isDropDown">
         <!-- 点击上部空白也返回 -->
         <div class="close" @click.stop="close"></div>
         <div class="drop-down-content" :style="{height:curIndex==1?'9.24rem':''}">
@@ -24,7 +24,7 @@
           />
 
           <!-- 排行榜 -->
-          <profit v-if="curIndex == 1" :is-full="false" :current='curIndex' />
+          <profit v-if="curIndex == 1" :is-full="false" :current="curIndex" />
           <!-- 右下角图标 -->
           <img src="../images/icon-back.png" class="icon-back" @click.stop="close" />
         </div>
@@ -85,9 +85,7 @@ export default {
       default: () => false
     }
   },
-  mounted() {
-    
-  },
+  mounted() {},
   computed: {
     remanentNum() {
       return (this.data && this.data.remanentNum) || 0;
@@ -102,11 +100,10 @@ export default {
   },
   methods: {
     innerHandleTab(idx) {
-      if (idx==0||idx==1) {
+      if (idx == 0 || idx == 1) {
         GLOBALS.marchSetsPoint("A_H5PT0075001466"); // H5平台-有奖排行榜
         // this.$router.push("/after");
         this.handleTab(idx);
-        console.log("点击");
         // } else {
         //   this.handleTab(idx);
         //   GLOBALS.marchSetsPoint("A_H5PT0075001470"); // H5平台-点击获取翻牌点
@@ -115,7 +112,6 @@ export default {
       }
     },
     outHandleTab(idx) {
-     
       //H5平台-翻牌活动-底部获取翻牌点TAB点击(展开) A_H5PT0156002609
       //H5平台-翻牌活动-底部有奖排行榜TAB点击(展开) A_H5PT0156002610
       GLOBALS.marchSetsPoint(idx ? "A_H5PT0156002610" : "A_H5PT0156002609"); //H5平台-翻牌活动-中间区域-获得更多翻牌点点击
@@ -124,9 +120,8 @@ export default {
       }
       if (idx == 1 && !this.end) {
         this.handleTab(idx);
-      } 
-      if(idx==1&&this.end) 
-      {
+      }
+      if (idx == 1 && this.end) {
         this.$router.push("/after");
       }
     },
@@ -134,8 +129,6 @@ export default {
     handleTab(idx) {
       this.isDropDown = true;
       this.curIndex = idx;
-      console.log("下标", this.curIndex);
-      console.log(this.isDropDown);
     },
     close() {
       this.isDropDown = false;

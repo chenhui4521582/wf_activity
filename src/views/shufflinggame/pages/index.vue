@@ -4,7 +4,10 @@
       <!--返回-->
       <img src="../images/back.png" class="e-back" @click.stop="back" />
       <!--规则-->
-      <rule :ruleMain="actData.beginDate.split(' ')[0]+'~'+actData.endDate.split(' ')[0]+'，'+actData.rankDate.split(' ')[0]" v-if="actData"></rule>
+      <rule
+        :ruleMain="actData.beginDate.split(' ')[0]+'~'+actData.endDate.split(' ')[0]+'，'+actData.rankDate.split(' ')[0]"
+        v-if="actData"
+      ></rule>
       <game ref="game"></game>
       <!--&lt;!&ndash;礼包&ndash;&gt;-->
       <package ref="package"></package>
@@ -60,7 +63,7 @@
               alt
               style="width:1.2rem;height:0.58rem;position: absolute;
     left: -0.05rem;"
-            /> -->
+            />-->
           </div>
 
           <!--<scroll :data="awards">-->
@@ -210,8 +213,6 @@ export default {
         this.actData = data;
         this.state = this.actData.state;
         this.countDown(this.actData.countdown);
-        console.log(this.actData);
-
         this.isEnd = data.state != 1;
         !this.isEnd && localStorage.removeItem("ranked");
         !this.countdown.time &&
@@ -482,17 +483,6 @@ export default {
     // 活动地址：shufflinggame.html?from=index
     history.pushState({}, "", location.href.split(/\?|\&/)[0]); // shufflinggame.html
     // GLOBALS.marchSetsPoint('A_H5PT0075001453')   // H5平台-砸金蛋-活动进行中-页面
-    console.log(
-      Math.max(document.documentElement.scrollTop, document.body.scrollTop)
-    );
-    // console.log(window.innerHeight + Math.max(document.documentElement.scrollTop, document.body.scrollTop))
-    console.log(window.innerHeight);
-    console.log(
-      Math.max(
-        document.documentElement.clientHeight,
-        document.body.clientHeight
-      )
-    );
   },
   watch: {
     "countdown.time": function(val) {
@@ -507,7 +497,6 @@ export default {
       if (val === "") {
         this.getActInfo();
         this.getRankList();
-        console.log("再次调用接口");
       }
     }
   }
