@@ -90,7 +90,7 @@
         <div class="title"></div>
         <div class="bill_wrapper">
           <div>当前话费券：{{actInfoData.hfqNum}}</div>
-          <p @click="showPop(8)">提升限购次数></p>
+          <p @click="showPop(8)">限购次数说明></p>
         </div>
         <div class="list">
           <div class="list-item" @click="preheat(()=>exchangeLeaf(actInfoData.leafConvertConfig))">
