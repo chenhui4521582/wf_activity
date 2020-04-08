@@ -93,7 +93,7 @@
             <img src="../img/manure-title.png" alt="">
           </div>
           <div class="items">
-            <div class="item item1" >
+            <div class="item item1">
               <div class="title2">成长值+60</div>
               <div class="icon">
                 <img src="../img/manure-icon1.png" alt="">
@@ -106,7 +106,7 @@
                 <img src="../img/buyend-text.png" alt="">
               </div>
             </div>
-            <div class="item item2" >
+            <div class="item item2">
               <div class="title2">成长值+220</div>
               <div class="icon">
                 <img src="../img/manure-icon2.png" alt="">
@@ -134,57 +134,57 @@ export default {
   name: 'popup',
   props: ['popupType', 'value', 'treeInfo', 'treeFinishAward', 'cardList'],
   methods: {
-    hidePopup() {
+    hidePopup () {
       /** 重新拉取数据 **/
-      if(this.popupType == 2){
+      if (this.popupType == 2) {
         this.$emit('refresh')
       }
       /** 浇水意外奖励 **/
-      if(this.popupType == 3 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade){
+      if (this.popupType == 3 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade) {
         this.$emit('treeUpgrade')
         return
       }
       /** 树长大了 动画 **/
-      if(this.popupType == 1 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade){
+      if (this.popupType == 1 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade) {
         this.$emit('treeUpgradeAnimation')
         return
       }
       this.$emit('input', false)
     },
-    gotoPay(index) {
+    gotoPay (index) {
       let channel = localStorage.getItem('APP_CHANNEL')
       let originDeffer = `//wap.beeplaying.com/activities/tree.html?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(this.cardList[index]))
       localStorage.setItem('originDeffer', originDeffer)
-      switch(index) {
-        case 0 :
+      switch (index) {
+        case 0:
           GLOBALS.marchSetsPoint('A_H5PT0244002828')
-          break;
-        case 1 :
+          break
+        case 1:
           GLOBALS.marchSetsPoint('A_H5PT0244002829')
-          break;
+          break
       }
-      window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
+      window.location.href = '//wap.beeplaying.com/xmWap/#/payment/paymentlist'
     },
-    openTask() {
+    openTask () {
       this.$emit('input', false)
       this.$emit('openTask')
     },
-    tryAgen() {
+    tryAgen () {
       this.$emit('input', false)
       this.$emit('tryAgen')
     },
-    checkLog() {
+    checkLog () {
       this.$emit('input', false)
       this.$emit('refresh', false)
       this.$emit('checkLog')
     }
   },
   computed: {
-    currentTree() {
+    currentTree () {
       return require(`../img/tree${this.treeInfo.currTreeGrade}.png`)
     },
-    proveTree() {
+    proveTree () {
       return require(`../img/tree${this.treeInfo.treeGrade}.png`)
     }
   }
@@ -205,11 +205,11 @@ export default {
     bottom: 0;
     right: 0;
     z-index: 1;
-    background: rgba(0,0,0,.7);
+    background: rgba(0, 0, 0, 0.7);
   }
   .wrap {
     position: absolute;
-    left: .21rem;
+    left: 0.21rem;
     top: 50%;
     z-index: 2;
     transform: translate(0, -50%);
@@ -219,8 +219,8 @@ export default {
     background-size: 100% 100%;
     .close {
       position: absolute;
-      right: -.2rem;
-      top: .18rem;
+      right: -0.2rem;
+      top: 0.18rem;
       width: 1.01rem;
       height: 1.05rem;
       background: url(../img/close.png) no-repeat center center;
@@ -235,16 +235,16 @@ export default {
       .title1 {
         margin: 1.45rem 0 0 1.13rem;
         width: 4.32rem;
-        height: .59rem;
+        height: 0.59rem;
       }
       .title2 {
-        margin: .1rem 0 0 2.13rem;
+        margin: 0.1rem 0 0 2.13rem;
         width: 2.27rem;
-        height: .26rem;
+        height: 0.26rem;
       }
       .body {
         height: 2.64rem;
-        margin: .2rem 0;
+        margin: 0.2rem 0;
         display: flex;
         justify-content: center;
         align-items: flex-end;
@@ -259,9 +259,9 @@ export default {
           }
         }
         .right-arrows {
-          margin: 0 .1rem .6rem;
-          width: .51rem;
-          height: .44rem;
+          margin: 0 0.1rem 0.6rem;
+          width: 0.51rem;
+          height: 0.44rem;
         }
         .nextTree {
           display: flex;
@@ -275,24 +275,23 @@ export default {
         }
       }
       .btn {
-        margin: .2rem 0 0 1.53rem;
+        margin: 0.2rem 0 0 1.53rem;
         width: 3.52rem;
         height: 1.3rem;
         background: url(../img/sign-btn-bg.png) no-repeat center center;
         background-size: 100% 100%;
         img {
-          margin: .2rem 0 0 .8rem;
+          margin: 0.2rem 0 0 0.8rem;
           width: 1.91rem;
-          height: .58rem;
+          height: 0.58rem;
         }
       }
-  
     }
     .get-award {
       .title {
         margin: 1.71rem 0 0 1.44rem;
         width: 3.74rem;
-        height: .6rem;
+        height: 0.6rem;
       }
       .award {
         position: absolute;
@@ -313,9 +312,9 @@ export default {
             height: auto;
           }
           p {
-            margin-top: .05rem;
-            color: #CD4211;
-            font-size: .36rem;
+            margin-top: 0.05rem;
+            color: #cd4211;
+            font-size: 0.36rem;
             font-weight: bold;
           }
         }
@@ -323,31 +322,31 @@ export default {
       .btns {
         position: absolute;
         top: 5.7rem;
-        left: .83rem;
+        left: 0.83rem;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
         .cancel {
           width: 2.29rem;
           height: 1.01rem;
-          margin-right: .27rem;
+          margin-right: 0.27rem;
           background: url(../img/btn3.png) no-repeat center bottom;
           background-size: 100% 100%;
           img {
-            margin: .21rem 0 0 .47rem;
+            margin: 0.21rem 0 0 0.47rem;
             width: 1.36rem;
-            height: .42rem;
+            height: 0.42rem;
           }
         }
         .confirm {
           width: 2.29rem;
-          height: .98rem;
+          height: 0.98rem;
           background: url(../img/btn1.png) no-repeat center bottom;
           background-size: 100% 100%;
           img {
-            margin: .2rem 0 0 .48rem;
+            margin: 0.2rem 0 0 0.48rem;
             width: 1.33rem;
-            height: .42rem;
+            height: 0.42rem;
           }
         }
       }
@@ -356,26 +355,26 @@ export default {
       .title1 {
         margin: 1.73rem 0 0 2.34rem;
         width: 1.82rem;
-        height: .85rem;
+        height: 0.85rem;
       }
       .title2 {
-        margin: .1rem 0 0 1.65rem;
+        margin: 0.1rem 0 0 1.65rem;
         width: 3.25rem;
-        height: .61rem;
+        height: 0.61rem;
       }
       .award {
         height: 2.26rem;
         text-align: center;
         img {
-          margin-top: .3rem;
+          margin-top: 0.3rem;
           width: 1.64rem;
           height: 1.41rem;
         }
         p {
-          margin-top: .05rem;
-          color: #CD4211;
-          font-size: .36rem;
-          font-weight: bold; 
+          margin-top: 0.05rem;
+          color: #cd4211;
+          font-size: 0.36rem;
+          font-weight: bold;
         }
       }
       .btn {
@@ -385,10 +384,10 @@ export default {
         background: url(../img/btn1.png) no-repeat center center;
         background-size: 100% 100%;
         img {
-          margin: .2rem 0 0 1.05rem;
+          margin: 0.2rem 0 0 1.05rem;
           width: 1.43rem;
-          height: .57rem;
-        } 
+          height: 0.57rem;
+        }
       }
     }
     .no-water {
@@ -398,25 +397,25 @@ export default {
         height: 1.48rem;
       }
       .icon {
-        margin: .32rem 0 0 2.9rem;
-        width: .63rem;
-        height: .87rem;
+        margin: 0.32rem 0 0 2.9rem;
+        width: 0.63rem;
+        height: 0.87rem;
       }
       .title2 {
-        margin: .3rem 0 0 1.27rem;
+        margin: 0.3rem 0 0 1.27rem;
         width: 4rem;
-        height: .5rem;
+        height: 0.5rem;
       }
       .btn {
-        margin: .6rem 0 0 1.53rem;
+        margin: 0.6rem 0 0 1.53rem;
         width: 3.52rem;
         height: 1.3rem;
         background: url(../img/btn1.png) no-repeat center center;
         background-size: 100% 100%;
         img {
-          margin: .24rem 0 0 .83rem;
+          margin: 0.24rem 0 0 0.83rem;
           width: 1.91rem;
-          height: .58rem;
+          height: 0.58rem;
         }
       }
     }
@@ -424,75 +423,74 @@ export default {
       .title {
         margin: 1.36rem 0 0 1.69rem;
         width: 3.2rem;
-        height: .86rem;
-
+        height: 0.86rem;
       }
       .items {
-        margin: .1rem 0 0 .77rem;
+        margin: 0.1rem 0 0 0.77rem;
         display: flex;
         justify-content: flex-start;
         .item {
           width: 2.46rem;
           background: url(../img/card-bg.png) no-repeat center top;
-          background-size: 100% 3.3rem; 
+          background-size: 100% 3.3rem;
           .title2 {
-            margin: .67rem 0 0 .35rem;
+            margin: 0.67rem 0 0 0.35rem;
             width: 1.77rem;
-            height: .54rem;
+            height: 0.54rem;
             background: url(../img/manure-title2.png) no-repeat center center;
-            background-size: 100% 100%; 
-            font-size: .22rem;
+            background-size: 100% 100%;
+            font-size: 0.22rem;
             text-align: center;
-            line-height: .5rem;
+            line-height: 0.5rem;
             color: #fff;
             font-weight: bold;
           }
           .icon {
-            margin-top: -.1rem;
+            margin-top: -0.1rem;
             height: 1.56rem;
           }
           .numer {
-            margin-top: -.1rem;
+            margin-top: -0.1rem;
             text-align: center;
-            font-size: .28rem;
+            font-size: 0.28rem;
             color: #fff;
             font-weight: bold;
           }
           .btn {
-            margin: .3rem auto ;
+            margin: 0.3rem auto;
             background: url(../img/btn1.png) no-repeat center center;
-            background-size: 100% 100%; 
+            background-size: 100% 100%;
             width: 2.3rem;
-            height: .98rem;
+            height: 0.98rem;
             &.no {
               background: url(../img/buyend.png) no-repeat center center;
-              background-size: 100% 100%; 
+              background-size: 100% 100%;
             }
           }
         }
         .item1 {
           .icon {
-            margin-left: .67rem;
+            margin-left: 0.67rem;
             width: 1.17rem;
           }
           .btn {
             img {
-              margin: .2rem 0 0 .52rem;
+              margin: 0.2rem 0 0 0.52rem;
               width: 1.24rem;
-              height: .42rem;
+              height: 0.42rem;
             }
           }
         }
         .item2 {
           .icon {
-            margin-left: .32rem;
+            margin-left: 0.32rem;
             width: 1.88rem;
           }
-         .btn {
+          .btn {
             img {
-              margin: .2rem 0 0 .45rem;
+              margin: 0.2rem 0 0 0.45rem;
               width: 1.37rem;
-              height: .42rem;
+              height: 0.42rem;
             }
           }
         }
@@ -500,8 +498,8 @@ export default {
       .tips {
         text-align: center;
         font-weight: bold;
-        font-size: .22rem;
-        color: #9D694C;
+        font-size: 0.22rem;
+        color: #9d694c;
       }
     }
   }

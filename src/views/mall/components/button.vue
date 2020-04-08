@@ -25,21 +25,21 @@ export default {
     }
   },
   computed: {
-    buttonClass() {
-      let classNames = ""
+    buttonClass () {
+      let classNames = ''
       if (this.size === 'small') {
-        classNames =  `button-${this.type} size-small`
+        classNames = `button-${this.type} size-small`
       } else {
         if (!this.long) {
-          classNames =  `button-warp button-${this.type}`
+          classNames = `button-warp button-${this.type}`
         } else {
           classNames = ` button-warp button-${this.type} button-long`
         }
       }
-      if(!this.enable){
-        classNames+=' disable';
+      if (!this.enable) {
+        classNames += ' disable'
       }
-      return classNames;
+      return classNames
     }
   },
   methods: {
@@ -51,26 +51,26 @@ export default {
 </script>
 <style lang="less" scoped>
 .disable {
-  background:rgba(255,65,65,1);
-  opacity:0.4;
+  background: rgba(255, 65, 65, 1);
+  opacity: 0.4;
 }
 
 .button-warp {
   display: inline-block;
-  width: calc(50% - .2rem);
-  padding: 0 .15rem;
-  height: .7rem;
-  font-size: .24rem;
+  width: calc(50% - 0.2rem);
+  padding: 0 0.15rem;
+  height: 0.7rem;
+  font-size: 0.24rem;
   color: #fff;
   box-sizing: border-box;
   text-align: center;
-  line-height: .7rem;
+  line-height: 0.7rem;
   border: none;
-  border-radius: .16rem;
+  border-radius: 0.16rem;
   background-color: #ff4141;
 }
 .size-small {
-  font-size: .22rem;
+  font-size: 0.22rem;
 }
 .button-default {
   color: #fff;

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-warp"  v-show="show">
+  <div class="modal-warp" v-show="show">
     <transition name="mask">
       <div class="modal-mask" v-show="show"></div>
     </transition>
@@ -22,7 +22,8 @@
         </slot>
       </div>
       <slot name="other"></slot>
-      <div class="close-icon" v-if="type == 1 && closeIconShow" @click="closeModal"><i class="iconfont icon-close"></i></div>
+      <div class="close-icon" v-if="type == 1 && closeIconShow" @click="closeModal"><i
+          class="iconfont icon-close"></i></div>
     </div>
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
     }
   },
   props: {
-    isWidth:{
+    isWidth: {
       type: Boolean,
       default: false
     },
@@ -78,7 +79,7 @@ export default {
       type: Object,
       default: () => ({})
     }
-  },  
+  },
   methods: {
     closeModal () {
       this.show = false
@@ -94,16 +95,16 @@ export default {
       this.$emit('on-save')
     },
     ScrollNoMove () {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('touchmove', this.move, { passive: false });
+      document.body.style.overflow = 'hidden'
+      document.addEventListener('touchmove', this.move, { passive: false })
     },
     ScrollMove () {
-      document.body.style.overflow = null;
-      document.removeEventListener('touchmove', this.move, { passive: false });
+      document.body.style.overflow = null
+      document.removeEventListener('touchmove', this.move, { passive: false })
     }
   },
   watch: {
-    value(newValue) {
+    value (newValue) {
       this.show = newValue
     }
   }
@@ -129,56 +130,55 @@ export default {
   left: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
-  overflow:hidden;
-  pointer-events:none;
+  overflow: hidden;
+  pointer-events: none;
 }
 .modal-content {
   position: absolute;
   width: 4.7rem;
-  &.showWidth
-  {
+  &.showWidth {
     width: 6rem;
   }
   min-height: 2rem;
   z-index: 2;
   background-color: #ffffff;
-  border-radius: .32rem;
+  border-radius: 0.32rem;
   top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
   overflow: hidden;
 
-  &.showWidth{
+  &.showWidth {
     width: 6rem;
   }
 
   .header {
-    margin-top: .36rem;
-    height: .4rem;
+    margin-top: 0.36rem;
+    height: 0.4rem;
     width: 100%;
     position: relative;
-    font-size: .28rem;
+    font-size: 0.28rem;
     font-weight: bold;
     color: #000000;
-    line-height: .4rem;
+    line-height: 0.4rem;
     text-align: center;
   }
   .content {
-    padding: .08rem .3rem .23rem;
+    padding: 0.08rem 0.3rem 0.23rem;
     &.line {
       border-bottom: 2px solid #e6e6e6;
     }
   }
   .footer-warp {
-    margin-bottom: .3rem;
-    height: .7rem;
+    margin-bottom: 0.3rem;
+    height: 0.7rem;
     width: 100%;
     text-align: center;
     box-sizing: border-box;
-    padding: 0 .3rem;
+    padding: 0 0.3rem;
   }
   .btns {
-    height: .9rem;
+    height: 0.9rem;
     width: 100%;
     text-align: center;
     box-sizing: border-box;
@@ -186,11 +186,11 @@ export default {
     display: flex;
     justify-content: center;
     .btn {
-      margin: 0 .1rem;
+      margin: 0 0.1rem;
       width: 100%;
-      height: .9rem;
-      line-height: .9rem;
-      font-size: .24rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
+      font-size: 0.24rem;
     }
     .cannel {
       color: #000000;
@@ -201,14 +201,14 @@ export default {
   }
   .close-icon {
     position: absolute;
-    height: .4rem;
-    width: .4rem;
-    top: .15rem;
-    right: .2rem;
+    height: 0.4rem;
+    width: 0.4rem;
+    top: 0.15rem;
+    right: 0.2rem;
     text-align: center;
-    line-height: .4rem;
+    line-height: 0.4rem;
     i {
-      font-size: .18rem;
+      font-size: 0.18rem;
       color: #888888;
     }
   }
