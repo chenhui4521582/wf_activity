@@ -54,6 +54,10 @@ export default {
     myInfo: {
       type: Object,
       default: null
+    },
+    actInfoData: {
+      type: Object,
+      default: null
     }
   },
   components: {
@@ -64,7 +68,7 @@ export default {
       this.handleTab(idx)
     },
     outHandleTab (idx) {
-      GLOBALS.marchSetsPoint('A_H5PT0252003000')   // H5平台-元宵活动-底部有奖排行点击
+      GLOBALS.marchSetsPoint('A_H5PT0252003000', { role_level: this.actInfoData.catLevel })   // H5平台-元宵活动-底部有奖排行点击
       this.$emit('handleTab', idx)
     },
     handleTab (idx) {

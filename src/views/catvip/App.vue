@@ -8,7 +8,7 @@
             <div class="back" @click="back">返回</div>
             <div class="rule" @click="showPop(7)">规则</div>
           </div>
-          <div class="gift" @click="showPop(9)"
+          <div class="gift" @click="buyGiftClick()"
             v-if="actInfoData.catStatus&&actInfoData.catLevel<20">
             <img src="./imgs/gift-icon.png" alt="">
             <span>升等级</span>
@@ -127,7 +127,10 @@
             <div class="info">
               <div class="info_title">{{item.taskName}}</div>
               <div class="info_content">
-                <div class="percent" :class="{full:item.status}"></div>
+                <div class="percent-wrap">
+                  <div class="percent" :style="{width:item.progress/item.total+'%'}"></div>
+                  <div class="percent-text">{{item.progress}}/{{item.total}}</div>
+                </div>
                 <div class="awardsname">{{item.awardsName}}</div>
               </div>
             </div>
@@ -138,14 +141,15 @@
         </div>
       </div>
       <drop-down ref="dropDown" :countTime="countTime" :endDate="actInfoData.endDate"
-        @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab"></drop-down>
+        @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab" :actInfoData="actInfoData">
+      </drop-down>
     </template>
     <template v-else>
       <div class="clickIcons">
         <div class="back" @click="back">返回</div>
         <div class="rule" @click="showPop(7)">规则</div>
       </div>
-      <profit :is-full="true" @showPop="showPop" />
+      <profit :is-full="true" @showPop="showPop" :actInfoData="actInfoData" />
     </template>
     <!--popType-->
     <com-pop :pop-type="popType" :award-data="awardData" :package-info="packageInfo" ref="comPop"
@@ -243,8 +247,12 @@ export default {
     },
     //返回
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0252002981')   // 点击返回
+      GLOBALS.marchSetsPoint('A_H5PT0252002981', { role_level: this.actInfoData.catLevel })   // 点击返回
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
+    },
+    buyGiftClick () {
+      GLOBALS.marchSetsPoint('A_H5PT0252003228', { role_level: this.actInfoData.catLevel })
+      this.showPop(9)
     },
     //弹窗
     showPop (type) {
@@ -257,16 +265,21 @@ export default {
         case 2:
           point = 'A_H5PT0252002994'
           break//猫币介绍
+        case 8:
+          point = 'A_H5PT0252003226'
+          break//点击提升限购次数
       }
-      point && GLOBALS.marchSetsPoint(point)
+      point && GLOBALS.marchSetsPoint(point, { role_level: this.actInfoData.catLevel })
       if ([0].includes(type)) {
         setTimeout(() => {
           this.$refs.comPop.showPop()
         }, 1000)
       } else {
-        type == 2 && GLOBALS.marchSetsPoint('A_H5PT0252002997')
+        type == 2 && GLOBALS.marchSetsPoint('A_H5PT0252002997', { role_level: this.actInfoData.catLevel })
         setTimeout(() => {
           this.$refs.comPop.showPop()
+          type == 9 && GLOBALS.marchSetsPoint('A_H5PT0252003229', { role_level: this.actInfoData.catLevel }) // 直升礼包弹窗加载完成
+          type == 10 && GLOBALS.marchSetsPoint('A_H5PT0252003231', { role_level: this.actInfoData.catLevel }) // 等级提升弹窗加载完成
         })
       }
     },
@@ -293,7 +306,8 @@ export default {
           this.isEnd = true
         }
         flag && GLOBALS.marchSetsPoint('P_H5PT0252', {
-          source_address: GLOBALS.getUrlParam('from') || ''
+          source_address: GLOBALS.getUrlParam('from') || '',
+          role_level: this.actInfoData.catLevel
         })
       }
     },
@@ -323,19 +337,21 @@ export default {
       if (item.purchased < item.limit) {
         GLOBALS.marchSetsPoint('A_H5PT0252002987', {
           awards_id: item.level,
-          awards_name: item.hfqName + '兑换' + item.leafName
+          awards_name: item.hfqName + '兑换' + item.leafName,
+          role_level: this.actInfoData.catLevel
         })
         this.leafItem = item
         GLOBALS.marchSetsPoint(item.convert ? 'A_H5PT0252002988' : 'A_H5PT0252002990', {
           awards_id: item.level,
-          awards_name: item.hfqName + '兑换' + item.leafName
+          awards_name: item.hfqName + '兑换' + item.leafName,
+          role_level: this.actInfoData.catLevel
         })
         this.showPop(6)
       }
     },
     //确认兑换
     async exchange () {//exchangeLeaf
-      GLOBALS.marchSetsPoint('A_H5PT0252002989')
+      GLOBALS.marchSetsPoint('A_H5PT0252002989', { role_level: this.actInfoData.catLevel })
       this.showLoading = true
       let { code, data, message } = await exchangeLeaf()
       if (code == 200) {
@@ -345,7 +361,7 @@ export default {
           info: `可至“我的-资产”查看`,
           popType: 1
         }
-        GLOBALS.marchSetsPoint('A_H5PT0252002992')
+        GLOBALS.marchSetsPoint('A_H5PT0252002992', { role_level: this.actInfoData.catLevel })
         this.showPop(3)
         this.getActInfo(false)
         this.showLoading = false
@@ -363,7 +379,8 @@ export default {
       if (item.status == 0) {
         GLOBALS.marchSetsPoint('A_H5PT0252002995', {
           task_id: item.taskId,
-          task_name: item.taskName
+          task_name: item.taskName,
+          role_level: this.actInfoData.catLevel
         })
         if (item.url.includes('moreGamePop')) {
           this.showPop(5)
@@ -375,7 +392,8 @@ export default {
       if (item.status == 1) {
         GLOBALS.marchSetsPoint('A_H5PT0252002996', {
           task_id: item.taskId,
-          task_name: item.taskName
+          task_name: item.taskName,
+          role_level: this.actInfoData.catLevel
         })
         this.showLoading = true
         let { code, data, message } = await taskGain(item.taskId)
@@ -386,7 +404,7 @@ export default {
             info: `可至招财猫查看`,
             popType: 2
           }
-          GLOBALS.marchSetsPoint(data.type == 'mb' ? 'A_H5PT0252002999' : 'A_H5PT0252002998')
+          GLOBALS.marchSetsPoint(data.type == 'mb' ? 'A_H5PT0252002999' : 'A_H5PT0252002998', { role_level: this.actInfoData.catLevel })
           this.showPop(3)
           this.getActInfo(false)
           this.showLoading = false
@@ -403,7 +421,7 @@ export default {
     async lottery (lotteryType) {
       if (this.actInfoData[lotteryType] == 0) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0252002983')   // 点击任意礼包
+        GLOBALS.marchSetsPoint(lotteryType === 'juniorLottery' ? 'A_H5PT0252002983' : 'A_H5PT0252003223', { role_level: this.actInfoData.catLevel })   // 点击任意礼包
         let packageInfo = this.packageInfo.filter(item => item.price === this.currentAwardType)
         if (packageInfo && packageInfo.length > 0) {
           packageInfo = packageInfo[0]
@@ -413,7 +431,7 @@ export default {
             'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
         }
       } else if (this.actInfoData[lotteryType] == 1) {
-        GLOBALS.marchSetsPoint('A_H5PT0252002984')
+        GLOBALS.marchSetsPoint(lotteryType === 'juniorLottery' ? 'A_H5PT0252002984' : 'A_H5PT0252003224', { role_level: this.actInfoData.catLevel })
         this.showLoading = true
         let { code, data, message } = await levelLottery({ level: this.currentAwardType })
         if (code == 200) {
@@ -423,7 +441,7 @@ export default {
             info: `奖励已发放，可至“我的”查看`,
             popType: 0
           }
-          GLOBALS.marchSetsPoint('A_H5PT0252002985')
+          GLOBALS.marchSetsPoint(lotteryType === 'juniorLottery' ? 'A_H5PT0252002985' : 'A_H5PT0252003225', { role_level: this.actInfoData.catLevel })
           this.showPop(3)
           this.getActInfo(false)
           this.getHornList()
@@ -440,9 +458,9 @@ export default {
     //预热、活动中的(无猫、级别不够)
     preheat (dosth, ms = 0) {//预热
       if (this.actInfoData.state == 0 || (this.actInfoData.state == 1 && (!this.actInfoData.catStatus || this.actInfoData.catLevel < 20))) {
-        this.actInfoData.state == 0 && GLOBALS.marchSetsPoint('A_H5PT0252002976')   // H5平台-招财猫会员日-预热阶段提示弹窗加载完成
-        this.actInfoData.state == 1 && !this.actInfoData.catStatus && GLOBALS.marchSetsPoint('A_H5PT0252002977')   // H5平台-招财猫会员日-未领猫提示弹窗加载完成
-        this.actInfoData.state == 1 && this.actInfoData.catStatus && this.actInfoData.catLevel < 20 && GLOBALS.marchSetsPoint('A_H5PT0252002979')   // H5平台-招财猫会员日-未领猫提示弹窗加载完成
+        this.actInfoData.state == 0 && GLOBALS.marchSetsPoint('A_H5PT0252002976', { role_level: this.actInfoData.catLevel })   // H5平台-招财猫会员日-预热阶段提示弹窗加载完成
+        this.actInfoData.state == 1 && !this.actInfoData.catStatus && GLOBALS.marchSetsPoint('A_H5PT0252002977', { role_level: this.actInfoData.catLevel })   // H5平台-招财猫会员日-未领猫提示弹窗加载完成
+        this.actInfoData.state == 1 && this.actInfoData.catStatus && this.actInfoData.catLevel < 20 && GLOBALS.marchSetsPoint('A_H5PT0252002979', { role_level: this.actInfoData.catLevel })   // H5平台-招财猫会员日-未领猫提示弹窗加载完成
         setTimeout(() => {
           this.showPop(4)
         }, ms)
@@ -648,8 +666,8 @@ export default {
           align-items: center;
           justify-content: center;
           text-align: center;
-          color: #fff;
           padding-top: 0.24rem;
+          color: #ff9638;
           .left {
             width: 1.64rem;
             height: 0.72rem;
@@ -671,7 +689,7 @@ export default {
             }
           }
           .active {
-            color: #ff9638;
+            color: #fff;
           }
           .name {
             font-size: 0.3rem;
@@ -763,6 +781,7 @@ export default {
           &.gray {
             background: url("./imgs/btngray.png");
             background-size: 100% 100%;
+            color: #fff;
           }
         }
       }
@@ -937,14 +956,29 @@ export default {
             font-size: 0.2rem;
             font-weight: 400;
             color: rgba(231, 133, 54, 1);
-            .percent {
+            .percent-wrap {
               margin-right: 0.1rem;
               width: 1.52rem;
               height: 0.3rem;
               background: rgba(236, 223, 213, 1);
               border-radius: 0.12rem;
-              &.full {
+              overflow: hidden;
+              position: relative;
+              .percent {
+                width: 0%;
+                max-width: 100%;
+                height: 0.3rem;
                 background: rgba(236, 192, 134, 1);
+              }
+              .percent-text {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                line-height: 0.32rem;
+                text-align: center;
+                color: #fff;
               }
             }
           }

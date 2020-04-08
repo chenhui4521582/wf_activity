@@ -22,7 +22,7 @@
         </div>
         <div class="pass" v-if="lastTreasurePassed">
           <p>上期流拍</p>
-          <p>话费卷已经退回账户</p>
+          <p>话费券已经退回账户</p>
         </div>
     </div>
     <!-- 夺宝结束 -->

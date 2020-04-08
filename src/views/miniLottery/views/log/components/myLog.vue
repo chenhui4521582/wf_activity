@@ -16,7 +16,7 @@
             <div class="item">
               <div class="pass" v-if="item.status!=0 && item.ifReturn">
                 <p>流拍</p>
-                <p>话费卷已退回</p>
+                <p>话费券已退回</p>
               </div>
               <div class="yes" v-if="item.status!=0 && !item.ifReturn && item.ifWin">
                 中奖
