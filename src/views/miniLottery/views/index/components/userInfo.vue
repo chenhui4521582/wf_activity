@@ -1,13 +1,12 @@
 <template>
   <div class="user-info">
     <div class="leaf">
-      {{userInfo.leafs | amountComputen}}
+      <div class="name">金叶子</div>
+      <div class="value">{{userInfo.leafs | amountComputen}}</div>
     </div>
     <div class="phone">
-      {{userInfo.phoneScrap / 10 | amountComputen}}
-    </div>
-    <div class="card-lottery" @click="goExchange">
-      {{userInfo.cardAccount  | amountComputen}}
+      <div class="name">话费</div>
+      <div class="value">{{userInfo.phoneScrap / 10 | amountComputen}}</div>
     </div>
   </div>
 </template>
@@ -34,30 +33,49 @@ export default {
 </script>
 <style lang="less" scoped>
   .user-info {
-    padding: 0 0 0 1.45rem; 
+    margin-left: 1rem;
     display: flex;
-    justify-items: flex-start;
+    justify-content: flex-start;
+    width: 5.3rem;
+    height: .56rem;
     font-size: .24rem;
     color: #F1303D;
-    height: .56rem;
     background: url(../img/user-bg.png) no-repeat center top / 100% 100%;
+
     .leaf {
-      margin-right: .85rem;
-      width: 1.1rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 2.58rem;
       height: .56rem;
-      line-height: .56rem;
+      line-height: .58rem;
+      box-sizing: border-box;
     }
     .phone {
-      margin-right: 1.05rem;
-      width: 1.1rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
       height: .56rem;
-      line-height: .56rem;
+      line-height: .58rem;
+      .name {
+        width: .9rem;
+      }
     }
-    .card-lottery {
-      width: 1.1rem;
-      height: .56rem;
-      line-height: .56rem;
-      background: url(../img/add-icon.png) no-repeat right center / .28rem .28rem;
+    .name {
+      padding-left: .2rem;
+      font-size: .24rem;
+      color: #AD4E54;
+      font-weight: bold;
+      width: 1rem;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+    .value {
+      box-sizing: border-box;
+      padding-left: .1rem;
+      font-size: .24rem;
+      color: #F1303D;
+      font-weight: 500;
     }
   }
 </style>

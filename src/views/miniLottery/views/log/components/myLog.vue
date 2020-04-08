@@ -16,7 +16,7 @@
             <div class="item">
               <div class="pass" v-if="item.status!=0 && item.ifReturn">
                 <p>流拍</p>
-                <p>夺宝卡已退回</p>
+                <p>话费券已退回</p>
               </div>
               <div class="yes" v-if="item.status!=0 && !item.ifReturn && item.ifWin">
                 中奖
@@ -141,8 +141,8 @@ export default {
     }
   }
   .wrap {
-    overflow: hidden;
     padding-bottom: .2rem;
+    overflow: hidden;
     position: absolute;
     left: .24rem;
     top: .5rem;
@@ -151,11 +151,11 @@ export default {
     background: #FFFAD4;
     border-radius: 0 0 .16rem  .16rem;
     ul {
-      height: calc(100% - 1.86rem);
-      padding-bottom: .2rem;
-      background: #FFFAD4;
-      border-radius: 0 0 .16rem  .16rem;
-      overflow-y: scroll;
+      // height: calc(100% - 1.86rem);
+      // padding-bottom: .2rem;
+      // background: #FFFAD4;
+      // border-radius: 0 0 .16rem  .16rem;
+      // overflow-y: scroll;
       li {
         height: .9rem;
         display: flex;
