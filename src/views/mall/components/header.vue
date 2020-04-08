@@ -38,7 +38,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f7f7f7;
+  background: #fff;
   .return-img {
     position: absolute;
     top: 0;
@@ -52,12 +52,14 @@ export default {
     z-index: 10;
     .iconfont {
       font-size: 0.3rem;
+      color: #202020;
     }
   }
   .title {
     text-align: center;
     font-size: 0.32rem;
     font-weight: bold;
+    color: #202020;
   }
 }
 </style>
