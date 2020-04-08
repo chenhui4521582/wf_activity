@@ -282,6 +282,7 @@ export default {
     },
     buyGift (item) {
       GLOBALS.marchSetsPoint('A_H5PT0252003230', { recharge_rmb: item.price, product_id: item.bizId, role_level: this.actInfoData.catLevel })
+      localStorage.setItem('originDeffer', window.location.href)
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
