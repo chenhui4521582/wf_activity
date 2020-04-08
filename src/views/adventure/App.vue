@@ -39,9 +39,14 @@ export default {
   methods: {
     goTask () {
       GLOBALS.marchSetsPoint('A_H5PT0019003191') // H5平台-大户流失挽留(奇遇任务)弹窗-前往查看点击
-      let url = `https://wap.beeplaying.com/xmWap/#/task`
-      parent.GameEval&&parent.GameEval('closeweb')
-      parent.location.href = url
+      if(parent&&parent.openWebView&&parent.SDK&&parent.SDK.getTaskUrl){
+        parent.GameEval&&parent.GameEval('closeweb')
+        parent.openWebView(parent.SDK.getTaskUrl())
+      }else{
+        let url = `https://wap.beeplaying.com/xmWap/#/task`
+        parent.GameEval&&parent.GameEval('closeweb')
+        parent.location.href = url
+      }
     }
   }
 }
