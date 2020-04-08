@@ -1,6 +1,6 @@
 .profit-container {
   text-align: center;
-  padding: 0.5rem .17rem 0;
+  padding: 0.5rem 0.17rem 0;
   width: 100%;
   height: calc(100%);
   position: absolute;
@@ -48,17 +48,17 @@
       }
       .help {
         position: absolute;
-        top: .25rem;
+        top: 0.25rem;
         left: 3.96rem;
-        width: .35rem;
-        height: .35rem;
+        width: 0.35rem;
+        height: 0.35rem;
         background: url("../../imgs/profit/help.png");
         background-size: 100% 100%;
       }
     }
 
     .p-items {
-      background: #FFFAF1;
+      background: #fffaf1;
       box-sizing: border-box;
 
       &.p-items-content {
@@ -78,9 +78,9 @@
         }
         .p-container {
           position: absolute;
-          top: .8rem;
-          left: .2rem;
-          right: .2rem;
+          top: 0.8rem;
+          left: 0.2rem;
+          right: 0.2rem;
           height: 3.5rem;
           &.isfull {
             height: 6.5rem;
@@ -89,21 +89,20 @@
         }
         .i-font-style {
           font-style: normal;
-          color: #EBAF44;
+          color: #ebaf44;
         }
       }
 
       &.p-items-header {
         width: 100%;
-        color: #FEC041;
+        color: #fec041;
         font-size: 0.18rem;
 
         li {
-
           span:nth-child(1):after,
           span:nth-child(2):after,
           span:nth-child(3):after {
-            content: '';
+            content: "";
             width: 1px;
             height: 0.15rem;
             background: rgba(254, 192, 65, 1);
@@ -135,7 +134,7 @@
           position: relative;
 
           em.i-ellipsis {
-            display: flex;
+            display: block;
             font-style: normal;
             overflow: hidden;
             /*超出部分隐藏*/
@@ -144,18 +143,21 @@
             text-overflow: ellipsis;
             /*超出部分文字以...显示*/
             padding: 0 0.02rem;
+            max-width: 100%;
             height: 100%;
-            align-items: center;
           }
 
           &:nth-child(1) {
-            flex: 0 0 13%;
+            // flex: 0 0 13%;
+            width: 13%;
           }
           &:nth-child(2) {
-            flex: 0 0 30%;
+            // flex: 0 0 30%;
+            width: 30%;
           }
           &:nth-child(3) {
-            flex: 0 0 30%;
+            // flex: 0 0 30%;
+            width: 30%;
           }
           &:nth-child(4) {
             flex: 1;
@@ -168,7 +170,6 @@
             text-overflow: ellipsis;
             /*超出部分文字以...显示*/
           }
-
         }
 
         .icon-dot {
@@ -206,7 +207,7 @@
   }
 
   .profit-footer {
-    margin-top: .12rem;
+    margin-top: 0.12rem;
     font-size: 0.2rem;
     font-weight: 400;
     color: rgba(196, 94, 19, 1);
@@ -229,9 +230,9 @@
     }
   }
   .chongbangbtn {
-    margin: .18rem 0 .06rem;
+    margin: 0.18rem 0 0.06rem;
     width: 6.86rem;
-    height: .9rem;
+    height: 0.9rem;
     background: url("../../imgs/profit/chongbangbtn.png");
     background-size: 100% 100%;
   }
