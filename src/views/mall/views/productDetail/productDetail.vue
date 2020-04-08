@@ -33,7 +33,13 @@ export default {
   },
   data () {
     return {
-      info: {}
+      info: {
+        detailPicture: 'https://tinypng.com/web/output/f375w0dcq22f87cqztm2jeq3r5ym5bn0/iPhone11Pro.png',
+        purchasePrice: 9999,
+        marketPrice: 10000,
+        name: 'iPhone11 pro',
+        participants: 0
+      }
     }
   },
   mounted () {

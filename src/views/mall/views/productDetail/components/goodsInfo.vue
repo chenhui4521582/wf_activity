@@ -2,19 +2,19 @@
   <div class="goods-info">
     <div class="goods-img">
       <img :src="info.detailPicture | filter" alt="">
-      <div class="corner">
+      <div class="corner" v-if="info.cornerImg">
         <img :src="info.cornerImg | filter" alt="">
       </div>
     </div>
     <div class="info">
       <div class="group">
         <span class="unit">¥</span>
-        <span class="price">{{info.purchasePrice||9999}}</span>
-        <span class="market-price">官方价:￥{{info.marketPrice||11000 | unit}}</span>
+        <span class="price">{{info.purchasePrice}}</span>
+        <span class="market-price">官方价:￥{{info.marketPrice | unit}}</span>
       </div>
       <div class="group1">
         <span class="name">
-          {{info.name||'iPhone11 pro'}}
+          {{info.name}}
         </span>
         <span class="participants">
           已有{{info.participants || 0}}人参与抽奖
