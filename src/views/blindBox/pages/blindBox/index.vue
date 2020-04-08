@@ -6,7 +6,7 @@
       <section ref="banner"
         :style="{'transform': `translateY(${translateY}px)`}"
         class="banner">
-        <div class="time"></div>
+        <!-- <div class="time"></div> -->
       </section>
       <article class="container"
         :class="{'active': (bannerHeight + translateY)}">
