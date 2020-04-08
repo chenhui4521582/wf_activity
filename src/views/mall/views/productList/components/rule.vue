@@ -49,7 +49,7 @@ export default {
     background: rgba(0,0,0,.7);
   }
   .center {
-    padding: 0 .25rem;
+    padding: 0 .25rem .25rem;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -76,6 +76,7 @@ export default {
       margin-bottom: .3rem;
       font-size: .24rem;
       color: #fff;
+      line-height: .36rem;
     }
     .close {
       position: absolute;
