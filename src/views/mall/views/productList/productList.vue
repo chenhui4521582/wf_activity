@@ -12,7 +12,7 @@
     <!-- rule 按钮 -->
     <div class="rule-btn" @click="openRule">购买须知</div>
     <!-- order 按钮 -->
-    <div class="order-btn">
+    <div class="order-btn" @click="jumpMyOrder">
       <img src="./img/order-btn.png" alt="">
     </div>
     <!-- container -->
@@ -96,6 +96,11 @@ export default {
     },
     openRule() {
       this.showRule = true
+    },
+    jumpMyOrder() {
+      this.$router.push({
+        name: 'order'
+      })
     }
   }
 }
