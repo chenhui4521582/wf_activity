@@ -16,6 +16,10 @@
     <div class="buy-btn">
       购买
     </div>
+    <!-- 售罄 -->
+    <div class="sell-out">
+      <img src="../img/sell-out.png" alt="">
+    </div>
   </div>
 </template>
 <script>
@@ -98,6 +102,18 @@ export default {
     font-size: .24rem;
     background: #FF4141;
     border-radius: .1rem;
+  }
+  .sell-out {
+    position: absolute;
+    left: .16rem;
+    top: .64rem;
+    width: 1.1rem;
+    height: .94rem;
+    img {
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

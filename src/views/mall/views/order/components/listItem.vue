@@ -23,7 +23,7 @@
     </div>
     <!-- 待付款  status == 1 -->
     <div class="obligation" v-if="item.status == 1">
-      <div class="white-btn cancel-btn">取消订单</div>
+      <div class="white-btn cancel-btn" @click="openOrderCancal">取消订单</div>
       <div class="red-btn comfirm-btn">付款</div>
     </div>
     <!-- 待发货 status == 2 -->
@@ -32,25 +32,32 @@
     </div>
     <!-- 已发货 status == 3 -->
     <div class="shipped" v-if="item.status == 3">
-      <div class="white-btn check-btn">查看物流</div>
-      <div class="red-btn comfirm-btn">确认收货</div>
+      <div class="white-btn check-btn" @click="openLogistics">查看物流</div>
+      <div class="red-btn comfirm-btn" @click="receipt">确认收货</div>
     </div>
     <!-- 已完成 status == 4-->
     <div class="success" 
       v-if="item.status == 4" 
-      :class="{cancel: isCancel(item), refund: isRefund(item)}"
+      :class="{cancel: isCancel(item)}"
     >
       <!-- 退款 -->
       <template v-if="isRefund(item)">
-        <div class="icon"></div>
+        <div class="icon">
+          <img src="../img/refund-icon.png" alt="">
+        </div>
+        <div class="red-btn buy-btn">再次购买</div>
       </template>
       <!-- 订单取消 -->
       <template v-else-if="isCancel(item)">
-        <div class="icon"></div>
+        <div class="icon">
+          <img src="../img/cancel-icon.png" alt="">
+        </div>
+        <div class="explain">注：若产生退款，请点击<span @click="goServices">联系客服</span>及时处理订单</div>
+        <div class="red-btn buy-btn">再次购买</div>
       </template>
       <!-- 没有评论过 -->
       <template v-else-if="item.evaluation == 0">
-        <div class="white-btn  buy-btn">再次购买</div>
+        <div class="white-btn buy-btn">再次购买</div>
         <div class="red-btn evaluation-btn">立即评价</div>
       </template>
       <!-- 评论过 -->
@@ -70,6 +77,9 @@ export default {
       default: () => {}
     }
   },
+  data: () => ({
+
+  }),
   methods: {
     isCancel (item) {
       if(item.cancel == 1){
@@ -82,12 +92,29 @@ export default {
         return true
       }
       return false
+    },
+    /** 打开取消订单弹框 **/
+    openOrderCancal() {
+      this.$emit('openPopup', 1)
+    },
+    /** 打开物流弹框 **/
+    openLogistics() {
+      this.$emit('openPopup', 2)
+    },
+    /** 打开确认收货弹框 **/
+    receipt() {
+      this.$emit('openPopup', 3)
+    },
+    /** 跳转客服 **/
+    goServices() {
+      this.$emit('goServices')
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .order-item {
+  position: relative;
   margin-bottom: .2rem;
   padding: .3rem .2rem .36rem .3rem;
   border-radius: .16rem;
@@ -186,6 +213,31 @@ export default {
     font-size: .24rem;
     .check-evaluation {
       color: #FF7800;
+    }
+
+    &.cancel {
+      justify-content: space-between;
+      align-items: center;
+    }
+    .icon {
+      position: absolute;
+      top: 0;
+      right: 1.13rem;
+      width: 1.76rem;
+      height: 1.42rem;
+      img {
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .explain {
+      color: #BBBBBB;
+      font-size: .2rem;
+      span {
+        text-decoration: underline;
+        color: #5186CA;
+      }
     }
   }
 }
