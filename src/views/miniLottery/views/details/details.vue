@@ -86,7 +86,6 @@ export default {
     init() {
       this._getUserInfo()
       this._getDetails()
-
     }
   },
   mounted() {
