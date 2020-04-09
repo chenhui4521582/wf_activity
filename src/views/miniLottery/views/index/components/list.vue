@@ -203,6 +203,7 @@ export default {
           }
         }
         .text {
+          flex: 1;
           overflow: hidden;
           position: relative;
           padding-left: .22rem; 
