@@ -52,12 +52,14 @@ export default {
     z-index: 10;
     .iconfont {
       font-size: 0.3rem;
+      color: #202020;
     }
   }
   .title {
     text-align: center;
     font-size: 0.32rem;
     font-weight: bold;
+    color: #202020;
   }
 }
 </style>
