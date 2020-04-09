@@ -175,7 +175,7 @@ export default {
     getAward() {
       let APP_CHANNEL = localStorage.getItem('APP_CHANNEL').toString()
       let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      parent.location.href = `https://wap.beeplaying.com/xmWap/#/my/prize?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
+      parent.location.href = `https://wap.beeplaying.com/xmWap/#/my?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}`
       GLOBALS.marchSetsPoint('A_H5PT0202002095', {
         task_id: this.details.currentPeriodStatus,
         task_name: this.details.currentPeriodStatus
