@@ -186,7 +186,6 @@ export default {
           border-right: 1px solid #e8e2e2;
           img {
             vertical-align: top;
-            width: 100%;
             height: 100%;
           }
           .icon {
@@ -312,7 +311,6 @@ export default {
             text-align: center;
             img {
               vertical-align: top;
-              width: 100%;
               height: 100%;
             }
           }
