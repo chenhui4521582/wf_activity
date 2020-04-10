@@ -37,6 +37,14 @@ const routes = [
     name: 'orderDetail',
     component: () => import('../views/orderDetail/orderDetail'),
     mate: {
+      title: '订单详情'
+    }
+  },
+  {
+    path: '/comfirmorder',
+    name: 'comfirmOrder',
+    component: () => import('../views/comfirmOrder/comfirmOrder'),
+    mate: {
       title: '确认订单'
     }
   },
