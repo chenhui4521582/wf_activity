@@ -471,13 +471,10 @@ export default {
     padding-top: 0.28rem;
     font-size: 0.3rem;
     text-align: center;
-    background: linear-gradient(90deg, #dbbe6f, #fee9b4);
+    background: linear-gradient(90deg, #FFF8DC, #FCA667);
     -webkit-background-clip: text;
     font-weight: bold;
     color: transparent;
-    &.activity {
-      color: #e9355a;
-    }
   }
   .buy-tip {
     color: #6f768e;
@@ -485,7 +482,7 @@ export default {
     text-align: center;
     padding-top: 0.33rem;
     &.activity {
-      color: #7b4913;
+      color: #fff;
     }
   }
   .activity-button {
@@ -515,7 +512,7 @@ export default {
     }
   }
   .botton-wrapper {
-    background: #fef2de;
+    background: #5A4DAF;
   }
   img.coupon-tip {
     width: 1.56rem;
@@ -649,7 +646,7 @@ export default {
     box-sizing: border-box;
     // padding: 0.16rem;
     &.activity {
-      background: #fef2de;
+      background: #5A4DAF;
     }
     .times {
       padding-left: 0.2rem;
@@ -690,7 +687,7 @@ export default {
       display: flex;
       align-items: center;
       &.activity {
-        color: #e9355a;
+        /*color: #e9355a;*/
       }
       .icon {
         width: 0.34rem;

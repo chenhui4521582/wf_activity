@@ -188,9 +188,9 @@ export default {
   position: relative;
   z-index: 2;
   &.activity {
-    background: #fef2de;
+    background: #5A4DAF;
     .back {
-      background: #ed4263;
+      background: #9D88EC;
     }
   }
   .main-wrapper {
@@ -209,7 +209,7 @@ export default {
   z-index: 1;
   left: 0;
   top: 0;
-  background: url("./activity/banner.png") no-repeat;
+  background:#30569F url("./activity/banner.png") no-repeat;
   background-size: cover;
   .time {
     line-height: 0.4rem;
@@ -247,7 +247,6 @@ export default {
   position: relative;
   z-index: 8;
   flex: 1;
-  background: #1b1f29;
   flex-direction: column;
   display: flex;
   &.active {

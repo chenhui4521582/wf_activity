@@ -68,7 +68,7 @@ export default {
   color: #edeef1;
   font-size: 0.24rem;
   &.activity {
-    background: #FEF2DE url('../activity/top-btn-wrap.png') no-repeat;
+    background: #30569F url('../activity/top-btn-wrap.png') no-repeat;
     background-size:100% 90%;
   }
   .text-btn {

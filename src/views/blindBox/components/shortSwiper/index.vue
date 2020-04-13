@@ -57,11 +57,11 @@ export default {
   .swiper-info {
     padding: 0.06rem 0.2rem;
     box-sizing: border-box;
-    background: rgba(28, 32, 42, 0.52);
+    background: rgba(9,27,119, 0.6);
     border-radius: 0.25rem;
     color: #fff;
     line-height: 1.2;
-    font-size: 0.22rem;
+    font-size: 0.18rem;
     text-align: center;
   }
 }

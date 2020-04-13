@@ -117,7 +117,7 @@ export default {
       background-size: 100% 100%;
     }
     .title,.count,.tip {
-      color: #E9355A;
+      color: #fff;
     }
     .float.left,.float.right{
       background: rgba(233,53,90,0.6);
@@ -172,7 +172,7 @@ export default {
     font-size: 0.2rem;
     .score-count {
       font-size: 0.28rem;
-      color: #eb8967;
+      /*color: #eb8967;*/
       font-weight: bold;
     }
   }
