@@ -71,6 +71,7 @@
   </main>
 </template>
 <script>
+/* eslint-disable no-undef */
 import utils from '@/common/js/utils'
 import { moveInfo, signIn, signInfo, getMallProductListByType, userMoveNum, userMoveSend } from './services/api'
 import _get from 'lodash.get'
@@ -157,7 +158,6 @@ export default {
       this.$toast.show({ message: '复制失败' })
     },
     back () {
-      // eslint-disable-next-line no-undef
       location.href = SDK.getBackUrl()
     },
     async init () {
