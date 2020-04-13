@@ -129,7 +129,7 @@ export default {
           let param = { ...item, num: 0 }
           if (this.moveNumArr && this.moveNumArr.length) {
             this.moveNumArr.forEach(element => {
-              if (element.grade === param.price) {
+              if (parseInt(element.grade) === param.price) {
                 param.num = element.num
               }
             })
