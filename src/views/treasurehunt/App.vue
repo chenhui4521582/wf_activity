@@ -7,7 +7,7 @@
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
           <!-- <span >06时30分12秒</span> -->
         </p>
-        <p style=" margin-top: 0.05rem;">明天返利：{{state.rebateAmount}}金叶</p>
+        <p style=" margin-top: 0.05rem;">预计返利：{{state.rebateAmount}}金叶</p>
       </div>
       <div class="back" @click="back">
         <span>返回</span>
