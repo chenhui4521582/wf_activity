@@ -10,7 +10,7 @@ import Components from './components/index'
 import fastclick from 'fastclick'
 import '@/common/js/window'
 import VueClipboard from 'vue-clipboard2'
-fastclick.attach(document.body)
+// fastclick.attach(document.body)
 Vue.config.productionTip = false
 /** 全局公共组件 **/
 Vue.use(Components)
