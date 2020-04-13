@@ -92,7 +92,7 @@ export default {
   &.activity {
     background: url(../activity/top-btn-bg.png) no-repeat;
     background-size: 100% 100%;
-    color:#BB0A2F;
+    color:#fcffb4;
   }
 }
 .horn {

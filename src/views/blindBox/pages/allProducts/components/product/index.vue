@@ -47,10 +47,10 @@ export default {
   background: #fff;
   position:relative;
   .icon {
-    width: .88rem;
+    width: .9rem;
     position: absolute;
     top: 0;
-    left: 0.2rem;
+    left: 0rem;
   }
   .product-img {
     height: 2.7rem;
