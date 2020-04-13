@@ -1,16 +1,16 @@
 <template>
   <div class="goods-description">
     <div class="title">商品详情</div>
-    <div class="desc" v-html="info.description"></div>
+    <div class="desc" v-html="currentInfo.description"></div>
   </div>
 </template>
 <script>
 export default {
   name: 'goodsDesc',
   props: {
-    info: {
+    currentInfo: {
       type: Object,
-      default: () => { }
+      default: () => ({})
     }
   }
 }
