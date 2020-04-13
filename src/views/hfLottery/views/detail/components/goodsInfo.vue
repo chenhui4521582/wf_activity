@@ -2,9 +2,10 @@
   <div class="goods-info">
     <div class="goods-img">
       <img :src="info.detailPicture | filter" alt="">
-      <div class="corner">
+      <div class="corner" v-if="info.lotteryStatus!==3">
         <img :src="info.cornerImg | filter" alt="">
       </div>
+      <div class="sell-out" v-else></div>
     </div>
     <div class="info">
       <div class="group">
@@ -29,14 +30,14 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   filters: {
-    unit(value) {
-      if(value) {
+    unit (value) {
+      if (value) {
         return value.toFixed(2)
-      }else {
+      } else {
         return value
       }
     }
@@ -49,9 +50,9 @@ export default {
 }
 .goods-info {
   overflow: hidden;
-  margin: .2rem 0;
+  margin: 0.2rem 0;
   background: #fff;
-  border-radius: .16rem;
+  border-radius: 0.16rem;
   height: 4.17rem;
   .goods-img {
     position: relative;
@@ -67,33 +68,44 @@ export default {
       left: 0;
       top: 0;
       width: 1.07rem;
-      height: .62rem;
+      height: 0.62rem;
+    }
+
+    .sell-out {
+      position: absolute;
+      left: 0.24rem;
+      top: 0.16rem;
+      z-index: 2;
+      width: 1.1rem;
+      height: 0.94rem;
+      background: url(../../../img/sell-out.png) no-repeat center center;
+      background-size: 100% 100%;
     }
   }
   .info {
-    padding: 0 .22rem;
+    padding: 0 0.22rem;
     height: 1.4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     .group {
-      height: .4rem;
+      height: 0.4rem;
       &:first-child {
-        margin-bottom: .24rem;
+        margin-bottom: 0.24rem;
       }
       .price {
-        color: #FF2F2F;
-        font-size: .42rem;
-        font-weight:800;
+        color: #ff2f2f;
+        font-size: 0.42rem;
+        font-weight: 800;
       }
       .unit {
-        font-size: .2rem;
-        color: #FF2F2F;
+        font-size: 0.2rem;
+        color: #ff2f2f;
       }
       .market-price {
-        font-size: .2rem;
-        color: #BBBBBB;
+        font-size: 0.2rem;
+        color: #bbbbbb;
       }
     }
     .group1 {
@@ -101,12 +113,12 @@ export default {
       justify-content: space-between;
       align-items: flex-end;
       .name {
-        font-size: .32rem;
+        font-size: 0.32rem;
         color: #000;
-        font-weight:bold;
+        font-weight: bold;
       }
       .participants {
-        font-size: .24rem;
+        font-size: 0.24rem;
         color: #888888;
       }
     }
