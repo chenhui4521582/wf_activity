@@ -1,4 +1,4 @@
-import $axios from '../http'
+import $axios from '../../../http'
 
 /**
  * @description 活动信息
@@ -9,7 +9,7 @@ export const activityInfo = async () => {
   return data
 }
 /**
- * @description 排行榜列表
+ * @description
  * @return {Object} data
  */
 
@@ -18,7 +18,7 @@ export const rankList = async () => {
   return data
 }
 /**
- * @description 元宵红包活动-累消领取奖励
+ * @description 累消领取奖励
  * @return {Object} data
  */
 export const gameReceive = async (sort) => {
@@ -26,7 +26,7 @@ export const gameReceive = async (sort) => {
   return data
 }
 /**
- * @description 元宵红包活动-副页活动详细信息
+ * @description 副页活动详细信息
  * @return {Object} data
  */
 export const taskProgressInfo = async () => {
@@ -34,7 +34,7 @@ export const taskProgressInfo = async () => {
   return data
 }
 /**
- * @description 元宵红包活动-任务领取奖励 任务序号,1:每日任务数，2：充值数
+ * @description 任务领取奖励 任务序号,1:每日任务数，2：充值数
  * @return {Object} data
  */
 export const taskReceive = async (params) => {
@@ -52,41 +52,12 @@ export const gameReceiveRecord = async () => {
 }
 
 /**
- * @description 奖励提示
- * @return {Object} data
- */
-
-export const userAwardsTips = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-awards-tips')
-  return data
-}
-
-/**
- * @description 瓜分券奖励领取
- * @return {Object} data
- */
-
-export const couponAwardReceive = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/coupon-award-receive')
-  return data
-}
-/**
  * @description 跑马灯
  * @return {Object} data
  */
 
 export const getNoticeList = async () => {
   const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/notice-list')
-  return data
-}
-
-/**
- * @description 兑换叶子
- * @return {Object} data
- */
-
-export const exchangeLeaf = async (level) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/leafConvert/' + level)
   return data
 }
 /**
@@ -112,5 +83,13 @@ export const yiyuanlottery = async () => {
  */
 export const getPackages = async (flag) => {
   const {data} = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/' + flag)
+  return data
+}
+/**
+ * @description 大家手气
+ * @return {Object} data
+ */
+export const getAllRecords = async (params) => {
+  const {data} = await $axios.post('//platform-api.beeplaying.com/wap/api/profit/findPage',params)
   return data
 }
