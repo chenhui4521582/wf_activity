@@ -241,8 +241,8 @@ export default {
     takeFree (item) {
       if (this.isDDW && this.beginTime) {
         if (item.num) {
-          this.userMoveSend(item.grade)
-          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.grade })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
+          this.userMoveSend(item.price)
+          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.price })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
         } else {
           this.openPop(3)
         }
