@@ -1,6 +1,5 @@
 <template>
-  <div class="catvip" :class="{end:isEnd,showDown:$refs.dropDown&&$refs.dropDown.isDropDown}"
-    v-if="actInfoData">
+  <div class="catvip" :class="{end:isEnd,showDown:$refs.dropDown&&$refs.dropDown.isDropDown}" v-if="actInfoData">
     <template v-if="!isEnd">
       <div class="catvip_container">
         <div class="clickIcons">
@@ -8,18 +7,24 @@
             <div class="back" @click="back">返回</div>
             <div class="rule" @click="showPop(7)">规则</div>
           </div>
-          <div class="gift" @click="buyGiftClick()"
-            v-if="actInfoData.catStatus&&actInfoData.catLevel<20">
+          <div class="gift" @click="buyGiftClick()" v-if="actInfoData.catStatus&&actInfoData.catLevel<20">
             <img src="./imgs/gift-icon.png" alt="">
             <span>升等级</span>
           </div>
         </div>
-        <div class="catvip_countdown" v-if="actInfoData.state==1">
-          剩余
-          <div class="countdown_item" v-for="item in countTime.split('')">
-            <i v-if="!['时','分','秒'].includes(item)">{{item}}</i>
-            <template v-else>{{item}}</template>
-          </div>
+        <div class="catvip_countdown">
+          <template v-if="actInfoData.state==1">
+            剩余
+            <div class="countdown_item" v-for="item in countTime.split('')">
+              <i v-if="!['时','分','秒'].includes(item)">{{item}}</i>
+              <template v-else>{{item}}</template>
+            </div>
+          </template>
+          <template v-else>
+            <div class="countdown_item" style="opacity: 0;">
+              <i></i>
+            </div>
+          </template>
         </div>
         <div class="catvip_lottery_wrapper" :class="`bg-${currentAwardType}`">
           <div class="petal_bg"></div>
@@ -34,8 +39,7 @@
                 <p class="level">(10元)</p>
               </div>
             </div>
-            <div class="awards_list" v-for="(items,key) in actInfoData.awardsConfigList" :key="key"
-              v-show="items.level===currentAwardType">
+            <div class="awards_list" v-for="(items,key) in actInfoData.awardsConfigList" :key="key" v-show="items.level===currentAwardType">
               <div class="list">
                 <div class="item" v-for="item in items.awardsList">
                   <img :src="item.awardsImage|filter" alt="">
@@ -54,11 +58,9 @@
               </div>
             </div>
             <template v-if="currentAwardType===10">
-              <div class="pay_btn" :class="{gray:actInfoData.seniorLottery==2}"
-                @click="preheat(()=>lottery('seniorLottery'))">
+              <div class="pay_btn" :class="{gray:actInfoData.seniorLottery==2}" @click="preheat(()=>lottery('seniorLottery'))">
                 <template v-if="actInfoData.seniorLottery === 0">
-                  支付{{currentAwardType}}元抽奖<br><i
-                    v-if="actInfoData.seniorLotteryNum>=200">{{actInfoData.seniorLotteryNum}}人已抽奖</i>
+                  支付{{currentAwardType}}元抽奖<br><i v-if="actInfoData.seniorLotteryNum>=200">{{actInfoData.seniorLotteryNum}}人已抽奖</i>
                 </template>
                 <template v-else-if="actInfoData.seniorLottery==1">
                   立即开奖
@@ -69,11 +71,9 @@
               </div>
             </template>
             <template v-else>
-              <div class="pay_btn" :class="{gray:actInfoData.juniorLottery==2}"
-                @click="preheat(()=>lottery('juniorLottery'))">
+              <div class="pay_btn" :class="{gray:actInfoData.juniorLottery==2}" @click="preheat(()=>lottery('juniorLottery'))">
                 <template v-if="actInfoData.juniorLottery === 0">
-                  支付{{currentAwardType}}元抽奖<br><i
-                    v-if="actInfoData.juniorLotteryNum>=200">{{actInfoData.juniorLotteryNum}}人已抽奖</i>
+                  支付{{currentAwardType}}元抽奖<br><i v-if="actInfoData.juniorLotteryNum>=200">{{actInfoData.juniorLotteryNum}}人已抽奖</i>
                 </template>
                 <template v-else-if="actInfoData.juniorLottery==1">
                   立即开奖
@@ -108,8 +108,7 @@
                 <div>{{actInfoData.leafConvertConfig.leafs}}金叶子</div>
               </div>
             </div>
-            <div class="right"
-              :class="{gray:actInfoData.leafConvertConfig.purchased>=actInfoData.leafConvertConfig.limit}">
+            <div class="right" :class="{gray:actInfoData.leafConvertConfig.purchased>=actInfoData.leafConvertConfig.limit}">
               <div>立即<br>兑换</div>
               <div>限购
                 {{actInfoData.leafConvertConfig.purchased>actInfoData.leafConvertConfig.limit?actInfoData.leafConvertConfig.limit:actInfoData.leafConvertConfig.purchased}}/{{actInfoData.leafConvertConfig.limit}}
@@ -135,13 +134,11 @@
               </div>
             </div>
             <!--奖励状态 1：未完成，2：待领取，3：已领取 ,-->
-            <div class="btn" :class="{gain:item.status==1,gained:item.status==2}"
-              @click="preheat(()=>dotask(item))"></div>
+            <div class="btn" :class="{gain:item.status==1,gained:item.status==2}" @click="preheat(()=>dotask(item))"></div>
           </div>
         </div>
       </div>
-      <drop-down ref="dropDown" :countTime="countTime" :endDate="actInfoData.endDate"
-        @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab" :actInfoData="actInfoData">
+      <drop-down ref="dropDown" :countTime="countTime" :endDate="actInfoData.endDate" @showPop="showPop" :myInfo="myInfo" @handleTab="outHandleTab" :actInfoData="actInfoData">
       </drop-down>
     </template>
     <template v-else>
@@ -152,9 +149,7 @@
       <profit :is-full="true" @showPop="showPop" :actInfoData="actInfoData" />
     </template>
     <!--popType-->
-    <com-pop :pop-type="popType" :award-data="awardData" :package-info="packageInfo" ref="comPop"
-      :countTime="countTime" :leafItem="leafItem" @exchange="exchange" @opengame="showPop(5)"
-      @buy-gift="showPop(9)" :actInfoData="actInfoData">
+    <com-pop :pop-type="popType" :award-data="awardData" :package-info="packageInfo" ref="comPop" :countTime="countTime" :leafItem="leafItem" @exchange="exchange" @opengame="showPop(5)" @buy-gift="showPop(9)" :actInfoData="actInfoData">
     </com-pop>
     <loading v-if="showLoading"></loading>
   </div>
