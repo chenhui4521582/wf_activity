@@ -2,19 +2,28 @@
   <article class="product-detail">
     <Header title="商品详情" />
     <section class="content">
+      <!-- 商品详情 -->
       <goods-info :current-info="currentInfo" />
-      <specifications :info="info" :current-index="currentIndex" :current-info="currentInfo"
-        v-model="buyNumber" @change-index="changeIndex" />
+      <!-- 规格 -->
+      <specifications 
+        v-model="buyNumber" 
+        :info="info" 
+        :current-index="currentIndex" 
+        :current-info="currentInfo"
+        @change-index="changeIndex" 
+      />
+      <!-- 发货信息 -->
       <section class="deliver-quality">
         <p class="good-deliver">
           <span>发货</span>
-          <span>商家配送 | 快递 ¥{{currentInfo.postage.toFixed(2)}}</span>
+          <span>商家配送 | 快递 ¥{{currentInfo.postage && currentInfo.postage.toFixed(2)}}</span>
         </p>
         <p class="good-quality">
           <span>保障</span>
           <span>正品保障·全国联保·售后无忧</span>
         </p>
       </section>
+      <!-- 商品详情 -->
       <goods-descript :current-info="currentInfo" />
     </section>
     <div class="bottom-button" @click="comfirmOrder">立即购买</div>
@@ -25,6 +34,8 @@
 import GoodsInfo from './components/goodsInfo'
 import GoodsDescript from './components/goodsDescription'
 import Specifications from './components/specifications'
+import Services from '../../services/product'
+import _get from 'lodash.get'
 export default {
   name: 'productDetail',
   components: {
@@ -34,42 +45,63 @@ export default {
   },
   data () {
     return {
-      info: [{
-        detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-        picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-        payPrice: 9999,
-        marketPrice: 10000,
-        name: 'iPhone11 pro',
-        purchaseNum: 0,
-        specs: '256G',
-        postage: 6,
-        deductPrice: 100,
-        description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
-      }, {
-        detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-        picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-        payPrice: 10200,
-        marketPrice: 15000,
-        name: 'iPhone11 pro',
-        purchaseNum: 0,
-        specs: '512G',
-        postage: 0,
-        deductPrice: 200,
-        description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
-      }],
+      info: [],
       currentIndex: 0,
       buyNumber: 1
     }
   },
   computed: {
     currentInfo () {
-      return this.info[this.currentIndex]
+      if(this.info[this.currentIndex]) {
+        return this.info[this.currentIndex]
+      }
+      return {}
     }
   },
-  mounted () {
-
-  },
   methods: {
+    /** 获取商品详情 **/
+    _getProductDetail () {
+      const { name } = this.$route.query
+      if (!name) return false
+      Services.getProductDetail({
+        name: decodeURIComponent(name)
+      }).then(res => {
+        res = {
+          data: {
+            code: 200,
+            data: {
+              detailInfoList: [{
+                detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
+                picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
+                payPrice: 9999,
+                marketPrice: 10000,
+                name: 'iPhone11 pro',
+                purchaseNum: 0,
+                specs: '256G',
+                postage: 6,
+                deductPrice: 100,
+                description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
+              }, {
+                detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
+                picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
+                payPrice: 10200,
+                marketPrice: 15000,
+                name: 'iPhone11 pro',
+                purchaseNum: 0,
+                specs: '512G',
+                postage: 0,
+                deductPrice: 200,
+                description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
+              }]
+            }
+          }
+        }
+        const {code} = _get(res, 'data')
+        if (code == 200) {
+          this.info = _get(res, 'data.data.detailInfoList', [])
+        } 
+      })
+    },
     changeIndex (index) {
       this.currentIndex = index
     },
@@ -83,13 +115,14 @@ export default {
         postage: this.currentInfo.postage,
         num: this.buyNumber
       }
+      localStorage.setItem('activitiesMallItem', JSON.stringify(info))
       this.$router.push({
-        name: 'comfirmOrder',
-        query: {
-          info: JSON.stringify(info)
-        }
+        name: 'comfirmOrder'
       })
     }
+  },
+  mounted () {
+    this._getProductDetail()
   }
 }
 </script>
@@ -97,9 +130,6 @@ export default {
 <style lang="less" scoped>
 .product-detail {
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   padding: 1.2rem 0.24rem;
   box-sizing: border-box;
   .introduction-wrapper {

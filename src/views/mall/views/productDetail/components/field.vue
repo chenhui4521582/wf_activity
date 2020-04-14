@@ -77,22 +77,22 @@ export default {
   }
 
   .input-warp {
+    margin: 0 0.1rem;
     width: 0.6rem;
     height: 0.3rem;
-    background-color: #f4f4f4;
     border-radius: 0.08rem;
-    overflow: hidden;
-    margin: 0 0.1rem;
+    background-color: #f4f4f4;
     input {
-      display: block;
+      padding: 0;
+      vertical-align: top;
       width: 100%;
       height: 0.3rem;
-      line-height: 0.3rem;
-      font-size: 0.22rem;
+      line-height: .3rem;
       text-align: center;
-      background-color: #f4f4f4;
+      font-size: 0.22rem;
       color: #e8382b;
       border: none;
+      background-color: #f4f4f4;
     }
   }
 }

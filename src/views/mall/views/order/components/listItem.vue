@@ -58,13 +58,17 @@
       <!-- 没有评论过 -->
       <template v-else-if="item.evaluation == 0">
         <div class="white-btn buy-btn">再次购买</div>
-        <div class="red-btn evaluation-btn">立即评价</div>
+        <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div>
       </template>
       <!-- 评论过 -->
       <template v-else-if="item.evaluation == 1">
-        <div class="white-btn check-evaluation">查看评价</div>
+        <div class="white-btn check-evaluation" @click="checkEvaluation">查看评价</div>
         <div class="red-btn buy-btn">再次购买</div>
       </template>
+    </div>
+    <!-- 付款中 status == 5-->
+    <div class="in-payment" v-if="item.status == 5" >
+      正在付款，请刷新页面更新订单状态
     </div>
   </div>  
 </template>
@@ -92,6 +96,18 @@ export default {
         return true
       }
       return false
+    },
+    /** 去评价 **/
+    goEvaluation() {
+      this.$router.push({
+        name: 'evaluation'
+      })
+    },
+    /** 查看评价 **/
+    checkEvaluation() {
+      this.$router.push({
+        name: 'evaluation'
+      })
     },
     /** 打开取消订单弹框 **/
     openOrderCancal() {
@@ -239,6 +255,12 @@ export default {
         color: #5186CA;
       }
     }
+  }
+  .in-payment {
+    text-align: right;
+    color: #FF7800;
+    font-size: .24rem;
+    line-height: 1.2;
   }
 }
 </style>

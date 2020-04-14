@@ -13,7 +13,7 @@
         </p>
         <div class="detail address-item">
           <p>
-            <span class="label">收货地址</span><span>{{info.receiveAddress}}</span>
+            <span class="label">收货地址</span><span>{{info.province}}  {{info.city}}  {{info.area}}  {{info.receiverAddress}}</span>
           </p>
           <span class="icon">
             <i class="iconfont icon-next" v-if="!locked"></i>
@@ -46,8 +46,12 @@ export default {
         return false
       }
     },
-    toAddAddress () { location.href = '/xmWap/#/address/add' },
-    toEditAddress () { location.href = '/xmWap/#/address/set' }
+    toAddAddress () { 
+      location.replace('https://wap.beeplaying.com/xmWap/#/address/add')
+    },
+    toEditAddress () {
+      location.replace(`https://wap.beeplaying.com/xmWap/#/address/list?from=${encodeURIComponent('/activities/mall.html#/comfirmorder')}`)
+    }
   }
 }
 </script>

@@ -72,7 +72,7 @@
       </template>
     </modal>
     <!-- 返回商品列表 -->
-    <div class="back">
+    <div class="back" @click="backOrder">
       <img src="./img/back.png" alt="">
     </div>
   </div>  
@@ -82,7 +82,7 @@ import OrderItem from './components/listItem'
 export default {
   name: 'orderList',
   data: () => ({
-    nav: ['待付款', '待发货', '已发货', '已完成'],
+    nav: ['全部', '待付款', '待发货', '已发货', '已完成'],
     currentIndex: 0,
     list: [
       {
@@ -163,6 +163,18 @@ export default {
         evaluation: 0,
         cancel: 0,
         refund: 1
+      },
+      {
+        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
+        name: 'iPhone11 Pro',
+        price: 9999,
+        number: 1,
+        hf: 30,
+        practicalPrice: 129,
+        status: 5,
+        evaluation: 0,
+        cancel: 0,
+        refund: 1
       }
     ],
     modal: {
@@ -232,6 +244,11 @@ export default {
     goServices() {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     },
+    backOrder() {
+      this.$router.push({
+        name: 'productList'
+      })
+    },
     onCopy() {
       this.$toast.show({message: '复制成功'})
     },
@@ -259,7 +276,7 @@ export default {
       align-items: center;
       height: .94rem;
       .nav-item {
-        padding: 0 .28rem;
+        padding: 0 .2rem;
         font-size: .32rem;
         color: #888888;
         &.active {

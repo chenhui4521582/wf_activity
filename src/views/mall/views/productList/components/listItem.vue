@@ -1,23 +1,23 @@
 <template>
-  <div class="list-item">
+  <div class="list-item" @click="goProductDetail">
     <div class="title">话费券最高可抵100元</div>
     <div class="goods-img">
-      <img :src="item.img | filter" alt="">
+      <img :src="item.picture | filter" alt="">
     </div>
     <div class="goods-name">
       {{item.name}}
     </div>
     <div class="goods-buy">
-      {{item.buyNo}}人已买
+      {{item.purchaseNum }}人已买
     </div>
     <div class="goods-price">
-      <span class="unit">¥</span>{{item.price}}
+      <span class="unit">¥</span>{{item.payPrice}}
     </div>
     <div class="buy-btn">
       购买
     </div>
     <!-- 售罄 -->
-    <div class="sell-out">
+    <div class="sell-out" v-if="item.stock == 0">
       <img src="../img/sell-out.png" alt="">
     </div>
   </div>
@@ -29,6 +29,16 @@ export default {
     item: {
       type: Object,
       default: () => {}
+    }
+  },
+  methods: {
+    goProductDetail() {
+      this.$router.push({
+        name: 'productDetail',
+        query: {
+          name: encodeURIComponent(this.item.name)
+        }
+      })
     }
   }  
 

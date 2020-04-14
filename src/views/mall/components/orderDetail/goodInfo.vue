@@ -34,16 +34,16 @@ export default {
 <style lang="less" scoped>
 .good-info {
   padding: 0.3rem 0.2rem 0.3rem 0.3rem;
+  margin-bottom: 0.2rem;
   background: #fff;
   border-radius: 0.16rem;
-  margin-bottom: 0.2rem;
   display: flex;
   align-items: center;
   .img-wrapper {
+    margin-right: 0.16rem;
     min-width: 1.2rem;
     max-width: 1.2rem;
     height: 1.2rem;
-    margin-right: 0.16rem;
     img {
       width: 100%;
       height: 100%;

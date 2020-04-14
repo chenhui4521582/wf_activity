@@ -56,7 +56,7 @@ export default {
 }
 .goods-info {
   overflow: hidden;
-  margin: 0.2rem 0;
+  margin: 0 0 0.2rem;
   background: #fff;
   border-radius: 0.16rem;
   height: 4.17rem;
@@ -97,23 +97,37 @@ export default {
         font-weight: 800;
         margin-right: 0.16rem;
       }
-      .unit {
-        font-size: 0.24rem;
-        color: #ff2f2f;
+      p {
+        height: .4rem;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        white-space: nowrap;
+        &:first-child {
+          .unit {
+            font-size: 0.24rem;
+            color: #ff2f2f;
+            line-height: .25rem;
+          }
+          .price {
+            line-height: .36rem;
+          }
+          .market-price {
+            font-size: 0.2rem;
+            color: #bbbbbb;
+          }
+        }
       }
-      .market-price {
-        font-size: 0.2rem;
-        color: #bbbbbb;
-      }
+
       .deduction {
         color: #ff4141;
-        margin-bottom: 0.02rem;
         span {
           font-size: 0.2rem;
           border: 0.01rem solid #ff4141;
           border-radius: 0.06rem;
           padding: 0 0.1rem;
           line-height: 0.3rem;
+          flex-shrink: 0;
         }
       }
     }

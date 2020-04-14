@@ -28,16 +28,18 @@
 export default {
   name: 'goodsEvaluation',
   data: () => ({
-    goodsIndex: -1,
-    expressageIndex: -1,
+    goodsIndex: 4,
+    expressageIndex: 4,
     evaluationText: ['非常差', '差', '一般', '好', '非常好']
   }),
   methods: {
     handleGoods(index) {
       this.goodsIndex = index
+      this.$emit('goodsStars', this.goodsIndex + 1)
     },
     handleExpressage(index) {
       this.expressageIndex = index
+      this.$emit('sendStars', this.expressageIndex + 1)
     }
   }
 }

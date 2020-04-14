@@ -1,5 +1,6 @@
 <template>
   <article class="comfirm-order">
+    <!-- 头部 -->
     <Header title="订单详情" />
     <order-tag :info="orderInfo" />
     <Address :info="orderInfo" :locked=true />
@@ -100,15 +101,13 @@ export default {
 <style lang="less" scoped>
 .comfirm-order {
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   padding: 1.2rem 0.24rem;
   box-sizing: border-box;
   .bottom-wrapper {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 10;
     height: 0.9rem;
     width: 100vw;
     background: #fff;

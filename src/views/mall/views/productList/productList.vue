@@ -6,7 +6,7 @@
       <img src="./img/banner.png" alt="">
     </div>
     <!-- back 按钮 -->
-    <div class="back-btn">
+    <div class="back-btn" @click="backHome">
       <img src="./img/back.png" alt="">
     </div>
     <!-- rule 按钮 -->
@@ -20,16 +20,16 @@
       <!-- 导航条 -->
       <div class="nav">
         <div class="nav-item" 
-          v-for="(item, index) in nav"
+          v-for="(item, index) in list"
           :key="index"
           :class="{'active': currentIndex == index}"
           @click="handerClick(index)"
-        >{{item}}</div>
+        >{{item.categoryName || ''}}</div>
       </div>
       <!-- 列表 -->
       <div class="list">
         <list-item 
-          v-for="(item, index) in list"
+          v-for="(item, index) in productList"
           :key="index"
           :item="item"
         />
@@ -40,14 +40,16 @@
   </div>
 </template>
 <script>
+import { getProductList } from '../../services/product'
+import _get from 'lodash.get'
 import ListItem from './components/listItem'
 import Rule from './components/rule'
 export default {
   name: 'productList',
   data: () => ({
-    nav: ['生活居家', '手机数码', '美食', '家具家电'],
     list: [
       {
+        id: 1,
         title: '话费券最高可抵100元',
         img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
         name: 'iPhone XR 64G',
@@ -55,6 +57,7 @@ export default {
         price: '5632'
       },
       {
+        id: 2,
         title: '话费券最高可抵100元',
         img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
         name: 'iPhone XR 64G',
@@ -62,6 +65,7 @@ export default {
         price: '5632'
       },
       {
+        id: 3,
         title: '话费券最高可抵100元',
         img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
         name: 'iPhone XR 64G',
@@ -69,6 +73,7 @@ export default {
         price: '5632'
       },
       {
+        id: 4,
         title: '话费券最高可抵100元',
         img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
         name: 'iPhone XR 64G',
@@ -76,6 +81,7 @@ export default {
         price: '5632'
       },
       {
+        id: 5,
         title: '话费券最高可抵100元',
         img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
         name: 'iPhone XR 64G',
@@ -90,7 +96,15 @@ export default {
     ListItem,
     Rule
   },
+  computed: {
+    productList() {
+      return this.list[this.currentIndex].productList
+    }
+  },
   methods: {
+    backHome() {
+      window.location.href = 'https://wap.beeplaying.com/xmWap/'
+    },
     handerClick(index) {
       this.currentIndex = index
     },
@@ -101,7 +115,19 @@ export default {
       this.$router.push({
         name: 'order'
       })
+    },
+    /** 获取商品列表 **/
+    _getProductList() {
+      getProductList().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.list = _get(res, 'data.data.categoryList', [])
+        }
+      })
     }
+  },
+  mounted() {
+    this._getProductList()
   }
 }
 </script>
