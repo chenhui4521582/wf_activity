@@ -1,5 +1,5 @@
 <template>
-  <section class="com_pop" :style="{zIndex:isShowPop?100:99}" :class="{flag7:popType==7}">
+  <section :class="getClassName('com_pop')" :style="{zIndex:isShowPop?100:99}">
     <div class="pop-mask" v-if="isShowPop&&popType" @touchmove.prevent></div>
     <transition name="scalc">
       <div class="pop" v-if="isShowPop&&popType">
@@ -361,6 +361,9 @@
     margin-left: -2.75rem;
     &.flag7 {
       top: .5rem;
+    }
+    &.flag4 {
+      top: 3rem;
     }
     .pop-mask {
       position: fixed;
