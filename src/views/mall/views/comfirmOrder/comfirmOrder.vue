@@ -47,7 +47,7 @@ export default {
       }
       if (this.isSelectedCost) {
         let price = info.deductPrice * info.num
-        price = price < this.goodInfo.fragmentAmount ? price : this.goodInfo.fragmentAmount
+        price = price < info.fragmentAmount ? price : info.fragmentAmount
         this.$set(info, 'hfqPrice', price)
       } else {
         delete info.hfqPrice
