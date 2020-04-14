@@ -15,7 +15,7 @@
         </p>
         <p class="deduction">
           <span>
-            话费券最高可抵扣{{currentInfo.deductPrice}}元
+            {{currentInfo.label}}
           </span>
         </p>
       </div>
@@ -98,7 +98,7 @@ export default {
         margin-right: 0.16rem;
       }
       p {
-        height: .4rem;
+        height: 0.4rem;
         display: flex;
         align-items: flex-end;
         justify-content: flex-start;
@@ -107,10 +107,10 @@ export default {
           .unit {
             font-size: 0.24rem;
             color: #ff2f2f;
-            line-height: .25rem;
+            line-height: 0.25rem;
           }
           .price {
-            line-height: .36rem;
+            line-height: 0.36rem;
           }
           .market-price {
             font-size: 0.2rem;

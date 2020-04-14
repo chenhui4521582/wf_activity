@@ -1,7 +1,7 @@
 <template>
   <section class="good-info">
     <div class="img-wrapper">
-      <img :src="info.picture" alt="">
+      <img :src="info.picture|filter" alt="">
     </div>
     <div class="detail-wrapper">
       <div class="top">

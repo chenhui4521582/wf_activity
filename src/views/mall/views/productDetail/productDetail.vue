@@ -5,13 +5,8 @@
       <!-- 商品详情 -->
       <goods-info :current-info="currentInfo" />
       <!-- 规格 -->
-      <specifications 
-        v-model="buyNumber" 
-        :info="info" 
-        :current-index="currentIndex" 
-        :current-info="currentInfo"
-        @change-index="changeIndex" 
-      />
+      <specifications v-model="buyNumber" :info="info" :current-index="currentIndex"
+        :current-info="currentInfo" @change-index="changeIndex" />
       <!-- 发货信息 -->
       <section class="deliver-quality">
         <p class="good-deliver">
@@ -47,12 +42,13 @@ export default {
     return {
       info: [],
       currentIndex: 0,
-      buyNumber: 1
+      buyNumber: 1,
+      fragmentAmount: 0
     }
   },
   computed: {
     currentInfo () {
-      if(this.info[this.currentIndex]) {
+      if (this.info[this.currentIndex]) {
         return this.info[this.currentIndex]
       }
       return {}
@@ -66,40 +62,11 @@ export default {
       Services.getProductDetail({
         name: decodeURIComponent(name)
       }).then(res => {
-        res = {
-          data: {
-            code: 200,
-            data: {
-              detailInfoList: [{
-                detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-                picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-                payPrice: 9999,
-                marketPrice: 10000,
-                name: 'iPhone11 pro',
-                purchaseNum: 0,
-                specs: '256G',
-                postage: 6,
-                deductPrice: 100,
-                description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
-              }, {
-                detailPicture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-                picture: 'https://img13.360buyimg.com/n1/s450x450_jfs/t1/98682/21/15708/153146/5e74a581Ea58612d6/474a18564d87b1d8.jpg',
-                payPrice: 10200,
-                marketPrice: 15000,
-                name: 'iPhone11 pro',
-                purchaseNum: 0,
-                specs: '512G',
-                postage: 0,
-                deductPrice: 200,
-                description: '该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，直接使用移动线路，故与移动是一样音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。该产品是三网通用的电话卡，与移动合作，接使用移动线路，故与移动是一样的音质，显号，不费流量，通话价格相比又是极便宜，包括通话及淘宝购物折扣使用，欢迎体验。'
-              }]
-            }
-          }
-        }
-        const {code} = _get(res, 'data')
-        if (code == 200) {
+        const { code } = _get(res, 'data')
+        if (code === 200) {
           this.info = _get(res, 'data.data.detailInfoList', [])
-        } 
+          this.fragmentAmount = _get(res, 'data.data.fragmentAmount', 0)
+        }
       })
     },
     changeIndex (index) {
@@ -113,7 +80,8 @@ export default {
         payPrice: this.currentInfo.payPrice,
         deductPrice: this.currentInfo.deductPrice,
         postage: this.currentInfo.postage,
-        num: this.buyNumber
+        num: this.buyNumber,
+        fragmentAmount: this.fragmentAmount
       }
       localStorage.setItem('activitiesMallItem', JSON.stringify(info))
       this.$router.push({
