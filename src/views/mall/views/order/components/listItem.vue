@@ -2,29 +2,33 @@
   <div class="order-item">
     <div class="wrap">
       <div class="order-img">
-        <img :src="item.img | filter" alt="">
+        <img :src="item.picture | filter" alt="">
       </div>
       <div class="desc">
         <div class="group offset">
           <div class="name">{{item.name}}</div>
-          <div class="price">¥{{item.price.toFixed(2)}}</div>
+          <div class="price">¥{{item.payPrice.toFixed(2)}}</div>
         </div>
         <div class="group flex-end">
           <div class="specification">
-            <p>所选型号</p>
-            <p>512G</p>
+            <p>规格</p>
+            <p>{{item.specs}}</p>
           </div>
-          <div class="number">x{{item.number}}</div>
+          <div class="number">x{{item.num || 1}}</div>
         </div>
       </div>
     </div>
     <div class="practial">
-      合计：30话费券+¥129.00
+      合计：{{item.hfqPrice}}话费券 + ¥{{item.realPrice}}
     </div>
-    <!-- 待付款  status == 1 -->
-    <div class="obligation" v-if="item.status == 1">
+    <!-- 待付款  status == 0 -->
+    <div class="obligation" v-if="item.status == 0">
       <div class="white-btn cancel-btn" @click="openOrderCancal">取消订单</div>
       <div class="red-btn comfirm-btn">付款</div>
+    </div>
+    <!-- 付款中 status == 1 -->
+    <div class="in-payment" v-if="item.status == 1" >
+      正在付款，请刷新页面更新订单状态
     </div>
     <!-- 待发货 status == 2 -->
     <div class="send" v-if="item.status == 2">
@@ -35,41 +39,31 @@
       <div class="white-btn check-btn" @click="openLogistics">查看物流</div>
       <div class="red-btn comfirm-btn" @click="receipt">确认收货</div>
     </div>
-    <!-- 已完成 status == 4-->
-    <div class="success" 
-      v-if="item.status == 4" 
-      :class="{cancel: isCancel(item)}"
-    >
-      <!-- 退款 -->
-      <template v-if="isRefund(item)">
-        <div class="icon">
-          <img src="../img/refund-icon.png" alt="">
-        </div>
-        <div class="red-btn buy-btn">再次购买</div>
-      </template>
-      <!-- 订单取消 -->
-      <template v-else-if="isCancel(item)">
-        <div class="icon">
-          <img src="../img/cancel-icon.png" alt="">
-        </div>
-        <div class="explain">注：若产生退款，请点击<span @click="goServices">联系客服</span>及时处理订单</div>
-        <div class="red-btn buy-btn">再次购买</div>
-      </template>
-      <!-- 没有评论过 -->
-      <template v-else-if="item.evaluation == 0">
-        <div class="white-btn buy-btn">再次购买</div>
-        <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div>
-      </template>
-      <!-- 评论过 -->
-      <template v-else-if="item.evaluation == 1">
-        <div class="white-btn check-evaluation" @click="checkEvaluation">查看评价</div>
-        <div class="red-btn buy-btn">再次购买</div>
-      </template>
+    <!-- 订单取消 status == 5 -->
+    <div class="cancel completion" v-if="item.status == 5">
+      <div class="icon">
+        <img src="../img/cancel-icon.png" alt="">
+      </div>
+      <div class="explain">注：若产生退款，请点击<span @click="goServices">联系客服</span>及时处理订单</div>
+      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
     </div>
-    <!-- 付款中 status == 5-->
-    <div class="in-payment" v-if="item.status == 5" >
-      正在付款，请刷新页面更新订单状态
+    <!-- 退款 status == 6 -->
+    <div class="refund completion" v-if="item.status == 6">
+      <div class="icon">
+        <img src="../img/refund-icon.png" alt="">
+      </div>
+      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
     </div>
+    <!-- 没有评论过 status == 4 -->
+    <!-- <div class="evalution completion" v-if="item.status == 4">
+      <div class="white-btn buy-btn" @click="continueBuy">再次购买</div>
+      <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div>
+    </div> -->
+    <!-- 评论过 status == 7 -->
+    <!-- <div class="evalution-end completion" v-if="item.status == 7">
+      <div class="white-btn check-evaluation" @click="checkEvaluation">查看评价</div>
+      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
+    </div> -->
   </div>  
 </template>
 <script>
@@ -111,15 +105,25 @@ export default {
     },
     /** 打开取消订单弹框 **/
     openOrderCancal() {
-      this.$emit('openPopup', 1)
+      this.$emit('openPopup', 1, this.item.id)
     },
     /** 打开物流弹框 **/
     openLogistics() {
-      this.$emit('openPopup', 2)
+      this.$emit('openPopup', 2, null, this.item.shipInfo)
+      // this.$emit('openPopup', 2, null, '圆通速递；123192319073')
+    },
+    /** 再次购买 **/
+    continueBuy() {
+      this.$router.push({
+        name: 'productDetail',
+        query: {
+          name: encodeURIComponent(this.item.name)
+        }
+      })
     },
     /** 打开确认收货弹框 **/
     receipt() {
-      this.$emit('openPopup', 3)
+      this.$emit('openPopup', 3, this.item.id)
     },
     /** 跳转客服 **/
     goServices() {
@@ -169,6 +173,7 @@ export default {
           p {
             color: #BBBBBB;
             &:first-child {
+              margin-bottom: .05rem;
               font-size: .2rem;
             }
             &:last-child {
@@ -223,18 +228,14 @@ export default {
     justify-content: flex-end;
     font-size: .24rem;
   }
-  .success {
+  .completion {
     display: flex;
     justify-content: flex-end;
     font-size: .24rem;
     .check-evaluation {
       color: #FF7800;
     }
-
-    &.cancel {
-      justify-content: space-between;
-      align-items: center;
-    }
+    &
     .icon {
       position: absolute;
       top: 0;
@@ -256,6 +257,11 @@ export default {
       }
     }
   }
+  .cancel {
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .in-payment {
     text-align: right;
     color: #FF7800;

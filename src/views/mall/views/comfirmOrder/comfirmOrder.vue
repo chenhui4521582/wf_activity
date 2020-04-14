@@ -98,9 +98,11 @@ export default {
         "realPrice": this.price,
         "userHfq": this.isSelectedCost
       }).then(res => {
-        const { code } = _get(res, 'data')
+        const { code, message } = _get(res, 'data')
         if (code == 200) {
 
+        } else {
+          this.$toast({ message })
         }
       })
     }

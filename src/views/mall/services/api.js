@@ -4,6 +4,8 @@ const Api = {
   getAddress: '//uic-api.beeplaying.com/uic/api/user/receiver/getReceiverInfoNew',
   payOrder: '//quoits-api.beeplaying.com/quoits/api/mall/buy/submit-order',
   getOrderList: '//quoits-api.beeplaying.com/quoits/api/mall/buy/order-list/{status}',
+  cancelOrder: '//quoits-api.beeplaying.com/quoits/api/mall/buy/cancel-order/{orderId}',
+  confirmOrder: '//quoits-api.beeplaying.com/quoits/api/mall/buy/confirm-order/{orderId}',
   goodsCommit: '//shop-api.beeplaying.com/shop/api/award-comment/comment',
 
 }

@@ -9,7 +9,7 @@
           :key="index"
           @click="handleClick(index)"
         >
-          {{item}}
+          {{item.name}}
           <div class="line"></div>  
         </div>
       </div>
@@ -79,115 +79,29 @@
 </template>
 <script>
 import OrderItem from './components/listItem'
-import {getOrderList} from '../../services/order'
+import { getOrderList, cancelOrder } from '../../services/order'
+import _get from 'lodash.get'
 export default {
   name: 'orderList',
   data: () => ({
-    nav: ['全部', '待付款', '待发货', '已发货', '已完成'],
-    currentIndex: 0,
-    list: [
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        evaluation: 0,
-        status: 1,
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 2,
-        evaluation: 0,
-        cancel: 0
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 3,
-        cancel: 0
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 4,
-        evaluation: 0,
-        cancel: 0,
-        refund: 0
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 4,
-        evaluation: 1,
-        cancel: 0,
-        refund: 0
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 4,
-        evaluation: 0,
-        cancel: 1,
-        refund: 0
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 4,
-        evaluation: 0,
-        cancel: 0,
-        refund: 1
-      },
-      {
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone11 Pro',
-        price: 9999,
-        number: 1,
-        hf: 30,
-        practicalPrice: 129,
-        status: 5,
-        evaluation: 0,
-        cancel: 0,
-        refund: 1
-      }
+    nav: [
+      {name: '全部', status: 0},
+      {name: '待付款', status: 1},
+      {name: '待发货', status: 2},
+      {name: '已发货', status: 3},
+      {name: '已完成', status: 4}
     ],
+    currentIndex: 0,
+    list: [],
     modal: {
       show: false,
-      status: 1,
-      type: 1,
-      title: '温馨提示',
-      saveText: '再考虑下',
-      closeText: '取消订单',
+      status: 0,
+      type: 0,
+      title: '',
+      saveText: '',
+      closeText: '',
     },
-    logisticsNo: '123123123123',
-    logisticsName: '顺丰'
+    shipInfo: ''
   }),
   components: {
     OrderItem
@@ -195,23 +109,45 @@ export default {
   computed: {
     showList () {
       return this.list.length
+    },
+    logisticsNo () {
+      if (this.shipInfo) {
+        return this.shipInfo.split(/；|;/g)[1]
+      }
+      return ''
+    },
+    logisticsName () {
+      if (this.shipInfo) {
+        return this.shipInfo.split(/；|;/g)[0]
+      }
+      return ''
     }
   },
   methods: {
-    handleClick(index) {
+    handleClick (index) {
       this.currentIndex = index
+      this._getOrderList()
     },
-    /** 关闭弹框 **/
-    hideModal() {
+    /** 重置弹框 **/
+    resetModal () {
       this.modal.show = false
-      this.modal.type = 1
+      this.modal.type = 0
       this.modal.status = 0
       this.modal.title = ''
       this.modal.saveText = ''
       this.modal.closeText = ''
     },
+    /** 关闭弹框 **/
+    hideModal () {
+      if(this.modal.status == 1) {
+        this._cancelOrder()
+      }
+      this.resetModal()
+    },
     /** 打开弹框 **/
-    openPopup(status) {
+    openPopup (status, orderNo, shipInfo) {
+      this.orderNo = orderNo
+      this.shipInfo = shipInfo
       if(status == 1) {
         this.modal.show = true
         this.modal.type = 2
@@ -238,28 +174,71 @@ export default {
       }
     },
     /** 弹框回调 **/
-    modalCallback() {
-      console.log(111)
+    modalCallback () {
+      if(this.modal.status == 1) {
+        this.resetModal()
+      }
+      if(this.modal.status == 3) {
+        this._confirmOrder()
+      }
+      if(this.modal.status == 2) {
+        this._confirmOrder()
+      }
     },
     /** 跳转客服 **/
-    goServices() {
+    goServices () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     },
     /** 获取订单列表 **/
-    _getOrderList() {
-
+    _getOrderList () {
+      const { status } = this.nav[this.currentIndex]
+      getOrderList(status).then(res => {
+        const {code} = _get(res, 'data')
+        if (code == 200) {
+          this.list = _get(res, 'data.data', [])
+        } 
+      })
     },
-    backToProduct() {
+    /** 取消订单 **/
+    _cancelOrder () {
+      cancelOrder(this.orderNo).then(res => {
+        const {code, message} = _get(res, 'data')
+        if (code == 200) {
+          this.$toast.show({message: '取消成功'}, () => {
+            this._getOrderList()
+          })
+        } else {
+          this.$toast.show({message})
+        }
+      })
+    },
+    /** 确认收货 **/
+    _confirmOrder () {
+      confirmOrder(this.orderNo).then(res => {
+        const {code, message} = _get(res, 'data')
+        if (code == 200) {
+          this.$toast.show({message: '确认收货成功'}, () => {
+            this._getOrderList()
+          })
+        } else {
+          this.$toast.show({message})
+        }
+      })
+    },
+    backToProduct () {
       this.$router.push({
         name: 'productList'
       })
     },
-    onCopy() {
-      this.$toast.show({message: '复制成功'})
+    onCopy () {
+      this.$toast.show({ message: '复制成功' })
     },
-    onError() {
-      this.$toast.show({message: '复制失败'})
+    onError () {
+      this.$toast.show({ message: '复制失败 '})
     }
+  },
+  mounted () {
+    this._getOrderList()
   }
 }
 </script>
