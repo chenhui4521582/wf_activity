@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       addressList: [],
-      isSelectedCost: true
+      isSelectedCost: false
     }
   },
   components: {
@@ -59,7 +59,7 @@ export default {
       return price < this.goodInfo.fragmentAmount ? price : this.goodInfo.fragmentAmount
     },
     price () {
-      let price = this.goodInfo.payPrice + this.goodInfo.postage
+      let price = this.goodInfo.payPrice * this.goodInfo.num + this.goodInfo.postage
       this.isSelectedCost && (price = price - this.maxDeductPrice)
       return price
     },
@@ -89,24 +89,27 @@ export default {
     },
     /** 下单 **/
     _payOrder () {
-      Services.payOrder({
-        "deductPrice": this.goodInfo.deductPrice,
-        "num": this.goodInfo.num,
-        "placeId": this.defaultAddress.id,
-        "postage": this.goodInfo.postage,
-        "productId": this.goodInfo.id,
-        "realPrice": this.price,
-        "userHfq": this.isSelectedCost
+      services.payOrder({
+        'deductPrice': this.goodsInfo.deductPrice,
+        'num': this.goodsInfo.num,
+        'placeId': 0,
+        'postage': 0,
+        'productId': 0,
+        'realPrice': 0,
+        'userHfq': false
       }).then(res => {
-        const {code} = _get(res, 'data')
+        const { code } = _get(res, 'data')
         if (code == 200) {
-          
+
         }
       })
     }
   },
   mounted () {
     this._getAddress()
+    if (this.maxDeductPrice) {
+      this.isSelectedCost = true
+    }
   }
 }
 </script>
