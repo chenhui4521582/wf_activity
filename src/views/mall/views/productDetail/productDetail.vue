@@ -74,6 +74,7 @@ export default {
     },
     comfirmOrder () {
       let info = {
+        id: this.currentInfo.id,
         picture: this.currentInfo.picture,
         name: this.currentInfo.name,
         specs: this.currentInfo.specs,

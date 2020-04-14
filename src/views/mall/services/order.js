@@ -14,14 +14,25 @@ const payOrder = function (params) {
   return Axios.post(Api.payOrder, params)
 }
 
+/**
+* @description 我的订单列表
+*/
+const getOrderList = function (params) {
+  return Axios.post(Api.getOrderList.replace('{status}', params))
+}
+
+
+
 
 const Service = {
   getAddress,
-  payOrder
+  payOrder,
+  getOrderList
 }
 
 export default Service
 export {
   getAddress,
-  payOrder
+  payOrder,
+  getOrderList
 }

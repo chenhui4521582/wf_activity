@@ -9,9 +9,9 @@
     <section class="bottom-wrapper">
       <div class="value">
         <span>还需支付</span>
-        <em>¥{{price}}</em>
+        <em>¥{{ price && price.toFixed(2) }}</em>
       </div>
-      <div class="submit-btn">提交订单</div>
+      <div class="submit-btn" @click="_payOrder">提交订单</div>
     </section>
   </article>
 </template>
@@ -24,7 +24,6 @@ import DuctionPrice from '../../components/orderDetail/ductionPrice'
 import BusinessInfo from '../../components/orderDetail/businessInfo'
 import Services from '../../services/order'
 import _get from 'lodash.get'
-import services from '../../../miniLottery/services/services'
 export default {
   name: 'comfirm-order',
   data () {
@@ -62,7 +61,7 @@ export default {
     price () {
       let price = this.goodInfo.payPrice + this.goodInfo.postage
       this.isSelectedCost && (price = price - this.maxDeductPrice)
-      return price.toFixed(2)
+      return price
     },
     hasAddressList () {
       return this.addressList.length
@@ -90,14 +89,14 @@ export default {
     },
     /** 下单 **/
     _payOrder () {
-      services.payOrder({
-        "deductPrice": this.goodsInfo.deductPrice,
-        "num": this.goodsInfo.num,
-        "placeId": 0,
-        "postage": 0,
-        "productId": 0,
-        "realPrice": 0,
-        "userHfq": false
+      Services.payOrder({
+        "deductPrice": this.goodInfo.deductPrice,
+        "num": this.goodInfo.num,
+        "placeId": this.defaultAddress.id,
+        "postage": this.goodInfo.postage,
+        "productId": this.goodInfo.id,
+        "realPrice": this.price,
+        "userHfq": this.isSelectedCost
       }).then(res => {
         const {code} = _get(res, 'data')
         if (code == 200) {

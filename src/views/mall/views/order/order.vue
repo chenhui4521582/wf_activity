@@ -72,13 +72,14 @@
       </template>
     </modal>
     <!-- 返回商品列表 -->
-    <div class="back" @click="backOrder">
+    <div class="back" @click="backToProduct">
       <img src="./img/back.png" alt="">
     </div>
   </div>  
 </template>
 <script>
 import OrderItem from './components/listItem'
+import {getOrderList} from '../../services/order'
 export default {
   name: 'orderList',
   data: () => ({
@@ -244,7 +245,11 @@ export default {
     goServices() {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     },
-    backOrder() {
+    /** 获取订单列表 **/
+    _getOrderList() {
+
+    },
+    backToProduct() {
       this.$router.push({
         name: 'productList'
       })
