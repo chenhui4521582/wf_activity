@@ -8,16 +8,20 @@ const getAddress = function (params) {
 }
 
 /**
-* @description 获取商品详情
+* @description 商品下单
 */
-const getProductDetail = function (params) {
-  return Axios.post(Api.getProductDetail, params)
+const payOrder = function (params) {
+  return Axios.post(Api.payOrder, params)
 }
+
+
 const Service = {
-  getAddress
+  getAddress,
+  payOrder
 }
 
 export default Service
 export {
-  getAddress
+  getAddress,
+  payOrder
 }
