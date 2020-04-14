@@ -18,6 +18,8 @@
           <span>正品保障·全国联保·售后无忧</span>
         </p>
       </section>
+      <!-- 商品评价 -->
+      <recommend-info :current-info="currentInfo" />
       <!-- 商品详情 -->
       <goods-descript :current-info="currentInfo" />
     </section>
@@ -29,6 +31,7 @@
 import GoodsInfo from './components/goodsInfo'
 import GoodsDescript from './components/goodsDescription'
 import Specifications from './components/specifications'
+import RecommendInfo from './components/recommendInfo'
 import Services from '../../services/product'
 import _get from 'lodash.get'
 export default {
@@ -36,7 +39,8 @@ export default {
   components: {
     GoodsInfo,
     GoodsDescript,
-    Specifications
+    Specifications,
+    RecommendInfo
   },
   data () {
     return {
