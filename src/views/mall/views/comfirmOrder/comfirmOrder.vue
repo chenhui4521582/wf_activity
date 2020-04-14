@@ -89,14 +89,14 @@ export default {
     },
     /** 下单 **/
     _payOrder () {
-      services.payOrder({
-        'deductPrice': this.goodsInfo.deductPrice,
-        'num': this.goodsInfo.num,
-        'placeId': 0,
-        'postage': 0,
-        'productId': 0,
-        'realPrice': 0,
-        'userHfq': false
+      Services.payOrder({
+        "deductPrice": this.goodInfo.deductPrice,
+        "num": this.goodInfo.num,
+        "placeId": this.defaultAddress.id,
+        "postage": this.goodInfo.postage,
+        "productId": this.goodInfo.id,
+        "realPrice": this.price,
+        "userHfq": this.isSelectedCost
       }).then(res => {
         const { code } = _get(res, 'data')
         if (code == 200) {
