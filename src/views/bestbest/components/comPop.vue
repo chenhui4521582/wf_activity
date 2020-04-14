@@ -40,7 +40,7 @@
                       <scroll :data="record">
                         <ul>
                           <li v-for="item in record">
-                            <div>{{item.createTime}}</div>
+                            <div>{{item.acceptTime}}</div>
                             <div>
                               {{item.awardsName}}
                             </div>
@@ -64,7 +64,7 @@
                               @scroll="scroll">
                         <ul>
                           <li v-for="(item,index) in allRecord">
-                            <div>{{index+1}}</div>
+                            <div>{{item.rank}}</div>
                             <div>{{item.nickName}}</div>
                             <div>
                               {{item.awardsName}}
@@ -107,45 +107,44 @@
               <template v-else-if="popType==5">
                 <img src="../images/compop/sad.png" alt="" class="sad">
                 <p>您尚未达到抽签要求...</p>
-                <p>您可以通过购买6元礼包</p>
+                <p>您可以通过购买{{package.price}}元礼包</p>
                 <p>获取抽签资格</p>
                 <div class="package">
                   <img src="../images/compop/package.png" alt="" class="package">
-                  <div class="awardname">抽奖机会<br>+6000金叶子</div>
+                  <div class="awardname">{{package.content.split('+')[0]}}<br/>+{{package.content.split('+')[1]}}</div>
                 </div>
                 <div class="btnred" @click="gotopay">立即购买</div>
                 <div class="btnOrange" @click="close">放弃巨款</div>
               </template>
               <!--发榜-->
               <template v-else-if="popType==6">
-                <div class="content">
+                <div class="content" :class="{empty:!mineData.length}">
                   <scroll ref="scroll6" :data="mineData">
                     <div class="tasks">
-                      <template v-for="item in 100">
-                        <div class="task-item" v-for="item in mineData">
-                          <div class="item">
-                            <div class="date">{{item.date}}</div>
-                            <div class="bestname">{{item.bestname}}</div>
-                          </div>
-                          <p>{{item.taskname}}</p>
-                          <div class="btn"
-                               :class="{btnComplete:item.status==0,btnGain:item.status==1,btnGained:item.status==2}" @click="gototask(item)">
-                            {{btnNames[item.status]}}
-                          </div>
+                      <div class="task-item" v-for="item in mineData">
+                        <div class="item">
+                          <div class="date">{{item.createTime}}</div>
+                          <div class="bestname">{{bestname[item.awardsLevel-1]}}</div>
                         </div>
-                      </template>
+                        <p>{{item.awardsName}}</p>
+                        <div class="btn"
+                             :class="{btnComplete:item.status==0,btnGain:item.status==1,btnGained:item.status>=2}"
+                             @click="gototask(item)">
+                          {{btnNames[item.status]}}
+                        </div>
+                      </div>
                     </div>
                   </scroll>
                 </div>
               </template>
               <template v-else-if="popType==7">
-                <p>活动时间：x年x月x日-x年x月x日,一共5天</p>
+                <p>活动时间：{{actInfoData.timeline}},一共5天</p>
                 <p>活动介绍：</p>
                 <p>1、活动1-4天，玩家每日首次任意付费，可获得1次抽签机会；任意付费后，可以购买礼包获得更多抽签机会，每日最多可以抽签4次。</p>
                 <p>2、活动第5天抽签高额奖励上上签，最高可得150元奖励。参与每日抽签3天及以上，即可免费获得抽签机会；参与每日抽签不足3天，可以购买礼包获得抽签机会；参与每日抽签不足1天，则无抽签机会。</p>
                 <p>3、签面由上上签、上签和中签组成，抽中不同的签会有不同的奖励和或者任务。抽到奖励的签，可以直接领取；抽到任务的签，完成简单任务后即可领取奖励。</p>
                 <p>4、抽中签内的奖励或任务仅当日有效，逾期将不能领取或完成。</p>
-                <p>5、抽签奖励包含不同面额的话费券、京东卡以及高额满减优惠券。</p>
+                <p>5、抽签奖励包含不同面额的话费券以及高额满减优惠券。</p>
                 <p>如有其他问题请向客服咨询。</p>
               </template>
             </div>
@@ -160,15 +159,13 @@
 </template>
 
 <script>
-  import {getAllRecords} from '../utils/api'
+  import {getAwardsRecord, getLotRecord, getRankList, taskGain} from '../utils/api'
 
   export default {
     name: 'comPop',
     data() {
       return {
         isShowPop: false,
-        tabs: ["活动规则", "奖励预览"],
-        tabIndex: 0,
         record: [],
         allRecord: [],
         currentIndex: 1,
@@ -176,7 +173,7 @@
         /** 滚动到底部锁 **/
         scrollLock: false,
         mineData: [],
-        btnNames: ['去完成', '可领取', '已获得']
+        btnNames: ['去完成', '可领取', '已获得', '已过期']
       }
     },
     props: {
@@ -184,16 +181,11 @@
         type: Number,
         default: 0
       },
-      awardData: {
-        type: Object,
-        default: () => {
-          return {
-            awardsType: 'jdk',
-            awardsName: '1000元京东券'
-          }
-        }
+      bestname: {
+        type: Array,
+        default: []
       },
-      leafItem: {
+      awardData: {
         type: Object,
         default: null
       },
@@ -205,25 +197,9 @@
         type: Object,
         default: null
       },
-      prizeInfoList: {
-        type: Array,
-        default: () => [{
-          awardsType: 'jdk',
-          awardsName: '100京东券'
-        }, {
-          awardsType: 'hfq',
-          awardsName: '100话费券'
-        }, {
-          awardsType: 'yhq',
-          awardsName: '100-45优惠券'
-        }, {
-          awardsType: 'jdk',
-          awardsName: '100京东券'
-        }, {
-          awardsType: 'hfq',
-          awardsName: '100话费券'
-        }]
-
+      package: {
+        type: Object,
+        default: null
       }
     },
     components: {
@@ -249,11 +225,11 @@
         }
       },
       async _getAllList() {
-        let {code, data} = await getAllRecords({pageSize: this.pageSize, page: this.currentIndex})
+        let {code, data} = await getRankList({pageSize: this.pageSize, page: this.currentIndex})
         if (code == 200) {
-          this.allRecord = [...this.allRecord, ...data.rankingList]
+          this.allRecord = [...this.allRecord, ...data]
           /** 解除滚动限制 **/
-          if (data.rankingList.length == this.pageSize) {
+          if (data.length == this.pageSize) {
             this.scrollLock = false
           } else {
             this.scrollLock = true
@@ -285,43 +261,23 @@
       },
       async showPop() {
         if (![1, 2, 6].includes(this.popType)) {
-          this.popType==4&&GLOBALS.marchSetsPoint('A_H5PT0274003249');
+          this.popType == 4 && GLOBALS.marchSetsPoint('A_H5PT0274003249');
           this.isShowPop = true
         } else {
           if (this.popType == 1) {
-            // let {code, data} = (await Services.gameReceiveRecord()).data
-            // if (code == 200) {
-            //   this.toalItems = [{
-            //     awardsType: 'hfq',
-            //     name: '话费券',
-            //     value: data.hfqAmount
-            //   }, {
-            //     awardsType: 'jdk',
-            //     name: '京东券',
-            //     value: data.jdkAmount
-            //   }, {
-            //     awardsType: 'jyz',
-            //     name: '金叶',
-            //     value: data.jyzAmount
-            //   }, {
-            //     awardsType: 'yg',
-            //     name: '鱼干',
-            //     value: data.ygAmount
-            //   }]
-            this.record = []
+            let {code, data} = await getAwardsRecord()
+            if (code == 200) {
+              this.record = data
+            }
             this.isShowPop = true
-            // }
           } else if (this.popType == 2) {
             this._getAllList()
           } else {
-            this.mineData = [{
-              date: '4月9日',
-              bestname: '上上签',
-              taskname: '88元话费券+去竞技台球 中体验5局(0/5)',
-              status: 1,
-              url: ''
-            }]
-            this.isShowPop = true
+            let {code, data} = await getLotRecord()
+            if (code == 200) {
+              this.mineData = data
+              this.isShowPop = true
+            }
           }
         }
       },
@@ -332,7 +288,6 @@
         }
         this.$emit('close')
         this.isShowPop = false
-        this.tabIndex = 0
         this.scrollLock = false
         this.currentIndex = 1
         this.allRecord = []
@@ -340,23 +295,47 @@
       move(e) {
         e.preventDefault()
       },
-      exchange(item) {
-        this.isShowPop = false
-        this.$emit('exchange', item)
-      },
       gotomall() {
         GLOBALS.marchSetsPoint('A_H5PT0274003250')
         location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
       },
-      gototask(item){
-        if(item.status==0){
-          item.url&&GLOBALS.jumpOutsideGame(item.url)
+      //我的抽签里 去完成 和去领取操作
+      async gototask(item) {
+        if (item.status == 0) {
+          item.url && GLOBALS.jumpOutsideGame(item.url)
         }
-        if(item.status==1){
-          this.$emit('openprize',{
-            awardsType: 'jdk',
-            awardsName: '1000元京东券'
-          })
+        if (item.status == 1) {
+          let {code, data, message} = await taskGain(item.id)
+          if (code == 200) {
+            this.$emit('openprize', {
+              awardsType: data.awardsType,
+              awardsName: data.awardsAmount
+            })
+            //刷新接口
+            let res = await getLotRecord()
+            if (res.code == 200) {
+              this.mineData = res.data
+            }
+          } else {
+            this.$toast.show({
+              message: message
+            })
+          }
+        }
+      },
+      gotopay(){
+        if (this.package.buyFlag == 1) {
+          localStorage.setItem('originDeffer', window.location.href)
+          GLOBALS.marchSetsPoint('A_H5PT0274003251', {
+            recharge_rmb: this.package.price,
+            product_id: this.package.bizId,
+            awards_name: this.package.name,
+            product_name: this.package.name
+          })   // 点击任意礼包
+          localStorage.setItem('JDD_PARAM', JSON.stringify(this.package))
+          localStorage.setItem('payment', JSON.stringify(this.package))
+          location.href =
+            'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
         }
       }
     },
@@ -378,7 +357,7 @@
   .com_pop {
     position: fixed;
     left: 50%;
-    top: 2.5rem;
+    top: 1rem;
     margin-left: -2.75rem;
     &.flag7 {
       top: .5rem;
@@ -467,32 +446,6 @@
                   right: 0;
                   margin: auto;
                   height: 5rem;
-                }
-              }
-              .tabs {
-                display: flex;
-                height: .7rem;
-                font-size: .24rem;
-                font-weight: bold;
-                margin: auto;
-                .tabs-item {
-                  flex: 1;
-                  font-weight: bold;
-                  color: rgba(243, 226, 200, 1);
-                  background: #F8783F;
-                  flex: 1;
-                  text-align: center;
-                  line-height: .76rem;
-                  &.selected {
-                    background: #F8B478;
-                    color: #F8783F;
-                  }
-                  &:nth-child(1) {
-                    border-radius: .35rem 0 0 .35rem;
-                  }
-                  &:nth-child(2) {
-                    border-radius: 0 .35rem .35rem 0;
-                  }
                 }
               }
               .prize {
@@ -807,33 +760,34 @@
                     box-sizing: border-box;
                     margin-bottom: .2rem;
                     .item {
-                      width: 1.65rem;
+                      width: 1.25rem;
                       padding-bottom: .14rem;
                       box-sizing: border-box;
                       display: flex;
                       flex-direction: column;
                       justify-content: space-around;
                       align-items: center;
-                      .date{
-                        width:1rem;
-                        height:.24rem;
-                        line-height: .24rem;
+                      .date {
+                        width: 1rem;
+                        height: .24rem;
+                        line-height: .26rem;
                         text-align: center;
-                        background:rgba(246,228,189,1);
-                        border-radius:.12rem;
-                        font-size:.18rem;
-                        font-weight:bold;
-                        color:rgba(255,127,50,1);
+                        background: rgba(246, 228, 189, 1);
+                        border-radius: .12rem;
+                        font-size: .18rem;
+                        font-weight: bold;
+                        color: rgba(255, 127, 50, 1);
                         margin-bottom: .06rem;
                       }
-                      .bestname{
-                        font-size:.24rem;
-                        font-weight:bold;
-                        color:rgba(255,248,238,1);
+                      .bestname {
+                        font-size: .24rem;
+                        font-weight: bold;
+                        color: rgba(255, 248, 238, 1);
                       }
                     }
                     p {
-                      padding: 0 .02rem;
+                      width: 2.5rem;
+                      padding: 0 .05rem;
                       box-sizing: border-box;
                       font-size: .2rem;
                       font-weight: bold;
@@ -858,6 +812,33 @@
                         background: rgba(174, 174, 174, 1);
                       }
                     }
+                  }
+                }
+                &.empty {
+                  position: absolute;
+                  top: 0;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  margin: auto;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  &:before {
+                    content: '';
+                    position: absolute;
+                    width: 1.27rem;
+                    height: 1.27rem;
+                    background: url("../images/compop/empty.png");
+                    background-size: 100% 100%;
+                  }
+                  &:after {
+                    content: '没有记录';
+                    position: absolute;
+                    font-size: .24rem;
+                    font-weight: 500;
+                    color: rgba(207, 117, 66, 1);
+                    margin-top: 1rem;
                   }
                 }
               }

@@ -1,82 +1,78 @@
 <template>
-  <div class="bestbest">
+  <div class="bestbest" v-if="actInfo">
     <div class="bestbest-container">
       <img src="./images/back.png" alt="" class="back" @click="backHome">
       <div class="horn" v-if="hornList.length">
-        <horn :noticeList="hornList"></horn>
+        <horn :noticeList="hornList" :bestname="bestname"></horn>
       </div>
       <div class="rule" @click="showPop(7)">活动规则</div>
       <div class="myprize" @click="showPop(1)">奖励</div>
       <img src="./images/mine.png" alt="" class="mine" @click="showPop(6)">
       <div class="bestbest-person" :class="{animation:!showBar}">
         <template v-if="showBar">
-          <img src="./images/playbtn.png" alt="" @click="gotolottery(0)" v-if="!moreprize" :class="{end:showPackages}">
-          <img src="./images/prizebtn.png" alt="" @click="gotolottery(1)" v-if="moreprize" :class="{end:showPackages}">
-          <!--<img src="./images/overbtn.png" alt="" class="end">-->
+          <template v-if="actInfo.state!=4">
+            <img src="./images/playbtn.png" alt="" @click="gotolottery(0)" v-if="!moreprize"
+                 :class="{end:showPackages}">
+            <img src="./images/prizebtn.png" alt="" @click="gotolottery(1)" v-if="moreprize"
+                 :class="{end:showPackages}">
+          </template>
+          <img src="./images/overbtn.png" alt="" class="end" v-else>
         </template>
       </div>
-      <div class="best-num">抽签次数：<i>888次</i></div>
+      <div class="best-num">抽签次数：<i>{{actInfo.remnantTime||0}}次</i></div>
     </div>
-    <div class="downbtn" :class="{moreprize:moreprize}" @click="checkdownbtn" v-if="!showPackages">
-      <template v-if="!moreprize">
-        <div class="item">连续参与3天即可<i>免费抽取高额奖励</i>上上签！</div>
-        <div class="item">XX日0点开启！</div>
+    <div class="downbtn" :class="{moreprize:moreprize||(actInfo.state==1&&!actInfo.todayRecharge)||(actInfo.state==4)}"
+         @click="checkdownbtn" v-if="!showPackages">
+      <template v-if="!moreprize&&actInfo.state!=4">
+        <div class="item">连续参与{{actInfo.ultimateMinTime}}天即可<i>免费抽取高额奖励</i>上上签！</div>
+        <div class="item">{{actInfo.ultimateDate}}0点开启！</div>
       </template>
       <template v-else>
-        <div class="item" :class="{moreprize:moreprize}">高额奖励上上签,<i>最高抽取150元京东卡！</i></div>
+        <div class="item" :class="{moreprize:moreprize}">高额奖励上上签,<i>最高抽取150元奖励！</i></div>
         <div class="item" :class="{moreprize:moreprize}">查看大家手气>></div>
       </template>
     </div>
     <div class="pop-mask" v-if="showPackages" @touchmove.prevent></div>
     <transition name="fade">
       <div class="drop-down" v-if="showPackages">
-        <div class="drop-down-content" :class="{gray:false}">
+        <div class="drop-down-content" :class="{gray:allPackagesBuyed}">
           <p>购买下列礼包可获得抽签次数</p>
           <div class="packages">
-            <div class="item" v-for="(item,index) in leaguePacksListArr" @click="gotopay(item)">
+            <div class="item" v-for="(item,index) in leaguePacksListArr.slice(0,3)" @click="gotopay(item)">
               <img :src="`${require(`./images/package${index}.png`)}`" alt="">
               <span
                 class="item-text">{{item.content.split('+')[0]}}<br/>+{{item.content.split('+')[1]}}</span>
-              <a href="javascript:" class="btn-price">{{item.price}}元购买</a>
+              <a href="javascript:" class="btn-price" :class="{gray:item.buyFlag==0}">{{item.price}}元购买</a>
             </div>
           </div>
           <div class="downarrow" @click="showPackages=false"></div>
         </div>
       </div>
     </transition>
-    <winPop @openmine="showPop(6)" ref="winPop"></winPop>
-    <comPop :popType="popType" ref="comPop" @close="popType=0" @openprize="openprize"></comPop>
-    <prize-pop :awardData="prizeItem" ref="prizePop" @close="prizeItem=null"></prize-pop>
+    <winPop :bestname="bestname" :awardData="awardData" @openmine="showPop(6)" ref="winPop"></winPop>
+    <comPop :popType="popType" :actInfoData="actInfo" :bestname="bestname" ref="comPop" @close="popType=0"
+            @openprize="openprize" :package="leaguePacksListArr[3]"></comPop>
+    <prize-pop :awardData="prizeItem" :bestname="bestname" ref="prizePop" @close="prizeItem=null"></prize-pop>
     <loading v-show="showLoading" :showBar="false"></loading>
   </div>
 </template>
 <script>
-  import _get from 'lodash.get'
-  import {getAllRecords, getNoticeList, getPackages, activityInfo} from './utils/api'
+  import {getNoticeList, showLeaguePacksList, activityInfo, drawLot} from './utils/api'
 
   export default {
-    name: 'tree',
+    name: 'bestbest',
     data: () => ({
-      moreprize: false,
+      bestname: ["中签", "上签", "上上签"],
       showPackages: false,
       popType: 0,
-      leaguePacksListArr: [{
-        content: '1次抽签机会+2000金叶子',
-        price: 2
-      }, {
-        content: '1次抽签机会+2000金叶子',
-        price: 2
-      }, {
-        content: '1次抽签机会+2000金叶子',
-        price: 2
-      }],
-      hornList: [{
-        nickname: '333',
-        awardsName: '88999999'
-      }],
+      leaguePacksListArr: [],
+      hornList: [],
       prizeItem: null,//签面领取奖品
       showBar: true,
       showLoading: false,
+      actInfo: null,
+      awardData: null,
+      allPackagesBuyed: false
     }),
     components: {
       horn: () => import('./components/horn'),
@@ -85,7 +81,11 @@
       prizePop: () => import('./components/prizePop'),
       loading: () => import('../../components/common/loading'),
     },
-    computed: {},
+    computed: {
+      moreprize() {
+        return this.actInfo && [2, 3].includes(this.actInfo.state)
+      }
+    },
     methods: {
       move(e) {
         e.preventDefault()
@@ -115,7 +115,10 @@
         window.location.href = "//wap.beeplaying.com/xmWap/#/"
       },
       checkdownbtn() {
-        if (!this.moreprize) {
+        if (this.actInfo.state == 1 && !this.actInfo.todayRecharge) {
+          return
+        }
+        if (!this.moreprize&&this.actInfo.state!=4) {
           this.showPackages = true
         } else {
           GLOBALS.marchSetsPoint('A_H5PT0274003252')
@@ -129,88 +132,95 @@
         })
       },
       gotopay(item) {
-        localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0274003251', {
-          recharge_rmb: item.price,
-          product_id: item.bizId,
-          awards_name: item.name,
-          product_name: item.name
-        })   // 点击任意礼包
-        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-        localStorage.setItem('payment', JSON.stringify(item))
-        location.href =
-          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        if (item.buyFlag == 1) {
+          localStorage.setItem('originDeffer', window.location.href)
+          GLOBALS.marchSetsPoint('A_H5PT0274003251', {
+            recharge_rmb: item.price,
+            product_id: item.bizId,
+            awards_name: item.name,
+            product_name: item.name
+          })   // 点击任意礼包
+          localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+          localStorage.setItem('payment', JSON.stringify(item))
+          location.href =
+            'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        }
       },
-      gotolottery(type) {//0 立即抽签 1高级奖励抽签
+      async gotolottery(type) {//0 立即抽签 1高级奖励抽签
         this.showLoading = true
         this.showBar = false
         GLOBALS.marchSetsPoint(type ? 'A_H5PT0274003253' : 'A_H5PT0274003245')
         let self = this
-        if (true) {//次数不够
-          this.showPop(4)
-          // this.showPackages=true
+        if (!this.actInfo.remnantTime&&this.actInfo.state!=2) {//次数不够
+          if(this.moreprize){
+            this.showPop(5)
+          }else{
+            if(this.actInfo.todayRecharge){
+              this.showPackages=true
+            }else{
+              this.showPop(4)
+            }
+          }
           this.showLoading = false
           this.showBar = true
         } else {
           this.showLoading = true
           try {
-            // let {code, data, message} = (await Services.runAnimation(awardsLevel)).data
-            // if (code == 200) {
-            //   this.awardData = data
-            setTimeout(() => {
-              self.showBar = true
+            let {code, data, message} = await drawLot()
+            if (code == 200) {
+              this.awardData = data
               setTimeout(() => {
-                self.showLoading = false
-                self.$refs.winPop.showPop()
-              }, 100)
-            }, 1000)
-            // } else {
-            //   this.showLoading = false
-            //   this.showBar = true
-            //   this.$toast.show({
-            //     message: message,
-            //     duration: 2000
-            //   })
-            // }
+                self.showBar = true
+                setTimeout(() => {
+                  self.showLoading = false
+                  self.$refs.winPop.showPop()
+                  self._getInfo()
+                }, 100)
+              }, 1000)
+            } else {
+              this.showLoading = false
+              this.showBar = true
+              this.$toast.show({
+                message: message,
+                duration: 2000
+              })
+            }
           } catch (e) {
             this.showLoading = false
           }
         }
       },
       /** 获取活动信息 **/
-      _getInfo() {
-        activityInfo().then(res => {
-          let {code, data, message} = _get(res, 'data')
-          if (code == 200) {
-            this.userInfo = _get(res, 'data.data', {})
-            this.treeInfo = _get(res, 'data.data.userTreeInfoRsp')
-            this.status = _get(res, 'data.data.userTreeInfoRsp.currTreeGrade', 0)
-            this.awardUrl = _get(res, 'data.data.awardUrl', '')
-            let activities_status = _get(res, 'data.data.state')
-            if (activities_status == 0) {
-              this.$toast.show({message: '当前活动尚未开始'})
-              return
-            }
-            if (activities_status == 2) {
-              this.$toast.show({message: '当前活动已经结束'})
-              return
-            }
-            /** 用户尚未领取种子 **/
-            if (!this.treeInfo) {
-              this._getAwardList()
-            }
-          }
-        })
+      async _getInfo() {
+        let {code, data, message} = await activityInfo()
+        if (code == 200) {
+          this.actInfo = data
+          this._getNoticeList()
+        }
+      },
+      async _getNoticeList() {
+        let {code, data, message} = await getNoticeList()
+        if (code == 200) {
+          this.hornList = data
+        }
+      },
+      async getShowLeaguePacksList() {
+        const {code, data} = await showLeaguePacksList()
+        if (code === 200) {
+          this.leaguePacksListArr = data.mallBizConfigs
+          this.allPackagesBuyed = this.leaguePacksListArr.slice(0, 3).filter(item => item.buyFlag == 0).length == 3
+        }
       },
       init() {
         this._getInfo()
       }
     },
     mounted() {
-      this.init()
       GLOBALS.marchSetsPoint('P_H5PT0274', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })
+      this.init()
+      this.getShowLeaguePacksList()
     },
     watch: {
       showPackages(value) {
@@ -485,7 +495,7 @@
         left: 0;
         right: 0;
         margin: auto;
-        background: rgba(0, 0, 0, .7);
+        background: rgba(0, 0, 0, .5);
         border-radius: .35rem .35rem 0 0;
       }
       &.gray:after {

@@ -11,7 +11,7 @@
           </div>
           <div :class="getClassName('main')">
             <div :class="getClassName('container_compop')">
-              <p>成功领取<i>{{awardData.awardsName.replace(getAwardName(awardData.awardsType),'')}}</i>{{getAwardName(awardData.awardsType)}}
+              <p>成功领取<i>{{awardData.awardsName}}元</i>{{getAwardName(awardData.awardsType)}}
               </p>
               <div class="prize_info_item">
                 <div class="prize_info_img">
@@ -22,7 +22,7 @@
                     {{getAwardName(awardData.awardsType)}}
                   </div>
                   <div class="prize_info_name_item" v-if="awardData.awardsName">
-                    {{awardData.awardsName.replace(getAwardName(awardData.awardsType),'')}}
+                    {{awardData.awardsName}}
                   </div>
                 </div>
               </div>
@@ -39,9 +39,8 @@
 </template>
 
 <script>
-  import {getAllRecords} from '../utils/api'
   export default {
-    name: 'comPop',
+    name: 'prizePop',
     data() {
       return {
         isShowPop: true,
@@ -51,6 +50,10 @@
       awardData: {
         type: Object,
         default: null
+      },
+      bestname: {
+        type: Array,
+        default: []
       }
     },
     methods: {

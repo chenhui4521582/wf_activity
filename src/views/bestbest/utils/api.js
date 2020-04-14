@@ -5,59 +5,16 @@ import $axios from '../../../http'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/activityInfo')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/activity-info')
   return data
 }
-/**
- * @description
- * @return {Object} data
- */
-
-export const rankList = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/rankList')
-  return data
-}
-/**
- * @description 累消领取奖励
- * @return {Object} data
- */
-export const gameReceive = async (sort) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/game-receive/' + sort)
-  return data
-}
-/**
- * @description 副页活动详细信息
- * @return {Object} data
- */
-export const taskProgressInfo = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/activity-detail-info')
-  return data
-}
-/**
- * @description 任务领取奖励 任务序号,1:每日任务数，2：充值数
- * @return {Object} data
- */
-export const taskReceive = async (params) => {
-  const {data} = await $axios.post("//petcat-api.beeplaying.com/ops/api/kill-virus/task-receive/" + params.sort)
-  return data
-}
-/**
- * @description 领取记录
- * @return {Object} data
- */
-
-export const gameReceiveRecord = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/ops/api/kill-virus/user-coupon-awards')
-  return data
-}
-
 /**
  * @description 跑马灯
  * @return {Object} data
  */
 
 export const getNoticeList = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/notice-list')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/notice-list')
   return data
 }
 /**
@@ -65,15 +22,7 @@ export const getNoticeList = async () => {
  * @return {Object} data
  */
 export const taskGain = async (id) => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/task/' + id)
-  return data
-}
-/**
- * @description 一元抽奖
- * @return {Object} data
- */
-export const yiyuanlottery = async () => {
-  const {data} = await $axios.post('//petcat-api.beeplaying.com/petcat/api/vip/day/lottery')
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/accept-awards/' + id)
   return data
 }
 
@@ -81,15 +30,39 @@ export const yiyuanlottery = async () => {
  * @description 礼包数据
  * @return {Object} data
  */
-export const getPackages = async (flag) => {
-  const {data} = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/' + flag)
+export const showLeaguePacksList = async () => {
+  const { data } = await $axios.post('http://shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/238')
   return data
 }
 /**
  * @description 大家手气
  * @return {Object} data
  */
-export const getAllRecords = async (params) => {
-  const {data} = await $axios.post('//platform-api.beeplaying.com/wap/api/profit/findPage',params)
+export const getRankList = async (params) => {
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/rank-list', params)
+  return data
+}
+/**
+ * @description 我抽到的签
+ * @return {Object} data
+ */
+export const getLotRecord = async () => {
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/lot-record')
+  return data
+}
+/**
+ * @description 我的奖励
+ * @return {Object} data
+ */
+export const getAwardsRecord = async () => {
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/awards-record')
+  return data
+}
+/**
+ * @description 抽签
+ * @return {Object} data
+ */
+export const drawLot = async () => {
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/lucky-lot/draw-lot')
   return data
 }

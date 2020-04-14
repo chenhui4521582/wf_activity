@@ -7,9 +7,9 @@
           <div class="main">
             <div class="container_winpop">
               <p class="title">恭喜抽中</p>
-              <p class="bestname">上上签</p>
-              <p class="content">奖励XX元话费券去竞技台球中消耗1000金叶子，即可获得~</p>
-              <div class="btnred" @click="receive">立即完成</div>
+              <p class="bestname">{{bestname[awardData.awardsLevel-1]}}</p>
+              <p class="content">{{awardData.awardsName}}</p>
+              <div class="btnred" @click="receive(awardData)">{{awardData.btnStatus==0?'立即完成':'开心收下'}}</div>
             </div>
             <div class="footer" @click="openmine">可在活动页面-<i>我抽到的签查看>></i></div>
           </div>
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-  import {getAllRecords} from '../utils/api'
   export default {
     name: 'winpop',
     data() {
@@ -31,6 +30,10 @@
       }
     },
     props: {
+      bestname: {
+        type: Array,
+        default: []
+      },
       awardData: {
         type: Object,
         default: () => null
@@ -52,7 +55,7 @@
         GLOBALS.marchSetsPoint('A_H5PT0274003246')
         this.isShowPop = true
       },
-      close(data) {
+      close() {
         this.isShowPop = false
       },
       move(e) {
@@ -62,10 +65,11 @@
         this.isShowPop = false
         this.$emit('openmine')
       },
-      receive(){
+      receive(item){
         //H5平台-上上签活动-立即抽签-抽中奖励弹窗-开心收下点击 A_H5PT0274003247
         //H5平台-上上签活动-立即抽签-抽中奖励弹窗-开心收下点击 A_H5PT0274003248
-        GLOBALS.marchSetsPoint('A_H5PT0274003247')
+        GLOBALS.marchSetsPoint(item.btnStatus?'A_H5PT0274003247':'A_H5PT0274003248')
+        this.close()
       }
     },
     watch: {

@@ -4,7 +4,7 @@
       <div ref="hornDivWraper">
         <ul ref="hornUl" id="hornUl" :style="hornStyles">
           <li v-for="(item,index) in noticeList" :key="index" ref="hornLi">
-            恭喜{{item.nickname}}抽中了{{item.awardsName}}
+            恭喜玩家{{item.nickname}}抽中{{bestname[item.awardsLevel-1]}}
           </li>
         </ul>
         <ul id="copyHornUl" :style="copyStyles"></ul>
@@ -16,6 +16,10 @@
   export default {
     props: {
       noticeList: {
+        type: Array,
+        default: []
+      },
+      bestname:{
         type: Array,
         default: []
       }
