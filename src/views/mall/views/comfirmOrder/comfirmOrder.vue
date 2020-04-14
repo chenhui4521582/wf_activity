@@ -90,17 +90,22 @@ export default {
     /** 下单 **/
     _payOrder () {
       Services.payOrder({
-        "deductPrice": this.goodInfo.deductPrice,
-        "num": this.goodInfo.num,
-        "placeId": this.defaultAddress.id,
-        "postage": this.goodInfo.postage,
-        "productId": this.goodInfo.id,
-        "realPrice": this.price,
-        "userHfq": this.isSelectedCost
+        'deductPrice': this.goodInfo.deductPrice,
+        'num': this.goodInfo.num,
+        'placeId': this.defaultAddress.id,
+        'postage': this.goodInfo.postage,
+        'productId': this.goodInfo.id,
+        'realPrice': this.price,
+        'userHfq': this.isSelectedCost
       }).then(res => {
-        const { code, message } = _get(res, 'data')
-        if (code == 200) {
-
+        const { code, data, message } = _get(res, 'data')
+        if (code === 200) {
+          let orderInfo = {
+            ...data,
+            price: this.price
+          }
+          localStorage.setItem('payment', JSON.stringify(orderInfo))
+          location.href = '/xmWap/#/payment/paymentlist'
         } else {
           this.$toast({ message })
         }
