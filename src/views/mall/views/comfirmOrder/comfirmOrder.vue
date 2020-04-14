@@ -29,8 +29,7 @@ export default {
   data () {
     return {
       addressList: [],
-      cost: 50,
-      isSelectedCost: false
+      isSelectedCost: true
     }
   },
   components: {
@@ -48,7 +47,7 @@ export default {
       }
       if (this.isSelectedCost) {
         let price = info.deductPrice * info.num
-        price = price < this.cost ? price : this.cost
+        price = price < this.goodInfo.fragmentAmount ? price : this.goodInfo.fragmentAmount
         this.$set(info, 'hfqPrice', price)
       } else {
         delete info.hfqPrice
@@ -57,22 +56,22 @@ export default {
     },
     maxDeductPrice () {
       let price = this.goodInfo.deductPrice * this.goodInfo.num
-      return price < this.cost ? price : this.cost
+      return price < this.goodInfo.fragmentAmount ? price : this.goodInfo.fragmentAmount
     },
     price () {
       let price = this.goodInfo.payPrice + this.goodInfo.postage
       this.isSelectedCost && (price = price - this.maxDeductPrice)
       return price.toFixed(2)
     },
-    hasAddressList() {
+    hasAddressList () {
       return this.addressList.length
     },
-    defaultAddress() {
+    defaultAddress () {
       let from = this.$route.query.from
-      if(from) {
+      if (from) {
         return this.$route.query
       }
-      if(this.hasAddressList) {
+      if (this.hasAddressList) {
         return this.addressList[0]
       }
       return {}
@@ -80,10 +79,10 @@ export default {
   },
   methods: {
     /** 获取收货地址 **/
-    _getAddress() {
+    _getAddress () {
       Services.getAddress().then(res => {
-        const {code} = _get(res, 'data')
-        if (code == 200) {
+        const { code } = _get(res, 'data')
+        if (code === 200) {
           this.addressList = _get(res, 'data.data')
         }
       })
@@ -91,7 +90,7 @@ export default {
   },
   mounted () {
     this._getAddress()
-  },
+  }
 }
 </script>
 
@@ -107,7 +106,7 @@ export default {
     left: 0;
     z-index: 10;
     width: 100%;
-    height: .9rem;
+    height: 0.9rem;
     background: #fff;
     font-size: 0.24rem;
     color: #888;
@@ -115,7 +114,7 @@ export default {
     display: flex;
     justify-content: space-between;
     .value {
-      height: .9rem;
+      height: 0.9rem;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -127,8 +126,8 @@ export default {
     }
     .submit-btn {
       width: 3rem;
-      height: .9rem;
-      line-height: .9rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
       background: #ff4141;
       text-align: center;
       color: #fff;

@@ -1,10 +1,9 @@
 <template>
   <section class="duction-price">
     <p class="label">话费券抵扣</p>
-    <p class="value">
+    <p class="value" @click="toggleCost()">
       <span>可用{{cost}}元话费券抵用{{cost}}元</span>
-      <span v-if="cost" class="radio" :class="inputValue?'selected':''"
-        @click="toggleCost()"></span>
+      <span v-if="cost" class="radio" :class="inputValue?'selected':''"></span>
     </p>
   </section>
 </template>
