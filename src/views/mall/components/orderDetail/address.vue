@@ -13,7 +13,10 @@
         </p>
         <div class="detail address-item">
           <p>
-            <span class="label">收货地址</span><span>{{info.province}}  {{info.city}}  {{info.area}}  {{info.receiverAddress}}</span>
+            <span class="label">收货地址</span>
+            <span v-if="locked">{{info.receiveAddress}}</span>
+            <span v-else>{{info.province}} {{info.city}} {{info.area}}
+              {{info.receiverAddress}}</span>
           </p>
           <span class="icon">
             <i class="iconfont icon-next" v-if="!locked"></i>
@@ -46,7 +49,7 @@ export default {
         return false
       }
     },
-    toAddAddress () { 
+    toAddAddress () {
       location.replace('https://wap.beeplaying.com/xmWap/#/address/add')
     },
     toEditAddress () {

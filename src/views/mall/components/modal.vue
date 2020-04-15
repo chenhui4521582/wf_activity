@@ -166,7 +166,7 @@ export default {
   .content {
     padding: 0.08rem 0.3rem 0.23rem;
     &.line {
-      border-bottom: 2px solid #e6e6e6;
+      border-bottom: 1px solid #eee;
     }
   }
   .footer-warp {
