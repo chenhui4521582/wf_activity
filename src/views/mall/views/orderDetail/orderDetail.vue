@@ -238,7 +238,7 @@ export default {
         price: this.orderInfo.realPrice
       }
       localStorage.setItem('payment', JSON.stringify(orderInfo))
-      window.location.href = '/xmWap/#/payment/paymentlist'
+      window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
     },
     /** 再次购买 **/
     continueBuy () {

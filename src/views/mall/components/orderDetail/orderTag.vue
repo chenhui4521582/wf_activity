@@ -16,6 +16,10 @@
       <p>卖家已发货</p>
       <span>等待买家收货</span>
     </template>
+    <template v-else-if="info.status===4">
+      <img src="./imgs/order-finished.png" alt="">
+      <span>交易已完成</span>
+    </template>
     <template v-else-if="info.status===5">
       <img src="./imgs/order-cancel.png" alt="">
       <span>订单已取消</span>
@@ -23,10 +27,6 @@
     <template v-else-if="info.status===6">
       <img src="./imgs/order-closed.png" alt="">
       <span>订单已退款</span>
-    </template>
-    <template v-else>
-      <img src="./imgs/order-finished.png" alt="">
-      <span>交易已完成</span>
     </template>
   </section>
 </template>
