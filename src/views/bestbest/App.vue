@@ -28,7 +28,7 @@
         <div class="item">{{actInfo.ultimateDate}}0点开启！</div>
       </template>
       <template v-else>
-        <div class="item" :class="{moreprize:moreprize}">高额奖励上上签,<i>最高抽取150元奖励！</i></div>
+        <div class="item" :class="{moreprize:moreprize}">高额奖励上上签，<i>最高抽取150元奖励！</i></div>
         <div class="item" :class="{moreprize:moreprize}">查看大家手气>></div>
       </template>
     </div>
