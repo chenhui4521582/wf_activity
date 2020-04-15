@@ -107,13 +107,13 @@ export default {
       }
     },
     onToucheEnd (e) {
-      const scrollY = document.documentElement.scrollTop
+      const scrollY = document.documentElement.scrollTop||document.body.scrollTop
       // banner图向下滑动，收起banner
       if (this.translateY === 0 && scrollY > 0) {
         this.translateY = -this.bannerHeight
         setTimeout(()=>{
-          document.documentElement.scrollTop=0
-        },250)
+          document.body.scrollTop=0
+        },300)
         if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
         GLOBALS.marchSetsPoint('A_H5PT0225002748')
         return
@@ -122,6 +122,9 @@ export default {
       // if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0.3 * this.bannerHeight) {
       if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0) {
         this.translateY = 0
+        setTimeout(()=>{
+          document.body.scrollTop=0
+        },300)
       } else {
         this.translateY = -this.bannerHeight
       }
