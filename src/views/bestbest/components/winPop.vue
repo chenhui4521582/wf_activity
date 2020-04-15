@@ -67,8 +67,11 @@
       },
       receive(item){
         //H5平台-上上签活动-立即抽签-抽中奖励弹窗-开心收下点击 A_H5PT0274003247
-        //H5平台-上上签活动-立即抽签-抽中奖励弹窗-开心收下点击 A_H5PT0274003248
+        //H5平台-上上签活动-立即抽签-抽中奖励弹窗-立即完成点击 A_H5PT0274003248
         GLOBALS.marchSetsPoint(item.btnStatus?'A_H5PT0274003247':'A_H5PT0274003248')
+        if(!item.btnStatus){
+          GLOBALS.jumpOutsideGame(item.url)
+        }
         this.close()
       }
     },
