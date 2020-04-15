@@ -35,6 +35,11 @@ const confirmOrder = function (params) {
   return Axios.post(Api.confirmOrder.replace('{orderId}', params))
 }
 
+const getOrderDetail = function (params) {
+  return Axios.post(Api.getOrderDetail.replace('{orderId}', params))
+}
+POST 
+
 const Service = {
   getAddress,
   payOrder,
