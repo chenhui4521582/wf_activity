@@ -111,6 +111,9 @@ export default {
       // banner图向下滑动，收起banner
       if (this.translateY === 0 && scrollY > 0) {
         this.translateY = -this.bannerHeight
+        setTimeout(()=>{
+          document.documentElement.scrollTop=0
+        },250)
         if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
         GLOBALS.marchSetsPoint('A_H5PT0225002748')
         return
