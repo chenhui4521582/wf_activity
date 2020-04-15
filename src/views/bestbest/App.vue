@@ -24,7 +24,7 @@
     <div class="downbtn" :class="{moreprize:moreprize||(actInfo.state==1&&!actInfo.todayRecharge)||(actInfo.state==4)}"
          @click="checkdownbtn" v-if="!showPackages">
       <template v-if="!moreprize&&actInfo.state!=4">
-        <div class="item">连续参与{{actInfo.ultimateMinTime}}天即可<i>免费抽取高额奖励</i>上上签！</div>
+        <div class="item">参与任意{{actInfo.ultimateMinTime}}天即可<i>免费抽取高额奖励</i>上上签！</div>
         <div class="item">{{actInfo.ultimateDate}}0点开启！</div>
       </template>
       <template v-else>
@@ -293,7 +293,7 @@
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        line-height: .3rem;
+        line-height: .24rem;
         &.rule {
           top: .53rem
         }

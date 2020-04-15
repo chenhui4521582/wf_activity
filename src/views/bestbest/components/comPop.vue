@@ -795,6 +795,7 @@
                       font-size: .2rem;
                       font-weight: bold;
                       color: rgba(153, 153, 153, 1);
+                      line-height: .3rem;
                     }
                     .btn {
                       width: 1rem;
