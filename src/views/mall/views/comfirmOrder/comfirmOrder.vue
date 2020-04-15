@@ -105,7 +105,10 @@ export default {
             price: this.price
           }
           localStorage.setItem('payment', JSON.stringify(orderInfo))
-          // location.href = '/xmWap/#/payment/paymentlist'
+          let channel = localStorage.getItem('APP_CHANNEL')
+          let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
+          localStorage.setItem('originDeffer', originDeffer)
+          window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
         } else {
           this.$toast({ message })
         }
