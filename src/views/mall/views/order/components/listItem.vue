@@ -23,7 +23,7 @@
     </div>
     <!-- 待付款  status == 0 -->
     <div class="obligation" v-if="item.status == 0">
-      <div class="white-btn cancel-btn" @click="openOrderCancal">取消订单</div>
+      <div class="white-btn cancel-btn" @click.stop="openOrderCancal">取消订单</div>
       <div class="red-btn comfirm-btn">付款</div>
     </div>
     <!-- 付款中 status == 1 -->
@@ -36,8 +36,8 @@
     </div>
     <!-- 已发货 status == 3 -->
     <div class="shipped" v-if="item.status == 3">
-      <div class="white-btn check-btn" @click="openLogistics">查看物流</div>
-      <div class="red-btn comfirm-btn" @click="receipt">确认收货</div>
+      <div class="white-btn check-btn" @click.stop="openLogistics">查看物流</div>
+      <div class="red-btn comfirm-btn" @click.stop="receipt">确认收货</div>
     </div>
     <!-- 订单取消 status == 5 -->
     <div class="cancel completion" v-if="item.status == 5">
@@ -45,18 +45,18 @@
         <img src="../img/cancel-icon.png" alt="">
       </div>
       <div class="explain">注：若产生退款，请点击<span @click="goServices">联系客服</span>及时处理订单</div>
-      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
+      <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
     </div>
     <!-- 退款 status == 6 -->
     <div class="refund completion" v-if="item.status == 6">
       <div class="icon">
         <img src="../img/refund-icon.png" alt="">
       </div>
-      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
+      <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
     </div>
     <!-- 订单已完成 status == 4 -->
     <div class="evalution completion" v-if="item.status == 4">
-      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
+      <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
       <!-- <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div> -->
     </div>
     <!-- 评论过 status == 7 -->
