@@ -31,7 +31,7 @@ export const taskGain = async (id) => {
  * @return {Object} data
  */
 export const showLeaguePacksList = async () => {
-  const { data } = await $axios.post('http://shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/238')
+  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/238')
   return data
 }
 /**
