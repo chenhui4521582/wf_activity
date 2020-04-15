@@ -1,6 +1,6 @@
 <template>
   <div class="list-item" @click="goProductDetail">
-    <div class="title">话费券最高可抵100元</div>
+    <div class="title">{{item.label}}</div>
     <div class="goods-img">
       <img :src="item.picture | filter" alt="">
     </div>

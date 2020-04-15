@@ -20,6 +20,7 @@
           :key="index" 
           @openPopup="openPopup"
           @goServices="goServices"
+          @jumpOrderDetail="jumpOrderDetail"
         />
       </div>
       <div class="empty" v-else>
@@ -222,6 +223,15 @@ export default {
           })
         } else {
           this.$toast.show({message})
+        }
+      })
+    },
+    /** 跳转订单详情 **/
+    jumpOrderDetail (orderId) {
+      this.$router.push({
+        name: 'orderDetail',
+        query: {
+          orderId
         }
       })
     },

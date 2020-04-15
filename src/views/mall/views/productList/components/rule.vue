@@ -56,7 +56,6 @@ export default {
     z-index: 2;
     transform: translate(-50%, -50%);
     width: 4.6rem;
-    height: 5.8rem;
     background: #B43131;
     border-radius: .32rem;
     .title {

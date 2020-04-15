@@ -187,6 +187,7 @@ img {
   .container {
     position: relative;
     z-index: 2;
+    height: 100%;
     .nav {
       display: flex;
       justify-content: center;
@@ -210,8 +211,8 @@ img {
     }
     .list {
       padding: .26rem .3rem;
-      position: fixed;
-      top: 4.89rem;
+      position: absolute;
+      top: .7rem;
       left: 0;
       right: 0;
       bottom: 0;

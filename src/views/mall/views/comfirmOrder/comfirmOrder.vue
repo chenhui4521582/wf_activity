@@ -105,7 +105,7 @@ export default {
             price: this.price
           }
           localStorage.setItem('payment', JSON.stringify(orderInfo))
-          location.href = '/xmWap/#/payment/paymentlist'
+          // location.href = '/xmWap/#/payment/paymentlist'
         } else {
           this.$toast({ message })
         }

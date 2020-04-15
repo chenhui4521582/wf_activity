@@ -1,5 +1,5 @@
 <template>
-  <div class="order-item">
+  <div class="order-item" @click="jumpOrderDetail">
     <div class="wrap">
       <div class="order-img">
         <img :src="item.picture | filter" alt="">
@@ -124,6 +124,10 @@ export default {
     /** 打开确认收货弹框 **/
     receipt() {
       this.$emit('openPopup', 3, this.item.id)
+    },
+    /** 跳转订单详情 **/
+    jumpOrderDetail() {
+      this.$emit('jumpOrderDetail', this.item.id)
     },
     /** 跳转客服 **/
     goServices() {
