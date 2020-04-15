@@ -81,7 +81,7 @@
                 </p>
                 <div class="prize_info_item">
                   <div class="prize_info_img">
-                    <img :src="`${require(`../images/compop/${awardData.awardsType}.png`)}`" alt="">
+                    <img :src="`${require(`../images/comPop/${awardData.awardsType}.png`)}`" alt="">
                   </div>
                   <div class="prize_info_name">
                     <div class="prize_info_name_item" v-if="awardData.awardsType">
@@ -105,12 +105,12 @@
               </template>
               <!--大家玩游戏-->
               <template v-else-if="popType==5">
-                <img src="../images/compop/sad.png" alt="" class="sad">
+                <img src="../images/comPop/sad.png" alt="" class="sad">
                 <p>您尚未达到抽签要求...</p>
                 <p>您可以通过购买{{package.price}}元礼包</p>
                 <p>获取抽签资格</p>
                 <div class="package">
-                  <img src="../images/compop/package.png" alt="" class="package">
+                  <img src="../images/comPop/package.png" alt="" class="package">
                   <div class="awardname">{{package.content.split('+')[0]}}<br/>+{{package.content.split('+')[1]}}</div>
                 </div>
                 <div class="btnred" @click="gotopay">立即购买</div>
@@ -618,7 +618,7 @@
                     position: absolute;
                     width: 1.27rem;
                     height: 1.27rem;
-                    background: url("../images/compop/empty.png");
+                    background: url("../images/comPop/empty.png");
                     background-size: 100% 100%;
                   }
                   &:after {
@@ -754,7 +754,7 @@
                   .task-item {
                     width: 5.07rem;
                     height: .79rem;
-                    background: url("../images/compop/mineTaskBg.png");
+                    background: url("../images/comPop/mineTaskBg.png");
                     background-size: 100% 100%;
                     display: flex;
                     align-items: center;
@@ -832,7 +832,7 @@
                     position: absolute;
                     width: 1.27rem;
                     height: 1.27rem;
-                    background: url("../images/compop/empty.png");
+                    background: url("../images/comPop/empty.png");
                     background-size: 100% 100%;
                   }
                   &:after {
@@ -851,7 +851,7 @@
         .close {
           width: .6rem;
           height: .6rem;
-          background: url("../images/compop/close.png") no-repeat center
+          background: url("../images/comPop/close.png") no-repeat center
             center / 100% 100%;
           position: absolute;
           bottom: -1rem;
