@@ -182,9 +182,6 @@ export default {
       if(this.modal.status == 3) {
         this._confirmOrder()
       }
-      if(this.modal.status == 2) {
-        this._confirmOrder()
-      }
     },
     /** 跳转客服 **/
     goServices () {

@@ -54,11 +54,11 @@
       </div>
       <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
     </div>
-    <!-- 没有评论过 status == 4 -->
-    <!-- <div class="evalution completion" v-if="item.status == 4">
-      <div class="white-btn buy-btn" @click="continueBuy">再次购买</div>
-      <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div>
-    </div> -->
+    <!-- 订单已完成 status == 4 -->
+    <div class="evalution completion" v-if="item.status == 4">
+      <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
+      <!-- <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div> -->
+    </div>
     <!-- 评论过 status == 7 -->
     <!-- <div class="evalution-end completion" v-if="item.status == 7">
       <div class="white-btn check-evaluation" @click="checkEvaluation">查看评价</div>
