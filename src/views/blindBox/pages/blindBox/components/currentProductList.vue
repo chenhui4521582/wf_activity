@@ -126,7 +126,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   &.activity {
-    background: #FEF2DE url('../activity/top-bg.png') no-repeat;
+    background:#30569F url('../activity/top-bg.png') no-repeat;
     background-size: 100% 100%;
     width: 100%;
     height: 2.5rem;

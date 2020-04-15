@@ -107,10 +107,13 @@ export default {
       }
     },
     onToucheEnd (e) {
-      const scrollY = document.documentElement.scrollTop
+      const scrollY = document.documentElement.scrollTop||document.body.scrollTop
       // banner图向下滑动，收起banner
       if (this.translateY === 0 && scrollY > 0) {
         this.translateY = -this.bannerHeight
+        setTimeout(()=>{
+          document.body.scrollTop=0
+        },300)
         if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
         GLOBALS.marchSetsPoint('A_H5PT0225002748')
         return
@@ -119,6 +122,9 @@ export default {
       // if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0.3 * this.bannerHeight) {
       if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0) {
         this.translateY = 0
+        setTimeout(()=>{
+          document.body.scrollTop=0
+        },300)
       } else {
         this.translateY = -this.bannerHeight
       }
@@ -188,9 +194,9 @@ export default {
   position: relative;
   z-index: 2;
   &.activity {
-    background: #fef2de;
+    background: #5A4DAF;
     .back {
-      background: #ed4263;
+      background: #9D88EC;
     }
   }
   .main-wrapper {
@@ -209,7 +215,7 @@ export default {
   z-index: 1;
   left: 0;
   top: 0;
-  background: url("./activity/banner.png") no-repeat;
+  background:#30569F url("./activity/banner.png") no-repeat;
   background-size: cover;
   .time {
     line-height: 0.4rem;
@@ -247,7 +253,6 @@ export default {
   position: relative;
   z-index: 8;
   flex: 1;
-  background: #1b1f29;
   flex-direction: column;
   display: flex;
   &.active {

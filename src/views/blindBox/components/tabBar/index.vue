@@ -116,7 +116,7 @@ export default {
 .content {
   width: 100%;
   height: 1.1rem;
-  background: #494b58;
+  background: #292D46;
   border-radius: 0.2rem 0.2rem 0 0;
   display: flex;
   position: fixed;

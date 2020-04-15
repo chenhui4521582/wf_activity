@@ -69,13 +69,13 @@ export default {
       margin-top: 0.24rem;
     }
     .name {
-      color: #ffe3b2;
+      color:rgba(255,225,246,1);
       font-weight: bold;
       font-size: 0.3rem;
       padding: 0.21rem 0 0.12rem;
     }
     .id {
-      color: #ffe3b2;
+      color:rgba(255,225,246,1);
       font-size: 0.24rem;
     }
   }
