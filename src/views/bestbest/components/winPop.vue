@@ -109,7 +109,7 @@
           width: 3.34rem;
           height: 5.85rem;
           font-size: 0.2rem;
-          background: url("../images/compop/popbg.png");
+          background: url("../images/comPop/popbg.png");
           background-size: 100% 100%;
           color: #fff;
           position: relative;
@@ -169,7 +169,7 @@
         .close {
           width: .6rem;
           height: .6rem;
-          background: url("../images/compop/close.png") no-repeat center
+          background: url("../images/comPop/close.png") no-repeat center
             center / 100% 100%;
           position: absolute;
           bottom: -1.6rem;

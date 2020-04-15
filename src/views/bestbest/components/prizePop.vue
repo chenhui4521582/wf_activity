@@ -15,7 +15,7 @@
               </p>
               <div class="prize_info_item">
                 <div class="prize_info_img">
-                  <img :src="`${require(`../images/compop/${awardData.awardsType}.png`)}`" alt="">
+                  <img :src="`${require(`../images/comPop/${awardData.awardsType}.png`)}`" alt="">
                 </div>
                 <div class="prize_info_name">
                   <div class="prize_info_name_item" v-if="awardData.awardsType">
@@ -217,7 +217,7 @@
         .close {
           width: .6rem;
           height: .6rem;
-          background: url("../images/compop/close.png") no-repeat center
+          background: url("../images/comPop/close.png") no-repeat center
             center / 100% 100%;
           position: absolute;
           bottom: -1rem;
