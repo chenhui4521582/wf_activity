@@ -5,18 +5,22 @@
       <span>{{countdownTime}}后自动关闭</span>
     </template>
     <template v-else-if="info.status===1">
+      <p>订单付款中</p>
+      <span>正在付款，请刷新页面更新订单状态</span>
+    </template>
+    <template v-else-if="info.status===2">
       <p>等待卖家发货</p>
       <span>商品将在7天内发货，请耐心等待</span>
     </template>
-    <template v-else-if="info.status===2">
+    <template v-else-if="info.status===3">
       <p>卖家已发货</p>
       <span>等待买家收货</span>
     </template>
-    <template v-else-if="info.status===4">
+    <template v-else-if="info.status===5">
       <img src="./imgs/order-cancel.png" alt="">
       <span>订单已取消</span>
     </template>
-    <template v-else-if="info.status===5">
+    <template v-else-if="info.status===6">
       <img src="./imgs/order-closed.png" alt="">
       <span>订单已退款</span>
     </template>
@@ -33,7 +37,7 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => ({}) // 订单状态 0-待支付，1-已支付待发货，2-已发货，3-确认收货，4-订单取消，5-退款，6-已评价
+      default: () => ({}) // 订单状态 0-待支付，1-支付中，2-已支付待发货，3-已发货，4-确认收货，5-订单取消，6-退款
     }
   },
   data () {
@@ -108,39 +112,39 @@ export default {
     height: 0.3rem;
     margin-right: 0.1rem;
   }
-  &.status-0 {
+  &.status-0,
+  &.status-1 {
     background: #ffecec;
     color: #ff4141;
     p {
       background: #ff4141;
     }
   }
-  &.status-1 {
+  &.status-2 {
     background: #ffecec;
     color: #ff7800;
     p {
       background: #ff7800;
     }
   }
-  &.status-2 {
+  &.status-3 {
     background: #fff2c7;
     color: #ffbc00;
     p {
       background: #ffbc00;
     }
   }
-  &.status-3,
-  &.status-6 {
+  &.status-4 {
     background: #fffad4;
     color: #ff7800;
     justify-content: center;
   }
-  &.status-4 {
+  &.status-5 {
     background: #f0f0f0;
     color: #bbb;
     justify-content: center;
   }
-  &.status-5 {
+  &.status-6 {
     background: #ffecec;
     color: #ff4141;
     justify-content: center;

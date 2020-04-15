@@ -27,7 +27,7 @@
       <div class="red-btn comfirm-btn">付款</div>
     </div>
     <!-- 付款中 status == 1 -->
-    <div class="in-payment" v-if="item.status == 1" >
+    <div class="in-payment" v-if="item.status == 1">
       正在付款，请刷新页面更新订单状态
     </div>
     <!-- 待发货 status == 2 -->
@@ -64,7 +64,7 @@
       <div class="white-btn check-evaluation" @click="checkEvaluation">查看评价</div>
       <div class="red-btn buy-btn" @click="continueBuy">再次购买</div>
     </div> -->
-  </div>  
+  </div>
 </template>
 <script>
 export default {
@@ -72,7 +72,7 @@ export default {
   props: {
     item: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data: () => ({
@@ -80,40 +80,40 @@ export default {
   }),
   methods: {
     isCancel (item) {
-      if(item.cancel == 1){
+      if (item.cancel == 1) {
         return true
       }
       return false
     },
     isRefund (item) {
-      if(item.refund == 1){
+      if (item.refund == 1) {
         return true
       }
       return false
     },
     /** 去评价 **/
-    goEvaluation() {
+    goEvaluation () {
       this.$router.push({
         name: 'evaluation'
       })
     },
     /** 查看评价 **/
-    checkEvaluation() {
+    checkEvaluation () {
       this.$router.push({
         name: 'evaluation'
       })
     },
     /** 打开取消订单弹框 **/
-    openOrderCancal() {
+    openOrderCancal () {
       this.$emit('openPopup', 1, this.item.id)
     },
     /** 打开物流弹框 **/
-    openLogistics() {
+    openLogistics () {
       this.$emit('openPopup', 2, null, this.item.shipInfo)
       // this.$emit('openPopup', 2, null, '圆通速递；123192319073')
     },
     /** 再次购买 **/
-    continueBuy() {
+    continueBuy () {
       this.$router.push({
         name: 'productDetail',
         query: {
@@ -122,15 +122,15 @@ export default {
       })
     },
     /** 打开确认收货弹框 **/
-    receipt() {
+    receipt () {
       this.$emit('openPopup', 3, this.item.id)
     },
     /** 跳转订单详情 **/
-    jumpOrderDetail() {
+    jumpOrderDetail () {
       this.$emit('jumpOrderDetail', this.item.id)
     },
     /** 跳转客服 **/
-    goServices() {
+    goServices () {
       this.$emit('goServices')
     }
   }
@@ -139,16 +139,16 @@ export default {
 <style lang="less" scoped>
 .order-item {
   position: relative;
-  margin-bottom: .2rem;
-  padding: .3rem .2rem .36rem .3rem;
-  border-radius: .16rem;
+  margin-bottom: 0.2rem;
+  padding: 0.3rem 0.2rem 0.36rem 0.3rem;
+  border-radius: 0.16rem;
   background: #fff;
   .wrap {
-    margin-bottom: .2rem;
+    margin-bottom: 0.2rem;
     display: flex;
     justify-content: space-between;
     .order-img {
-      margin-right: .16rem;
+      margin-right: 0.16rem;
       flex-shrink: 0;
       width: 1.2rem;
       height: 1.2rem;
@@ -168,79 +168,77 @@ export default {
         justify-content: space-between;
         align-items: center;
         color: #000;
-        font-size: .24rem;
+        font-size: 0.24rem;
         &.offset {
-          margin-bottom: .15rem;
+          margin-bottom: 0.15rem;
         }
         &.flex-end {
           align-items: flex-end;
           p {
-            color: #BBBBBB;
+            color: #bbbbbb;
             &:first-child {
-              margin-bottom: .05rem;
-              font-size: .2rem;
+              margin-bottom: 0.05rem;
+              font-size: 0.2rem;
             }
             &:last-child {
-              font-size: .24rem;
+              font-size: 0.24rem;
             }
           }
         }
         .number {
-          font-size: .24rem;
+          font-size: 0.24rem;
           color: #888888;
         }
       }
-      
     }
   }
   .practial {
-    margin-bottom: .2rem;
+    margin-bottom: 0.2rem;
     text-align: right;
   }
   .white-btn {
-    margin-right: .2rem;
+    margin-right: 0.2rem;
     width: 1.2rem;
-    height: .42rem;
-    line-height: .44rem;
+    height: 0.42rem;
+    line-height: 0.44rem;
     text-align: center;
-    color: #FF4141;
-    border-radius: .1rem;
-    background: #F0F0F0;
+    color: #ff4141;
+    border-radius: 0.1rem;
+    background: #f0f0f0;
   }
   .red-btn {
     width: 1.2rem;
-    height: .42rem;
-    line-height: .44rem;
+    height: 0.42rem;
+    line-height: 0.44rem;
     text-align: center;
-    color: #FFFFFF;
-    border-radius: .1rem;
-    background: #FF4141;
+    color: #ffffff;
+    border-radius: 0.1rem;
+    background: #ff4141;
   }
   .obligation {
     display: flex;
     justify-content: flex-end;
-    font-size: .24rem;
+    font-size: 0.24rem;
   }
   .send {
     text-align: right;
-    color: #FF7800;
-    font-size: .24rem;
+    color: #ff7800;
+    font-size: 0.24rem;
     line-height: 1.2;
   }
   .shipped {
     display: flex;
     justify-content: flex-end;
-    font-size: .24rem;
+    font-size: 0.24rem;
   }
   .completion {
     display: flex;
     justify-content: flex-end;
-    font-size: .24rem;
+    font-size: 0.24rem;
     .check-evaluation {
-      color: #FF7800;
+      color: #ff7800;
     }
-    &
-    .icon {
+    & .icon {
       position: absolute;
       top: 0;
       right: 1.13rem;
@@ -253,11 +251,11 @@ export default {
       }
     }
     .explain {
-      color: #BBBBBB;
-      font-size: .2rem;
+      color: #bbbbbb;
+      font-size: 0.2rem;
       span {
         text-decoration: underline;
-        color: #5186CA;
+        color: #5186ca;
       }
     }
   }
@@ -268,8 +266,8 @@ export default {
 
   .in-payment {
     text-align: right;
-    color: #FF7800;
-    font-size: .24rem;
+    color: #ff7800;
+    font-size: 0.24rem;
     line-height: 1.2;
   }
 }

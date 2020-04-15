@@ -1,42 +1,25 @@
 <template>
   <div class="order-list">
-    <Header title="我的订单"/>
+    <Header title="我的订单" />
     <div class="wrap">
       <div class="order-nav">
-        <div class="nav-item" 
-          v-for="(item, index) in nav" 
-          :class="{'active': currentIndex == index}"
-          :key="index"
-          @click="handleClick(index)"
-        >
+        <div class="nav-item" v-for="(item, index) in nav"
+          :class="{'active': currentIndex == index}" :key="index" @click="handleClick(index)">
           {{item.name}}
-          <div class="line"></div>  
+          <div class="line"></div>
         </div>
       </div>
       <div class="list" v-if="showList">
-        <order-item 
-          v-for="(item, index) in list" 
-          :item="item"
-          :key="index" 
-          @openPopup="openPopup"
-          @goServices="goServices"
-          @jumpOrderDetail="jumpOrderDetail"
-        />
+        <order-item v-for="(item, index) in list" :item="item" :key="index" @openPopup="openPopup"
+          @goServices="goServices" @jumpOrderDetail="jumpOrderDetail" />
       </div>
       <div class="empty" v-else>
         <img src="./img/empty.png" alt="">
       </div>
     </div>
     <!-- 弹框 -->
-    <modal 
-      v-model="modal.show" 
-      :type="modal.type" 
-      :title="modal.title"
-      :saveText="modal.saveText"
-      :closeText="modal.closeText"
-      @on-save="modalCallback"
-      @on-close="hideModal"
-    >
+    <modal v-model="modal.show" :type="modal.type" :title="modal.title" :saveText="modal.saveText"
+      :closeText="modal.closeText" @on-save="modalCallback" @on-close="hideModal">
       <!-- 取消订单 -->
       <template v-if="modal.status == 1">
         <div class="pannel1">
@@ -59,9 +42,7 @@
           <span class="value">{{logisticsName}}</span>
         </div>
         <div class="logistics-explain">复制快递单号进行查询</div>
-        <div class="copy" slot="footer" 
-          v-clipboard:copy="logisticsNo"
-          v-clipboard:success="onCopy"
+        <div class="copy" slot="footer" v-clipboard:copy="logisticsNo" v-clipboard:success="onCopy"
           v-clipboard:error="onError">复制</div>
       </template>
       <!-- 确认收货 -->
@@ -76,7 +57,7 @@
     <div class="back" @click="backToProduct">
       <img src="./img/back.png" alt="">
     </div>
-  </div>  
+  </div>
 </template>
 <script>
 import OrderItem from './components/listItem'
@@ -86,11 +67,11 @@ export default {
   name: 'orderList',
   data: () => ({
     nav: [
-      {name: '全部', status: 0},
-      {name: '待付款', status: 1},
-      {name: '待发货', status: 2},
-      {name: '已发货', status: 3},
-      {name: '已完成', status: 4}
+      { name: '全部', status: 0 },
+      { name: '待付款', status: 1 },
+      { name: '待发货', status: 2 },
+      { name: '已发货', status: 3 },
+      { name: '已完成', status: 4 }
     ],
     currentIndex: 0,
     list: [],
@@ -100,7 +81,7 @@ export default {
       type: 0,
       title: '',
       saveText: '',
-      closeText: '',
+      closeText: ''
     },
     shipInfo: ''
   }),
@@ -140,7 +121,7 @@ export default {
     },
     /** 关闭弹框 **/
     hideModal () {
-      if(this.modal.status == 1) {
+      if (this.modal.status == 1) {
         this._cancelOrder()
       }
       this.resetModal()
@@ -149,7 +130,7 @@ export default {
     openPopup (status, orderNo, shipInfo) {
       this.orderNo = orderNo
       this.shipInfo = shipInfo
-      if(status == 1) {
+      if (status == 1) {
         this.modal.show = true
         this.modal.type = 2
         this.modal.status = status
@@ -157,7 +138,7 @@ export default {
         this.modal.saveText = '再考虑下'
         this.modal.closeText = '取消订单'
       }
-      if(status == 2) {
+      if (status == 2) {
         this.modal.show = true
         this.modal.type = 1
         this.modal.status = status
@@ -165,7 +146,7 @@ export default {
         this.modal.saveText = ''
         this.modal.closeText = ''
       }
-      if(status == 3) {
+      if (status == 3) {
         this.modal.show = true
         this.modal.type = 2
         this.modal.status = status
@@ -176,10 +157,10 @@ export default {
     },
     /** 弹框回调 **/
     modalCallback () {
-      if(this.modal.status == 1) {
+      if (this.modal.status == 1) {
         this.resetModal()
       }
-      if(this.modal.status == 3) {
+      if (this.modal.status == 3) {
         this._confirmOrder()
       }
     },
@@ -191,35 +172,35 @@ export default {
     _getOrderList () {
       const { status } = this.nav[this.currentIndex]
       getOrderList(status).then(res => {
-        const {code} = _get(res, 'data')
+        const { code } = _get(res, 'data')
         if (code == 200) {
           this.list = _get(res, 'data.data', [])
-        } 
+        }
       })
     },
     /** 取消订单 **/
     _cancelOrder () {
       cancelOrder(this.orderNo).then(res => {
-        const {code, message} = _get(res, 'data')
+        const { code, message } = _get(res, 'data')
         if (code == 200) {
-          this.$toast.show({message: '取消成功'}, () => {
+          this.$toast.show({ message: '取消成功' }, () => {
             this._getOrderList()
           })
         } else {
-          this.$toast.show({message})
+          this.$toast.show({ message })
         }
       })
     },
     /** 确认收货 **/
     _confirmOrder () {
       confirmOrder(this.orderNo).then(res => {
-        const {code, message} = _get(res, 'data')
+        const { code, message } = _get(res, 'data')
         if (code == 200) {
-          this.$toast.show({message: '确认收货成功'}, () => {
+          this.$toast.show({ message: '确认收货成功' }, () => {
             this._getOrderList()
           })
         } else {
-          this.$toast.show({message})
+          this.$toast.show({ message })
         }
       })
     },
@@ -241,7 +222,7 @@ export default {
       this.$toast.show({ message: '复制成功' })
     },
     onError () {
-      this.$toast.show({ message: '复制失败 '})
+      this.$toast.show({ message: '复制失败 ' })
     }
   },
   mounted () {
@@ -256,19 +237,19 @@ export default {
 .order-list {
   position: relative;
   overflow: hidden;
-  padding-top: .9rem;
+  padding-top: 0.9rem;
   height: 100vh;
-  background: #F7F7F7;
+  background: #f7f7f7;
   .wrap {
     .order-nav {
-      padding: 0 .24rem;
+      padding: 0 0.24rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: .94rem;
+      height: 0.94rem;
       .nav-item {
-        padding: 0 .2rem;
-        font-size: .32rem;
+        padding: 0 0.2rem;
+        font-size: 0.32rem;
         color: #888888;
         &.active {
           position: relative;
@@ -277,20 +258,19 @@ export default {
           .line {
             position: absolute;
             left: 50%;
-            bottom: -.1rem;
+            bottom: -0.1rem;
             transform: translate(-50%, 0);
-            width: .32rem;
-            height: .06rem;
-            background: #FF4141;
-            border-radius: .3rem;
+            width: 0.32rem;
+            height: 0.06rem;
+            background: #ff4141;
+            border-radius: 0.3rem;
           }
         }
-
       }
     }
     .list {
       position: absolute;
-      padding: 0 .24rem;
+      padding: 0 0.24rem;
       left: 0;
       right: 0;
       top: 1.84rem;
@@ -311,56 +291,56 @@ export default {
   }
   /** 弹框样式 **/
   .pannel1 {
-    margin-bottom: .1rem;
-    font-size: .24rem;
+    margin-bottom: 0.1rem;
+    font-size: 0.24rem;
     color: #888;
     text-align: center;
     p {
-      line-height: .36rem;
+      line-height: 0.36rem;
     }
   }
   .pannel2 {
-    font-size: .20rem;
-    color: #BBBBBB;
+    font-size: 0.2rem;
+    color: #bbbbbb;
     text-align: center;
     p {
-      line-height: .3rem;
+      line-height: 0.3rem;
     }
   }
   .logistics-No {
-    margin: .2rem 0 .15rem;
-    font-size: .24rem;
+    margin: 0.2rem 0 0.15rem;
+    font-size: 0.24rem;
     color: #000;
   }
   .logistics-name {
-    margin-bottom: .2rem;
-    font-size: .24rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.24rem;
     color: #000;
   }
   .logistics-explain {
-    font-size: .2rem;
-    color: #BBBBBB;
+    font-size: 0.2rem;
+    color: #bbbbbb;
     text-align: center;
   }
   .copy {
-    height: .7rem;
+    height: 0.7rem;
     width: 100%;
-    line-height: .72rem;
-    font-size: .24rem;
+    line-height: 0.72rem;
+    font-size: 0.24rem;
     color: #fff;
-    background: #FF4141;
-    border-radius: .16rem;
+    background: #ff4141;
+    border-radius: 0.16rem;
   }
   .receipt {
-    padding: .24rem 0 .1rem;
+    padding: 0.24rem 0 0.1rem;
     text-align: center;
     color: #888888;
-    font-size: .24rem;
-    line-height: .38rem;
+    font-size: 0.24rem;
+    line-height: 0.38rem;
   }
   .back {
     position: absolute;
-    right: .24rem;
+    right: 0.24rem;
     bottom: 1.1rem;
     z-index: 2;
     width: 1.2rem;
