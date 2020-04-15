@@ -35,17 +35,20 @@ const confirmOrder = function (params) {
   return Axios.post(Api.confirmOrder.replace('{orderId}', params))
 }
 
+/**
+* @description 获取订单详情
+*/
 const getOrderDetail = function (params) {
   return Axios.post(Api.getOrderDetail.replace('{orderId}', params))
 }
-POST 
 
 const Service = {
   getAddress,
   payOrder,
   getOrderList,
   cancelOrder,
-  confirmOrder
+  confirmOrder,
+  getOrderDetail
 }
 
 export default Service
@@ -54,5 +57,6 @@ export {
   payOrder,
   getOrderList,
   cancelOrder,
-  confirmOrder
+  confirmOrder,
+  getOrderDetail
 }
