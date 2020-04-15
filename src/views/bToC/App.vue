@@ -1,5 +1,5 @@
 <template>
-  <main class="b-to-c-wrapper">
+  <main class="b-to-c-wrapper" v-if="signList&&signList.length&&giftList&&giftList.length">
     <div class="b-to-c">
       <article class="btn-wrapper">
         <div class="back" @click="back">返回</div>
@@ -40,7 +40,8 @@
           <p class="move-num">你还有<span>{{moveNum}}次</span>抽奖机会</p>
           <ul class="gift-list">
             <li class="gift-item" v-for="(item,index) in giftList" :key="index">
-              <div class="gift-icon" :class="`gift-${item.grade}`" @click.stop="buyGift(item)">
+              <div class="gift-icon" @click.stop="buyGift(item)">
+                <img :src="item.productIcon|filter" alt="">
               </div>
               <div class="use-btn" :class="{'have-time':item.num}" v-if="isDDW"
                 @click.stop="takeFree(item)">
@@ -56,30 +57,21 @@
     </div>
     <popup v-model="isShowPop" :type="popType" :begin-time="beginTime" :end-time="endTime"
       :leaf-num="leafNum" @on-close="closeCallback" @on-confirm="confirmCallback"></popup>
-    <modal 
-      v-model="showModal"
-      @on-close="modalClose"
-      title="下载方式"
-    >
+    <modal v-model="showModal" @on-close="modalClose" title="下载方式">
       <div class="modal-container">
-        下载链接：<br>  
-        <p
-          v-clipboard:copy="downLoadUrl"
-          v-clipboard:success="onCopy"
-          v-clipboard:error="onError"
-        >{{downLoadUrl}}</p>
+        下载链接：<br>
+        <p v-clipboard:copy="downLoadUrl" v-clipboard:success="onCopy" v-clipboard:error="onError">
+          {{downLoadUrl}}</p>
         复制链接， <br>
         在浏览器打开即可下载啦~
       </div>
-      <div class="btn" slot="footer" 
-          v-clipboard:copy="downLoadUrl"
-          v-clipboard:success="onCopy"
-          v-clipboard:error="onError"
-      >复制链接</div>
+      <div class="btn" slot="footer" v-clipboard:copy="downLoadUrl" v-clipboard:success="onCopy"
+        v-clipboard:error="onError">复制链接</div>
     </modal>
   </main>
 </template>
 <script>
+/* eslint-disable no-undef */
 import utils from '@/common/js/utils'
 import { moveInfo, signIn, signInfo, getMallProductListByType, userMoveNum, userMoveSend } from './services/api'
 import _get from 'lodash.get'
@@ -118,7 +110,7 @@ export default {
     sourceAddress () {
       return utils.getUrlParam('from')
     },
-    isDDW () { return this.curChannel === '100030' },
+    isDDW () { return this.curChannel === '100030' || this.curChannel === '100061' },
     isIOS () { return utils.isIOS() },
     isAndroid () { return utils.isAndroid() },
     moveNum () {
@@ -131,30 +123,21 @@ export default {
       return num
     },
     giftList () {
-      let arr = [{ grade: '68', num: 0 }, { grade: '88', num: 0 }, { grade: '888', num: 0 }]
-      let beforelist = []
-      let afterlist = []
-      arr.forEach(element => {
-        if (this.moveNumArr && this.moveNumArr.length > 0) {
-          this.moveNumArr.forEach(item => {
-            if (element.grade === item.grade) {
-              element.num = item.num
-            }
-          })
-        }
-        beforelist.push(element)
-      })
-      beforelist.forEach(element => {
-        if (this.bizList && this.bizList.length > 0) {
-          this.bizList.forEach(item => {
-            if (Number(element.grade) === item.price) {
-              element = { ...element, ...item }
-            }
-          })
-        }
-        afterlist.push(element)
-      })
-      return afterlist
+      let arr = []
+      if (this.bizList && this.bizList.length > 0) {
+        this.bizList.forEach(item => {
+          let param = { ...item, num: 0 }
+          if (this.moveNumArr && this.moveNumArr.length) {
+            this.moveNumArr.forEach(element => {
+              if (parseInt(element.grade) === param.price) {
+                param.num = element.num
+              }
+            })
+          }
+          arr.push(param)
+        })
+      }
+      return arr
     }
   },
   filters: {
@@ -163,17 +146,18 @@ export default {
     }
   },
   methods: {
-    modalClose() {
+    modalClose () {
       this.showModal = false
     },
-    onCopy() {
-      this.$toast.show({message: '复制成功'})
+    onCopy () {
+      GLOBALS.marchSetsPoint('A_H5PT0271003199')// H5平台-B端迁移活动-复制下载链接弹窗-复制链接点击
+      this.$toast.show({ message: '复制成功' })
     },
-    onError() {
-      this.$toast.show({message: '复制失败'})
+    onError () {
+      GLOBALS.marchSetsPoint('A_H5PT0271003199')// H5平台-B端迁移活动-复制下载链接弹窗-复制链接点击
+      this.$toast.show({ message: '复制失败' })
     },
     back () {
-      // eslint-disable-next-line no-undef
       location.href = SDK.getBackUrl()
     },
     async init () {
@@ -257,8 +241,8 @@ export default {
     takeFree (item) {
       if (this.isDDW && this.beginTime) {
         if (item.num) {
-          this.userMoveSend(item.grade)
-          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.grade })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
+          this.userMoveSend(item.price)
+          GLOBALS.marchSetsPoint('A_H5PT0250002925', { product_name: item.price })// H5平台-现在用户引流活动-C端活动承接页-抽免单点击
         } else {
           this.openPop(3)
         }
@@ -272,7 +256,8 @@ export default {
       }
       if (!this.beginTime) {
         this.openPop(5)
-      } else{
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0271003198')// H5平台-B端迁移活动-复制下载链接弹窗加载完成
         this.showModal = true
       }
     },
@@ -475,14 +460,9 @@ li {
           .gift-icon {
             width: 1.64rem;
             height: 2.16rem;
-            &.gift-68 {
-              .bg-center("./img/68.png");
-            }
-            &.gift-88 {
-              .bg-center("./img/88.png");
-            }
-            &.gift-888 {
-              .bg-center("./img/888.png");
+            img {
+              width: 100%;
+              height: 100%;
             }
           }
           .use-btn {
@@ -514,21 +494,21 @@ li {
   }
 }
 .modal-container {
-  padding: .37rem 0 .33rem;
-  font-size: .24rem;
+  padding: 0.37rem 0 0.33rem;
+  font-size: 0.24rem;
   p {
-    margin: .1rem 0 .2rem;
-    font-size: .28rem;
-    color: #FF7800;
+    margin: 0.1rem 0 0.2rem;
+    font-size: 0.28rem;
+    color: #ff7800;
   }
 }
 .btn {
   width: 4.1rem;
-  height: .7rem;
-  line-height: .7rem;
-  font-size: .24rem;
+  height: 0.7rem;
+  line-height: 0.7rem;
+  font-size: 0.24rem;
   color: #fff;
-  background: #FF4141;
-  border-radius: .16rem;
+  background: #ff4141;
+  border-radius: 0.16rem;
 }
 </style>
