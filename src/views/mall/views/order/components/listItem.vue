@@ -39,8 +39,16 @@
       <div class="white-btn check-btn" @click.stop="openLogistics">查看物流</div>
       <div class="red-btn comfirm-btn" @click.stop="receipt">确认收货</div>
     </div>
+    <!-- 订单已完成 status == 4 -->
+    <div class="evalution finish" v-if="item.status == 4">
+      <div class="icon">
+        <img src="../img/finish-icon.png" alt="">
+      </div>
+      <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
+      <!-- <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div> -->
+    </div>
     <!-- 订单取消 status == 5 -->
-    <div class="cancel completion" v-if="item.status == 5">
+    <div class="cancel finish" v-if="item.status == 5">
       <div class="icon">
         <img src="../img/cancel-icon.png" alt="">
       </div>
@@ -48,16 +56,11 @@
       <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
     </div>
     <!-- 退款 status == 6 -->
-    <div class="refund completion" v-if="item.status == 6">
+    <div class="refund finish" v-if="item.status == 6">
       <div class="icon">
         <img src="../img/refund-icon.png" alt="">
       </div>
       <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
-    </div>
-    <!-- 订单已完成 status == 4 -->
-    <div class="evalution completion" v-if="item.status == 4">
-      <div class="red-btn buy-btn" @click.stop="continueBuy">再次购买</div>
-      <!-- <div class="red-btn evaluation-btn" @click="goEvaluation">立即评价</div> -->
     </div>
     <!-- 评论过 status == 7 -->
     <!-- <div class="evalution-end completion" v-if="item.status == 7">
@@ -231,7 +234,7 @@ export default {
     justify-content: flex-end;
     font-size: 0.24rem;
   }
-  .completion {
+  .finish {
     display: flex;
     justify-content: flex-end;
     font-size: 0.24rem;
