@@ -196,6 +196,8 @@ export default {
 <style lang="less" scoped>
 .code-login {
   padding-bottom: .5rem;
+  min-height: 100vh;
+  background: #fff;
   .logo {
     margin: 1.13rem auto .6rem;
     width: 1.5rem;
