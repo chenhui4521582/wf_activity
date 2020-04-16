@@ -104,7 +104,7 @@ export default {
     width: 1.8rem;
     // padding-top: 0.2rem;
     // background: rgba(129, 131, 136, 0.73);
-    background: rgba(254,243,222,.9);
+    background: #b04a8b;
     display: flex;
     position: relative;
     flex-direction: column;
