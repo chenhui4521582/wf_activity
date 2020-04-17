@@ -1,30 +1,30 @@
 <template>
   <section class="order-tag" :class="`status-${info.status}`">
-    <template v-if="info.status===0">
+    <template v-if="info.status === 0">
       <p>订单待付款</p>
       <span>{{countdownTime}}后自动关闭</span>
     </template>
-    <template v-else-if="info.status===1">
+    <template v-else-if="info.status === 1">
       <p>订单付款中</p>
       <span>正在付款，请刷新页面更新订单状态</span>
     </template>
-    <template v-else-if="info.status===2">
+    <template v-else-if="info.status === 2">
       <p>等待卖家发货</p>
       <span>商品将在7天内发货，请耐心等待</span>
     </template>
-    <template v-else-if="info.status===3">
+    <template v-else-if="info.status === 3">
       <p>卖家已发货</p>
       <span>等待买家收货</span>
     </template>
-    <template v-else-if="info.status===4">
+    <template v-else-if="info.status === 4">
       <img src="./imgs/order-finished.png" alt="">
       <span>交易已完成</span>
     </template>
-    <template v-else-if="info.status===5">
+    <template v-else-if="info.status === 5">
       <img src="./imgs/order-cancel.png" alt="">
       <span>订单已取消</span>
     </template>
-    <template v-else-if="info.status===6">
+    <template v-else-if="info.status === 6">
       <img src="./imgs/order-closed.png" alt="">
       <span>订单已退款</span>
     </template>
@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      countdownTime: '',
+      countdownTime: '00小时00分00秒',
       timer: null
     }
   },
@@ -54,6 +54,7 @@ export default {
         date = date - 1
         if (date <= 0) {
           date = 0
+          this.$emit('updateOrderStatus', 5)
           clearInterval(this.timer)
         }
         let day = Math.floor(date / 86400)

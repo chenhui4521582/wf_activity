@@ -33,6 +33,11 @@ export default {
   },
   methods: {
     goProductDetail() {
+      GLOBALS.marchSetsPoint('A_H5PT0276003259', {
+        product_price: this.item.payPrice,
+        product_id: this.item.id,
+        product_name: this.item.name
+      })
       this.$router.push({
         name: 'productDetail',
         query: {

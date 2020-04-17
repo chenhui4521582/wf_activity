@@ -24,7 +24,7 @@
     <!-- 待付款  status == 0 -->
     <div class="obligation" v-if="item.status == 0">
       <div class="white-btn cancel-btn" @click.stop="openOrderCancal">取消订单</div>
-      <div class="red-btn comfirm-btn">付款</div>
+      <div class="red-btn comfirm-btn" @click.stop="gotoPay">付款</div>
     </div>
     <!-- 付款中 status == 1 -->
     <div class="in-payment" v-if="item.status == 1">
@@ -106,17 +106,46 @@ export default {
         name: 'evaluation'
       })
     },
+    /** 去付款 **/
+    gotoPay() {
+      GLOBALS.marchSetsPoint('A_H5PT0276003265', {
+        product_price: this.item.payPrice,
+        product_id: this.item.id,
+        product_name: this.item.name
+      })
+      let channel = localStorage.getItem('APP_CHANNEL')
+      let orderInfo = {
+        bizType: this.item.bizType,
+        bizId: this.item.bizId,
+        thirdOrderId: this.item.thirdOrderId,
+        price: this.item.realPrice
+      }
+      localStorage.setItem('payment', JSON.stringify(orderInfo))
+      let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
+      localStorage.setItem('originDeffer', originDeffer)
+      window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
+    },
     /** 打开取消订单弹框 **/
     openOrderCancal () {
       this.$emit('openPopup', 1, this.item.id)
+      GLOBALS.marchSetsPoint('A_H5PT0276003266', {
+        product_price: this.item.payPrice,
+        product_id: this.item.id,
+        product_name: this.item.name
+      })
     },
     /** 打开物流弹框 **/
     openLogistics () {
       this.$emit('openPopup', 2, null, this.item.shipInfo)
-      // this.$emit('openPopup', 2, null, '圆通速递；123192319073')
+      GLOBALS.marchSetsPoint('A_H5PT0276003271')
     },
     /** 再次购买 **/
     continueBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003270', {
+        product_price: this.item.payPrice,
+        product_id: this.item.id,
+        product_name: this.item.name
+      })
       this.$router.push({
         name: 'productDetail',
         query: {

@@ -2,7 +2,7 @@
   <article class="comfirm-order">
     <!-- 头部 -->
     <Header title="订单详情" />
-    <order-tag :info="orderInfo" />
+    <order-tag :info="orderInfo" @updateOrderStatus="updateOrderStatus"/>
     <Address :info="orderInfo" :locked=true />
     <good-info :info="orderInfo" />
     <business-info :info="orderInfo" />
@@ -72,7 +72,7 @@ import { getOrderDetail, confirmOrder, cancelOrder } from '../../services/order'
 import _get from 'lodash.get'
 
 export default {
-  name: 'comfirm-order',
+  name: 'orderDetail',
   components: {
     orderTag,
     Address,
@@ -198,15 +198,18 @@ export default {
       }
     },
     toService () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003274')
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     },
     whiteClick () {
+      
       switch (this.orderInfo.status) {
         case 0:
           this.openPopup(1, this.orderInfo.id)
           break
         case 3:
           this.openPopup(2, null, this.orderInfo.shipInfo)
+          GLOBALS.marchSetsPoint('A_H5PT0276003273')
           break
         default:
           return ''
@@ -228,20 +231,32 @@ export default {
           break
       }
     },
-
     /** 付款 **/
     payNow () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003267', {
+        product_price: this.orderInfo.payPrice,
+        product_id: this.orderInfo.id,
+        product_name: this.orderInfo.name
+      })
       let orderInfo = {
         bizType: this.orderInfo.bizType,
         bizId: this.orderInfo.bizId,
         thirdOrderId: this.orderInfo.thirdOrderId,
         price: this.orderInfo.realPrice
       }
+      let channel = localStorage.getItem('APP_CHANNEL')
+      let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(orderInfo))
+      localStorage.setItem('originDeffer', originDeffer)
       window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
     },
     /** 再次购买 **/
     continueBuy () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003272', {
+        product_price: this.orderInfo.payPrice,
+        product_id: this.orderInfo.id,
+        product_name: this.orderInfo.name
+      })
       this.$router.push({
         name: 'productDetail',
         query: {
@@ -251,6 +266,11 @@ export default {
     },
     /** 取消订单 **/
     async _cancelOrder () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003268', {
+        product_price: this.orderInfo.payPrice,
+        product_id: this.orderInfo.id,
+        product_name: this.orderInfo.name
+      })
       const res = await cancelOrder(this.orderNo)
       const { code, message } = _get(res, 'data')
       if (code === 200) {
@@ -272,6 +292,10 @@ export default {
       } else {
         this.$toast.show({ message })
       }
+    },
+    /** 更新订单状态 **/
+    updateOrderStatus (status) {
+      this.orderInfo.status = status
     },
     onCopy () {
       this.$toast.show({ message: '复制成功' })

@@ -2,7 +2,7 @@
   <div class="cut-and-add">
     <div class="button-cut base-button" @click="cutClick">-</div>
     <div class="input-warp">
-      <input type="number" @input="handleInput" v-model.number="inputValue">
+      <p> {{inputValue}}</p>
     </div>
     <div class="button-add base-button" @click="addClick">+</div>
   </div>
@@ -25,7 +25,7 @@ export default {
     },
     limitNumber: {
       type: Number,
-      default: 0
+      default: 1
     }
   },
   watch: {
@@ -82,7 +82,7 @@ export default {
     height: 0.3rem;
     border-radius: 0.08rem;
     background-color: #f4f4f4;
-    input {
+    p {
       padding: 0;
       vertical-align: top;
       width: 100%;

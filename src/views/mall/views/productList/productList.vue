@@ -47,48 +47,7 @@ import Rule from './components/rule'
 export default {
   name: 'productList',
   data: () => ({
-    list: [
-      {
-        id: 1,
-        title: '话费券最高可抵100元',
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone XR 64G',
-        buyNo: '300',
-        price: '5632'
-      },
-      {
-        id: 2,
-        title: '话费券最高可抵100元',
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone XR 64G',
-        buyNo: '300',
-        price: '5632'
-      },
-      {
-        id: 3,
-        title: '话费券最高可抵100元',
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone XR 64G',
-        buyNo: '300',
-        price: '5632'
-      },
-      {
-        id: 4,
-        title: '话费券最高可抵100元',
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone XR 64G',
-        buyNo: '300',
-        price: '5632'
-      },
-      {
-        id: 5,
-        title: '话费券最高可抵100元',
-        img: '/group1/M00/3F/84/CmcEHV0xhj2AMl94AABS_LcXROk239.png',
-        name: 'iPhone XR 64G',
-        buyNo: '300',
-        price: '5632'
-      },
-    ],
+    list: [],
     currentIndex: 0,
     showRule: false
   }),
@@ -98,7 +57,7 @@ export default {
   },
   computed: {
     productList() {
-      return this.list[this.currentIndex].productList
+      return _get(this.list[this.currentIndex], 'productList', {})
     }
   },
   methods: {
@@ -128,6 +87,9 @@ export default {
   },
   mounted() {
     this._getProductList()
+    GLOBALS.marchSetsPoint('P_H5PT0276', {
+      source_address: navigator.Referer
+    })
   }
 }
 </script>

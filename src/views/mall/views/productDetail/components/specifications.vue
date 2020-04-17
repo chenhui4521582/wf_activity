@@ -15,15 +15,12 @@
     </div>
     <div class="spec-item number">
       <div class="item-title">数量<span>剩余库存充足</span></div>
-      <Field :store-max="0" :limit-number="0" v-model="buyNumber"></Field>
     </div>
   </div>
 </template>
 <script>
-import Field from './field.vue'
 export default {
   name: 'specifications',
-  components: { Field },
   props: {
     info: {
       type: Array,

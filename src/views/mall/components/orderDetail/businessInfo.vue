@@ -4,19 +4,19 @@
     <ul>
       <li>
         <span class="label">商品金额</span>
-        <span class="value">¥{{(info.totalPrice).toFixed(2)}}</span>
+        <span class="value">¥{{ info.totalPrice && info.totalPrice.toFixed(2)}}</span>
       </li>
       <li v-if="info.hfqPrice">
         <span class="label">话费券抵扣</span>
-        <span class="value">- ¥{{info.hfqPrice.toFixed(2)}}</span>
+        <span class="value">- ¥{{info.hfqPrice && info.hfqPrice.toFixed(2)}}</span>
       </li>
       <li v-if="info.postage">
         <span class="label">运费</span>
-        <span class="value">+ ¥{{info.postage.toFixed(2)}}</span>
+        <span class="value">+ ¥{{info.postage && info.postage.toFixed(2)}}</span>
       </li>
       <li v-if="info.realPrice">
         <span class="label">实付款</span>
-        <span class="value">¥{{info.realPrice.toFixed(2)}}</span>
+        <span class="value">¥{{ info.realPrice && info.realPrice.toFixed(2)}}</span>
       </li>
     </ul>
   </section>

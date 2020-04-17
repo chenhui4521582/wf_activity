@@ -180,6 +180,11 @@ export default {
     },
     /** 取消订单 **/
     _cancelOrder () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003269', {
+        product_price: this.orderInfo.payPrice,
+        product_id: this.orderInfo.id,
+        product_name: this.orderInfo.name
+      })
       cancelOrder(this.orderNo).then(res => {
         const { code, message } = _get(res, 'data')
         if (code == 200) {
@@ -227,6 +232,7 @@ export default {
   },
   mounted () {
     this._getOrderList()
+    GLOBALS.marchSetsPoint('A_H5PT0276003264')
   }
 }
 </script>

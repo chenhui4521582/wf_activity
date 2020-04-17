@@ -45,6 +45,11 @@ export default {
       if (info) {
         info = JSON.parse(info)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0276003262', {
+        product_price: info.payPrice,
+        product_id: info.id,
+        product_name: info.name
+      })
       if (this.isSelectedCost) {
         let price = info.deductPrice * info.num
         price = price < info.fragmentAmount ? price : info.fragmentAmount
@@ -89,6 +94,11 @@ export default {
     },
     /** 下单 **/
     _payOrder () {
+      GLOBALS.marchSetsPoint('A_H5PT0276003263', {
+        product_price: this.goodInfo.payPrice,
+        product_id: this.goodInfo.id,
+        product_name: this.goodInfo.name
+      })
       Services.payOrder({
         'deductPrice': this.goodInfo.deductPrice,
         'num': this.goodInfo.num,
@@ -96,7 +106,7 @@ export default {
         'postage': this.goodInfo.postage,
         'productId': this.goodInfo.id,
         'realPrice': this.price,
-        'userHfq': this.isSelectedCost
+        'useHfq': this.isSelectedCost
       }).then(res => {
         const { code, data, message } = _get(res, 'data')
         if (code === 200) {
@@ -110,7 +120,7 @@ export default {
           localStorage.setItem('originDeffer', originDeffer)
           window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
         } else {
-          this.$toast({ message })
+          this.$toast.show({ message })
         }
       })
     }

@@ -70,6 +70,11 @@ export default {
         if (code === 200) {
           this.info = _get(res, 'data.data.detailInfoList', [])
           this.fragmentAmount = _get(res, 'data.data.fragmentAmount', 0)
+          GLOBALS.marchSetsPoint('A_H5PT0276003260', {
+            product_price: this.currentInfo.payPrice,
+            product_id: this.currentInfo.id,
+            product_name: this.currentInfo.name
+          })
         }
       })
     },
@@ -85,10 +90,15 @@ export default {
         payPrice: this.currentInfo.payPrice,
         deductPrice: this.currentInfo.deductPrice,
         postage: this.currentInfo.postage,
-        num: this.buyNumber,
+        num: 1,
         fragmentAmount: this.fragmentAmount
       }
       localStorage.setItem('activitiesMallItem', JSON.stringify(info))
+      GLOBALS.marchSetsPoint('A_H5PT0276003261', {
+        product_price: this.currentInfo.payPrice,
+        product_id: this.currentInfo.id,
+        product_name: this.currentInfo.name
+      })
       this.$router.push({
         name: 'comfirmOrder'
       })
