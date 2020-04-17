@@ -1,4 +1,5 @@
 import axios from './http'
+import Api from '../../mall/services/api'
 const services = {
   getUserInfo: function(params) {
     let url = '//ops-api.beeplaying.com/ops/api/smallTreasure/userAccount'
