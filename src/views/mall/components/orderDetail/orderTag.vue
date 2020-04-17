@@ -45,7 +45,7 @@ export default {
       countdownTime: '00小时00分00秒',
       timer: null
     }
-  },
+  }, 
   methods: {
     countDown (data) {
       if (!data) return false

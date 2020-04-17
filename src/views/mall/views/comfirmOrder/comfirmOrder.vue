@@ -99,6 +99,8 @@ export default {
         product_id: this.goodInfo.id,
         product_name: this.goodInfo.name
       })
+      if(this.lock) return false
+      this.lock = true
       Services.payOrder({
         'deductPrice': this.goodInfo.deductPrice,
         'num': this.goodInfo.num,
@@ -108,6 +110,7 @@ export default {
         'realPrice': this.price,
         'useHfq': this.isSelectedCost
       }).then(res => {
+        this.lock = false
         const { code, data, message } = _get(res, 'data')
         if (code === 200) {
           let orderInfo = {
@@ -122,6 +125,8 @@ export default {
         } else {
           this.$toast.show({ message })
         }
+      }).catch(erro => {
+        this.lock = false
       })
     }
   },

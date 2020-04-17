@@ -127,7 +127,7 @@ export default {
     },
     /** 打开取消订单弹框 **/
     openOrderCancal () {
-      this.$emit('openPopup', 1, this.item.id)
+      this.$emit('openPopup', 1, this.item)
       GLOBALS.marchSetsPoint('A_H5PT0276003266', {
         product_price: this.item.payPrice,
         product_id: this.item.id,
@@ -136,7 +136,7 @@ export default {
     },
     /** 打开物流弹框 **/
     openLogistics () {
-      this.$emit('openPopup', 2, null, this.item.shipInfo)
+      this.$emit('openPopup', 2, this.item)
       GLOBALS.marchSetsPoint('A_H5PT0276003271')
     },
     /** 再次购买 **/
@@ -155,7 +155,7 @@ export default {
     },
     /** 打开确认收货弹框 **/
     receipt () {
-      this.$emit('openPopup', 3, this.item.id)
+      this.$emit('openPopup', 3, this.item)
     },
     /** 跳转订单详情 **/
     jumpOrderDetail () {

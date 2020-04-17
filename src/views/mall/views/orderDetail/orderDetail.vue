@@ -155,7 +155,7 @@ export default {
     /** 关闭弹框 **/
     hideModal () {
       if (this.modal.status === 1) {
-        this._cancelOrder()
+        this._cancelOrder()   
       }
       this.resetModal()
     },
@@ -286,6 +286,7 @@ export default {
       const res = await confirmOrder(this.orderNo)
       const { code, message } = _get(res, 'data')
       if (code === 200) {
+        this.resetModal()
         this.$toast.show({ message: '确认收货成功' }, () => {
           this.init()
         })

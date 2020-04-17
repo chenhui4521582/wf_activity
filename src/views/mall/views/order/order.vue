@@ -61,7 +61,7 @@
 </template>
 <script>
 import OrderItem from './components/listItem'
-import { getOrderList, cancelOrder } from '../../services/order'
+import { getOrderList, cancelOrder, confirmOrder } from '../../services/order'
 import _get from 'lodash.get'
 export default {
   name: 'orderList',
@@ -127,9 +127,10 @@ export default {
       this.resetModal()
     },
     /** 打开弹框 **/
-    openPopup (status, orderNo, shipInfo) {
-      this.orderNo = orderNo
-      this.shipInfo = shipInfo
+    openPopup (status, item) {
+      this.orderNo = item.id
+      this.item = item
+      this.shipInfo = item.shipInfo
       if (status == 1) {
         this.modal.show = true
         this.modal.type = 2
@@ -181,9 +182,9 @@ export default {
     /** 取消订单 **/
     _cancelOrder () {
       GLOBALS.marchSetsPoint('A_H5PT0276003269', {
-        product_price: this.orderInfo.payPrice,
-        product_id: this.orderInfo.id,
-        product_name: this.orderInfo.name
+        product_price: this.item.payPrice,
+        product_id: this.item.id,
+        product_name: this.item.name
       })
       cancelOrder(this.orderNo).then(res => {
         const { code, message } = _get(res, 'data')
@@ -201,6 +202,7 @@ export default {
       confirmOrder(this.orderNo).then(res => {
         const { code, message } = _get(res, 'data')
         if (code == 200) {
+          this.resetModal()
           this.$toast.show({ message: '确认收货成功' }, () => {
             this._getOrderList()
           })

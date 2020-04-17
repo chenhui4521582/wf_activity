@@ -4,7 +4,7 @@
     <ul>
       <li>
         <span class="label">商品金额</span>
-        <span class="value">¥{{ info.totalPrice && info.totalPrice.toFixed(2)}}</span>
+        <span class="value">¥{{ info.payPrice && info.payPrice.toFixed(2)}}</span>
       </li>
       <li v-if="info.hfqPrice">
         <span class="label">话费券抵扣</span>
