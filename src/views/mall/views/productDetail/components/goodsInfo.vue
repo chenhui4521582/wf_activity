@@ -96,6 +96,7 @@ export default {
         font-size: 0.42rem;
         font-weight: 800;
         margin-right: 0.16rem;
+        line-height: .3rem;
       }
       p {
         height: 0.4rem;
@@ -126,7 +127,7 @@ export default {
           border: 0.01rem solid #ff4141;
           border-radius: 0.06rem;
           padding: 0 0.1rem;
-          line-height: 0.3rem;
+          line-height: 0.36rem;
           flex-shrink: 0;
         }
       }
@@ -135,12 +136,14 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+      height: .5rem;
       .name {
         font-size: 0.32rem;
         color: #000;
         font-weight: bold;
       }
       .participants {
+        line-height: .25rem;
         font-size: 0.24rem;
         color: #888888;
       }

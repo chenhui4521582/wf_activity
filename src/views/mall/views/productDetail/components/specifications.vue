@@ -71,7 +71,7 @@ export default {
   .spec-item {
     display: flex;
     align-items: center;
-    margin-bottom: 0.25rem;
+    height: .5rem;
     .item-title {
       width: 0.7rem;
       color: #888;

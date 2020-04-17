@@ -32,7 +32,7 @@
     </div>
     <!-- 待发货 status == 2 -->
     <div class="send" v-if="item.status == 2">
-      商品将在7天内发货，请耐心等待
+      商品将在3天内发货，请耐心等待
     </div>
     <!-- 已发货 status == 3 -->
     <div class="shipped" v-if="item.status == 3">

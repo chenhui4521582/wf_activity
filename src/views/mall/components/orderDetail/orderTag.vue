@@ -10,7 +10,7 @@
     </template>
     <template v-else-if="info.status === 2">
       <p>等待卖家发货</p>
-      <span>商品将在7天内发货，请耐心等待</span>
+      <span>商品将在3天内发货，请耐心等待</span>
     </template>
     <template v-else-if="info.status === 3">
       <p>卖家已发货</p>
@@ -104,7 +104,7 @@ export default {
     color: #fff;
     font-size: 0.2rem;
     height: 0.3rem;
-    line-height: 0.3rem;
+    line-height: 0.32rem;
     border-radius: 0.06rem;
     padding: 0 0.1rem;
   }

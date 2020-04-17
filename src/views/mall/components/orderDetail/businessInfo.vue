@@ -42,8 +42,12 @@ export default {
   margin-bottom: 0.2rem;
   font-size: 0.24rem;
   line-height: 0.36rem;
+  .title {
+    margin-bottom: .1rem;
+  }
   ul {
     li {
+      margin-bottom: .07rem;
       display: flex;
       justify-content: space-between;
       align-items: center;

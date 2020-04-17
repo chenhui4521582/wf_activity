@@ -107,7 +107,7 @@ export default {
   .buy-btn {
     position: absolute;
     right: .3rem;
-    top: 3.6rem;
+    top: 3.7rem;
     width: .9rem;
     height: .42rem;
     line-height: .44rem;
