@@ -7,6 +7,8 @@ import Vue from 'vue'
 import App from './App'
 import fastclick from 'fastclick'
 import '@/common/js/window'
+import Toast from '../../plugins/toast'
+Vue.use(Toast)
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 new Vue({
