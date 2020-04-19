@@ -41,6 +41,9 @@
       </transition>
     </article>
     <bottom-btns @showPop="openPop" />
+    <drop-down ref="dropDown" :toDayUserCouponNum="actInfoData.totalNum"
+      :rules-explain="rulesExplain" @refresh="refresh" :countTime="actInfoData.countdown"
+      :endDate="actInfoData.endDate" @showPop="hitShowPop"></drop-down>
     <pop-up v-model="popType" v-show="isShowPop" @closePop="closePop" />
   </main>
 </template>
@@ -51,6 +54,7 @@ import Jackpot from './component/jackpot.vue'
 import ActivityInfo from './component/activityInfo.vue'
 import BottomBtns from './component/bottomBtns.vue'
 import PopUp from './component/popUp.vue'
+import DropDown from './dropDown.vue'
 export default {
   name: '',
   components: {
@@ -58,7 +62,8 @@ export default {
     Jackpot,
     ActivityInfo,
     BottomBtns,
-    PopUp
+    PopUp,
+    DropDown
   },
   data () {
     return {

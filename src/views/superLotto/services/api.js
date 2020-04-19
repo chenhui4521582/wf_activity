@@ -106,3 +106,20 @@ export const userProgress = async () => {
   const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-progress`)
   return data
 }
+
+const Service = {
+  activityInfo,
+  addNumGroup,
+  gameReceive,
+  modifyNumGroup,
+  myRank,
+  rankList,
+  taskReceive,
+  userAwardInfo,
+  userAwardNums,
+  userNumGroups,
+  userAwardsTips,
+  userNumInfo,
+  userProgress
+}
+export default Service

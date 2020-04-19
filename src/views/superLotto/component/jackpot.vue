@@ -2,7 +2,7 @@
   <article class="jackpot-wrapper">
     <section class="top">
       <span>当前奖池累计</span>
-      <img src="../img/problem-icon.png" alt="">
+      <img src="../img/problem-icon.png" alt="" @click="showPop()">
     </section>
     <section class="bottom">
       <div>
@@ -28,7 +28,9 @@ export default {
 
   },
   methods: {
-
+    showPop () {
+      this.$emit('showPop', 11)
+    }
   }
 }
 </script>

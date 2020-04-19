@@ -2,7 +2,7 @@
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
       <div class="ranktitle" :class="{full:isFull}">
-        <img src="../../imgs/rankbank.png" class="back" @click="rankback" v-if="isFull">
+        <img src="../../img/rankbank.png" class="back" @click="rankback" v-if="isFull">
         <img :src="$moduleConfig.viruskill.dropDown.inner.rank.title.url"
           :style="$moduleConfig.viruskill.dropDown.inner.rank.title.style" class="title">
       </div>
@@ -51,7 +51,7 @@
             <li :style="{borderColor:$moduleConfig.viruskill.dropDown.inner.bg.background}">
               <h4
                 :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color}">
-                累计消灭病毒</h4>
+                累计获得号码</h4>
               <span>{{myInfo.totalNum}}个</span>
             </li>
             <li>
@@ -68,7 +68,7 @@
             <li style="border:none">
               <span>排名</span>
               <span><em class="i-ellipsis">昵称</em></span>
-              <span><em class="i-ellipsis">累计消灭病毒+时间</em></span>
+              <span><em class="i-ellipsis">获得号码+时间</em></span>
               <span><em class="i-ellipsis">奖励</em></span>
             </li>
           </ul>
@@ -133,7 +133,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import { rankList } from '../../utils/api'
+import { rankList } from '../../services/api'
 
 export default {
   data () {

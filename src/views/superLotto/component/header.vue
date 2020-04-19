@@ -14,17 +14,6 @@
 <script>
 export default {
   name: '',
-  components: {
-
-  },
-  data () {
-    return {
-
-    }
-  },
-  mounted () {
-
-  },
   methods: {
     showPop (type) {
       this.$emit('showPop', type)
