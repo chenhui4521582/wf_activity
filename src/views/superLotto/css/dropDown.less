@@ -1,0 +1,107 @@
+.bottom-wrap {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  display: flex;
+  padding: 0.2rem 0.2rem 0.16rem;
+  box-sizing: border-box;
+  .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.22rem;
+    font-weight: bold;
+    color: #ffecdd;
+    .hammer_icon {
+      margin-right: 0.4rem;
+    }
+    .right {
+      text-align: center;
+      .main-text {
+        line-height: 0.35rem;
+        span {
+          color: #ca1139;
+        }
+      }
+      .btn {
+        font-size: 0.22rem;
+        width: 1.44rem;
+        white-space: nowrap;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        border-radius: 0.22rem;
+        &.hasMainTxt {
+          margin: 0.12rem auto 0;
+        }
+      }
+    }
+  }
+  .line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1px;
+  }
+}
+
+.drop-down {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.drop-down-content {
+  width: 100%;
+  height: 98%;
+  max-height: 98%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  font-size: 0.2rem;
+  z-index: 12;
+  .d-tab {
+    overflow-y: hidden;
+    width: 100%;
+    position: relative;
+    z-index: 15;
+    ul {
+      display: flex;
+      li {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.3rem;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.icon-back {
+  width: 0.8rem;
+  height: 0.8rem;
+  position: fixed;
+  right: 0.16rem;
+  bottom: 0.8rem;
+  z-index: 10;
+}
