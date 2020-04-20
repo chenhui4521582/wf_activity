@@ -53,7 +53,10 @@ export default {
       location.replace('https://wap.beeplaying.com/xmWap/#/address/add')
     },
     toEditAddress () {
-      location.replace(`https://wap.beeplaying.com/xmWap/#/address/list?from=${encodeURIComponent('/activities/mall.html#/comfirmorder')}`)
+      let {name} = this.$route
+      if(name != 'orderDetail') {
+        location.replace(`https://wap.beeplaying.com/xmWap/#/address/list?from=${encodeURIComponent('/activities/mall.html#/comfirmorder')}`)
+      }
     }
   }
 }
