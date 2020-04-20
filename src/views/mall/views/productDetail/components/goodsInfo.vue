@@ -136,13 +136,13 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      height: .5rem;
       .name {
         font-size: 0.32rem;
         color: #000;
         font-weight: bold;
       }
       .participants {
+        flex-shrink: 0;
         line-height: .25rem;
         font-size: 0.24rem;
         color: #888888;

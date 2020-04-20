@@ -10,7 +10,7 @@
       </div>
       <div class="bottom">
         <p>
-          <span class="label">所选型号</span><br>
+          <span class="label">规格</span><br>
           <span>{{info.specs}}</span>
         </p>
         <p>x{{info.num}}</p>

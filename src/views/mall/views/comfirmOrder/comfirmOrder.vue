@@ -65,7 +65,11 @@ export default {
     },
     price () {
       let price = this.goodInfo.payPrice * this.goodInfo.num + this.goodInfo.postage
-      this.isSelectedCost && (price = price - this.maxDeductPrice)
+
+      this.isSelectedCost && (price = (price * 1000 - this.maxDeductPrice * 1000) / 1000)
+      
+      console.log(price)
+      // 
       return price
     },
     hasAddressList () {
@@ -121,7 +125,7 @@ export default {
           let channel = localStorage.getItem('APP_CHANNEL')
           let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
           localStorage.setItem('originDeffer', originDeffer)
-          window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
+          // window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
         } else {
           this.$toast.show({ message })
         }
