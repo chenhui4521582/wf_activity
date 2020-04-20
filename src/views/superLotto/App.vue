@@ -1,24 +1,32 @@
 <template>
   <main class="super-lotto-wrapper">
-    <Header @showPop="openPop" />
-    <Jackpot @showPop="openPop" />
-    <activity-info />
+    <Header :info="actInfoData" @showPop="openPop" @showDropDown="showDropDown" />
+    <Jackpot :info="actInfoData" @showPop="openPop" />
+    <activity-info :info="actInfoData" />
     <article class="number-area-wrapper">
       <section class="title">
-        <h4>已合成{{numberArrLength}}注号码</h4>
-        <span @click="openPop(13)">上期开奖结果></span>
+        <h4>已合成{{numGroupLength}}注号码</h4>
+        <span v-if="whatDay" @click="openPop(13)">上期开奖结果></span>
       </section>
       <ul class="number-area">
-        <li v-for="(items,index) in numberArr" :key="`line-${index}`">
+        <li v-for="(items,index) in numGroup" :key="`line-${index}`">
           <span class="line-number">{{index+1}}</span>
-          <span class="number first-number">{{items[0]|numberFilter}}</span>
-          <span class="number second-number">{{items[1]|numberFilter}}</span>
-          <span class="number third-number">{{items[2]|numberFilter}}</span>
-          <span class="number fourth-number">{{items[3]|numberFilter}}</span>
-          <span class="edit-btn" v-if="showEdit(items)">编辑</span>
+          <span class="number"
+            :class="{'is-select':selectedIndex===0 && selectedLineIndex=== index}"
+            @click="editItem(index,items,0)">{{items.numGroup[0]|numberFilter}}</span>
+          <span class="number"
+            :class="{'is-select':selectedIndex===1 && selectedLineIndex=== index}"
+            @click="editItem(index,items,1)">{{items.numGroup[1]|numberFilter}}</span>
+          <span class="number"
+            :class="{'is-select':selectedIndex===2 && selectedLineIndex=== index}"
+            @click="editItem(index,items,2)">{{items.numGroup[2]|numberFilter}}</span>
+          <span class="number"
+            :class="{'is-select':selectedIndex===3 && selectedLineIndex=== index}"
+            @click="editItem(index,items,3)">{{items.numGroup[3]|numberFilter}}</span>
+          <span class="edit-btn" v-if="showEdit(items)" @click="editLine(items,index)">编辑</span>
         </li>
       </ul>
-      <div class="add-btn">
+      <div class="add-btn" @click="addNewGroup">
         <span>新增一组号码</span>
         <img src="./img/plus-icon.png" alt="">
       </div>
@@ -34,17 +42,18 @@
               <span class="num">{{item.num}}</span>
             </li>
           </ul>
-          <div class="btn">
+          <div class="btn" @click="saveNum">
             确 定
           </div>
         </div>
       </transition>
     </article>
-    <bottom-btns @showPop="openPop" />
-    <drop-down ref="dropDown" :toDayUserCouponNum="actInfoData.totalNum"
-      :rules-explain="rulesExplain" @refresh="refresh" :countTime="actInfoData.countdown"
-      :endDate="actInfoData.endDate" @showPop="hitShowPop"></drop-down>
-    <pop-up v-model="popType" v-show="isShowPop" @closePop="closePop" />
+    <bottom-btns :user-num-count="userNumCount" @showPop="openPop" @showDropDown="showDropDown" />
+    <drop-down ref="dropDown" v-model="dropDownType" :toDayUserCouponNum="actInfoData.totalNum"
+      @refresh="refresh" :endDate="actInfoData.endDate" @showPop="openPop">
+    </drop-down>
+    <pop-up :info="actInfoData" :last-award-info="lastAwardInfo" :number-list="numberList"
+      :award-info="awardTipsInfo" v-model="popType" v-show="isShowPop" @closePop="closePop" />
   </main>
 </template>
 
@@ -55,6 +64,8 @@ import ActivityInfo from './component/activityInfo.vue'
 import BottomBtns from './component/bottomBtns.vue'
 import PopUp from './component/popUp.vue'
 import DropDown from './dropDown.vue'
+import { activityInfo, userAwardInfo, userAwardsTips, userNumGroups, userNumInfo, addNumGroup, modifyNumGroup } from './services/api'
+import _get from 'lodash.get'
 export default {
   name: '',
   components: {
@@ -67,27 +78,28 @@ export default {
   },
   data () {
     return {
-      numberArr: [],
+      actInfoData: {},
+      awardTipsInfo: {},
+      numGroup: [],
       isShowPop: false,
       isShowMyNumBox: false,
-      numberList: [
-        { value: 0, num: 888 },
-        { value: 1, num: 888 },
-        { value: 2, num: 888 },
-        { value: 3, num: 888 },
-        { value: 4, num: 888 },
-        { value: 5, num: 888 },
-        { value: 6, num: 888 },
-        { value: 7, num: 888 },
-        { value: 8, num: 888 },
-        { value: 9, num: 888 }
-      ],
-      popType: 0
+      numberList: [],
+      popType: 0,
+      dropDownType: 0,
+      selectedIndex: null,
+      selectedLineIndex: null,
+      isHasPopTip: false,
+      page: 1,
+      userNumCount: 0,
+      lastAwardInfo: {}
     }
   },
   computed: {
-    numberArrLength () {
-      return this.numberArr.length
+    numGroupLength () {
+      return this.numGroup.filter(items => items.id && items.numGroup && items.numGroup.length).length
+    },
+    whatDay () {
+      return this.actInfoData.whatDay
     }
   },
   filters: {
@@ -96,33 +108,124 @@ export default {
     }
   },
   mounted () {
-    // var arr = [...(new Array(1000)).fill(0), ...(new Array(1000)).fill(1), ...(new Array(1000)).fill(2), ...(new Array(1000)).fill(3), ...(new Array(1000)).fill(4), ...(new Array(1000)).fill(5), ...(new Array(1000)).fill(6), ...(new Array(1000)).fill(7), ...(new Array(1000)).fill(8), ...(new Array(1000)).fill(9)]
-    // arr.sort(function () {
-    //   return Math.random() - 0.5
-    // })
-    // arr.sort(function () {
-    //   return Math.random() - 0.5
-    // })
-    // this.numberArr = this.arrTrans(4, arr)
+    this.init()
   },
   methods: {
-    showEdit (items) {
-      const all = (arr, fn = Boolean) => arr.every(fn)
-      return all(items, x => (x || x === 0))
-    },
-    arrTrans (num, arr) {
-      const newArr = []
-      while (arr.length > 0) {
-        newArr.push(arr.splice(0, num))
+    async init () {
+      this.page = 1
+      const res = await activityInfo()
+      this.page++
+      this.actInfoData = _get(res, 'data', {})
+      this.numGroup = _get(res, 'data.numGroup', [])
+      this.userNumCount = this.actInfoData.userNumCount
+      if (this.actInfoData.state === 3 && !this.isHasPopTip) {
+        this.isHasPopTip = true
+        this.openPop(6)
       }
-      return newArr
+      if (this.actInfoData.tipFlog === 0) {
+        this._userAwardsTips()
+      }
+      this.selectedIndex = null
+      this.selectedLineIndex = null
     },
-    openPop (type) {
-      this.popType = type
+    async _userAwardsTips () {
+      const res = await userAwardsTips()
+      this.awardTipsInfo = _get(res, 'data', {})
+      let type = 5
+      if (this.awardTipsInfo.awardNum) {
+        type = 4
+      }
+      this.openPop(type)
+    },
+    async _userAwardInfo () {
+      const res = await userAwardInfo()
+      this.lastAwardInfo = _get(res, 'data', {})
       this.isShowPop = true
+    },
+    async _userNumGroups () {
+      const res = await userNumGroups(this.page)
+      let arr = _get(res, 'data', [])
+      this.numGroup = [...this.numGroup, ...arr]
+    },
+    _getNumberList ({ eightNum, fiveNum, fourNum, nineNum, oneNum, sevenNum, sixNum, threeNum, twoNum, zeroNum }) {
+      this.numberList = [
+        { value: 1, num: oneNum },
+        { value: 2, num: twoNum },
+        { value: 3, num: threeNum },
+        { value: 4, num: fourNum },
+        { value: 5, num: fiveNum },
+        { value: 6, num: sixNum },
+        { value: 7, num: sevenNum },
+        { value: 8, num: eightNum },
+        { value: 9, num: nineNum },
+        { value: 0, num: zeroNum },
+      ]
+    },
+    async _userNumInfo () {
+      const res = await userNumInfo()
+      let data = _get(res, 'data', {})
+      this._getNumberList(data)
+      this.userNumCount = data.numCount
+      this.isShowPop = true
+    },
+    showEdit (items) {
+      if (items.numGroup && items.numGroup.length === 4) {
+        const all = (arr, fn = Boolean) => arr.every(fn)
+        return all(items.numGroup, x => (x || x === 0))
+      } else {
+        return false
+      }
+    },
+    openPop (type, data) {
+      this.popType = type
+      switch (type) {
+        case 8:
+          this._getNumberList(data)
+          this.isShowPop = true
+          break
+        case 12:
+        case 15:
+          this._userNumInfo()
+          break
+        case 13:
+          this._userAwardInfo()
+          break
+
+        default:
+          this.isShowPop = true
+          break
+      }
     },
     closePop (type) {
       this.isShowPop = false
+    },
+    refresh () { },
+    showDropDown (type) {
+      this.dropDownType = type
+    },
+    addNewGroup () {
+      this.selectedIndex = 0
+      this.numGroup.push({ numGroup: [] })
+      this.selectedLineIndex = this.numGroup.length - 1
+    },
+    editLine (items, index) {
+      items.numGroup = []
+      this.selectedLineIndex = index
+      this.selectedIndex = 0
+      this.isShowMyNumBox = true
+    },
+    editItem (index) {
+      this.selectedIndex = index
+      this.isShowMyNumBox = true
+    },
+    saveNum () { },
+    async _addNumGroup (item) {
+      if (item.numGroup.length === 4) {
+        const res = await addNumGroup({ newNumGroup: item })
+      }
+    },
+    async _modifyNumGroup (item) {
+      const res = await modifyNumGroup({ id: item.id, newNumGroup: ite.numGroup })
     }
   }
 }
@@ -195,6 +298,9 @@ export default {
           justify-content: center;
           font-size: 0.48rem;
           margin: 0 0.26rem 0 0.14rem;
+          &.is-select {
+            border: 1px solid #fdd130;
+          }
         }
         .edit-btn {
           position: absolute;

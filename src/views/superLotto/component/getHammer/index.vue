@@ -2,7 +2,7 @@
   <div class="get-hammer">
     <template v-if="taskProgressInfoData">
       <template
-        v-for="(itemtitle,indextitle) in $moduleConfig.viruskill.dropDown.inner.info.titles">
+        v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
         <h4 class="s-title"><em></em>{{itemtitle}}</h4>
         <template v-if="indextitle==0">
           <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
@@ -23,9 +23,9 @@
           </div>
         </template>
         <template v-else-if="indextitle==1">
-          <span class="info">{{$moduleConfig.viruskill.dropDown.inner.info.sideTitle}}</span>
+          <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
-            :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}">
+            :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
             <div class="g-package-container g2">
               <hit-percent :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
                 :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
@@ -34,7 +34,11 @@
             <div class="g-package-info">
               <ul class="li0">
                 <li>
-                  <span>已支持金叶：{{taskProgressInfoData.gameProgress.gameBetting | filterPrice}}</span>
+                  <span>已支持金叶: {{taskProgressInfoData.gameProgress.gameBetting | conversion}}</span>
+                </li>
+                <li>
+                  <span>累计号码:
+                    {{taskProgressInfoData.gameProgress.gameBettingNumCount | conversion}}个</span>
                 </li>
               </ul>
             </div>
@@ -42,27 +46,28 @@
         </template>
         <template v-else>
           <div class="g-package"
-            :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}">
+            :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
             <div class="g-package-container g1">
               <ul>
-                <li v-for="(item,index) in leaguePacksListArr" @click="gotopay(item)"
-                  :style="{background:$moduleConfig.viruskill.dropDown.inner.packageBlockBg}">
-                  <img :src="$moduleConfig.viruskill.dropDown.inner.packageImgs[index]" alt="">
+                <li v-for="(item,index) in mallBizConfigs" @click="gotopay(item)"
+                  :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBg}">
+                  <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
                   <div class="item-text"
-                    :style="{color:$moduleConfig.viruskill.dropDown.inner.packageBlockTextColor}">
+                    :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
                     {{item.content.split('+')[0]}}<br /> <span class="content"
-                      :style="{color:$moduleConfig.viruskill.dropDown.inner.packageBlockBtnBg}"><em
-                        :style="{background:$moduleConfig.viruskill.dropDown.inner.packageBlockBtnBg}">赠</em>{{item.content.split('+')[1]}}</span>
+                      :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}"><em
+                        :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">赠</em>{{item.content.split('+')[1]}}</span>
                   </div>
                   <a href="javascript:" class="btn-price"
-                    :style="{background:$moduleConfig.viruskill.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
+                    :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
                 </li>
               </ul>
             </div>
             <div class="g-package-info">
               <ul class="li0">
-                <li>已购买礼包：{{taskProgressInfoData.buyTime}}次</li>
-                <!--<li><div class="line" :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color}"></div>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>-->
+                <li>已购买礼包: {{taskProgressInfoData.buyTime}}次</li>
+                <li>累计号码: {{taskProgressInfoData.buyNumCount | conversion}}个</li>
+                <!--<li><div class="line" :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}"></div>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>-->
               </ul>
             </div>
           </div>
@@ -72,12 +77,12 @@
   </div>
 </template>
 <script type="text/javascript">
-import { showLeaguePacksList, taskProgressInfo, taskReceive } from '../../services/api'
+import { showLeaguePacksList, userProgress, taskReceive } from '../../services/api'
 
 export default {
   data () {
     return {
-      leaguePacksListArr: [],
+      mallBizConfigs: [],
       pUserInfo: {},
       taskProgressInfoData: null,
       popType: 0,
@@ -88,6 +93,15 @@ export default {
     countTime: {
       type: Number,
       default: 0
+    }
+  },
+  filters: {
+    conversion (value) {
+      if (value >= 10000) {
+        return `${Math.floor(value / 1000) / 10}万`
+      } else {
+        return value
+      }
     }
   },
   components: {
@@ -114,12 +128,13 @@ export default {
     async getShowLeaguePacksList () {
       const { code, data } = await showLeaguePacksList()
       if (code === 200) {
-        this.leaguePacksListArr = data.leaguePacksList
+        this.mallBizConfigs = data.mallBizConfigs
       }
     },
     async taskProgressInfo () {
-      const { code, data } = await taskProgressInfo()
+      const { code, data } = await userProgress()
       if (code === 200) {
+        console.log(data)
         this.taskProgressInfoData = data
       }
     },
@@ -145,6 +160,7 @@ export default {
       })   // 每日任务奖励领取点击
       const { code, data } = await taskReceive({ sort: index + 1 })
       if (code === 200) {
+        this.showPop(8, data)
         this.refresh(data)
       }
     },
@@ -152,8 +168,8 @@ export default {
       this.taskProgressInfo()
       this.$emit('refresh', data)
     },
-    showPop (data) {
-      this.$emit('showPop', data)
+    showPop (type, data) {
+      this.$emit('showPop', type, data)
     }
   }
 }
@@ -203,6 +219,7 @@ export default {
     background: #fff;
     margin-top: 0.19rem;
     border-radius: 0.15rem 0.15rem 0 0;
+    font-size: 0;
     &.g1 {
       height: 2.94rem;
     }
@@ -250,6 +267,7 @@ export default {
           text-align: center;
           border-radius: 50%;
           color: #fff;
+          font-style: normal;
         }
       }
     }
@@ -265,10 +283,11 @@ export default {
       font-weight: bold;
       text-align: center;
       position: absolute;
-      bottom: 0.1rem;
+      bottom: 0.14rem;
       left: 0;
       right: 0;
       margin: auto;
+      text-decoration: none;
     }
   }
 }
@@ -280,13 +299,12 @@ export default {
     height: 0.52rem;
     text-align: left;
     li {
-      height: 0.52rem;
-      line-height: 0.52rem;
       position: relative;
       font-size: 0.24rem;
       font-weight: bold;
       text-indent: 0.27rem;
       color: #fff;
+      flex: 1;
       .line {
         width: 1px;
         height: 0.33rem;
@@ -294,14 +312,14 @@ export default {
         left: 0;
         top: 0.1rem;
       }
+      &:not(:first-child) {
+        border-left: #ffa200 1px solid;
+      }
     }
     &.li0 {
       justify-content: center;
-    }
-    &:not(.li0) {
-      li {
-        flex: 1;
-      }
+      padding: 0.1rem 0;
+      box-sizing: border-box;
     }
   }
 }

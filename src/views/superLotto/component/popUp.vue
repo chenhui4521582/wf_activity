@@ -9,7 +9,7 @@
             <div class="has-hf">
               <img class="sub-title" src="../img/yesterday.png" alt="">
               <img src="../img/hfq-icon.png" alt="">
-              <p>XX话费</p>
+              <p>{{awardInfo.awardNum}}话费</p>
             </div>
             <p>
               今日还没获得号码<br />
@@ -41,13 +41,13 @@
               点击“上期开奖结果”查看
             </p>
           </template>
-          <div class="btn">快去看看</div>
+          <div class="btn" @click="closePop">快去看看</div>
           <p class="other-desc">搜集数字越多，中奖概率越大！</p>
         </section>
         <section class="content" v-else>
           <div class="title">
             <template v-if="type===1">
-              <img src="" alt="">
+              <img src="../img/rule-title.png" alt="">
             </template>
             <template v-else>
               {{title}}
@@ -55,19 +55,21 @@
           </div>
           <div class="container">
             <template v-if="type===0">
-              活动时间：X年X月X日10点-X年X月X日24点<br />
-              1. 活动期间内，玩家在指定游戏中消耗一定的叶子，可领取随机号码，将4个任意号码进行组合即可获得一注兑奖号（数字可重复）；<br />
-              2. 活动期间，玩家将集齐的每组号码与系统随机生成的中奖码进行匹配，单组数字与中奖码数字和位置一致越多，则瓜分的奖励越多<br />
+              活动时间：{{info.beginDate}}至{{info.endDate}}<br />
+              1. 活动期间内，玩家在指定游戏中消耗一定的叶子，可领取随机号码，将4个任意号码进行组合即可获得一注兑奖号；<br />
+              2. 活动期间，玩家将集齐的每组号码与系统随机生成的中奖码进行匹配，<span
+                class="bold">单组数字与中奖码数字和顺序一致越多，则瓜分的奖励越多</span><br />
               3. 玩家在活动中获得的号码越多，则组合越多。同时获奖概率越大。<br />
-              4. 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费券。比例：1000金叶 = 1话费券
+              4. 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费券。<br />
+              比例：100金叶=1话费券=0.1元话费<br />
               <span class="click-span" @click="type=1">点击查看瓜分示意图</span><br />
               获奖金额计算方式：<br />
               改奖项在奖池金额的占比除以该奖项的号码注数<br />
               例：当日奖池为8万话费券，则特等奖总金额为16000话费券；如果有2注号码中特等奖，则每注可获得8000话费券。<br />
-              4. 活动期间，每期开奖时间为次日1点，奖励会在用户次日进入活动页面后发放；<br />
-              5. 活动期间，活动金叶消耗进度每日重置，请及时领取使用；<br />
-              6. 玩家当日未使用的号码，会在次日0点开奖后删除<br />
-              7. 活动结束后，根据活动期间累计获得的数字进行排名并发放排行奖励，有奖排行榜仅限前30名玩家进榜，排行榜奖励将直接发放，排行榜单会展示一天<br />
+              5. 活动期间，每期开奖时间为次日<span class="red-text bold">1点</span>，奖励会在用户次日进入活动页面后发放；<br />
+              6. 活动期间，活动金叶消耗进度<span class="red-text bold">每日重置</span>，请及时领取使用；<br />
+              7. <span class="red-text bold">玩家当日未使用的号码，会在次日0点开奖后删除</span><br />
+              8. 活动结束后，根据活动期间累计获得的数字进行排名并发放排行奖励，有奖排行榜仅限前30名玩家进榜，排行榜奖励将直接发放，排行榜单会展示一天<br />
               注意：<br />
               活动期间，超过当天24：00未领取的数字将清零<br />
               活动期间，未使用的数字将清零
@@ -196,10 +198,10 @@
               <p>
                 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费券。
                 参与活动的用户可在次日依据<span class="click-span" @click="type=0">活动规则</span>进行奖池瓜分。<br />
-                比例：1000金叶=1话费券
+                比例：100金叶=1话费券=0.1元话费
               </p>
               <p class="sub-title">当前金叶累计</p>
-              <p class="leaf-number">88888888金叶</p>
+              <p class="leaf-number">{{info.awardPool*100}}金叶</p>
             </template>
             <template v-else-if="type===12">
               <p>备注：获得的号码会在次日零点清零并重新累计请尽快使用</p>
@@ -215,11 +217,12 @@
             </template>
             <template v-else-if="type===13">
               <ul class="last-number">
-                <li v-for="(item,index) in lastNumber">{{item}}</li>
+                <li v-for="(item,index) in lastNumber">
+                  {{item}}</li>
               </ul>
               <div class="sub-title">恭喜您获得</div>
               <ul class="award-list">
-                <li v-for="(item,index) in awardList">
+                <li v-for="(item,index) in lastAwardList">
                   <div class="left">
                     <p>{{item.label}}</p>
                     <p class="num">{{item.num}}注</p>
@@ -235,10 +238,19 @@
             <template v-else-if="type===14">
               <ul class="last-award-list">
                 <li v-for="(items,index) in awardNumsArr" :key="`line-${index}`">
-                  <p v-for="(item,key) in items" :key="`item-${index}-${key}`"
+                  <p v-for="(item,key) in items.numGroup" :key="`item-${index}-${key}`"
                     :class="{activitied:item===lastNumber[key]}">{{item}}</p>
                 </li>
               </ul>
+            </template>
+            <template v-else-if="type===15">
+              <ul class="last-award-list">
+                <li v-for="(items,index) in newNumGroups" :key="`line-${index}`">
+                  <p v-for="(item,key) in items.newNumGroup" :key="`item-${index}-${key}`"
+                    :class="{activitied:item===lastNumber[key]}">{{item}}</p>
+                </li>
+              </ul>
+              <div class="btn" @click="_addNumGroup()">保 存</div>
             </template>
           </div>
         </section>
@@ -249,6 +261,8 @@
 </template>
 
 <script>
+import { userAwardNums, addNumGroup } from "../services/api"
+import _get from "lodash.get"
 export default {
   name: 'popUp',
   components: {
@@ -271,28 +285,33 @@ export default {
       }, {
         id: 21, url: '/Marbles'
       }],
-      numberList: [
-        { value: 0, num: 888 },
-        { value: 1, num: 888 },
-        { value: 2, num: 888 },
-        { value: 3, num: 888 },
-        { value: 4, num: 888 },
-        { value: 5, num: 888 },
-        { value: 6, num: 888 },
-        { value: 7, num: 888 },
-        { value: 8, num: 888 },
-        { value: 9, num: 888 }
-      ],
       selectedTitle: '幸运奖',
-      lastNumber: [1, 2, 3, 4],
-      awardList: [{ label: '特等奖', num: 1, hfNum: 888 }, { label: '一等奖', num: 1, hfNum: 888 }, { label: '二等奖', num: 1, hfNum: 888 }, { label: '三等奖', num: 1, hfNum: 888 }, { label: '幸运奖', num: 1, hfNum: 888 }],
-      awardNumsArr: [[1, 2, 3, 0], [2, 1, 3, 9], [6, 4, 7, 3]]
+      awardNumsArr: [],
+      newNumGroups: [],
+      awardGrade: 0,
+      page: 1
     }
   },
   props: {
     value: {
       type: Number,
       default: 0
+    },
+    info: {
+      type: Object,
+      default: () => ({})
+    },
+    awardInfo: {
+      type: Object,
+      default: () => ({})
+    },
+    numberList: {
+      type: Array,
+      default: () => ([])
+    },
+    lastAwardInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   computed: {
@@ -319,6 +338,8 @@ export default {
           return '上次开奖结果'
         case 14:
           return this.selectedTitle
+        case 15:
+          return '随机号码结果如下'
         default:
           return ''
       }
@@ -326,11 +347,32 @@ export default {
     hasClose () {
       switch (this.type) {
         case 4:
+        case 5:
+        case 6:
           return false
 
         default:
           return true
       }
+    },
+    lastNumber () {
+      let arr = this.lastAwardInfo.awardNumGroup && this.lastAwardInfo.awardNumGroup.split(':') || []
+      arr = arr.map(x => x = parseInt(x))
+      return arr
+    },
+    lastAwardList () {
+      let maxGroupAwardInfo = this.lastAwardInfo.maxGroupAwardInfo && this.lastAwardInfo.maxGroupAwardInfo.split(':') || [0, 0]
+      let oneGroupAwardInfo = this.lastAwardInfo.oneGroupAwardInfo && this.lastAwardInfo.oneGroupAwardInfo.split(':') || [0, 0]
+      let twoGroupAwardInfo = this.lastAwardInfo.twoGroupAwardInfo && this.lastAwardInfo.twoGroupAwardInfo.split(':') || [0, 0]
+      let threeGroupAwardInfo = this.lastAwardInfo.threeGroupAwardInfo && this.lastAwardInfo.threeGroupAwardInfo.split(':') || [0, 0]
+      let luckyGroupAwardInfo = this.lastAwardInfo.luckyGroupAwardInfo && this.lastAwardInfo.luckyGroupAwardInfo.split(':') || [0, 0]
+      return [
+        { label: '特等奖', num: maxGroupAwardInfo[0], hfNum: maxGroupAwardInfo[1], id: 0 },
+        { label: '一等奖', num: oneGroupAwardInfo[0], hfNum: oneGroupAwardInfo[1], id: 1 },
+        { label: '二等奖', num: twoGroupAwardInfo[0], hfNum: twoGroupAwardInfo[1], id: 2 },
+        { label: '三等奖', num: threeGroupAwardInfo[0], hfNum: threeGroupAwardInfo[1], id: 3 },
+        { label: '幸运奖', num: luckyGroupAwardInfo[0], hfNum: luckyGroupAwardInfo[1], id: 99 }
+      ]
     }
   },
   mounted () {
@@ -349,17 +391,56 @@ export default {
     selectAward (item) {
       this.selectedTitle = item.label
       this.type = 14
+      this.awardGrade = item.id
+      this.page = 1
+      this._userAwardNums()
+    },
+    async _userAwardNums () {
+      const res = await userAwardNums(this.awardGrade, this.page)
+      this.awardNumsArr = _get(res, 'data', [])
+    },
+    _createMoreNum () {
+      let arr = this.numberList.map(items => {
+        let item = new Array(items.num).fill(items.value)
+        return item
+      }).flat(Infinity)
+      arr.sort(function () {
+        return Math.random() - 0.5
+      })
+      arr.sort(function () {
+        return Math.random() - 0.5
+      })
+      this.newNumGroups = this.arrTrans(4, arr)
+    },
+    arrTrans (num, arr) {
+      const newArr = []
+      while (arr.length > 0) {
+        newArr.push({ newNumGroup: arr.splice(0, num) })
+      }
+      return newArr
+    },
+    async _addNumGroup () {
+      if (this.newNumGroups.length) {
+        const res = await addNumGroup(this.newNumGroups)
+      }
     }
   },
   watch: {
     value (val) {
       if (val) {
-
       }
       this.type = val
     },
     type (val) {
       this.$emit('input', val)
+    },
+    numberList: {
+      deep: true,
+      handler (val) {
+        if (this.value === 15) {
+          this._createMoreNum()
+        }
+      }
     }
   }
 }
@@ -462,6 +543,9 @@ export default {
         background: #fdd130;
         border-radius: 0.2rem 0.2rem 0 0;
         font-weight: bold;
+        img {
+          height: 0.3rem;
+        }
       }
       .container {
         height: calc(~'100%' - 0.9rem);
@@ -495,9 +579,18 @@ export default {
     &.type-3,
     &.type-12,
     &.type-13,
-    &.type-14 {
+    &.type-14,
+    &.type-15 {
       .content {
         height: 7.76rem;
+      }
+    }
+    &.type-0 {
+      .red-text {
+        color: #ff4330;
+      }
+      .bold {
+        font-weight: bold;
       }
     }
     &.type-1 {
@@ -845,7 +938,8 @@ export default {
         }
       }
     }
-    &.type-14 {
+    &.type-14,
+    &.type-15 {
       .last-award-list {
         li {
           margin-bottom: 0.12rem;

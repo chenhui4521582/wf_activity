@@ -1,13 +1,13 @@
 <template>
   <article class="bottom-btns">
-    <div class="get-btn">获取号码</div>
-    <div class="random-btn">
+    <div class="get-btn" @click="showDropDown()">获取号码</div>
+    <div class="random-btn" @click="showPop(15)">
       一键随机所有<br />
       未使用号码
     </div>
-    <div class="my-number-btn" @click="showPop()">
+    <div class="my-number-btn" @click="showPop(12)">
       我的号码箱
-      <span>剩余1.12万个</span>
+      <span>剩余{{userNumCount|conversion}}个</span>
     </div>
   </article>
 </template>
@@ -18,17 +18,27 @@ export default {
   components: {
 
   },
-  data () {
-    return {
-
+  props: {
+    userNumCount: {
+      type: Number,
+      default: 0
     }
   },
-  mounted () {
-
+  filters: {
+    conversion (value) {
+      if (value >= 10000) {
+        return `${Math.floor(value / 1000) / 10}万`
+      } else {
+        return value
+      }
+    }
   },
   methods: {
-    showPop () {
-      this.$emit('showPop', 12)
+    showPop (type) {
+      this.$emit('showPop', type)
+    },
+    showDropDown () {
+      this.$emit('showDropDown', 1)
     }
   }
 }

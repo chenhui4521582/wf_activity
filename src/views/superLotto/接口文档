@@ -286,52 +286,26 @@ zeroNum (integer, optional): 号码0的数量
 {
   "code": 0,
   "data": {
-    "buyTime": 0,
-    "gameProgress": {
-      "gameBetting": 0,
-      "progressList": [
-        {
-          "amount": 0,
-          "awards": 0,
-          "propType": 0,
-          "sort": 0,
-          "status": 0
-        }
-      ]
-    },
-    "taskProgress": [
-      {
-        "finishNum": 0,
-        "idx": 0,
-        "state": 0,
-        "totalNum": 0
-      }
-    ]
+    "awardNumGroup": "string",
+    "luckyGroupAwardInfo": "string",
+    "maxGroupAwardInfo": "string",
+    "oneGroupAwardInfo": "string",
+    "threeGroupAwardInfo": "string",
+    "twoGroupAwardInfo": "string"
   },
   "message": "string"
 }
-ResponseBean«LottoUserProgressRsp» {
+RResponseBean«LottoUserAwardInfoRsp» {
 code (integer, optional),
-data (LottoUserProgressRsp, optional): 响应数据体 ,
+data (LottoUserAwardInfoRsp, optional): 响应数据体 ,
 message (string, optional): 错误信息
-}LottoUserProgressRsp {
-buyTime (integer, optional): 购买礼包次数 ,
-gameProgress (LottoGameInfoRsp, optional): 游戏进度 ,
-taskProgress (Array[SupremeActivityTaskProgressRsp], optional): 任务进度 idx=1每日任务 idx=2充值任务
-}LottoGameInfoRsp {
-gameBetting (integer, optional): 游戏累消 ,
-progressList (Array[LottoGameProgressRsp], optional): 累消进度
-}SupremeActivityTaskProgressRsp {
-finishNum (integer, optional): 完成数 ,
-idx (integer, optional): 位置 1=每日任务 2=充值任务 ,
-state (integer, optional): 状态 0=未完成 1=已完成未领取 2=已完成已领取 ,
-totalNum (integer, optional): 总数
-}LottoGameProgressRsp {
-amount (integer, optional): 流水 ,
-awards (integer, optional): 奖励数 ,
-propType (integer, optional): 类型 1=药丸 2=酒精 3=疫苗 ,
-sort (integer, optional): 顺序 ,
-status (integer, optional): 状态 0=未完成 1=待领取 2=已领取
+}LottoUserAwardInfoRsp {
+awardNumGroup (string, optional): 上期开奖号码，逗号分隔：1:2:3:4 ,
+luckyGroupAwardInfo (string, optional): 参与奖信息，格式：组数:奖励数量 ,
+maxGroupAwardInfo (string, optional): 特等奖信息，格式：组数:奖励数量 ,
+oneGroupAwardInfo (string, optional): 一等奖信息，格式：组数:奖励数量 ,
+threeGroupAwardInfo (string, optional): 三等奖信息，格式：组数:奖励数量 ,
+twoGroupAwardInfo (string, optional): 二等奖信息，格式：组数:奖励数量
 }
 
 

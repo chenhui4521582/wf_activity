@@ -7,7 +7,7 @@
     <section class="bottom">
       <div>
         <img src="../img/hf-icon.png" alt="">
-        <span>888888</span>
+        <span>{{info.awardPool}}</span>
       </div>
     </section>
   </article>
@@ -19,9 +19,10 @@ export default {
   components: {
 
   },
-  data () {
-    return {
-
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
     }
   },
   mounted () {

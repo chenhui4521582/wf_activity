@@ -2,9 +2,8 @@
   <article class="activity-info">
     <p class="count-down">本期开奖倒计时：{{countdownTime}}</p>
     <section class="open-number-wrapper">
-      <div class="normal" v-for="(item,index) in openNumberArr" :key="index">
-        <img src="../img/lock-icon.png" alt="" v-if="!item&&item!==0">
-        <span v-else>{{item}}</span>
+      <div class="normal" v-for="(item,index) in 4" :key="index">
+        <img src="../img/lock-icon.png" alt="">
       </div>
     </section>
     <p>与开奖号码一致越多，奖励越多</p>
@@ -20,12 +19,16 @@ export default {
   data () {
     return {
       countdownTime: '',
-      timer: null,
-      openNumberArr: [null, null, null, null]
+      timer: null
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
     }
   },
   mounted () {
-    this.countDown(40000000)
   },
   methods: {
     countDown (data) {
@@ -53,6 +56,14 @@ export default {
           this.countdownTime = `${countHour}:${countMinute}:${countSecond}`
         }
       }, 1000)
+    }
+  },
+  watch: {
+    info: {
+      deep: true,
+      handler (newVal) {
+        this.countDown(newVal.countdown)
+      }
     }
   }
 }

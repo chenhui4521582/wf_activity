@@ -2,25 +2,25 @@
   <div class="hit-percent">
     <div class="hb-task-box">
       <div class="percent-box"
-        :style="{background:$moduleConfig.viruskill.dropDown.inner.bg.background}">
+        :style="{background:$moduleConfig.superLotto.dropDown.inner.bg.background}">
         <div class="percent-number"
-          :style="{width:wpercent,background:$moduleConfig.viruskill.dropDown.inner.percentBg}">
+          :style="{width:wpercent,background:$moduleConfig.superLotto.dropDown.inner.percentBg}">
         </div>
       </div>
       <ul>
         <li v-for="(item,index) in envelopsItem" v-if="!item.dot">
           <h2>支持金叶</h2>
-          <h4 v-if="envelopsItem.length<6">{{item.amount | filterPrice}}</h4>
+          <h4 v-if="envelopsItem.length<6">{{item.amount | conversion}}</h4>
           <template v-else>
-            <h4 v-if="index<envelopsItem.length-1">{{item.amount | filterPrice}}</h4>
+            <h4 v-if="index<envelopsItem.length-1">{{item.amount | conversion}}</h4>
             <h4 v-else>终极档位</h4>
           </template>
           <div class="hb-line">
             <img :src="require(`./images/icon${item.propType}.png`)" alt="">
           </div>
-          <div class="envelopes">{{item.awards}}个{{medicineInfo[item.propType-1]}}</div>
+          <div class="envelopes">{{item.awards}}个</div>
           <div class="btn btn-complete"
-            :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}"
+            :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}"
             v-if="item.status == 2">完成
           </div>
           <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(item)">领取</div>
@@ -48,8 +48,7 @@ export default {
       hbTestData: [],
       popType: 0,
       awardData: null,
-      showLoading: false,
-      medicineInfo: ['药丸', '酒精', '疫苗']
+      showLoading: false
     }
   },
   props: {
@@ -64,6 +63,15 @@ export default {
     countTime: {
       type: Number,
       default: 0
+    }
+  },
+  filters: {
+    conversion (value) {
+      if (value >= 10000) {
+        return `${Math.floor(value / 1000) / 10}万`
+      } else {
+        return value
+      }
     }
   },
   computed: {
@@ -160,17 +168,17 @@ export default {
         task_id: item.sort,
         task_name: '消耗金叶' + item.amount
       })   // 玩游戏去完成点击
-      this.showPop(5, null)
+      this.showPop(7)
     },
     async gotoact (item) { // 领取
-      GLOBALS.marchSetsPoint('A_H5PT0248002913', {
-        task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })// 玩游戏奖励领取点击
+      // GLOBALS.marchSetsPoint('A_H5PT0248002913', {
+      //   task_id: item.sort,
+      //   task_name: '消耗金叶' + item.amount
+      // })// 玩游戏奖励领取点击
       this.showLoading = true
       gameReceive(item.sort).then((res) => {
         if (res.code == 200) {
-          this.$emit('refresh', res.data)
+          this.showPop(8, res.data)
         } else {
           this.$toast.show({
             message: res.message,
@@ -183,9 +191,7 @@ export default {
       })
     },
     showPop (type, awardData) {
-      this.$emit('showPop', {
-        type, awardData
-      })
+      this.$emit('showPop', type, awardData)
     }
   },
   components: {
@@ -207,7 +213,7 @@ export default {
     border-radius: 0.08rem;
     position: absolute;
     left: 0.3rem;
-    top: 1.01rem;
+    top: 1.04rem;
     border-radius: 0.08rem;
     .percent-number {
       height: 0.15rem;
@@ -216,6 +222,17 @@ export default {
       top: 0;
       background: rgba(220, 50, 42, 1);
       border-radius: 0.08rem;
+      max-width: 100%;
+      &:after {
+        content: '';
+        width: 0.23rem;
+        height: 0.23rem;
+        background: url(./images/percent-dot.png) no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        right: -0.1rem;
+        top: -0.04rem;
+      }
     }
   }
   li {
@@ -233,7 +250,7 @@ export default {
       font-size: 0.22rem;
       font-weight: 800;
       color: #ff4330;
-      margin: 0.1rem auto 0.05rem;
+      margin: 0 auto;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -243,14 +260,14 @@ export default {
     }
     .hb-line {
       width: 2px;
-      height: 0.48rem;
+      height: 0.4rem;
       position: relative;
       img {
-        width: 0.4rem;
-        height: 0.4rem;
+        width: 0.46rem;
+        height: 0.46rem;
         position: absolute;
+        top: -0.02rem;
         left: -0.2rem;
-        top: 0.04rem;
         z-index: 2;
       }
     }
@@ -277,12 +294,12 @@ export default {
       }
     }
     .envelopes {
-      /*width: 0.59rem;*/
       height: 0.25rem;
       font-weight: 500;
-      color: rgba(231, 70, 21, 1);
+      color: #e74615;
       text-align: center;
       white-space: nowrap;
+      margin-bottom: 0.04rem;
     }
     .btn {
       display: block;

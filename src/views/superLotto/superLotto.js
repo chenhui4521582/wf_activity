@@ -9,6 +9,8 @@ import Toast from '@/plugins/toast'
 import '@/common/js/window.js'
 import VueClipboard from 'vue-clipboard2'
 // document.addEventListener('touchmove',function(event){event.preventDefault(); },false);
+import moduleConfig from './moduleConfig'
+Vue.prototype.$moduleConfig = moduleConfig
 Vue.use(Toast)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false

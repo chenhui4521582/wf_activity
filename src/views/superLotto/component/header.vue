@@ -6,7 +6,7 @@
     </section>
     <section class="bottom">
       <div class="left" @click="showPop(2)">攻略<span>+</span>奖励</div>
-      <div class="right" @click="">排行榜></div>
+      <div class="right" @click="showDropDown()">排行榜></div>
     </section>
   </header>
 </template>
@@ -17,6 +17,9 @@ export default {
   methods: {
     showPop (type) {
       this.$emit('showPop', type)
+    },
+    showDropDown () {
+      this.$emit('showDropDown', 2)
     }
   }
 }
