@@ -20,9 +20,6 @@
       <better-scroll ref="scroll" :data="highlightTimeList" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
           <template v-if="showList">
-            <div :class="{'active': currentIndex == 1}" class="recommend-item item top"  v-for="(item, index) in optimumTimeList" :key="`recommend${index}`">
-              <list :item="item" :currentIndex="currentIndex" :from="from" :index="'recommend'+index"></list>
-            </div>
             <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in highlightTimeList" :key="`list${index}`">
               <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
             </div>
@@ -123,10 +120,8 @@ export default {
       }
       this.scrollLock = true
       Services.highlightTimeList({
-        optimumNum: 2,
         page: this.page,
         pageSize: this.pageSize,
-        sortRule: 0,
         type: this.currentIndex
       }).then(res=> {
         let {code, data, message} = _get(res, 'data')
@@ -225,32 +220,6 @@ export default {
     .item {
       margin-bottom: .08rem;
     }
-    .recommend-item {
-      width: 3.25rem;
-      height: 2.5rem;
-      background: url(./img/recommend-bg.png) no-repeat center center;
-      background-size: 100% 100%;
-      &.active {
-        background: url(./img/recommend-bg-1.png) no-repeat center center;
-        background-size: 100% 100%
-      }
-      &.top{
-        position: relative;
-        background: url(./img/recommend-bg-top.png) no-repeat center center;
-        background-size: 100% 100%;
-        &:before {
-          content:'';
-          background: url(./img/icon_recommend.png) no-repeat center center;
-          background-size: 100% 100%;
-          width:1.05rem;
-          height:0.97rem;
-          display: block;
-          position: absolute;
-          top:0;
-          right: -0.2rem;
-        }
-      }
-    }
     .list-item {
       overflow: hidden;
       width: 3.25rem;
@@ -343,28 +312,6 @@ export default {
   .list {
     .item {
       margin-bottom: .08rem;
-    }
-    .recommend-item {
-      width: 3rem;
-      height: 2.33rem;
-      background: url(./img/recommend-bg.png) no-repeat center center;
-      background-size: 100% 100%;
-      &.top{
-        position: relative;
-        background: url(./img/recommend-bg-top.png) no-repeat center center;
-        background-size: 100% 100%;
-        &:before {
-          content:'';
-          background: url(./img/icon_recommend.png) no-repeat center center;
-          background-size: 100% 100%;
-          width: 0.92rem;
-          height:0.85rem;
-          display: block;
-          position: absolute;
-          top:0;
-          right: -0.18rem;
-        }
-      }
     }
     .list-item {
       overflow: hidden;
