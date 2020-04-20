@@ -18,7 +18,7 @@
             <img v-else src="../../img/img_photo.png" alt="">
           </div>
           <div class="name">{{item.userName}}</div>
-          <div class="time">{{item.createTime | formatTime('y-m-d')}}</div>
+          <div class="time">{{item.totalHeat}}</div>
         </div>
     </div>
 </template>
@@ -101,7 +101,7 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   .avatar{
-    margin: .06rem .1rem 0 0;
+    margin: 0 .1rem 0 0;
     float: left;
     width: .36rem;
     height: .36rem;
@@ -118,11 +118,13 @@ export default {
     font-size: .2rem;
     font-weight: bold;
     color: #fff;
-    width: 1rem;
+    width: 1.4rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: .36rem;
   }
   .time {
+    height: .36rem;
     float: right;
     font-size: .18rem;
     color: #fff;

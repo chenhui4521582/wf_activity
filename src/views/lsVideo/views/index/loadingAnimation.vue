@@ -1,59 +1,40 @@
 <template lang="html">
-    <div :class="{'loading-wrap': !smaller, hidebar:!showBar}">
-        <div class="container">
-            <div class="spinner" v-if="showBar">
-                <div class="bar1"></div>
-                <div class="bar2"></div>
-                <div class="bar3"></div>
-                <div class="bar4"></div>
-                <div class="bar5"></div>
-                <div class="bar6"></div>
-                <div class="bar7"></div>
-                <div class="bar8"></div>
-                <div class="bar9"></div>
-                <div class="bar10"></div>
-                <div class="bar11"></div>
-                <div class="bar12"></div>
-            </div>
+    <div class="container">
+        <div class="spinner">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+            <div class="bar6"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar9"></div>
+            <div class="bar10"></div>
+            <div class="bar11"></div>
+            <div class="bar12"></div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name : 'loading',
-    props:{
-        smaller : Boolean,
-        showBar: true
-    }
+    name : 'loading-animation',
 }
 </script>
 
 <style lang="less" scoped>
-.loading-wrap {
-   position:fixed;
-   top:0;
-   left:0;
-   width:100%;
-   height:100%;
-   background-color: rgba(0,0,0,0.7);
-   z-index: 15;
-   &.hidebar{
-     background-color: rgba(0,0,0,0.1);
-   }
-}
 .container {
     position: absolute;
-    top:50%;
     left:50%;
-    transform: translate(-50%,-50%);
-    width:100px;
-    height: 100px;
+    transform: translate(-50%, 0);
+    width: 30px;
+    height: 30px;
     -webkit-border-radius: 10%;
 }
 .spinner {
-    height: 40%;
-    width: 40%;
+    height: 100%;
+    width: 100%;
     position: relative;
     margin: 0 auto;
 }

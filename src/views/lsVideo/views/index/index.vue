@@ -12,7 +12,7 @@
     </template>
     <!-- 导航 -->
     <div class="nav">
-      <div class="item" :class="{'active1': currentIndex == 2}" @click="handleNav(2)">奖池高光时刻</div>
+      <div class="item" :class="{'active1': currentIndex == 2}" @click="handleNav(2)">击中奖池</div>
       <div class="item" :class="{'active2': currentIndex == 1}" @click="handleNav(1)">一杆多球</div>
     </div>
     <!-- 列表 -->
@@ -24,12 +24,12 @@
               <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
             </div>
           </template>
-          <!-- 加载动画 -->
-          <loading v-else :showBar="true"/>
         </div>
       </better-scroll>
+      <!-- 加载动画 -->
+      <loading-animation v-if="scrollLock" class="loading-animation" :showBar="true" :smaller="true"/>
       <!-- back-top -->
-      <div v-if="isBackTop" class="back-top" @click="backTop"> </div>
+      <div v-if="isBackTop" class="back-top" @click="backTop"></div>
     </div>
     <!-- 规则 -->
     <rule v-model="showRule"></rule>
@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+import LoadingAnimation from './loadingAnimation'
 import Loading from '@/components/common/loading'
 import BetterScroll from '../../components/betterScroll/betterScroll'
 import Rule from '../../components/rule'
@@ -62,7 +63,8 @@ export default {
     Rule,
     List,
     Loading,
-    BetterScroll
+    BetterScroll,
+    LoadingAnimation
   },
   computed: {
     showList() {
@@ -96,6 +98,8 @@ export default {
         if (this.timer) {
           clearTimeout(this.timer)
         }
+        /** 开启加载动画 **/
+        this.LoadingAnimation = true
         this.timer = setTimeout(() => {
           this.page++
           this._getHighlightTimeList()
@@ -115,7 +119,6 @@ export default {
       this.list = []
     },
     _getHighlightTimeList() {
-      console.log(this.scrollLock)
       if(this.scrollLock) {
         return false
       }
@@ -129,6 +132,8 @@ export default {
         if(code == 200) {
           let list = _get(res, 'data.data', [])
           this.list = this.list.concat(list)
+          /** 关闭加载动画 **/
+          this.LoadingAnimation = false
           if(list.length == 20) {
             this.scrollLock = false
           }
@@ -238,6 +243,16 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  .loading-animation {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    .container {
+      width: 70px;
+      height: 70px;
+    }
+  }
   .list {
     padding-bottom: .7rem;
   }
