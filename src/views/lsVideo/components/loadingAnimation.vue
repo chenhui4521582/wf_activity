@@ -1,18 +1,18 @@
 <template lang="html">
     <div class="container">
         <div class="spinner">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-            <div class="bar4"></div>
-            <div class="bar5"></div>
-            <div class="bar6"></div>
-            <div class="bar7"></div>
-            <div class="bar8"></div>
-            <div class="bar9"></div>
-            <div class="bar10"></div>
-            <div class="bar11"></div>
-            <div class="bar12"></div>
+            <div class="bar1" :style="{'background': color}"></div>
+            <div class="bar2" :style="{'background': color}"></div>
+            <div class="bar3" :style="{'background': color}"></div>
+            <div class="bar4" :style="{'background': color}"></div>
+            <div class="bar5" :style="{'background': color}"></div>
+            <div class="bar6" :style="{'background': color}"></div>
+            <div class="bar7" :style="{'background': color}"></div>
+            <div class="bar8" :style="{'background': color}"></div>
+            <div class="bar9" :style="{'background': color}"></div>
+            <div class="bar10" :style="{'background': color}"></div>
+            <div class="bar11" :style="{'background': color}"></div>
+            <div class="bar12" :style="{'background': color}"></div>
         </div>
     </div>
 </template>
@@ -20,14 +20,17 @@
 <script>
 export default {
     name : 'loading-animation',
+    props: {
+        color: {
+            type: String,
+            default: '#fff'
+        }
+    }
 }
 </script>
 
 <style lang="less" scoped>
 .container {
-    position: absolute;
-    left:50%;
-    transform: translate(-50%, 0);
     width: 30px;
     height: 30px;
     -webkit-border-radius: 10%;

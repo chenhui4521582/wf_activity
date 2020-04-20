@@ -4,11 +4,13 @@
     <template v-if="from == 'platFrom'">
       <div class="back-home" @click="backHome"></div>
       <div class="rule-btn" @click="openRule">规则</div>
+      <div class="my" @click="goMy">我的高光</div>
     </template>
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'game'">
       <div class="rule-btn" @click="openRule">规则</div>
       <div class="close-btn" @click="close"></div>
+      <div class="my" @click="goMy">我的高光</div>
     </template>
     <!-- 导航 -->
     <div class="nav">
@@ -23,11 +25,13 @@
             <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in list" :key="`list${index}`">
               <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
             </div>
+            <!-- 没有数据了 -->
+            <bottom-line class="bottom-line" v-if="noData" />
+            <!-- 加载动画 -->
+            <loading-animation class="loading-animation" v-if="!noData && loadingAnimation" :showBar="true" :smaller="true"/>
           </template>
         </div>
       </better-scroll>
-      <!-- 加载动画 -->
-      <loading-animation v-if="scrollLock" class="loading-animation" :showBar="true" :smaller="true"/>
       <!-- back-top -->
       <div v-if="isBackTop" class="back-top" @click="backTop"></div>
     </div>
@@ -38,8 +42,9 @@
   </div>
 </template>
 <script>
-import LoadingAnimation from './loadingAnimation'
 import Loading from '@/components/common/loading'
+import BottomLine from '../../components/bottomLine'
+import LoadingAnimation from '../../components/loadingAnimation'
 import BetterScroll from '../../components/betterScroll/betterScroll'
 import Rule from '../../components/rule'
 import List from './list'
@@ -57,14 +62,17 @@ export default {
     pageSize: 20,
     showRule: false,
     isBackTop: false,
-    scrollLock: false
+    scrollLock: false,
+    loadingAnimation: false,
+    noData: false
   }),
   components: {
     Rule,
     List,
     Loading,
     BetterScroll,
-    LoadingAnimation
+    LoadingAnimation,
+    BottomLine
   },
   computed: {
     showList() {
@@ -90,6 +98,11 @@ export default {
     backTop() {
       this.isBackTop = false
     },
+    goMy() {
+      this.$router.push({
+        name: 'my'
+      })
+    },
     onScroll ({ y }) {
       let box = this.$refs.box.clientHeight
       let scrollBox = this.$refs.wrap.clientHeight
@@ -99,7 +112,7 @@ export default {
           clearTimeout(this.timer)
         }
         /** 开启加载动画 **/
-        this.LoadingAnimation = true
+        this.loadingAnimation = true
         this.timer = setTimeout(() => {
           this.page++
           this._getHighlightTimeList()
@@ -117,6 +130,8 @@ export default {
       this.pageSize = 20
       this.scrollLock = false
       this.list = []
+      this.loadingAnimation = false
+      this.noData = false
     },
     _getHighlightTimeList() {
       if(this.scrollLock) {
@@ -133,13 +148,17 @@ export default {
           let list = _get(res, 'data.data', [])
           this.list = this.list.concat(list)
           /** 关闭加载动画 **/
-          this.LoadingAnimation = false
+          this.loadingAnimation = false
           if(list.length == 20) {
             this.scrollLock = false
+          }else {
+            /** 没有数据了 **/
+            this.noData = true
           }
         }
       }).catch(error => {
         this.scrollLock = false
+        this.loadingAnimation = false
       })
     },
     openRule() {
@@ -176,7 +195,7 @@ export default {
 .ls-video {
   overflow: hidden;
   min-height: 100vh;  
-  background: url(../../img/bg.jpg) no-repeat center top #bc77eb;
+  background: url(../../img/bg.jpg) no-repeat center top #a55fdb;
   background-size: 100% auto;
   .nav {
     margin: 2.48rem auto 0;
@@ -217,7 +236,7 @@ export default {
     }
   }
   .list {
-    padding: .16rem .25rem .16rem;
+    padding: .16rem .25rem .7rem;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -244,17 +263,7 @@ export default {
   right: 0;
   bottom: 0;
   .loading-animation {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-    .container {
-      width: 70px;
-      height: 70px;
-    }
-  }
-  .list {
-    padding-bottom: .7rem;
+    margin: 0 auto;
   }
   .back-top {
     position: absolute;
@@ -278,9 +287,22 @@ export default {
   }
   .rule-btn {
     position: absolute;
+    left: 0;
+    top: 1.1rem;
+    width: .8rem;
+    height: .42rem;
+    background: #B437D0;
+    border-radius: 0 .21rem .21rem 0;
+    line-height: .44rem;
+    text-align: center;
+    color: #fff;
+    font-size: .2rem;
+  }
+  .my {
+    position: absolute;
     right: 0;
     top: .37rem;
-    width: .8rem;
+    width: 1.16rem;
     height: .42rem;
     background: #B437D0;
     border-radius: .21rem 0 0 .21rem;
@@ -298,6 +320,19 @@ export default {
   top: 1.28rem;
   min-height: auto;
   border-radius: .2rem;
+  .my {
+    position: absolute;
+    left: 0;
+    top: 1.3rem;
+    width: 1.16rem;
+    height: .42rem;
+    background: #B437D0;
+    border-radius: 0 .21rem .21rem 0;
+    line-height: .44rem;
+    text-align: center;
+    color: #fff;
+    font-size: .2rem;
+  }
   .close-btn {
     position: absolute;
     right: .1rem;
@@ -310,7 +345,7 @@ export default {
   .rule-btn {
     position: absolute;
     left: 0;
-    top: .59rem;
+    top: .37rem;
     width: .8rem;
     height: .42rem;
     background: #B437D0;
@@ -321,7 +356,7 @@ export default {
     font-size: .2rem;
   }
   .listWrap {
-    top: 4.56rem;
+    top: 4.8rem;
     left: .28rem;
     right: .28rem;
     bottom: 1.28rem;
