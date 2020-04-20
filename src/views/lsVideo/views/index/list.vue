@@ -15,7 +15,7 @@
         <div class="user-info">
           <div class="avatar">
             <img v-if="item.headPortrait" :src="item.headPortrait | filter" alt="">
-            <img v-else src="./img/img_photo.png" alt="">
+            <img v-else src="../../img/img_photo.png" alt="">
           </div>
           <div class="name">{{item.userName}}</div>
           <div class="time">{{item.createTime | formatTime('y-m-d')}}</div>
@@ -126,6 +126,9 @@ export default {
     float: right;
     font-size: .18rem;
     color: #fff;
+    padding-left: .36rem;
+    background: url('../../img/hot.png') no-repeat left center;
+    background-size: .27rem .33rem;
   }
 }
 </style>
