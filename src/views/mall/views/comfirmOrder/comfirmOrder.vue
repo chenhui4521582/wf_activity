@@ -99,6 +99,10 @@ export default {
         product_id: this.goodInfo.id,
         product_name: this.goodInfo.name
       })
+      if(!this.hasAddressList) {
+        this.$toast.show({message: '请选择收货地址'})
+        return false
+      }
       if(this.lock) return false
       this.lock = true
       Services.payOrder({
@@ -121,7 +125,7 @@ export default {
           let channel = localStorage.getItem('APP_CHANNEL')
           let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
           localStorage.setItem('originDeffer', originDeffer)
-          window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
+          window.location.replace('/xmWap/#/payment/paymentlist')
         } else {
           this.$toast.show({ message })
         }

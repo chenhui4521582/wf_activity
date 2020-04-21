@@ -50,7 +50,7 @@ export default {
       }
     },
     toAddAddress () {
-      location.replace('https://wap.beeplaying.com/xmWap/#/address/add')
+      window.location.href = 'https://wap.beeplaying.com/xmWap/#/address/add'
     },
     toEditAddress () {
       let {name} = this.$route
