@@ -100,7 +100,10 @@ export default {
     },
     goMy() {
       this.$router.push({
-        name: 'my'
+        name: 'my',
+        query: {
+          from: this.$route.query.from
+        }
       })
     },
     onScroll ({ y }) {
@@ -198,7 +201,7 @@ export default {
   background: url(../../img/bg.jpg) no-repeat center top #a55fdb;
   background-size: 100% auto;
   .nav {
-    margin: 2.48rem auto 0;
+    margin: 2.73rem auto 0;
     padding: 0 .1rem;
     display: flex;
     justify-content: space-between;
@@ -258,7 +261,7 @@ export default {
 }
 .listWrap {
   position: fixed;
-  top: 3.3rem;
+  top: 3.55rem;
   left: 0;
   right: 0;
   bottom: 0;

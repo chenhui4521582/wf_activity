@@ -1,35 +1,45 @@
 <template>
   <div class="my-lsvideo">
     <Header class="header" title="我的高光"/>
-    <div class="title">共{{showList}}个记录</div>
     <!-- 列表 -->
     <div class="listWrap" ref="box" v-if="showList">
+      <div class="title">共{{showList}}个记录</div>
       <better-scroll ref="scroll" :data="list" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
-          <template v-if="showList">
-            <div class="list-item item"  v-for="(item, index) in list" :key="`list${index}`">
-              <div class="video-img">
-                <div class="amount">{{item.amount}}出杆</div>
-                <div class="oddsResult">{{item.odds}}倍奖励</div>
-              </div>
-              <div class="video-text">
-                <p class="name">一杆{{item.ballNum}}球</p>
-                <p class="desc">
-                  <span class="play-num">播放量：{{item.playbackVolume}}</span>
-                </p>
-                <div class="time">{{item.createTime}}</div>
-              </div>
+          <div class="list-item item"  
+            v-for="(item, index) in list" 
+            :key="`list${index}`" 
+            @click="handleClick(item, index)"
+          >
+            <div class="video-img">
+              <div class="amount">{{item.amount}}出杆</div>
+              <div class="oddsResult">{{item.odds}}倍奖励</div>
             </div>
-            <!-- 没有数据了 -->
-            <bottom-line class="bottom-line" :color="'#ddd'" v-if="noData" />
-            <!-- 加载动画 -->
-            <loading-animation class="loading-animation" :color="'#999'" v-if="!noData && loadingAnimation" :showBar="true" :smaller="true"/>
-          </template>
+            <div class="video-text">
+              <p class="name">一杆{{item.ballNum}}球</p>
+              <p class="desc">
+                <span class="play-num">播放量：{{item.playbackVolume}}</span>
+              </p>
+              <div class="time">{{item.createTime}}</div>
+            </div>
+          </div>
+          <!-- 没有数据了 -->
+          <bottom-line class="bottom-line" :color="'#ddd'" v-if="noData" />
+          <!-- 加载动画 -->
+          <loading-animation 
+            v-if="!noData && loadingAnimation" 
+            class="loading-animation" 
+            :color="'#999'" 
+            :showBar="true" 
+            :smaller="true"
+          />
         </div>
       </better-scroll>
       <!-- back-top -->
       <div v-if="isBackTop" class="back-top" @click="backTop"></div>
     </div>
+    <!-- 没有数据 -->
+    <empty v-else />
     <div class="item"></div>
   </div>
 </template>
@@ -37,6 +47,7 @@
 import BetterScroll from '../../components/betterScroll/betterScroll'
 import BottomLine from '../../components/bottomLine'
 import LoadingAnimation from '../../components/loadingAnimation'
+import Empty from './empty'
 import Services from '../../services/services'
 import _get from 'lodash.get'
 export default {
@@ -53,7 +64,8 @@ export default {
   components: {
     LoadingAnimation,
     BottomLine,
-    BetterScroll
+    BetterScroll,
+    Empty
   },
   computed: {
     showList() {
@@ -107,6 +119,16 @@ export default {
         this.isBackTop = false
       }
     },
+    handleClick(item, index) {
+      if(this.from == 'game' && parent.playLsVideo) {
+        let id = item.id
+        parent.playLsVideo(id, this.currentIndex, index)
+      }else {
+        let id = item.id
+        let channel = localStorage.getItem('APP_CHANNEL')
+        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${index}&type=${this.currentIndex}&time=${Date.now()}`
+      }
+    },
     backTop() {
       this.isBackTop = false
     },
@@ -131,6 +153,9 @@ export default {
     border-bottom: 1px solid rgba(204,204,204, .4);
   }
   .title {
+    position: absolute;
+    top: -.7rem;
+    padding-left: .06rem;
     height: .7rem;
     line-height: .7rem;
     font-size: .26rem;
