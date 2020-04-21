@@ -1,28 +1,20 @@
 <template>
-  <main class="super-lotto-wrapper">
+  <main class="super-lotto-wrapper" ref="area">
     <Header :info="actInfoData" @showPop="openPop" @showDropDown="showDropDown" />
     <Jackpot :info="actInfoData" @showPop="openPop" />
     <activity-info :info="actInfoData" />
     <article class="number-area-wrapper">
       <section class="title">
-        <h4>已合成{{numGroupLength}}注号码</h4>
-        <span v-if="whatDay" @click="openPop(13)">上期开奖结果></span>
+        <h4>已合成{{actInfoData.userNumGroupCount}}注号码</h4>
+        <span v-if="actInfoData.whatDay!==1" @click="openPop(13)">上期开奖结果></span>
       </section>
       <ul class="number-area">
         <li v-for="(items,index) in numGroup" :key="`line-${index}`">
           <span class="line-number">{{index+1}}</span>
-          <span class="number"
-            :class="{'is-select':selectedIndex===0 && selectedLineIndex=== index}"
-            @click="editItem(index,items,0)">{{items.numGroup[0]|numberFilter}}</span>
-          <span class="number"
-            :class="{'is-select':selectedIndex===1 && selectedLineIndex=== index}"
-            @click="editItem(index,items,1)">{{items.numGroup[1]|numberFilter}}</span>
-          <span class="number"
-            :class="{'is-select':selectedIndex===2 && selectedLineIndex=== index}"
-            @click="editItem(index,items,2)">{{items.numGroup[2]|numberFilter}}</span>
-          <span class="number"
-            :class="{'is-select':selectedIndex===3 && selectedLineIndex=== index}"
-            @click="editItem(index,items,3)">{{items.numGroup[3]|numberFilter}}</span>
+          <span class="number">{{items.numGroup[0]|numberFilter}}</span>
+          <span class="number">{{items.numGroup[1]|numberFilter}}</span>
+          <span class="number">{{items.numGroup[2]|numberFilter}}</span>
+          <span class="number">{{items.numGroup[3]|numberFilter}}</span>
           <span class="edit-btn" v-if="showEdit(items)" @click="editLine(items,index)">编辑</span>
         </li>
       </ul>
@@ -32,12 +24,19 @@
       </div>
     </article>
     <article class="my-number-box" v-show="isShowMyNumBox" @click="">
-      <div class="pop-mask" @click="isShowMyNumBox=false"></div>
+      <div class="pop-mask" @click="closeMyNumBox(true)"></div>
       <transition name="fade">
         <div class="my-number-list" v-show="isShowMyNumBox">
           <p>获得的号码会在次日零点清零并重新累计，请尽快使用</p>
+          <ul class="edit-number-area">
+            <li v-for="(item,index) in editNumber.newNumGroup" :class="{selected:item===0||item>0}"
+              @click="delNum(item,index)">
+              {{item|numberFilter}}</li>
+          </ul>
           <ul>
-            <li v-for="(item,index) in numberList">
+            <li v-for="(item,index) in numberList"
+              :class="{selected:editNumber.newNumGroup.includes(item.value),empty:item.num===0}"
+              @click="selectNumber(item)">
               <span>{{item.value}}</span>
               <span class="num">{{item.num}}</span>
             </li>
@@ -53,7 +52,8 @@
       @refresh="refresh" :endDate="actInfoData.endDate" @showPop="openPop">
     </drop-down>
     <pop-up :info="actInfoData" :last-award-info="lastAwardInfo" :number-list="numberList"
-      :award-info="awardTipsInfo" v-model="popType" v-show="isShowPop" @closePop="closePop" />
+      :award-info="awardTipsInfo" :my-rank-info="myRankInfo" v-model="popType" v-show="isShowPop"
+      @closePop="closePop" />
   </main>
 </template>
 
@@ -84,6 +84,7 @@ export default {
       isShowPop: false,
       isShowMyNumBox: false,
       numberList: [],
+      oldNumberList: '',
       popType: 0,
       dropDownType: 0,
       selectedIndex: null,
@@ -91,16 +92,16 @@ export default {
       isHasPopTip: false,
       page: 1,
       userNumCount: 0,
-      lastAwardInfo: {}
+      editLineIndex: null,
+      lastAwardInfo: {},
+      myRankInfo: {},
+      el: {},
+      editNumber: { newNumGroup: [null, null, null, null] },
+      finished: false,
+      loading: false
     }
   },
   computed: {
-    numGroupLength () {
-      return this.numGroup.filter(items => items.id && items.numGroup && items.numGroup.length).length
-    },
-    whatDay () {
-      return this.actInfoData.whatDay
-    }
   },
   filters: {
     numberFilter (number) {
@@ -109,8 +110,22 @@ export default {
   },
   mounted () {
     this.init()
+    this.el = this.$refs.area
+    this.$nextTick(() => {
+      this.el.addEventListener('touchend', this.onScroll)
+    })
   },
   methods: {
+    onScroll () {
+      let bottom = this.el.getBoundingClientRect().bottom
+      let height = window.innerHeight
+      if (bottom - height < 50) {
+        this._userNumGroups()
+      }
+    },
+    removeScroll () {
+      this.el.removeEventListener('touchend', this.onScroll)
+    },
     async init () {
       this.page = 1
       const res = await activityInfo()
@@ -127,6 +142,7 @@ export default {
       }
       this.selectedIndex = null
       this.selectedLineIndex = null
+      this._userNumInfo()
     },
     async _userAwardsTips () {
       const res = await userAwardsTips()
@@ -143,11 +159,23 @@ export default {
       this.isShowPop = true
     },
     async _userNumGroups () {
+      if (this.finished || this.loading) {
+        return
+      }
+      this.loading = true
       const res = await userNumGroups(this.page)
+      this.loading = false
       let arr = _get(res, 'data', [])
-      this.numGroup = [...this.numGroup, ...arr]
+      if (arr.length) {
+        this.finished = false
+        this.numGroup = [...this.numGroup, ...arr]
+        this.page++
+      } else {
+        this.finished = true
+      }
     },
-    _getNumberList ({ eightNum, fiveNum, fourNum, nineNum, oneNum, sevenNum, sixNum, threeNum, twoNum, zeroNum }) {
+    _getNumberList ({ numCount, eightNum, fiveNum, fourNum, nineNum, oneNum, sevenNum, sixNum, threeNum, twoNum, zeroNum }) {
+      this.userNumCount = numCount
       this.numberList = [
         { value: 1, num: oneNum },
         { value: 2, num: twoNum },
@@ -158,15 +186,14 @@ export default {
         { value: 7, num: sevenNum },
         { value: 8, num: eightNum },
         { value: 9, num: nineNum },
-        { value: 0, num: zeroNum },
+        { value: 0, num: zeroNum }
       ]
     },
-    async _userNumInfo () {
+    async _userNumInfo (isShowPop = false) {
       const res = await userNumInfo()
       let data = _get(res, 'data', {})
       this._getNumberList(data)
-      this.userNumCount = data.numCount
-      this.isShowPop = true
+      this.isShowPop = isShowPop
     },
     showEdit (items) {
       if (items.numGroup && items.numGroup.length === 4) {
@@ -185,7 +212,7 @@ export default {
           break
         case 12:
         case 15:
-          this._userNumInfo()
+          this._userNumInfo(true)
           break
         case 13:
           this._userAwardInfo()
@@ -196,36 +223,112 @@ export default {
           break
       }
     },
-    closePop (type) {
+    closePop (isSure) {
       this.isShowPop = false
+      if (isSure) {
+        switch (this.popType) {
+          case 8:
+            this.showDropDown(0)
+            break
+          case 10:
+            this.showDropDown(1)
+            break
+          case 15:
+            this.init()
+            break
+          default:
+            break
+        }
+      }
     },
-    refresh () { },
+    refresh (data) {
+      if (data && data.numCount) {
+        this.userNumCount = data.numCount
+      }
+    },
     showDropDown (type) {
       this.dropDownType = type
     },
     addNewGroup () {
-      this.selectedIndex = 0
-      this.numGroup.push({ numGroup: [] })
-      this.selectedLineIndex = this.numGroup.length - 1
+      if (this.userNumCount < 4) {
+        this.openPop(10)
+      }
+      this.editNumber = { newNumGroup: [null, null, null, null] }
+      this.oldNumberList = JSON.stringify(this.numberList)
+      this.isShowMyNumBox = true
     },
     editLine (items, index) {
-      items.numGroup = []
-      this.selectedLineIndex = index
-      this.selectedIndex = 0
+      this.editLineIndex = index
+      this.editNumber = { id: items.id, newNumGroup: [...items.numGroup] }
+      this.oldNumberList = JSON.stringify(this.numberList)
       this.isShowMyNumBox = true
     },
-    editItem (index) {
-      this.selectedIndex = index
-      this.isShowMyNumBox = true
+    closeMyNumBox (needRestore) {
+      this.editNumber = { newNumGroup: [null, null, null, null] }
+      this.editLineIndex = null
+      if (needRestore) {
+        this.numberList = JSON.parse(this.oldNumberList)
+      }
+      this.isShowMyNumBox = false
     },
-    saveNum () { },
-    async _addNumGroup (item) {
-      if (item.numGroup.length === 4) {
-        const res = await addNumGroup({ newNumGroup: item })
+    delNum (item, index) {
+      let numIndex = this.numberList.findIndex(element => element.value === item)
+      this.numberList[numIndex].num++
+      this.editNumber.newNumGroup[index] = null
+    },
+    selectNumber (item) {
+      if (item.num) {
+        let index = this.editNumber.newNumGroup.findIndex(element => element === null)
+        if (index >= 0) {
+          this.editNumber.newNumGroup[index] = item.value
+          item.num--
+        }
+      } else {
+        this.$toast.show({
+          message: '所选号码数量不足',
+          duration: 1000
+        })
       }
     },
-    async _modifyNumGroup (item) {
-      const res = await modifyNumGroup({ id: item.id, newNumGroup: ite.numGroup })
+    saveNum () {
+      if (this.editNumber.newNumGroup.findIndex(element => element === null) >= 0) {
+        this.$toast.show({
+          message: '需要4个号码才能保存哦~',
+          duration: 1000
+        })
+        return
+      }
+      if (this.editNumber.id) {
+        this._modifyNumGroup()
+      } else {
+        this._addNumGroup()
+      }
+    },
+    async _addNumGroup () {
+      const res = await addNumGroup({ newNumGroup: [this.editNumber.newNumGroup] })
+      let code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.closeMyNumBox()
+        this.$toast.show({
+          message: '保存成功',
+          duration: 1000
+        })
+        this.init()
+      }
+    },
+    async _modifyNumGroup () {
+      const res = await modifyNumGroup({ id: this.editNumber.id, newNumGroup: this.editNumber.newNumGroup })
+      let code = _get(res, 'code', 0)
+      let data = _get(res, 'data', {})
+      if (code === 200) {
+        this.numGroup[this.editLineIndex].numGroup = this.editNumber.newNumGroup
+        this.$toast.show({
+          message: '保存成功',
+          duration: 1000
+        })
+        this.closeMyNumBox()
+        this._getNumberList(data)
+      }
     }
   }
 }
@@ -349,7 +452,7 @@ export default {
     .my-number-list {
       background: #ffa200;
       border-radius: 0.2rem 0.2rem 0 0;
-      height: 4.06rem;
+      height: 5.86rem;
       box-sizing: border-box;
       position: fixed;
       bottom: 0;
@@ -375,6 +478,13 @@ export default {
           line-height: 0.86rem;
           text-align: center;
           margin: 0.24rem 0.2rem 0;
+          &.selected {
+            background: #fff;
+          }
+          &.empty {
+            background: #a6a29c;
+            color: #fff;
+          }
           .num {
             position: absolute;
             display: block;
@@ -389,6 +499,17 @@ export default {
             right: -0.1rem;
             bottom: -0.1rem;
           }
+        }
+      }
+      .edit-number-area {
+        border-radius: 0.16rem;
+        border: 0.02rem solid #fff;
+        margin: 0.4rem auto 0.2rem;
+        li {
+          margin: 0.24rem 0.36rem;
+          width: 0.66rem;
+          height: 0.66rem;
+          line-height: 0.66rem;
         }
       }
       .btn {

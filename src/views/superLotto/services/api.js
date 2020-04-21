@@ -8,8 +8,8 @@ const SHOP_API_BASE_URL = '//shop-api.beeplaying.com'
  * @return {Object} data
  */
 export const activityInfo = async () => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/activity-info`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/activity-info`)
+  /* const data = {
     code: 200,
     data: {
       awardPool: 564250,
@@ -104,7 +104,7 @@ export const activityInfo = async () => {
       userNumCount: 0,
       whatDay: 4
     }
-  }
+  } */
 
   return data
 }
@@ -113,8 +113,8 @@ export const activityInfo = async () => {
  * @return {Object} data
  */
 export const gameReceive = async (sort) => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/game-receive/${sort}`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/game-receive/${sort}`)
+  /* const data = {
     'code': 200,
     'data': {
       'eightNum': 1,
@@ -130,7 +130,7 @@ export const gameReceive = async (sort) => {
       'zeroNum': 0
     },
     'message': 'string'
-  }
+  } */
   return data
 }
 /**
@@ -178,18 +178,18 @@ export const taskReceive = async (type) => {
  * @return {Object} data
  */
 export const userAwardInfo = async () => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-award-info`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-award-info`)
+  /* const data = {
     code: 200,
     data: {
-      awardNumGroup: '1:2:3:4',
+      awardNumGroup: '1234',
       luckyGroupAwardInfo: '2:400',
       maxGroupAwardInfo: '1:300',
       oneGroupAwardInfo: '4:400',
       threeGroupAwardInfo: '6:700',
       twoGroupAwardInfo: '9:1000'
     }
-  }
+  } */
   return data
 }
 /**
@@ -197,17 +197,93 @@ export const userAwardInfo = async () => {
  * @return {Object} data
  */
 export const userAwardNums = async (awardGrade, page) => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-award-nums/${awardGrade}/${page}`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-award-nums/${awardGrade}/${page}`)
+  /* const data = {
     'code': 200,
     'data': [
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
+      {
+        'id': 21,
+        'numGroup': [1, 2, 3, 4]
+      },
       {
         'id': 21,
         'numGroup': [1, 2, 3, 4]
       }
     ],
     'message': 'string'
-  }
+  } */
   return data
 }
 /**
@@ -215,8 +291,8 @@ export const userAwardNums = async (awardGrade, page) => {
  * @return {Object} data
  */
 export const userNumGroups = async (page) => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-num-groups/${page}`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-num-groups/${page}`)
+  /* const data = {
     'code': 0,
     'data': [
       {
@@ -225,7 +301,7 @@ export const userNumGroups = async (page) => {
       }
     ],
     'message': 'string'
-  }
+  } */
   return data
 }
 /**
@@ -234,16 +310,22 @@ export const userNumGroups = async (page) => {
  */
 
 export const userAwardsTips = async () => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-awards-tips`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-awards-tips`)
+  /* const data = {
     code: 200,
     data: {
-      awardNum: 100,
-      rankAward: null,
-      rankIdx: 0,
-      rankTips: 0
+      awardNum: 0,
+      rankAward: [{
+        awardsName: '话费券100',
+        awardsType: 'hfq'
+      }, {
+        awardsName: '金叶子100',
+        awardsType: 'jyz'
+      }],
+      rankIdx: 1,
+      rankTips: 1
     }
-  }
+  } */
   return data
 }
 /**
@@ -251,8 +333,8 @@ export const userAwardsTips = async () => {
  * @return {Object} data
  */
 export const userNumInfo = async () => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-num-info`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-num-info`)
+  /* const data = {
     'code': 200,
     'data': {
       'eightNum': 20,
@@ -268,7 +350,7 @@ export const userNumInfo = async () => {
       'zeroNum': 60
     },
     'message': 'string'
-  }
+  } */
   return data
 }
 /**
@@ -276,8 +358,8 @@ export const userNumInfo = async () => {
  * @return {Object} data
  */
 export const userProgress = async () => {
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-progress`)
-  const data = {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/user-progress`)
+  /* const data = {
     'code': 200,
     'data': {
       'taskProgress': [
@@ -402,7 +484,7 @@ export const userProgress = async () => {
       'buyNumCount': 0
     },
     'message': null
-  }
+  } */
   return data
 }
 /**

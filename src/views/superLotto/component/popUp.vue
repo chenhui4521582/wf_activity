@@ -2,7 +2,7 @@
   <transition name="scalc">
     <article class="pop-up-wrapper">
       <section class="mask"></section>
-      <section class="content-wrapper" :class="`type-${type}`">
+      <section class="content-wrapper" :class="`type-${type}`" ref="group">
         <section class="first-pop" v-if="[4,5,6].includes(type)">
           <img class="title" src="../img/pop-up-title.png" alt="">
           <template v-if="type===4">
@@ -11,7 +11,7 @@
               <img src="../img/hfq-icon.png" alt="">
               <p>{{awardInfo.awardNum}}话费</p>
             </div>
-            <p>
+            <p v-if="info.state!==2">
               今日还没获得号码<br />
               可以在指定游戏消耗金叶或者完成活动任务<br />
               获得随机号码
@@ -24,7 +24,7 @@
               您昨日未集齐4个号码<br />
               未获得奖励
             </p>
-            <p>
+            <p v-if="info.state!==2">
               今日还没获得号码<br />
               可以在指定游戏消耗金叶或者完成活动任务<br />
               获得随机号码
@@ -41,7 +41,7 @@
               点击“上期开奖结果”查看
             </p>
           </template>
-          <div class="btn" @click="closePop">快去看看</div>
+          <div class="btn" @click="toLook()">快去看看</div>
           <p class="other-desc">搜集数字越多，中奖概率越大！</p>
         </section>
         <section class="content" v-else>
@@ -143,13 +143,13 @@
                   <li>
                     <div class="step">三等奖</div>
                     <div>
-                      <p class="sub-title">奖池总金额的10%除以中奖号码注数</p>
+                      <p class="sub-title">奖池总金额的30%除以中奖号码注数</p>
                     </div>
                   </li>
                   <li>
                     <div class="step">幸运奖</div>
                     <div>
-                      <p class="sub-title">奖池总金额的60%除以中奖号码注数</p>
+                      <p class="sub-title">奖池总金额的40%除以中奖号码注数</p>
                     </div>
                   </li>
                 </ul>
@@ -165,32 +165,22 @@
             <template v-else-if="type===8">
               <div class="sub-title"><span>号码展示</span></div>
               <ul class="number-list">
-                <li v-for="(item,index) in numberList">
+                <li :class="{selected:item.num}" v-for="(item,index) in numberList">
                   <span>{{item.value}}</span>
                   <span class="num">{{item.num}}</span>
                 </li>
               </ul>
-              <div class="btn">
+              <div class="btn" @click="closePop(true)">
                 去组号
               </div>
             </template>
-            <template v-else-if="type===9">
-              <img src="../img/happy-icon.png" alt="">
-              <p>
-                4个数字就可以组成一注号码哟~<br>
-                快去搜集数字吧！
-              </p>
-              <div class="btn">
-                去搜集
-              </div>
-            </template>
             <template v-else-if="type===10">
-              <img src="../img/happy-icon.png" alt="">
+              <img src="../img/sad-icon.png" alt="">
               <p>
                 您的号码不足4个<br>
-                快去搜集数字吧！
+                快去搜集数字吧
               </p>
-              <div class="btn">
+              <div class="btn" @click="closePop(true)">
                 去搜集
               </div>
             </template>
@@ -236,7 +226,7 @@
               </ul>
             </template>
             <template v-else-if="type===14">
-              <ul class="last-award-list">
+              <ul class="last-award-list" ref="area">
                 <li v-for="(items,index) in awardNumsArr" :key="`line-${index}`">
                   <p v-for="(item,key) in items.numGroup" :key="`item-${index}-${key}`"
                     :class="{activitied:item===lastNumber[key]}">{{item}}</p>
@@ -245,12 +235,38 @@
             </template>
             <template v-else-if="type===15">
               <ul class="last-award-list">
-                <li v-for="(items,index) in newNumGroups" :key="`line-${index}`">
-                  <p v-for="(item,key) in items.newNumGroup" :key="`item-${index}-${key}`"
+                <li v-for="(items,index) in newNumGroup" :key="`line-${index}`">
+                  <p v-for="(item,key) in items" :key="`item-${index}-${key}`"
                     :class="{activitied:item===lastNumber[key]}">{{item}}</p>
                 </li>
               </ul>
               <div class="btn" @click="_addNumGroup()">保 存</div>
+            </template>
+            <template v-else-if="type===16">
+              <template v-if="awardInfo.rankAward&&awardInfo.rankAward.length">
+                <h4>恭喜你排名为第{{awardInfo.rankIdx}}名<br />
+                  获得</h4>
+                <div class="prize_info lte2">
+                  <div class="prize_info_item" v-for="(item,index) in awardInfo.rankAward">
+                    <div class="prize_info_img">
+                      <img :src="`${require(`../img/common/${item.awardsType}.png`)}`" alt=""
+                        v-if="item.awardsType">
+                    </div>
+                    <div class="prize_info_name">
+                      <div class="prize_info_name_item" v-if="item.awardsType">
+                        {{getAwardName(item.awardsType)}}</div>
+                      <div class="prize_info_name_item" v-if="item.awardsName">
+                        {{item.awardsName.replace(getAwardName(item.awardsType),'')}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <img src="../img/sad-icon.png" alt="" class="icon">
+                <div class="sad_tips">您未上榜，下次继续加油哦</div>
+              </template>
+              <div class="btn" @click="closePop()">我知道了</div>
             </template>
           </div>
         </section>
@@ -261,8 +277,8 @@
 </template>
 
 <script>
-import { userAwardNums, addNumGroup } from "../services/api"
-import _get from "lodash.get"
+import { userAwardNums, addNumGroup } from '../services/api'
+import _get from 'lodash.get'
 export default {
   name: 'popUp',
   components: {
@@ -287,9 +303,12 @@ export default {
       }],
       selectedTitle: '幸运奖',
       awardNumsArr: [],
-      newNumGroups: [],
+      newNumGroup: [],
       awardGrade: 0,
-      page: 1
+      page: 1,
+      group: {},
+      finished: false,
+      loading: false
     }
   },
   props: {
@@ -340,6 +359,8 @@ export default {
           return this.selectedTitle
         case 15:
           return '随机号码结果如下'
+        case 16:
+          return '排行榜已发榜'
         default:
           return ''
       }
@@ -356,7 +377,7 @@ export default {
       }
     },
     lastNumber () {
-      let arr = this.lastAwardInfo.awardNumGroup && this.lastAwardInfo.awardNumGroup.split(':') || []
+      let arr = this.lastAwardInfo.awardNumGroup && this.lastAwardInfo.awardNumGroup.split('') || []
       arr = arr.map(x => x = parseInt(x))
       return arr
     },
@@ -379,8 +400,27 @@ export default {
 
   },
   methods: {
-    closePop () {
-      this.$emit('closePop', this.type)
+    closePop (isSure, data) {
+      this.$emit('closePop', isSure, data)
+    },
+    toLook () {
+      if (this.awardInfo.rankTips) {
+        this.type = 16
+      } else {
+        this.closePop()
+      }
+    },
+    getAwardName (awardType) {
+      switch (awardType) {
+        case 'jyz':
+          return '金叶子'
+        case 'yg':
+          return '鱼干'
+        case 'jdk':
+          return '京东券'
+        case 'hfq':
+          return '话费券'
+      }
     },
     gotogame ({ url, id }) {
       GLOBALS.jumpOutsideGame(url)
@@ -395,9 +435,31 @@ export default {
       this.page = 1
       this._userAwardNums()
     },
+    onScroll () {
+      let bottom = this.$refs.area.getBoundingClientRect().bottom
+      let height = this.group.offsetHeight
+      if (bottom - height < 50) {
+        this._userAwardNums()
+      }
+    },
+    removeScroll () {
+      this.el.removeEventListener('touchend', this.onScroll)
+    },
     async _userAwardNums () {
+      if (this.finished || this.loading) {
+        return
+      }
+      this.loading = true
       const res = await userAwardNums(this.awardGrade, this.page)
-      this.awardNumsArr = _get(res, 'data', [])
+      this.loading = false
+      let arr = _get(res, 'data', [])
+      if (arr.length) {
+        this.finished = false
+        this.awardNumsArr = [...this.awardNumsArr, ...arr]
+        this.page++
+      } else {
+        this.finished = true
+      }
     },
     _createMoreNum () {
       let arr = this.numberList.map(items => {
@@ -410,24 +472,36 @@ export default {
       arr.sort(function () {
         return Math.random() - 0.5
       })
-      this.newNumGroups = this.arrTrans(4, arr)
+      this.newNumGroup = this.arrTrans(4, arr)
     },
     arrTrans (num, arr) {
       const newArr = []
-      while (arr.length > 0) {
-        newArr.push({ newNumGroup: arr.splice(0, num) })
+      while (arr.length >= num) {
+        newArr.push(arr.splice(0, num))
       }
       return newArr
     },
     async _addNumGroup () {
-      if (this.newNumGroups.length) {
-        const res = await addNumGroup(this.newNumGroups)
+      if (this.newNumGroup.length) {
+        const res = await addNumGroup({ newNumGroup: this.newNumGroup })
+        let { code, data } = res
+        if (code === 200) {
+          this.$toast.show({
+            message: '生成成功',
+            duration: 1000
+          })
+          this.closePop(true)
+        }
       }
     }
   },
   watch: {
     value (val) {
-      if (val) {
+      if (val === 14) {
+        this.group = this.$refs.group
+        this.$nextTick(() => {
+          this.group.addEventListener('touchend', this.onScroll)
+        })
       }
       this.type = val
     },
@@ -472,7 +546,6 @@ export default {
     font-size: 0.3rem;
     .first-pop {
       width: 5.6rem;
-      height: 7.98rem;
       background: #ff7101;
       border-radius: 0.16rem;
       margin: 1.2rem auto 0;
@@ -480,9 +553,9 @@ export default {
       color: #fff;
       font-size: 0.2rem;
       line-height: 0.3rem;
+      padding: 0.5rem 0;
       .title {
         width: 3.16rem;
-        margin-top: 0.5rem;
       }
       .has-hf {
         background: #fff;
@@ -751,6 +824,9 @@ export default {
             right: -0.1rem;
             bottom: -0.1rem;
           }
+          &.selected {
+            background: #fff;
+          }
         }
       }
     }
@@ -960,6 +1036,93 @@ export default {
               background: #fff3e9;
             }
           }
+        }
+      }
+    }
+    &.type-16 {
+      text-align: center;
+      .sad_tips {
+        font-size: 0.36rem;
+        color: #c34a04;
+        text-align: center;
+        margin-bottom: 0.8rem;
+      }
+      .icon {
+        width: 2.2rem;
+        display: block;
+        margin: 0.2rem auto 0.6rem;
+      }
+      h4 {
+        font-size: 0.36rem;
+        font-weight: 400;
+        color: #c34a04;
+        margin-bottom: 0.5rem;
+        line-height: 0.44rem;
+      }
+      .prize_info {
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 0.8rem;
+        .prize_info_item {
+          width: 1.22rem;
+          &.empty {
+            opacity: 0;
+            width: 0.96rem;
+          }
+          .prize_info_img {
+            height: 1.15rem;
+            background: rgba(254, 253, 251, 1);
+            border-radius: 0.2rem 0.2rem 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+              width: 80%;
+              margin: auto;
+            }
+          }
+          .prize_info_name {
+            height: 0.65rem;
+            background: rgba(255, 127, 50, 1);
+            border-radius: 0 0 0.2rem 0.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 0.1rem 0;
+            box-sizing: border-box;
+            .prize_info_name_item {
+              font-size: 0.22rem;
+              font-weight: 800;
+              text-align: center;
+              line-height: 0.24rem;
+              &:nth-child(2) {
+                color: #fff500;
+              }
+            }
+          }
+        }
+        &.lte2 {
+          justify-content: center;
+          .prize_info_item:nth-child(1) {
+            margin-right: 0.8rem;
+          }
+        }
+        &.triple {
+          width: 4.5rem;
+          margin: auto;
+        }
+        &:after {
+          content: '+';
+          position: absolute;
+          top: 0.7rem;
+          bottom: 0;
+          margin: auto;
+          font-size: 0.36rem;
+          font-weight: bold;
+          color: #ff7f32;
         }
       }
     }

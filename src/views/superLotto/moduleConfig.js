@@ -69,7 +69,7 @@ const ModuleConfig = {
         },
         info: {
           titles: ['每日任务送号码（每日重置）', '玩游戏得号码', '超值礼包额外加赠'],
-          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，飞机大战， 生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
+          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，飞机大战，生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
         },
         percentBg: '#dc322a',
         packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`],

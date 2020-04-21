@@ -100,7 +100,7 @@ export default {
       if (value >= 10000) {
         return `${Math.floor(value / 1000) / 10}万`
       } else {
-        return value
+        return value || 0
       }
     }
   },
@@ -134,7 +134,6 @@ export default {
     async taskProgressInfo () {
       const { code, data } = await userProgress()
       if (code === 200) {
-        console.log(data)
         this.taskProgressInfoData = data
       }
     },
@@ -158,7 +157,7 @@ export default {
         task_id: index + 1,
         task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个号码` : `累计充值${item.totalNum}元给1个号码`
       })   // 每日任务奖励领取点击
-      const { code, data } = await taskReceive({ sort: index + 1 })
+      const { code, data } = await taskReceive(index + 1)
       if (code === 200) {
         this.showPop(8, data)
         this.refresh(data)

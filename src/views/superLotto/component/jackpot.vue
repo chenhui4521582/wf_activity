@@ -63,6 +63,7 @@ export default {
       position: absolute;
       left: 50%;
       transform: translateX(calc(~'-50%' - 0.4rem));
+      width: 100%;
     }
   }
 }

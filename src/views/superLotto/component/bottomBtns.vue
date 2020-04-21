@@ -35,6 +35,10 @@ export default {
   },
   methods: {
     showPop (type) {
+      if (type === 15 && this.userNumCount < 4) {
+        this.$emit('showPop', 10)
+        return
+      }
       this.$emit('showPop', type)
     },
     showDropDown () {

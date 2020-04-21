@@ -132,7 +132,6 @@ export default {
           let idArr = [...this.envelopsItem.map(c => c.sort)].indexOf(minUnfinished.sort)
           if (this.envelopsItem.length == 6) {
             if (idArr == -1) { // 在省略号里
-              console.log(parseFloat(5 * 100 / 6).toFixed(2) + '%')
               return parseFloat(5 * 100 / 6).toFixed(2) + '%'
             } else {
               if (idArr == 0) {
@@ -179,6 +178,7 @@ export default {
       gameReceive(item.sort).then((res) => {
         if (res.code == 200) {
           this.showPop(8, res.data)
+          this.$emit('refresh', res.data)
         } else {
           this.$toast.show({
             message: res.message,
@@ -300,6 +300,7 @@ export default {
       text-align: center;
       white-space: nowrap;
       margin-bottom: 0.04rem;
+      font-size: 0.24rem;
     }
     .btn {
       display: block;
