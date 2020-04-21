@@ -82,11 +82,14 @@ export default {
     }
   }
   .goods-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin-bottom: .2rem;
-    padding-left: .3rem;
+    padding: 0 .3rem;
     font-size: .28rem;
     color: #000;
     font-weight:bold;
+    white-space: nowrap;
   }
   .goods-buy {
     margin-bottom: .2rem;
