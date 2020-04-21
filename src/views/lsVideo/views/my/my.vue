@@ -25,16 +25,16 @@
           </div>
           <!-- 没有数据了 -->
           <bottom-line class="bottom-line" :color="'#ddd'" v-if="noData" />
-          <!-- 加载动画 -->
-          <loading-animation 
-            v-if="!noData && loadingAnimation" 
-            class="loading-animation" 
-            :color="'#999'" 
-            :showBar="true" 
-            :smaller="true"
-          />
         </div>
       </better-scroll>
+      <!-- 加载动画 -->
+      <loading-animation 
+        v-if="!noData && loadingAnimation" 
+        class="loading-animation" 
+        :color="'#999'" 
+        :showBar="true" 
+        :smaller="true"
+      />
       <!-- back-top -->
       <div v-if="isBackTop" class="back-top" @click="backTop"></div>
     </div>
@@ -87,7 +87,7 @@ export default {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           let list = _get(res, 'data.data', [])
-          // this.list = this.list.concat(list)
+          this.list = this.list.concat(list)
           /** 关闭加载动画 **/
           this.loadingAnimation = false
           if(list.length == 20) {
@@ -136,8 +136,9 @@ export default {
       }
     },
     backTop() {
+      this.$refs.scroll.scrollTo(0, 0)
       this.isBackTop = false
-    },
+    }
   },
   mounted() {
     this.getMyVideo()
@@ -174,11 +175,15 @@ export default {
     right: .24rem;
     bottom: 0;
     top: 1.6rem;
+    .loading-animation {
+      position: absolute;
+      left: 50%;
+      bottom: .1rem;
+      transform: translate(-50%, 0);
+    }
     .list {
+      position: relative;
       padding: .1rem .1rem .6rem .1rem ;
-      .loading-animation {
-        margin: 0 auto;
-      }
       .list-item {
         display: flex;
         justify-self: start;
@@ -229,6 +234,19 @@ export default {
           }
         }
       }
+      .bottom-line {
+        flex-wrap: nowrap;
+        margin: .2rem auto;
+      }
+    }
+    .back-top {
+      position: absolute;
+      right: .24rem;
+      bottom: 2rem;  
+      width: .7rem;
+      height: .7rem;
+      background: url(../../img/back-top.png) no-repeat center center;
+      background-size: 100% 100%;
     }
   }
 }

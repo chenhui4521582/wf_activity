@@ -23,11 +23,9 @@ export default {
 
 <style lang="less" scoped>
 .buttom-line{
-    margin-top: .2rem;
     height: .4rem;
     line-height: .4rem;
     box-sizing: border-box;
-    padding: 0 1.1rem;
     display: flex;
     p{
         width: 3rem;

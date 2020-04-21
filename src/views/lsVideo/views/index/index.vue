@@ -10,7 +10,7 @@
     <template v-if="from == 'game'">
       <div class="rule-btn" @click="openRule">规则</div>
       <div class="close-btn" @click="close"></div>
-      <div class="my" @click="goMy">我的高光</div>
+      <!-- <div class="my" @click="goMy">我的高光</div> -->
     </template>
     <!-- 导航 -->
     <div class="nav">
@@ -21,17 +21,15 @@
     <div class="listWrap" ref="box" v-if="showList">
       <better-scroll ref="scroll" :data="list" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
-          <template v-if="showList">
-            <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in list" :key="`list${index}`">
-              <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
-            </div>
-            <!-- 没有数据了 -->
-            <bottom-line class="bottom-line" v-if="noData" />
-            <!-- 加载动画 -->
-            <loading-animation class="loading-animation" v-if="!noData && loadingAnimation" :showBar="true" :smaller="true"/>
-          </template>
+          <div class="list-item item" :class="{'active': currentIndex == 1}"  v-for="(item, index) in list" :key="`list${index}`">
+            <list :item="item" :currentIndex="currentIndex" :from="from" :index="index"></list>
+          </div>
+          <!-- 没有数据了 -->
+          <bottom-line class="bottom-line" v-if="noData" />
         </div>
       </better-scroll>
+      <!-- 加载动画 -->
+      <loading-animation class="loading-animation" v-if="!noData && loadingAnimation" :showBar="true" :smaller="true"/>
       <!-- back-top -->
       <div v-if="isBackTop" class="back-top" @click="backTop"></div>
     </div>
@@ -269,7 +267,14 @@ export default {
   right: 0;
   bottom: 0;
   .loading-animation {
-    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    bottom: .1rem;
+    transform: translate(-50%, 0);
+  }
+  .bottom-line {
+    flex-wrap: nowrap;
+    margin: .2rem auto;
   }
   .back-top {
     position: absolute;
