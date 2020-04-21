@@ -118,7 +118,7 @@ export default {
     font-size: .2rem;
     font-weight: bold;
     color: #fff;
-    width: 1.4rem;
+    width: 1.2rem;
     overflow: hidden;
     text-overflow: ellipsis;
     height: .36rem;

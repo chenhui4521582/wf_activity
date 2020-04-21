@@ -48,11 +48,13 @@ import BetterScroll from '../../components/betterScroll/betterScroll'
 import BottomLine from '../../components/bottomLine'
 import LoadingAnimation from '../../components/loadingAnimation'
 import Empty from './empty'
+import utils from '../../components/utils'
 import Services from '../../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'myLsVideo',
   data: () => ({
+    from: 'platFrom',
     page: 1,
     pageSize: 20,
     list: [],
@@ -85,7 +87,7 @@ export default {
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           let list = _get(res, 'data.data', [])
-          this.list = this.list.concat(list)
+          // this.list = this.list.concat(list)
           /** 关闭加载动画 **/
           this.loadingAnimation = false
           if(list.length == 20) {
@@ -120,13 +122,17 @@ export default {
       }
     },
     handleClick(item, index) {
+      GLOBALS.marchSetsPoint('A_H5PT0232003285', {
+        from_project_id: this.from,
+        task_id: item.id,
+      })
       if(this.from == 'game' && parent.playLsVideo) {
         let id = item.id
-        parent.playLsVideo(id, this.currentIndex, index)
+        parent.playLsVideo(id, 3, index)
       }else {
         let id = item.id
         let channel = localStorage.getItem('APP_CHANNEL')
-        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${index}&type=${this.currentIndex}&time=${Date.now()}`
+        location.href = `//wap.beeplaying.com/billiards/?channel=${channel}&id=${id}&index=${index}&type=3&time=${Date.now()}`
       }
     },
     backTop() {
@@ -136,6 +142,7 @@ export default {
   mounted() {
     this.getMyVideo()
     document.title = "我的高光"
+    this.from = utils.getUrlParams('from') || 'platFrom'
   }
 }
 </script>

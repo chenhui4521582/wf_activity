@@ -99,6 +99,9 @@ export default {
       this.isBackTop = false
     },
     goMy() {
+      GLOBALS.marchSetsPoint('A_H5PT0232003284', {
+        from_project_id: this.from
+      })
       this.$router.push({
         name: 'my',
         query: {

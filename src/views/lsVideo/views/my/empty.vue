@@ -10,6 +10,9 @@ export default {
   name: 'empty',
   methods: {
     handleClick () {
+      GLOBALS.marchSetsPoint('A_H5PT0232003286', {
+        from_project_id: this.$route.query.from
+      })
       this.$router.push({
         name: 'lsVideo',
         query: {
