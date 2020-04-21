@@ -21,7 +21,6 @@
         {{redText}}
       </div>
     </section>
-
     <!-- 弹框 -->
     <modal v-model="modal.show" :type="modal.type" :title="modal.title" :saveText="modal.saveText"
       :closeText="modal.closeText" @on-save="modalCallback" @on-close="hideModal">
@@ -202,7 +201,6 @@ export default {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/customerService'
     },
     whiteClick () {
-      
       switch (this.orderInfo.status) {
         case 0:
           this.openPopup(1, this.orderInfo.id)
@@ -248,7 +246,7 @@ export default {
       let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(orderInfo))
       localStorage.setItem('originDeffer', originDeffer)
-      window.location.href = '/xmWap/#/payment/paymentlist?isBack=true'
+      window.location.replace('/xmWap/#/payment/paymentlist')
     },
     /** 再次购买 **/
     continueBuy () {

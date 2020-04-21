@@ -153,7 +153,7 @@ export default {
     },
     gotoPay (index) {
       let channel = localStorage.getItem('APP_CHANNEL')
-      let originDeffer = `//wap.beeplaying.com/activities/tree.html?channel=${channel}&blindBox=true`
+      let originDeffer = `//wap.beeplaying.com/activities/tree.html?channel=${channel}&话费券`
       localStorage.setItem('payment', JSON.stringify(this.cardList[index]))
       localStorage.setItem('originDeffer', originDeffer)
       switch (index) {
