@@ -14,11 +14,10 @@
             </ul>
           </div>
           <!-- 获取幸运币组件 -->
-          <getHammer v-if="curIndex - 1 === 0" @refresh="refresh" @showPop="showPop" />
+          <getHammer v-if="curIndex === 1" @refresh="refresh" @showPop="showPop" />
 
           <!-- 排行榜 -->
-          <profit v-if="curIndex - 1 === 1" :is-full="false" @refresh="refresh"
-            :endDate="endDate" />
+          <profit v-if="curIndex === 2" :is-full="false" :endDate="endDate" />
 
           <!-- 右下角图标 -->
           <img src="./img/hide.png" class="icon-back" @click.stop="close">
