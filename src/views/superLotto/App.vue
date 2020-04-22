@@ -85,7 +85,7 @@ export default {
       isShowMyNumBox: false,
       numberList: [],
       oldNumberList: '',
-      popType: 0,
+      popType: null,
       dropDownType: 0,
       selectedIndex: null,
       selectedLineIndex: null,
@@ -240,6 +240,7 @@ export default {
             break
         }
       }
+      this.popType = null
     },
     refresh (data) {
       if (data && data.numCount) {
