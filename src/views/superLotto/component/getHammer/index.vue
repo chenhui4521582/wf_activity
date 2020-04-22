@@ -116,12 +116,12 @@ export default {
   methods: {
     gotopay (item) {
       localStorage.setItem('originDeffer', window.location.href)
-      GLOBALS.marchSetsPoint('A_H5PT0248002914', {
+      GLOBALS.marchSetsPoint('A_H5PT0277003315', {
         recharge_rmb: item.price,
         product_id: item.bizId,
         awards_name: item.name,
         product_name: item.name
-      })   // 点击任意礼包
+      })   // H5平台-超级大赢家活动-礼包点击
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
@@ -140,10 +140,10 @@ export default {
       }
     },
     gotocomplete (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0248002910', {
+      GLOBALS.marchSetsPoint('A_H5PT0277003311', {
         task_id: index + 1,
-        task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个号码` : `累计充值${item.totalNum}元给1个号码`
-      })   // H5平台-元宵活动-获取幸运币-每日任务去完成点击
+        task_name: index === 0 ? `今日完成{{item.totalNum}}个每日任务给1个号码` : `充值任意金额，送1个号码`
+      })   // H5平台-超级大赢家活动-每日任务去完成点击
       if (index == 0) {
         if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
           location.href = 'https://wap.beeplaying.com/xmWap/#/task'
@@ -155,10 +155,10 @@ export default {
       }
     },
     async gain (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0248002911', {
+      GLOBALS.marchSetsPoint('A_H5PT0277003312', {
         task_id: index + 1,
-        task_name: index == 0 ? `每天完成${item.totalNum}个每日任务给1个号码` : `累计充值${item.totalNum}元给1个号码`
-      })   // 每日任务奖励领取点击
+        task_name: index === 0 ? `今日完成{{item.totalNum}}个每日任务给1个号码` : `充值任意金额，送1个号码`
+      })   // H5平台-超级大赢家活动-每日任务领取点击
       const { code, data } = await taskReceive(index + 1)
       if (code === 200) {
         this.showPop(8, data)

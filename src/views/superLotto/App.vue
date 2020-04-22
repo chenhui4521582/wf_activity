@@ -81,6 +81,7 @@ import BottomBtns from './component/bottomBtns.vue'
 import PopUp from './component/popUp.vue'
 import Profit from './component/profit/index.vue'
 import DropDown from './dropDown.vue'
+import utils from '@/common/js/utils'
 
 import { activityInfo, userAwardInfo, userAwardsTips, userNumGroups, userNumInfo, addNumGroup, modifyNumGroup } from './services/api'
 import _get from 'lodash.get'
@@ -122,6 +123,12 @@ export default {
     }
   },
   computed: {
+    curChannel () {
+      return localStorage.getItem('APP_CHANNEL') || utils.getUrlParam('channel')
+    },
+    sourceAddress () {
+      return utils.getUrlParam('from')
+    },
   },
   filters: {
     numberFilter (number) {
@@ -130,6 +137,8 @@ export default {
   },
   mounted () {
     this.init()
+    GLOBALS.marchSetsPoint('P_H5PT0277', { source_address: this.sourceAddress }) // H5平台-超级大赢家活动-页面加载完成
+
     this.el = this.$refs.area
     this.$nextTick(() => {
       this.el.addEventListener('touchend', this.onScroll)
@@ -240,6 +249,7 @@ export default {
           this._userNumInfo(true)
           break
         case 13:
+          GLOBALS.marchSetsPoint('A_H5PT0277003310') // H5平台-超级大赢家活动-上期开奖结果点击
           this._userAwardInfo()
           break
 
@@ -275,8 +285,9 @@ export default {
     showDropDown (type) {
       this.dropDownType = type
     },
-    addNewGroup () {
-      this._userNumInfo()
+    async addNewGroup () {
+      GLOBALS.marchSetsPoint('A_H5PT0277003306') // H5平台-超级大赢家活动-新增一组号码按钮点击
+      await this._userNumInfo()
       if (this.userNumCount < 4) {
         this.openPop(10)
         return
@@ -285,8 +296,8 @@ export default {
       this.oldNumberList = JSON.stringify(this.numberList)
       this.isShowMyNumBox = true
     },
-    editLine (items, index) {
-      this._userNumInfo()
+    async editLine (items, index) {
+      await this._userNumInfo()
       this.editLineIndex = index
       this.editNumber = { id: items.id, newNumGroup: [...items.numGroup] }
       this.oldNumberList = JSON.stringify(this.numberList)

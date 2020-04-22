@@ -35,13 +35,25 @@ export default {
   },
   methods: {
     showPop (type) {
-      if (type === 15 && this.userNumCount < 4) {
-        this.$emit('showPop', 10)
-        return
+      switch (type) {
+        case 12:
+          GLOBALS.marchSetsPoint('A_H5PT0277003309') // H5平台-超级大赢家活动-我的号码箱按钮点击
+          this.$emit('showPop', 12)
+          break
+        case 15:
+          GLOBALS.marchSetsPoint('A_H5PT0277003308') // H5平台-超级大赢家活动-一键随机所有未使用按钮点击
+          if (this.userNumCount < 4) {
+            this.$emit('showPop', 10)
+            return
+          }
+          this.$emit('showPop', 15)
+          break
+        default:
+          break
       }
-      this.$emit('showPop', type)
     },
     showDropDown () {
+      GLOBALS.marchSetsPoint('A_H5PT0277003307') // H5平台-超级大赢家活动-获取号码按钮点击
       this.$emit('showDropDown', 1)
     }
   }
