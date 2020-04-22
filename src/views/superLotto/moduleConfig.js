@@ -73,7 +73,7 @@ const ModuleConfig = {
         },
         percentBg: '#dc322a',
         packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`],
-        packageBlockBg: '#C7D4FF',
+        packageBlockBg: '#ffecca',
         packageBlockTextColor: '#9A5619',
         packageBlockBtnBg: '#E74615',
         rank: {
@@ -89,5 +89,4 @@ const ModuleConfig = {
     }
   }
 }
-
 export default ModuleConfig
