@@ -9,7 +9,7 @@ const SHOP_API_BASE_URL = '//shop-api.beeplaying.com'
  */
 export const activityInfo = async () => {
   const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/lotto/activity-info`)
-  /* const data = {"code":200,"data":{"state":2,"beginDate":"2020-04-17 00:00:00","endDate":"2020-04-21 23:59:59","timeline":"2020年4月17日-2020年4月21日","countdown":40880005,"whatDay":6,"userNumCount":0,"numGroup":[],"awardPool":200000,"userNumGroupCount":0,"tipFlog":1},"message":null} */
+  /*  const data = { 'code': 200, 'data': { 'state': 1, 'beginDate': '2020-04-17 00:00:00', 'endDate': '2020-04-21 23:59:59', 'timeline': '2020年4月17日-2020年4月21日', 'countdown': 40880005, 'whatDay': 6, 'userNumCount': 0, 'numGroup': [], 'awardPool': 200000, 'userNumGroupCount': 0, 'tipFlog': 1 }, 'message': null } */
 
   return data
 }
