@@ -16,12 +16,25 @@ export default {
   name: '',
   methods: {
     back () {
+      GLOBALS.marchSetsPoint('A_H5PT0277003302') // H5平台-超级大赢家活动-返回按钮点击
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
     },
     showPop (type) {
+      switch (type) {
+        case 0:
+          GLOBALS.marchSetsPoint('A_H5PT0277003305') // H5平台-超级大赢家活动-规则按钮点击
+          break
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0277003303') // H5平台-超级大赢家活动-攻略奖励按钮点击
+          break
+
+        default:
+          break
+      }
       this.$emit('showPop', type)
     },
     showDropDown () {
+      GLOBALS.marchSetsPoint('A_H5PT0277003304') // H5平台-超级大赢家活动-排行榜按钮点击
       this.$emit('showDropDown', 2)
     }
   }

@@ -168,7 +168,6 @@ export default {
   methods: {
     closeOpenProfit () {
       this.isOpen = true
-      GLOBALS.marchSetsPoint('A_H5PT0248002915')   // 点击展开完整榜单
     },
     async getRankList () {
       this.isLoading = true

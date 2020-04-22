@@ -163,17 +163,17 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0248002912', {
+      GLOBALS.marchSetsPoint('A_H5PT0277003313', {
         task_id: item.sort,
         task_name: '消耗金叶' + item.amount
-      })   // 玩游戏去完成点击
+      })   // H5平台-超级大赢家活动-玩游戏任务去完成点击
       this.showPop(7)
     },
     async gotoact (item) { // 领取
-      // GLOBALS.marchSetsPoint('A_H5PT0248002913', {
-      //   task_id: item.sort,
-      //   task_name: '消耗金叶' + item.amount
-      // })// 玩游戏奖励领取点击
+      GLOBALS.marchSetsPoint('A_H5PT0277003314', {
+        task_id: item.sort,
+        task_name: '消耗金叶' + item.amount
+      })// H5平台-超级大赢家活动-玩游戏任务领取点击
       this.showLoading = true
       gameReceive(item.sort).then((res) => {
         if (res.code == 200) {

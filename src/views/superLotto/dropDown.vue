@@ -58,11 +58,6 @@ export default {
       this.handleTab(idx + 1)
     },
     outHandleTab (idx) {
-      if (idx) {
-        GLOBALS.marchSetsPoint('A_H5PT0248002909')   // H5平台-元宵活动-底部有奖排行点击
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0248002908')   // H5平台-元宵活动-底部获取幸运币点击
-      }
       this.handleTab(idx)
     },
     handleTab (idx) {
