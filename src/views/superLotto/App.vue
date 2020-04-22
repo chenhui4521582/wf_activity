@@ -276,6 +276,7 @@ export default {
       this.dropDownType = type
     },
     addNewGroup () {
+      this._userNumInfo()
       if (this.userNumCount < 4) {
         this.openPop(10)
         return
@@ -285,6 +286,7 @@ export default {
       this.isShowMyNumBox = true
     },
     editLine (items, index) {
+      this._userNumInfo()
       this.editLineIndex = index
       this.editNumber = { id: items.id, newNumGroup: [...items.numGroup] }
       this.oldNumberList = JSON.stringify(this.numberList)
