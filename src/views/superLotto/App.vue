@@ -482,7 +482,7 @@ export default {
     .my-number-list {
       background: #ffa200;
       border-radius: 0.2rem 0.2rem 0 0;
-      height: 5.86rem;
+      height: 6rem;
       box-sizing: border-box;
       position: fixed;
       bottom: 0;
@@ -497,7 +497,6 @@ export default {
         align-items: center;
         justify-content: center;
         li {
-          position: relative;
           width: 0.86rem;
           height: 0.86rem;
           border-radius: 50%;
@@ -507,7 +506,7 @@ export default {
           font-weight: bold;
           line-height: 0.86rem;
           text-align: center;
-          margin: 0.24rem 0.2rem 0;
+          margin: 0.12rem 0.2rem 0.24rem;
           &.selected {
             background: #fff;
           }
@@ -516,18 +515,11 @@ export default {
             color: #fff;
           }
           .num {
-            position: absolute;
             display: block;
-            font-size: 0.18rem;
-            color: #ff7101;
-            background: #fce6bf;
-            width: 0.36rem;
-            height: 0.36rem;
+            font-size: 0.2rem;
+            color: #fff;
             line-height: 0.36rem;
             text-align: center;
-            border-radius: 50%;
-            right: -0.1rem;
-            bottom: -0.1rem;
           }
         }
       }
