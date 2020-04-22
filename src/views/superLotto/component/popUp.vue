@@ -464,10 +464,11 @@ export default {
       }
     },
     _createMoreNum () {
-      let arr = this.numberList.map(items => {
+      let arr = []
+      this.numberList.forEach(items => {
         let item = new Array(items.num).fill(items.value)
-        return item
-      }).flat(Infinity)
+        arr = [...arr, ...item]
+      })
       arr.sort(function () {
         return Math.random() - 0.5
       })
@@ -933,6 +934,7 @@ export default {
               font-size: 0.2rem;
               color: #ffa200;
               text-align: center;
+              margin-top: 0.04rem;
             }
           }
         }

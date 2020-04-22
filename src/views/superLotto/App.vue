@@ -438,6 +438,8 @@ export default {
         .edit-btn {
           position: absolute;
           right: 0.2rem;
+          top: 50%;
+          margin-top: -0.16rem;
           color: #fdd130;
           font-size: 0.24rem;
           font-weight: 400;
