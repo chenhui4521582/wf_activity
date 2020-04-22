@@ -199,7 +199,7 @@ export default {
 .ls-video {
   overflow: hidden;
   min-height: 100vh;  
-  background: url(../../img/bg.jpg) no-repeat center top #a55fdb;
+  background: url(../../img/bg.jpg) no-repeat center top #bc79ec;
   background-size: 100% auto;
   .nav {
     margin: 2.73rem auto 0;

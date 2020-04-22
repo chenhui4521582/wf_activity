@@ -12,7 +12,9 @@
             @click="handleClick(item, index)"
           >
             <div class="video-img">
-              <div class="amount">{{item.amount}}出杆</div>
+              <div class="amount">
+                <span>{{item.amount}}出杆</span>
+              </div>
               <div class="oddsResult">{{item.odds}}倍奖励</div>
             </div>
             <div class="video-text">
@@ -201,14 +203,13 @@ export default {
           background-size: 100% 100%;
           text-align: center;
           .amount {
-            display: inline-block;
             margin: .77rem auto .23rem;
             padding: 0 .1rem;
+            width: 1.3rem;
             height: .27rem;
             line-height: .27rem;
             background: #DD3DF0;
             font-size: .18rem;
-            font-weight: bold;
             color: #fff;
             border-radius: .24rem;
           }

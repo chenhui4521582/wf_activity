@@ -6,8 +6,8 @@ const services = {
     return axios.post(url, params)
   },
   getMyVideo: function(params) {
-    let url = 'http://rap2.taobao.org:38080/app/mock/250821/billiards/api/get/meHighlightTimeList'
-    // let url = '//game-api.beeplaying.com/billiards/api/get/meHighlightTimeList'
+    // let url = 'http://rap2.taobao.org:38080/app/mock/250821/billiards/api/get/meHighlightTimeList'
+    let url = '//game-api.beeplaying.com/billiards/api/get/meHighlightTimeList'
     return axios.post(url, params)
   }
 }
