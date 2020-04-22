@@ -7,8 +7,8 @@
         <template v-if="indextitle==0">
           <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
             <div class="item">
-              <p v-if="index==0">每天完成{{item.totalNum}}个每日任务给1个号码</p>
-              <p v-else-if="index==1">累计充值{{item.totalNum}}元给1个号码</p>
+              <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个号码</p>
+              <p v-else-if="index==1">充值任意金额，送1个号码</p>
             </div>
             <div class="item">
               <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
@@ -368,7 +368,7 @@ export default {
       }
     }
     .btn_progress {
-      // margin-top: 0.1rem;
+      line-height: 0.3rem;
       font-size: 0.2rem;
       font-weight: 400;
       color: rgba(102, 102, 102, 1);

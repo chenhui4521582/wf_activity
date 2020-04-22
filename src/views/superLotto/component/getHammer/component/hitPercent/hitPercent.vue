@@ -213,7 +213,7 @@ export default {
     border-radius: 0.08rem;
     position: absolute;
     left: 0.3rem;
-    top: 1.04rem;
+    top: 1rem;
     border-radius: 0.08rem;
     .percent-number {
       height: 0.15rem;
@@ -245,6 +245,7 @@ export default {
       font-weight: 500;
       padding-top: 0.28rem;
       color: #ff4330;
+      height: 0.3rem;
     }
     h4 {
       font-size: 0.22rem;
@@ -254,6 +255,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      height: 0.3rem;
     }
     &:last-child h4 {
       max-width: 1.2rem;
