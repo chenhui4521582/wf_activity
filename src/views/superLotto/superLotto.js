@@ -15,7 +15,6 @@ Vue.use(Toast)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 fastclick.attach(document.body)
-
 Vue.filter('filter', function (url) {
   if (url && !url.includes('http')) {
     return '//file.beeplaying.com' + url

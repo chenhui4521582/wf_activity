@@ -299,7 +299,7 @@ export default {
       color: #e74615;
       text-align: center;
       white-space: nowrap;
-      margin-bottom: 0.04rem;
+      margin-bottom: 0.08rem;
       font-size: 0.24rem;
     }
     .btn {
