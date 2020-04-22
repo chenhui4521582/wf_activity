@@ -15,10 +15,10 @@
         <div class="user-info">
           <div class="avatar">
             <img v-if="item.headPortrait" :src="item.headPortrait | filter" alt="">
-            <img v-else src="./img/img_photo.png" alt="">
+            <img v-else src="../../img/img_photo.png" alt="">
           </div>
           <div class="name">{{item.userName}}</div>
-          <div class="time">{{item.createTime | formatTime('y-m-d')}}</div>
+          <div class="time">{{item.totalHeat}}</div>
         </div>
     </div>
 </template>
@@ -57,17 +57,6 @@ export default {
 </script>
 <style scoped lang="less">
 .in-game {
-  .recommend-item {
-    .title {
-      margin: .22rem auto 0;
-      width: 1.8rem;
-      height: .34rem;
-      line-height: .36rem;
-      text-align: center;
-      color: #fff;
-      font-size: .22rem;
-    }
-  }
   .title {
     margin: .24rem auto 0;
     width: 1.8rem;
@@ -77,19 +66,8 @@ export default {
     color: #fff;
     font-size: .22rem;
   }
-}
-.recommend-item {
-  .title {
-    margin: .22rem auto 0;
-    width: 1.8rem;
-    height: .34rem;
-    line-height: .39rem;
-    text-align: center;
-    color: #fff;
-    font-size: .22rem;
-  }
-  .award {
-     line-height: .4rem;
+  .user-info {
+    margin-top: .27rem;
   }
 }
 .title {
@@ -101,7 +79,6 @@ export default {
   color: #fff;
   font-size: .22rem;
 }
-
 .award {
   margin: .56rem auto 0;
   width: 1.9rem;
@@ -124,7 +101,7 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   .avatar{
-    margin: .06rem .1rem 0 0;
+    margin: 0 .1rem 0 0;
     float: left;
     width: .36rem;
     height: .36rem;
@@ -141,19 +118,19 @@ export default {
     font-size: .2rem;
     font-weight: bold;
     color: #fff;
-    width: 1rem;
+    width: 1.2rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: .36rem;
   }
   .time {
+    height: .36rem;
     float: right;
     font-size: .18rem;
     color: #fff;
-  }
-}
-.in-game {
-  .user-info {
-    margin-top: .27rem;
+    padding-left: .36rem;
+    background: url('../../img/hot.png') no-repeat left center;
+    background-size: .27rem .33rem;
   }
 }
 </style>
