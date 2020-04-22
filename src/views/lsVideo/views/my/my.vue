@@ -3,7 +3,7 @@
     <Header class="header" title="我的高光"/>
     <!-- 列表 -->
     <div class="listWrap" ref="box" v-if="showList">
-      <div class="title">共{{showList}}个记录</div>
+      <div class="title">共{{logNum}}条记录</div>
       <better-scroll ref="scroll" :data="list" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
           <div class="list-item item" 
@@ -81,6 +81,13 @@ export default {
   computed: {
     showList() {
       return this.list.length
+    },
+    logNum () {
+      if(this.showList <= 20) {
+        return this.showList
+      }else {
+        return '20+'
+      }
     }
   },
   methods: {
