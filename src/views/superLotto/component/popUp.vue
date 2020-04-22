@@ -123,31 +123,31 @@
               <template v-else>
                 <ul>
                   <li>
-                    <div class="step">特等奖</div>
+                    <div class="step">特等奖单注奖励</div>
                     <div>
                       <p class="sub-title">奖池总金额的10%除以中奖号码注数</p>
                     </div>
                   </li>
                   <li>
-                    <div class="step">一等奖</div>
+                    <div class="step">一等奖单注奖励</div>
                     <div>
                       <p class="sub-title">奖池总金额的10%除以中奖号码注数</p>
                     </div>
                   </li>
                   <li>
-                    <div class="step">二等奖</div>
+                    <div class="step">二等奖单注奖励</div>
                     <div>
                       <p class="sub-title">奖池总金额的10%除以中奖号码注数</p>
                     </div>
                   </li>
                   <li>
-                    <div class="step">三等奖</div>
+                    <div class="step">三等奖单注奖励</div>
                     <div>
                       <p class="sub-title">奖池总金额的30%除以中奖号码注数</p>
                     </div>
                   </li>
                   <li>
-                    <div class="step">幸运奖</div>
+                    <div class="step">幸运奖单注奖励</div>
                     <div>
                       <p class="sub-title">奖池总金额的40%除以中奖号码注数</p>
                     </div>
@@ -234,13 +234,12 @@
               </ul>
             </template>
             <template v-else-if="type===15">
+              <div class="btn" @click="_addNumGroup()">保 存</div>
               <ul class="last-award-list">
                 <li v-for="(items,index) in newNumGroup" :key="`line-${index}`">
-                  <p v-for="(item,key) in items" :key="`item-${index}-${key}`"
-                    :class="{activitied:item===lastNumber[key]}">{{item}}</p>
+                  <p v-for="(item,key) in items" :key="`item-${index}-${key}`">{{item}}</p>
                 </li>
               </ul>
-              <div class="btn" @click="_addNumGroup()">保 存</div>
             </template>
             <template v-else-if="type===16">
               <template v-if="awardInfo.rankAward&&awardInfo.rankAward.length">
@@ -358,7 +357,7 @@ export default {
         case 14:
           return this.selectedTitle
         case 15:
-          return '随机号码结果如下'
+          return '随机号码结果'
         case 16:
           return '排行榜已发榜'
         default:
@@ -433,6 +432,8 @@ export default {
       this.type = 14
       this.awardGrade = item.id
       this.page = 1
+      this.finished = false
+      this.awardNumsArr = []
       this._userAwardNums()
     },
     onScroll () {
