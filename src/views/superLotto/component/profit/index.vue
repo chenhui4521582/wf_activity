@@ -198,15 +198,9 @@ export default {
     },
     showPop (type) {
       this.$emit('showPop', type)
-    },
-  },
-  watch: {
-    countTime (val) {
-      if (val === '') {
-        this.$emit('refresh', false)
-      }
     }
-  }
+  },
+  watch: {}
 }
 </script>
 <style lang="less" scoped>
