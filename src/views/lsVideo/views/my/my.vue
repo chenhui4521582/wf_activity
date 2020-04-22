@@ -6,19 +6,26 @@
       <div class="title">共{{showList}}个记录</div>
       <better-scroll ref="scroll" :data="list" :probeType="3" :listenScroll="true" @scroll="onScroll">
         <div class="list" ref="wrap" >
-          <div class="list-item item"  
+          <div class="list-item item" 
             v-for="(item, index) in list" 
             :key="`list${index}`" 
             @click="handleClick(item, index)"
           >
-            <div class="video-img">
+            <div class="video-img" :class="{'ratepool': item.type == 2}">
               <div class="amount">
                 <span>{{item.amount}}出杆</span>
               </div>
-              <div class="oddsResult">{{item.odds}}倍奖励</div>
+              <!-- 一杆几球 -->
+              <div class="oddsResult" v-if="item.type == 1">{{item.odds}}倍奖励</div>
+              <!-- 击中奖池 -->
+              <div class="oddsResult" v-if="item.type == 2" >{{item.ratePoolAwards}}奖励</div>
             </div>
+
             <div class="video-text">
-              <p class="name">一杆{{item.ballNum}}球</p>
+              <!-- 一杆几球 -->
+              <p class="name" v-if="item.type == 1">一杆{{item.ballNum}}球</p>
+              <!-- 击中奖池 -->
+              <p class="name" v-if="item.type == 2">击中奖池</p>
               <p class="desc">
                 <span class="play-num">播放量：{{item.playbackVolume}}</span>
               </p>
@@ -218,6 +225,10 @@ export default {
             line-height: .28rem;
             font-size: .18rem;
             color: #fff;
+          }
+          &.ratepool {
+            background: url(../../img/my-list1.png) no-repeat center top;
+            background-size: 100% 100%;
           }
         }
         .video-text {
