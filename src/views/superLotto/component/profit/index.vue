@@ -2,21 +2,16 @@
   <div class="profit-container" :class="{full:isFull}">
     <div v-if="!isLoading" class="profit-inner-container">
       <div class="ranktitle" :class="{full:isFull}">
-        <img src="../../imgs/rankbank.png" class="back" @click="rankback" v-if="isFull">
-        <img :src="$moduleConfig.viruskill.dropDown.inner.rank.title.url"
-          :style="$moduleConfig.viruskill.dropDown.inner.rank.title.style" class="title">
+        <img src="../../img/rankbank.png" class="back" @click="rankback" v-if="isFull">
+        <img :src="$moduleConfig.superLotto.dropDown.inner.rank.title.url"
+          :style="$moduleConfig.superLotto.dropDown.inner.rank.title.style" class="title">
       </div>
       <h4 class="p-time" :class="{nodata:profitData.length==0}">
         <template v-if="isFull">
           活动结束，已发榜
         </template>
         <template v-else>
-          <template v-if="countTime">
-            发榜倒计时：{{countTime}}
-          </template>
-          <template v-else-if="countTime===0">
-            发榜时间 ：{{endDate}}
-          </template>
+          发榜时间 ：{{endDate}}
         </template>
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
@@ -40,41 +35,41 @@
       </div>
       <div class="profit-items" :class="{nodata:profitData.length==0}">
         <div class="p-header"
-          :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}">
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
           <ul>
             <li>
               <h4
-                :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color}">
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
                 我的排名</h4>
               <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
             </li>
-            <li :style="{borderColor:$moduleConfig.viruskill.dropDown.inner.bg.background}">
+            <li :style="{borderColor:$moduleConfig.superLotto.dropDown.inner.bg.background}">
               <h4
-                :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color}">
-                累计消灭病毒</h4>
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
+                累计获得号码</h4>
               <span>{{myInfo.totalNum}}个</span>
             </li>
             <li>
               <h4
-                :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color}">
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
                 当前奖励</h4>
               <span>{{myInfo.currentAwards}}</span>
             </li>
           </ul>
         </div>
         <div class="p-items p-items-header"
-          :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}">
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
           <ul class="p-item-title">
             <li style="border:none">
               <span>排名</span>
               <span><em class="i-ellipsis">昵称</em></span>
-              <span><em class="i-ellipsis">累计消灭病毒+时间</em></span>
+              <span><em class="i-ellipsis">获得号码+时间</em></span>
               <span><em class="i-ellipsis">奖励</em></span>
             </li>
           </ul>
         </div>
         <div class="p-items p-items-content"
-          :style="{background:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.viruskill.dropDown.inner.bg.background}">
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.superLotto.dropDown.inner.bg.background}">
           <ul class="p-item-title">
             <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
@@ -108,8 +103,9 @@
         </div>
       </div>
       <div class="profit-footer"
-        :style="{color:$moduleConfig.viruskill.dropDown.inner.tabs.btnDefaultStyle.background}">
-        活动期间累计消灭的病毒数量前30名有奖励<br>如最终累计的数量一样，则先达成的排名靠前
+        :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+        活动期间累计获得号码数量计入排行榜前30名上榜有奖<br>
+        如最终累计的数量一样，则先达成排名靠前
       </div>
     </div>
     <div class="loading-wrap" v-if="isLoading">
@@ -133,7 +129,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import { rankList } from '../../utils/api'
+import { rankList } from '../../services/api'
 
 export default {
   data () {
@@ -145,7 +141,6 @@ export default {
       otherData: [],
       lastThreeData: [],
       isOpen: true,
-      countTime: '',
       myInfo: {},
       isLoading: false,
       defaultImg: '/cdn/common/images/common/img_photo.png',
@@ -165,10 +160,6 @@ export default {
     endDate: {
       type: String,
       default: ''
-    },
-    time: {
-      type: Number,
-      default: 0
     }
   },
   mounted () {
@@ -183,8 +174,6 @@ export default {
       this.isLoading = true
       const { code, data } = await rankList()
       if (code === 200) {
-        console.log(this.time)
-        this.countDown(this.time)
         this.myInfo = {
           myRank: data.myRank,
           totalNum: data.totalNum,
@@ -204,69 +193,14 @@ export default {
       }
       this.isLoading = false
     },
-    countDown (item) {
-      if (!item) return false
-      let date = item / 1000
-      let { day, countHour, countMinute, countSecond } = this.getCountInfo(date)
-      if (day >= 2) {
-        this.countTime = 0
-      } else if (day > 0) {
-        this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
-      } else {
-        this.countTime = `${countHour}:${countMinute}:${countSecond}`
-      }
-      this.timer = setInterval(() => {
-        date = date - 1
-        if (date <= 0) {
-          date = 0
-          clearInterval(this.timer)
-          this.countTime = ''
-          return
-        }
-        let day = Math.floor(date / 86400)
-        let hour = Math.floor(parseInt(date / 60 / 60) % 24)
-        let minute = Math.floor(parseInt(date / 60) % 60)
-        let second = Math.floor(date % 60)
-        // let countDay = day >= 10 ? day : '0' + day
-        let countHour = hour >= 10 ? hour : '0' + hour
-        let countMinute = minute >= 10 ? minute : '0' + minute
-        let countSecond = second >= 10 ? second : '0' + second
-        if (day >= 2) {
-          this.countTime = 0
-        } else if (day > 0) {
-          this.countTime = `${day}天${countHour}:${countMinute}:${countSecond}`
-        } else {
-          this.countTime = `${countHour}:${countMinute}:${countSecond}`
-        }
-      }, 1000)
-    },
     rankback () {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     showPop (type) {
       this.$emit('showPop', type)
-    },
-    getCountInfo (dateinfo) {
-      let day = Math.floor(dateinfo / 86400)
-      let hour = Math.floor(parseInt(dateinfo / 60 / 60) % 24)
-      let minute = Math.floor(parseInt(dateinfo / 60) % 60)
-      let second = Math.floor(dateinfo % 60)
-      // let countDay = day >= 10 ? day : '0' + day
-      let countHour = hour >= 10 ? hour : '0' + hour
-      let countMinute = minute >= 10 ? minute : '0' + minute
-      let countSecond = second >= 10 ? second : '0' + second
-      return {
-        day, countHour, countMinute, countSecond
-      }
     }
   },
-  watch: {
-    countTime (val) {
-      if (val === '') {
-        this.$emit('refresh', false)
-      }
-    }
-  }
+  watch: {}
 }
 </script>
 <style lang="less" scoped>
