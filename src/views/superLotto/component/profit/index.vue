@@ -16,8 +16,8 @@
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
         <!--查看我的奖励-->
-        <div class="myprize" @click="showPop(1)" v-if="isFull">
-          我的奖励
+        <div class="myprize" @click="showPop(13)" v-if="isFull">
+          上期开奖结果
         </div>
         <ul class="profit-icon">
           <li v-for="(item,index) in topthreeData">

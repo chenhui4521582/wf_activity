@@ -1,7 +1,7 @@
 <template>
   <header>
     <section class="top">
-      <div class="left">返回</div>
+      <div class="left" @click="back()">返回</div>
       <div class="right" @click="showPop(0)">规则</div>
     </section>
     <section class="bottom">
@@ -15,6 +15,9 @@
 export default {
   name: '',
   methods: {
+    back () {
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
+    },
     showPop (type) {
       this.$emit('showPop', type)
     },
