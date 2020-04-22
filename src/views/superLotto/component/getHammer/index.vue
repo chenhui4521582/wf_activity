@@ -366,7 +366,7 @@ export default {
       }
     }
     .btn_progress {
-      margin-top: 0.1rem;
+      // margin-top: 0.1rem;
       font-size: 0.2rem;
       font-weight: 400;
       color: rgba(102, 102, 102, 1);

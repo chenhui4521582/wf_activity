@@ -1,56 +1,72 @@
 <template>
-  <main class="super-lotto-wrapper" ref="area">
-    <Header :info="actInfoData" @showPop="openPop" @showDropDown="showDropDown" />
-    <Jackpot :info="actInfoData" @showPop="openPop" />
-    <activity-info :info="actInfoData" />
-    <article class="number-area-wrapper">
-      <section class="title">
-        <h4>已合成{{actInfoData.userNumGroupCount}}注号码</h4>
-        <span v-if="actInfoData.whatDay!==1" @click="openPop(13)">上期开奖结果></span>
-      </section>
-      <ul class="number-area">
-        <li v-for="(items,index) in numGroup" :key="`line-${index}`">
-          <span class="line-number">{{index+1}}</span>
-          <span class="number">{{items.numGroup[0]|numberFilter}}</span>
-          <span class="number">{{items.numGroup[1]|numberFilter}}</span>
-          <span class="number">{{items.numGroup[2]|numberFilter}}</span>
-          <span class="number">{{items.numGroup[3]|numberFilter}}</span>
-          <span class="edit-btn" v-if="showEdit(items)" @click="editLine(items,index)">编辑</span>
-        </li>
-      </ul>
-      <div class="add-btn" @click="addNewGroup">
-        <span>新增一组号码</span>
-        <img src="./img/plus-icon.png" alt="">
-      </div>
-    </article>
-    <article class="my-number-box" v-show="isShowMyNumBox" @click="">
-      <div class="pop-mask" @click="closeMyNumBox(true)"></div>
-      <transition name="fade">
-        <div class="my-number-list" v-show="isShowMyNumBox">
-          <p>获得的号码会在次日零点清零并重新累计，请尽快使用</p>
-          <ul class="edit-number-area">
-            <li v-for="(item,index) in editNumber.newNumGroup" :class="{selected:item===0||item>0}"
-              @click="delNum(item,index)">
-              {{item|numberFilter}}</li>
-          </ul>
-          <ul>
-            <li v-for="(item,index) in numberList"
-              :class="{selected:editNumber.newNumGroup.includes(item.value),empty:item.num===0}"
-              @click="selectNumber(item)">
-              <span>{{item.value}}</span>
-              <span class="num">{{item.num}}</span>
+  <main class="super-lotto-wrapper" :class="{end:isEnd}" ref="area" v-if="actInfoData">
+    <template v-if="!isEnd">
+      <Header :info="actInfoData" @showPop="openPop" @showDropDown="showDropDown" />
+      <Jackpot :info="actInfoData" @showPop="openPop" />
+      <activity-info :info="actInfoData" />
+      <article class="number-area-wrapper">
+        <section class="title">
+          <h4>已合成{{actInfoData.userNumGroupCount}}注号码</h4>
+          <span v-if="actInfoData.whatDay!==1" @click="openPop(13)">上期开奖结果></span>
+        </section>
+        <ul class="number-area">
+          <template v-if="numGroup&&numGroup.length">
+            <li v-for="(items,index) in numGroup" :key="`line-${index}`">
+              <span class="line-number">{{index+1}}</span>
+              <span class="number">{{items.numGroup[0]|numberFilter}}</span>
+              <span class="number">{{items.numGroup[1]|numberFilter}}</span>
+              <span class="number">{{items.numGroup[2]|numberFilter}}</span>
+              <span class="number">{{items.numGroup[3]|numberFilter}}</span>
+              <span class="edit-btn" v-if="showEdit(items)" @click="editLine(items,index)">编辑</span>
             </li>
-          </ul>
-          <div class="btn" @click="saveNum">
-            确 定
-          </div>
+          </template>
+          <template v-else>
+            <li>
+              <span class="line-number">0</span>
+              <span class="number">?</span>
+              <span class="number">?</span>
+              <span class="number">?</span>
+              <span class="number">?</span>
+            </li>
+          </template>
+        </ul>
+        <div class="add-btn" @click="addNewGroup">
+          <span>新增一组号码</span>
+          <img src="./img/plus-icon.png" alt="">
         </div>
-      </transition>
-    </article>
-    <bottom-btns :user-num-count="userNumCount" @showPop="openPop" @showDropDown="showDropDown" />
-    <drop-down ref="dropDown" v-model="dropDownType" :toDayUserCouponNum="actInfoData.totalNum"
-      @refresh="refresh" :endDate="actInfoData.endDate" @showPop="openPop">
-    </drop-down>
+      </article>
+      <article class="my-number-box" v-show="isShowMyNumBox" @click="">
+        <div class="pop-mask" @click="closeMyNumBox(true)"></div>
+        <transition name="fade">
+          <div class="my-number-list" v-show="isShowMyNumBox">
+            <p>获得的号码会在次日零点清零并重新累计，请尽快使用</p>
+            <ul class="edit-number-area">
+              <li v-for="(item,index) in editNumber.newNumGroup"
+                :class="{selected:item===0||item>0}" @click="delNum(item,index)">
+                {{item|numberFilter}}</li>
+            </ul>
+            <ul>
+              <li v-for="(item,index) in numberList"
+                :class="{selected:editNumber.newNumGroup.includes(item.value),empty:item.num===0}"
+                @click="selectNumber(item)">
+                <span>{{item.value}}</span>
+                <span class="num">{{item.num}}</span>
+              </li>
+            </ul>
+            <div class="btn" @click="saveNum">
+              确 定
+            </div>
+          </div>
+        </transition>
+      </article>
+      <bottom-btns :user-num-count="userNumCount" @showPop="openPop" @showDropDown="showDropDown" />
+      <drop-down ref="dropDown" v-model="dropDownType" :toDayUserCouponNum="actInfoData.totalNum"
+        @refresh="refresh" :endDate="actInfoData.endDate" @showPop="openPop">
+      </drop-down>
+    </template>
+    <template v-else>
+      <profit :is-full="true" @showPop="openPop" />
+    </template>
     <pop-up :info="actInfoData" :last-award-info="lastAwardInfo" :number-list="numberList"
       :award-info="awardTipsInfo" :my-rank-info="myRankInfo" v-model="popType" v-show="isShowPop"
       @closePop="closePop" />
@@ -63,7 +79,9 @@ import Jackpot from './component/jackpot.vue'
 import ActivityInfo from './component/activityInfo.vue'
 import BottomBtns from './component/bottomBtns.vue'
 import PopUp from './component/popUp.vue'
+import Profit from './component/profit/index.vue'
 import DropDown from './dropDown.vue'
+
 import { activityInfo, userAwardInfo, userAwardsTips, userNumGroups, userNumInfo, addNumGroup, modifyNumGroup } from './services/api'
 import _get from 'lodash.get'
 export default {
@@ -74,7 +92,8 @@ export default {
     ActivityInfo,
     BottomBtns,
     PopUp,
-    DropDown
+    DropDown,
+    Profit
   },
   data () {
     return {
@@ -98,7 +117,8 @@ export default {
       el: {},
       editNumber: { newNumGroup: [null, null, null, null] },
       finished: false,
-      loading: false
+      loading: false,
+      isEnd: true
     }
   },
   computed: {
@@ -133,6 +153,11 @@ export default {
       this.actInfoData = _get(res, 'data', {})
       this.numGroup = _get(res, 'data.numGroup', [])
       this.userNumCount = this.actInfoData.userNumCount
+      if (this.actInfoData.state === 2) {
+        this.isEnd = true
+      } else {
+        this.isEnd = false
+      }
       if (this.actInfoData.state === 3 && !this.isHasPopTip) {
         this.isHasPopTip = true
         this.openPop(6)
@@ -253,6 +278,7 @@ export default {
     addNewGroup () {
       if (this.userNumCount < 4) {
         this.openPop(10)
+        return
       }
       this.editNumber = { newNumGroup: [null, null, null, null] }
       this.oldNumberList = JSON.stringify(this.numberList)
@@ -347,6 +373,9 @@ export default {
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  &.end {
+    background: #ffa200;
+  }
   .number-area-wrapper {
     width: 6.7rem;
     margin: 0.14rem auto 0;
@@ -453,7 +482,7 @@ export default {
     .my-number-list {
       background: #ffa200;
       border-radius: 0.2rem 0.2rem 0 0;
-      height: 5.86rem;
+      height: 6rem;
       box-sizing: border-box;
       position: fixed;
       bottom: 0;
@@ -468,7 +497,6 @@ export default {
         align-items: center;
         justify-content: center;
         li {
-          position: relative;
           width: 0.86rem;
           height: 0.86rem;
           border-radius: 50%;
@@ -478,7 +506,7 @@ export default {
           font-weight: bold;
           line-height: 0.86rem;
           text-align: center;
-          margin: 0.24rem 0.2rem 0;
+          margin: 0.12rem 0.2rem 0.24rem;
           &.selected {
             background: #fff;
           }
@@ -487,18 +515,11 @@ export default {
             color: #fff;
           }
           .num {
-            position: absolute;
             display: block;
-            font-size: 0.18rem;
-            color: #ff7101;
-            background: #fce6bf;
-            width: 0.36rem;
-            height: 0.36rem;
+            font-size: 0.2rem;
+            color: #fff;
             line-height: 0.36rem;
             text-align: center;
-            border-radius: 50%;
-            right: -0.1rem;
-            bottom: -0.1rem;
           }
         }
       }
