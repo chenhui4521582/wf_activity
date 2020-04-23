@@ -63,7 +63,7 @@ export default {
 }
 </script>
 <style scoped lang="less">
-@import '../../common/css/base.css';
+@import '../../common/css/base.less';
 @import url('../../../static/iconfont/iconfont.css');
 * {
   box-sizing: border-box;
