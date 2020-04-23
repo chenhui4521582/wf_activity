@@ -123,7 +123,7 @@ export default {
       localStorage.setItem('payment', JSON.stringify(orderInfo))
       let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
       localStorage.setItem('originDeffer', originDeffer)
-      window.location.href = '/xmWap/#/payment/paymentlist'
+      window.location.replace('/xmWap/#/payment/paymentlist')
     },
     /** 打开取消订单弹框 **/
     openOrderCancal () {
