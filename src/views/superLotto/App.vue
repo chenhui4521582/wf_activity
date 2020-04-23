@@ -160,6 +160,7 @@ export default {
       this.actInfoData = _get(res, 'data', {})
       this.numGroup = _get(res, 'data.numGroup', [])
       this.userNumCount = this.actInfoData.userNumCount
+      this.finished = false
       this.selectedIndex = null
       this.selectedLineIndex = null
       await this._userNumInfo()
