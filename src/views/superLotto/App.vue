@@ -68,8 +68,7 @@
       <profit :is-full="true" @showPop="openPop" />
     </template>
     <pop-up :info="actInfoData" :last-award-info="lastAwardInfo" :number-list="numberList"
-      :award-info="awardTipsInfo" :my-rank-info="myRankInfo" v-model="popType" v-show="isShowPop"
-      @closePop="closePop" />
+      :award-info="awardTipsInfo" v-model="popType" v-show="isShowPop" @closePop="closePop" />
   </main>
 </template>
 
@@ -114,7 +113,6 @@ export default {
       userNumCount: 0,
       editLineIndex: null,
       lastAwardInfo: {},
-      myRankInfo: {},
       el: {},
       editNumber: { newNumGroup: [null, null, null, null] },
       finished: false,
@@ -128,7 +126,7 @@ export default {
     },
     sourceAddress () {
       return utils.getUrlParam('from')
-    },
+    }
   },
   filters: {
     numberFilter (number) {
@@ -162,6 +160,9 @@ export default {
       this.actInfoData = _get(res, 'data', {})
       this.numGroup = _get(res, 'data.numGroup', [])
       this.userNumCount = this.actInfoData.userNumCount
+      this.selectedIndex = null
+      this.selectedLineIndex = null
+      await this._userNumInfo()
       if (this.actInfoData.state === 2) {
         this.isEnd = true
       } else {
@@ -170,13 +171,9 @@ export default {
       if (this.actInfoData.state === 3 && !this.isHasPopTip) {
         this.isHasPopTip = true
         this.openPop(6)
-      }
-      if (this.actInfoData.tipFlog === 0) {
+      } else if (this.actInfoData.tipFlog === 0) {
         this._userAwardsTips()
       }
-      this.selectedIndex = null
-      this.selectedLineIndex = null
-      this._userNumInfo()
     },
     async _userAwardsTips () {
       const res = await userAwardsTips()
