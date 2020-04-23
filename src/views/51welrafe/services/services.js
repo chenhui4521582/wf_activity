@@ -63,6 +63,16 @@ const getUserRanking = ( params ) => {
   return axios.post(url, params)
 }
 
+/**
+ *  @description  福利游乐场-获取礼包列表
+ */
+const getCardList = ( params ) => {
+  let url = `//ops-api.beeplaying.com/ops/api/playground/user-rank`
+  return axios.post(url, params)
+}
+
+
+
 const services = {
   getInfo,
   getExchangeLog,
@@ -71,6 +81,7 @@ const services = {
   getProgress,
   getUserProgress,
   getUserPropLog,
-  getUserRanking
+  getUserRanking,
+  getCardList
 }
 export default services

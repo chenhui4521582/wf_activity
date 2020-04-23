@@ -1,6 +1,6 @@
 <template>
   <div class="count-down" v-if="showCountDown">
-    距离活动结束剩余
+    <div class="title">距离活动结束剩余</div>
     <div class="item" v-for="(item, index) in countdownTime" :key="index">
       <div class="num">{{item}}</div>
       <div class="separate">
@@ -87,9 +87,11 @@ export default {
   justify-content: center;
   align-items: center;
   line-height: .56rem;
-  font-weight: bold;
   color: #fff;
   background: rgba(255, 25, 122, .6);
+  .title {
+    font-weight: bold;
+  }
   .item {
     display: flex;
     justify-content: flex-start;

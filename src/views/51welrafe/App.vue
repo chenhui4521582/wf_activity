@@ -9,7 +9,7 @@
       <img src="./img/rule-icon.png" alt="">
     </div>
     <!-- 倒计时 -->
-    <count-down />
+    <count-down :time="countdown"/>
     <!-- 导航 -->
     <div class="nav">
       <div :class="[currentIndex == 1 ? 'seal active' : 'seal']" @click="handleNavClick(1)"/>
@@ -19,11 +19,18 @@
     <!-- 内容 -->
     <div class="content">
       <!-- 收集图章 -->
-      <get-seal v-if="currentIndex == 1"/>
+      <get-seal 
+        v-if="currentIndex == 1" 
+        :userInfo="userInfo" 
+      />
       <!-- 兑换大奖 -->
-      <exchange-prize v-if="currentIndex == 2"/>
+      <exchange-prize 
+        v-if="currentIndex == 2" 
+        :userInfo="userInfo" 
+        :awardsList="awardsList"
+      />
       <!-- 排行榜 -->
-      <ranking v-if="currentIndex == 3"/>
+      <ranking v-if="currentIndex == 3" />
     </div>
   </div>
 </template>
@@ -40,7 +47,10 @@ import _get from 'lodash.get'
 export default {
   name: 'welrafe',
   data: ()=>({
-    currentIndex: 1
+    currentIndex: 3,
+    userInfo: {},
+    awardsList: [],
+    countdown: ''
   }),
   components: {
     CountDown,
@@ -55,15 +65,26 @@ export default {
   methods: {
     handleNavClick (index) {
       this.currentIndex = index
+    },
+    /** 获取活动信息 **/
+    _getInfo () {
+      Services.getInfo().then(res => {
+        const {code} = _get(res, 'data')
+        if(code == 200) {
+          this.userInfo = _get(res, 'data.data.userInfo', {})
+          this.countdown = _get(res, 'data.data.countdown', '')
+          this.awardsList = _get(res, 'data.data.awardsList', [])
+        }
+      })
     }
   },
   mounted() {
-    
+    this._getInfo()
   }
 }
 </script>
-<style scoped lang="less">
-@import '../../common/css/base.less';
+<style lang="less">
+@import url('../../common/css/base.less');
 @import url('../../../static/iconfont/iconfont.css');
 * {
   box-sizing: border-box;
