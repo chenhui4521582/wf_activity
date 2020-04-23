@@ -503,6 +503,9 @@ export default {
       text-align: center;
       font-size: 0.28rem;
       padding: 0.24rem;
+      p {
+        white-space: nowrap;
+      }
       ul {
         display: flex;
         flex-wrap: wrap;
