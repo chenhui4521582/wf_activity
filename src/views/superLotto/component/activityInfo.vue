@@ -29,11 +29,12 @@ export default {
     }
   },
   mounted () {
+    this.countDown()
   },
   methods: {
-    countDown (data) {
-      if (!data) return false
-      let date = data / 1000
+    countDown () {
+      if (!this.info.countdown) return false
+      let date = this.info.countdown / 1000
       this.timer = setInterval(() => {
         date = date - 1
         if (date <= 0) {
@@ -56,14 +57,6 @@ export default {
           this.countdownTime = `${countHour}:${countMinute}:${countSecond}`
         }
       }, 1000)
-    }
-  },
-  watch: {
-    info: {
-      deep: true,
-      handler (newVal) {
-        this.countDown(newVal.countdown)
-      }
     }
   }
 }

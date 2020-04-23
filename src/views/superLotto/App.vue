@@ -164,7 +164,7 @@ export default {
       this.selectedIndex = null
       this.selectedLineIndex = null
       await this._userNumInfo()
-      if (this.actInfoData.state === 2) {
+      if (this.actInfoData.state === 2 || this.actInfoData.whatDay === 0) {
         this.isEnd = true
       } else {
         this.isEnd = false
