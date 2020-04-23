@@ -377,8 +377,8 @@ export default {
       }
     },
     lastNumber () {
-      let arr = this.lastAwardInfo.awardNumGroup && this.lastAwardInfo.awardNumGroup.split('') || []
-      arr = arr.map(x => x = parseInt(x))
+      let arr = (this.lastAwardInfo.awardNumGroup && this.lastAwardInfo.awardNumGroup.split('')) || []
+      arr = arr.map(x => (x = parseInt(x)))
       return arr
     },
     lastAwardList () {
