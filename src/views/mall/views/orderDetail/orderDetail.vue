@@ -246,7 +246,7 @@ export default {
       let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(orderInfo))
       localStorage.setItem('originDeffer', originDeffer)
-      window.location.href = '/xmWap/#/payment/paymentlist'
+      window.location.replace('/xmWap/#/payment/paymentlist')
     },
     /** 再次购买 **/
     continueBuy () {
