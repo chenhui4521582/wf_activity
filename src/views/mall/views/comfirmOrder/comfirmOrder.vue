@@ -125,7 +125,7 @@ export default {
           let channel = localStorage.getItem('APP_CHANNEL')
           let originDeffer = `//wap.beeplaying.com/activities/mall.html#/order?channel=${channel}&blindBox=true`
           localStorage.setItem('originDeffer', originDeffer)
-          window.location.replace('/xmWap/#/payment/paymentlist')
+          window.location.href = '/xmWap/#/payment/paymentlist'
         } else {
           this.$toast.show({ message })
         }
