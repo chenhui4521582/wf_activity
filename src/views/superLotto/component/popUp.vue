@@ -240,7 +240,6 @@
                   <p v-for="(item,key) in items" :key="`item-${index}-${key}`">{{item}}</p>
                 </li>
               </ul>
-              <div class="btn" @click="_addNumGroup()">保 存</div>
             </template>
             <template v-else-if="type===16">
               <template v-if="awardInfo.rankAward&&awardInfo.rankAward.length">
@@ -269,6 +268,7 @@
               <div class="btn" @click="closePop()">我知道了</div>
             </template>
           </div>
+          <div v-if="type===15" class="btn" @click="_addNumGroup()">保 存</div>
         </section>
         <div class="close-icon" v-if="hasClose" @click="closePop()"></div>
       </section>
