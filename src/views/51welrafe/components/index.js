@@ -1,5 +1,4 @@
 import Header from './header'
-import Modal from './modal'
 import AwardModal from './awardsDialog/awardsDialog'
 import Button from './button'
 import Filters from './Filters'
@@ -8,7 +7,6 @@ import VueClipboard from 'vue-clipboard2'
 // 自定义全局组件
 const components = [
   Header,
-  Modal,
   Button,
   AwardModal
 ]

@@ -1,9 +1,8 @@
 <template>
   <div class="count-down" v-if="showCountDown">
+    距离活动结束剩余
     <div class="item" v-for="(item, index) in countdownTime" :key="index">
-      <div class="num" v-for="(innerItem, innerIndex) in item" :key="innerIndex">
-        {{innerItem}}
-      </div>
+      <div class="num">{{item}}</div>
       <div class="separate">
         <span v-if="index == 0">天</span>
         <span v-if="index == 1">时</span>
@@ -80,32 +79,38 @@ export default {
 </script>
 <style scoped lang="less">
 .count-down {
-  margin: 4.97rem auto;
-  width: 4.5rem;
+  margin: 2.8rem auto .1rem;
+  width: 5.2rem;
+  height: .56rem;
+  border-radius: .28rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  line-height: .56rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(255, 25, 122, .6);
   .item {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
     .num {
-      margin-right: .05rem;
-      width: 0.44rem;
-      height: 0.48rem;
+      width: .38rem;
+      height: .38rem;
       text-align: center;
-      line-height: 0.48rem;
+      line-height: .38rem;
       color: #fff;
-      font-size: 0.36rem;
-      border-radius: 0.06rem;
-      background: #F24D72;
+      font-size: .22rem;
+      border-radius: .06rem;
+      background: #B4244B;
     }
     .separate {
       padding: 0 0.05rem;
-      height: 0.48rem;
+      height: 0.38rem;
       text-align: center;
-      line-height: 0.56rem;
+      line-height: 0.4rem;
       font-size: 0.24rem;
-      color: #F24D72;
+      font-weight: bold;
+      color: #fff;
     }
   }
 }
