@@ -503,8 +503,10 @@ export default {
       text-align: center;
       font-size: 0.28rem;
       padding: 0.24rem;
+      width: 100%;
       p {
         white-space: nowrap;
+        margin: 0 -0.24rem;
       }
       ul {
         display: flex;
