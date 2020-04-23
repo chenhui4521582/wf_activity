@@ -19,13 +19,19 @@
     <!-- 内容 -->
     <div class="content">
       <!-- 收集图章 -->
+      <get-seal v-if="currentIndex == 1"/>
       <!-- 兑换大奖 -->
+      <exchange-prize v-if="currentIndex == 2"/>
       <!-- 排行榜 -->
+      <ranking v-if="currentIndex == 3"/>
     </div>
   </div>
 </template>
 <script>
 import CountDown from './components/countDown'
+import GetSeal from './components/getSeal'
+import ExchangePrize from './components/exchangePrize'
+import Ranking from './components/Ranking'
 // import Rule from './components/rule'
 // import Popup from './components/popup'
 import Services from './services/services'
@@ -38,6 +44,9 @@ export default {
   }),
   components: {
     CountDown,
+    GetSeal,
+    ExchangePrize,
+    Ranking
     // Popup,
     // Rule,
   },
@@ -49,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    this.init()
+    
   }
 }
 </script>
