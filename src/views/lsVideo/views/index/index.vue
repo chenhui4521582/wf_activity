@@ -2,7 +2,7 @@
   <div class="ls-video" :class="[from == 'platFrom' ? 'in-platFrom' : 'in-game']"> 
     <!-- 兼容游戏内打开跟平台打开 -->
     <template v-if="from == 'platFrom'">
-      <div class="back-home" @click="backHome"></div>
+      <div class="back-home" @click="backHome">返回</div>
       <div class="rule-btn" @click="openRule">规则</div>
       <div class="my" @click="goMy">我的高光</div>
     </template>
@@ -293,8 +293,13 @@ export default {
     top: .37rem;
     width: .8rem;
     height: .42rem;
-    background: url(../../img/back-icon.png) no-repeat left top;
-    background-size: 100% 100%;
+    line-height: .44rem;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: .2rem;
+    background: #8a913e;
+    border-radius: 0 .21rem .21rem 0;
   }
   .rule-btn {
     position: absolute;
@@ -307,6 +312,7 @@ export default {
     line-height: .44rem;
     text-align: center;
     color: #fff;
+    font-weight: bold;
     font-size: .2rem;
   }
   .my {
@@ -321,6 +327,7 @@ export default {
     text-align: center;
     color: #fff;
     font-size: .2rem;
+    font-weight: bold;
   }
 }
 .in-game {
@@ -343,6 +350,7 @@ export default {
     text-align: center;
     color: #fff;
     font-size: .2rem;
+    font-weight: bold;
   }
   .close-btn {
     position: absolute;
@@ -365,6 +373,7 @@ export default {
     text-align: center;
     color: #fff;
     font-size: .2rem;
+    font-weight: bold;
   }
   .listWrap {
     top: 4.8rem;
