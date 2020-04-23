@@ -38,7 +38,7 @@
                 </li>
                 <li>
                   <span>累计号码:
-                    {{taskProgressInfoData.gameProgress.gameBettingNumCount | conversion}}个</span>
+                    {{taskProgressInfoData.gameProgress.gameBettingNumCount }}个</span>
                 </li>
               </ul>
             </div>
@@ -68,7 +68,7 @@
             <div class="g-package-info">
               <ul class="li0">
                 <li>已购买礼包: {{taskProgressInfoData.buyTime}}次</li>
-                <li>累计号码: {{taskProgressInfoData.buyNumCount | conversion}}个</li>
+                <li>累计号码: {{taskProgressInfoData.buyNumCount }}个</li>
                 <!--<li><div class="line" :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}"></div>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>-->
               </ul>
             </div>
