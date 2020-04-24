@@ -430,7 +430,6 @@ export default {
       window.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     selectAward (item) {
-      debugger
       if (item.num && parseInt(item.num)) {
         this.selectedTitle = item.label
         this.type = 14
