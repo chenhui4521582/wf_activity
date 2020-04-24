@@ -185,7 +185,11 @@ export default {
     async _userAwardInfo () {
       const res = await userAwardInfo()
       this.lastAwardInfo = _get(res, 'data', {})
-      this.isShowPop = true
+      if (this.lastAwardInfo && this.lastAwardInfo.awardNumGroup) {
+        this.isShowPop = true
+      } else {
+        this.openPop(6)
+      }
     },
     async _userNumGroups () {
       if (this.finished || this.loading) {
