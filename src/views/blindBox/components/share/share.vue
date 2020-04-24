@@ -66,12 +66,13 @@ export default {
     },
     init () {
       UserInfo().then(res => {
-        let { code, data, message } = _get(res, 'data')
+        let code = _get(res, 'data.code', 0)
         if (code === 200) {
-          let binding = _get(res, 'data.data.binding', false)
+          // let binding = _get(res, 'data.data.binding', false)
+          let openBoxOrTransparent = _get(res, 'data.data.openBoxOrTransparent', false)
           let wechatEntry = localStorage.getItem('wechatEntry')
           let channel = localStorage.getItem('APP_CHANNEL')
-          if (!binding && !wechatEntry && channel != '110005001') {
+          if (openBoxOrTransparent && !wechatEntry && channel != '110005001') {
             this.show = true
             this.$nextTick(res => {
               this.animation()
