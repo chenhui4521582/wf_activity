@@ -23,10 +23,7 @@
           <template v-else>
             <li>
               <span class="line-number">0</span>
-              <span class="number">?</span>
-              <span class="number">?</span>
-              <span class="number">?</span>
-              <span class="number">?</span>
+              <span class="number" v-for="item in 4" :key="`empty-${item}`">?</span>
             </li>
           </template>
         </ul>
