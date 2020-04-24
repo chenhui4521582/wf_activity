@@ -12,7 +12,7 @@
 </template>
 <script>
 import Velocity from 'velocity-animate'
-import {UserInfo} from '../../apis/user'
+import { UserInfo } from '../../apis/user'
 import _get from 'lodash.get'
 export default {
   name: 'share',
@@ -22,13 +22,13 @@ export default {
     binding: false
   }),
   methods: {
-    goWechat() {
+    goWechat () {
       GLOBALS.marchSetsPoint('A_H5PT0225003138')
       this.$router.push({
         name: 'bindWechat'
       })
     },
-    hide() {
+    hide () {
       this.show = false
       localStorage.setItem('wechatEntry', true)
     },
@@ -36,45 +36,44 @@ export default {
       let wechatAnimation = localStorage.getItem('wechatAnimation')
       let shareEle = this.$refs.share
       let textEle = this.$refs.text
-      if((!shareEle && !textEle) || wechatAnimation) return
-      Velocity(shareEle,{
+      if ((!shareEle && !textEle) || wechatAnimation) return
+      Velocity(shareEle, {
         right: 0
-      },{
+      }, {
         duration: 1000,
         delay: 2000,
         complete: () => {
           textEle.classList.add('active')
         }
       })
-      Velocity(textEle,{
+      Velocity(textEle, {
         width: 100
       }, {
         duration: 1000,
         delay: 3000,
         complete: () => {
-          if(this.timer) {
+          if (this.timer) {
             clearTimeout(this.timer)
           }
-          this.timer = setTimeout(()=> {
-            shareEle.style=""
-            textEle.style=""
+          this.timer = setTimeout(() => {
+            shareEle.style = ''
+            textEle.style = ''
             textEle.classList.remove('active')
             localStorage.setItem('wechatAnimation', true)
           }, 4000)
         }
       })
     },
-    init() {
-      let wechatEntry = localStorage.getItem('wechatEntry')
-      UserInfo().then(res=> {
-        let {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+    init () {
+      UserInfo().then(res => {
+        let { code, data, message } = _get(res, 'data')
+        if (code === 200) {
           let binding = _get(res, 'data.data.binding', false)
           let wechatEntry = localStorage.getItem('wechatEntry')
           let channel = localStorage.getItem('APP_CHANNEL')
-          if(!binding && !wechatEntry && channel != '110005001') {
+          if (!binding && !wechatEntry && channel != '110005001') {
             this.show = true
-            this.$nextTick(res=> {
+            this.$nextTick(res => {
               this.animation()
             })
           }
@@ -82,7 +81,7 @@ export default {
       })
     }
   },
-  mounted() {
+  mounted () {
     this.init()
   }
 }
@@ -90,22 +89,22 @@ export default {
 <style lang="less" scoped>
 .share {
   position: fixed;
-  right: .3rem;
+  right: 0.3rem;
   bottom: 1.69rem;
   z-index: 99;
   display: flex;
   justify-self: start;
-  min-width: .56rem;
-  min-height: .56rem;
+  min-width: 0.56rem;
+  min-height: 0.56rem;
   .icon {
     position: absolute;
     left: 0;
     top: 0;
     z-index: 1;
-    width: .56rem;
-    height: .56rem;
+    width: 0.56rem;
+    height: 0.56rem;
     border-radius: 50%;
-    background: #D1AC42;
+    background: #d1ac42;
     img {
       vertical-align: top;
       width: 100%;
@@ -115,27 +114,27 @@ export default {
   .text {
     box-sizing: border-box;
     overflow: hidden;
-    padding-top: .07rem;
-    margin-left: .28rem;
+    padding-top: 0.07rem;
+    margin-left: 0.28rem;
 
     width: 0;
-    height: .56rem;
-    font-size: .18rem;
+    height: 0.56rem;
+    font-size: 0.18rem;
     color: #fff;
-    background: #D1AC42;
+    background: #d1ac42;
     white-space: nowrap;
     &.active {
-      padding-left: .28rem;
+      padding-left: 0.28rem;
     }
   }
   .closed {
     position: absolute;
-    width: .3rem;
-    height: .3rem;
+    width: 0.3rem;
+    height: 0.3rem;
     right: 0;
-    top: -.4rem;
+    top: -0.4rem;
     background: url(./img/closed.png) no-repeat center center;
-    background-size: .29rem .29rem;
+    background-size: 0.29rem 0.29rem;
   }
 }
 </style>
