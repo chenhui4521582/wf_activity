@@ -1158,9 +1158,9 @@ export default {
         &:after {
           content: '+';
           position: absolute;
-          top: 0.7rem;
-          bottom: 0;
-          margin: auto;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           font-size: 0.36rem;
           font-weight: bold;
           color: #ff7f32;
