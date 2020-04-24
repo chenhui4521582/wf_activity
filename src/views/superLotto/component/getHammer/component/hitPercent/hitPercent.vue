@@ -182,7 +182,8 @@ export default {
         } else {
           this.$toast.show({
             message: res.message,
-            duration: 1000
+            duration: 1000,
+            isOneLine: true
           })
         }
         this.showLoading = false

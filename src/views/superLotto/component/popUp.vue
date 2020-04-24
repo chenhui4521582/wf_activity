@@ -430,13 +430,21 @@ export default {
       window.location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
     selectAward (item) {
-      this.selectedTitle = item.label
-      this.type = 14
-      this.awardGrade = item.id
-      this.page = 1
-      this.finished = false
-      this.awardNumsArr = []
-      this._userAwardNums()
+      if (item.num) {
+        this.selectedTitle = item.label
+        this.type = 14
+        this.awardGrade = item.id
+        this.page = 1
+        this.finished = false
+        this.awardNumsArr = []
+        this._userAwardNums()
+      } else {
+        this.$toast.show({
+          message: '您没有中该类型的奖项哦～',
+          duration: 2000,
+          isOneLine: true
+        })
+      }
     },
     onScroll () {
       let bottom = this.$refs.area.getBoundingClientRect().bottom
@@ -492,7 +500,8 @@ export default {
         if (code === 200) {
           this.$toast.show({
             message: '生成成功',
-            duration: 1000
+            duration: 1000,
+            isOneLine: true
           })
           this.closePop(true)
         }

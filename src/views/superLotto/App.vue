@@ -321,7 +321,8 @@ export default {
       } else {
         this.$toast.show({
           message: '所选号码数量不足',
-          duration: 1000
+          duration: 1000,
+          isOneLine: true
         })
       }
     },
@@ -329,7 +330,8 @@ export default {
       if (this.editNumber.newNumGroup.findIndex(element => element === null) >= 0) {
         this.$toast.show({
           message: '需要4个号码才能保存哦~',
-          duration: 1000
+          duration: 1000,
+          isOneLine: true
         })
         return
       }
@@ -346,7 +348,8 @@ export default {
         this.closeMyNumBox()
         this.$toast.show({
           message: '保存成功',
-          duration: 1000
+          duration: 1000,
+          isOneLine: true
         })
         this.init()
       }
@@ -359,7 +362,8 @@ export default {
         this.numGroup[this.editLineIndex].numGroup = this.editNumber.newNumGroup
         this.$toast.show({
           message: '保存成功',
-          duration: 1000
+          duration: 1000,
+          isOneLine: true
         })
         this.closeMyNumBox()
         this._getNumberList(data)
