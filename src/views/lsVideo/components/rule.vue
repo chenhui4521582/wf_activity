@@ -3,8 +3,7 @@
     <div class="mask"></div>
     <div class="center">
       <p>1.用户在台球里击中奖池时，视频会在“奖池高光时刻”中展示，用户打出一杆多球时（5球及以上),视频会在“一杆多球”中展示。</p>
-      <p>2.视频默认时间倒序排序，最新的视频放在最前面。</p>
-      <p>3.视频存放数量有限，每个视频有展示时间限制，到期后不再展示。</p>
+      <p>2.视频按热度值高低排序，热度值大小与播放量、出杆额度、击中奖池金额/一杆多球倍率、视频生产时间相关。</p>
       <div class="closed" @click="hide"></div>
     </div>
   </div>
@@ -60,6 +59,7 @@ export default {
     font-size: .24rem;
     color: #fff;
     p {
+      margin-bottom: .1rem;
       line-height: .34rem;
     }
     .closed {
