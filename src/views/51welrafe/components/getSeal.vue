@@ -2,26 +2,43 @@
   <div class="get-seal">
     <my-seal 
       :userInfo="userInfo" 
-      :current="1" 
-      @openSealLog="openSealLog"
+      :currentIndex="1" 
+      @openSealLog="_getSealLog"
     />
     <!-- 玩游戏集图章 -->
     <div class="play-game">
       <div class="title">累计支持金叶</div>
-      <Progress :list="betProgress" :status="1" />
+      <Progress 
+        :list="betProgress" 
+        :status="1" 
+        @openPopup="openPopup"
+        @taskFinish="_getProgress"
+      />
     </div>
     <!-- 充值领图章 -->
     <div class="pay">
       <div class="title">累计充值</div>
-      <Progress :list="rechargeProgress" :status="2" />
+      <Progress 
+        :list="rechargeProgress"
+        :status="2" 
+        @openPopup="openPopup"
+        @taskFinish="_getProgress"
+      />
     </div>
     <!-- 买礼包 -->
     <div class="buy-card">
       
     </div>
+    <!-- Popup -->
+    <popup 
+      v-model="showPopup" 
+      :popupType="popupType"
+      :sealNum="sealNum"
+    />
   </div>
 </template>
 <script>
+import Popup from './popup'
 import MySeal from './mySeal'
 import Progress from './progress'
 import Services from '../services/services'
@@ -35,25 +52,36 @@ export default {
     }
   },
   data: () => ({
-    betProgress: {},
+    betProgress: {1: 2, 2:3},
     rechargeProgress: {},
-    cardList: []
+    cardList: [],
+    showPopup: false,
+    popupType: 5,
+    sealNum: 0
   }),
   components: {
     MySeal,
-    Progress
+    Progress,
+    Popup
   },
   methods: {
-    openSealLog () {
-
+    /** 获取图章记录 **/
+    _getSealLog () {
+      Services.getUserPropLog().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.betProgress = _get(res, 'data.data.betProgress', {})
+          this.rechargeProgress = _get(res, 'data.data.rechargeProgress', {})
+        } 
+      }) 
     },
+
     /** 获取-用户任务进度 **/
     _getUserProgress () {
       Services.getUserProgress().then(res => {
-        const {code} = _get(res, 'data')
+        const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.betProgress = _get(res, 'data.data.betProgress', {})
-          console.log(res.data.data)
           this.rechargeProgress = _get(res, 'data.data.rechargeProgress', {})
         }
       })
@@ -63,6 +91,39 @@ export default {
       Services.getCardList().then(res => {
 
       })
+    },
+    /** 进度条任务领取 **/
+    _getProgress (params) {
+      if(this.lock) {
+        return false
+      }
+      this.lock = true
+      Services.getProgress(params).then(res => {
+        this.lock = false
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.sealNum = _get(res, 'data.data')
+          this.showPopup = true
+          this.popupType = 5
+          /** 重新拉取 用户信息 跟 进度信息 **/
+          this._getUserProgress()
+          this.$emit('refrshUserInfo')
+        }else {
+          this.$toast.show({ message })
+        }
+      }).catch(error => {
+        this.lock = false
+      })
+    },
+    openPopup (status) {
+      if(status == 1) {
+        this.showPopup = true
+        this.popupType = 3
+      }
+      if(status == 2) {
+        window.location.href = '//wap.beeplaying.com/xmWap/#/payment'
+      }
+
     }
   },
   mounted () {

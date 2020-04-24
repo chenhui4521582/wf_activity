@@ -4,152 +4,132 @@
   <div class="popup" v-if="value">
     <div class="mask"></div>
     <div class="wrap">
-      <!-- 许愿树长大弹框 -->
+      <!-- 活动规则 -->
       <template v-if="popupType == 1">
-        <div class="tree">
-          <div class="title1">
-            <img src="../img/popup-tree-title1.png" alt="">
-          </div>
-          <div class="title2">
-            <img src="../img/popup-tree-title2.png" alt="">
+        <div class="rule bg1">
+          <div class="title">
+            <img src="../img/title9.png" alt="">
           </div>
           <div class="body">
-            <div class="preveTree">
-              <img :src="proveTree" alt="">
-            </div>
-            <div class="right-arrows">
-              <img src="../img/right-arrows.png" alt="">
-            </div>
-            <div class="nextTree">
-              <img :src="currentTree" alt="">
-            </div>
-          </div>
-          <div class="btn" @click="hidePopup">
-            <img src="../img/popup-tree-btn.png" alt="">
+            <h5>1、活动时间：5月1日- 5月5日 </h5>
+            <h5>2、收集图章</h5> 
+            通过消耗流水、充值、购买活动礼包可获得图章，在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动；
+            <h5>3、图章兑换奖励</h5>
+            奖励需一定数量的图章进行兑换，且兑换不限次数；
+            <h5>4、 累计排行榜</h5>
+            活动5天内，累计图章最多的玩家，前15名获得奖励；<br> 
+            5、图章注意及时领取并兑换奖品，活动结束（5月5日24点后）图章自动作废清零，不予补偿。 <br> 
+            6、如有问题，请联系在线客服。
           </div>
         </div>
       </template>
-      <!-- 收获弹框 -->
+      <!-- 活动攻略 -->
       <template v-if="popupType == 2">
-        <div class="get-award">
+        <div class="strategy bg1">
           <div class="title">
-            <img src="../img/popup-award-title.png" alt="">
+            <img src="../img/title8.png" alt="">
           </div>
-          <div class="award">
-            <div class="group">
-              <img :src="treeFinishAward.awardImage | filter" alt="">
-              <p>{{treeFinishAward.awardName}}</p>
-            </div>
-          </div>
-          <div class="btns">
-            <div class="cancel" @click="tryAgen">
-              <img src="../img/try-agen.png" alt="">
-            </div>
-            <div class="confirm" @click="checkLog">
-              <img src="../img/check-myprice.png" alt="">
-            </div>
+          <div class="body">
+            <img src="../img/strategy.png" alt="">
           </div>
         </div>
       </template>
-      <!-- 惊喜弹框 -->
+      <!-- 大家都在玩 -->
       <template v-if="popupType == 3">
-        <div class="accident">
-          <div class="title1">
-            <img src="../img/popup-accident-title2.png" alt="">
+        <div class="game-list bg1">
+          <div class="title">
+            <img src="../img/title1.png" alt="">
           </div>
-          <div class="title2">
-            <img src="../img/popup-accident-title1.png" alt="">
-          </div>
-          <div class="award">
-            <img :src="treeInfo.awardConfigRsp.awardImage | filter" alt="">
-            <p>{{treeInfo.awardConfigRsp.awardName || ''}}</p>
-          </div>
-          <div class="btn" @click="hidePopup">
-            <img src="../img/accident-text.png" alt="">
+          <div class="body">
+            <div class="list">
+              <div class="item" v-for="(item, index) in gameList" :key="index" @click="gotoGame(item)">
+                <img :src="item.img" alt="">
+              </div>
+            </div>
+            <div class="more" @click="moreGame">更多游戏>></div>
+            <div class="explain">部分游戏支持金叶不计入活动，详见规则</div>
           </div>
         </div>
       </template>
-      <!-- 水滴不足弹框 -->
+      <!-- 图章收集记录 -->
       <template v-if="popupType == 4">
-        <div class="no-water">
+        <div class="seal-log bg2">
           <div class="title">
-            <img src="../img/no-water.png" alt="">
+            <img src="../img/title12.png" alt="">
           </div>
-          <div class="icon">
-            <img src="../img/no-water-icon.png" alt="">
-          </div>
-          <div class="title2">
-            <img src="../img/go-task-icon.png" alt="">
-          </div>
-          <div class="btn" @click="openTask">
-            <img src="../img/get-water-icon.png" alt="">
+          <div class="body">
+            <div class="total">
+              累计获得图章：100个
+            </div>
+            <div class="seal-wrap">
+              <div class="nav">
+                <div class="time">日期</div>
+                <div class="num">获得数</div>
+              </div>
+              <div class="list">
+                <div class="item" v-for="(item, index) in sealLog" :key="index">
+                  <div class="time"></div>
+                  <div class="num"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </template>
-      <!-- 肥料礼包弹框 -->
+      <!-- 图章兑换成功 -->
       <template v-if="popupType == 5">
-        <div class="manure">
+        <div class="exchange-seal bg2">
           <div class="title">
-            <img src="../img/manure-title.png" alt="">
+            <img src="../img/title10.png" alt="">
           </div>
-          <div class="items">
-            <div class="item item1" >
-              <div class="title2">成长值+60</div>
-              <div class="icon">
-                <img src="../img/manure-icon1.png" alt="">
-              </div>
-              <div class="numer">+{{cardList[0].amount}}金叶子</div>
-              <div class="btn" v-if="cardList[0].buyFlag == 1" @click="gotoPay(0)">
-                <img src="../img/manure-btn1.png" alt="">
-              </div>
-              <div class="btn no" v-if="cardList[0].buyFlag == 0">
-                <img src="../img/buyend-text.png" alt="">
-              </div>
+          <div class="body">
+            <div class="award-img">
+              <img src="../img/seal-award-img.png" alt="">
             </div>
-            <div class="item item2" >
-              <div class="title2">成长值+220</div>
-              <div class="icon">
-                <img src="../img/manure-icon2.png" alt="">
-              </div>
-              <div class="numer">+{{cardList[1].amount}}金叶子</div>
-              <div class="btn" v-if="cardList[1].buyFlag == 1" @click="gotoPay(1)">
-                <img src="../img/manure-btn2.png" alt="">
-              </div>
-              <div class="btn no" v-if="cardList[1].buyFlag == 0">
-                <img src="../img/buyend-text.png" alt="">
-              </div>
-            </div>
+            <div class="award-name">兑奖图章 x{{sealNum}}</div>
+            <div class="explain">记得兑换奖品哟~</div>
           </div>
-          <div class="tips">*肥料礼包每日限购一次*</div>
         </div>
       </template>
+
       <div class="close" @click="hidePopup"></div>
     </div>
   </div>
 </template>
 <script>
+import Utils from './utils'
 import Services from '../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'popup',
-  props: ['popupType', 'value', 'treeInfo', 'treeFinishAward', 'cardList'],
+  props: ['popupType', 'value', 'sealLog', 'sealNum'],
+  data: () => ({
+    gameList: [
+      {img: require('../img/0.png'), url: `//wap.beeplaying.com/crush/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '糖果萌消消乐'},
+      {img: require('../img/3.png'), url: `//wap.beeplaying.com/fish/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '街机欢乐捕鱼'},
+      {img: require('../img/2.png'), url: `//wap.beeplaying.com/billiards/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '欢乐竞技台球'},
+      {img: require('../img/4.png'), url: `//wap.beeplaying.com/kingdom2/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '三国大作战'},
+      {img: require('../img/1.png'), url: `//wap.beeplaying.com/square/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '众神风云'},
+      {img: require('../img/5.png'), url: `//wap.beeplaying.com/Marbles/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '王者弹珠'},
+    ]
+  }),
+  computed: {
+    currentTree() {
+      return require(`../img/tree${this.treeInfo.currTreeGrade}.png`)
+    },
+    proveTree() {
+      return require(`../img/tree${this.treeInfo.treeGrade}.png`)
+    }
+  },
   methods: {
     hidePopup() {
-      /** 重新拉取数据 **/
-      if(this.popupType == 2){
-        this.$emit('refresh')
-      }
-      /** 浇水意外奖励 **/
-      if(this.popupType == 3 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade){
-        this.$emit('treeUpgrade')
-        return
-      }
-      /** 树长大了 动画 **/
-      if(this.popupType == 1 && this.treeInfo.treeGrade != this.treeInfo.currTreeGrade){
-        this.$emit('treeUpgradeAnimation')
-        return
-      }
       this.$emit('input', false)
+    },
+    moreGame() {
+      window.location.href = '//wap.beeplaying.com/xmWap/#/'
+    },
+    gotoGame(item) {
+      window.location.href = item.url
     },
     gotoPay(index) {
       let channel = localStorage.getItem('APP_CHANNEL')
@@ -180,12 +160,13 @@ export default {
       this.$emit('checkLog')
     }
   },
-  computed: {
-    currentTree() {
-      return require(`../img/tree${this.treeInfo.currTreeGrade}.png`)
-    },
-    proveTree() {
-      return require(`../img/tree${this.treeInfo.treeGrade}.png`)
+  watch: {
+    value (newValue) {
+      if(newValue) {
+        Utils.ScrollNoMove()
+      }else {
+        Utils.ScrollMove()
+      }
     }
   }
 }
@@ -209,21 +190,18 @@ export default {
   }
   .wrap {
     position: absolute;
-    left: .21rem;
-    top: 50%;
+    left: 50%;
+    top: 45%;
     z-index: 2;
-    transform: translate(0, -50%);
-    width: 6.37rem;
-    height: 7.54rem;
-    background: url(../img/popup-bg.png) no-repeat center center;
-    background-size: 100% 100%;
+    transform: translate(-50%, -50%);
     .close {
       position: absolute;
-      right: -.2rem;
-      top: .18rem;
-      width: 1.01rem;
-      height: 1.05rem;
-      background: url(../img/close.png) no-repeat center center;
+      left: 50%;
+      bottom: -.41rem;
+      transform: translate(-50%, 0);
+      width: .92rem;
+      height: .92rem;
+      background: url(../img/closed.png) no-repeat center center;
       background-size: 100% 100%;
     }
     img {
@@ -231,277 +209,163 @@ export default {
       width: 100%;
       height: 100%;
     }
-    .tree {
-      .title1 {
-        margin: 1.45rem 0 0 1.13rem;
-        width: 4.32rem;
-        height: .59rem;
-      }
-      .title2 {
-        margin: .1rem 0 0 2.13rem;
-        width: 2.27rem;
-        height: .26rem;
+    .bg1 {
+      overflow: hidden;
+      background: url(../img/popupBg1.png) no-repeat center top;
+      background-size: 100% 100%;
+      width: 6.48rem;
+      height: 10.23rem;
+    }
+    .bg2 {
+      overflow: hidden;
+      background: url(../img/popupBg2.png) no-repeat center top;
+      background-size: 100% 100%;
+      width: 6.48rem;
+      height: 9.33rem;
+    }
+    .rule {
+      .title {
+        margin: 2.5rem auto .72rem;
+        width: 1.61rem;
+        height: .41rem;
       }
       .body {
-        height: 2.64rem;
-        margin: .2rem 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        .preveTree {
-          display: flex;
-          align-items: flex-end;
-          width: 1.82rem;
-          height: 2.5rem;
-          img {
-            vertical-align: bottom;
-            height: 100%;
-          }
-        }
-        .right-arrows {
-          margin: 0 .1rem .6rem;
-          width: .51rem;
-          height: .44rem;
-        }
-        .nextTree {
-          display: flex;
-          align-items: flex-end;
-          width: 2.11rem;
-          height: 2.5rem;
-          img {
-            vertical-align: bottom;
-            height: 100%;
-          }
+        padding: 0 1rem;
+        color: #EAD9FF;
+        h5 {
+          color: #fff;
         }
       }
-      .btn {
-        margin: .2rem 0 0 1.53rem;
-        width: 3.52rem;
-        height: 1.3rem;
-        background: url(../img/sign-btn-bg.png) no-repeat center center;
-        background-size: 100% 100%;
-        img {
-          margin: .2rem 0 0 .8rem;
-          width: 1.91rem;
-          height: .58rem;
-        }
-      }
-  
     }
-    .get-award {
+    .strategy {
       .title {
-        margin: 1.71rem 0 0 1.44rem;
-        width: 3.74rem;
-        height: .6rem;
-      }
-      .award {
-        position: absolute;
-        top: 1.9rem;
-        left: 1.22rem;
-        width: 4.18rem;
-        height: 3.73rem;
-        background: url(../img/light.png) no-repeat center center;
-        background-size: 100% 100%;
-        text-align: center;
-        .group {
-          position: absolute;
-          left: 50%;
-          top: 58%;
-          transform: translate(-50%, -50%);
-          img {
-            width: 1.92rem;
-            height: auto;
-          }
-          p {
-            margin-top: .05rem;
-            color: #CD4211;
-            font-size: .36rem;
-            font-weight: bold;
-          }
-        }
-      }
-      .btns {
-        position: absolute;
-        top: 5.7rem;
-        left: .83rem;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-end;
-        .cancel {
-          width: 2.29rem;
-          height: 1.01rem;
-          margin-right: .27rem;
-          background: url(../img/btn3.png) no-repeat center bottom;
-          background-size: 100% 100%;
-          img {
-            margin: .21rem 0 0 .47rem;
-            width: 1.36rem;
-            height: .42rem;
-          }
-        }
-        .confirm {
-          width: 2.29rem;
-          height: .98rem;
-          background: url(../img/btn1.png) no-repeat center bottom;
-          background-size: 100% 100%;
-          img {
-            margin: .2rem 0 0 .48rem;
-            width: 1.33rem;
-            height: .42rem;
-          }
-        }
-      }
-    }
-    .accident {
-      .title1 {
-        margin: 1.73rem 0 0 2.34rem;
-        width: 1.82rem;
-        height: .85rem;
-      }
-      .title2 {
-        margin: .1rem 0 0 1.65rem;
-        width: 3.25rem;
-        height: .61rem;
-      }
-      .award {
-        height: 2.26rem;
-        text-align: center;
-        img {
-          margin-top: .3rem;
-          width: 1.64rem;
-          height: 1.41rem;
-        }
-        p {
-          margin-top: .05rem;
-          color: #CD4211;
-          font-size: .36rem;
-          font-weight: bold; 
-        }
-      }
-      .btn {
-        margin: 0 0 0 1.53rem;
-        width: 3.52rem;
-        height: 1.3rem;
-        background: url(../img/btn1.png) no-repeat center center;
-        background-size: 100% 100%;
-        img {
-          margin: .2rem 0 0 1.05rem;
-          width: 1.43rem;
-          height: .57rem;
-        } 
-      }
-    }
-    .no-water {
-      .title {
-        margin: 1.48rem 0 0 1.45rem;
-        width: 3.69rem;
-        height: 1.48rem;
-      }
-      .icon {
-        margin: .32rem 0 0 2.9rem;
-        width: .63rem;
-        height: .87rem;
-      }
-      .title2 {
-        margin: .3rem 0 0 1.27rem;
-        width: 4rem;
+        margin: 2.5rem auto .48rem;
+        width: 2.78rem;
         height: .5rem;
       }
-      .btn {
-        margin: .6rem 0 0 1.53rem;
-        width: 3.52rem;
-        height: 1.3rem;
-        background: url(../img/btn1.png) no-repeat center center;
-        background-size: 100% 100%;
-        img {
-          margin: .24rem 0 0 .83rem;
-          width: 1.91rem;
-          height: .58rem;
+      .body {
+        margin: 0 auto;
+        width: 4.32rem;
+        height: 5.57rem;
+      }
+    }
+    .game-list {
+      .title {
+        margin: 2.5rem auto .8rem;
+        width: 1.89rem;
+        height: .44rem;
+      }
+      .body {
+        padding: 0 .86rem 0 .97rem;
+        .list {
+          margin-bottom: .15rem;
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          .item {
+            margin: 0 .1rem .1rem 0;
+            padding: .15rem .1rem;
+            width: 1.45rem;
+            height: 1.99rem;
+            background: url(../img/game-list-bg.png) no-repeat center top;
+            background-size: 100% 100%;
+          }
+        }
+        .more {
+          margin-bottom: .15rem;
+          text-align: center;
+          font-size: .3rem;
+          font-weight: bold;
+          color: #FEF84B;
+        }
+        .explain {
+          text-align: center;
+          font-size: .24rem;
+          font-weight: bold;
+          color: #D6BFFA;
         }
       }
     }
-    .manure {
+    .seal-log {
       .title {
-        margin: 1.36rem 0 0 1.69rem;
-        width: 3.2rem;
-        height: .86rem;
-
+        margin: 2.5rem auto .68rem;
+        width: 2.26rem;
+        height: .47rem;
       }
-      .items {
-        margin: .1rem 0 0 .77rem;
-        display: flex;
-        justify-content: flex-start;
-        .item {
-          width: 2.46rem;
-          background: url(../img/card-bg.png) no-repeat center top;
-          background-size: 100% 3.3rem; 
-          .title2 {
-            margin: .67rem 0 0 .35rem;
-            width: 1.77rem;
-            height: .54rem;
-            background: url(../img/manure-title2.png) no-repeat center center;
-            background-size: 100% 100%; 
-            font-size: .22rem;
-            text-align: center;
-            line-height: .5rem;
-            color: #fff;
-            font-weight: bold;
-          }
-          .icon {
-            margin-top: -.1rem;
-            height: 1.56rem;
-          }
-          .numer {
-            margin-top: -.1rem;
-            text-align: center;
-            font-size: .28rem;
-            color: #fff;
-            font-weight: bold;
-          }
-          .btn {
-            margin: .3rem auto ;
-            background: url(../img/btn1.png) no-repeat center center;
-            background-size: 100% 100%; 
-            width: 2.3rem;
-            height: .98rem;
-            &.no {
-              background: url(../img/buyend.png) no-repeat center center;
-              background-size: 100% 100%; 
-            }
-          }
-        }
-        .item1 {
-          .icon {
-            margin-left: .67rem;
-            width: 1.17rem;
-          }
-          .btn {
-            img {
-              margin: .2rem 0 0 .52rem;
-              width: 1.24rem;
-              height: .42rem;
-            }
-          }
-        }
-        .item2 {
-          .icon {
-            margin-left: .32rem;
-            width: 1.88rem;
-          }
-         .btn {
-            img {
-              margin: .2rem 0 0 .45rem;
-              width: 1.37rem;
-              height: .42rem;
-            }
-          }
-        }
-      }
-      .tips {
+      .total {
+        margin: 0 auto .2rem;
+        width: 4.4rem;
+        height: .55rem;
+        line-height: .55rem;
         text-align: center;
-        font-weight: bold;
-        font-size: .22rem;
-        color: #9D694C;
+        color: #FEF84B;
+        background: url(../img/total-bg.png) no-repeat center top;
+        background-size: 100% 100%;
+      }
+      .seal-wrap {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 4.4rem;
+        height: 3.65rem;
+        background:linear-gradient(0deg,rgba(93,34,188,1) 0%,rgba(93,36,184,1) 100%);
+        border-radius: .4rem;
+        .nav {
+          margin: .3rem 0;
+          .time, .num{
+            width: 50%;
+            height: .26rem;
+            line-height: .26rem;
+            border-right: 1px solid #AE85EF;
+            text-align: center;
+            color: #fff;
+          }
+          .num {
+            border: none
+          }
+        }
+        .list {
+          overflow-x: hidden;
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
+          .item {
+            margin-bottom: .2rem;
+            display: flex;
+            justify-content: flex-start;
+            .time, .num{
+              width: 50%;
+              text-align: center;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .exchange-seal {
+      .title {
+        margin: 2.5rem auto .85rem;
+        width: 1.53rem;
+        height: .42rem;
+      }
+      .body {
+        .award-img {
+          margin: 0 auto .4rem;
+          padding: .38rem .47rem .3rem;
+          width: 2.7rem;
+          height: 2.5rem;
+          background: url(../img/seal-award-bg.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
+        .award-name {
+          text-align: center;
+          margin-bottom: .7rem;
+          font-size: .3rem;
+          color: #FEF84B;
+          font-weight: bold;
+        }
+        .explain {
+          text-align: center;
+          color: #D6BFFA;
+        }
       }
     }
   }

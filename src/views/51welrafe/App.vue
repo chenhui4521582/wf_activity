@@ -5,7 +5,7 @@
       <img src="./img/back-icon.png" alt="">
     </div>
     <!-- 规则按钮 -->
-    <div class="rule-btn">
+    <div class="rule-btn" @click="openRule">
       <img src="./img/rule-icon.png" alt="">
     </div>
     <!-- 倒计时 -->
@@ -22,6 +22,7 @@
       <get-seal 
         v-if="currentIndex == 1" 
         :userInfo="userInfo" 
+        @refrshUserInfo="_getInfo"
       />
       <!-- 兑换大奖 -->
       <exchange-prize 
@@ -32,6 +33,11 @@
       <!-- 排行榜 -->
       <ranking v-if="currentIndex == 3" />
     </div>
+    <!-- popup -->
+    <popup 
+      v-model="showPopup" 
+      :popupType="popupType"
+    />
   </div>
 </template>
 <script>
@@ -39,26 +45,26 @@ import CountDown from './components/countDown'
 import GetSeal from './components/getSeal'
 import ExchangePrize from './components/exchangePrize'
 import Ranking from './components/Ranking'
-// import Rule from './components/rule'
-// import Popup from './components/popup'
+import Popup from './components/popup'
 import Services from './services/services'
 import utils from './components/utils'
 import _get from 'lodash.get'
 export default {
   name: 'welrafe',
   data: ()=>({
-    currentIndex: 3,
+    currentIndex: 1,
     userInfo: {},
     awardsList: [],
-    countdown: ''
+    countdown: '',
+    showPopup: false,
+    popupType: 1
   }),
   components: {
     CountDown,
     GetSeal,
     ExchangePrize,
-    Ranking
-    // Popup,
-    // Rule,
+    Ranking,
+    Popup
   },
   computed: {
   },
@@ -76,6 +82,9 @@ export default {
           this.awardsList = _get(res, 'data.data.awardsList', [])
         }
       })
+    },
+    openRule () {
+      this.showPopup = 1
     }
   },
   mounted() {

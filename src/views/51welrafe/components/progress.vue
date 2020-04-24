@@ -7,17 +7,16 @@
     </div>
     <div class="task">
       <div class="item" v-for="(item, index) in list.progressList" :key="index">
-        <div class="unit" :class="{'received': item.status = 2}">
+        <div class="unit" :class="{'received': item.status == 2}">
           <div class="award">{{item.awards}}</div>
           <div class="amount">{{unit(item.amount)}}</div>
         </div>
-        {{item.status}}
         <!-- 去完成 -->
-        <div class="btn go-finished" v-if="item.status == 0">
+        <div class="btn go-finished" v-if="item.status == 0" @click="openPopup">
           <img src="../img/go-finished-icon.png" alt="">
         </div>
         <!-- 领取 -->
-        <div class="btn finish" v-if="item.status == 1">
+        <div class="btn finish" v-if="item.status == 1" @click="taskFinish(item)">
           <img src="../img/get-icon.png" alt="">
         </div>
         <!-- 已经领取 -->
@@ -30,11 +29,11 @@
 </template>
 <script>
 export default {
-  name: 'progressModule',
+  name: 'task',
   props: {
     list: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     status: {
       type: Number,
@@ -47,6 +46,15 @@ export default {
         return `${(value / 10000)}万`
       }
       return `${value}元`
+    },
+    openPopup () {
+      this.$emit('openPopup', this.status)
+    },
+    taskFinish (item) {
+      this.$emit('taskFinish', {
+        type: this.status,
+        sort: item.sort
+      })
     }
   }
 }

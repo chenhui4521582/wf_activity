@@ -8,7 +8,7 @@ const getInfo = ( params ) => {
 }
 
 /**
- *  @description  福利游乐场-兑换记录
+ *  @description  福利游乐场-图章兑换记录
  */
 const getExchangeLog = ( params ) => {
   let url = '//ops-api.beeplaying.com/ops/api/playground/convert-record'
