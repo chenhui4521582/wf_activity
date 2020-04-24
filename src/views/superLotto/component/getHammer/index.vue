@@ -142,7 +142,7 @@ export default {
     gotocomplete (item, index) {
       GLOBALS.marchSetsPoint('A_H5PT0277003311', {
         task_id: index + 1,
-        task_name: index === 0 ? `今日完成{{item.totalNum}}个每日任务给1个号码` : `充值任意金额，送1个号码`
+        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个号码` : `充值任意金额，送1个号码`
       })   // H5平台-超级大赢家活动-每日任务去完成点击
       if (index == 0) {
         if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
@@ -157,7 +157,7 @@ export default {
     async gain (item, index) {
       GLOBALS.marchSetsPoint('A_H5PT0277003312', {
         task_id: index + 1,
-        task_name: index === 0 ? `今日完成{{item.totalNum}}个每日任务给1个号码` : `充值任意金额，送1个号码`
+        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个号码` : `充值任意金额，送1个号码`
       })   // H5平台-超级大赢家活动-每日任务领取点击
       const { code, data } = await taskReceive(index + 1)
       if (code === 200) {
