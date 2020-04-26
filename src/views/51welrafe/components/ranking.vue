@@ -1,6 +1,6 @@
 <template>
   <div class="ranking">
-    <div class="title">排行榜统计截至5月5日</div>
+    <div class="title">排行榜统计截至{{activitiesInfo.endDate | formatTime('m-d')}}</div>
     <!-- 前三名 -->
     <div class="top3">
       <div class="item" v-for="(item, index) in top3List" :key="index">
@@ -9,9 +9,11 @@
           <img v-else src="../img/img_photo.png" alt="">
         </div>
         <div class="name">{{item.nickname}}</div>
-        <div class="seal">{{item.totalNum}}</div>
+        <div class="seal">{{item.totalNum}}个</div>
         <div class="award-name">{{item.awardsName}}</div>
-        <div class="award-img"></div>
+        <div class="award-img">
+          <img src="../img/top3-award.png" alt="">
+        </div>
       </div>
     </div>
     <!-- 后N名 -->
@@ -62,6 +64,12 @@ import Services from '../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'ranking',
+  props: {
+    activitiesInfo: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data: () => ({
     rankingList: [],
     ranking: {}
@@ -103,14 +111,16 @@ export default {
     font-weight: bold;
   }
   .top3 {
+    position: relative;
     display: flex;
     justify-content: space-between;
-    padding: 0 .3rem;
+    height: 5.17rem;
     .item {
-      position: relative;
+      position: absolute;
       width: 1.9rem;
       height: 4.53rem;
       .avatar {
+        margin: .87rem auto 0;
         width: 1rem;
         height: 1rem;
         img {
@@ -118,6 +128,53 @@ export default {
           width: 100%;
           height: 100%;
         }
+      }
+      .name {
+        height: .35rem;
+        line-height: .32rem;
+        text-align: center;
+        font-size: .22rem;
+        color: #E43D81;
+      }
+      .seal {
+        height: .52rem;
+        line-height: .52rem;
+        text-align: center;
+        color: #F0882B;
+        font-weight:bold;
+      }
+      .award-name {
+        height: .52rem;
+        line-height: .52rem;
+        text-align: center;
+        color: #fff;
+        font-weight:bold;
+      }
+      .award-img {
+        margin: 0 auto;
+        width: 1.16rem;
+        img {
+          width: 100%;
+        }
+      }
+      &:nth-child(1) {
+        left: 50%;
+        top: 0;
+        background: url(../img/top3-1.png) no-repeat center top;
+        background-size: 100% 100%;
+        transform: translate(-50%, 0);
+      }
+      &:nth-child(2) {
+        left: .3rem;
+        bottom: 0;
+        background: url(../img/top3-2.png) no-repeat center top;
+        background-size: 100% 100%;
+      }
+      &:nth-child(3) {
+        right: .3rem;
+        bottom: 0;
+        background: url(../img/top3-3.png) no-repeat center top;
+        background-size: 100% 100%;
       }
     }
   }

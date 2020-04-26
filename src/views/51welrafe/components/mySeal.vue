@@ -42,6 +42,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .my-seal {
+  padding: 0 .3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,7 +62,7 @@ export default {
     background: url(../img/num-bg.png) no-repeat center center;
     background-size: 100% 100%;
     .icon {
-      margin-right: .1rem;
+      margin-right: .05rem;
       width: .3rem;
       height: .26rem;
       img {

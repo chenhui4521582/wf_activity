@@ -11,7 +11,7 @@
             <img src="../img/title9.png" alt="">
           </div>
           <div class="body">
-            <h5>1、活动时间：5月1日- 5月5日 </h5>
+            <h5>1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} 至 {{activitiesInfo.endDate | formatTime('m-d')}} </h5>
             <h5>2、收集图章</h5> 
             通过消耗流水、充值、购买活动礼包可获得图章，在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动；
             <h5>3、图章兑换奖励</h5>
@@ -66,11 +66,14 @@
                 <div class="time">日期</div>
                 <div class="num">获得数</div>
               </div>
-              <div class="list">
+              <div class="list" v-if="showSealLog">
                 <div class="item" v-for="(item, index) in sealLog" :key="index">
-                  <div class="time"></div>
-                  <div class="num"></div>
+                  <div class="time">{{item.createTime}}</div>
+                  <div class="num">{{item.propNum}}个</div>
                 </div>
+              </div>
+              <div v-else class="empty">
+                暂无记录
               </div>
             </div>
           </div>
@@ -91,7 +94,101 @@
           </div>
         </div>
       </template>
-
+      <!-- 商品兑换记录 -->
+      <template v-if="popupType == 6">
+        <div class="exchange-award-log bg2">
+          <div class="title">
+            <img src="../img/title5.png" alt="">
+          </div>
+          <div class="body">
+            <div class="nav">
+              <div class="time">日期</div>
+              <div class="num">兑换奖品</div>
+            </div>
+            <div class="list" v-if="showAwardLog">
+              <div class="item" v-for="(item, index) in awardLog" :key="index">
+                <div class="time">{{item.createTime}}</div>
+                <div class="num">{{item.awardsName}}</div>
+              </div>
+            </div>
+            <div v-else class="empty">
+              暂无记录
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- 奖品兑换确认 -->
+      <template v-if="popupType == 7">
+        <div class="confirm-exchange bg2">
+          <div class="title">
+            <img src="../img/title11.png" alt="">
+          </div>
+          <div class="body">
+            <div class="award-img">
+              <img src="../img/seal-award-img.png" alt="">
+            </div>
+            <div class="explain">本次兑换消耗<span>{{consumePropNum}}</span>个图章~</div>
+            <div class="btns">
+              <div class="cancel-btn" @click="hidePopup">
+                <img src="../img/cancel-btn.png" alt="">
+              </div>
+              <div class="confirm-btn" @click="confirmExchange">
+                <img src="../img/confirm-btn.png" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- 奖品兑换成功 -->
+      <template v-if="popupType == 8">
+        <div class="exchange-award bg2">
+          <div class="title">
+            <img src="../img/title3.png" alt="">
+          </div>
+          <div class="body">
+            <div class="award-img">
+              <img :src="awardsImg[awardsInfo.awardsType]" alt="">
+            </div>
+            <div class="award-name">{{awardsInfo.awardsName}}</div>
+            <div class="explain">奖品在<span>“我的”</span> 页面查询~</div>
+          </div>
+        </div>
+      </template>
+      <!-- 发榜 -->
+      <template v-if="popupType == 9">
+        <div class="user-ranking bg2">
+          <div class="title">
+            <img src="../img/title6.png" alt="">
+          </div>
+          <div class="body">
+            <!-- 上榜 -->
+            <template  v-if="myRank <=15 ">
+              <div class="ranking-list">
+                <div class="item" v-for="(item, index) in rankingAward" :key="index">
+                  <div class="award-img">
+                    <img :src="awardsImg[item.awardsType]" alt="">
+                  </div>
+                  <div class="award-name">{{item.awardsName}}</div>
+                </div>
+                <div class="add">+</div>
+              </div>
+              <div class="explain">恭喜您排名<span>第{{myRank}}</span>，获得以上奖品</div>
+            </template>
+            <!-- 没上榜 -->
+            <template v-else>
+              <div class="no-ranking-list">
+                <div class="item">
+                  <div class="award-img">
+                    <img src="../img/no-ranking.png" alt="">
+                  </div>
+                  <div class="award-name">您暂未上榜</div>
+                </div>
+              </div>
+              <div class="explain">下次继续加油哟！</div>
+            </template>
+          </div>
+        </div>
+      </template>
       <div class="close" @click="hidePopup"></div>
     </div>
   </div>
@@ -102,7 +199,7 @@ import Services from '../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'popup',
-  props: ['popupType', 'value', 'sealLog', 'sealNum'],
+  props: ['popupType', 'value', 'sealLog', 'awardLog', 'sealNum', 'awardsInfo', 'consumePropNum', 'myRank', 'rankingAward', 'activitiesInfo'],
   data: () => ({
     gameList: [
       {img: require('../img/0.png'), url: `//wap.beeplaying.com/crush/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '糖果萌消消乐'},
@@ -111,14 +208,20 @@ export default {
       {img: require('../img/4.png'), url: `//wap.beeplaying.com/kingdom2/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '三国大作战'},
       {img: require('../img/1.png'), url: `//wap.beeplaying.com/square/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '众神风云'},
       {img: require('../img/5.png'), url: `//wap.beeplaying.com/Marbles/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '王者弹珠'},
-    ]
+    ],
+    awardsImg: {
+      jyz: require('../img/leaf-icon.png'),
+      hfq: require('../img/hf-icon.png'),
+      jdk: require('../img/jd-icon.png'),
+      yhq: require('../img/copon-icon.png')
+    }
   }),
   computed: {
-    currentTree() {
-      return require(`../img/tree${this.treeInfo.currTreeGrade}.png`)
+    showSealLog () {
+      return this.sealLog.length
     },
-    proveTree() {
-      return require(`../img/tree${this.treeInfo.treeGrade}.png`)
+    showAwardLog () {
+      return this.awardLog.length
     }
   },
   methods: {
@@ -130,6 +233,9 @@ export default {
     },
     gotoGame(item) {
       window.location.href = item.url
+    },
+    confirmExchange() {
+      this.$emit('confirmExchange')
     },
     gotoPay(index) {
       let channel = localStorage.getItem('APP_CHANNEL')
@@ -162,7 +268,7 @@ export default {
   },
   watch: {
     value (newValue) {
-      if(newValue) {
+      if(newValue && [4, 6].indexOf(this.popupType) == -1) {
         Utils.ScrollNoMove()
       }else {
         Utils.ScrollMove()
@@ -324,6 +430,7 @@ export default {
           }
         }
         .list {
+          height: 2.6rem;
           overflow-x: hidden;
           overflow-y: scroll;
           -webkit-overflow-scrolling: touch;
@@ -335,8 +442,17 @@ export default {
               width: 50%;
               text-align: center;
               color: #fff;
+              white-space: nowrap;
+              color: #D6BFFA;
             }
           }
+        }
+        .empty {
+          margin: 1.3rem;
+          text-align: center;
+          font-size: .36rem;
+          font-weight: bold;
+          color: #D6BFFA;
         }
       }
     }
@@ -366,6 +482,194 @@ export default {
           text-align: center;
           color: #D6BFFA;
         }
+      }
+    }
+    .exchange-award-log {
+      .title {
+        margin: 2.5rem auto .73rem;
+        width: 1.51rem;
+        height: .42rem;
+      }
+      .body {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 4.4rem;
+        height: 4.35rem;
+        background:linear-gradient(0deg,rgba(93,34,188,1) 0%,rgba(93,36,184,1) 100%);
+        border-radius: .4rem;
+        .nav {
+          margin: .3rem 0;
+          .time, .num{
+            width: 50%;
+            height: .26rem;
+            line-height: .26rem;
+            border-right: 1px solid #AE85EF;
+            text-align: center;
+            color: #fff;
+          }
+          .num {
+            border: none
+          }
+        }
+        .list {
+          height: 3.3rem;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
+          .item {
+            margin-bottom: .2rem;
+            display: flex;
+            justify-content: flex-start;
+            .time, .num{
+              width: 50%;
+              text-align: center;
+              color: #fff;
+              white-space: nowrap;
+              color: #D6BFFA;
+            }
+          }
+        }
+        .empty {
+          margin: 1.3rem;
+          text-align: center;
+          font-size: .36rem;
+          font-weight: bold;
+          color: #D6BFFA;
+        }
+      }
+    }
+    .confirm-exchange  {
+      .title {
+        margin: 2.5rem auto .91rem;
+        width: 1.53rem;
+        height: .43rem;
+      }
+      .body {
+        .award-img {
+          margin: 0 auto .25rem;
+          padding: .38rem .47rem .3rem;
+          width: 2.7rem;
+          height: 2.5rem;
+          background: url(../img/seal-award-bg.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
+        .explain {
+          margin-bottom: .3rem;
+          text-align: center;
+          font-size: .3rem;
+          color: #D6BFFA;
+          font-weight: bold;
+          span {
+            color: #FEF84B;
+          }
+        }
+        .btns {
+          margin: 0 auto;
+          width: 4.8rem;
+          display: flex;
+          justify-content: flex-start;
+        }
+        .cancel-btn ,.confirm-btn {
+          width: 2.4rem;
+          height: 1.07rem;
+        }
+      }
+    }
+    .exchange-award {
+      .title {
+        margin: 2.5rem auto .73rem;
+        width: 1.51rem;
+        height: .42rem;
+      }
+      .body {
+        .award-img {
+          margin: 0 auto .5rem;
+          padding: .38rem .47rem .3rem;
+          width: 2.7rem;
+          height: 2.5rem;
+          background: url(../img/seal-award-bg.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
+        .award-name {
+          text-align: center;
+          margin-bottom: .5rem;
+          font-size: .3rem;
+          color: #FEF84B;
+          font-weight: bold;
+        }
+        .explain {
+          text-align: center;
+          color: #D6BFFA;
+          span {
+            color: #FEF84B;
+          }
+        }
+      }
+    }
+    .user-ranking {
+      .title {
+        margin: 2.5rem auto 0;
+        width: 1.18rem;
+        height: .4rem;
+      }
+      .body {
+        .ranking-list {
+          position: relative;
+          margin: 1.41rem auto 0;
+          display: flex;
+          justify-content: space-between; 
+          width: 4.34rem;
+          .item {
+            width: 1.88rem;
+            .award-img {
+              margin: 0 auto .5rem;
+              width: 1.88rem;
+              height: 1.88rem;
+              background: url(../img/seal-award-bg.png) no-repeat center center;
+              background-size: 100% 100%;
+            }
+            .award-name {
+              text-align: center;
+              margin-bottom: .5rem;
+              font-size: .3rem;
+              color: #FEF84B;
+              font-weight: bold;
+            }
+          }
+          .add {
+            position: absolute;
+            left: 50%;
+            top: .6rem;
+            transform: translate(-50%, 0);
+            font-size: .5rem;
+            color: #682BCA;
+          }
+        }
+        .no-ranking-list {
+          margin-top: .85rem;
+          .award-img {
+            margin: 0 auto .5rem;
+            width: 2.7rem;
+            height: 2.5rem;
+            background: url(../img/seal-award-bg.png) no-repeat center center;
+            background-size: 100% 100%;
+          }
+          .award-name {
+            text-align: center;
+            margin-bottom: .5rem;
+            font-size: .3rem;
+            color: #FEF84B;
+            font-weight: bold;
+          }
+        }
+        .explain {
+          text-align: center;
+          color: #D6BFFA;
+          span {
+            color: #FEF84B;
+          }
+        }
+
       }
     }
   }

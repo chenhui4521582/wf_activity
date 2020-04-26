@@ -25,19 +25,19 @@
         @taskFinish="_getProgress"
       />
     </div>
-    <!-- 买礼包 -->
-    <div class="buy-card">
-      
-    </div>
+    <!-- 购买礼包 -->
+    <CardList :list="cardList"/>
     <!-- Popup -->
     <popup 
       v-model="showPopup" 
       :popupType="popupType"
       :sealNum="sealNum"
+      :sealLog="sealLog"
     />
   </div>
 </template>
 <script>
+import CardList from './cardList'
 import Popup from './popup'
 import MySeal from './mySeal'
 import Progress from './progress'
@@ -52,17 +52,19 @@ export default {
     }
   },
   data: () => ({
-    betProgress: {1: 2, 2:3},
+    betProgress: {},
     rechargeProgress: {},
     cardList: [],
+    sealLog: [],
+    sealNum: 0,
     showPopup: false,
     popupType: 5,
-    sealNum: 0
   }),
   components: {
     MySeal,
     Progress,
-    Popup
+    Popup,
+    CardList
   },
   methods: {
     /** 获取图章记录 **/
@@ -70,8 +72,9 @@ export default {
       Services.getUserPropLog().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.betProgress = _get(res, 'data.data.betProgress', {})
-          this.rechargeProgress = _get(res, 'data.data.rechargeProgress', {})
+          this.sealLog = _get(res, 'data.data', [])
+          this.showPopup = true
+          this.popupType = 4
         } 
       }) 
     },
@@ -89,7 +92,10 @@ export default {
     /** 获取礼包列表 **/
     _getCardList () {
       Services.getCardList().then(res => {
-
+        const {code, data, message} = _get(res, 'data')
+        if (code == 200) {
+          this.cardList = _get(res, 'data.data.mallBizConfigs')
+        }
       })
     },
     /** 进度条任务领取 **/
@@ -128,12 +134,12 @@ export default {
   },
   mounted () {
     this._getUserProgress()
+    this._getCardList()
   }
 }
 </script>
 <style lang="less" scoped>
 .get-seal {
-  padding: 0 .3rem;
   background: url(../img/content-bg.png) no-repeat center top;
   background-size: 100% auto;
   .play-game {
@@ -152,9 +158,6 @@ export default {
       font-weight:bold;
       text-align: center;
     }
-  }
-  .buy-card {
-    height: 4.9rem;
   }
 }
 </style>

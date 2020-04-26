@@ -8,7 +8,7 @@ const getInfo = ( params ) => {
 }
 
 /**
- *  @description  福利游乐场-图章兑换记录
+ *  @description  福利游乐场-奖品兑换记录
  */
 const getExchangeLog = ( params ) => {
   let url = '//ops-api.beeplaying.com/ops/api/playground/convert-record'
@@ -48,7 +48,7 @@ const getUserProgress = ( params ) => {
 }
 
 /**
- *  @description  福利游乐场-用户获取道具记录
+ *  @description  福利游乐场-图章获取记录
  */
 const getUserPropLog = ( params ) => {
   let url = `//ops-api.beeplaying.com/ops/api/playground/user-prop-record`
@@ -67,7 +67,7 @@ const getUserRanking = ( params ) => {
  *  @description  福利游乐场-获取礼包列表
  */
 const getCardList = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/user-rank`
+  let url = `http://shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/241`
   return axios.post(url, params)
 }
 

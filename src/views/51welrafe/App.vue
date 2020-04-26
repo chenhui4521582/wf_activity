@@ -29,14 +29,21 @@
         v-if="currentIndex == 2" 
         :userInfo="userInfo" 
         :awardsList="awardsList"
+        @refrshUserInfo="_getInfo"
       />
       <!-- 排行榜 -->
-      <ranking v-if="currentIndex == 3" />
+      <ranking 
+        v-if="currentIndex == 3" 
+        :activitiesInfo="activitiesInfo"
+      />
     </div>
     <!-- popup -->
     <popup 
       v-model="showPopup" 
       :popupType="popupType"
+      :rankingAward="rankingAward"
+      :myRank="myRank"
+      :activitiesInfo="activitiesInfo"
     />
   </div>
 </template>
@@ -54,10 +61,13 @@ export default {
   data: ()=>({
     currentIndex: 1,
     userInfo: {},
+    activitiesInfo: {},
     awardsList: [],
     countdown: '',
     showPopup: false,
-    popupType: 1
+    popupType: 0,
+    rankingAward: [],
+    myRank: []
   }),
   components: {
     CountDown,
@@ -65,8 +75,6 @@ export default {
     ExchangePrize,
     Ranking,
     Popup
-  },
-  computed: {
   },
   methods: {
     handleNavClick (index) {
@@ -80,11 +88,37 @@ export default {
           this.userInfo = _get(res, 'data.data.userInfo', {})
           this.countdown = _get(res, 'data.data.countdown', '')
           this.awardsList = _get(res, 'data.data.awardsList', [])
+          this.activitiesInfo = _get(res, 'data.data', {})
+            this._getUserRanking()
+          if(_get(res, 'data.data.state') == 2) {
+            this.currentIndex = 3
+            return 
+          }
+          if(_get(res, 'data.data.guidePopup', false)) {
+            this.popupType = 2
+            this.showPopup = true
+          }
+        }
+      })
+    },
+    /** 获取发榜数据 **/
+    _getUserRanking () {
+      Services.getUserRanking().then(res => {
+        const {code} = _get(res, 'data')
+        if(code == 200) {
+          let popup = _get(res, 'data.data.popup', false)
+          this.myRank = _get(res, 'data.data.myRank', 0)
+          this.rankingAward = _get(res, 'data.data.awardsList', [])
+          if(popup) {
+            this.popupType = 9
+            this.showPopup = true
+          }
         }
       })
     },
     openRule () {
-      this.showPopup = 1
+      this.popupType = 1
+      this.showPopup = true
     }
   },
   mounted() {
