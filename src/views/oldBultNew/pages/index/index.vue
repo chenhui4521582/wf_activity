@@ -109,6 +109,10 @@ export default {
     async init () {
       const data = await activityInfo()
       this.userInfo = data.data
+      GLOBALS.marchSetsPoint('P_H5PT0246', {
+        invited_number: this.userInfo.invitedNum,
+        source_address: GLOBALS.getUrlParam('from') || ''
+      })
     },
     share () {
       GLOBALS.marchSetsPoint('A_H5PT0246002891', {
