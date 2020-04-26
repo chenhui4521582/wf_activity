@@ -67,7 +67,7 @@ const getUserRanking = ( params ) => {
  *  @description  福利游乐场-获取礼包列表
  */
 const getCardList = ( params ) => {
-  let url = `http://shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/241`
+  let url = `//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/241`
   return axios.post(url, params)
 }
 

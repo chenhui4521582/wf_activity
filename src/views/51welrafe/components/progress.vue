@@ -104,7 +104,7 @@ export default {
   padding: 0 .17rem;
   position: relative;
   width: 100%;
-  height: 3rem;
+  height: 2.1rem;
   .wrap {
     display: inline-block;
     .progress {
