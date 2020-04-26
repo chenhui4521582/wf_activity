@@ -100,6 +100,7 @@ export default {
   },
   mounted () {
     this._getRanking()
+    GLOBALS.marchSetsPoint('A_H5PT0278003326')
   }
 }
 </script>

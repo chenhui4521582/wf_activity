@@ -17,7 +17,7 @@
               <div class="amount">{{unit(item.amount)}}</div>
             </div>
             <!-- 去完成 -->
-            <div class="btn go-finished" v-if="item.status == 0" @click="openPopup">
+            <div class="btn go-finished" v-if="item.status == 0" @click="openPopup(item)">
               <img src="../img/go-finished-icon.png" alt="">
             </div>
             <!-- 领取 -->
@@ -67,14 +67,34 @@ export default {
       }
       return `${value}元`
     },
-    openPopup () {
+    openPopup (item) {
       this.$emit('openPopup', this.status)
+      if(this.status == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0278003319',{
+          task_id: item.sort
+        })
+      }
+      if(this.status == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0278003321',{
+          task_id: item.sort
+        })
+      }
     },
     taskFinish (item) {
       this.$emit('taskFinish', {
         type: this.status,
         sort: item.sort
       })
+      if(this.status == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0278003320',{
+          task_id: item.sort
+        })
+      }
+      if(this.status == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0278003322',{
+          task_id: item.sort
+        })
+      }
     }
   }
 }

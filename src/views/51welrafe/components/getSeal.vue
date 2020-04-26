@@ -129,12 +129,12 @@ export default {
       if(status == 2) {
         window.location.href = '//wap.beeplaying.com/xmWap/#/payment'
       }
-
     }
   },
   mounted () {
     this._getUserProgress()
     this._getCardList()
+    GLOBALS.marchSetsPoint('A_H5PT0278003324')
   }
 }
 </script>

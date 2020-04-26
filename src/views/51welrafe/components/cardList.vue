@@ -20,6 +20,9 @@ export default {
   },
   methods: {
     gotoPayCard(item, index) {
+      GLOBALS.marchSetsPoint('A_H5PT0278003323',{
+        product_price: item.price
+      })
       let channel = localStorage.getItem('APP_CHANNEL')
       let originDeffer = `//wap.beeplaying.com/activities/51welrafe.html?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(item))

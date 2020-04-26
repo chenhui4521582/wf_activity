@@ -1,7 +1,7 @@
 <template>
   <div class="welrafe">
     <!-- 返回按钮 -->
-    <div class="back-btn">
+    <div class="back-btn" @click="backHome">
       <img src="./img/back-icon.png" alt="">
     </div>
     <!-- 规则按钮 -->
@@ -89,14 +89,15 @@ export default {
           this.countdown = _get(res, 'data.data.countdown', '')
           this.awardsList = _get(res, 'data.data.awardsList', [])
           this.activitiesInfo = _get(res, 'data.data', {})
-            this._getUserRanking()
           if(_get(res, 'data.data.state') == 2) {
+            this._getUserRanking()
             this.currentIndex = 3
             return 
           }
           if(_get(res, 'data.data.guidePopup', false)) {
             this.popupType = 2
             this.showPopup = true
+            GLOBALS.marchSetsPoint('A_H5PT0278003316')
           }
         }
       })
@@ -112,6 +113,7 @@ export default {
           if(popup) {
             this.popupType = 9
             this.showPopup = true
+            GLOBALS.marchSetsPoint('A_H5PT0278003330')
           }
         }
       })
@@ -119,10 +121,18 @@ export default {
     openRule () {
       this.popupType = 1
       this.showPopup = true
+      GLOBALS.marchSetsPoint('A_H5PT0278003317')
+    },
+    backHome() {
+      window.location.href = "//wap.beeplaying.com/xmWap/"
+      GLOBALS.marchSetsPoint('A_H5PT0278003318')
     }
   },
   mounted() {
     this._getInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0278', {
+      source_address: navigator.referrer
+    })
   }
 }
 </script>

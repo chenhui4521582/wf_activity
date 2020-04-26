@@ -88,6 +88,11 @@ export default {
       this.consumePropNum = item.consumePropNum
       this.showPopup = true
       this.popupType = 7
+      GLOBALS.marchSetsPoint('A_H5PT0278003327', {
+        awards_id:  item.sort,
+        awards_name: item.awardsName
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0278003328')
     },
     /** 兑换 **/
     _exchange () {
@@ -103,6 +108,7 @@ export default {
           this.showPopup = true
           this.popupType = 8
           this.$emit('refrshUserInfo')
+          GLOBALS.marchSetsPoint('A_H5PT0278003329')
         }else {
           this.$toast.show({ message })
         }
@@ -110,6 +116,9 @@ export default {
         this.lock = false
       })
     }
+  },
+  mounted () {
+    GLOBALS.marchSetsPoint('A_H5PT0278003326')
   }
 }
 </script>

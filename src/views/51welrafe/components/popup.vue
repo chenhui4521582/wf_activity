@@ -163,14 +163,14 @@
           <div class="body">
             <!-- 上榜 -->
             <template  v-if="myRank <=15 ">
-              <div class="ranking-list">
+              <div class="ranking-list" :class="{big: oneAward}">
                 <div class="item" v-for="(item, index) in rankingAward" :key="index">
                   <div class="award-img">
                     <img :src="awardsImg[item.awardsType]" alt="">
                   </div>
                   <div class="award-name">{{item.awardsName}}</div>
                 </div>
-                <div class="add">+</div>
+                <div class="add" v-if="showAddIcon">+</div>
               </div>
               <div class="explain">恭喜您排名<span>第{{myRank}}</span>，获得以上奖品</div>
             </template>
@@ -222,6 +222,12 @@ export default {
     },
     showAwardLog () {
       return this.awardLog.length
+    },
+    oneAward () {
+      return this.rankingAward.length == 1
+    },
+    showAddIcon () {
+      return this.rankingAward.length > 1
     }
   },
   methods: {
@@ -236,34 +242,6 @@ export default {
     },
     confirmExchange() {
       this.$emit('confirmExchange')
-    },
-    gotoPay(index) {
-      let channel = localStorage.getItem('APP_CHANNEL')
-      let originDeffer = `//wap.beeplaying.com/activities/tree.html?channel=${channel}&blindBox=true`
-      localStorage.setItem('payment', JSON.stringify(this.cardList[index]))
-      localStorage.setItem('originDeffer', originDeffer)
-      switch(index) {
-        case 0 :
-          GLOBALS.marchSetsPoint('A_H5PT0244002828')
-          break;
-        case 1 :
-          GLOBALS.marchSetsPoint('A_H5PT0244002829')
-          break;
-      }
-      window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
-    },
-    openTask() {
-      this.$emit('input', false)
-      this.$emit('openTask')
-    },
-    tryAgen() {
-      this.$emit('input', false)
-      this.$emit('tryAgen')
-    },
-    checkLog() {
-      this.$emit('input', false)
-      this.$emit('refresh', false)
-      this.$emit('checkLog')
     }
   },
   watch: {
@@ -636,6 +614,20 @@ export default {
               font-weight: bold;
             }
           }
+          &.big {
+            margin-top: .85rem;
+            justify-content: center; 
+            .item {
+              width: 2.7rem;
+            }
+            .award-img {
+              margin: 0 auto .5rem;
+              width: 2.7rem;
+              height: 2.5rem;
+              background: url(../img/seal-award-bg.png) no-repeat center center;
+              background-size: 100% 100%;
+            }
+          }
           .add {
             position: absolute;
             left: 50%;
@@ -647,8 +639,12 @@ export default {
         }
         .no-ranking-list {
           margin-top: .85rem;
+          .item {
+            margin: 0 auto ;
+            width: 2.7rem;
+          }
           .award-img {
-            margin: 0 auto .5rem;
+            margin-bottom: .5rem;
             width: 2.7rem;
             height: 2.5rem;
             background: url(../img/seal-award-bg.png) no-repeat center center;
