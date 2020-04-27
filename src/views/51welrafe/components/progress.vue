@@ -7,7 +7,7 @@
       ref="scroll"
     > <div class="wrap">
         <div class="progress">
-          <div class="progress-bg" :style="{width: `${countProgress}%`}">
+          <div class="progress-bg" :style="{width: `${countProgress}`}">
             <div class="arrows" v-if="countProgress"></div>
           </div>
         </div>
@@ -55,10 +55,15 @@ export default {
   computed: {
     countProgress () {
       const progressList = this.list.progressList || []
-      const finishedArray = progressList.filter(item => {
-        return item.status == 1
-      })
-      return (finishedArray.length / progressList.length) * 100
+      const currentAmount = this.list.currentAmount || 0
+      let progress = 0
+      for(let i = 0; i < progressList.length; i++) {
+        const currentItem = progressList[i]
+        if(currentAmount >= currentItem.amount) {
+          progress = `${i * 1.49 + .75}rem`
+        }
+      }
+      return progress
     }
   },
   methods: {
@@ -117,14 +122,13 @@ export default {
 </script>
 <style lang="less" scoped>
 .gress-wrap{
-  padding: 0 .17rem;
+  margin: 0 .17rem;
   position: relative;
-  width: 100%;
   height: 2.3rem;
   .wrap {
     display: inline-block;
     .progress {
-      margin: 0 .3rem .1rem;
+      margin: 0 0 .1rem;
       padding: .06rem .06rem 0;
       height: .2rem;
       border-radius: .1rem;
