@@ -42,15 +42,21 @@ export default {
     .item-img {
       width: 1.74rem;
       height: 1.74rem;
+      img {
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
     }
     .item-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
       width: 1.74rem;
       white-space: nowrap;
       font-size: .2rem;
       font-weight: bold;
       color: #fff;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: center;
     }
     .item-btn {
       width: 1.74rem;
