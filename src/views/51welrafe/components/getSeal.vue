@@ -31,6 +31,7 @@
     <popup 
       v-model="showPopup" 
       :popupType="popupType"
+      :userInfo="userInfo"
       :sealNum="sealNum"
       :sealLog="sealLog"
     />

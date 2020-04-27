@@ -59,7 +59,7 @@
           </div>
           <div class="body">
             <div class="total">
-              累计获得图章：100个
+              累计获得图章：{{userInfo.totalNum}}个
             </div>
             <div class="seal-wrap">
               <div class="nav">
@@ -199,7 +199,7 @@ import Services from '../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'popup',
-  props: ['popupType', 'value', 'sealLog', 'awardLog', 'sealNum', 'awardsInfo', 'consumePropNum', 'myRank', 'rankingAward', 'activitiesInfo'],
+  props: ['popupType', 'value', 'sealLog', 'awardLog', 'sealNum', 'awardsInfo', 'consumePropNum', 'myRank', 'rankingAward', 'activitiesInfo', 'userInfo'],
   data: () => ({
     gameList: [
       {img: require('../img/0.png'), url: `//wap.beeplaying.com/crush/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '糖果萌消消乐'},
