@@ -308,6 +308,7 @@ export default {
       height: 9.33rem;
     }
     .rule {
+      line-height: .32rem;
       .title {
         margin: 2.5rem auto .72rem;
         width: 1.61rem;

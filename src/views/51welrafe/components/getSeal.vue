@@ -11,6 +11,7 @@
       <Progress 
         :list="betProgress" 
         :status="1" 
+        :probeType="3"
         @openPopup="openPopup"
         @taskFinish="_getProgress"
       />
@@ -20,7 +21,8 @@
       <div class="title">累计充值</div>
       <Progress 
         :list="rechargeProgress"
-        :status="2" 
+        :status="2"
+        :probeType="3"
         @openPopup="openPopup"
         @taskFinish="_getProgress"
       />

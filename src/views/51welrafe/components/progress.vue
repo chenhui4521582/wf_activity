@@ -4,6 +4,7 @@
       :scrollX="true" 
       :scrollY="false"
       :data="list"
+      ref="scroll"
     > <div class="wrap">
         <div class="progress">
           <div class="progress-bg" :style="{width: `${countProgress}%`}">
@@ -11,7 +12,7 @@
           </div>
         </div>
         <div class="task">
-          <div class="item" v-for="(item, index) in list.progressList" :key="index">
+          <div class="item" v-for="(item, index) in list.progressList" :key="index" ref="items">
             <div class="unit" :class="{'received': item.status == 2}">
               <div class="award">{{item.awards}}</div>
               <div class="amount">{{unit(item.amount)}}</div>
@@ -35,7 +36,7 @@
   </div>
 </template>
 <script>
-import BetterScroll from '@/components/scroll/scroll'
+import BetterScroll from './scroll/scroll'
 export default {
   name: 'task',
   props: {
@@ -96,6 +97,25 @@ export default {
         })
       }
     }
+  },
+  mounted () {
+
+
+  },
+  watch: {
+    list(value) {
+      setTimeout(() => {
+        const listArr = value.progressList
+        for(let i = 0; i < listArr.length; i++) {
+          const next = i+1
+          if(listArr[i].status == 2 && listArr[next].status != 2) {
+            const listElement = this.$refs.items
+            this.$refs.scroll.scrollToElement(listElement[next])
+            break
+          }
+        }
+      },1000)
+    }
   }
 }
 </script>
@@ -104,7 +124,7 @@ export default {
   padding: 0 .17rem;
   position: relative;
   width: 100%;
-  height: 2.1rem;
+  height: 2.3rem;
   .wrap {
     display: inline-block;
     .progress {
@@ -142,10 +162,14 @@ export default {
           background-size: 100% 100%;
           text-align: center;
           .award {
+            height: .4rem;
+            line-height: .36rem;
             font-size: .28rem;
-            color: #FF6622;
+            color: #5C5886;
           }
           .amount {
+            height: .3rem;
+            line-height: .28rem;
             font-size: .2rem;
             color: #fff;
           }

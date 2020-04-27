@@ -27,7 +27,7 @@ export default {
       let originDeffer = `//wap.beeplaying.com/activities/51welrafe.html?channel=${channel}&blindBox=true`
       localStorage.setItem('payment', JSON.stringify(item))
       localStorage.setItem('originDeffer', originDeffer)
-      window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist"
+      window.location.href="//wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true"
     }
   }
 }
