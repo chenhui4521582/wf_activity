@@ -56,7 +56,7 @@ export default {
     countProgress () {
       const progressList = this.list.progressList || []
       const finishedArray = progressList.filter(item => {
-        return item.status == 2
+        return item.status == 1
       })
       return (finishedArray.length / progressList.length) * 100
     }
@@ -97,10 +97,6 @@ export default {
         })
       }
     }
-  },
-  mounted () {
-
-
   },
   watch: {
     list(value) {
