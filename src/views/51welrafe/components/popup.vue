@@ -160,7 +160,7 @@
           </div>
           <div class="body">
             <!-- 上榜 -->
-            <template  v-if="myRank <=15 ">
+            <template  v-if="myRank !=0 && myRank <=15">
               <div class="ranking-list" :class="{big: oneAward}">
                 <div class="item" v-for="(item, index) in rankingAward" :key="index">
                   <div class="award-img">
