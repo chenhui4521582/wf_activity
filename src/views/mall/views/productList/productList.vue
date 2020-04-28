@@ -119,7 +119,7 @@ img {
   .rule-btn {
     position: absolute;
     right: 0.3rem;
-    top: 1.2rem;
+    top: 0.3rem;
     z-index: 2;
     width: 1.3rem;
     height: 0.4rem;
