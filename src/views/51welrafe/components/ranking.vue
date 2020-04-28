@@ -21,7 +21,7 @@
       <div class="my-ranking">
         <div class="rank">
           <p class="key">我的排名</p>
-          <p class="value">{{ranking.myRank}}</p>
+          <p class="value">{{ranking.myRank || '未上榜'}}</p>
           <div class="line"></div>
         </div>
         <div class="seal">
