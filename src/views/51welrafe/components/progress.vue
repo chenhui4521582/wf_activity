@@ -58,7 +58,7 @@ export default {
       const progressList = this.list.progressList || []
       const currentAmount = this.list.currentAmount || 0
       let progress = 0
-      if(currentAmount >= progressList[progressList.length-1].amount) {
+      if(progressList.length && currentAmount >= progressList[progressList.length-1].amount) {
         progress = `100%`
         return progress
       }
@@ -114,7 +114,7 @@ export default {
         const listArr = value.progressList
         for(let i = 0; i < listArr.length; i++) {
           const next = i+1
-          if(listArr[i].status == 2 && listArr[next].status != 2) {
+          if(listArr[i].status == 2 && listArr[next] && listArr[next].status != 2) {
             const listElement = this.$refs.items
             this.$refs.scroll && this.$refs.scroll.scrollToElement(listElement[next])
             break

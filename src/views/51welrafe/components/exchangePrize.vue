@@ -96,6 +96,11 @@ export default {
     },
     /** 兑换 **/
     _exchange () {
+      if(this.userInfo.totalNum < this.consumePropNum ) {
+        this.showPopup = false
+        this.$toast.show({message: '您的奖章不足!'})
+        return false
+      }
       if(this.lock) {
         return false
       }
