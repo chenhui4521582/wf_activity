@@ -1,48 +1,31 @@
 <template>
   <article class="myprize-wrapper">
-    <Dialog :show="show"
-      title="温馨提示"
-      @onConfirm="onConfirm"
-      confirm="我知道了">
-      <p v-if="this.active===1"
-        class="tip">
+    <Dialog :show="show" title="温馨提示" @onConfirm="onConfirm" confirm="我知道了">
+      <p v-if="this.active===1" class="tip">
         领取成功后，预计1-2个工作日发货,请您耐心等待，并确保通话畅通若超时未发货，请及时联系<span @click="toOnlineService">在线客服</span>
       </p>
-      <p class="tip"
-        v-if="this.active===2">您的运单号为：{{orderNumber}} <span v-clipboard:success="copySuccess"
-          v-clipboard:copy="orderNumber">复制</span></p>
+      <p class="tip" v-if="this.active===2">您的运单号为：{{orderNumber}} <span
+          v-clipboard:success="copySuccess" v-clipboard:copy="orderNumber">复制</span></p>
     </Dialog>
-    <Dialog :show="isExchange"
-      title="换积分"
-      cancel="取消"
-      @onCancel="onCancel"
-      @onConfirm="onExchange"
+    <Dialog :show="isExchange" title="换积分" cancel="取消" @onCancel="onCancel" @onConfirm="onExchange"
       :confirm="`<p style='color:#FF4141'>立即兑换</p>`">
       <p class="score-content">
-        积分可以在<span class="score-center"
-          @click="goScore">积分中心</span>兑换盲盒<br>
+        积分可以在<span class="score-center" @click="goScore">积分中心</span>兑换盲盒<br>
         优惠券，透视卡，包邮卡等奖品。<br>
         此奖品可兑换<span class="score-count">{{score}}</span>积分。
       </p>
       <p class="score-tip"><span class="icon">!</span> 兑换后,奖品将无法领取,请谨慎操作</p>
     </Dialog>
     <section class="container">
-      <div class="bar"
-        v-for="(item,index) in tabBar"
-        @click="changeTab(index)"
-        :key="item.label">
-        <span class="bar__span"
-          :class="{'active':index===active}">
+      <div class="bar" v-for="(item,index) in tabBar" @click="changeTab(index)" :key="item.label">
+        <span class="bar__span" :class="{'active':index===active}">
           {{item.label}}
         </span>
       </div>
     </section>
     <section class="content">
-      <p v-if="!isFollow"
-        class="wechat">
-        <img @click="closeWechat"
-          src="./assets/icon.png"
-          alt="">
+      <p v-if="!isFollow" class="wechat">
+        <img @click="closeWechat" src="./assets/icon.png" alt="">
         <span>
           关注公众号 及时跟踪物流
         </span>
@@ -50,55 +33,37 @@
           点击关注>
         </span>
       </p>
-      <div v-if="this.goodsList && this.goodsList.length > 0"
-        class="total">
+      <div v-if="this.goodsList && this.goodsList.length > 0" class="total">
         <p>共<span>{{this.goodsList.length}}件</span>商品</p>
         <p></p>
         <p v-if="this.active === 0 && this.goodsList && this.goodsList.length > 0"
           class="free-shipping">温馨提示: 领取奖品满2件即可包邮哦~</p>
       </div>
       <section v-if="this.goodsList && this.goodsList.length > 0">
-        <Goods @viewProduct="viewProduct"
-          v-for="(item,index) in goodsList"
-          :key="index"
-          :isPrice="active!==3"
-          :goods="item">
+        <Goods @viewProduct="viewProduct" v-for="(item,index) in goodsList" :key="index"
+          :isPrice="active!==3" :goods="item">
           <div slot="left">
             <p class="goods-time">开盒时间：{{item.openTime}}</p>
-            <p class="goods-time"
-              v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
+            <p class="goods-time" v-if="item.sendTime">发货时间：{{item.sendTime}}</p>
           </div>
           <section slot="right">
-            <div v-if="handelList[active]"
-              @click="handelList[active].handle(item)"
-              class="button"
+            <div v-if="handelList[active]" @click="handelList[active].handle(item)" class="button"
               :class="handelList[active].buttonType">{{handelList[active].buttonText}}
             </div>
-            <p class="score"
-              @click="getScore(item.id)"
-              v-if="active===0">换积分</p>
-            <img v-if="active===3"
-              class="recover"
-              src="./assets/recover.png"
-              alt="">
-            <p v-if="active===3"
-              class="score">{{item.remark}}</p>
+            <p class="score" @click="getScore(item.id)" v-if="active===0">换积分</p>
+            <img v-if="active===3" class="recover" src="./assets/recover.png" alt="">
+            <p v-if="active===3" class="score">{{item.remark}}</p>
           </section>
         </Goods>
       </section>
       <Default v-if="this.goodsList && this.goodsList.length === 0"
-        :title="`您没有${tabBar[active].label}的盲盒奖品哦~`"
-        @onConfirm="toIndex" />
+        :title="`您没有${tabBar[active].label}的盲盒奖品哦~`" @onConfirm="toIndex" />
     </section>
-    <section @click="toOnlineService"
-      class="service">
-      <img src="./assets/service.png"
-        alt="">
+    <section @click="toOnlineService" class="service">
+      <img src="./assets/service.png" alt="">
       <p>客服</p>
     </section>
-    <ProductDialog :goods-detail="productDetail"
-      v-if="showProduct"
-      @close="showProduct=false"
+    <ProductDialog :goods-detail="productDetail" v-if="showProduct" @close="showProduct=false"
       :show="showProduct" />
   </article>
 </template>
@@ -177,7 +142,7 @@ export default {
     new Promise(resolve => {
       resolve(isFollowWechat())
     }).then(resolve => {
-      if (!isWechat && !resolve) {
+      if (!isWechat && resolve.openBoxOrTransparent) {
         this.isFollow = false
       }
     })
@@ -458,7 +423,7 @@ export default {
         &.active {
           color: #d1ac42;
           &::after {
-            content: "";
+            content: '';
             width: 100%;
             height: 0.04rem;
             background: #d1ac42;

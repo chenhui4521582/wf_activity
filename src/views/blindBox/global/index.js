@@ -6,8 +6,8 @@ export const WechatUrl = ''
 export const isWechat = localStorage.getItem('APP_CHANNEL') === '110005001'
 // 是否关注公众号
 export const isFollowWechat = async () => {
-  const { data: { data: { binding } } } = await UserInfo()
-  return binding || false
+  const { data: { data: { binding, openBoxOrTransparent } } } = await UserInfo()
+  return { binding, openBoxOrTransparent }
 }
 
 // 跳转客服 插入js
@@ -28,39 +28,39 @@ export const toService = () => {
   const userInfo = JSON.parse(localStorage.getItem('user_Info'))
   let info = [
     {
-      "key": "user_id",
-      "label": "用户ID",
-      "value": String(userInfo.userId)
+      'key': 'user_id',
+      'label': '用户ID',
+      'value': String(userInfo.userId)
     },
     {
-      "key": "nickname",
-      "label": "用户昵称",
-      "value": String(userInfo.nickname)
+      'key': 'nickname',
+      'label': '用户昵称',
+      'value': String(userInfo.nickname)
     },
     {
-      "key": "channel",
-      "label": "渠道号",
-      "value": userInfo.channelId
+      'key': 'channel',
+      'label': '渠道号',
+      'value': userInfo.channelId
     },
     {
-      "key": "channel_name",
-      "label": "渠道名称",
-      "value": userInfo.channelName
+      'key': 'channel_name',
+      'label': '渠道名称',
+      'value': userInfo.channelName
     },
     {
-      "key": "cat_level",
-      "label": "猫等级",
-      "value": String(userInfo.catVipLev)
+      'key': 'cat_level',
+      'label': '猫等级',
+      'value': String(userInfo.catVipLev)
     },
     {
-      "key": "sum_recharge",
-      "label": "充值数量",
-      "value": String(userInfo.sumRecharge) + '元'
+      'key': 'sum_recharge',
+      'label': '充值数量',
+      'value': String(userInfo.sumRecharge) + '元'
     },
     {
-      "key": "add_time",
-      "label": "创建时间",
-      "value": String(userInfo.createTime)
+      'key': 'add_time',
+      'label': '创建时间',
+      'value': String(userInfo.createTime)
     }
   ]
   ysf('config', {
