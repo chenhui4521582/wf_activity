@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="popup" v-if="value">
     <div class="mask"></div>
