@@ -34,3 +34,9 @@ export default {
   }
 }
 </style>
+<style>
+.goods-description .desc img {
+  width: 100% !important;
+  height: auto !important;
+}
+</style>
