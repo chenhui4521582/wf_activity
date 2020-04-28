@@ -9,9 +9,10 @@
       <img src="./img/rule-icon.png" alt="">
     </div>
     <!-- 倒计时 -->
-    <count-down :time="countdown"/>
+    <img v-if="activitiesInfo.state == 2" class="activities-end" src="./img/activities-end.png" alt="">
+    <count-down v-else :time="countdown" @countDownCallback="countDownCallback"/>
     <!-- 导航 -->
-    <div class="nav">
+    <div class="nav" v-if="activitiesInfo.state != 2">
       <div :class="[currentIndex == 1 ? 'seal active' : 'seal']" @click="handleNavClick(1)"/>
       <div :class="[currentIndex == 2 ? 'exchange active' : 'exchange']" @click="handleNavClick(2)"/>
       <div :class="[currentIndex == 3 ? 'ranking active' : 'ranking']" @click="handleNavClick(3)"/>
@@ -126,6 +127,9 @@ export default {
     backHome() {
       window.location.href = "//wap.beeplaying.com/xmWap/"
       GLOBALS.marchSetsPoint('A_H5PT0278003318')
+    },
+    countDownCallback() {
+      this.activitiesInfo.state = 2
     }
   },
   mounted() {
@@ -206,6 +210,12 @@ export default {
         background-size: 2.02rem .82rem;
       }
     }
+  }
+  .activities-end {
+    margin: 3.2rem auto .46rem;
+    display: block;
+    width: 2.9rem;
+    height: .66rem;
   }
 }
 </style>

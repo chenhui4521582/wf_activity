@@ -5,7 +5,8 @@
       :scrollY="false"
       :data="list"
       ref="scroll"
-    > <div class="wrap">
+    >
+       <div class="wrap">
         <div class="progress">
           <div class="progress-bg" :style="{width: `${countProgress}`}">
             <div class="arrows" v-if="countProgress"></div>
@@ -111,7 +112,7 @@ export default {
           const next = i+1
           if(listArr[i].status == 2 && listArr[next].status != 2) {
             const listElement = this.$refs.items
-            this.$refs.scroll.scrollToElement(listElement[next])
+            this.$refs.scroll && this.$refs.scroll.scrollToElement(listElement[next])
             break
           }
         }
