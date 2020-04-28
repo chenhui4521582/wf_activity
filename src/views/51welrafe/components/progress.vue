@@ -58,6 +58,10 @@ export default {
       const progressList = this.list.progressList || []
       const currentAmount = this.list.currentAmount || 0
       let progress = 0
+      if(currentAmount >= progressList[progressList.length-1].amount) {
+        progress = `100%`
+        return progress
+      }
       for(let i = 0; i < progressList.length; i++) {
         const currentItem = progressList[i]
         if(currentAmount >= currentItem.amount) {
