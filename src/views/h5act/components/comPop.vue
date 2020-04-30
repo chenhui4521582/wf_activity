@@ -30,7 +30,7 @@
                          :class="{selected:index==tabIndex}">{{item}}
                     </div>
                   </div>
-                  <div class="bonus-record prize" :class="{empty:!record.length}" v-if="tabIndex==0">
+                  <div class="bonus-record prize" :class="{empty:!record.length}" v-if="tabIndex==1">
                     <template v-if="record.length">
                       <div class="title_items">
                         <div class="title" style="flex: .6">奖励时间</div>
@@ -108,8 +108,8 @@
               <!--大家都在玩-->
               <template v-else-if="popType==6">
                 <div class="gamelist">
-                  <img :src="require(`../images/games/${index}.png`)" alt=""
-                       v-for="(item,index) in games" class="game" @click="gotogame(item)">
+                  <img :src="require(`../images/games/${item.imgpostion}.png`)" alt=""
+                       v-for="(item,index) in games.slice().sort((a,b)=>a.postion-b.postion)" class="game" @click="gotogame(item)">
                 </div>
                 <div class="gogames" @click="gotoindex">去玩更多游戏>></div>
               </template>
@@ -117,12 +117,12 @@
               <template v-else-if="popType==7">
                 <p>活动时间：{{actInfoData.beginDate+'~'+actInfoData.endDate}}</p>
                 <p>活动介绍：</p>
-                <p>1、优惠券仅限网游大作充值使用。</p>
-                <p>2、不同额度的优惠券共六张，每个额度每日领取一次，领取后24小时内有效。</p>
-                <p>3、每使用一张优惠券会在领奖页面前进相应的步数，所经过的奖励全部可领取；每日前进步数越多，奖励越大。</p>
-                <p>4、领奖页奖励领取进度每日更新，按照自然日计算。</p>
-                <p>5、奖励需在获得当天及时领取，逾期更新后将不再发放。</p>
-                <p>如有其他问题请向客服咨询。</p>
+                <p>1、此次活动中领取的满减优惠券仅限网游大作充值使用。</p>
+                <p>2、活动内含不同额度的优惠券共六张，每日领取一次，限领取后24小时内使用，次日0点后可重新领取。</p>
+                <p>3、当日累计充值金额越高，得到的宝箱越多，获得奖励越大。</p>
+                <p>4、领奖页奖励的领取进度每日0点更新。</p>
+                <p>5、所有宝箱奖励请在获得当天24点之前领取，领奖进度已经更新或活动已经结束将不再发放。</p>
+                <p>6、若有其他问题请向在线客服咨询。</p>
               </template>
             </div>
             <div class="footer"></div>
@@ -153,19 +153,31 @@
         btnNames: ['去使用', '已使用', '使用中', '已失效'],
         games: [{//一刀传世
           id: 258,
-          url: 'https://37.com.cn/h5game/public/?pid=652&gid=1005903&external=1'
+          url: 'https://37.com.cn/h5game/public/?pid=652&gid=1005903&external=1',
+          postion:3,
+          imgpostion:0
         }, {//屠龙破晓
-          id: 234, url: 'http://sdk.djsh5.com/c/login/jiangDD.php?99aG8Y6q57sEX&external=1'
+          id: 234, url: 'http://sdk.djsh5.com/c/login/jiangDD.php?99aG8Y6q57sEX&external=1',
+          postion:4,
+          imgpostion:1
         }, {//斩月屠龙
-          id: 253, url: 'https://apigameh5.37.com/enter/ddw/23?external=1'
+          id: 253, url: 'https://apigameh5.37.com/enter/ddw/23?external=1',
+          postion:5,
+          imgpostion:2
         }, {//沙巴克传奇
-          id: 252, url: 'https://sdk.djsh5.com/c/login/jiangDD.php?bHUMz7MG2r9oh&external=1'
+          id: 252, url: 'https://sdk.djsh5.com/c/login/jiangDD.php?bHUMz7MG2r9oh&external=1',
+          postion:1,
+          imgpostion:3
         }, {//金币大富翁
-          id: 260, url: 'https://starth5super.ewan.cn/game/?aid=14229&pid=222951&cid=1479&external=1'
+          id: 260, url: 'https://starth5super.ewan.cn/game/?aid=14229&pid=222951&cid=1479&external=1',
+          postion:2,
+          imgpostion:4
         }, {//霸者雄心
-          id: 278, url: 'https://sdk.djsh5.com/c/login/jiangDD.php?V2Oon7oRTKwt5&external=1'
+          id: 278, url: 'https://sdk.djsh5.com/c/login/jiangDD.php?V2Oon7oRTKwt5&external=1',
+          postion:6,
+          imgpostion:5
         }],
-        tabs: ['领奖记录', '领劵记录'],
+        tabs: ['领劵记录', '领奖记录'],
         tabIndex: 0,
       }
     },
@@ -195,7 +207,7 @@
       },
       async changeTab(index) {
         this.tabIndex = index
-        if (this.tabIndex == 0) {
+        if (this.tabIndex == 1) {
           if (!this.record.length) {
             let {code, data} = await getAwardsRecord()
             if (code == 200) {
@@ -248,7 +260,7 @@
           this.isShowPop = true
         } else {
           if (this.popType == 1) {
-            if (this.tabIndex == 0) {
+            if (this.tabIndex == 1) {
               if (!this.record.length) {
                 let {code, data} = await getAwardsRecord()
                 if (code == 200) {
@@ -364,11 +376,14 @@
           &.flag3 {
             height: 5rem;
           }
-          &.flag6, &.flag7 {
+          &.flag6{
             height: 5.5rem;
           }
           &.flag4 {
             height: 4.8rem;
+          }
+          &.flag7{
+            height: 6rem;
           }
           .container_compop {
             .btnred {
