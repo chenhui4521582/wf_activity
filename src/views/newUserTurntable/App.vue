@@ -18,9 +18,11 @@
         <div class="pointer" @click="betting()"><span>({{info.wheelTimes}}次)</span></div>
       </div>
     </div>
-    <div class="notice-wrap">
-      <!-- 跑马灯 -->
-      <horn-list :notice-list="noticeList" v-if="noticeList.length" />
+    <div class="active-info-wrap">
+      <div class="money-wrap">
+        <p>已抽到: <span>{{}}</span>元</p>
+        <p>还差{{}}元就可以提现了</p>
+      </div>
     </div>
     <div class="task-wrap">
       <div class="task-content">
@@ -34,7 +36,8 @@
               <div class="name">{{item.taskName}}</div>
               <div class="other">
                 <div class="percent-wrap">
-                  <div class="percent" :style="{width:item.finishNum/item.taskOps * 100 + '%'}"></div>
+                  <div class="percent" :style="{width:item.finishNum/item.taskOps * 100 + '%'}">
+                  </div>
                   <div class="text-percent">{{item.finishNum}}/{{item.taskOps}}</div>
                 </div>
                 <div class="awards">
@@ -52,11 +55,13 @@
       </div>
     </div>
     <rule v-if="isRuleShow" @on-close="closeRule()"></rule>
-    <turnpop v-if="isTurnpopShow" :pop-type="popType" :awards-info="awardsInfo" @on-close="closeTurnPop"></turnpop>
+    <turnpop v-if="isTurnpopShow" :pop-type="popType" :awards-info="awardsInfo"
+      @on-close="closeTurnPop"></turnpop>
   </div>
 </template>
 <script>
 /* eslint-disable no-undef */
+import { taskInfo } from './services/api'
 export default {
   name: 'app',
   data () {
@@ -79,7 +84,6 @@ export default {
   components: {
     'rule': () => import('./components/rule.vue'),
     'turnpop': () => import('./components/turnpop'),
-    'horn-list': () => import('./components/hornList')
   },
   mounted () {
     this.init()
@@ -117,7 +121,7 @@ export default {
       }
     },
     async getTaskInfo () {
-      const res = await this.axios.post('//platform-api.beeplaying.com/task/api/usertask/platCommonTaskByBatch', { value: 'newUserWheel' })
+      const res = await taskInfo()
       const { data } = res.data
       if (data) {
         this.taskList = data
@@ -246,12 +250,12 @@ export default {
       e.preventDefault()
     },
     scrollNoMove () {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener("touchmove", this.move, { passive: false });
+      document.body.style.overflow = 'hidden'
+      document.addEventListener("touchmove", this.move, { passive: false })
     },
     scrollMove () {
-      document.body.style.overflow = null;
-      document.removeEventListener("touchmove", this.move, { passive: false });
+      document.body.style.overflow = null
+      document.removeEventListener("touchmove", this.move, { passive: false })
     }
   },
   watch: {
@@ -273,13 +277,13 @@ export default {
 }
 </script>
 <style lang="less">
-@import "../../common/css/base.css";
+@import '../../common/css/base.css';
 .bgWithFull(@url) {
   background: url(@url) no-repeat center center / 100% 100%;
 }
 .turn-wrap {
   min-height: 100vh;
-  background: #b52fe1 url("./img/bg.png") no-repeat center ~"-1.2rem" / 100%;
+  background: #b52fe1 url('./img/bg.png') no-repeat center ~'-1.2rem' / 100%;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0 0 0.2rem;
@@ -297,7 +301,7 @@ export default {
     padding: 0.12rem 0;
     box-sizing: border-box;
     position: relative;
-    .bgWithFull("./img/top-bg.png");
+    .bgWithFull('./img/top-bg.png');
     span {
       font-size: 0.32rem;
       font-weight: 800;
@@ -326,13 +330,13 @@ export default {
         font-size: 0.24rem;
       }
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 0.14rem;
         height: 0.24rem;
         margin-right: 0.08rem;
         margin-left: 0.2rem;
-        .bgWithFull("./img/back.png");
+        .bgWithFull('./img/back.png');
       }
     }
   }
@@ -361,13 +365,13 @@ export default {
         align-items: center;
         justify-content: center;
         &::before {
-          content: "";
+          content: '';
           display: block;
           width: 0.24rem;
           height: 0.26rem;
           font-size: 0;
           margin: -0.02rem 0.04rem 0;
-          .bgWithFull("./img/awards-icon.png");
+          .bgWithFull('./img/awards-icon.png');
         }
       }
     }
@@ -377,7 +381,7 @@ export default {
     margin: 1.72rem auto 0;
     width: 5.2rem;
     height: 5.2rem;
-    .bgWithFull("./img/light1.png");
+    .bgWithFull('./img/light1.png');
     animation: changeBg 0.3s infinite ease;
     .list-wrap {
       padding: 0.2rem;
@@ -385,7 +389,7 @@ export default {
       height: 100%;
       .awards-list {
         height: 100%;
-        .bgWithFull("./img/awards.png");
+        .bgWithFull('./img/awards.png');
         position: relative;
         transition: all 3s;
         ul {
@@ -411,7 +415,7 @@ export default {
         left: 50%;
         margin-top: -1.1rem;
         margin-left: -0.92rem;
-        .bgWithFull("./img/pointer.png");
+        .bgWithFull('./img/pointer.png');
         animation: scale 1s infinite ease;
         span {
           color: #fff;
@@ -425,6 +429,28 @@ export default {
       }
     }
   }
+  .active-info-wrap {
+    margin: 0.4rem 0.3rem;
+    padding: 0.2rem;
+    .money-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ffc8c5;
+      p {
+        vertical-align: baseline;
+        font-size: 0.3rem;
+        color: #fff;
+        span {
+          font-size: 0.48rem;
+        }
+        &:last-child {
+          color: #ffd6e1;
+          font-size: 0.2rem;
+        }
+      }
+    }
+  }
   .notice-wrap {
     width: 4rem;
     height: 0.38rem;
@@ -433,12 +459,11 @@ export default {
     margin: auto;
   }
   .task-wrap {
-    width: 6.8rem;
-    margin: 0.5rem auto 0;
+    margin: 0.3rem;
+    border-radius: 0.3rem;
+    background: #f9ebfb;
+    padding: 0.34rem 0.2rem;
     .task-content {
-      background: url("./img/wcrw-bj02.png") repeat-y center top / 100%;
-      margin: -1px 0;
-      padding-top: 0.32rem;
       h4 {
         text-align: center;
         font-size: 0.36rem;
@@ -528,36 +553,23 @@ export default {
               color: #fff;
             }
             .undone {
-              .bgWithFull("./img/btn-red.png");
+              .bgWithFull('./img/btn-red.png');
             }
             .done {
-              .bgWithFull("./img/btn-grey.png");
+              .bgWithFull('./img/btn-grey.png');
             }
           }
         }
       }
     }
-    &::before {
-      content: "";
-      display: block;
-      height: 0.26rem;
-      .bgWithFull("./img/wcrw-bj01.png");
-    }
-    &::after {
-      content: "";
-      display: block;
-      height: 0.26rem;
-      .bgWithFull("./img/wcrw-bj01.png");
-      transform: rotateX(180deg);
-    }
   }
   @keyframes changeBg {
     0% {
-      .bgWithFull("./img/light1.png");
+      .bgWithFull('./img/light1.png');
     }
 
     100% {
-      .bgWithFull("./img/light2.png");
+      .bgWithFull('./img/light2.png');
     }
   }
 
