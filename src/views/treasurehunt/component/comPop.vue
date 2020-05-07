@@ -49,7 +49,7 @@
             alt="">
           <p class="congra-texts">恭喜您获得</p>
           <p class="prize-name">{{prizeshow.awardsName}}</p>
-          <p class="expire-date" v-if="prizeshow.awardsType=='yhq'">(有效期截至2020年4月25日)</p>
+          <p class="expire-date" v-if="prizeshow.awardsType=='yhq'">(有效期截至2020年5月15日)</p>
           <p class="tips">奖励可前往“我的”页面查看</p>
         </template>
         <!-- 太棒了（每次宝石与上次新增时） -->
