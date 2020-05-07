@@ -20,7 +20,7 @@
     <div class="awards-history-wrapper">
       <ul class="nav-title">
         <li v-for="item in navArr" :class="[`type-${item}`,{selected:currentType===item}]"
-          @click="currentType = item">
+          @click="_envelopeRecord(item)">
         </li>
       </ul>
       <template v-if="currentType === 4">
@@ -29,6 +29,8 @@
             <div>领取日期</div>
             <div>领取额度</div>
           </li>
+        </ul>
+        <ul class="list type-4 content">
           <li v-for="(item) in list">
             <div>{{item.createTime}}</div>
             <div>{{item.envelopeRmb}}元</div>
@@ -42,10 +44,12 @@
             <div>提取额度</div>
             <div>提取状态</div>
           </li>
+        </ul>
+        <ul class="list type-5 content">
           <li v-for="(item) in list">
             <div>{{item.createTime}}</div>
             <div>{{item.envelopeRmb}}元</div>
-            <div @click="toMyPrize()">查看状态></div>
+            <div class="to-my-prize" @click="toMyPrize()">查看状态></div>
           </li>
         </ul>
       </template>
@@ -81,10 +85,11 @@ export default {
     }
   },
   mounted () {
-    this._envelopeRecord()
+    this._envelopeRecord(4)
   },
   methods: {
-    async _envelopeRecord () {
+    async _envelopeRecord (type) {
+      this.currentType = type
       const res = await envelopeRecord(this.currentType)
       const data = _get(res, 'data', null)
       if (data) {
@@ -93,7 +98,7 @@ export default {
       console.log(data)
     },
     toMyPrize () {
-      WapCall.openGame('xmWap/#/my/prize')
+      WapCall.openGame('/xmWap/#/my/prize')
     }
   },
   watch: {
@@ -222,9 +227,6 @@ export default {
         background: #f9ebfb;
         color: #15002b;
         font-size: 0.24rem;
-        &:nth-child(2n) {
-          background: #fef2ff;
-        }
       }
       .list-title {
         font-weight: bold;
@@ -243,6 +245,18 @@ export default {
         }
         div:nth-child(3) {
           flex: 1;
+        }
+        .to-my-prize {
+          color: #ff5a00;
+        }
+      }
+      &.content {
+        height: calc(~'100%' - 1.8rem);
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        li:nth-child(2n-1) {
+          background: #fef2ff;
         }
       }
     }

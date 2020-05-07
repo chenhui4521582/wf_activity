@@ -2,20 +2,37 @@
   <div class="turnpop">
     <div class="pop-mask"></div>
     <div class="turnpop-wrap">
-      <div class="turnpop-content success" v-if="popType">
-        <p>
-          <span>¥</span><em>{{awardsInfo.awardsAmount|priceFilter}}</em>
-        </p>
-        <div class="btn" @click="close(true)">再抽一次</div>
-      </div>
-      <div class="turnpop-content error" v-else>
-        <p>
-          非常遗憾
-        </p>
-        <p>
-          您的抽奖机会已用完
-        </p>
-        <div class="btn" @click="close(true)">获得更多抽奖机会</div>
+      <div class="turnpop-content" :class="`type-${popType}`">
+        <template v-if="popType===0">
+          <p>
+            非常遗憾
+          </p>
+          <p>
+            您的抽奖机会已用完
+          </p>
+          <p class="sub-desc">
+            <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
+              达到体现门槛，快去领话费吧
+            </template>
+            <template v-else>
+              还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb}}元就可以提现了
+            </template>
+          </p>
+          <div class="btn" @click="close(true)">获得更多抽奖机会</div>
+        </template>
+        <template v-if="popType===1">
+          <p>
+            话费红包 x{{awardsInfo.awardsEnvelopeNum}} 预计{{awardsInfo.awardsEnvelopeRmb}}元<br />
+            <template v-if="awardsInfo.envelopeRmb>=info.convertConsumeRmb">
+              达到体现门槛，快去领话费吧
+            </template>
+            <template v-else>
+              还差{{info.convertConsumeRmb-awardsInfo.envelopeRmb}}元就可以提现了
+            </template>
+          </p>
+          <div class="btn" @click="close(true)">再抽一次</div>
+        </template>
+        <template v-if=""></template>
       </div>
       <div class="close" @click="close()"></div>
     </div>
@@ -37,11 +54,15 @@ export default {
   props: {
     popType: {
       type: Number,
-      default: 0
+      default: 0 // 0 没有机会 1 转盘抽奖 2
     },
     awardsInfo: {
       type: Object,
-      default: () => { }
+      default: () => ({})
+    },
+    info: {
+      type: Object,
+      default: () => ({})
     }
   },
   filters: {
@@ -60,7 +81,8 @@ export default {
 <style lang="less" scoped>
 @import '../../../common/css/base.css';
 .bgWithFull(@url) {
-  background: url(@url) no-repeat center center / 100% 100%;
+  background: url(@url) no-repeat center center;
+  background-size: 100% 100%;
 }
 .pop-mask {
   position: fixed;
@@ -73,7 +95,7 @@ export default {
 .turnpop {
   .turnpop-wrap {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     .turnpop-content {
@@ -84,41 +106,47 @@ export default {
       font-weight: 500;
       color: #666666;
       line-height: 0.36rem;
-      &.success {
-        .bgWithFull('../img/success-bg.png');
-        color: #fff;
-        p {
-          padding: 4.06rem 1.38rem 0;
-          span {
-            font-size: 0.4rem;
-            margin-right: 0.2rem;
-          }
-          em {
-            font-size: 0.8rem;
-          }
-        }
-      }
-      &.error {
-        padding: 3.96rem 0.44rem 0;
-        text-align: center;
-        .bgWithFull('../img/error-bg.png');
-        color: #fdfdeb;
-        line-height: 0.48rem;
-        p:first-child {
-          font-size: 0.36rem;
-        }
-        p:last-child {
-          font-size: 0.3rem;
-        }
-      }
       .btn {
         width: 2.8rem;
         height: 0.7rem;
         line-height: 0.7rem;
         text-align: center;
         color: #fff;
-        margin: 0.9rem auto 0;
+        margin: auto;
         .bgWithFull('../img/btn-bg.png');
+      }
+      &.type-1 {
+        .bgWithFull('../img/success-bg.png');
+        p {
+          color: #666;
+          padding: 4.8rem 0 0;
+          text-align: center;
+          font-size: 0.26rem;
+        }
+        .btn {
+          margin-top: 0.4rem;
+        }
+      }
+      &.type-0 {
+        padding: 3.96rem 0.44rem 0;
+        text-align: center;
+        .bgWithFull('../img/error-bg.png');
+        color: #fdfdeb;
+        line-height: 0.48rem;
+        p:nth-child(1) {
+          font-size: 0.36rem;
+        }
+        p:nth-child(2) {
+          font-size: 0.3rem;
+        }
+        p:nth-child(3) {
+          color: #666;
+          font-size: 0.26rem;
+          margin-top: 0.3rem;
+        }
+        .btn {
+          margin-top: 0.3rem;
+        }
       }
     }
     .close {

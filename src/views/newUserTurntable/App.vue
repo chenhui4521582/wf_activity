@@ -32,8 +32,8 @@
           <div class="percent-wrapper">
             <div class="percent-bg">
               <div class="percent"
-                :style="{width:`${info.convertConsumeRmb>info.newUserInfo.envelopeNum?info.newUserInfo.envelopeNum/info.convertConsumeRmb*100:100}%`,borderRadius: info.convertConsumeRmb>info.newUserInfo.envelopeNum?'0.08rem 0 0 0.08rem':'0.08rem'}">
-                <p>{{info.newUserInfo.envelopeNum}}<span>元</span></p>
+                :style="{width:`${info.convertConsumeRmb>info.newUserInfo.envelopeRmb?info.newUserInfo.envelopeRmb/info.convertConsumeRmb*100:100}%`,borderRadius: info.convertConsumeRmb>info.newUserInfo.envelopeRmb?'0.08rem 0 0 0.08rem':'0.08rem'}">
+                <p>{{info.newUserInfo.envelopeRmb}}<span>元</span></p>
               </div>
             </div>
             <p>{{info.convertConsumeRmb}}<span>元</span></p>
@@ -65,9 +65,10 @@
               </div>
               <div class="btn-wrap">
                 <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成</div>
-                <div class="btn receive" v-else-if="item.taskStatus===0" @click="goGame(item)">领抽奖机会
+                <div class="btn receive" v-else-if="item.taskStatus===0" @click="_finish(item)">
+                  领抽奖机会
                 </div>
-                <div class="btn done" v-else @click="goGame(item)">已完成</div>
+                <div class="btn done" v-else>已完成</div>
               </div>
             </li>
           </ul>
@@ -82,7 +83,7 @@
 </template>
 <script>
 /* eslint-disable no-undef */
-import { taskInfo, activityInfo, bet } from './services/api'
+import { taskInfo, activityInfo, bet, finish } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'app',
@@ -93,7 +94,7 @@ export default {
       taskList: {},
       isRuleShow: false,
       isTurnpopShow: false,
-      isDetailShow: true,
+      isDetailShow: false,
       popType: 0,
       awardsInfo: { price: 1 },
       options: {
@@ -235,19 +236,35 @@ export default {
           this.options.isStart = false
           this.popType = 1
           this.showTurnPop()
-          this.init()
+          this.info.newUserInfo.betTimes = this.awardsInfo.betTimes
+          this.info.newUserInfo.envelopeNum = this.awardsInfo.envelopeNum
+          this.info.newUserInfo.envelopeRmb = this.awardsInfo.envelopeRmb
         }, 3200)
       }
     },
-    goGame ({ url, taskId, taskName, taskStatus }) {
-      let params = {
+    goGame (item) {
+      let { gameType, url, action, taskId, taskName, index } = item
+      GLOBALS.marchSetsPoint('A_H5PT0279003333', {
+        position_id: index + 1,
+        target_project_id: gameType,
         task_id: taskId,
         task_name: taskName
+      })
+      let actionsArr = [39, 35, 34, 32]
+      // 跳转到首页
+      if (action == 36 || url == '/plat/') {
+        this.$router.push('/')
+        return false
       }
-      if (taskStatus === 1) {
-        GLOBALS.marchSetsPoint('A_H5PT0279003333', params) // H5平台-新人抽奖转盘-任务去完成点击
+      // 跳转商城
+      if (actionsArr.includes(action)) {
+        WapCall.openGame('/xmWap/#/payment/')
+        return false
       }
       WapCall.openGame(url)
+    },
+    async _finish ({ taskId, taskLogId }) {
+      const res = await finish({ taskId, taskLogId })
     },
     back () {
       let url = SDK.getBackUrl()
@@ -501,6 +518,7 @@ export default {
               bottom: -0.4rem;
               right: 0;
               transform: translateX(55%);
+              white-space: nowrap;
             }
             &::before {
               content: '';
@@ -603,7 +621,7 @@ export default {
               }
               .awards {
                 display: flex;
-                align-items: flex-end;
+                align-items: center;
                 color: #ff5544;
                 font-size: 0.26rem;
                 margin-left: 0.1rem;
