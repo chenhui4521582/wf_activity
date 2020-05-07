@@ -96,15 +96,12 @@ export default {
     border-radius: 0.16rem;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
-    // border: 1px dashed #ffebb6;
     animation: load 0.2s infinite alternate;
   }
   .content {
     border-radius: 0.1rem;
     width: 1.8rem;
-    // padding-top: 0.2rem;
-    // background: rgba(129, 131, 136, 0.73);
-    background: #b04a8b;
+    background: #F2EDD8;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -127,11 +124,10 @@ export default {
       height: 1.2rem;
     }
     .des {
-      // border-radius: 0.1rem;
       border-bottom-right-radius: 0.1rem;
       border-bottom-left-radius: 0.1rem;
-      background: #f2db8f;
-      color: #2a2e3a;
+      background: #FED387;
+      color: #292D39;
       width: 1.8rem;
       height: 0.3rem;
       box-sizing: border-box;

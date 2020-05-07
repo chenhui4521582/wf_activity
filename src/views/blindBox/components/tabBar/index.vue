@@ -130,8 +130,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 0.24rem;
-    color: #9699aa;
-    font-weight: bold;
+    color: #9699AA;
     position: relative;
     .mark {
       width: 0.86rem;
@@ -141,7 +140,7 @@ export default {
       left: 50%;
     }
     &.active {
-      color: #e2c87e;
+      color: #E2C87E;
     }
     img {
       width: 0.6rem;

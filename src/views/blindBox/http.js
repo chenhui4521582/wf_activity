@@ -22,7 +22,7 @@ if (localStorage.getItem('APP_CHANNEL') === '100001') {
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么486d88c9c827406d9a31c9ca22c2cd89
-  let token = localStorage.getItem('ACCESS_TOKEN')
+  let token = utils.getUrlParam('token') || localStorage.getItem('ACCESS_TOKEN')
   config.headers.Authorization = token
   config.headers['App-Channel'] = channel && /\d+/.exec(channel) && /\d+/.exec(channel)[0]
   config.headers['App-Version'] = version

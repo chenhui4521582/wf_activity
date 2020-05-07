@@ -430,12 +430,10 @@ export default {
   top: 0;
   margin-top: -0.32rem;
   z-index: 99;
-  // background: #f0ead1;
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  background: #fef2de;
   .view-gift {
     color: #ff2828;
   }
@@ -512,7 +510,7 @@ export default {
     }
   }
   .botton-wrapper {
-    background: #5A4DAF;
+   
   }
   img.coupon-tip {
     width: 1.56rem;
@@ -639,15 +637,10 @@ export default {
   }
   .handler {
     position: relative;
-    background: #1b1f29;
     display: flex;
     justify-content: space-between;
     padding: 0.25rem 0.3rem;
     box-sizing: border-box;
-    // padding: 0.16rem;
-    &.activity {
-      background: #5A4DAF;
-    }
     .times {
       padding-left: 0.2rem;
       span {
@@ -674,21 +667,12 @@ export default {
       margin: auto;
     }
     .change-btn {
-      // position: absolute;
-      // top: calc(~"50%" - 0.4rem);
-      // width: 1.14rem;
       box-sizing: border-box;
-      color: #fff;
-      // border: 0.02rem solid #fff;
+      color: #B2498D;
       line-height: 0.42rem;
-      // text-align: center;
-      // border-radius: 0.22rem;
       font-size: 0.26rem;
       display: flex;
       align-items: center;
-      &.activity {
-        /*color: #e9355a;*/
-      }
       .icon {
         width: 0.34rem;
         margin-right: 0.1rem;
