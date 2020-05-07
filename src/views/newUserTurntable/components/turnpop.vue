@@ -23,6 +23,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: '',
   components: {
@@ -35,8 +36,8 @@ export default {
   },
   props: {
     popType: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     },
     awardsInfo: {
       type: Object,
@@ -57,7 +58,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../common/css/base.css";
+@import '../../../common/css/base.css';
 .bgWithFull(@url) {
   background: url(@url) no-repeat center center / 100% 100%;
 }
@@ -84,7 +85,7 @@ export default {
       color: #666666;
       line-height: 0.36rem;
       &.success {
-        .bgWithFull("../img/success-bg.png");
+        .bgWithFull('../img/success-bg.png');
         color: #fff;
         p {
           padding: 4.06rem 1.38rem 0;
@@ -100,7 +101,7 @@ export default {
       &.error {
         padding: 3.96rem 0.44rem 0;
         text-align: center;
-        .bgWithFull("../img/error-bg.png");
+        .bgWithFull('../img/error-bg.png');
         color: #fdfdeb;
         line-height: 0.48rem;
         p:first-child {
@@ -117,13 +118,13 @@ export default {
         text-align: center;
         color: #fff;
         margin: 0.9rem auto 0;
-        .bgWithFull("../img/btn-bg.png");
+        .bgWithFull('../img/btn-bg.png');
       }
     }
     .close {
       width: 0.7rem;
       height: 0.7rem;
-      .bgWithFull("../img/close.png");
+      .bgWithFull('../img/close.png');
       margin: 0.3rem auto 0;
     }
   }
