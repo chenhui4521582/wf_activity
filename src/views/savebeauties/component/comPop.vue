@@ -13,6 +13,9 @@
             <div class="img" v-else-if="popType==3">
               恭喜您
             </div>
+            <div class="img" v-else-if="popType==4">
+              主人
+            </div>
             <div class="img" v-else-if="popType==6">
               {{awardData&&awardData.title}}
             </div>
@@ -23,14 +26,6 @@
           <div :class="getClassName('main')">
             <div :class="getClassName('container_compop')">
               <template v-if="popType==1">
-                <div class="textcontent">
-                  <p>主人，我是{{beautyname[actDay-1]}}！</p>
-                  <p>我被拼图碎片困住了</p>
-                  <p>....嘤嘤嘤嘤....</p>
-                  <p>快点做任务解锁拼图碎片</p>
-                  <p>救我出去吧，还能得到</p>
-                  <p>不少奖励哦！</p>
-                </div>
                 <div class="savebtn" @click="close">开始营救</div>
               </template>
               <template v-else-if="popType==2">
@@ -60,6 +55,16 @@
                 <div class="award_name">{{awardData.awardsName}}</div>
                 <div class="btnred" @click="close(awardData)" v-if="awardData.btnName">{{awardData.btnName}}</div>
                 <div class="info" v-if="awardData.info" v-html="awardData.info"></div>
+              </template>
+              <template v-else-if="popType==4">
+                <div>
+                  <p>啊~终于看到阳光了</p>
+                  <p>谢谢你救我出来</p>
+                  <p>未来</p>
+                  <p>我将和你一起看遍浩渺星河</p>
+                  <p>就现在，出发吧！</p>
+                  <div class="btnred" @click="close">关闭</div>
+                </div>
               </template>
               <template v-else-if="popType==6">
                 <div v-html="awardData.tips"></div>
@@ -109,7 +114,7 @@
       return {
         isShowPop: false,
         record: [],
-        beautyname: ['晴晴', '倩雯', '丽娜', '熙瑶', '文洁', '君君']
+        beautyname: ['千夏','风音','妃奈','沙耶','心优','空音']
       }
     },
     props: {
@@ -212,10 +217,10 @@
     position: fixed;
     left: 50%;
     top: .5rem;
-    margin-left: -1.96*1.3rem;
+    margin-left: -2.8rem;
     &.flag1 {
       top: 2rem;
-      margin-left: -1.735rem;
+      margin-left: -2.71rem;
     }
     .pop-mask {
       position: fixed;
@@ -232,36 +237,40 @@
         margin: 0 auto;
         box-sizing: border-box;
         .title_bg {
-          width: 3.92*1.3rem;
-          height: 1.714*1.3rem;
+          width:  5.61rem;
+          height: .98rem;
           background: url("../images/comPop/top.png") no-repeat center
             center / 100% 100%;
           position: relative;
           .img {
             position: absolute;
-            top: 1.4rem;
+            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
             margin: auto;
             font-size: .36rem;
             font-weight: bold;
-            color: rgba(255, 227, 197, 1);
+            color:rgba(255,206,215,1);
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
         .main {
-          width: 3.92*1.3rem;
+          width: 5.61rem;
           font-size: 0.2rem;
           background: url("../images/comPop/bgline.png");
-          background-size: 3.92*1.3rem .329*1.3rem;
+          background-size: 5.61rem .71rem;
           color: #fff;
           position: relative;
           top: -.1rem;
           padding: .2rem .2rem 0;
           box-sizing: border-box;
           &.flag1 {
-            width: 3.47rem;
-            height: 5.74rem;
+            width: 5.43rem;
+            height: 6.83rem;
             padding: 2.5rem .2rem 0;
             .textcontent {
               height: 2.35rem;
@@ -275,12 +284,20 @@
               margin-bottom: .2rem;
             }
             .savebtn {
+              width:2.1rem;
+              background:rgba(255,162,41,1);
+              border-radius:.35rem;
               height: .7rem;
               line-height: .7rem;
               text-align: center;
               font-size: .3rem;
               font-weight: bold;
               color: rgba(255, 241, 241, 1);
+              position: absolute;
+              bottom: -.1rem;
+              left: 0;
+              right: 0;
+              margin: auto;
             }
             &.beauty0 {
               background: url("../images/comPop/popBeauty/0.png");
@@ -309,9 +326,9 @@
           }
           .container_compop {
             .btnred {
-              width: 2.1rem;
+              width: 2.5rem;
               height: .7rem;
-              background: rgba(219, 86, 42, 1);
+              background:rgba(252,43,102,1);
               border-radius: .35rem;
               font-size: .3rem;
               font-weight: bold;
@@ -323,11 +340,12 @@
               margin: .2rem auto 0;
               font-weight: bold;
             }
+            z-index: 1;
             &.flag7 {
-              color: rgba(106, 44, 20, 1);
+              color:rgba(186,56,79,1);
               box-sizing: border-box;
-              font-size: .2rem;
-              font-weight: bold;
+              font-size: .24rem;
+              font-weight:400;
               height: 6.5rem;
               position: relative;
               p {
@@ -413,7 +431,8 @@
                   display: flex;
                   align-items: center;
                   height: .46rem;
-                  background: rgba(196, 101, 70, 1);
+                  background:rgba(224,82,106,1);
+                  color:rgba(255,227,197,1);
                   .title {
                     flex: 1;
                     text-align: center;
@@ -431,11 +450,11 @@
                   top: .44rem;
                   left: 0rem;
                   right: 0;
-                  font-size: .2rem;
+                  font-size: .28rem;
                   font-weight: 400;
-                  background: rgba(249, 186, 165, 1);
+                  background:rgba(249,222,226,1);
                   overflow: hidden;
-                  color: rgba(106, 44, 20, 1);
+                  color:rgba(188,55,78,1);
                   ul {
                     display: flex;
                     flex-direction: column;
@@ -443,7 +462,7 @@
                       display: flex;
                       justify-content: space-between;
                       align-items: center;
-                      height: .77rem;
+                      height: 1.06rem;
                       div {
                         flex: 1;
                         text-align: center;
@@ -452,7 +471,7 @@
                         text-overflow: ellipsis;
                       }
                       &:nth-child(2n) {
-                        background: rgba(211, 140, 116, 1);
+                        background:rgba(227,156,168,1);
                       }
                     }
                   }
@@ -464,7 +483,7 @@
               .tips {
                 font-size: .28rem;
                 font-weight: bold;
-                color: rgba(106, 44, 20, 1);
+                color:rgba(188,52,76,1);
                 margin-bottom: .15rem;
                 line-height: .36rem;
               }
@@ -476,23 +495,20 @@
                 margin-top: .1rem;
                 font-size: .28rem;
                 font-weight: bold;
-                color: rgba(234, 57, 44, 1);
+                color:rgba(234,57,44,1);
               }
               .info {
                 margin-top: .3rem;
                 font-size: .28rem;
                 font-weight: bold;
-                color: rgba(106, 44, 20, 1);
+                color:rgba(155,61,78,1);
                 line-height: .36rem;
               }
             }
             &.flag4 {
-              font-size: .38rem;
+              font-size: .36rem;
               font-weight: bold;
-              color: rgba(196, 94, 19, 1);
-              i {
-                color: #F8212C
-              }
+              color: #BC344C;
               line-height: .5rem;
               text-align: center;
             }
@@ -518,23 +534,23 @@
               }
             }
             &.flag6 {
-              font-size: .28rem;
+              font-size: .36rem;
               font-weight: bold;
-              color: rgba(106, 44, 20, 1);
+              color:rgba(188,52,76,1);
               text-align: center;
               line-height: .5rem;
               .back {
                 margin: .27rem auto 0;;
-                width: 2.1rem;
+                width: 2.5rem;
                 height: .7rem;
                 line-height: .7rem;
                 text-align: center;
-                border: .02rem solid #ffcab0;
+                border: .02rem solid rgba(255,255,255,1);
                 box-sizing: border-box;
                 border-radius: .35rem;
                 font-size: .3rem;
                 font-weight: bold;
-                color: #ffcab0;
+                color:rgba(255,241,241,1);
               }
               .sad {
                 display: block;
@@ -545,12 +561,12 @@
             }
           }
           .footer {
-            width: 3.92*1.3rem;
-            height: .369*1.3rem;
+            width: 5.61rem;
+            height: .63rem;
             background: url("../images/comPop/bottom.png") no-repeat center
               center / 100% 100%;
             position: absolute;
-            bottom: -.35*1.3rem;
+            bottom: -0.62rem;
             left: 0;
             margin: auto;
           }
