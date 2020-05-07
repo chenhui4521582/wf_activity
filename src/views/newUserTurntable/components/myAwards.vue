@@ -18,14 +18,45 @@
       </template>
     </p>
     <div class="awards-history-wrapper">
-      <div class="nav-title"></div>
-      <template v-if="currentIndex === 4"></template>
-      <template v-if="currentIndex === 5"></template>
+      <ul class="nav-title">
+        <li v-for="item in navArr" :class="[`type-${item}`,{selected:currentType===item}]"
+          @click="currentType = item">
+        </li>
+      </ul>
+      <template v-if="currentType === 4">
+        <ul class="list type-4">
+          <li class="list-title">
+            <div>领取日期</div>
+            <div>领取额度</div>
+          </li>
+          <li v-for="(item) in list">
+            <div>{{item.createTime}}</div>
+            <div>{{item.envelopeRmb}}元</div>
+          </li>
+        </ul>
+      </template>
+      <template v-if="currentType === 5">
+        <ul class="list type-5">
+          <li class="list-title">
+            <div>提取日期</div>
+            <div>提取额度</div>
+            <div>提取状态</div>
+          </li>
+          <li v-for="(item) in list">
+            <div>{{item.createTime}}</div>
+            <div>{{item.envelopeRmb}}元</div>
+            <div @click="toMyPrize()">查看状态></div>
+          </li>
+        </ul>
+      </template>
     </div>
   </section>
 </template>
 
 <script>
+/* eslint-disable no-undef */
+import { envelopeRecord } from '../services/api'
+import _get from 'lodash.get'
 export default {
   name: '',
   components: {
@@ -44,14 +75,26 @@ export default {
   data () {
     return {
       show: this.value,
-      currentIndex: 4
+      navArr: [4, 5],
+      currentType: 4,
+      list: []
     }
   },
   mounted () {
-
+    this._envelopeRecord()
   },
   methods: {
-
+    async _envelopeRecord () {
+      const res = await envelopeRecord(this.currentType)
+      const data = _get(res, 'data', null)
+      if (data) {
+        this.list = data
+      }
+      console.log(data)
+    },
+    toMyPrize () {
+      WapCall.openGame('xmWap/#/my/prize')
+    }
   },
   watch: {
     value (val) {
@@ -73,12 +116,10 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  min-height: 100vh;
-  width: 100%;
+  bottom: 0;
+  right: 0;
   background: #b52fe1 url('../img/detail-bg.png') no-repeat center ~'-1.2rem';
   background-size: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
   .top-btn-wrap {
     margin-top: 0.52rem;
     .back {
@@ -124,6 +165,87 @@ export default {
     margin-top: 0.24rem;
   }
   .awards-history-wrapper {
+    position: absolute;
+    top: 6.5rem;
+    left: 0.3rem;
+    bottom: 0.5rem;
+    right: 0.3rem;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    .nav-title {
+      display: flex;
+      li {
+        flex: 1;
+        height: 0.9rem;
+        &.type-4,
+        &.type-5 {
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 1.2rem 0.28rem;
+          background-color: #b43994;
+          &.selected {
+            position: relative;
+            background-color: #f86364;
+            &::after {
+              content: '';
+              display: block;
+              position: absolute;
+              width: 0.4rem;
+              height: 0.18rem;
+              bottom: -0.16rem;
+              left: 50%;
+              margin-left: -0.2rem;
+              .bgWithFull('../img/selected-arrow-icon.png');
+            }
+          }
+        }
+        &.type-4 {
+          background-image: url('../img/type-4.png');
+          &.selected {
+            background-image: url('../img/type-4-selected.png');
+          }
+        }
+        &.type-5 {
+          background-image: url('../img/type-5.png');
+          &.selected {
+            background-image: url('../img/type-5-selected.png');
+          }
+        }
+      }
+    }
+    .list {
+      li {
+        display: flex;
+        height: 0.9rem;
+        align-items: center;
+        text-align: center;
+        background: #f9ebfb;
+        color: #15002b;
+        font-size: 0.24rem;
+        &:nth-child(2n) {
+          background: #fef2ff;
+        }
+      }
+      .list-title {
+        font-weight: bold;
+      }
+      &.type-4 {
+        div {
+          flex: 1;
+        }
+      }
+      &.type-5 {
+        div:nth-child(1) {
+          flex: 2;
+        }
+        div:nth-child(2) {
+          flex: 1;
+        }
+        div:nth-child(3) {
+          flex: 1;
+        }
+      }
+    }
   }
 }
 </style>

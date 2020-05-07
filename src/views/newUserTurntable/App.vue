@@ -93,7 +93,7 @@ export default {
       taskList: {},
       isRuleShow: false,
       isTurnpopShow: false,
-      isDetailShow: false,
+      isDetailShow: true,
       popType: 0,
       awardsInfo: { price: 1 },
       options: {
