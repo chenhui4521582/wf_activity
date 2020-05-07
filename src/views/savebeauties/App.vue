@@ -89,7 +89,6 @@
             <div class="list">
               <div class="list-item" v-for="(item,index) in saved.rescueDay.slice(0,3)"
                    :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
-                <div class="name">{{beautyname[item-1]}}</div>
               </div>
               <div class="list-item empty"
                    :class="{help:index==0&&!saved.rescueDay.slice(0,3).includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.slice(0,3).includes(actDay)}"
@@ -104,7 +103,7 @@
               </div>
               <div class="btn" :class="{gray:saved.composeAwardInfoRsps[0].awardStatus!=0}"
                    @click="getRanksPrize('3',saved.composeAwardInfoRsps[0])">
-                {{saved.composeAwardInfoRsps[0].awardStatus==2?'已获得':'可领取'}}
+                {{saved.composeAwardInfoRsps[0].awardStatus==2?'已领取':'可领取'}}
               </div>
             </div>
           </div>
@@ -112,7 +111,6 @@
             <div class="list">
               <div class="list-item" v-for="(item,index) in saved.rescueDay"
                    :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
-                <div class="name">{{beautyname[item-1]}}</div>
               </div>
               <div class="list-item empty"
                    :class="{help:index==0&&!saved.rescueDay.includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.includes(actDay)}"
@@ -127,7 +125,7 @@
               </div>
               <div class="btn" :class="{gray:saved.composeAwardInfoRsps[1].awardStatus!=0}"
                    @click="getRanksPrize('6',saved.composeAwardInfoRsps[1])">
-                {{saved.composeAwardInfoRsps[1].awardStatus==2?'已获得':'可领取'}}
+                {{saved.composeAwardInfoRsps[1].awardStatus==2?'已领取':'可领取'}}
               </div>
             </div>
           </div>
@@ -430,11 +428,11 @@
                   awardsName: data.taskAward.awardName,
                   info: data.rescueStatus ? '喔~好棒！任务已经全部完成啦！' : `离救出她更进一步了<br>继续加油吧~`,
                   btnName: '',
-                  extraAward: data.rescueAward
+                  extraAward: data.rescueStatus
                 }
                 this.showPop(3)
                 this.getActInfo(false)
-                if (data.rescueAward) {
+                if (data.rescueStatus) {
                   this.myBeauty()
                   this.getHornList()
                 }
@@ -602,7 +600,7 @@
           background: url("./images/light1.png");
           background-size: 100% 100%;
           position: absolute;
-          top:.38rem;
+          top:.3rem;
           left:0;
           right: 0;
           margin: auto;
