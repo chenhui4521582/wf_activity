@@ -472,7 +472,7 @@ export default {
     background: linear-gradient(90deg, #FFF8DC, #FCA667);
     -webkit-background-clip: text;
     font-weight: bold;
-    color: transparent;
+    color: #fe5754;
   }
   .buy-tip {
     color: #6f768e;
@@ -480,7 +480,7 @@ export default {
     text-align: center;
     padding-top: 0.33rem;
     &.activity {
-      color: #fff;
+      color: #2D3250;
     }
   }
   .activity-button {
