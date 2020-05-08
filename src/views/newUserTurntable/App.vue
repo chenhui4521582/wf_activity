@@ -38,7 +38,7 @@
             </div>
             <p>{{info.convertConsumeRmb}}<span>元</span></p>
           </div>
-          <div class="btn">提现</div>
+          <div class="btn" @click="_convert()">提现</div>
         </div>
       </div>
       <div class="task-wrap">
@@ -75,15 +75,15 @@
         </div>
       </div>
     </template>
+    <my-awards :info="info" v-model="isDetailShow" @convert="_convert"></my-awards>
     <rule v-if="isRuleShow" :info="info" @on-close="closeRule()"></rule>
     <turnpop v-if="isTurnpopShow" :pop-type="popType" :info="info" :awards-info="awardsInfo"
       @on-close="closeTurnPop"></turnpop>
-    <my-awards :info="info" v-model="isDetailShow"></my-awards>
   </div>
 </template>
 <script>
 /* eslint-disable no-undef */
-import { taskInfo, activityInfo, bet, finish } from './services/api'
+import { taskInfo, activityInfo, bet, finish, convert, setRetainPopup } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'app',
@@ -109,10 +109,32 @@ export default {
     'turnpop': () => import('./components/turnpop'),
     'myAwards': () => import('./components/myAwards')
   },
-  mounted () {
-    this.init()
+  async mounted () {
+    await this.init()
     this.getTaskInfo()
     GLOBALS.marchSetsPoint('P_H5PT0279', { source_address: this.sourceAddress }) // H5平台-新人抽奖转盘活动-页面加载完成
+    let curChannel = localStorage.getItem('APP_CHANNEL')
+    if (curChannel == '100039' && this.info.newUserInfo.needRetain) {
+      try {
+        window.bdminCloseFun = () => {
+          this.popType = 8
+          this.showTurnPop()
+          setRetainPopup()
+        }
+        var bdminObj = "bdminCloseFun"
+        var scheme = 'baiduhaokan://action/backHandler/?goback_callback=' + encodeURIComponent(bdminObj)
+        var iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = scheme
+        console.log('iframe::', iframe)
+        document.body.appendChild(iframe)
+        setTimeout(function () {
+          iframe.remove()
+        }, 1000)
+      } catch (e) {
+        window.alert(e.message)
+      }
+    }
   },
   computed: {
     rotate () {
@@ -135,6 +157,21 @@ export default {
       if (data) {
         this.info = data
         this.countDown(data.countdown)
+        if (this.info.newUser) {
+          if (this.info.newUserInfo.incrBetTimes) {
+            this.awardsInfo = { awardsNum: this.info.newUserInfo.incrBetTimes }
+            this.popType = 3
+            this.showTurnPop()
+          }
+        } else {
+          if (this.info.oldUserInfo && this.info.oldUserInfo.couponName) {
+            this.popType = 6
+            this.showTurnPop()
+          } else {
+            this.popType = 7
+            this.showTurnPop()
+          }
+        }
       }
     },
     imgFilter (url) {
@@ -153,8 +190,6 @@ export default {
     },
     async betting () {
       GLOBALS.marchSetsPoint('A_H5PT0279003331') // H5平台-新人抽奖转盘-抽奖点击
-      // GLOBALS.marchSetsPoint('A_H5PT0279003332') // H5平台-新人抽奖转盘-提现点击
-      // GLOBALS.marchSetsPoint('A_H5PT0279003334') // H5平台-新人抽奖转盘-马上提取点击
       if (this.info.newUserInfo && this.info.newUserInfo.betTimes) {
         const res = await bet()
         const data = _get(res, 'data', null)
@@ -167,6 +202,33 @@ export default {
         this.popType = 0
       }
       this.showTurnPop()
+    },
+    async _convert (convertType) {
+      if (this.convertType) {
+        GLOBALS.marchSetsPoint('A_H5PT0279003334') // H5平台-新人抽奖转盘-马上提取点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0279003332') // H5平台-新人抽奖转盘-提现点击
+      }
+      if (this.info.convertConsumeRmb <= this.info.newUserInfo.envelopeRmb) {
+        const res = await convert()
+        const code = _get(res, 'code', 0)
+        const data = _get(res, 'data', null)
+        if (code === 200) {
+          this.awardsInfo = data
+          this.info.newUserInfo.betTimes = this.awardsInfo.betTimes
+          this.info.newUserInfo.envelopeNum = this.awardsInfo.envelopeNum
+          this.info.newUserInfo.envelopeRmb = this.awardsInfo.envelopeRmb
+          this.popType = 4
+          this.showTurnPop()
+        } else {
+          this.popType = 5
+          this.showTurnPop()
+        }
+      } else {
+        this.$toast.show({
+          message: `满${this.info.convertConsumeRmb}元才可以提取哦`
+        })
+      }
     },
     // 特惠倒计时
     countDown (info) {
@@ -207,18 +269,23 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0279003337') // H5平台-新人抽奖转盘-抽奖机会不足弹窗加载完成
       } else if (this.popType === 1) {
         GLOBALS.marchSetsPoint('A_H5PT0279003335') // H5平台-新人抽奖转盘-中奖弹窗加载完成
-        // GLOBALS.marchSetsPoint('A_H5PT0279003336') // H5平台-新人抽奖转盘-满足提现弹窗加载完成
+      } else if (this.popType === 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0279003336') // H5平台-新人抽奖转盘-满足提现弹窗加载完成
       }
     },
     closeTurnPop (type) {
       this.isTurnpopShow = false
       if (type) {
-        if (this.popType) {
-          this.betting()
-        } else {
+        if (this.popType === 0) {
           this.$nextTick(() => {
             window.scrollTo(0, this.$refs.app.scrollHeight)
           })
+        } else if (this.popType === 1) {
+          this.betting()
+        } else if (this.popType === 4) {
+          WapCall.openGame('/xmWap/#/my/prize')
+        } else if (this.popType === 5) {
+          WapCall.openGame('/xmWap/#/my/customerService')
         }
       }
     },
@@ -265,6 +332,13 @@ export default {
     },
     async _finish ({ taskId, taskLogId }) {
       const res = await finish({ taskId, taskLogId })
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', null)
+      if (code === 200) {
+        this.awardsInfo = data
+        this.popType = 2
+        this.showTurnPop()
+      }
     },
     back () {
       let url = SDK.getBackUrl()
@@ -467,7 +541,7 @@ export default {
     .money-wrap {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       padding-bottom: 0.12rem;
       border-bottom: 1px solid rgba(255, 200, 197, 0.5);
       p {

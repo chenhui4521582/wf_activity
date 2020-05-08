@@ -40,38 +40,6 @@
         s.parentNode.insertBefore(hm, s)
       })()
     }, 500)
-    var curChannel = localStorage.getItem('APP_CHANNEL')
-    if (curChannel == '100039') {
-      try {
-        window.bdminCloseFun = function () {
-          //弹出挽留弹窗
-          document.getElementById('sFrame').src = 'https://wap.beeplaying.com/rrzqClosePage/index_bd.html?t=' + Date.now();
-          document.getElementById('sFrame').style.display = 'block';
-        };
-
-        var bdminObj = "bdminCloseFun";
-        var scheme = 'baiduhaokan://action/backHandler/?goback_callback=' + encodeURIComponent(bdminObj);
-        var iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = scheme;
-        console.log('iframe::', iframe);
-        document.body.appendChild(iframe);
-        setTimeout(function () {
-          iframe.remove();
-        }, 1000);
-
-        // 关闭方法
-        window.closeRRVideo = function () {
-          document.getElementById('sFrame').style.display = 'none';
-          location.href = 'baiduhaokan://action/goback';
-        };
-        window.closeRRVideo2 = function () {
-          document.getElementById('sFrame').style.display = 'none';
-        };
-      } catch (e) {
-        window.alert(e.message);
-      }
-    }
   }
 </script>
 

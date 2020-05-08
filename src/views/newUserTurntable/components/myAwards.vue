@@ -7,7 +7,7 @@
       我的话费
     </p>
     <p class="envelope-rmb">{{info.newUserInfo.envelopeRmb}}<span>元</span></p>
-    <div class="get-now-btn">马上提取</div>
+    <div class="get-now-btn" @click="convert">马上提取</div>
     <p class="sub-title">
       <template v-if="info.state===1">
         满{{info.convertConsumeRmb}}元可以提取话费
@@ -99,6 +99,9 @@ export default {
     },
     toMyPrize () {
       WapCall.openGame('/xmWap/#/my/prize')
+    },
+    convert () {
+      this.$emit('convert', 1)
     }
   },
   watch: {
