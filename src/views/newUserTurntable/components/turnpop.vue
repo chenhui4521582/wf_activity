@@ -140,8 +140,13 @@ export default {
       WapCall.openGame('/xmWap/#/')
     },
     back () {
-      // location.href = 'bdminivideo://webview/close'
-      location.href = 'bdminivideo://webview/goback'
+      let curChannel = localStorage.getItem('APP_CHANNEL')
+      if (curChannel === '100039') {
+        // location.href = 'bdminivideo://webview/close'
+        location.href = 'bdminivideo://webview/goback'
+      } else {
+        history.go(-1)
+      }
     }
   }
 }

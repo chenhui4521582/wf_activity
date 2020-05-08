@@ -3,7 +3,12 @@
     <template v-if="!isDetailShow">
       <div class="top">
         <p class="back" @click="back"><span>返回</span></p>
-        <span>&nbsp;&nbsp;限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
+        <template v-if="info.countdown>0">
+          <span>&nbsp;&nbsp;限时福利&nbsp;</span>剩余&nbsp;<em>{{countTime.day}}</em>&nbsp;天&nbsp;<em>{{countTime.hour}}</em>&nbsp;小时&nbsp;<em>{{countTime.minute}}</em>&nbsp;分
+        </template>
+        <template v-else>
+          <span>活动已结束</span>
+        </template>
       </div>
       <div class="top-btn-wrap">
         <div class="btn left" @click="showRule()">玩法说明</div>
@@ -123,7 +128,7 @@ export default {
     this.getTaskInfo()
     GLOBALS.marchSetsPoint('P_H5PT0279', { source_address: this.sourceAddress }) // H5平台-新人抽奖转盘活动-页面加载完成
     let curChannel = localStorage.getItem('APP_CHANNEL')
-    if (curChannel == '100039' && this.info.newUser && this.info.newUserInfo.needRetain) {
+    if (curChannel === '100039' && this.info.newUser && this.info.newUserInfo.needRetain) {
       try {
         window.bdminCloseFun = () => {
           this.popType = 8
