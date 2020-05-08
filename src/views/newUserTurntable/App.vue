@@ -23,30 +23,32 @@
         </div>
       </div>
       <div class="active-info-wrap">
-        <div class="money-wrap">
-          <p>已抽到: <span>{{info.newUserInfo&&info.newUserInfo.envelopeRmb||0 }}</span>元
-          </p>
-          <p>
-            <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
-              达到提现门槛，快去领话费吧
-            </template>
-            <template v-else>
-              还差{{Math.floor((info.convertConsumeRmb - info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
-            </template>
-          </p>
-        </div>
-        <div class="cash-out">
-          <div class="percent-wrapper">
-            <div class="percent-bg">
-              <div class="percent"
-                :style="{width:`${info.convertConsumeRmb>info.newUserInfo.envelopeRmb?info.newUserInfo.envelopeRmb/info.convertConsumeRmb*100:100}%`,borderRadius: info.convertConsumeRmb>info.newUserInfo.envelopeRmb?'0.08rem 0 0 0.08rem':'0.08rem'}">
-                <p>{{info.newUserInfo.envelopeRmb}}<span>元</span></p>
-              </div>
-            </div>
-            <p>{{info.convertConsumeRmb}}<span>元</span></p>
+        <template v-if="info.newUser">
+          <div class="money-wrap">
+            <p>已抽到: <span>{{info.newUserInfo.envelopeRmb||0 }}</span>元
+            </p>
+            <p>
+              <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
+                达到提现门槛，快去领话费吧
+              </template>
+              <template v-else>
+                还差{{Math.floor((info.convertConsumeRmb - info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
+              </template>
+            </p>
           </div>
-          <div class="btn" @click="_convert()">提现</div>
-        </div>
+          <div class="cash-out">
+            <div class="percent-wrapper">
+              <div class="percent-bg">
+                <div class="percent"
+                  :style="{width:`${info.convertConsumeRmb>info.newUserInfo.envelopeRmb?info.newUserInfo.envelopeRmb/info.convertConsumeRmb*100:100}%`,borderRadius: info.convertConsumeRmb>info.newUserInfo.envelopeRmb?'0.08rem 0 0 0.08rem':'0.08rem'}">
+                  <p>{{info.newUserInfo.envelopeRmb}}<span>元</span></p>
+                </div>
+              </div>
+              <p>{{info.convertConsumeRmb}}<span>元</span></p>
+            </div>
+            <div class="btn" @click="_convert()">提现</div>
+          </div>
+        </template>
       </div>
       <div class="task-wrap">
         <div class="task-content">
@@ -171,7 +173,7 @@ export default {
             this.showTurnPop()
           }
         } else {
-          if (this.info.oldUserInfo && this.info.oldUserInfo.couponName) {
+          if (this.info.oldUserInfo && this.info.oldUserInfo.showCoupon) {
             this.popType = 6
             this.showTurnPop()
           } else {
