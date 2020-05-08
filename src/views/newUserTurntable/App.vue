@@ -51,7 +51,7 @@
               </div>
               <p>{{info.convertConsumeRmb}}<span>元</span></p>
             </div>
-            <div class="btn" @click="_convert()">提现</div>
+            <div class="btn" @click="goMy(1)">提现</div>
           </div>
         </template>
       </div>
@@ -217,12 +217,8 @@ export default {
       }
       this.showTurnPop()
     },
-    async _convert (convertType) {
-      if (this.convertType) {
-        GLOBALS.marchSetsPoint('A_H5PT0279003334') // H5平台-新人抽奖转盘-马上提取点击
-      } else {
-        GLOBALS.marchSetsPoint('A_H5PT0279003332') // H5平台-新人抽奖转盘-提现点击
-      }
+    async _convert () {
+      GLOBALS.marchSetsPoint('A_H5PT0279003334') // H5平台-新人抽奖转盘-马上提取点击
       if (this.info.convertConsumeRmb <= this.info.newUserInfo.envelopeRmb) {
         const res = await convert()
         const code = _get(res, 'code', 0)
@@ -268,8 +264,11 @@ export default {
         }
       }, 1000)
     },
-    goMy () {
+    goMy (type) {
       this.isDetailShow = true
+      if (type) {
+        GLOBALS.marchSetsPoint('A_H5PT0279003332') // H5平台-新人抽奖转盘-提现点击
+      }
     },
     showRule () {
       this.isRuleShow = true
@@ -292,12 +291,10 @@ export default {
       if (type) {
         if (this.popType === 0) {
           this.$nextTick(() => {
-            window.scrollTo(0, this.$refs.app.scrollHeight)
+            window.scrollTo(0, document.querySelector('.task-wrap').offsetTop - 15)
           })
         } else if (this.popType === 1) {
           this.betting()
-        } else if (this.popType === 2) {
-          this.getTaskInfo()
         } else if (this.popType === 4) {
           WapCall.openGame('/xmWap/#/my/prize')
         } else if (this.popType === 5) {
@@ -335,7 +332,7 @@ export default {
       })
       let actionsArr = [39, 35, 34, 32]
       // 跳转到首页
-      if (action == 36 || url == '/plat/') {
+      if (action === 36 || url === '/plat/') {
         this.$router.push('/')
         return false
       }
@@ -354,6 +351,8 @@ export default {
         this.awardsInfo = data
         this.popType = 2
         this.showTurnPop()
+        this.init()
+        this.getTaskInfo()
       }
     },
     back () {
