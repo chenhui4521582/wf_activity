@@ -101,7 +101,7 @@ export default {
       WapCall.openGame('/xmWap/#/my/prize')
     },
     convert () {
-      this.$emit('convert', 1)
+      this.$emit('convert')
     }
   },
   watch: {

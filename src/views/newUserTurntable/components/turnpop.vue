@@ -142,8 +142,7 @@ export default {
     back () {
       let curChannel = localStorage.getItem('APP_CHANNEL')
       if (curChannel === '100039') {
-        // location.href = 'bdminivideo://webview/close'
-        location.href = 'bdminivideo://webview/goback'
+        location.href = 'baiduhaokan://action/goback'
       } else {
         history.go(-1)
       }
