@@ -26,7 +26,14 @@
         <div class="money-wrap">
           <p>已抽到: <span>{{info.newUserInfo&&info.newUserInfo.envelopeRmb||0 }}</span>元
           </p>
-          <p>还差{{(info.convertConsumeRmb - info.newUserInfo.envelopeRmb)}}元就可以提现了</p>
+          <p>
+            <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
+              达到提现门槛，快去领话费吧
+            </template>
+            <template v-else>
+              还差{{Math.floor((info.convertConsumeRmb - info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
+            </template>
+          </p>
         </div>
         <div class="cash-out">
           <div class="percent-wrapper">
@@ -114,7 +121,7 @@ export default {
     this.getTaskInfo()
     GLOBALS.marchSetsPoint('P_H5PT0279', { source_address: this.sourceAddress }) // H5平台-新人抽奖转盘活动-页面加载完成
     let curChannel = localStorage.getItem('APP_CHANNEL')
-    if (curChannel == '100039' && this.info.newUserInfo.needRetain) {
+    if (curChannel == '100039' && this.info.newUser && this.info.newUserInfo.needRetain) {
       try {
         window.bdminCloseFun = () => {
           this.popType = 8

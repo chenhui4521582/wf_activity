@@ -12,10 +12,10 @@
           </p>
           <p class="sub-desc">
             <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
-              达到体现门槛，快去领话费吧
+              达到提现门槛，快去领话费吧
             </template>
             <template v-else>
-              还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb}}元就可以提现了
+              还差{{Math.floor((info.convertConsumeRmb-info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
             </template>
           </p>
           <div class="btn" @click="close(true)">获得更多抽奖机会</div>
@@ -24,10 +24,10 @@
           <p>
             话费红包 x{{awardsInfo.awardsEnvelopeNum}} 预计{{awardsInfo.awardsEnvelopeRmb}}元<br />
             <template v-if="awardsInfo.envelopeRmb>=info.convertConsumeRmb">
-              达到体现门槛，快去领话费吧
+              达到提现门槛，快去领话费吧
             </template>
             <template v-else>
-              还差{{info.convertConsumeRmb-awardsInfo.envelopeRmb}}元就可以提现了
+              还差{{Math.floor((info.convertConsumeRmb-awardsInfo.envelopeRmb)*100)/100}}元就可以提现了
             </template>
           </p>
           <div class="btn" @click="close(true)">再抽一次</div>
@@ -75,10 +75,10 @@
         <template v-if="popType===8">
           <p>
             <template v-if="info.newUserInfo.envelopeRmb>=info.convertConsumeRmb">
-              达到体现门槛，快去领话费吧<br />
+              达到提现门槛，快去领话费吧<br />
             </template>
             <template v-else>
-              还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb}}元就可以体现喽<br />
+              还差{{Math.floor((info.convertConsumeRmb-info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现喽<br />
             </template>
             抽奖页面可以从<br />
             “好看视频-我的-游戏大厅”进入哦
