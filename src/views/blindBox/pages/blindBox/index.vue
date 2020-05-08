@@ -1,19 +1,9 @@
 <template>
   <main>
-    <article class="blind-box-wrap activity"
-      :style="{'padding-top': `${bannerHeight + translateY}px`}">
-      <!-- <article class="blind-box-wrap"> -->
-      <section ref="banner"
-        :style="{'transform': `translateY(${translateY}px)`}"
-        class="banner">
-        <!-- <div class="time"></div> -->
-      </section>
-      <article class="container"
-        :class="{'active': (bannerHeight + translateY)}">
+    <article class="blind-box-wrap activity">
+      <article class="container">
         <!-- <article class="container"> -->
-        <span @click="toPlatform"
-          v-if="!isWechat"
-          class="back">返回</span>
+        <span class="back" v-if="!isWechat" @click="toPlatform">返回</span>
         <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
@@ -48,10 +38,8 @@ export default {
       showCoupon: false,
       isOldUser: true,
       couponInfo: null,
-      translateY: 0,
       startY: 0,
       endY: 0,
-      bannerHeight: 0,
       isFirst: false,
       isTouchBannerHide: false
     }
@@ -78,56 +66,6 @@ export default {
     },
     onCouponClose () {
       this.showCoupon = false
-    },
-    initToucheListener () {
-      // if (!this.isFirst) this.translateY = 0
-      this.bannerHeight = this.$refs.banner.offsetHeight
-      if (!this.isFirst) this.translateY = -this.bannerHeight
-      document.addEventListener('touchstart', this.onToucheStart)
-      document.addEventListener('touchmove', this.onToucheMove)
-      document.addEventListener('touchend', this.onToucheEnd)
-    },
-    removeToucheListener () {
-      document.removeEventListener('touchstart', this.onToucheStart)
-      document.removeEventListener('touchmove', this.onToucheMove)
-      document.removeEventListener('touchend', this.onToucheEnd)
-    },
-    onToucheStart (e) {
-      this.startY = Number(e.touches[0].pageY)
-      this.endY = 0
-      this.isTouchBannerHide = false
-    },
-    onToucheMove (e) {
-      this.endY = Number(e.touches[0].pageY)
-      const scrollY = document.documentElement.scrollTop
-      // 向下拉动时banner出现
-      if (this.translateY < 0 && scrollY <= 0) {
-        this.translateY = this.toucheMoveY - this.bannerHeight
-        this.isTouchBannerHide = true
-      }
-    },
-    onToucheEnd (e) {
-      const scrollY = document.documentElement.scrollTop||document.body.scrollTop
-      // banner图向下滑动，收起banner
-      if (this.translateY === 0 && scrollY > 0) {
-        this.translateY = -this.bannerHeight
-        setTimeout(()=>{
-          document.body.scrollTop=0
-        },300)
-        if (this.isTouchBannerHide) document.documentElement.scrollTop = 0
-        GLOBALS.marchSetsPoint('A_H5PT0225002748')
-        return
-      }
-      // banner向上拉动
-      // if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0.3 * this.bannerHeight) {
-      if (this.translateY <= 0 && scrollY <= 0 && this.toucheMoveY > 0) {
-        this.translateY = 0
-        setTimeout(()=>{
-          document.body.scrollTop=0
-        },300)
-      } else {
-        this.translateY = -this.bannerHeight
-      }
     },
     // 盲盒banner24H只出现一次 年货节，不需要注释掉
     init () {
@@ -174,16 +112,12 @@ export default {
     if (data.data.data) {
       this.guideTest()
     }
-  },
-  beforeDestroy () {
-    this.removeToucheListener()
   }
 }
 </script>
 
 <style scoped lang="less">
 .blind-box-wrap {
-  background: #1b1f29;
   min-height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
@@ -194,7 +128,7 @@ export default {
   position: relative;
   z-index: 2;
   &.activity {
-    background: #5A4DAF;
+    background: #F2EDD7;
     .back {
       background: #9D88EC;
     }
