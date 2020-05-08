@@ -1,17 +1,11 @@
 <template>
-  <section class="current-product-list activity">
-    <div class="header">
-      <!-- <div class="header-left">
-        <img :class="{'gift' : !show}"
-          src="../assets/box.png"
-          alt="">
-        <span>盲盒明星奖品</span>
-      </div> -->
-      <div></div>
-      <a href="#/allProducts"
-        @click="moreAwards()">更多奖品>></a>
+  <section class="current-product-list">
+    <div class="product-list-wrap">
+      <div class="header">
+        <a href="#/allProducts" @click="moreAwards()">更多奖品>></a>
+      </div>
+      <Swiper :is-guide="show" />
     </div>
-    <Swiper :is-guide="show" />
   </section>
 </template>
 
@@ -116,36 +110,28 @@ export default {
 }
 
 .current-product-list {
-  width: 7.05rem;
-  padding: 0.18rem;
-  padding-top: 0.3rem;
-  margin: 0 auto;
-  color: #fff;
-  font-size: 0.24rem;
-  max-width: 100vw;
-  box-sizing: border-box;
-  overflow: hidden;
-  &.activity {
-    background:#30569F url('../activity/top-bg.png') no-repeat;
-    background-size: 100% 100%;
-    width: 100%;
-    height: 2.5rem;
-    padding-top: 0.4rem;
-    padding-left: 0 ;
-    padding-right: .32rem;
-    .header a {
-      color:#fff;
-    }
+  padding: 0 .1rem;
+  background: #30569F;
+  .product-list-wrap {
+    padding-top: .38rem;
+    overflow: hidden;
+    height: 2.63rem;
+    font-size: 0.24rem;
+    color: #fff;
+    background: url('../activity/top-bg.png') no-repeat;
+    background-size: 100% 2.5rem;
+    box-sizing: border-box;
+  }
+  .header a {
+    color:#fff;
   }
   .gift {
     animation: bounce 0.9s linear 2;
   }
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding-right: .25rem;
     margin-bottom: 0.15rem;
-    padding-left: 0.5rem;
+    text-align: right;
     .header-left {
       display: flex;
       align-items: center;
@@ -167,7 +153,7 @@ export default {
       }
     }
     a {
-      color: #fee994;
+      color: #FFF4DF;
     }
   }
   .product-list-wrapper {

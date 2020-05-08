@@ -427,7 +427,7 @@ export default {
       background-size: 100% 100%;
     }
     .buy-tip {
-      color: #6F768E;
+      color: #2D3250;
       font-size: 0.24rem;
       text-align: center;
       padding-top: 0.33rem;
