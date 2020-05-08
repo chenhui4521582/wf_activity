@@ -135,7 +135,7 @@ export default {
           this.showTurnPop()
           setRetainPopup()
         }
-        var bdminObj = "bdminCloseFun"
+        var bdminObj = 'bdminCloseFun'
         var scheme = 'baiduhaokan://action/backHandler/?goback_callback=' + encodeURIComponent(bdminObj)
         var iframe = document.createElement('iframe')
         iframe.style.display = 'none'
@@ -296,6 +296,8 @@ export default {
           })
         } else if (this.popType === 1) {
           this.betting()
+        } else if (this.popType === 2) {
+          this.getTaskInfo()
         } else if (this.popType === 4) {
           WapCall.openGame('/xmWap/#/my/prize')
         } else if (this.popType === 5) {
