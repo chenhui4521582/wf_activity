@@ -123,7 +123,7 @@ export default {
   filters: {
     floatFilter (val) {
       if (val.toString().length > 5) {
-        return Math.floor(val * 100) / 100
+        return val.toFixed(2)
       }
       return val
     }
