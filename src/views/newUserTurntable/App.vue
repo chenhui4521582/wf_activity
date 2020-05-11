@@ -37,7 +37,7 @@
                 达到提现门槛，快去领话费吧
               </template>
               <template v-else>
-                还差{{Math.floor((info.convertConsumeRmb - info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
+                还差{{info.convertConsumeRmb - info.newUserInfo.envelopeRmb|floatFilter}}元就可以提现了
               </template>
             </p>
           </div>
@@ -148,6 +148,14 @@ export default {
       } catch (e) {
         window.alert(e.message)
       }
+    }
+  },
+  filters: {
+    floatFilter (val) {
+      if (val.toString().length > 5) {
+        return Math.floor(val * 100) / 100
+      }
+      return val
     }
   },
   computed: {

@@ -15,7 +15,7 @@
               达到提现门槛，快去领话费吧
             </template>
             <template v-else>
-              还差{{Math.floor((info.convertConsumeRmb-info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现了
+              还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb|floatFilter}}元就可以提现了
             </template>
           </p>
           <div class="btn" @click="close(true)">获得更多抽奖机会</div>
@@ -27,7 +27,7 @@
               达到提现门槛，快去领话费吧
             </template>
             <template v-else>
-              还差{{Math.floor((info.convertConsumeRmb-awardsInfo.envelopeRmb)*100)/100}}元就可以提现了
+              还差{{info.convertConsumeRmb-awardsInfo.envelopeRmb|floatFilter}}元就可以提现了
             </template>
           </p>
           <div class="btn" @click="close(true)">再抽一次</div>
@@ -78,7 +78,7 @@
               达到提现门槛，快去领话费吧<br />
             </template>
             <template v-else>
-              还差{{Math.floor((info.convertConsumeRmb-info.newUserInfo.envelopeRmb)*100)/100}}元就可以提现喽<br />
+              还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb|floatFilter}}元就可以提现喽<br />
             </template>
             抽奖页面可以从<br />
             “好看视频-我的-游戏大厅”进入哦
@@ -121,8 +121,11 @@ export default {
     }
   },
   filters: {
-    priceFilter (val) {
-      return (val / 10).toFixed(1) || 0
+    floatFilter (val) {
+      if (val.toString().length > 5) {
+        return Math.floor(val * 100) / 100
+      }
+      return val
     }
   },
   methods: {
