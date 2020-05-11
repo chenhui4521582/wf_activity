@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     goBack () {
-      this.$router.go(-1)
+      history.go(-1)
     },
     onCopy () {
       this.$toast.show({ message: '复制成功' })
