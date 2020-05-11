@@ -39,7 +39,7 @@
               以后每天登录都可获得抽奖机会
             </template>
           </p>
-          <div class="btn" @click="close()">去抽奖</div>
+          <div class="btn" @click="close(popType===2)">去抽奖</div>
         </template>
         <template v-if="popType===4">
           <p>
@@ -132,6 +132,8 @@ export default {
     handleClose () {
       if (this.popType === 6 || this.popType === 7 || this.popType === 8) {
         this.back()
+      } else if (this.popType === 2) {
+        this.close(true)
       } else {
         this.close()
       }
