@@ -295,6 +295,9 @@ export default {
           })
         } else if (this.popType === 1) {
           this.betting()
+        } else if (this.popType === 2) {
+          this.init()
+          this.getTaskInfo()
         } else if (this.popType === 4) {
           WapCall.openGame('/xmWap/#/my/prize')
         } else if (this.popType === 5) {
@@ -351,8 +354,6 @@ export default {
         this.awardsInfo = data
         this.popType = 2
         this.showTurnPop()
-        this.init()
-        this.getTaskInfo()
       }
     },
     back () {
