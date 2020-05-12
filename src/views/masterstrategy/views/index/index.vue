@@ -41,7 +41,7 @@
             v-for="(item, index) in nav" 
             :class="{'active': currentIndex == index}"
             :key="index" 
-            @click="handleNavClick(index)"
+            @click="handleNavClick(index, item)"
           >
             {{item.name}} 
             <div class="bottom-icon"></div>
@@ -60,8 +60,8 @@
               <div class="check-btn" v-if="item.showBtn && item.pulldown">查看更多 <span class="arraw"></span></div>
               <div class="check-btn" v-if="item.showBtn && !item.pulldown">点击收起 <span class="arraw"></span></div>
             </div>
-            <div class="user-info" @click="checkUserInfo(item)">
-              <div class="user">
+            <div class="user-info">
+              <div class="user" @click="checkUserInfo(item)">
                 <div class="avatar">
                   <img v-if="item.headImg"  class="inner-img" :src="item.headImg | filter" alt="">
                   <img v-else class="inner-img" src="./img/img_photo.png" alt="">
@@ -149,10 +149,13 @@ export default {
     }
   },
   methods: {
-    handleNavClick (index) {
+    handleNavClick (index, item) {
       this.currentIndex = index
       this.resetParams()
       this._getList()
+      GLOBALS.marchSetsPoint('A_H5PT0282003393', {
+        awards_name: item.name
+      })
     },
     /** 监控滚动 **/
     onScroll ({ y }) {
@@ -234,7 +237,7 @@ export default {
         let element = this.$refs.text
         let fontsize = document.documentElement.style.fontSize.replace('px', '')
         element.forEach((item, index) => {
-          if(item.childNodes[0].clientHeight / fontsize > .9) {
+          if(item.childNodes[0].clientHeight / fontsize > 1.1) {
             let list = this.list[index]
             list.pulldown = true
             list.showBtn = true
@@ -263,6 +266,7 @@ export default {
     /** 打开更多游戏 **/
     openRecommend () {
       this.showRecommend = true
+      GLOBALS.marchSetsPoint('A_H5PT0282003395')
     },
     /** 点赞 **/
     _setPraise (item, index) {
@@ -278,16 +282,22 @@ export default {
       })
     },
     jump () {
+      GLOBALS.marchSetsPoint('A_H5PT0282003394')
       window.location.href = 'https://wj.qq.com/s2/5837168/9470/'
     },
     goRanking () {
+      GLOBALS.marchSetsPoint('A_H5PT0282003392')
       this.$router.push({
         name: 'ranking'
       })
+      
     }
   },
   mounted() {
     this._getInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0282', {
+      from_project_id: utils.getUrlParams('from')
+    })
   }
 }
 </script>

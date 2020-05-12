@@ -52,7 +52,7 @@
 <script>
 import Services from '../../../services/services'
 import _get from 'lodash.get'
-// import { jumpUrl } from '@/utils/utils'
+import utils from '../../../components/utils'
 
 export default {
   name: 'userInfo',
@@ -66,7 +66,7 @@ export default {
   methods: {
     openGame (game) {
       if (game.url) {
-        jumpUrl({ url: game.url })
+        utils.jumpUrl({ url: game.url })
       }
     },
     init (userId) {
