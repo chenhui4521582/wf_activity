@@ -53,7 +53,7 @@ export default {
   methods: {
     goGame( item ) {
       if (item.url) {
-        window.location.href = item
+        window.location.href = item.url
       }
     },
     hide(btn) {
