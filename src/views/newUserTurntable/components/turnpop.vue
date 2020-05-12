@@ -22,12 +22,20 @@
         </template>
         <template v-if="popType===1">
           <p>
-            话费红包 x{{awardsInfo.awardsEnvelopeNum}} 预计{{awardsInfo.awardsEnvelopeRmb}}元<br />
+            话费红包
+            <span class="red-text">
+              x{{awardsInfo.awardsEnvelopeNum}}
+            </span>&nbsp;&nbsp;
+            预计<span class="red-text">{{awardsInfo.awardsEnvelopeRmb}}元</span><br />
             <template v-if="awardsInfo.envelopeRmb>=info.convertConsumeRmb">
               达到提现门槛，快去领话费吧
             </template>
             <template v-else>
-              还差{{info.convertConsumeRmb-awardsInfo.envelopeRmb|floatFilter}}元就可以提现了
+              还差
+              <span class="red-text">
+                {{info.convertConsumeRmb-awardsInfo.envelopeRmb|floatFilter}}元
+              </span>
+              就可以提现了
             </template>
           </p>
           <div class="btn" @click="close(true)">再抽一次</div>
@@ -36,7 +44,8 @@
           <p>
             {{awardsInfo.awardsNum}}次转盘抽奖的机会<br />
             <template v-if="popType===3">
-              以后每天登录都可获得抽奖机会
+              <span>小提示：抽奖机会可以抽话费红包哦,</span><br />
+              <span>每天登录都可获得1次抽奖机会~</span>
             </template>
           </p>
           <div class="btn" @click="close(popType===2)">去抽奖</div>
@@ -231,7 +240,6 @@ export default {
         .bgWithFull('../img/turn-times-bg.png');
         p {
           color: #666;
-          padding: 4.8rem 0 0;
           text-align: center;
           font-size: 0.26rem;
         }
@@ -242,6 +250,21 @@ export default {
       &.type-2 {
         p {
           padding: 4.8rem 0 0.3rem;
+        }
+      }
+      &.type-3 {
+        p {
+          padding: 4.6rem 0 0;
+          span {
+            display: inline-block;
+            margin-top: 0.2rem;
+            &:last-child {
+              margin-top: 0;
+            }
+          }
+        }
+        .btn {
+          margin-top: 0.2rem;
         }
       }
       &.type-4 {
@@ -336,6 +359,9 @@ export default {
         .btn {
           margin-top: 0.3rem;
         }
+      }
+      .red-text {
+        color: #ff4330;
       }
     }
     .close {
