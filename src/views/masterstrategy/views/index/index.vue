@@ -218,6 +218,7 @@ export default {
         }
       }).catch(error => {
         this.scrollLock = false
+        this.loadingAnimaion(false)
       })
     },
     /** 加载动画 **/
