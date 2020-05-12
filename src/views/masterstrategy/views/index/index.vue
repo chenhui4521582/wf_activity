@@ -82,9 +82,7 @@
             </div>
           </div>
           <!-- 加载动画 -->
-          <loading-animation class="loading-animation" v-if="!noData && loadingAnimation" :showBar="true" :smaller="true"/>
-          <!-- 没有数据了 -->
-          <bottom-line class="bottom-line" v-if="noData" />
+          <loading-animation class="loading-animation" v-if="loadingAnimation" :showBar="true" :smaller="true"/>
         </div>
       </better-scroll>
     </div>
@@ -122,7 +120,6 @@ export default {
     page: 1,
     scrollLock: false,
     showRule: false,
-    noData: false,
     loadingAnimation: false,
     showRecommend: false
   }),
@@ -166,8 +163,6 @@ export default {
         if (this.timer) {
           clearTimeout(this.timer)
         }
-        /** 开启加载动画 **/
-        this.loadingAnimaion(true)
         this.timer = setTimeout(() => {
           this.page++
           this._getList()
@@ -187,7 +182,6 @@ export default {
       this.scrollLock = false
       this.list = []
       this.loadingAnimation = false
-      this.noData = false
     },
     /** 获取活动信息 **/
     _getInfo () {
@@ -203,6 +197,8 @@ export default {
     _getList () {
       if(this.scrollLock) return
       this.scrollLock = true
+      /** 开启加载动画 **/
+      this.loadingAnimaion(true)
       const id = _get(this.info, ['categoryList', this.currentIndex, 'id'], 1)
       Services.getList({
         "categoryId": id,
@@ -217,8 +213,6 @@ export default {
           this.loadingAnimaion(false)
           if(list.length == 20) {
             this.scrollLock = false
-          }else {
-            this.noData = true
           }
           this.countPullDown()
         }
