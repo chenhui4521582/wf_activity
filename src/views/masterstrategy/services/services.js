@@ -29,7 +29,7 @@ const getStrategyUserInfo = ( params ) => {
  *  @description  玩家攻略发布-排行榜列表
  */
 const getRanking = ( params ) => {
-  let url = `${host1}/wap/api/wap/coterie/rank-list`
+  let url = `${host}/wap/api/wap/coterie/rank-list`
   return axios.post(url, params)
 }
 

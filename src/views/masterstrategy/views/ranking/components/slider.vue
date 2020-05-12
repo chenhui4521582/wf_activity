@@ -37,7 +37,9 @@ export default {
   },
   mounted () {
     this.defaultOptions.height = document.getElementById('slider').clientHeight
-    this.show = true
+    setTimeout(item => {
+      this.show = true
+    }, 1000)
   }
 }
 </script>
