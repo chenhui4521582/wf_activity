@@ -3,14 +3,19 @@
     <div class="mask"></div>
     <div class="center">
       <div class="title">
-        <img src="../img/title.png" alt="">
+        <img src="../img/title1.png" alt="">
       </div>
       <div class="wrap">
-        1、活动时间：5月19日-5月25日<br>
-        2、活动期间，玩家累计充值达到一定梯度，可领取奖品；<br>
-        3、任务分为【每日充值】和【一周充值】两种，达到每日充值任务可在每天24点前领取奖品；<br>
-        4、【一周充值】奖品需在5月25日24点前手动领取；<br>
-        5、奖品请及时领取
+        <div class="item" v-for="(item, index) in list" :key="index">
+          <div class="award-img">
+            <img v-if="item.typeDesc == 'hfq'" class="inner-img" src="../img/award-hfq.png" alt="">
+            <img v-if="item.typeDesc == 'jdk'" class="inner-img" src="../img/award-jdk.png" alt="">
+          </div>
+          <div class="award-name">{{item.awardsName}}</div>
+        </div>
+        <div class="explain">
+          奖品已发放到账户
+        </div>
       </div>
       <div class="closed" @click="hide"></div>
     </div>
@@ -24,6 +29,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    list: {
+      type: Array,
+      default: () => ([])
     }
   },
   methods: {
@@ -36,6 +45,11 @@ export default {
 <style scoped lang="less">
 *{
   box-sizing: border-box;
+}
+.inner-img {
+  vertical-align: top;
+  width: 100%;
+  height: 100%;
 }
 .rule{
   position: fixed;
@@ -64,7 +78,7 @@ export default {
     background: url(../img/popup.png) no-repeat center top;
     background-size: 100% 100%;
     .title {
-      margin: 3.6rem 0 0 2.05rem;
+      margin: 3.6rem 2.1rem .3rem;
       width: 1.95rem;
       height: .37rem;
       img {
@@ -74,7 +88,7 @@ export default {
       }
     }
     .wrap {
-      margin:.24rem 0 0 1.4rem;
+      margin:.3rem 0 0 1.35rem;
       width: 3.55rem;
       overflow-y: scroll;
       overflow-x: hidden;
@@ -83,6 +97,30 @@ export default {
       font-size: .24rem;
       font-weight: bold;
       line-height: .45rem;
+      .item {
+        overflow: hidden;
+        margin: 0 auto .2rem;
+        width: 1.93rem;
+        height: 1.62rem;
+        background: #fee2cd;
+        border-radius: .1rem;
+        .award-img {
+          margin: .1rem auto 0;
+          width: 1.83rem;
+          height: 1.06rem;
+        }
+        .award-name {
+          text-align: center;
+          font-size: .22rem;
+          color: #FA4D03;
+        }
+      }
+      .explain {
+        padding-top: .1rem;
+        text-align: center;
+        color: #FFE5CF;
+        font-size: .24rem;
+      }
     }
   }
   .closed {
