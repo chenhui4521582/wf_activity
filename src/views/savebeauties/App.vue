@@ -1,28 +1,30 @@
 <template>
   <div class="save_beauties" :class="{hasReset: hasReset&&tabIndex==0}" v-if="actInfoData&&saved">
     <div class="save_beauties_container">
-      <div class="savenums">已成功营救{{saved.rescueDay.length}}/6人</div>
-      <div class="clickicons">
-        <div class="item">
-          <div class="back" @click="back"></div>
-          <div class="rule" @click="showPop(7)"></div>
+      <div class="header1">
+        <div class="savenums">已成功营救{{saved.rescueDay.length}}/6人</div>
+        <div class="clickicons">
+          <div class="item">
+            <div class="back" @click="back">返回</div>
+            <div class="rule" @click="showPop(7)">规则</div>
+          </div>
+          <div class="item">
+            <div class="myprize" @click="showPop(2)">我的奖励</div>
+          </div>
         </div>
-        <div class="item">
-          <div class="myprize" @click="showPop(2)"></div>
+        <div class="horn_content">
+          <horn :noticeList="hornList" v-if="hornList.length"></horn>
         </div>
-      </div>
-      <div class="tabs">
-        <div class="item" v-for="(item,index) in tabsName" :class="{selected:tabIndex==index}"
-             @click="selectTab(index)">
-          {{item}}
+        <div class="tabs" :class="{tab1:tabIndex==1}">
+          <div class="item" v-for="(item,index) in tabsName" :class="{selected:tabIndex==index}"
+               @click="selectTab(index)">
+            {{item}}
+          </div>
         </div>
       </div>
       <div class="container">
-        <template v-if="tabIndex==0">
+        <div class="save_container" v-if="tabIndex==0">
           <div class="task_container">
-            <div class="horn_content">
-              <horn :noticeList="hornList" v-if="hornList.length"></horn>
-            </div>
             <div :class="getClassName('content')"
                  :style="{backgroundImage:`url(${require(`./images/beauty/${this.actDay-1}.png`)})`}">
               <div class="content-item"
@@ -46,12 +48,11 @@
               </div>
             </div>
             <div class="footer" v-if="!actInfoData.beautyIsRescue">
-              <div class="item">成功解救<i>{{beautyname[actDay-1]}}</i>可再得<i>{{actInfoData.rescueAward}}</i></div>
-              <div class="item">6天全部完成可再得<i>{{actInfoData.allRescueAward}}</i></div>
+              <div class="item">六名队友全部救出获 {{actInfoData.allRescueAward}} 奖励</div>
             </div>
-            <div class="footer" v-else @click="tabIndex=1">
-              <div class="item">恭喜您成功解救 <i>{{beautyname[actDay-1]}}</i></div>
-              <div class="item">现在她已经加入到你的队伍中啦！<i>快去看看吧 >>></i></div>
+            <div class="footer moreline" v-else @click="tabIndex=1">
+              <div class="item">恭喜您成功解救 {{beautyname[actDay-1]}}</div>
+              <div class="item">现在她已经加入到你的队伍中啦！快去看看吧 >>></div>
             </div>
           </div>
           <div class="package_container">
@@ -82,63 +83,56 @@
               </div>
             </div>
           </div>
-        </template>
-        <template v-else>
-          <div class="ranks_container">
-            <div class="three_prize_container">
-              <div class="list">
-                <div class="list-item" v-for="(item,index) in saved.rescueDay.slice(0,3)"
-                     :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
-                  <div class="name">{{beautyname[item-1]}}</div>
-                </div>
-                <div class="list-item empty"
-                     :class="{help:index==0&&!saved.rescueDay.slice(0,3).includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.slice(0,3).includes(actDay)}"
-                     v-for="item,index in 3-saved.rescueDay.slice(0,3).length"
-                     :style="{backgroundImage:`url(${require(`./images/beautyShort/default.png`)})`}"
-                     @click="gotohelp(index==0&&!saved.rescueDay.slice(0,3).includes(actDay))"></div>
+        </div>
+        <div class="ranks_container" v-else>
+          <div class="three_prize_container">
+            <div class="list">
+              <div class="list-item" v-for="(item,index) in saved.rescueDay.slice(0,3)"
+                   :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
               </div>
-              <div class="prize_btn" v-if="saved.composeAwardInfoRsps&&saved.composeAwardInfoRsps[0]">
-                <div class="item">
-                  <div class="desc">营救{{saved.composeAwardInfoRsps[0].rescueBeautyNum}}人得</div>
-                  <div class="info">获得<i>{{saved.composeAwardInfoRsps[0].awardName}}</i></div>
-                </div>
-                <div class="btn" :class="{gray:saved.composeAwardInfoRsps[0].awardStatus!=0}"
-                     @click="getRanksPrize('3',saved.composeAwardInfoRsps[0])">
-                  {{saved.composeAwardInfoRsps[0].awardStatus==2?'已获得':'可领取'}}
-                </div>
-              </div>
+              <div class="list-item empty"
+                   :class="{help:index==0&&!saved.rescueDay.slice(0,3).includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.slice(0,3).includes(actDay)}"
+                   v-for="item,index in 3-saved.rescueDay.slice(0,3).length"
+                   :style="{backgroundImage:`url(${require(`./images/beautyShort/default.png`)})`}"
+                   @click="gotohelp(index==0&&!saved.rescueDay.slice(0,3).includes(actDay))"></div>
             </div>
-            <div class="all_prize_container">
-              <div class="list">
-                <div class="list-item" v-for="(item,index) in saved.rescueDay"
-                     :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
-                  <div class="name">{{beautyname[item-1]}}</div>
-                </div>
-                <div class="list-item empty"
-                     :class="{help:index==0&&!saved.rescueDay.includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.includes(actDay)}"
-                     v-for="(item,index) in 6-saved.rescueDay.length"
-                     :style="{backgroundImage:`url(${require(`./images/beautyShort/default.png`)})`}"
-                     @click="gotohelp(index==0&&!saved.rescueDay.includes(actDay))"></div>
+            <div class="prize_btn" v-if="saved.composeAwardInfoRsps&&saved.composeAwardInfoRsps[0]">
+              <div class="item">
+                <div class="desc">成功集结<i>{{saved.composeAwardInfoRsps[0].rescueBeautyNum}}</i>人</div>
+                <div class="info">获得<i>{{saved.composeAwardInfoRsps[0].awardName}}</i></div>
               </div>
-              <div class="prize_btn" v-if="saved.composeAwardInfoRsps&&saved.composeAwardInfoRsps[1]">
-                <div class="item">
-                  <div class="desc">营救{{saved.composeAwardInfoRsps[1].rescueBeautyNum}}人得</div>
-                  <div class="info">获得<i>{{saved.composeAwardInfoRsps[1].awardName}}</i></div>
-                </div>
-                <div class="btn" :class="{gray:saved.composeAwardInfoRsps[1].awardStatus!=0}"
-                     @click="getRanksPrize('6',saved.composeAwardInfoRsps[1])">
-                  {{saved.composeAwardInfoRsps[1].awardStatus==2?'已获得':'可领取'}}
-                </div>
+              <div class="btn" :class="{gray:saved.composeAwardInfoRsps[0].awardStatus!=0}"
+                   @click="getRanksPrize('3',saved.composeAwardInfoRsps[0])">
+                {{saved.composeAwardInfoRsps[0].awardStatus==2?'已领取':'可领取'}}
               </div>
-            </div>
-            <div class="footer">
-              本次活动惊喜多多，福利多多哦~
             </div>
           </div>
-        </template>
+          <div class="all_prize_container">
+            <div class="list">
+              <div class="list-item" v-for="(item,index) in saved.rescueDay"
+                   :style="{backgroundImage:`url(${require(`./images/beautyShort/${item-1}.png`)})`}">
+              </div>
+              <div class="list-item empty"
+                   :class="{help:index==0&&!saved.rescueDay.includes(actDay),torrowSave:actDay!=6&&index==0&&saved.rescueDay.includes(actDay)}"
+                   v-for="(item,index) in 6-saved.rescueDay.length"
+                   :style="{backgroundImage:`url(${require(`./images/beautyShort/default.png`)})`}"
+                   @click="gotohelp(index==0&&!saved.rescueDay.includes(actDay))"></div>
+            </div>
+            <div class="prize_btn" v-if="saved.composeAwardInfoRsps&&saved.composeAwardInfoRsps[1]">
+              <div class="item">
+                <div class="desc">成功集结<i>{{saved.composeAwardInfoRsps[1].rescueBeautyNum}}</i>人</div>
+                <div class="info">获得<i>{{saved.composeAwardInfoRsps[1].awardName}}</i></div>
+              </div>
+              <div class="btn" :class="{gray:saved.composeAwardInfoRsps[1].awardStatus!=0}"
+                   @click="getRanksPrize('6',saved.composeAwardInfoRsps[1])">
+                {{saved.composeAwardInfoRsps[1].awardStatus==2?'已领取':'可领取'}}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="bottom-wrap" v-if="tabIndex==0&&hasReset" @click="getConfirmPop({},2,0)">
-        <div class="btn" v-if="!isTaskAllComplete">立即重置任务</div>
+        <div class="btn" v-if="!isTaskAllComplete">立即简化任务</div>
         <div class="btn gray" v-else>今日解救成功</div>
       </div>
     </div>
@@ -169,7 +163,7 @@
       return {
         tabsName: ['每日营救', '我的队伍'],
         tabIndex: 0,
-        beautyname: ['晴晴', '倩雯', '丽娜', '熙瑶', '文洁', '君君'],
+        beautyname: ['千夏','风音','妃奈','沙耶','心优','空音'],
         actDay: 6,
         hasReset: true,
         saved: null,
@@ -316,11 +310,11 @@
           let {code, data, message} = await gameComposeReceive(item.awardId)
           if (code == 200) {
             this.awardData = {
-              tips: type == 3 ? `成功救出了3人<br>获得` : '全部营救成功<br>获得',
+              tips: type == 3 ? `队伍集结过半<br>获得` : '全部营救成功<br>获得',
               type: 'hfq',
               awardsImg: data.awardUrl,
               awardsName: data.awardName,
-              info: type == 6 ? '恭喜你，在这次活动中成功救出所有女孩，现在你的队伍已集合完毕，去做更多有趣的事吧~' : '',
+              info: type == 6 ? '恭喜你，队伍集结完毕<br>一起去征服浩瀚星海吧' : '',
               btnName: type == 3 ? '愉快收下' : ''
             }
             this.showPop(3)
@@ -366,15 +360,7 @@
       async confrimsure(item) {
         if (item.hasOwnProperty('extraAward') && item.extraAward) {
           GLOBALS.marchSetsPoint('A_H5PT0265003128')
-          this.awardData = {
-            tips: item.extraTips,
-            type: 'hfq',
-            awardsImg: item.extraAward.awardUrl,
-            awardsName: item.extraAward.awardName,
-            info: item.extraInfo,
-            btnName: item.extrabtnName
-          }
-          this.showPop(3)
+          this.showPop(4)
         } else {
           let {confirmtype, index} = item
           if (confirmtype == 0) {//使用万能碎片
@@ -440,16 +426,13 @@
                   type: 'hfq',
                   awardsImg: data.taskAward.awardUrl,
                   awardsName: data.taskAward.awardName,
-                  info: data.rescueAward ? '喔~好棒！任务已经全部完成啦！' : `离救出她更进一步了<br>继续加油吧~`,
+                  info: data.rescueStatus ? '喔~好棒！任务已经全部完成啦！' : `离救出她更进一步了<br>继续加油吧~`,
                   btnName: '',
-                  extraAward: data.rescueAward,
-                  extraTips: `呜呜呜~终于见到你了<br>主人，特意献上以下奖励`,
-                  extrabtnName: '收下啦',
-                  extraInfo: `往后的日子里你可要好好照顾她哦~`
+                  extraAward: data.rescueStatus
                 }
                 this.showPop(3)
                 this.getActInfo(false)
-                if (data.rescueAward) {
+                if (data.rescueStatus) {
                   this.myBeauty()
                   this.getHornList()
                 }
@@ -473,7 +456,7 @@
       async showLeaguePacksList() {
         let {code, data} = await showLeaguePacksList()
         if (code == 200) {
-          this.packages = data.leaguePacksList
+          this.packages = data.mallBizConfigs
         }
       },
       gotopay(item) {
@@ -513,87 +496,119 @@
     &.hasReset {
       padding-bottom: 1.15rem;
     }
-    background: #f5ab97;
+    background: #FE8095;
     .save_beauties_container {
       width: 7.2rem;
-      height: 14.93rem;
-      background: url("./images/bg.png");
-      background-size: 100% 100%;
       position: relative;
-      .savenums {
-        height: .3rem;
-        position: absolute;
-        top: .3rem;
-        left: 0;
-        right: 0;
-        margin: auto;
-        text-align: center;
-        line-height: .3rem;
-        font-size: .22rem;
-        font-weight: 400;
-        color: rgba(134, 56, 28, 1);
-      }
-      .clickicons {
-        height: 1.7rem;
-        position: absolute;
-        top: .33rem;
-        left: .23rem;
-        right: .14rem;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        .item {
-          .back, .rule {
-            width: .5rem;
-            height: .85rem;
-            &.back {
-              background: url("./images/back.png");
-              background-size: 100% 100%;
+      .header1{
+        width: 7.2rem;
+        height: 3.39rem;
+        background: url("./images/newbg1.png");
+        background-size: 100% 100%;
+        position: relative;
+        .savenums {
+          width:2.24rem;
+          height: .35rem;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+          text-align: center;
+          line-height: .35rem;
+          font-size: .24rem;
+          font-weight:bold;
+          color:rgba(255,254,254,1);
+          background:rgba(229,85,142,1);
+          border-radius:0 0 .16rem .16rem;
+        }
+        .clickicons {
+          position: absolute;
+          top: .1rem;
+          left: .23rem;
+          right: .14rem;
+          margin: auto;
+          display: flex;
+          justify-content: space-between;
+          .item {
+            font-size:.24rem;
+            font-weight:bold;
+            color:rgba(254,128,149,1);
+            .back, .rule {
+              width: .6rem;
+              height: .86rem;
+              background:rgba(255,230,234,1);
+              border-radius:.3rem;
+              padding: 0 .2rem;
+              box-sizing: border-box;
+              &.back{
+                margin-bottom: .05rem;
+              }
+              display: flex;
+              align-items: center;
             }
-            &.rule {
-              background: url("./images/rule.png");
-              background-size: 100% 100%;
+            .myprize {
+              width: .6rem;
+              height: 1.3rem;
+              background:rgba(255,230,234,1);
+              border-radius:.3rem;
+              padding: 0 .2rem;
+              box-sizing: border-box;
+              display: flex;
+              align-items: center;
             }
-          }
-          .myprize {
-            width: .5rem;
-            height: 1.33rem;
-            background: url("./images/myprize.png");
-            background-size: 100% 100%;
           }
         }
-      }
-      .tabs {
-        width: 4.27rem;
-        position: absolute;
-        top: 1.8rem;
-        left: 0rem;
-        right: 0rem;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        .item {
-          width: 1.99rem;
-          height: .52rem;
-          background: url("./images/tab.png");
+        .tabs {
+          width: 6.14rem;
+          height: 1.43rem;
+          position: absolute;
+          top: 1.8rem;
+          left: 0rem;
+          right: 0rem;
+          margin: auto;
+          display: flex;
+          justify-content: space-between;
+          background: url("./images/tab0.png");
           background-size: 100% 100%;
-          font-size: .24rem;
-          font-weight: 400;
-          color: rgba(255, 255, 255, 1);
-          text-align: center;
-          line-height: .52rem;
-          &.selected {
-            height: .65rem;
-            background: url("./images/tabselected.png");
+          &.tab1{
+            background: url("./images/tab1.png");
             background-size: 100% 100%;
-            padding-bottom: .07rem;
-            box-sizing: border-box;
           }
+          padding: .2rem .2rem .3rem;
+          box-sizing: border-box;
+          .item {
+            width: 50%;
+            height: .85rem;
+            font-size: .3rem;
+            font-weight:bold;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+            line-height: .9rem;
+          }
+        }
+        .horn_content{
+          position: absolute;
+          top:1.56rem;
+          left:2.45rem;
+          right:2.1rem;
+        }
+        &:before{
+          content: '';
+          width: 7.12rem;
+          height: 2.95rem;
+          background: url("./images/light1.png");
+          background-size: 100% 100%;
+          position: absolute;
+          top:.3rem;
+          left:0;
+          right: 0;
+          margin: auto;
+          animation: changeBg 1s infinite ease;
         }
       }
       .container {
-        position: absolute;
-        top: 2.46rem;
+        position: relative;
         left: 0;
         right: 0;
         margin: auto;
@@ -601,227 +616,199 @@
         flex-direction: column;
         align-items: center;
         z-index: 1;
-        .task_container {
-          width: 5.86rem;
-          height: 8.38rem;
-          background: url("./images/bg00.png");
+        .save_container{
+          width: 7.2rem;
+          height:14.23rem;
+          background: url("./images/newbg2.png");
           background-size: 100% 100%;
-          position: relative;
-          margin-bottom: .12rem;
-          .horn_content {
-            position: absolute;
-            left: 1.66rem;
-            right: .1rem;
-            top: .25rem;
-            margin-bottom: auto;
-          }
-          &:before {
-            content: '';
-            width: 1.62rem;
-            height: 1.66rem;
-            background: url("./images/saveicon.png");
-            background-size: 100% 100%;
-            position: absolute;
-            z-index: 1;
-            position: absolute;
-            left: -.06rem;
-            top: -.04rem;
-          }
-          .content {
-            position: absolute;
-            top: .71rem;
-            bottom: 1.17rem;
-            left: .26rem;
-            right: .26rem;
-            margin: auto;
-            background-size: 100% 100%;
-            border-radius: .2rem;
-            .content-item {
-              width: 100%;
-              height: 20%;
-              background: rgba(44, 15, 40, 0.85);
-              padding: 0 .3rem;
-              box-sizing: border-box;
-              display: flex;
-              justify-content: space-between;
-              border: 1px solid rgba(44, 15, 40, 0.85);
-              border-bottom: 1px solid rgba(174, 142, 131, 0.22);
-              &:nth-child(1) {
-                border-radius: .2rem .2rem 0 0;
-              }
-              &:nth-child(2),&:nth-child(3),&:nth-child(4){
-                border-top:0;
-              }
-              &:nth-child(5) {
-                border-top:0;
-                border-bottom: 0;
-                border-radius: 0 0 .2rem .2rem;
-              }
-              &.animation {
-                animation: fadeout 1s forwards;
-              }
-              &.saved {
-                opacity: 0;
-              }
-              .item {
-                font-size: .2rem;
-                font-weight: 400;
+          .task_container {
+            width: 6.09rem;
+            height: 9.5rem;
+            position: relative;
+            margin: 0 auto .42rem;
+            .content {
+              position: absolute;
+              top:0;
+              bottom: 2rem;
+              left: 0;
+              right: 0;
+              margin: auto;
+              background-size: 100% 100%;
+              border-radius:0 0 .6rem .6rem;
+              .content-item {
+                width: 100%;
+                height: 20%;
+                background:rgba(132,38,54,0.9);
+                padding: 0 .3rem;
+                box-sizing: border-box;
                 display: flex;
-                flex-direction: column;
-                justify-content: center;
-                .task_title {
-                  font-weight: bold;
-                  color: rgba(255, 214, 201, 1);
-                  line-height: .3rem;
+                justify-content: space-between;
+                border: 1px solid rgba(132,38,54,0.9);
+                border-bottom: 1px solid rgba(165,78,91,1);
+                &:nth-child(1) {
+                  border-radius:0;
                 }
-                .task_prize {
-                  margin-top: .12rem;
-                  color: rgba(255, 214, 201, 1);
-                  i {
-                    color: #FF8B45
+                &:nth-child(2),&:nth-child(3),&:nth-child(4){
+                  border-top:0;
+                }
+                &:nth-child(5) {
+                  border-top:0;
+                  border-bottom: 0;
+                  border-radius: 0 0 .6rem .6rem;
+                }
+                &.animation {
+                  animation: fadeout 1s forwards;
+                }
+                &.saved {
+                  opacity: 0;
+                }
+                .item {
+                  font-size: .2rem;
+                  font-weight: 400;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  .task_title {
+                    font-weight: bold;
+                    color:rgba(255,255,255,1);
+                    line-height: .3rem;
                   }
-                }
-                &:nth-child(2) {
-                  .btn {
-                    width: 1.18rem;
-                    height: .4rem;
-                    line-height: .43rem;
-                    text-align: center;
-                    color: rgba(255, 255, 255, 1);
-                    background: rgba(255, 214, 201, 1);
-                    border-radius: .2rem;
-                    &.btnsuipian {
-                      margin-top: .14rem;
-                      background: rgba(169, 93, 255, 1);
+                  .task_prize {
+                    margin-top: .12rem;
+                    color:rgba(255,255,255,1);
+                    i {
+                      color: #FFC435
                     }
-                    &.btnjiesuo {
-                      color: #733928;
-                    }
-                    &.canjiesuo {
-                      background: rgba(255, 108, 61, 1);
+                  }
+                  &:nth-child(2) {
+                    .btn {
+                      width: 1.56rem;
+                      height: .48rem;
+                      line-height: .5rem;
+                      text-align: center;
+                      color: rgba(255, 255, 255, 1);
+                      background:rgba(248,174,88,1);
+                      border-radius: .24rem;
+                      &.btnsuipian {
+                        margin-top: .14rem;
+                        background:rgba(27,145,236,1);
+                      }
+                      &.canjiesuo {
+                        background:rgba(254,68,103,1);
+                      }
                     }
                   }
                 }
               }
             }
+            .footer {
+              width: 100%;
+              position: absolute;
+              bottom: 0.35rem;
+              height: .8rem;
+              text-align: center;
+              font-size: .3rem;
+              font-weight: bold;
+              color:rgba(255,254,254,1);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              i {
+                color: #FF1510;
+              }
+              .item:nth-child(2) {
+                margin-top: .1rem;
+              }
+              &.moreline{
+                font-size: .24rem;
+              }
+            }
           }
-          .footer {
-            width: 100%;
-            position: absolute;
-            bottom: 0.1rem;
-            height: .8rem;
-            text-align: center;
-            font-size: .24rem;
-            font-weight: bold;
-            color: rgba(81, 37, 34, 1);
+          .package_container {
+            width: 5.86rem;
+            height: 3.7rem;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            i {
-              color: #FF1510;
+            justify-content: space-between;
+            padding: .22rem .26rem .27rem;
+            box-sizing: border-box;
+            margin: 0 auto;
+            .tips {
+              height: .45rem;
+              text-align: center;
+              line-height: .47rem;
+              border-radius: .23rem;
+              font-size: .36rem;
+              font-weight:bold;
+              color:rgba(255,216,231,1);
             }
-            .item:nth-child(2) {
-              margin-top: .1rem;
-            }
-          }
-        }
-        .package_container {
-          width: 5.86rem;
-          height: 3.48rem;
-          background: url("./images/bg01.png");
-          background-size: 100% 100%;
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          &:before {
-            content: '';
-            width: 1.62rem;
-            height: 1.66rem;
-            background: url("./images/onetime.png");
-            background-size: 100% 100%;
-            position: absolute;
-            left: -.06rem;
-            top: -.04rem;
-          }
-          padding: .22rem .26rem .27rem;
-          box-sizing: border-box;
-          .tips {
-            width: 3.48rem;
-            height: .45rem;
-            text-align: center;
-            line-height: .47rem;
-            background: rgba(218, 141, 90, 1);
-            border-radius: .23rem;
-            font-size: .26rem;
-            font-weight: bold;
-            color: rgba(255, 242, 237, 1);
-            background: #DB8D5A;
-          }
-          .content {
-            .item {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              width: 5.33rem;
-              height: 1.15rem;
-              background: rgba(242, 190, 172, 1);
-              border-radius: .16rem;
-              padding: .13rem;
-              box-sizing: border-box;
-              &:nth-child(2) {
-                margin-top: .11rem;
-              }
-              img {
-                width: .88rem;
-                height: .88rem;
-              }
-              .middle {
-                width: 3rem;
-                height: 100%;
-                font-size: .22rem;
-                font-weight: 400;
+            .content {
+              .item {
                 display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                .title {
-                  color: rgba(87, 31, 20, 1);
+                align-items: center;
+                justify-content: space-between;
+                width: 5.89rem;
+                height: 1.26rem;
+                background:rgba(255,182,213,1);
+                border-radius: .2rem;
+                padding: .13rem;
+                box-sizing: border-box;
+                &:nth-child(2) {
+                  margin-top: .11rem;
                 }
-                .info {
-                  color: rgba(255, 42, 37, 1);
+                img {
+                  width: .88rem;
+                  height: .88rem;
                 }
-                .desc {
-                  font-size: .18rem;
-                  color: rgba(144, 98, 82, 1);
-                }
-              }
-              .line {
-                width: 1px;
-                height: .66rem;
-                background: rgba(144, 98, 82, 0.41);
-              }
-              .right {
-                .price {
-                  font-size: .32rem;
-                  font-weight: bold;
-                  color: rgba(255, 42, 37, 1);
-                  text-align: center;
-                }
-                .buy {
-                  margin-top: .1rem;
-                  width: .9rem;
-                  height: .4rem;
-                  line-height: .42rem;
-                  text-align: center;
-                  background: rgba(252, 105, 58, 1);
-                  border-radius: .2rem;
-                  font-size: .18rem;
+                .middle {
+                  width: 3rem;
+                  height: 100%;
+                  font-size: .24rem;
                   font-weight: 400;
-                  color: rgba(255, 255, 255, 1);
-                  &.gray {
-                    background: rgba(120, 97, 89, 1);
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+                  .title {
+                    color:rgba(227,61,132,1);
+                  }
+                  .info {
+                    font-size: .18rem;
+                    color:rgba(248,56,88,1);
+                  }
+                  .desc {
+                    font-size: .18rem;
+                    color:rgba(227,61,132,1);
+                  }
+                }
+                .line {
+                  width: 1px;
+                  height: .8rem;
+                  background:rgba(250,133,183,1);
+                }
+                .right {
+                  .price {
+                    font-size: .36rem;
+                    font-weight: bold;
+                    color:rgba(255,0,42,1);
+                    text-align: center;
+                  }
+                  .buy {
+                    margin-top: .1rem;
+                    width: .99rem;
+                    height: .46rem;
+                    line-height: .48rem;
+                    text-align: center;
+                    background:rgba(254,68,103,1);
+                    border-radius: .2rem;
+                    font-size: .18rem;
+                    font-weight: 400;
+                    color:rgba(255,255,255,1);
+                    &.gray {
+                      background:rgba(114,114,114,1);
+                    }
                   }
                 }
               }
@@ -835,70 +822,57 @@
         bottom: 0;
         width: 100vw;
         height: 1.13rem;
-        background: rgba(151, 92, 72, 1);
+        background: #c60f78;
         border-radius: .16rem .16rem 0 0;
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 1;
         .btn {
-          width: 3.62rem;
-          height: .6rem;
-          line-height: .62rem;
+          width: 4.9rem;
+          height: .8rem;
+          line-height: .82rem;
           text-align: center;
-          background: rgba(255, 108, 61, 1);
-          border-radius: .16rem;
+          background:rgba(255,194,108,1);
+          border-radius: .4rem;
           font-size: .3rem;
           font-weight: bold;
           color: rgba(255, 255, 255, 1);
           &.gray {
-            background: rgba(120, 97, 89, 1);
+            color:rgba(254,128,149,1);
+            background:rgba(255,255,255,1);
           }
         }
       }
       .ranks_container {
-        width: 5.86rem;
-        height: 11.78rem;
-        background: url("./images/bg1.png");
+        width: 7.2rem;
+        height: 11.1rem;
+        background: url("./images/newbg3.png");
         background-size: 100% 100%;
         position: relative;
-        padding-top: .35rem;
-        box-sizing: border-box;
-        &:before {
-          content: '';
-          width: 1.62rem;
-          height: 1.66rem;
-          background: url("./images/saveicon.png");
-          background-size: 100% 100%;
-          position: absolute;
-          z-index: 1;
-          position: absolute;
-          left: -.06rem;
-          top: -.04rem;
-        }
         .three_prize_container {
           height: 3.56rem;
           background-size: 100% 100%;
-          padding: 0 .43rem 0 .53rem;
+          padding: 0 .75rem;
           box-sizing: border-box;
-          margin-bottom: .28rem;
+          margin-bottom: .44rem;
         }
         .all_prize_container {
           height: 6.05rem;
-          padding: 0 .43rem 0 .53rem;
+          padding: 0 .75rem;
           box-sizing: border-box;
-          margin-bottom: .4rem;
+          margin-bottom: .2rem;
         }
         .list {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
-          margin-bottom: .3rem;
+          margin-bottom: .2rem;
           .list-item {
-            width: 1.54rem;
-            height: 2.25rem;
+            width: 1.81rem;
+            height: 2.33rem;
             background-size: 100% 100%;
-            margin: .2rem 0 0;
+            margin: .1rem 0 0;
             position: relative;
             .name {
               position: absolute;
@@ -919,31 +893,39 @@
               line-height: .42rem;
             }
             &.help:after {
-              content: '';
+              content: '快来救我';
               position: absolute;
-              top: 0;
-              bottom: 0;
+              bottom: .23rem;
               left: 0;
               right: 0;
               margin: auto;
-              width: .8rem;
-              height: .8rem;
-              background: url("./images/helpicon.png");
-              background-size: 100% 100%;
+              width:1.24rem;
+              height:.4rem;
+              background:rgba(255,218,165,1);
+              border-radius:.2rem;
+              text-align: center;
+              line-height:.4rem;
+              font-size:.24rem;
+              font-weight:bold;
+              color:rgba(238,62,91,1);
               z-index: 1;
             }
             &.torrowSave:after {
-              content: '';
+              content: '明日解救';
               position: absolute;
-              top: 0;
-              bottom: 0;
+              bottom: .23rem;
               left: 0;
               right: 0;
               margin: auto;
-              width: .8rem;
-              height: .8rem;
-              background: url("./images/tomorrowsave.png");
-              background-size: 100% 100%;
+              width:1.24rem;
+              height:.4rem;
+              background:rgba(255,222,228,1);
+              border-radius:.2rem;
+              text-align: center;
+              line-height:.4rem;
+              font-size:.24rem;
+              font-weight:bold;
+              color:rgba(238,62,91,1);
             }
           }
         }
@@ -952,31 +934,42 @@
           justify-content: space-between;
           align-items: center;
           .desc {
-            font-size: .24rem;
+            width:1.57rem;
+            height:.33rem;
+            border:.02rem solid rgba(255,255,255,1);
+            border-radius:.16rem;
+            font-size: .22rem;
             font-weight: 400;
-            color: rgba(231, 171, 150, 1);
+            color:rgba(255,253,253,1);
+            line-height: .34rem;
+            text-align: center;
+            i{
+              color: #FFDF61
+            }
           }
           .info {
-            margin-top: .13rem;
+            margin-top: .1rem;
             font-size: .3rem;
-            font-weight: bold;
-            color: rgba(231, 171, 150, 1);
+            font-weight:bold;
+            color:rgba(255,253,253,1);
             i {
-              color: #FF3333;
+              color: #FFDF61
             }
           }
           .btn {
-            width: 1.51rem;
+            width: 1.43rem;
             height: .6rem;
             line-height: .6rem;
             text-align: center;
-            background: rgba(255, 86, 41, 1);
+            background:rgba(255,186,65,1);
             border-radius: .1rem;
-            font-size: .28rem;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 1);
+            font-size: .3rem;
+            font-weight:400;
+            color:rgba(191,82,22,1);
+            border-radius:.3rem;
             &.gray {
-              background: rgba(120, 97, 89, 1);
+              color:rgba(255,255,255,1);
+              background:rgba(189,189,189,1);
             }
           }
         }
@@ -987,20 +980,20 @@
           align-items: center;
           font-size: .3rem;
           font-weight: bold;
-          color: rgba(81, 37, 34, 1);
+          color:rgba(255,254,254,1);
           text-align: center;
         }
       }
-      &:after {
-        content: '';
-        position: absolute;
-        top: 2.25rem;
-        left: 0;
-        width: 4.7rem;
-        height: 7.55rem;
-        background: url("./images/light.png");
-        background-size: 100% 100%;
-      }
+      /*&:after {*/
+        /*content: '';*/
+        /*position: absolute;*/
+        /*top: 2.25rem;*/
+        /*left: 0;*/
+        /*width: 4.7rem;*/
+        /*height: 7.55rem;*/
+        /*background: url("./images/light.png");*/
+        /*background-size: 100% 100%;*/
+      /*}*/
     }
   }
 
@@ -1013,6 +1006,17 @@
     }
     100% {
       opacity: 0;
+    }
+  }
+  @keyframes changeBg {
+    0% {
+      background: url('./images/light1.png') no-repeat center center / 100%
+      100%;
+    }
+
+    100% {
+      background: url('./images/light2.png') no-repeat center center / 100%
+      100%;
     }
   }
 </style>
