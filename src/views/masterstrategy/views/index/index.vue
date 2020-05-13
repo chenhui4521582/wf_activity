@@ -9,7 +9,7 @@
       <img class="inner-img" src="./img/rule-icon.png" alt="">
     </div>
     <!-- 排行榜 -->
-    <div class="ranking-btn" @click="goRanking">
+    <div class="ranking-btn" v-if="info.showRank" @click="goRanking">
       <img class="inner-img" src="./img/ranking-icon.png" alt="">
     </div>
     <!-- horn -->
