@@ -31,7 +31,7 @@
           left: 0
         },
         wrapWidth: 0,
-        beautyname: ['晴晴', '倩雯', '丽娜', '熙瑶', '文洁', '君君']
+        beautyname: ['千夏','风音','妃奈','沙耶','心优','空音']
       }
     },
     mounted() {
@@ -87,15 +87,14 @@
     .horn-list {
       flex: 1;
       height: 0.38rem;
-      padding: 0 0.2rem;
-      font-size: 0.22rem;
+      font-size: 0.24rem;
       > div {
         position: relative;
         overflow: hidden;
         width: 100%;
         height: 100%;
-        font-weight: 500;
-        color: rgba(80, 24, 24, 1);
+        font-weight:400;
+        color:rgba(255,254,254,1);
       }
     }
   }
