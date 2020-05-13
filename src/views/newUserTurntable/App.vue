@@ -672,7 +672,7 @@ export default {
           .icon-wrap {
             height: 0.8rem;
             width: 0.8rem;
-            border-radius: 0.08rem;
+            border-radius: 0.16rem;
             position: relative;
             overflow: hidden;
             img {
