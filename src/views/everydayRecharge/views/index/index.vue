@@ -12,7 +12,11 @@
       <div class="item week" v-show="currentIndex == 1" @click="handleNavClick(0)"></div>
     </div>
     <div class="list">
-      <div class="top">·奖励请在 <span>每天24点</span> 前及时领取</div>
+      <div class="top">·奖励请在 
+        <span v-if="currentIndex == 0">每天24点</span>
+        <span v-if="currentIndex == 1">{{info.endDate | formatTime('m:d')}}24点</span>
+        前及时领取
+      </div>
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="title">
           <div class="key">
