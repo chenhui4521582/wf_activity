@@ -180,6 +180,7 @@ export default {
 .everyday-recharge {
   position: relative;
   padding: 1.98rem 0 .28rem;
+  min-height: 100%;
   background: url(./img/top.png) no-repeat center top #27040B;
   background-size: 100% auto;
   .back-btn,.rule-btn {
