@@ -5,9 +5,7 @@
       <div class="turnpop-content" :class="`type-${popType}`">
         <template v-if="popType===0">
           <p>
-            非常遗憾
-          </p>
-          <p>
+            非常遗憾<br />
             您的抽奖机会已用完
           </p>
           <p class="sub-desc">
@@ -18,7 +16,7 @@
               还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb|floatFilter}}元就可以提现了
             </template>
           </p>
-          <div class="btn" @click="close(true)">获得更多抽奖机会</div>
+          <div class="btn scale" @click="close(true)">获得更多抽奖机会</div>
         </template>
         <template v-if="popType===1">
           <p>
@@ -44,11 +42,11 @@
           <p>
             {{awardsInfo.awardsNum}}次转盘抽奖的机会<br />
             <template v-if="popType===3">
-              <span>小提示：抽奖机会可以抽话费红包哦,</span><br />
+              <span>小提示：抽奖机会可以抽</span><span class="red-text">话费红包</span><span>哦,</span><br />
               <span>每天登录都可获得1次抽奖机会~</span>
             </template>
           </p>
-          <div class="btn" @click="close(popType===2)">去抽奖</div>
+          <div class="btn scale" @click="close(popType===2)">去抽奖</div>
         </template>
         <template v-if="popType===4">
           <p>
@@ -203,24 +201,19 @@ export default {
         .bgWithFull('../img/btn-bg.png');
       }
       &.type-0 {
-        padding: 3.96rem 0.44rem 0;
+        height: 6.32rem;
+        padding: 3.2rem 0.44rem 0;
         text-align: center;
         .bgWithFull('../img/error-bg.png');
-        color: #fdfdeb;
-        line-height: 0.48rem;
-        p:nth-child(1) {
-          font-size: 0.36rem;
-        }
-        p:nth-child(2) {
-          font-size: 0.3rem;
-        }
-        p:nth-child(3) {
+        color: #fd5454;
+        line-height: 0.36rem;
+        .sub-desc {
           color: #666;
           font-size: 0.26rem;
           margin-top: 0.3rem;
         }
         .btn {
-          margin-top: 0.3rem;
+          margin-top: 0.4rem;
         }
       }
       &.type-1 {
@@ -361,7 +354,7 @@ export default {
         }
       }
       .red-text {
-        color: #ff4330;
+        color: #fd5454;
       }
     }
     .close {
@@ -369,6 +362,20 @@ export default {
       height: 0.7rem;
       .bgWithFull('../img/close.png');
       margin: 0.3rem auto 0;
+    }
+  }
+  .scale {
+    animation: scale 1s infinite ease;
+  }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 }
