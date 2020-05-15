@@ -16,7 +16,7 @@
               还差{{info.convertConsumeRmb-info.newUserInfo.envelopeRmb|floatFilter}}元就可以提现了
             </template>
           </p>
-          <div class="btn scale" @click="close(true)">获得更多抽奖机会</div>
+          <div class="btn scale" @click="close(1)">获得更多抽奖机会</div>
         </template>
         <template v-if="popType===1">
           <p>
@@ -36,7 +36,7 @@
               就可以提现了
             </template>
           </p>
-          <div class="btn" @click="close(true)">再抽一次</div>
+          <div class="btn" @click="close(1)">再抽一次</div>
         </template>
         <template v-if="popType===2||popType===3">
           <p>
@@ -46,13 +46,13 @@
               <span>每天登录都可获得1次抽奖机会~</span>
             </template>
           </p>
-          <div class="btn scale" @click="close(popType===2)">去抽奖</div>
+          <div class="btn scale" @click="close(1)">去抽奖</div>
         </template>
         <template v-if="popType===4">
           <p>
             {{awardsInfo.awardsName}}领取成功
           </p>
-          <div class="btn" @click="close(true)">去充话费</div>
+          <div class="btn" @click="close(1)">去充话费</div>
         </template>
         <template v-if="popType===5">
           <p>
@@ -60,9 +60,9 @@
           </p>
           <p>
             如果刷新后仍无法领取<br />
-            <span @click="close(true)">点击联系客服</span>处理
+            <span @click="close(2)">点击联系客服</span>处理
           </p>
-          <div class="btn" @click="close()">去抽奖</div>
+          <div class="btn" @click="close(1)">去抽奖</div>
         </template>
         <template v-if="popType===6">
           <p>
@@ -143,7 +143,7 @@ export default {
       if (this.popType === 6 || this.popType === 7 || this.popType === 8) {
         this.back()
       } else if (this.popType === 2) {
-        this.close(true)
+        this.close(1)
       } else {
         this.close()
       }
