@@ -1,7 +1,7 @@
 <template>
   <div class="rule" v-if="value">
     <div class="mask"></div>
-    <div class="center">
+    <div class="center" :class="{'one-awrad': list.length == 1}">
       <div class="title">
         <img src="../img/title1.png" alt="">
       </div>
@@ -77,6 +77,11 @@ export default {
     transform: translate(-50%, -50%);
     background: url(../img/popup.png) no-repeat center top;
     background-size: 100% 100%;
+    &.one-awrad {
+      height: 8.59rem;
+      background: url(../img/popup1.png) no-repeat center top;
+      background-size: 100% 100%;
+    }
     .title {
       margin: 3.6rem 2.1rem .3rem;
       width: 1.95rem;
