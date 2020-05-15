@@ -292,7 +292,7 @@ export default {
         }
       }
       &.hb-dot1 {
-        margin: 0.54rem auto 1.15rem;
+        margin: 0.34rem auto 1.25rem;
       }
     }
     .envelopes {
