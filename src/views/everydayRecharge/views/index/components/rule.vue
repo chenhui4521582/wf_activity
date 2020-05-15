@@ -6,7 +6,7 @@
         <img src="../img/title.png" alt="">
       </div>
       <div class="wrap">
-        1、活动时间：5月19日-5月25日<br>
+        1、活动时间：{{info.beginDate | formatTime('m:d')}}-{{info.endDate | formatTime('m:d')}}<br>
         2、活动期间，玩家累计充值达到一定梯度，可领取奖品；<br>
         3、任务分为【每日充值】和【一周充值】两种，达到每日充值任务可在每天24点前领取奖品；<br>
         4、【一周充值】奖品需在5月25日24点前手动领取；<br>
@@ -24,6 +24,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    info: {
+      type: Object,
+      default: () => ({})
     }
   },
   methods: {
