@@ -2,10 +2,12 @@
   <div class="get-hammer">
     <template v-if="taskProgressInfoData">
       <template
-        v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}}</h4>
-        <template v-if="indextitle==0">
-          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
+        v-for="(itemtitle, indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
+        <h4 class="s-title" :key="indextitle">
+          <em></em>{{itemtitle}}
+        </h4>
+        <div class="day-task" v-if="indextitle==0" :key="indextitle">
+          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress" :key="index">
             <div class="item">
               <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个号码</p>
               <p v-else-if="index==1">充值任意金额，送1个号码</p>
@@ -21,7 +23,7 @@
               </div>
             </div>
           </div>
-        </template>
+        </div>
         <template v-else-if="indextitle==1">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
@@ -69,7 +71,6 @@
               <ul class="li0">
                 <li>已购买礼包: {{taskProgressInfoData.buyTime}}次</li>
                 <li>累计号码: {{taskProgressInfoData.buyNumCount }}个</li>
-                <!--<li><div class="line" :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}"></div>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>-->
               </ul>
             </div>
           </div>
@@ -79,7 +80,8 @@
   </div>
 </template>
 <script type="text/javascript">
-import { showLeaguePacksList, userProgress, taskReceive } from ''
+import { showLeaguePacksList, userProgress, taskReceive } from '../../../../services/services'
+
 export default {
   data () {
     return {
@@ -176,7 +178,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .get-hammer {
-  padding: 1.24rem 0.38rem 0;
+  padding: 1.16rem 0.38rem 0;
   height: calc(100%);
   width: 100%;
   box-sizing: border-box;
@@ -201,6 +203,9 @@ export default {
       margin-right: 0.05rem;
     }
   }
+  .day-task {
+    overflow: hidden;
+  }
   .info {
     font-size: 0.2rem;
     font-weight: 400;
@@ -217,7 +222,7 @@ export default {
   border-radius: 0.15rem;
   .g-package-container {
     background: #fff;
-    margin-top: 0.19rem;
+    margin-top: 0.3rem;
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
@@ -301,8 +306,7 @@ export default {
     li {
       position: relative;
       font-size: 0.24rem;
-      font-weight: bold;
-      text-indent: 0.27rem;
+      text-align: center;
       color: #fff;
       flex: 1;
       .line {
@@ -313,7 +317,7 @@ export default {
         top: 0.1rem;
       }
       &:not(:first-child) {
-        border-left: #ffa200 1px solid;
+        border-left: #FFFFFF 1px solid;
       }
     }
     &.li0 {
@@ -332,9 +336,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.32rem;
+  margin-bottom: 0.2rem;
   padding: 0 0.3rem;
   box-sizing: border-box;
+  &:last-child {
+    margin-bottom: .4rem;
+  }
   .item {
     font-size: 0.3rem;
     p {

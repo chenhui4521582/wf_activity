@@ -1,5 +1,5 @@
 /*
-*  name: 玩家攻略发布
+*  name: 超级刮刮乐
 *  auth: chenhui
 */
 import "babel-polyfill";
@@ -9,6 +9,8 @@ import router from './router/router'
 import fastclick from 'fastclick'
 import Components from './components/index'
 import '@/common/js/window'
+import moduleConfig from './moduleConfig'
+Vue.prototype.$moduleConfig = moduleConfig
 Vue.config.productionTip = false
 fastclick.attach(document.body);
 /** 全局公共组件 **/

@@ -103,7 +103,7 @@ export default {
         overflow: hidden;
         margin: .3rem 0 .6rem;
         color: #000;
-        font-size: .28rem;
+        font-size: .28rem;-
         font-weight: bold;
       }
       .games {

@@ -50,28 +50,32 @@ const ModuleConfig = {
       },
       inner: {
         bg: {
-          background: '#FFA200',
+          background: '#4353C8',
           borderRadius: '.2rem .2rem 0 0'
         },
         tabBg: {
           height: '.76rem'
         },
         tabs: {
-          btnText: ['获得号码', '有奖排行榜'],
+          btnText: ['获得游戏币', '有奖排行榜'],
           btnDefaultStyle: {
             color: '#FFF',
-            background: '#FF7101'
+            background: '#687AFF'
           },
           activeStyle: {
             color: '#FFF',
-            background: '#FFA200'
+            background: '#4353C8'
           }
         },
         info: {
-          titles: ['每日任务送随机数字', '玩游戏得随机号码（每日重置）', '超值礼包额外加赠'],
-          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，斗西游，飞机大战，生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
+          titles: [
+            '每日任务送随机游戏币',
+            '玩游戏得随机游戏币',
+            '超值礼包额外加赠'
+          ],
+          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，飞机大战， 生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
         },
-        percentBg: '#dc322a',
+        percentBg: '#8795FF',
         packageImgs: [
           require(`./views/index/img/common/package1.png`), 
           require(`./views/index/img/common/package2.png`),
@@ -82,7 +86,7 @@ const ModuleConfig = {
         packageBlockBtnBg: '#E74615',
         rank: {
           title: {
-            url: `${require(`/views/index/img/common/rank_title.png`)}`,
+            url: `${require(`./views/index/img/common/rank_title.png`)}`,
             style: {
               width: '4.66rem',
               height: '.46rem'
