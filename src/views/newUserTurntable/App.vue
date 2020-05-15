@@ -304,9 +304,9 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0279003336') // H5平台-新人抽奖转盘-满足提现弹窗加载完成
       }
     },
-    closeTurnPop (type) {
+    closeTurnPop (type = 0) {
       this.isTurnpopShow = false
-      if (type) {
+      if (type === 1) {
         if (this.popType === 0) {
           this.$nextTick(() => {
             window.scrollTo(0, document.querySelector('.active-info-wrap').offsetTop - 10)
@@ -316,9 +316,16 @@ export default {
         } else if (this.popType === 2) {
           this.init()
           this.getTaskInfo()
+          window.scrollTo(0, 0)
+        } else if (this.popType === 3) {
+          window.scrollTo(0, 0)
         } else if (this.popType === 4) {
           WapCall.openGame('/xmWap/#/my/prize')
         } else if (this.popType === 5) {
+          window.scrollTo(0, 0)
+        }
+      } else if (type === 2) {
+        if (this.popType === 5) {
           WapCall.openGame('/xmWap/#/my/customerService')
         }
       }
