@@ -59,7 +59,7 @@
     </div>
     <div class="bottom"></div>
     <!-- rule -->
-    <rule v-model="showRule"/>
+    <rule v-model="showRule" :info="info"/>
     <!-- award -->
     <award v-model="showAward" :list="awardList"/>
   </div>
