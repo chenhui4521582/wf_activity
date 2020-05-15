@@ -1,5 +1,6 @@
 <template>
-  <div id="app" ref="app" class="turn-wrap" v-if="info.state">
+  <div id="app" ref="app" class="turn-wrap" v-if="info.state" @touchstart="touchStart()"
+    @touchend="touchEnd()">
     <template v-if="!isDetailShow">
       <div class="top">
         <p class="back" @click="back"><span>返回</span></p>
@@ -24,7 +25,9 @@
             </ul>
           </div>
           <div class="pointer" @click="betting()">
-            <span>({{info.newUserInfo&&info.newUserInfo.betTimes || 0}}次)</span></div>
+            <span>({{info.newUserInfo&&info.newUserInfo.betTimes || 0}}次)</span>
+            <div class="hand" v-show="isShowHand"></div>
+          </div>
         </div>
       </div>
       <div class="active-info-wrap">
@@ -78,9 +81,10 @@
                 </div>
               </div>
               <div class="btn-wrap">
-                <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成</div>
+                <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">获取抽奖机会
+                </div>
                 <div class="btn receive" v-else-if="item.taskStatus===0" @click="_finish(item)">
-                  领抽奖机会
+                  领取
                 </div>
                 <div class="btn done" v-else>已完成</div>
               </div>
@@ -115,7 +119,10 @@ export default {
         currentIndex: 0, // 当前圈数
         turn: 9, // 最少圈数
         isStart: false // 是否开始旋转
-      }
+      },
+      timer: null,
+      bdminTimer: null,
+      isShowHand: false
     }
   },
   components: {
@@ -126,6 +133,7 @@ export default {
   async mounted () {
     await this.init()
     this.getTaskInfo()
+    this.touchEnd()
     GLOBALS.marchSetsPoint('P_H5PT0279', { source_address: this.sourceAddress }) // H5平台-新人抽奖转盘活动-页面加载完成
     let curChannel = localStorage.getItem('APP_CHANNEL')
     if (curChannel === '100039' && this.info.newUser && this.info.newUserInfo.needRetain) {
@@ -142,8 +150,10 @@ export default {
         iframe.src = scheme
         console.log('iframe::', iframe)
         document.body.appendChild(iframe)
-        setTimeout(function () {
+        this.bdminTimer = setTimeout(function () {
           iframe.remove()
+          clearTimeout(this.bdminTimer)
+          this.bdminTimer = null
         }, 1000)
       } catch (e) {
         window.alert(e.message)
@@ -294,21 +304,28 @@ export default {
         GLOBALS.marchSetsPoint('A_H5PT0279003336') // H5平台-新人抽奖转盘-满足提现弹窗加载完成
       }
     },
-    closeTurnPop (type) {
+    closeTurnPop (type = 0) {
       this.isTurnpopShow = false
-      if (type) {
+      if (type === 1) {
         if (this.popType === 0) {
           this.$nextTick(() => {
-            window.scrollTo(0, document.querySelector('.task-wrap').offsetTop - 15)
+            window.scrollTo(0, document.querySelector('.active-info-wrap').offsetTop - 10)
           })
         } else if (this.popType === 1) {
           this.betting()
         } else if (this.popType === 2) {
           this.init()
           this.getTaskInfo()
+          window.scrollTo(0, 0)
+        } else if (this.popType === 3) {
+          window.scrollTo(0, 0)
         } else if (this.popType === 4) {
           WapCall.openGame('/xmWap/#/my/prize')
         } else if (this.popType === 5) {
+          window.scrollTo(0, 0)
+        }
+      } else if (type === 2) {
+        if (this.popType === 5) {
           WapCall.openGame('/xmWap/#/my/customerService')
         }
       }
@@ -370,6 +387,16 @@ export default {
         url = url.split('?')[0]
         WapCall.openGame(url)
       }
+    },
+    touchStart () {
+      this.isShowHand = false
+      clearTimeout(this.timer)
+    },
+    touchEnd () {
+      this.timer = setTimeout(() => {
+        this.isShowHand = true
+        clearTimeout(this.timer)
+      }, 5000)
     }
     // move (e) {
     //   e.preventDefault()
@@ -382,6 +409,10 @@ export default {
     //   document.body.style.overflow = null
     //   document.removeEventListener('touchmove', this.move, { passive: false })
     // }
+  },
+  destroyed () {
+    clearTimeout(this.bdminTimer)
+    clearTimeout(this.timer)
   }
   // watch: {
   //   isRuleShow (val) {
@@ -553,6 +584,27 @@ export default {
           left: 50%;
           transform: translateX(-50%);
           white-space: nowrap;
+        }
+        .hand {
+          width: 0.94rem;
+          height: 0.94rem;
+          .bgWithFull('./img/hand-pointer.png');
+          position: absolute;
+          top: 69%;
+          left: 63%;
+          transform-origin: bottom right;
+          animation: tranRotateZ 1s linear infinite;
+        }
+        @keyframes tranRotateZ {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          50% {
+            transform: rotateZ(30deg);
+          }
+          100% {
+            transform: rotateZ(0deg);
+          }
         }
       }
     }
