@@ -20,7 +20,7 @@
           <getHammer v-if="curIndex === 1" @refresh="refresh" @showPop="showPop" />
 
           <!-- 排行榜 -->
-          <profit v-if="curIndex === 2" :is-full="false" :endDate="endDate" />
+          <profit v-if="curIndex === 2" :is-full="false"/>
 
           <!-- 右下角图标 -->
           <img src="../img/hide.png" class="icon-back" @click.stop="close">
@@ -35,14 +35,6 @@ export default {
     value: {
       type: Number,
       default: 0
-    },
-    toDayUserCouponNum: {
-      type: Number,
-      default: 0
-    },
-    endDate: {
-      type: String,
-      default: ''
     }
   },
   data () {

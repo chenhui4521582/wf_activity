@@ -6,14 +6,6 @@
         <img :src="$moduleConfig.superLotto.dropDown.inner.rank.title.url"
           :style="$moduleConfig.superLotto.dropDown.inner.rank.title.style" class="title">
       </div>
-      <h4 class="p-time" :class="{nodata:profitData.length==0}">
-        <template v-if="isFull">
-          活动结束，已发榜
-        </template>
-        <template v-else>
-          发榜时间 ：{{endDate}}
-        </template>
-      </h4>
       <div class="profit-tx-container" v-if="profitData.length">
         <!--查看我的奖励-->
         <div class="myprize" @click="showPop(13)" v-if="isFull">
@@ -58,7 +50,7 @@
           </ul>
         </div>
         <div class="p-items p-items-header"
-          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,}">
           <ul class="p-item-title">
             <li style="border:none">
               <span>排名</span>
@@ -156,10 +148,6 @@ export default {
     from: {
       type: Number,
       default: 0
-    },
-    endDate: {
-      type: String,
-      default: ''
     }
   },
   mounted () {

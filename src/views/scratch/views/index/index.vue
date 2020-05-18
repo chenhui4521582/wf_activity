@@ -18,33 +18,34 @@
     </div>
     <!-- content -->
     <div class="content">
-      <div class="scratch-item" v-for="(item, index) in list" :key="index">
+      <div class="scratch-item" v-for="(item, index) in stageConfigList" :key="index">
         <img class="inner-img" :src="item.img" alt="">
         <div class="check-prize">查看奖励</div>
         <div class="btns">
           <div class="one">
-            <div class="text">消耗1个游戏币</div>
+            <div class="text">消耗{{item.consumeNum || 0}}个游戏币</div>
             <div class="explain">获得1个随机中级奖励</div>
           </div>
           <div class="ten">
-            <div class="text">消耗10个游戏币</div>
+            <div class="text">消耗{{item.consumeNum * 10}}个游戏币</div>
             <div class="explain">获得10个随机中级奖励</div>
           </div>
         </div>
+        <div class="total">剩余{{userInfo.totalNum || 0}}个游戏币</div>
       </div>
     </div>
     <!-- footer -->
     <div class="footer">
       <div class="get-coin" @click="openDialog(1)">
         <p>获取游戏币</p>
-        <p>剩余XXX个</p>
+        <p>剩余{{userInfo.totalNum || 0}}个</p>
       </div>
-      <div class="ranking">
+      <div class="ranking" @click="openDialog(2)">
         有奖排行榜
       </div>
     </div>
     <!-- rule -->
-    <rule v-model="showRule" />
+    <rule v-model="showRule" :info="info"/>
     <!-- recomend -->
     <recommend v-model="showRecommend" />
     <!-- dialog -->
@@ -63,14 +64,9 @@ export default {
   data: ()=>({
     currentIndex: 0,
     info: {},
-    list: [
-      {img: require('./img/item1.png')},
-      {img: require('./img/item2.png')},
-      {img: require('./img/item3.png')}
-    ],
     showRule: false,
     showRecommend: false,
-    showDownPopup: 1
+    showDownPopup: null
   }),
   components: {
     Rule,
@@ -78,6 +74,16 @@ export default {
     DownPopup
   },
   computed: {
+    userInfo () {
+      return _get(this.info, 'userInfo', {})
+    },
+    stageConfigList () {
+      let stageConfigList = _get(this.info, 'stageConfigList', [])
+      stageConfigList.forEach((item, index) => {
+        item.img = require(`./img/item${index}.png`)
+      })
+      return stageConfigList
+    }
   },
   methods: {
     handleNavClick (index, item) {
@@ -90,9 +96,9 @@ export default {
     /** 获取活动信息 **/
     _getInfo () {
       Services.activityInfo().then(res => {
-        const {code, data, message} = _get(res, 'data')
+        const {code, data, message} = res
         if(code == 200) {
-          this.info = _get(res, 'data.data', {})
+          this.info = _get(res, 'data', {})
         }
       })
     },
@@ -132,6 +138,7 @@ export default {
   height: 100%;
 }
 .scratch {
+  min-height: 100vh;
   padding: 1.68rem 0 1.2rem;
   overflow: hidden;
   position: relative;
@@ -187,6 +194,17 @@ export default {
             background-size: 100% 100%;
           }
         }
+      }
+      .total {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #fff;
+        font-size: .24rem;
+        height: .5rem;
+        line-height: .5rem;
       }
     }
   }

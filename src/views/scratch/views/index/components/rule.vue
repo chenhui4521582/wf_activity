@@ -4,16 +4,13 @@
     <div class="center">
       <div class="title">规则须知</div>
       <div class="wrap">
-        1.攻略公示<br>
-        通过审核的攻略均展示在此页面。<br>
-        2.点赞<br>
-        每位玩家都可以给喜欢的攻略点赞（可点赞自己的攻略)，每条攻略限点赞1次。<br>
-        3.排行榜<br>
-        排行榜持续14天，依据攻略点赞数量排名，若点赞量相同，则优先达成的攻略排名在前。排行榜结束次日，将通过站内信发放奖励，玩家需手动领取。奖励配置如下：<br>
-        第1~3名       金叶子+头像框+猫道具  <br>
-        第4~50名     金叶子+头像框<br>
-        第50+名       金叶子<br>
-        (金叶子奖励额度与排名相关)
+          活动时间：{{info.beginDate | formatTime('y:m:d')}}-{{info.endDate | formatTime('y:m:d')}} <br>
+          1. 活动期间，玩家可以使用一定数量游戏币来刮不同种类的刮刮乐，刮刮乐可以100%刮出奖励； <br>
+          2. 游戏币可以通过购买活动页面内礼包获得，重复购买可以重复获得； <br>
+          3. 活动期间内，玩家在指定游戏中消耗金叶子数量达到一定值即可领取活动游戏币； （套圈、枪火英雄、麻将、斗地主、飞机大战、生肖大作战及斗西游不计入本次活动） <br>
+          4. 活动期间，玩家使用兑换的刮刮卡可以刮出不同奖励，刮刮乐等级越高，刮出的奖励越好；<br>
+          <a>点击查看奖励</a> <br>
+          5. 活动结束后，根据活动期间累计获得的游戏币进行排名并发放排行奖励，有奖排行榜仅限前30名玩家进榜，排行榜奖励将直接发放，排行榜单会展示一天 注意： 活动结束后，未使用的游戏币将清零 活动结束后，未使用的刮刮卡作废
       </div>
       <div class="closed" @click="hide"></div>
     </div>
@@ -27,6 +24,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    info: {
+      type: Object,
+      default: () => ({})
     }
   },
   methods: {
@@ -60,17 +61,23 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 4.6rem;
-    height: 5.8rem;
+    width: 5.89rem;
+    height: 6.55rem;
     z-index: 2;
-    background: #B43131;
-    border-radius: .32rem;
+    background: #649FEF;
+    border-radius: .2rem;
+    border:3px solid #000;
     transform: translate(-50%, -50%);
     .title {
-      margin-top: .2rem;
+      overflow: hidden;
+      height: .93rem;
+      line-height: .93rem;
       text-align: center;
-      font-size: .32rem;
+      font-size: .36rem;
       color: #fff;
+      border-bottom:3px solid #000;
+      background: #0150E1;
+      border-radius: .1rem .1rem 0 0;
     }
     .wrap {
       margin-top:.32rem;
@@ -81,6 +88,11 @@ export default {
       height: 4.6rem;
       color: #fff;
       line-height: .4rem;
+      font-size: .24rem;
+      a {
+        color: #FFD941;
+        text-decoration: underline;
+      }
     }
   }
   .closed {
