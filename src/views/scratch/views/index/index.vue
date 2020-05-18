@@ -9,7 +9,7 @@
       <img class="inner-img" src="./img/rule-icon.png" alt="">
     </div>
     <!-- 攻略 -->
-    <div class="strategy-btn">
+    <div class="strategy-btn" @click="_getBetAward">
       <img class="inner-img" src="./img/strategy-icon.png" alt="">
     </div>
     <!-- 奖励明细 -->
@@ -48,11 +48,14 @@
     <rule v-model="showRule" :info="info"/>
     <!-- recomend -->
     <recommend v-model="showRecommend" />
-    <!-- dialog -->
+    <!-- down-popup -->
     <down-popup v-model="showDownPopup" />
+    <!-- popup -->
+    <popup v-model="showPopup" :title="popupTitle" :popupStatus="popupStatus" :betAwards="betAwards"/>
   </div>
 </template>
 <script>
+import Popup from './components/popup'
 import Recommend from './components/recommend'
 import DownPopup from './components/downPopup'
 import Rule from './components/rule'
@@ -66,12 +69,17 @@ export default {
     info: {},
     showRule: false,
     showRecommend: false,
-    showDownPopup: null
+    showDownPopup: null,
+    showPopup: false,
+    popupTitle: '',
+    popupStatus: 0,
+    betAwards: []
   }),
   components: {
     Rule,
     Recommend,
-    DownPopup
+    DownPopup,
+    Popup
   },
   computed: {
     userInfo () {
@@ -102,6 +110,17 @@ export default {
         }
       })
     },
+    /** 获取功率和奖励 **/
+    _getBetAward () {
+      Services.betAwards().then(res => {
+        console.log(res)
+        const {code, data, message} = res
+        if(code == 200) {
+          this.betAwards = _get(res, 'data', {})
+          this.openPopup(1, '活动攻略+奖励')
+        }
+      })
+    },
     /** 返回首页 **/
     backHome () {
       window.location.href = "//wap.beeplaying.com/xmWap/"
@@ -116,6 +135,12 @@ export default {
     },
     openDialog (index) {
       this.showDownPopup = index
+    },
+    /** 打开弹框 **/
+    openPopup (status, title) {
+      this.popupTitle = title
+      this.showPopup = true
+      this.popupStatus = status
     },
     jump () {
       window.location.href = 'https://wj.qq.com/s2/5837168/9470/'
