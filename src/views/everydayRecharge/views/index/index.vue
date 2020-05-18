@@ -293,6 +293,7 @@ export default {
             font-size: .3rem;
             color: #fff;
             font-weight: bold;
+            white-space: nowrap;
           }
         }
         .week {
@@ -311,6 +312,7 @@ export default {
             font-size: .24rem;
             color: #fff;
             font-weight: bold;
+            white-space: nowrap;
           }
         }
         .btns {
