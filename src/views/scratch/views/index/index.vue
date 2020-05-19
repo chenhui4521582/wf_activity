@@ -13,50 +13,62 @@
       <img class="inner-img" src="./img/strategy-icon.png" alt="">
     </div>
     <!-- 奖励明细 -->
-    <div class="prize-btn">
+    <div class="prize-btn" @click="_getAwardLog">
       <img class="inner-img" src="./img/price-icon.png" alt="">
     </div>
     <!-- content -->
     <div class="content">
       <div class="scratch-item" v-for="(item, index) in stageConfigList" :key="index">
         <img class="inner-img" :src="item.img" alt="">
-        <div class="check-prize">查看奖励</div>
+        <div class="check-prize" @click="_getBetAward">查看奖励</div>
         <div class="btns">
           <div class="one">
-            <div class="text">消耗{{item.consumeNum || 0}}个游戏币</div>
+            <div class="text" @click="openScratch(item, 1)">消耗{{item.consumeNum || 0}}个游戏币</div>
             <div class="explain">获得1个随机中级奖励</div>
           </div>
           <div class="ten">
-            <div class="text">消耗{{item.consumeNum * 10}}个游戏币</div>
+            <div class="text" @click="openScratch(item, 10)">消耗{{item.consumeNum * 10}}个游戏币</div>
             <div class="explain">获得10个随机中级奖励</div>
           </div>
         </div>
-        <div class="total">剩余{{userInfo.totalNum || 0}}个游戏币</div>
+        <div class="total">剩余{{userInfo.remnantNum || 0}}个游戏币</div>
       </div>
     </div>
     <!-- footer -->
     <div class="footer">
       <div class="get-coin" @click="openDialog(1)">
         <p>获取游戏币</p>
-        <p>剩余{{userInfo.totalNum || 0}}个</p>
+        <p>剩余{{userInfo.remnantNum || 0}}个</p>
       </div>
       <div class="ranking" @click="openDialog(2)">
         有奖排行榜
       </div>
     </div>
     <!-- rule -->
-    <rule v-model="showRule" :info="info"/>
-    <!-- recomend -->
-    <recommend v-model="showRecommend" />
+    <rule v-model="showRule" :info="info" @openBetAward="_getBetAward"/>
+    <!-- guide -->
+    <guide v-model="showGuide" :guideInfo="info.guideInfo"/>
     <!-- down-popup -->
-    <down-popup v-model="showDownPopup" />
+    <down-popup v-model="showDownPopup" @showPop="openGames" @refresh="refresh"/>
     <!-- popup -->
-    <popup v-model="showPopup" :title="popupTitle" :popupStatus="popupStatus" :betAwards="betAwards"/>
+    <popup 
+      v-model="showPopup" 
+      :title="popupTitle" 
+      :popupStatus="popupStatus" 
+      :betAwards="betAwards" 
+      :betIndex="betIndex"
+      :log="awardLog"
+      :scratch="scratch"
+      :awardList="awardList"
+      :boxArr="boxArr"
+      @getAward="_getScratch"
+      @openAward="openAward"
+    />
   </div>
 </template>
 <script>
 import Popup from './components/popup'
-import Recommend from './components/recommend'
+import Guide from './components/guide'
 import DownPopup from './components/downPopup'
 import Rule from './components/rule'
 import Services from '../../services/services'
@@ -68,16 +80,23 @@ export default {
     currentIndex: 0,
     info: {},
     showRule: false,
-    showRecommend: false,
+    showGuide: false,
     showDownPopup: null,
     showPopup: false,
     popupTitle: '',
     popupStatus: 0,
-    betAwards: []
+    betAwards: [],
+    betIndex: 1,
+    awardLog: [],
+    scratch: {
+      times: 0,
+      consumeNum: 0
+    },
+    award: []
   }),
   components: {
     Rule,
-    Recommend,
+    Guide,
     DownPopup,
     Popup
   },
@@ -91,6 +110,50 @@ export default {
         item.img = require(`./img/item${index}.png`)
       })
       return stageConfigList
+    },
+    boxArr () {
+      let arr = {}
+      for(let i =0; i < this.award.length; i++) {
+        if(arr[this.award[i].level]) {
+          arr[this.award[i].level].times++
+        }else {
+          arr[this.award[i].level] = {}
+          arr[this.award[i].level].times = 1
+        }
+        switch (this.award[i].level) {
+          case 1: 
+            arr[this.award[i].level].name = '特等奖'
+            arr[this.award[i].level].img = require('./img/box1.png')
+            break
+          case 2: 
+            arr[this.award[i].level].name = '一等奖'
+            arr[this.award[i].level].img = require('./img/box2.png')
+            break
+          case 3: 
+            arr[this.award[i].level].name = '二等奖'
+            arr[this.award[i].level].img = require('./img/box3.png')
+            break
+        }
+      }
+      return arr
+    },
+    awardList () {
+      let arr = [],name = ''
+      for(let i = 0; i< this.award.length; i++) {
+        switch (this.award[i].level) {
+          case 1: 
+            name = '特等奖'
+            break
+          case 2: 
+            name = '一等奖'
+            break
+          case 3: 
+            name = '二等奖'
+            break
+        }
+        arr[i] = Object.assign({},this.award[i], { name })
+      }
+      return arr
     }
   },
   methods: {
@@ -107,52 +170,148 @@ export default {
         const {code, data, message} = res
         if(code == 200) {
           this.info = _get(res, 'data', {})
+          if(this.info.guideInfo.popup) {
+            this.openGuide()
+          }
         }
       })
     },
     /** 获取功率和奖励 **/
     _getBetAward () {
       Services.betAwards().then(res => {
-        console.log(res)
         const {code, data, message} = res
         if(code == 200) {
           this.betAwards = _get(res, 'data', {})
+          this.betIndex = 2
           this.openPopup(1, '活动攻略+奖励')
         }
       })
+      GLOBALS.marchSetsPoint('A_H5PT0285003414') 
+    },
+    /** 获取奖励纪录 **/
+    _getAwardLog () {
+      Services.getAwardLog().then(res => {
+        const {code, data, message} = res
+        if(code == 200) {
+          this.awardLog = _get(res, 'data', {})
+          this.openPopup(2, '奖励明细')
+        }else {
+          this.$toast.show({ message })
+        }
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0285003415') 
+    },
+    /** 刮卡头部文字 **/
+    scratchTitle (stage) {
+      switch (stage) {
+        case 1:
+          return '普通刮刮乐'
+          break
+        case 2: 
+          return '中级刮刮乐'
+          break
+        case 3: 
+          return '超级刮刮乐'
+          break
+      }
+    },
+    /** 打开刮奖弹框 **/ 
+    openScratch (item, times) {
+      if(this.userInfo.remnantNum < item.consumeNum * times) {
+        this.$toast.show({message: '您的游戏币不足'})
+        return
+      }
+      this.scratch = {
+        times,
+        consumeNum: item.consumeNum,
+        stage: item.stage
+      }
+      let name = this.scratchTitle(item.stage)
+      this.openPopup(3, name)
+      if(item.stage == 1) {
+        if(times == 1) {
+          GLOBALS.marchSetsPoint('A_H5PT0285003416')
+          return
+        }
+        GLOBALS.marchSetsPoint('A_H5PT0285003417')
+      }
+      if(item.stage == 2) {
+        if(times == 1) {
+          GLOBALS.marchSetsPoint('A_H5PT0285003418')
+          return
+        }
+        GLOBALS.marchSetsPoint('A_H5PT0285003419')
+      }
+      if(item.stage == 3) {
+        if(times == 1) {
+          GLOBALS.marchSetsPoint('A_H5PT0285003420')
+          return
+        }
+        GLOBALS.marchSetsPoint('A_H5PT0285003421')
+      }
+      
+    },
+    /** 刮奖 **/
+    _getScratch () {
+      this.award = []
+      Services.getScratch({
+        stage: this.scratch.stage,
+        times: this.scratch.times
+      }).then(res => {
+        const {code, data, message} = res
+        if(code == 200) {
+          this.award = _get(res, 'data.awardsList', [])
+          this._getInfo()
+        }else {
+          this.$toast.show({ message })
+        }
+      })
+    },
+    /** 打开奖品弹框 **/ 
+    openAward () {
+      this.openPopup(4, '恭喜您获得')
+      GLOBALS.marchSetsPoint('A_H5PT0285003430') 
+    },
+    openGames () {
+      this.openPopup(5, '大家都在玩')
+    },
+    refresh () {
+      this._getInfo()
     },
     /** 返回首页 **/
     backHome () {
+      GLOBALS.marchSetsPoint('A_H5PT0285003412') 
       window.location.href = "//wap.beeplaying.com/xmWap/"
     },
     /** 打开规则 **/
     openRule () {
       this.showRule = true
+      GLOBALS.marchSetsPoint('A_H5PT0285003413') 
     },
-    /** 打开更多游戏 **/
-    openRecommend () {
-      this.showRecommend = true
+    /** 打开Guide弹框 **/
+    openGuide () {
+      this.showGuide = true
     },
     openDialog (index) {
       this.showDownPopup = index
+      if(index == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0285003422')
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0285003423')
+      }
     },
     /** 打开弹框 **/
     openPopup (status, title) {
       this.popupTitle = title
       this.showPopup = true
       this.popupStatus = status
-    },
-    jump () {
-      window.location.href = 'https://wj.qq.com/s2/5837168/9470/'
-    },
-    goRanking () {
-      this.$router.push({
-        name: 'ranking'
-      })
     }
   },
   mounted() {
     this._getInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0285', {
+      source_address: document.referrer
+    }) 
   }
 }
 </script>

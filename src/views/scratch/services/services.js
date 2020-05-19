@@ -2,7 +2,7 @@ import $axios from '@/http'
 
 const OPS_API_BASE_URL = '//ops-api.beeplaying.com'
 const SHOP_API_BASE_URL = '//shop-api.beeplaying.com'
-const test = 'http://rap2.taobao.org:38080/app/mock/254384'
+// const test = 'http://rap2.taobao.org:38080/app/mock/254384'
 
 /**
  * @description 活动信息 1
@@ -51,6 +51,41 @@ export const betAwards = async () => {
   return data
 }
 
+/**
+ * @description 用户奖励列表 1
+ * @return {Object} data
+ */
+export const getAwardLog = async () => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/user-awards`)
+  return data
+}
+
+/**
+ * @description 用户完成任务 1
+ * @return {Object} data
+ */
+export const taskFinish = async (type) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/task-receive/${type}`)
+  return data
+}
+
+/**
+ * @description 累消领取奖励
+ * @return {Object} data
+ */
+export const gameReceive = async (sort) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/game-receive/${sort}`)
+  return data
+}
+
+/**
+ * @description 刮卡
+ * @return {Object} data
+ */
+export const getScratch = async (params) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/lot/${params.stage}/${params.times}`)
+  return data
+}
 
 const Service = {
   // 活动信息
@@ -58,6 +93,10 @@ const Service = {
   rankList,
   userProgress,
   showLeaguePacksList,
-  betAwards
+  betAwards,
+  getAwardLog,
+  taskFinish,
+  gameReceive,
+  getScratch
 }
 export default Service

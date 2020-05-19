@@ -3,11 +3,11 @@
     <div class="hb-task-box">
       <div class="percent-box">
         <div class="percent-number"
-          :style="{width:wpercent,background:$moduleConfig.superLotto.dropDown.inner.percentBg}">
+          :style="{width:wpercent}">
         </div>
       </div>
       <ul>
-        <li v-for="(item,index) in envelopsItem" :key="index" v-if="!item.dot">
+        <li v-for="(item,index) in envelopsItem" v-if="!item.dot" :key="index">
           <h2>支持金叶</h2>
           <h4 v-if="envelopsItem.length<6">{{item.amount | conversion}}</h4>
           <template v-else>
@@ -162,32 +162,27 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0277003313', {
+      this.showPop(5)
+      GLOBALS.marchSetsPoint('A_H5PT0285003426', {
         task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })   // H5平台-超级大赢家活动-玩游戏任务去完成点击
-      this.showPop(7)
+      })
     },
-    async gotoact (item) { // 领取
-      GLOBALS.marchSetsPoint('A_H5PT0277003314', {
-        task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })// H5平台-超级大赢家活动-玩游戏任务领取点击
-      this.showLoading = true
-      gameReceive(item.sort).then((res) => {
+    async gotoact (item) { 
+      gameReceive(item.sort).then( res => {
         if (res.code == 200) {
-          this.showPop(8, res.data)
+          this.$toast.show({
+            message: `您获得${res.data}个游戏币`
+          })
           this.$emit('refresh', res.data)
         } else {
           this.$toast.show({
-            message: res.message,
-            duration: 1000,
-            isOneLine: true
+            message: res.message
           })
         }
-        this.showLoading = false
-      }).catch(e => {
-        this.showLoading = false
+      })
+      GLOBALS.marchSetsPoint('A_H5PT0285003427', {
+        task_id: item.sort,
+        task_name: ''
       })
     },
     showPop (type, awardData) {
@@ -220,7 +215,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
-      background: rgba(220, 50, 42, 1);
+      background: #FF4330;
       border-radius: 0.08rem;
       max-width: 100%;
       &:after {

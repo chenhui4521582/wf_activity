@@ -156,6 +156,7 @@ export default {
   methods: {
     closeOpenProfit () {
       this.isOpen = true
+      GLOBALS.marchSetsPoint('A_H5PT0285003429')  
     },
     async getRankList () {
       this.isLoading = true
