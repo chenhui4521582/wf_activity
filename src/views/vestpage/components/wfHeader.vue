@@ -1,6 +1,6 @@
 <template>
   <div class="header-wap" :style="{backgroundColor: bgColor}">
-    <div class="return-img" @click="returnPage">
+    <div class="return-img" @click="returnPage" v-if="showBack">
       <i class="iconfont icon-return"></i>
     </div>
     <slot>
@@ -23,7 +23,11 @@ export default {
     bgColor: {
       type: String,
       default: '#FFFFFF'
-    }
+    },
+    showBack: {
+      type: Boolean,
+      default: true
+    },
   },
   data: () => ({
 
