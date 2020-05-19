@@ -24,8 +24,6 @@ Vue.filter('filter', function (url) {
     return url
   }
 })
-localStorage.setItem('APP_CHANNEL','100039')
-localStorage.setItem('ACCESS_TOKEN','3e27f626972349a3a0d783a7fa4c908b')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
