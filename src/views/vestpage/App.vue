@@ -2,7 +2,7 @@
   <section id="app" class="vestpage" :class="{nodetail:!currentItem}">
     <commentDetail v-if="currentItem" :item="currentItem" @back="back"></commentDetail>
     <template v-else>
-      <wfHeader title="热门帖子"></wfHeader>
+      <wfHeader title="热门帖子" :showBack="showBack"></wfHeader>
       <div class="vestpage_container">
         <scroll ref="scroll">
           <div class="content">
@@ -87,6 +87,7 @@
     },
     data() {
       return {
+        showBack:false,
         showLoading: false,
         avatar: '/cdn/common/images/common/img_photo.png',
         currentItem:null,
@@ -111,7 +112,6 @@
     },
     mounted() {
       this.getPostsList()
-      this.getGamePacks()
       GLOBALS.marchSetsPoint('P_H5PT0284', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })// H5平台-马甲包游戏社区-页面加载完成
@@ -128,9 +128,11 @@
         })// H5平台-马甲包游戏社区-帖子列表点击
         this.currentItem = item
       },
-      setIndex(index) {
+      async setIndex(index) {
         if (index != this.tabIndex) {
           this.tabIndex = index;
+          index==0&&(await this.getPostsList())
+          index==1&&(await this.getGamePacks())
           this.$refs.scroll.scrollTo(0, 0)
           if (index == 1) {
             GLOBALS.marchSetsPoint('A_H5PT0284003406')// H5平台-马甲包游戏礼包-页面加载完成
@@ -161,7 +163,7 @@
             this.getGamePacks()
           } else {
             this.showLoading = false
-            this.$toast({
+            this.$toast.show({
               message: message
             })
           }
