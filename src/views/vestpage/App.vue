@@ -385,7 +385,7 @@
       .package_code {
         font-size: .24rem;
         font-weight: 400;
-        line-height: 36px;
+        line-height: .36rem;
         color: rgba(136, 136, 136, 1);
         text-align: center;
         i {
