@@ -2,13 +2,15 @@
   <div class="get-hammer">
     <template v-if="taskProgressInfoData">
       <template
-        v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}}</h4>
-        <template v-if="indextitle==0">
-          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
+        v-for="(itemtitle, indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
+        <h4 class="s-title" :key="itemtitle">
+          <em></em>{{itemtitle}}
+        </h4>
+        <div class="day-task" v-if="indextitle == 0" :key="indextitle">
+          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress" :key="index">
             <div class="item">
-              <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个号码</p>
-              <p v-else-if="index==1">充值任意金额，送1个号码</p>
+              <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个游戏币</p>
+              <p v-else-if="index==1">今日累计充值10元给1个游戏币</p>
             </div>
             <div class="item">
               <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
@@ -21,15 +23,19 @@
               </div>
             </div>
           </div>
-        </template>
-        <template v-else-if="indextitle==1">
+        </div>
+        <div class="group" v-else-if="indextitle==1" :key="indextitle">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
             <div class="g-package-container g2">
-              <hit-percent :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
-                :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
-                @refresh="refresh" @showPop="showPop"></hit-percent>
+              <hit-percent 
+                :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
+                :hbItems="taskProgressInfoData.gameProgress.progressList" 
+                :countTime="countTime"
+                @refresh="refresh" 
+                @showPop="showPop">
+              </hit-percent>
             </div>
             <div class="g-package-info">
               <ul class="li0">
@@ -37,20 +43,23 @@
                   <span>已支持金叶: {{taskProgressInfoData.gameProgress.gameBetting | conversion}}</span>
                 </li>
                 <li>
-                  <span>累计号码:
-                    {{taskProgressInfoData.gameProgress.gameBettingNumCount }}个</span>
+                  <span>累计游戏币: {{taskProgressInfoData.gameProgress.receiveNum }}个</span>
                 </li>
               </ul>
             </div>
           </div>
-        </template>
-        <template v-else>
+        </div>
+        <div class="group" v-else :key="indextitle">
           <div class="g-package"
-            :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+            :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}"
+          >
             <div class="g-package-container g1">
               <ul>
-                <li v-for="(item,index) in mallBizConfigs" @click="gotopay(item)"
-                  :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBg}">
+                <li v-for="(item,index) in mallBizConfigs" 
+                  :key="index"
+                  :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBg}"
+                  @click="gotopay(item)"
+                >
                   <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
                   <div class="item-text"
                     :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
@@ -67,19 +76,19 @@
             </div>
             <div class="g-package-info">
               <ul class="li0">
-                <li>已购买礼包: {{taskProgressInfoData.buyTime}}次</li>
-                <li>累计号码: {{taskProgressInfoData.buyNumCount }}个</li>
-                <!--<li><div class="line" :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}"></div>获得幸运币：{{taskProgressInfoData.buyProgress.returnNum}}个</li>-->
+                <li>已购买礼包：{{taskProgressInfoData.buyProgress.buyTime}}次</li>
+                <li>累计游戏币：{{taskProgressInfoData.buyProgress.returnNum }}个</li>
               </ul>
             </div>
           </div>
-        </template>
+        </div>
       </template>
     </template>
   </div>
 </template>
 <script type="text/javascript">
-import { showLeaguePacksList, userProgress, taskReceive } from ''
+import { showLeaguePacksList, userProgress, taskFinish } from '../../../../services/services'
+
 export default {
   data () {
     return {
@@ -115,7 +124,7 @@ export default {
   methods: {
     gotopay (item) {
       localStorage.setItem('originDeffer', window.location.href)
-      GLOBALS.marchSetsPoint('A_H5PT0277003315', {
+      GLOBALS.marchSetsPoint('A_H5PT0285003428', {
         recharge_rmb: item.price,
         product_id: item.bizId,
         awards_name: item.name,
@@ -123,8 +132,7 @@ export default {
       })   // H5平台-超级大赢家活动-礼包点击
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       localStorage.setItem('payment', JSON.stringify(item))
-      location.href =
-        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+      location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     },
     async getShowLeaguePacksList () {
       const { code, data } = await showLeaguePacksList()
@@ -139,10 +147,11 @@ export default {
       }
     },
     gotocomplete (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0277003311', {
+      GLOBALS.marchSetsPoint('A_H5PT0285003424', {
         task_id: index + 1,
-        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个号码` : `充值任意金额，送1个号码`
-      })   // H5平台-超级大赢家活动-每日任务去完成点击
+        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个游戏币` : `今日累计充值10元给1个游戏币`
+      })  
+      // H5平台-超级大赢家活动-每日任务去完成点击
       if (index == 0) {
         if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) == 'xmWap') {
           location.href = 'https://wap.beeplaying.com/xmWap/#/task'
@@ -154,15 +163,18 @@ export default {
       }
     },
     async gain (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0277003312', {
-        task_id: index + 1,
-        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个号码` : `充值任意金额，送1个号码`
-      })   // H5平台-超级大赢家活动-每日任务领取点击
-      const { code, data } = await taskReceive(index + 1)
+      // H5平台-超级大赢家活动-每日任务领取点击
+      const { code, data } = await taskFinish(index + 1)
       if (code === 200) {
-        this.showPop(8, data)
+        this.$toast.show({
+          message: `您获得${data}个游戏币`
+        })
         this.refresh(data)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0285003425', {
+        task_id: index + 1,
+        task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个游戏币` : `今日累计充值10元给1个游戏币`
+      })  
     },
     refresh (data) {
       this.taskProgressInfo()
@@ -176,7 +188,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .get-hammer {
-  padding: 1.24rem 0.38rem 0;
+  padding: 1.16rem 0.38rem 0;
   height: calc(100%);
   width: 100%;
   box-sizing: border-box;
@@ -201,6 +213,9 @@ export default {
       margin-right: 0.05rem;
     }
   }
+  .day-task {
+    overflow: hidden;
+  }
   .info {
     font-size: 0.2rem;
     font-weight: 400;
@@ -217,7 +232,7 @@ export default {
   border-radius: 0.15rem;
   .g-package-container {
     background: #fff;
-    margin-top: 0.19rem;
+    margin-top: 0.3rem;
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
@@ -301,8 +316,7 @@ export default {
     li {
       position: relative;
       font-size: 0.24rem;
-      font-weight: bold;
-      text-indent: 0.27rem;
+      text-align: center;
       color: #fff;
       flex: 1;
       .line {
@@ -313,7 +327,7 @@ export default {
         top: 0.1rem;
       }
       &:not(:first-child) {
-        border-left: #ffa200 1px solid;
+        border-left: #FFFFFF 1px solid;
       }
     }
     &.li0 {
@@ -332,9 +346,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.32rem;
+  margin-bottom: 0.2rem;
   padding: 0 0.3rem;
   box-sizing: border-box;
+  &:last-child {
+    margin-bottom: .4rem;
+  }
   .item {
     font-size: 0.3rem;
     p {
