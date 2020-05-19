@@ -1,10 +1,10 @@
 <template>
-  <section class="commentDetail" :class="{detail:!showComment}">
+  <section class="commentDetail">
     <comment v-if="showComment" :id="item.id" @close="refreshDetail" @back="showComment=false"></comment>
     <template v-else>
       <wfHeader title="帖子详情" :customize="customize" @on-click="back"></wfHeader>
       <div class="container">
-        <scroll ref="scroll">
+        <scroll ref="scroll" :data="detail">
           <div class="content">
             <div class="content_item">
               <div class="userinfo">
@@ -139,153 +139,151 @@
 
   .commentDetail {
     height: 100vh;
-    &.detail{
-      position: relative;
-      word-break: break-all;
-      .container {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 1rem;
-        bottom: 1rem;
-        margin: auto;
-        background: rgba(247, 247, 247, 1);
-        .content {
-          padding: .2rem .24rem;
-          .content_item {
-            background: rgba(255, 255, 255, 1);
-            padding: .26rem .21rem .23rem;
-            border-radius: .16rem;
-            margin-bottom: .2rem;
-            .title {
-              font-size: .4rem;
-              font-weight: bold;
-              line-height: .48rem;
-              color: rgba(0, 0, 0, 1);
-              margin-bottom: .1rem;
+    position: relative;
+    word-break: break-all;
+    .container {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 1rem;
+      bottom: 1rem;
+      margin: auto;
+      background: rgba(247, 247, 247, 1);
+      .content {
+        padding: .2rem .24rem;
+        .content_item {
+          background: rgba(255, 255, 255, 1);
+          padding: .26rem .21rem .23rem;
+          border-radius: .16rem;
+          margin-bottom: .2rem;
+          .title {
+            font-size: .4rem;
+            font-weight: bold;
+            line-height: .48rem;
+            color: rgba(0, 0, 0, 1);
+            margin-bottom: .1rem;
+          }
+          .articlecontent {
+            font-size: .28rem;
+            font-weight: 500;
+            line-height: .42rem;
+            color: rgba(0, 0, 0, 1);
+          }
+          img {
+            width: 6.3rem;
+            margin-bottom: .1rem;
+          }
+          .userinfo {
+            display: flex;
+            align-items: center;
+            .avatar {
+              width: .72rem;
+              height: .72rem;
+              margin-right: .15rem;
             }
-            .articlecontent {
+            .name {
               font-size: .28rem;
-              font-weight: 500;
-              line-height: .42rem;
+              font-weight: bold;
               color: rgba(0, 0, 0, 1);
+              margin-bottom: .02rem;
             }
-            img {
-              width: 6.3rem;
-              margin-bottom: .1rem;
-            }
-            .userinfo {
-              display: flex;
-              align-items: center;
-              .avatar {
-                width: .72rem;
-                height: .72rem;
-                margin-right: .15rem;
-              }
-              .name {
-                font-size: .28rem;
-                font-weight: bold;
-                color: rgba(0, 0, 0, 1);
-                margin-bottom: .02rem;
-              }
-              .time {
-                font-size: .24rem;
-                font-weight: 400;
-                color: rgba(187, 187, 187, 1);
-              }
+            .time {
+              font-size: .24rem;
+              font-weight: 400;
+              color: rgba(187, 187, 187, 1);
             }
           }
-          .content_item_comment {
-            background: rgba(255, 255, 255, 1);
-            padding: .22rem .21rem;
-            border-radius: .16rem;
-            margin-bottom: .2rem;
-            .comment_info {
-              font-size: .32rem;
+        }
+        .content_item_comment {
+          background: rgba(255, 255, 255, 1);
+          padding: .22rem .21rem;
+          border-radius: .16rem;
+          margin-bottom: .2rem;
+          .comment_info {
+            font-size: .32rem;
+            font-weight: bold;
+            line-height: .48rem;
+            color: rgba(0, 0, 0, 1);
+            i {
+              font-size: .28rem;
               font-weight: bold;
-              line-height: .48rem;
-              color: rgba(0, 0, 0, 1);
-              i {
-                font-size: .28rem;
-                font-weight: bold;
-                line-height: .42rem;
-                color: rgba(136, 136, 136, 1);
-              }
+              line-height: .42rem;
+              color: rgba(136, 136, 136, 1);
             }
-            .comment_list {
-              .comment_list_item {
-                margin-top: .22rem;
-                .name {
+          }
+          .comment_list {
+            .comment_list_item {
+              margin-top: .22rem;
+              .name {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: .24rem;
+                font-weight: 400;
+                line-height: .36rem;
+                color: rgba(136, 136, 136, 1);
+                img {
+                  width: .3rem;
+                  height: .3rem;
+                  margin-right: .1rem;
+                }
+                .time {
+                  color: rgba(187, 187, 187, 1);
+                }
+                .item {
                   display: flex;
-                  justify-content: space-between;
                   align-items: center;
-                  font-size: .24rem;
-                  font-weight: 400;
-                  line-height: .36rem;
-                  color: rgba(136, 136, 136, 1);
-                  img {
-                    width: .3rem;
-                    height: .3rem;
-                    margin-right: .1rem;
-                  }
-                  .time {
-                    color: rgba(187, 187, 187, 1);
-                  }
-                  .item {
-                    display: flex;
-                    align-items: center;
-                  }
                 }
-                .info {
-                  margin-top: .12rem;
-                  font-size: .24rem;
-                  font-weight: 400;
-                  line-height: .36rem;
-                  color: rgba(0, 0, 0, 1);
-                }
+              }
+              .info {
+                margin-top: .12rem;
+                font-size: .24rem;
+                font-weight: 400;
+                line-height: .36rem;
+                color: rgba(0, 0, 0, 1);
               }
             }
           }
         }
       }
-      .footer {
-        position: fixed;
-        left: 0;
-        right: 0;
-        margin: auto;
-        bottom: 0;
-        height: 1rem;
-        background: rgba(255, 255, 255, 1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-left: .17rem;
-        padding-right: .4rem;
+    }
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: 0;
+      height: 1rem;
+      background: rgba(255, 255, 255, 1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: .17rem;
+      padding-right: .4rem;
+      box-sizing: border-box;
+      .saysth {
+        width: 5.7rem;
+        height: .7rem;
+        line-height: .7rem;
+        padding-left: .4rem;
         box-sizing: border-box;
-        .saysth {
-          width: 5.7rem;
-          height: .7rem;
-          line-height: .7rem;
-          padding-left: .4rem;
-          box-sizing: border-box;
-          background: rgba(247, 247, 247, 1);
-          border-radius: .35rem;
-          font-size: .24rem;
-          font-weight: 400;
-          color: rgba(187, 187, 187, 1);
+        background: rgba(247, 247, 247, 1);
+        border-radius: .35rem;
+        font-size: .24rem;
+        font-weight: 400;
+        color: rgba(187, 187, 187, 1);
+      }
+      .item {
+        img {
+          width: .37rem;
+          height: .4rem;
         }
-        .item {
-          img {
-            width: .37rem;
-            height: .4rem;
-          }
-          text-align: center;
-          font-size: .24rem;
-          font-weight: 400;
-          color: rgba(187, 187, 187, 1);
-          &.active {
-            color: rgba(255, 65, 65, 1);
-          }
+        text-align: center;
+        font-size: .24rem;
+        font-weight: 400;
+        color: rgba(187, 187, 187, 1);
+        &.active {
+          color: rgba(255, 65, 65, 1);
         }
       }
     }
