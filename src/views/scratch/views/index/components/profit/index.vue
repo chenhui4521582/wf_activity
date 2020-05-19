@@ -1,17 +1,13 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
-    <div v-if="!isLoading" class="profit-inner-container">
+    <div class="profit-inner-container">
       <div class="ranktitle" :class="{full:isFull}">
         <img src="../../img/rankbank.png" class="back" @click="rankback" v-if="isFull">
         <img :src="$moduleConfig.superLotto.dropDown.inner.rank.title.url"
           :style="$moduleConfig.superLotto.dropDown.inner.rank.title.style" class="title">
       </div>
-      <div class="profit-tx-container" v-if="profitData.length">
-        <!--查看我的奖励-->
-        <div class="myprize" @click="showPop(13)" v-if="isFull">
-          上期开奖结果
-        </div>
-        <ul class="profit-icon">
+      <div class="profit-tx-container">
+        <ul class="profit-icon" v-if="profitData.length">
           <li v-for="(item,index) in topthreeData">
             <div class="s-tx">
               <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
@@ -98,24 +94,6 @@
         :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
         活动期间累计获得号码数量计入排行榜前30名上榜有奖<br>
         如最终累计的数量一样，则先达成排名靠前
-      </div>
-    </div>
-    <div class="loading-wrap" v-if="isLoading">
-      <div class="container">
-        <div class="spinner">
-          <div class="bar1"></div>
-          <div class="bar2"></div>
-          <div class="bar3"></div>
-          <div class="bar4"></div>
-          <div class="bar5"></div>
-          <div class="bar6"></div>
-          <div class="bar7"></div>
-          <div class="bar8"></div>
-          <div class="bar9"></div>
-          <div class="bar10"></div>
-          <div class="bar11"></div>
-          <div class="bar12"></div>
-        </div>
       </div>
     </div>
   </div>

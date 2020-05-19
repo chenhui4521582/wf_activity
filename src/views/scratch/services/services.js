@@ -37,8 +37,7 @@ export const userProgress = async () => {
  * @return {Object} data
  */
 export const rankList = async () => {
-  const { data } = await $axios.post(`http://rap2.taobao.org:38080/app/mock/254384/ops/api/scratch-card/rank-list`)
-  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/rank-list`)
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/rank-list`)
   return data
 }
 

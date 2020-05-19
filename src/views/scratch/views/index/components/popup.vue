@@ -368,7 +368,22 @@ export default {
             border-radius: .2rem;
             background: #fff;
             &:last-child {
-                margin-bottom: 0;
+              margin-bottom: 0;
+            }
+            &:nth-child(1) {
+              .item-title {
+                background: #F59037;
+              }
+            }
+            &:nth-child(2) {
+              .item-title {
+                background: #EB4141;
+              }
+            }
+            &:nth-child(3) {
+              .item-title {
+                background: #D1AB36;
+              }
             }
             .item-title {
               padding-left: .3rem;
@@ -376,7 +391,7 @@ export default {
               line-height: .55rem;
               color: #fff;
               border-radius: .1rem .1rem 0 0;
-              background: #F59037;
+              
               border-bottom: 3px solid #000;
             }
             .level-item {
@@ -451,6 +466,7 @@ export default {
             display: flex;
             justify-content: flex-start;
             background: #fff;
+            white-space: nowrap;
             &:nth-child(odd) {
               background: #D3E6FF;
             }
@@ -566,6 +582,9 @@ export default {
         }
       }
       .award-list {
+        position: relative;
+        min-height: 4.6rem;
+        padding-bottom: 1.2rem;
         .items {
           display: flex;
           justify-content: space-between;
@@ -594,7 +613,10 @@ export default {
           }
         }
         .receive {
-          margin: .2rem auto;
+          position: absolute;
+          left: 50%;
+          bottom: .2rem;
+          margin-left: -1.42rem;
           width: 2.83rem;
           height: .8rem;
           background: #fff;
