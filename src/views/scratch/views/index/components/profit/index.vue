@@ -34,7 +34,7 @@
             <li :style="{borderColor:$moduleConfig.superLotto.dropDown.inner.bg.background}">
               <h4
                 :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
-                累计获得号码</h4>
+                累计获得游戏币</h4>
               <span>{{myInfo.totalNum}}个</span>
             </li>
             <li>
@@ -92,7 +92,7 @@
       </div>
       <div class="profit-footer"
         :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
-        活动期间累计获得号码数量计入排行榜前30名上榜有奖<br>
+        活动期间累计获得游戏币数量计入排行榜前30名上榜有奖<br>
         如最终累计的数量一样，则先达成排名靠前
       </div>
     </div>

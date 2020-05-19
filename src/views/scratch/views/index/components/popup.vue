@@ -207,6 +207,7 @@ export default {
     hide() {
       this.$emit('input', false)
       this.showClose = true
+      this.currentIndex = 2
     },
     openAward () {
       this.$emit('openAward')
