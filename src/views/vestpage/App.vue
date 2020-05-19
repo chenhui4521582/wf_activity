@@ -2,7 +2,7 @@
   <section id="app" class="vestpage" :class="{nodetail:!currentItem}">
     <commentDetail v-if="currentItem" :item="currentItem" @back="back"></commentDetail>
     <template v-else>
-      <wfHeader title="热门帖子" :showBack="showBack"></wfHeader>
+      <wfHeader :title="title" :showBack="showBack"></wfHeader>
       <div class="vestpage_container">
         <scroll ref="scroll">
           <div class="content">
@@ -87,6 +87,7 @@
     },
     data() {
       return {
+        title:'热门帖子',
         showBack:false,
         showLoading: false,
         avatar: '/cdn/common/images/common/img_photo.png',
@@ -131,6 +132,7 @@
       async setIndex(index) {
         if (index != this.tabIndex) {
           this.tabIndex = index;
+          this.title=index?'游戏礼包':'热门帖子'
           index==0&&(await this.getPostsList())
           index==1&&(await this.getGamePacks())
           this.$refs.scroll.scrollTo(0, 0)

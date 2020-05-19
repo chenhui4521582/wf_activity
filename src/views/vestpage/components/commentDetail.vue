@@ -18,7 +18,7 @@
             <div class="content_item">
               <div class="title">{{detail&&detail.title}}</div>
               <img :src="detail&&detail.original|filter" alt="" v-if="detail&&detail.original">
-              <div class="articlecontent" v-html="detail&&detail.content"></div>
+              <div class="articlecontent" v-html="detail&&detail.detail"></div>
             </div>
             <div class="content_item_comment">
               <div class="comment_info">
