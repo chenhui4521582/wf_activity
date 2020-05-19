@@ -118,6 +118,9 @@
       save() {
         this.$emit('on-save')
       }
+    },
+    components:{
+      wfButton:()=>import('../button/button')
     }
   }
 </script>
