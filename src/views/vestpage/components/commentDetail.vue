@@ -4,43 +4,41 @@
     <template v-else>
       <wfHeader title="帖子详情" :customize="customize" @on-click="back"></wfHeader>
       <div class="container">
-        <scroll ref="scroll" :data="detail">
-          <div class="content">
-            <div class="content_item">
-              <div class="userinfo">
-                <img :src="(detail&&detail.headImg||avatar)|filter" alt="" class="avatar">
-                <div>
-                  <div class="name">{{detail&&detail.nickName}}</div>
-                  <div class="time">{{detail&&detail.createTime}}</div>
-                </div>
-              </div>
-            </div>
-            <div class="content_item">
-              <div class="title">{{detail&&detail.title}}</div>
-              <img :src="detail&&detail.original|filter" alt="" v-if="detail&&detail.original">
-              <div class="articlecontent" v-html="detail&&detail.detail"></div>
-            </div>
-            <div class="content_item_comment">
-              <div class="comment_info">
-                全部评论 <i>({{ detail&&detail.commentCount||'暂无评论'}})</i>
-              </div>
-              <div class="comment_list">
-                <div class="comment_list_item" :class="{last:index==detail&&detail.commentList.length-1}"
-                     v-for="(item,index) in  detail&&detail.commentList">
-                  <div class="name">
-                    <div class="item">
-                      <img :src="(item.headImg||avatar)|filter" alt="">{{item.nickName}}
-                    </div>
-                    <div class="time">
-                      {{item.createTime}}
-                    </div>
-                  </div>
-                  <div class="info" v-html="item.content"></div>
-                </div>
+        <div class="content">
+          <div class="content_item">
+            <div class="userinfo">
+              <img :src="(detail&&detail.headImg||avatar)|filter" alt="" class="avatar">
+              <div>
+                <div class="name">{{detail&&detail.nickName}}</div>
+                <div class="time">{{detail&&detail.createTime}}</div>
               </div>
             </div>
           </div>
-        </scroll>
+          <div class="content_item">
+            <div class="title">{{detail&&detail.title}}</div>
+            <img :src="detail&&detail.original|filter" alt="" v-if="detail&&detail.original">
+            <div class="articlecontent" v-html="detail&&detail.detail"></div>
+          </div>
+          <div class="content_item_comment">
+            <div class="comment_info">
+              全部评论 <i>({{ detail&&detail.commentCount||'暂无评论'}})</i>
+            </div>
+            <div class="comment_list">
+              <div class="comment_list_item" :class="{last:index==detail&&detail.commentList.length-1}"
+                   v-for="(item,index) in  detail&&detail.commentList">
+                <div class="name">
+                  <div class="item">
+                    <img :src="(item.headImg||avatar)|filter" alt="">{{item.nickName}}
+                  </div>
+                  <div class="time">
+                    {{item.createTime}}
+                  </div>
+                </div>
+                <div class="info" v-html="item.content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="footer">
         <div class="saysth" @click="showCommentPage">点击说点什么</div>
@@ -84,8 +82,8 @@
     mounted() {
       this.getDetailById()
       GLOBALS.marchSetsPoint('A_H5PT0284003409', {
-        awards_id:this.item.id,
-        awards_name:this.item.title
+        awards_id: this.item.id,
+        awards_name: this.item.title
       })// H5平台-马甲包游戏社区-帖子详情页面加载完成
     },
     methods: {
@@ -101,21 +99,21 @@
       async praise() {
         if (!(this.detail && this.detail.praise)) {
           GLOBALS.marchSetsPoint('A_H5PT0284003410', {
-            awards_id:this.item.id,
-            awards_name:this.item.title
+            awards_id: this.item.id,
+            awards_name: this.item.title
           })// H5平台-马甲包游戏社区-帖子详情页面-点赞点击
-          this.showLoading=true
-          let {code,message} = await commitPraise({
+          this.showLoading = true
+          let {code, message} = await commitPraise({
             value: this.item.id
           })
           if (code == 200) {
             this.getDetailById()
-            this.showLoading=false
-          }else{
+            this.showLoading = false
+          } else {
             this.$toast.show({
-              message:message
+              message: message
             })
-            this.showLoading=false
+            this.showLoading = false
           }
         }
       },
@@ -123,12 +121,12 @@
         this.showComment = false
         this.getDetailById()
       },
-      showCommentPage(){
+      showCommentPage() {
         GLOBALS.marchSetsPoint('A_H5PT0284003411', {
-          awards_id:this.item.id,
-          awards_name:this.item.title
+          awards_id: this.item.id,
+          awards_name: this.item.title
         })// H5平台-马甲包游戏社区-帖子详情页面-评论点击
-        this.showComment=true
+        this.showComment = true
       }
     }
   }
@@ -141,13 +139,9 @@
     height: 100vh;
     position: relative;
     word-break: break-all;
+    background: rgba(247, 247, 247, 1);
     .container {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 1rem;
-      bottom: 1rem;
-      margin: auto;
+      padding: 1rem 0;
       background: rgba(247, 247, 247, 1);
       .content {
         padding: .2rem .24rem;
