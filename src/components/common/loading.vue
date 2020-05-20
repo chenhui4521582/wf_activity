@@ -24,7 +24,10 @@ export default {
     name : 'loading',
     props:{
         smaller : Boolean,
-        showBar: true
+        showBar: {
+          type:Boolean,
+          default:true
+        }
     }
 }
 </script>
