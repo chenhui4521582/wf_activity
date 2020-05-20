@@ -86,7 +86,7 @@ export default {
     popupTitle: '',
     popupStatus: 0,
     betAwards: [],
-    betIndex: 1,
+    betIndex: 0,
     awardLog: [],
     scratch: {
       times: 0,
