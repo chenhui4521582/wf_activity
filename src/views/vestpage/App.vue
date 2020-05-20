@@ -333,6 +333,8 @@
                   font-size: .2rem;
                   font-weight: 500;
                   color: rgba(136, 136, 136, 1);
+                  max-width: 5rem;
+                  line-height: .26rem;
                 }
                 .btn {
                   width: 1.1rem;
