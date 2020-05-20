@@ -318,11 +318,11 @@
             }
             .package_list {
               .package_list_item {
-                height: 1.2rem;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 border-top: 1px solid rgba(238, 238, 238, 1);
+                padding: .2rem 0;
                 .name {
                   font-size: .24rem;
                   font-weight: 400;
