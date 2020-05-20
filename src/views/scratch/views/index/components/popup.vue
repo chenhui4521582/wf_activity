@@ -147,7 +147,7 @@ export default {
   name: 'popup',
   props: ['value', 'title', 'popupStatus', 'guideInfo', 'betAwards', 'betIndex', 'log', 'scratch', 'awardList', 'boxArr'],
   data: () => ({
-    currentIndex: 1,
+    currentIndex: 0,
     showTips: false,
     showClose: true,
     gameList: [
@@ -207,7 +207,7 @@ export default {
     hide() {
       this.$emit('input', false)
       this.showClose = true
-      this.currentIndex = 2
+      this.currentIndex = this.betIndex
     },
     openAward () {
       this.$emit('openAward')
@@ -220,7 +220,7 @@ export default {
     },
     gotoGame(item) {
       window.location.href = item.url
-    },
+    }
   },
   watch: {
     betIndex (value) {
