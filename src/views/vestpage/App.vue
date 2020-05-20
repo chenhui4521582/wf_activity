@@ -193,13 +193,6 @@
           this.packageList = data
         }
       }
-    },
-    watch: {
-      showModal(val) {
-        if (!val) {
-          this.hasCopy = false
-        }
-      }
     }
   }
 </script>
