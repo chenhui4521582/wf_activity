@@ -161,7 +161,7 @@
         if (item.status == 0) {//可领取
           GLOBALS.marchSetsPoint('A_H5PT0284003407', {
             awards_id: item.batchId,
-            awards_name: item.description
+            awards_name: item.name
           })// H5平台-马甲包游戏礼包-领取点击
           this.showLoading = true
           let {code, data, message} = await getAwards({
