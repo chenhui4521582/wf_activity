@@ -9,7 +9,7 @@
       <img class="inner-img" src="./img/rule-icon.png" alt="">
     </div>
     <!-- 攻略 -->
-    <div class="strategy-btn" @click="_getBetAward">
+    <div class="strategy-btn" @click="_getBetAward(2)">
       <img class="inner-img" src="./img/strategy-icon.png" alt="">
     </div>
     <!-- 奖励明细 -->
@@ -20,7 +20,7 @@
     <div class="content">
       <div class="scratch-item" v-for="(item, index) in stageConfigList" :key="index">
         <img class="inner-img" :src="item.img" alt="">
-        <div class="check-prize" @click="_getBetAward">查看奖励</div>
+        <div class="check-prize" @click="_getBetAward(1)">查看奖励</div>
         <div class="btns">
           <div class="one">
             <div class="text" @click="openScratch(item, 1)">消耗{{item.consumeNum || 0}}个游戏币</div>
@@ -177,12 +177,12 @@ export default {
       })
     },
     /** 获取功率和奖励 **/
-    _getBetAward () {
+    _getBetAward (index) {
       Services.betAwards().then(res => {
         const {code, data, message} = res
         if(code == 200) {
           this.betAwards = _get(res, 'data', {})
-          this.betIndex = 2
+          this.betIndex = index
           this.openPopup(1, '活动攻略+奖励')
         }
       })
