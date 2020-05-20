@@ -32,7 +32,7 @@
 	      },
 	      refreshDelay: {
 	        type: Number,
-	        default: 20
+	        default: 100
 	      },
 	      scrollX: {
 	      	type: Boolean,
