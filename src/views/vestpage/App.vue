@@ -297,7 +297,7 @@
             margin-bottom: .2rem;
             .package_info {
               display: flex;
-              height: 1.42rem;
+              padding: .2rem 0;
               align-items: center;
               img {
                 width: .8rem;
@@ -308,12 +308,14 @@
                 font-size: .28rem;
                 font-weight: bold;
                 color: rgba(0, 0, 0, 1);
+                line-height: .3rem;
               }
               .info {
                 margin-top: .09rem;
                 font-size: .2rem;
                 font-weight: 500;
                 color: rgba(136, 136, 136, 1);
+                line-height: .26rem;
               }
             }
             .package_list {
@@ -327,6 +329,8 @@
                   font-size: .24rem;
                   font-weight: 400;
                   color: rgba(0, 0, 0, 1);
+                  max-width: 5rem;
+                  line-height: .28rem;
                 }
                 .info {
                   margin-top: .02rem;
