@@ -63,10 +63,13 @@
         </div>
       </div>
     </template>
-    <modal v-model="showModel" title="领取成功" type="2" :closeButtonShow="false" saveText="知道了" :closeIcon2Show="true"
-           @on-save="showModel=false">
+    <modal v-model="showModel" title="领取成功" :buttonShow="false">
       <div class="package_code">
-        礼包兑换码:<i>{{code}}</i> 已复制,可进入游戏内兑换领取
+        礼包兑换码:<i>{{code}}</i>,可进入游戏内兑换领取
+        <button class="button-warp button-1 button-long" v-clipboard:copy=code
+                v-clipboard:success="onSuccess" v-clipboard:error="onError">
+          复制
+        </button>
       </div>
     </modal>
     <loading v-show="showLoading"></loading>
@@ -74,6 +77,7 @@
 </template>
 
 <script>
+  import ClipboardJS from 'clipboard'
   import {getPostsList, getGamePacks, getAwards} from './utils/api'
 
   export default {
@@ -83,15 +87,15 @@
       scroll: () => import('./components/scroll'),
       modal: () => import('./components/modal'),
       commentDetail: () => import('./components/commentDetail'),
-      loading: () => import('../../components/common/loading'),
+      loading: () => import('../../components/common/loading')
     },
     data() {
       return {
-        title:'热门帖子',
-        showBack:false,
+        title: '热门帖子',
+        showBack: false,
         showLoading: false,
         avatar: '/cdn/common/images/common/img_photo.png',
-        currentItem:null,
+        currentItem: null,
         showModel: false,
         tabIndex: 0,
         footerList: [
@@ -118,6 +122,18 @@
       })// H5平台-马甲包游戏社区-页面加载完成
     },
     methods: {
+      onSuccess() {
+        this.$toast.show({
+          message: '复制成功'
+        })
+        this.showModel = false
+      },
+      onError() {
+        this.$toast.show({
+          message: '复制失败'
+        })
+        this.showModel = false
+      },
       back() {
         this.currentItem = null
         this.getPostsList()
@@ -132,9 +148,9 @@
       async setIndex(index) {
         if (index != this.tabIndex) {
           this.tabIndex = index;
-          this.title=index?'游戏礼包':'热门帖子'
-          index==0&&(await this.getPostsList())
-          index==1&&(await this.getGamePacks())
+          this.title = index ? '游戏礼包' : '热门帖子'
+          index == 0 && (await this.getPostsList())
+          index == 1 && (await this.getGamePacks())
           this.$refs.scroll.scrollTo(0, 0)
           if (index == 1) {
             GLOBALS.marchSetsPoint('A_H5PT0284003406')// H5平台-马甲包游戏礼包-页面加载完成
@@ -154,13 +170,7 @@
           if (code == 200) {
             this.code = data;
             GLOBALS.marchSetsPoint('A_H5PT0284003408')// H5平台-马甲包游戏礼包-领取点击
-            this.$copyText(this.code).then(res => {
-              this.showModel = true
-            }, err => {
-              this.showModel = true
-            }).catch(e => {
-              this.showModel = true
-            })
+            this.showModel = true
             this.showLoading = false
             this.getGamePacks()
           } else {
@@ -181,6 +191,13 @@
         let {code, data} = await getGamePacks()
         if (code == 200) {
           this.packageList = data
+        }
+      }
+    },
+    watch: {
+      showModal(val) {
+        if (!val) {
+          this.hasCopy = false
         }
       }
     }
@@ -390,6 +407,35 @@
         text-align: center;
         i {
           color: #FF7800;
+        }
+        .button-warp {
+          display: inline-block;
+          width: calc(50% - 20px);
+          padding: 0 15*.01rem;
+          height: 70*.01rem;
+          font-size: 24*.01rem;
+          color: #fff;
+          box-sizing: border-box;
+          text-align: center;
+          line-height: 70*.01rem;
+          border: none;
+          border-radius: 16*.01rem;
+          background-color: #ff4141;
+        }
+        .size-small {
+          font-size: 22*.01rem;
+        }
+        .button-default {
+          color: #fff;
+          background-color: #ff4141;
+        }
+        .button-background {
+          background-color: #f4f4f4;
+          border: 1*.01rem solid #e6e6e6;
+        }
+        .button-long {
+          width: 100%;
+          margin: .4rem 0 0;
         }
       }
     }
