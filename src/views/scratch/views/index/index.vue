@@ -9,7 +9,7 @@
       <img class="inner-img" src="./img/rule-icon.png" alt="">
     </div>
     <!-- 攻略 -->
-    <div class="strategy-btn" @click="_getBetAward(2)">
+    <div class="strategy-btn" @click="_getBetAward(1)">
       <img class="inner-img" src="./img/strategy-icon.png" alt="">
     </div>
     <!-- 奖励明细 -->
@@ -20,7 +20,7 @@
     <div class="content">
       <div class="scratch-item" v-for="(item, index) in stageConfigList" :key="index">
         <img class="inner-img" :src="item.img" alt="">
-        <div class="check-prize" @click="_getBetAward(1)">查看奖励</div>
+        <div class="check-prize" @click="_getBetAward(2)">查看奖励</div>
         <div class="btns">
           <div class="one">
             <div class="text" @click="openScratch(item, 1)">消耗{{item.consumeNum || 0}}个游戏币</div>
@@ -45,7 +45,7 @@
       </div>
     </div>
     <!-- rule -->
-    <rule v-model="showRule" :info="info" @openBetAward="_getBetAward"/>
+    <rule v-model="showRule" :info="info" @openBetAward="_getBetAward(2)"/>
     <!-- guide -->
     <guide v-model="showGuide" :guideInfo="info.guideInfo"/>
     <!-- down-popup -->
