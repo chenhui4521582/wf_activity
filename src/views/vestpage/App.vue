@@ -4,57 +4,55 @@
     <template v-else>
       <wfHeader :title="title" :showBack="showBack"></wfHeader>
       <div class="vestpage_container">
-        <scroll ref="scroll">
-          <div class="content">
-            <template v-if="tabIndex==0">
-              <div class="content_item" v-for="(item,index) in list" @click="showDetail(item)">
-                <div class="title">{{item.title}}</div>
-                <img :src="item.small|filter" alt="" v-if="item.small">
-                <div class="articlecontent">{{item.content}}</div>
-                <div class="userinfo">
-                  <div class="item">
-                    <img :src="(item.headImg||avatar)|filter" alt="" class="avatar">
-                    <div>
-                      <div class="name">{{item.nickName}}</div>
-                      <div class="time">{{item.createTime}}</div>
-                    </div>
+        <div class="content">
+          <template v-if="tabIndex==0">
+            <div class="content_item" v-for="(item,index) in list" @click="showDetail(item)">
+              <div class="title">{{item.title}}</div>
+              <img :src="item.small|filter" alt="" v-if="item.small">
+              <div class="articlecontent">{{item.content}}</div>
+              <div class="userinfo">
+                <div class="item">
+                  <img :src="(item.headImg||avatar)|filter" alt="" class="avatar">
+                  <div>
+                    <div class="name">{{item.nickName}}</div>
+                    <div class="time">{{item.createTime}}</div>
                   </div>
-                  <div class="item">
-                    <div class="item_item">
-                      <img src="./img/comment.png" alt=""><span>{{item.commentCount||'评论'}}</span>
-                    </div>
-                    <div class="item_item">
-                      <img src="./img/like.png" alt=""><span>{{item.praiseCount||'点赞'}}</span>
-                    </div>
+                </div>
+                <div class="item">
+                  <div class="item_item">
+                    <img src="./img/comment.png" alt=""><span>{{item.commentCount||'评论'}}</span>
+                  </div>
+                  <div class="item_item">
+                    <img src="./img/like.png" alt=""><span>{{item.praiseCount||'点赞'}}</span>
                   </div>
                 </div>
               </div>
-            </template>
-            <template v-else="tabIndex==1">
-              <div class="content_item_package" v-for="(item,index) in packageList">
-                <div class="package_info">
-                  <img :src="item.icon|filter" alt="" v-if="item.icon">
-                  <div class="item">
-                    <div class="name">{{item.name}}</div>
-                    <div class="info">{{item.remark}}</div>
-                  </div>
+            </div>
+          </template>
+          <template v-else="tabIndex==1">
+            <div class="content_item_package" v-for="(item,index) in packageList">
+              <div class="package_info">
+                <img :src="item.icon|filter" alt="" v-if="item.icon">
+                <div class="item">
+                  <div class="name">{{item.name}}</div>
+                  <div class="info">{{item.remark}}</div>
                 </div>
-                <div class="package_list">
-                  <div class="package_list_item" v-for="(package,packageIndex) in item.list">
-                    <div>
-                      <div class="name">{{package.name}}</div>
-                      <div class="info">{{package.description}}</div>
-                    </div>
-                    <div class="btn" :class="{received:package.status==1,over:package.status==2}"
-                         @click="receive(package)">
-                      {{package.status==0?'领取':(package.status==1?'已领取':'已领完')}}
-                    </div>
+              </div>
+              <div class="package_list">
+                <div class="package_list_item" v-for="(package,packageIndex) in item.list">
+                  <div>
+                    <div class="name">{{package.name}}</div>
+                    <div class="info">{{package.description}}</div>
+                  </div>
+                  <div class="btn" :class="{received:package.status==1,over:package.status==2}"
+                       @click="receive(package)">
+                    {{package.status==0?'领取':(package.status==1?'已领取':'已领完')}}
                   </div>
                 </div>
               </div>
-            </template>
-          </div>
-        </scroll>
+            </div>
+          </template>
+        </div>
       </div>
       <div class="footer">
         <div class="item" v-for="(item,index) in footerList" @click="setIndex(index)">
@@ -84,7 +82,6 @@
     name: 'vestpage',
     components: {
       wfHeader: () => import('./components/wfHeader'),
-      scroll: () => import('./components/scroll'),
       modal: () => import('./components/modal'),
       commentDetail: () => import('./components/commentDetail'),
       loading: () => import('../../components/common/loading')
@@ -205,12 +202,7 @@
     &.nodetail {
       position: relative;
       .vestpage_container {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 1rem;
-        bottom: 1rem;
-        margin: auto;
+        padding: 1rem 0;
         background: rgba(247, 247, 247, 1);
         .content {
           padding: .2rem .24rem;
