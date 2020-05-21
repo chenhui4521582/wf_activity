@@ -100,11 +100,14 @@
         如最终累计的数量一样，则先达成排名靠前
       </div>
     </div>
+    <!-- 发榜 -->
+    <!-- award -->
+    <award v-model="showAward" :info="myInfo"/>
   </div>
 </template>
 <script type="text/javascript">
 import { rankList } from '../../services/services'
-
+import Award from './components/award'
 export default {
   data () {
     return {
@@ -119,7 +122,8 @@ export default {
       isLoading: false,
       defaultImg: '/cdn/common/images/common/img_photo.png',
       popType: 0,
-      awardData: null
+      awardData: null,
+      showAward: true
     }
   },
   props: {
@@ -131,6 +135,9 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  components: {
+    Award
   },
   mounted () {
     this.getRankList()
