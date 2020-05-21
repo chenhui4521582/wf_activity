@@ -173,6 +173,11 @@ export default {
           if(this.info.guideInfo.popup) {
             this.openGuide()
           }
+          if(this.info.state == 2) {
+            this.$router.push({
+              name: 'ranking'
+            })
+          }
         }
       })
     },
