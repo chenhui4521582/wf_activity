@@ -72,17 +72,13 @@ const ModuleConfig = {
           sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，斗西游，飞机大战，生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
         },
         percentBg: '#dc322a',
-        packageImgs: [
-          require(`./views/index/img/common/package1.png`), 
-          require(`./views/index/img/common/package2.png`),
-          require(`./views/index/img/common/package3.png`)
-        ],
+        packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`],
         packageBlockBg: '#ffecca',
         packageBlockTextColor: '#9A5619',
         packageBlockBtnBg: '#E74615',
         rank: {
           title: {
-            url: `${require(`/views/index/img/common/rank_title.png`)}`,
+            url: `${require(`./img/common/rank_title.png`)}`,
             style: {
               width: '4.66rem',
               height: '.46rem'
