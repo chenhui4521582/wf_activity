@@ -1,5 +1,9 @@
 <template>
   <div class="profit-container" :class="{full:isFull}">
+    <!-- 返回 -->
+    <div class="back-btn" @click="backHome">
+      <img class="inner-img" src="./img/back-icon.png" alt="">
+    </div>
     <div class="profit-inner-container">
       <div class="ranktitle" :class="{full:isFull}">
         <img src="./img/rankbank.png" class="back" @click="rankback" v-if="isFull">
@@ -164,7 +168,12 @@ export default {
     },
     showPop (type) {
       this.$emit('showPop', type)
-    }
+    },
+    /** 返回首页 **/
+    backHome () {
+      GLOBALS.marchSetsPoint('A_H5PT0285003412') 
+      window.location.href = "//wap.beeplaying.com/xmWap/"
+    },
   },
   watch: {}
 }
