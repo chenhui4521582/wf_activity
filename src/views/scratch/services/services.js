@@ -86,6 +86,15 @@ export const getScratch = async (params) => {
   return data
 }
 
+/**
+ * @description 用户排名
+ * @return {Object} data
+ */
+export const userRanking = async (params) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/scratch-card/my-rank`)
+  return data
+}
+
 const Service = {
   // 活动信息
   activityInfo,
@@ -96,6 +105,7 @@ const Service = {
   getAwardLog,
   taskFinish,
   gameReceive,
-  getScratch
+  getScratch,
+  userRanking
 }
 export default Service

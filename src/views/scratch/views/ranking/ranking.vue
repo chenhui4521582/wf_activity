@@ -100,11 +100,14 @@
         如最终累计的数量一样，则先达成排名靠前
       </div>
     </div>
+    <!-- 发榜 -->
+    <!-- award -->
+    <award v-model="showAward" :info="awardData"/>
   </div>
 </template>
 <script type="text/javascript">
-import { rankList } from '../../services/services'
-
+import { rankList, userRanking } from '../../services/services'
+import Award from './components/award'
 export default {
   data () {
     return {
@@ -119,7 +122,8 @@ export default {
       isLoading: false,
       defaultImg: '/cdn/common/images/common/img_photo.png',
       popType: 0,
-      awardData: null
+      awardData: null,
+      showAward: false
     }
   },
   props: {
@@ -132,8 +136,12 @@ export default {
       default: 0
     }
   },
+  components: {
+    Award
+  },
   mounted () {
     this.getRankList()
+    this._userRanking()
   },
   methods: {
     closeOpenProfit () {
@@ -162,6 +170,18 @@ export default {
         this.behindThreeData = this.profitData.slice(3, 6)
       }
       this.isLoading = false
+    },
+    _userRanking () {
+      userRanking().then(res =>{
+        // res = {"code":200,"data":{"popup": true,"myRank":1,"awardsList":[{"awardsType":"jdk","awardsName":"20000元京东券"},{"awardsType":"jyz","awardsName":"1500万金叶子"}]},"message":null}
+        const {code, data, message} = res 
+        if(code == 200) {
+          this.awardData = data
+          if(this.awardData.popup) {
+            this.showAward = true
+          }
+        }
+      })
     },
     rankback () {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
