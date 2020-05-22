@@ -1,163 +1,311 @@
 <template>
-  <div class="ranking">
-    <Header title="排行榜" />
-    <slider :info="info" />
-    <div class="center">
-      <div class="nav">
-        <div class="item rank">排名</div>
-        <div class="item nick-name">玩家</div>
-        <div class="item num">获赞数量</div>
+  <div class="profit-container" :class="{full:isFull}">
+    <!-- 返回 -->
+    <div class="back-btn" @click="backHome">
+      <img class="inner-img" src="./img/back-icon.png" alt="">
+    </div>
+    <div class="profit-inner-container">
+      <div class="ranktitle" :class="{full:isFull}">
+        <img src="./img/rankbank.png" class="back" @click="rankback" v-if="isFull">
+        <img :src="$moduleConfig.superLotto.dropDown.inner.rank.title.url"
+          :style="$moduleConfig.superLotto.dropDown.inner.rank.title.style" class="title">
       </div>
-      <div class="list" ref="list">
-        <better-scroll ref="scroll" :data="list" :probeType="3" :listenScroll="true" @scroll="onScroll">
-          <div class="list-item" ref="wrap" >
-            <div class="items" v-for="(item, index) in list" :key="index">
-              <div class="rank">{{item.rank}}</div>
-              <div class="nick-name">
-                <div class="avatar">
-                  <img v-if="item.avatar" class="inner-img" :src="item.avatar | filter" alt="">
-                  <img v-else class="inner-img" src="./img/img_photo.png" alt="">
-                </div>
-                {{item.nickName}}
-              </div>
-              <div class="num">
-                {{item.praiseCount}}
-              </div>
+      <div class="profit-tx-container">
+        <ul class="profit-icon" v-if="profitData.length">
+          <li v-for="(item,index) in topthreeData">
+            <div class="s-tx">
+              <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
+              <img v-if="!item.profilePhoto" :src="defaultImg | filter">
             </div>
-          </div>
-        </better-scroll>
+            <span class="s-text">{{item.nickname || '暂无昵称'}}</span>
+            <span class="hammer-number">{{item.totalNum}}个</span>
+            <span class="award-names">
+              {{item.awardsName.split('+')[0].replace('金叶子','金叶')}}<br />+{{item.awardsName.split('+')[1]&&item.awardsName.split('+')[1].replace('元','')}}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="profit-items" :class="{nodata:profitData.length==0}">
+        <div class="p-header"
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+          <ul>
+            <li>
+              <h4
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
+                我的排名</h4>
+              <span>{{myInfo.myRank?myInfo.myRank:'1000+'}}</span>
+            </li>
+            <li :style="{borderColor:$moduleConfig.superLotto.dropDown.inner.bg.background}">
+              <h4
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
+                累计获得游戏币</h4>
+              <span>{{myInfo.totalNum}}个</span>
+            </li>
+            <li>
+              <h4
+                :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color}">
+                当前奖励</h4>
+              <span>{{myInfo.currentAwards}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="p-items p-items-header"
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,}">
+          <ul class="p-item-title">
+            <li style="border:none">
+              <span>排名</span>
+              <span><em class="i-ellipsis">昵称</em></span>
+              <span><em class="i-ellipsis">获得号码+时间</em></span>
+              <span><em class="i-ellipsis">奖励</em></span>
+            </li>
+          </ul>
+        </div>
+        <div class="p-items p-items-content"
+          :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.color,color:$moduleConfig.superLotto.dropDown.inner.bg.background}">
+          <ul class="p-item-title">
+            <li v-for="(item,index) in behindThreeData">
+              <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
+                    class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em
+                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+            <li v-if="isOpen" v-for="(item,index) in otherData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
+                    class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em
+                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+            <li v-if="!isOpen" style="border: none">
+              <a href="javascript:" class="btn-check-profit"
+                @click.stop="closeOpenProfit">点击展开完整榜单</a>
+            </li>
+            <li v-for="(item,index) in lastThreeData">
+              <span><i class="icon-dot">{{item.rank}}</i></span>
+              <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
+                    class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em
+                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="profit-footer"
+        :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+        活动期间累计获得游戏币数量计入排行榜前30名上榜有奖<br>
+        如最终累计的数量一样，则先达成排名靠前
       </div>
     </div>
-    <div class="back-top" v-if="isBackTop" @click="backTop">
-      <img class="inner-img" src="./img/back_top.png" alt="">
-    </div>
+    <!-- 发榜 -->
+    <!-- award -->
+    <award v-model="showAward" :info="awardData"/>
   </div>
 </template>
-<script>
-import BetterScroll from '../../components/scroll/scroll'
-import Slider from './components/slider'
-import Services from '../../services/services'
-import _get from 'lodash.get'
+<script type="text/javascript">
+import { rankList, userRanking } from '../../services/services'
+import Award from './components/award'
 export default {
-  name: 'ranking',
-  data: () => ({
-    info: {},
-    isBackTop: false
-  }),
-  components: {
-    Slider,
-    BetterScroll
-  },
-  computed: {
-    list () {
-      return _get(this.info, 'rankList', [])
+  data () {
+    return {
+      curIndex: 0,
+      profitData: [],
+      topthreeData: [],
+      behindThreeData: [],
+      otherData: [],
+      lastThreeData: [],
+      isOpen: true,
+      myInfo: {},
+      isLoading: false,
+      defaultImg: '/cdn/common/images/common/img_photo.png',
+      popType: 0,
+      awardData: null,
+      showAward: false
     }
   },
+  props: {
+    isFull: {
+      type: Boolean,
+      default: false
+    },
+    from: {
+      type: Number,
+      default: 0
+    }
+  },
+  components: {
+    Award
+  },
+  mounted () {
+    this.getRankList()
+    this._userRanking()
+  },
   methods: {
-    _getRanking () {
-      Services.getRanking().then(res => {
-        const {code, data, message} = _get(res, 'data', {})
-        if (code == 200) {
-          this.info = _get(res, 'data.data', [])
+    closeOpenProfit () {
+      this.isOpen = true
+      GLOBALS.marchSetsPoint('A_H5PT0285003429')  
+    },
+    async getRankList () {
+      this.isLoading = true
+      const { code, data } = await rankList()
+      if (code === 200) {
+        this.myInfo = {
+          myRank: data.myRank,
+          totalNum: data.totalNum,
+          currentAwards: data.currentAwards || '无'
+        }
+        this.profitData = data.rankList
+        if (this.profitData.length > 6) {
+          this.lastThreeData = this.profitData.slice(6)
+        }
+        if (this.profitData.length > 9) {
+          this.isOpen = false
+          this.lastThreeData = this.profitData.slice(this.profitData.length - 3)
+          this.otherData = this.profitData.slice(6, this.profitData.length - 3)
+        }
+        this.topthreeData = this.profitData.slice(0, 3)
+        this.behindThreeData = this.profitData.slice(3, 6)
+      }
+      this.isLoading = false
+    },
+    _userRanking () {
+      userRanking().then(res =>{
+        // res = {"code":200,"data":{"popup": true,"myRank":1,"awardsList":[{"awardsType":"jdk","awardsName":"20000元京东券"},{"awardsType":"jyz","awardsName":"1500万金叶子"}]},"message":null}
+        const {code, data, message} = res 
+        if(code == 200) {
+          this.awardData = data
+          if(this.awardData.popup) {
+            this.showAward = true
+          }
         }
       })
     },
-    onScroll ({y}) {
-      /** 是否显示返回顶部 **/
-      if (Math.abs(Math.round(y)) > 200) {
-        this.isBackTop = true
-      } else {
-        this.isBackTop = false
-      }
+    rankback () {
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
     },
-    /** 列表返回顶部 **/
-    backTop() {
-      this.$refs.scroll.scrollTo(0, 0)
-      this.isBackTop = false
+    showPop (type) {
+      this.$emit('showPop', type)
+    },
+    /** 返回首页 **/
+    backHome () {
+      GLOBALS.marchSetsPoint('A_H5PT0285003412') 
+      window.location.href = "//wap.beeplaying.com/xmWap/"
     },
   },
-  mounted () {
-    this._getRanking()
-  }
+  watch: {}
 }
 </script>
-<style scoped lang="less">
-.inner-img {
-  vertical-align: top;
-  width: 100%;
-  height: 100%;
+<style lang="less" scoped>
+@import './index.less';
+
+.loading-wrap {
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // height: 100%;
+  // background-color: rgba(0, 0, 0, 0);
+  // z-index: 15;
 }
-.ranking {
-  padding: .9rem .24rem;
-  min-height: 100vh;
-  background: #F7F7F7;
-  .center {
-    border-radius: .16rem;
-    margin-top: .2rem;
-    overflow: hidden;
-    .nav {
-      display: flex;
-      justify-content: flex-start;
-      background: #FFFAD4;
-      .item {
-        height: .5rem;
-        line-height: .5rem;
-        text-align: center;
-        &.rank {
-          width: 30%;
-        }
-        &.nick-name {
-          width: 40%;
-        }
-        &.num {
-          width: 30%;
-        }
-      }
-    }
-    .list {
-      position: relative;
-      height: 75vh;
-      overflow: hidden;
-      .items {
-        display: flex;
-        justify-content: flex-start;
-        background: #fff;
-        height: .9rem;
-        line-height: .9rem;
-        text-align: center;
-        font-size: .24rem;
-        &:nth-child(event) {
-          background: #FFFDEF;
-        }
-        .rank {
-          width: 30%;
-          color: #888888;
-        }
-        .nick-name {
-          width: 40%;
-          color: #000000;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          .avatar {
-            margin-right: .1rem;
-            width: .3rem;
-            height: .3rem;
-          }
-        }
-        .num {
-          width: 30%;
-          color: #000;
-        }
-      }
-    }
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 10%;
+}
+
+.spinner {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.spinner div {
+  width: 10%;
+  height: 26%;
+  background-color: #e2812a;
+  position: absolute;
+  left: 44.5%;
+  top: 37%;
+  opacity: 0;
+  border-radius: 30%;
+  animation: fade 1s linear infinite;
+}
+
+.spinner div.bar1 {
+  transform: rotate(0deg) translate(0, -142%);
+  animation-delay: 0s;
+}
+
+.spinner div.bar2 {
+  transform: rotate(30deg) translate(0, -142%);
+  animation-delay: -0.9167s;
+}
+
+.spinner div.bar3 {
+  transform: rotate(60deg) translate(0, -142%);
+  animation-delay: -0.833s;
+}
+
+.spinner div.bar4 {
+  transform: rotate(90deg) translate(0, -142%);
+  animation-delay: -0.75s;
+}
+
+.spinner div.bar5 {
+  transform: rotate(120deg) translate(0, -142%);
+  animation-delay: -0.667s;
+}
+
+.spinner div.bar6 {
+  transform: rotate(150deg) translate(0, -142%);
+  animation-delay: -0.5833s;
+}
+
+.spinner div.bar7 {
+  transform: rotate(180deg) translate(0, -142%);
+  animation-delay: -0.5s;
+}
+
+.spinner div.bar8 {
+  transform: rotate(210deg) translate(0, -142%);
+  animation-delay: -0.41667s;
+}
+
+.spinner div.bar9 {
+  transform: rotate(240deg) translate(0, -142%);
+  animation-delay: -0.333s;
+}
+
+.spinner div.bar10 {
+  transform: rotate(270deg) translate(0, -142%);
+  animation-delay: -0.25s;
+}
+
+.spinner div.bar11 {
+  transform: rotate(300deg) translate(0, -142%);
+  animation-delay: -0.1667s;
+}
+
+.spinner div.bar12 {
+  transform: rotate(330deg) translate(0, -142%);
+  animation-delay: -0.0833s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.8;
   }
-  .back-top {
-    position: absolute;
-    right: .21rem;
-    bottom: 1.02rem;
-    width: .6rem;
-    height: .6rem;
+  to {
+    opacity: 0.25;
   }
 }
 </style>

@@ -79,7 +79,8 @@
   </div>
 </template>
 <script type="text/javascript">
-import { showLeaguePacksList, userProgress, taskReceive } from ''
+import { showLeaguePacksList, userProgress, taskReceive } from '../../services/api'
+
 export default {
   data () {
     return {
