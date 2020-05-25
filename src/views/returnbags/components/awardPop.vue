@@ -65,9 +65,9 @@
 
   .bonus-success {
     position: fixed;
-    top: 0;
+    top: 40%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%,-40%);
     width: 5.5rem;
     height: 6.56rem;
     background: url("../images/congratulations.png");
