@@ -1,5 +1,6 @@
 <template>
   <main v-if="userInfo" class="main">
+    <horn />
     <section class="rule" @click="showRule">
       玩法规则
     </section>
@@ -24,22 +25,56 @@
           <p class="count">
             {{userInfo.withdrawAbleAmount}}
           </p>
-          <p class="button" @click="getGoldLeaf">去提现</p>
+          <p class="button" @click="getGoldLeaf"></p>
         </div>
       </section>
     </header>
     <article class="content">
       <section class="title">
         <img src="../../assets/title-left.png" alt="">
-        <div>
-          <p>邀请好友加入平台</p>
-          <p>好友进行充值即可获得好友充值金额返利</p>
+        邀请好友加入平台 立得金叶子
+        <img src="../../assets/title-left.png" alt="">
+      </section>
+      <section class="wrapper">
+        <div class="item">
+          <div class="center">
+            <p>邀请好友下载</p>
+            <p>多多玩并登录</p>
+          </div>
+          <div class="prize">
+            立得<span>1000</span>金叶
+          </div>
         </div>
+        <div class="right-icon"></div>
+        <div class="item">
+          <div class="center">
+            <p>好友完成平台</p>
+            <p>新人任务</p>
+          </div>
+          <div class="prize">
+            立得<span>2000</span>金叶
+          </div>
+        </div>
+        <div class="right-icon"></div>
+        <div class="item">
+          <div class="center">
+            <p>好友充值</p>
+            <p>购买金叶子</p>
+          </div>
+          <div class="prize">
+            立得至少<span>1%</span>返利
+            上不封顶！
+          </div>
+        </div>
+      </section>
+      <section class="title">
+        <img src="../../assets/title-left.png" alt="">
+        邀请越多 返利越多！
         <img src="../../assets/title-left.png" alt="">
       </section>
       <section class="wrapper">
         <Task :info="item" v-for="(item,index) in userInfo.configList" :key="index" />
-        <Target :price="userInfo.taskTotalAmount" />
+        <div class="task"></div>
       </section>
     </article>
     <Drawer :show="isShare">
@@ -63,11 +98,12 @@
 </template>
 
 <script>
+import Horn from './components/horn/hornList'
 import Task from './components/task'
 import Target from './components/target'
 import Rule from './components/rule'
 import Drawer from '../../components/drawer'
-import { activityInfo, withdraw } from '../../apis/index'
+import { activityInfo, withdraw, getFragment } from '../../apis/index'
 import AppCall from '../../native'
 
 export default {
@@ -79,7 +115,11 @@ export default {
     }
   },
   components: {
-    Task, Target, Rule, Drawer
+    Task, 
+    Target, 
+    Rule, 
+    Drawer, 
+    Horn
   },
   methods: {
     async getGoldLeaf () {
@@ -109,6 +149,14 @@ export default {
     async init () {
       const data = await activityInfo()
       this.userInfo = data.data
+
+      let userInfo = localStorage.getItem('user_Info')
+      userInfo = userInfo && JSON.parse(userInfo)
+      const userId = userInfo.userId
+      const inviter = await getFragment(userId)
+      
+      this.fragment = inviter.data.fragment || 20
+
       GLOBALS.marchSetsPoint('P_H5PT0246', {
         invited_number: this.userInfo.invitedNum,
         source_address: GLOBALS.getUrlParam('from') || ''
@@ -123,23 +171,24 @@ export default {
     // IOS分享测试
     invite (type) {
       let that = this
-      window.backShareStatue = function (res) {
-        if (GLOBALS.channel === 100031) {
-          res = JSON.parse(res).shareStatue
-        }
-        that.$toast.show({
-          message: res.Code == 1 ? '分享成功' : '分享失败',
-          duration: 1500
-        })
-      }
+      const title = `我在这里赚了${this.fragment || 20}话费，看看你能领多少？`
       const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=100030`
       try {
-        AppCall.shareContent(JSON.stringify({ url, title: document.title, content: '', type }))
+        AppCall.shareContent(JSON.stringify({ url, title, content: '', type }))
       } catch (e) { }
     }
   },
   mounted () {
     this.init()
+    window.backShareStatue = function (res) {
+      if (GLOBALS.channel === 100031) {
+        res = JSON.parse(res).shareStatue
+      }
+      that.$toast.show({
+        message: res.Code == 1 ? '分享成功' : '分享失败',
+        duration: 1500
+      })
+    }
   }
 }
 </script>
@@ -164,7 +213,8 @@ export default {
 }
 
 .main {
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: .94rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -194,6 +244,7 @@ export default {
   }
   .rule {
     width: 1.28rem;
+    height: .4rem;
     line-height: 0.4rem;
     border-radius: 0.2rem;
     background: rgba(255, 79, 0, 0.73);
@@ -203,6 +254,7 @@ export default {
     position: absolute;
     right: 0.17rem;
     top: 0.22rem;
+    font-weight:800;
   }
   .preview {
     width: 6.4rem;
@@ -219,16 +271,12 @@ export default {
         border: none;
       }
       .button {
-        background: #ff5a00;
-        color: #fff;
-        border-radius: 0.15rem;
-        font-size: 0.2rem;
-        font-weight: bold;
-        line-height: 0.3rem;
-        width: 1rem;
-        margin: 0 auto;
         position: absolute;
         left: 26%;
+        width: 1rem;
+        height: 0.3rem;
+        background: url(./assets/btn.png) no-repeat center top;
+        background-size: 100% 100%;
       }
       .count {
         color: #000;
@@ -243,9 +291,9 @@ export default {
     }
   }
   .title {
-    padding: 0.23rem 0.9rem 0.35rem;
+    padding: 0 0.9rem 0.35rem;
     color: #fff;
-    font-size: 0.22rem;
+    font-size: 0.26rem;
     text-align: center;
     display: flex;
     justify-content: space-between;
@@ -255,19 +303,68 @@ export default {
     }
   }
   .content {
+    padding-top: .23rem;
     background: url("../../assets/bg2.png") no-repeat;
     background-size: 100% 100%;
     flex: 1;
   }
   .wrapper {
+    margin-bottom: .6rem;
     display: flex;
     padding: 0 0.2rem;
     justify-content: space-between;
     flex-wrap: wrap;
+    .task {
+      width: 2rem;
+    }
+    .item {
+      width: 1.8rem;
+      height: 1.8rem;
+      text-align: center;
+      border-radius: .32rem;
+      background: #FFE4C9;
+      &:last-child {
+        .prize {
+          white-space: normal;
+          line-height: 1.2;
+        }
+      }
+      .center {
+        margin: 0 .18rem;
+        height: 1.13rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: .24rem;
+        font-weight: bold;
+        color: #4C4A49;
+        border-bottom: 1px solid #FFBEA1;
+        p {
+          white-space: nowrap;
+          line-height: .4rem;
+        }
+      }
+      .prize {
+        height: .66rem;
+        line-height: .66rem;
+        font-size: .2rem;
+        white-space: nowrap;
+        span {
+          color: #E93232;
+          font-size: .28rem;
+        }
+      }
+    }
+    .right-icon {
+      height: 1.8rem;
+      width: .42rem;
+      background: url(./assets/right-icon.png) no-repeat center center;
+      background-size: .42rem .23rem;
+    }
   }
 }
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   height: 0.94rem;

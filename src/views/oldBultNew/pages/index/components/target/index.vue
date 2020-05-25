@@ -34,7 +34,7 @@ export default {
 
 <style lang="less" scoped>
 .task {
-  width: 2.2rem;
+  width: 2rem;
   background: rgba(255, 228, 201, 0.5);
   border-radius: 0.32rem;
   text-align: center;
