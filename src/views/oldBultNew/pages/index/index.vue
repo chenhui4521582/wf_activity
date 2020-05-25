@@ -173,8 +173,9 @@ export default {
       let that = this
       const title = `我在这里赚了${this.fragment || 20}话费，看看你能领多少？`
       const url = `${location.href}share?userId=${JSON.parse(localStorage.getItem('user_Info')).userId}&channelId=100030`
+      const content = '玩游戏就能免费领话费，还有好多其他奖品等你拿！'
       try {
-        AppCall.shareContent(JSON.stringify({ url, title, content: '', type }))
+        AppCall.shareContent(JSON.stringify({ url, title, content, type }))
       } catch (e) { }
     }
   },
