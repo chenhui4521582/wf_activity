@@ -24,7 +24,7 @@
         <div class="task_container">
           <div class="item" v-for="item in currentTasks">
             <div class="task_content">
-              <div class="name">{{item.awardsName}}</div>
+              <div class="name">{{item.taskName}}</div>
               <div class="percent">
                 <div class="g-percent">
                   <div class="g-percent-bg" :style="{width: (item.currentProgress/item.taskCondition)*100+'%'}"

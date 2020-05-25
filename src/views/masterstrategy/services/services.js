@@ -40,13 +40,20 @@ const setPraise = ( params ) => {
   let url = `${host}/wap/api/wap/coterie/praise`
   return axios.post(url, params)
 }
-
+/**
+ *  @description  记录从回归礼包跳转到攻略页的行为
+ */
+const singleBehavior8 = () => {
+  let url = `${host}/wap/api/plat/newUser/singleBehavior/8`
+  return axios.post(url)
+}
 
 const services = {
   getInfo,
   getList,
   getStrategyUserInfo,
   getRanking,
-  setPraise
+  setPraise,
+  singleBehavior8
 }
 export default services
