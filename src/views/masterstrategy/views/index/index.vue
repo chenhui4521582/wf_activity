@@ -27,23 +27,23 @@
     </div>
     <!-- nav -->
     <div class="nav">
-      <better-scroll 
-        v-if="showScroll" 
-        ref="scroll" 
-        :scrollY=false 
+      <better-scroll
+        v-if="showScroll"
+        ref="scroll"
+        :scrollY=false
         :scrollX=true
-        :data="nav" 
-        :listenScroll="true" 
+        :data="nav"
+        :listenScroll="true"
         :probeType="3"
       >
         <div class="nav-wrap">
-          <div class="item" 
-            v-for="(item, index) in nav" 
+          <div class="item"
+            v-for="(item, index) in nav"
             :class="{'active': currentIndex == index}"
-            :key="index" 
+            :key="index"
             @click="handleNavClick(index, item)"
           >
-            {{item.name}} 
+            {{item.name}}
             <div class="bottom-icon"></div>
           </div>
         </div>
@@ -285,7 +285,7 @@ export default {
       this.$router.push({
         name: 'ranking'
       })
-      
+
     }
   },
   mounted() {
@@ -293,6 +293,10 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0282', {
       from_project_id: utils.getUrlParams('from')
     })
+    //如果是从回归礼包页面returnbags跳转来的
+    if(utils.getUrlParams('from')=='returnbags'){
+      Services.singleBehavior8()
+    }
   }
 }
 </script>
@@ -358,9 +362,9 @@ export default {
     background: linear-gradient(0deg,rgba(255,55,55,0.98),rgba(200,34,34,0.98));
     .nav-wrap {
       display: inline-flex;
-      justify-content: flex-start; 
+      justify-content: flex-start;
       height: .7rem;
-      .item {        
+      .item {
         position: relative;
         white-space: nowrap;
         padding: 0 .3rem;
