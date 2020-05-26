@@ -17,13 +17,13 @@
         <div>
           <p>累计金叶</p>
           <p class="count">
-            {{userInfo.totalAmount}}
+            {{userInfo.totalAmount | unit}}
           </p>
         </div>
         <div>
           <p>可提现金叶</p>
           <p class="count">
-            {{userInfo.withdrawAbleAmount}}
+            {{userInfo.withdrawAbleAmount | unit}}
           </p>
           <p class="button" @click="getGoldLeaf"></p>
         </div>
@@ -120,6 +120,14 @@ export default {
     Rule, 
     Drawer, 
     Horn
+  },
+  filters: {
+    unit(value) {
+      if(value > 10000) {
+        return (value/10000).toFixed(1) + '万'
+      }
+      return value
+    }
   },
   methods: {
     async getGoldLeaf () {
