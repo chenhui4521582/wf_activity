@@ -7,7 +7,7 @@
       <div ref="hornDivWraper">
         <ul ref="hornUl" id="hornUl" :style="hornStyles">
           <li v-for="(item, index) in noticeList" :key="index" ref="hornLi">
-            用户{{item.nickname}}累计邀请了{{item.num}}位好友，累计赚了{{item.amount}}金叶
+            用户{{item.nickname}}累计邀请了{{item.num}}位好友，累计赚了{{item.amount | unit}}金叶
           </li>
         </ul>
         <ul id="copyHornUl" :style="copyStyles"></ul>
@@ -31,6 +31,14 @@ export default {
         left: 0
       },
       wrapWidth: 0
+    }
+  },
+  filters: {
+    unit(value) {
+      if(value > 10000) {
+        return (value/10000).toFixed(1) + '万'
+      }
+      return value
     }
   },
   computed: {
