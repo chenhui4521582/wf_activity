@@ -16,7 +16,6 @@
     </p>
     <p class="button"
       @click="$emit('onClose')">知道了</p>
-
   </Modal>
 
 </template>
