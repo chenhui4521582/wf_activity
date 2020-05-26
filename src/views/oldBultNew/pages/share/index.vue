@@ -36,8 +36,12 @@
         <img class="gift"
           src="./assets/gift.png"
           alt="">
+        <div class="explain">
+          <p>安卓的用户用绑定的手机号登陆App即可领取话费</p>
+          <p>苹果用户登录官方网站即可领取</p>
+        </div>
         <div @click="download"
-          class="confirm">立即下载多多玩APP</div>
+          class="confirm">立即下载领取</div>
       </section>
       <section v-else
         class="dialog">
@@ -47,7 +51,7 @@
           立即去多多玩APP 邀请用户返利吧
         </p>
         <div @click="download"
-          class="confirm">立即下载多多玩APP</div>
+          class="confirm">立即下载领取</div>
       </section>
     </Modal>
   </main>
@@ -154,6 +158,15 @@ export default {
       }
     }
   }
+  .explain {
+    padding: 0 .3rem;
+    text-align: left;
+    font-size: 0.2rem;
+    color: #666;
+    p {
+      margin-bottom: .2rem;
+    }
+  }
   .wrapper {
     flex: 1;
     background: url("./assets/middle.png") no-repeat;
@@ -225,7 +238,21 @@ export default {
       text-align: center;
       border-radius: 0.16rem;
       margin: 0 auto;
+      transform: scale(.9);
+      animation: scale 2s infinite;
     }
+
+  }
+}
+@keyframes scale {
+  0% {
+    transform: scale(.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(.9);
   }
 }
 </style>

@@ -57,7 +57,7 @@ export default {
   width: 100%;
   background: #fff;
   text-align: center;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   z-index: 9999;

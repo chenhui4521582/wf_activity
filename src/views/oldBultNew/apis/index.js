@@ -36,3 +36,8 @@ export const withdraw = async () => {
   const { data } = await $axios.post(`${HOST}/ops/invite/withdraw`)
   return data
 }
+
+export const getNoticeList = async () => {
+  const { data } = await $axios.post(`${HOST}/ops/invite/noticeList`)
+  return data
+}
