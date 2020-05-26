@@ -24,11 +24,13 @@
       <div class="total">
         <div class="item red">
           <p class="title">红队</p>
-          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：</p>
-          <p class="hot-people">火力人数：</p>
+          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>16,88888</span></p>
+          <p class="hot-people">火力人数：<span>16,88888</span></p>
         </div>
         <div class="item blue">
-
+          <p class="title">红队</p>
+          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>16,88888</span></p>
+          <p class="hot-people">火力人数：<span>16,88888</span></p>
         </div>
       </div>
     </div>
@@ -212,20 +214,48 @@ export default {
       position: absolute;
       top: -.31rem;
       left: .21rem;
-      padding-top: 1.53rem;
+      padding-top: 1.43rem;
       width: 6.4rem;
       height: 3.3rem;
       background: url(./img/total-bg.png) no-repeat center top;
       background-size: 100% 100%;
       display: flex;
       .item {
+        position: relative;
         width: 50%;
+        color: #FFFFFF;
+        font-size: .22rem;
+        span {
+          color: #FFF113;
+          font-weight: bold;
+        }
+        .title {
+          margin-bottom: .2rem;
+          text-indent: .73rem;
+          font-size: .28rem;
+          font-weight:800;
+        }
+        .hot-num {
+          margin-bottom: .1rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          img {
+            width: .22rem;
+            height: .26rem;
+          }
+        }
         &.red {
           padding-left: .29rem;
         }
         &.blue {
-          padding-right: .24rem;
-          text-align: right;
+          padding-left: .8rem;
+        }
+        .peckpot-icon {
+          position: absolute;
+          top: .97rem;
+          width: .77rem;
+          height: .83rem;
         }
       }
     }
