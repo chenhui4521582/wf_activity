@@ -1,5 +1,5 @@
 /*
-*  name: 高光时刻
+*  name: 大神PK赛
 *  auth: chenhui
 */
 import "babel-polyfill";

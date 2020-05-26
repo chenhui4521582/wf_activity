@@ -79,16 +79,16 @@ export default {
 </script>
 <style scoped lang="less">
 .count-down {
-  margin: 2.8rem auto .1rem;
-  width: 5.2rem;
-  height: .56rem;
-  border-radius: .28rem;
+  margin: 0 auto .13rem;
+  width: 6.57rem;
+  height: .54rem;
   display: flex;
   justify-content: center;
   align-items: center;
   line-height: .56rem;
   color: #fff;
-  background: rgba(255, 25, 122, .6);
+  background: url(../img/countdown-bg.png) no-repeat center top;
+  background-size: 100% 100%;
   .title {
     font-weight: bold;
   }
@@ -100,10 +100,10 @@ export default {
       height: .38rem;
       text-align: center;
       line-height: .38rem;
-      color: #fff;
+      color: #3419FF;
       font-size: .22rem;
       border-radius: .06rem;
-      background: #B4244B;
+      background: #fff;
     }
     .separate {
       padding: 0 0.05rem;

@@ -1,42 +1,36 @@
 <template>
-  <div class="welrafe">
+  <div class="master-pk">
     <!-- 返回按钮 -->
     <div class="back-btn" @click="backHome">
-      <img src="./img/back-icon.png" alt="">
+      <img class="inner-img" src="./img/back-icon.png" alt="">
     </div>
     <!-- 规则按钮 -->
     <div class="rule-btn" @click="openRule">
-      <img src="./img/rule-icon.png" alt="">
+      <img class="inner-img" src="./img/rule-icon.png" alt="">
     </div>
     <!-- 倒计时 -->
-    <img v-if="activitiesInfo.state == 2" class="activities-end" src="./img/activities-end.png" alt="">
-    <count-down v-else :time="countdown" @countDownCallback="countDownCallback"/>
-    <!-- 导航 -->
-    <div class="nav" v-if="activitiesInfo.state != 2">
-      <div :class="[currentIndex == 1 ? 'seal active' : 'seal']" @click="handleNavClick(1)"/>
-      <div :class="[currentIndex == 2 ? 'exchange active' : 'exchange']" @click="handleNavClick(2)"/>
-      <div :class="[currentIndex == 3 ? 'ranking active' : 'ranking']" @click="handleNavClick(3)"/>
+    <count-down :time="countdown" @countDownCallback="countDownCallback"/>
+    <!-- 奖池 -->
+    <div class="prize">
+      <div class="red item">加入任一队伍即可瓜分5000元话费，玩家贡献值越高，奖励越多</div>
+      <div class="blue item">获胜队赢80%奖池奖励，惜败队获20%。队员贡献值越高，奖励越多</div>
+      <div class="jeckpot">
+        奖池已累计 元京东券
+        <img class="jeckpot-icon" src="./img/jeckpot-icon.png" alt="">
+      </div>
     </div>
-    <!-- 内容 -->
-    <div class="content">
-      <!-- 收集图章 -->
-      <get-seal 
-        v-if="currentIndex == 1" 
-        :userInfo="userInfo" 
-        @refrshUserInfo="_getInfo"
-      />
-      <!-- 兑换大奖 -->
-      <exchange-prize 
-        v-if="currentIndex == 2" 
-        :userInfo="userInfo" 
-        :awardsList="awardsList"
-        @refrshUserInfo="_getInfo"
-      />
-      <!-- 排行榜 -->
-      <ranking 
-        v-if="currentIndex == 3" 
-        :activitiesInfo="activitiesInfo"
-      />
+    <!-- 排行榜 -->
+    <div class="ranking">
+      <div class="total">
+        <div class="item red">
+          <p class="title">红队</p>
+          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：</p>
+          <p class="hot-people">火力人数：</p>
+        </div>
+        <div class="item blue">
+
+        </div>
+      </div>
     </div>
     <!-- popup -->
     <popup 
@@ -50,32 +44,21 @@
 </template>
 <script>
 import CountDown from './components/countDown'
-import GetSeal from './components/getSeal'
-import ExchangePrize from './components/exchangePrize'
-import Ranking from './components/ranking'
-import Popup from './components/popup'
+// import Popup from './components/popup'
 import Services from './services/services'
 import utils from './components/utils'
 import _get from 'lodash.get'
 export default {
-  name: 'welrafe',
+  name: 'masterPK',
   data: ()=>({
-    currentIndex: 1,
-    userInfo: {},
     activitiesInfo: {},
-    awardsList: [],
     countdown: '',
     showPopup: false,
-    popupType: 0,
-    rankingAward: [],
-    myRank: []
+    popupType: 0
   }),
   components: {
     CountDown,
-    GetSeal,
-    ExchangePrize,
-    Ranking,
-    Popup
+    // Popup
   },
   methods: {
     handleNavClick (index) {
@@ -134,9 +117,6 @@ export default {
   },
   mounted() {
     this._getInfo()
-    GLOBALS.marchSetsPoint('P_H5PT0278', {
-      source_address: navigator.referrer
-    })
   }
 }
 </script>
@@ -146,76 +126,110 @@ export default {
 * {
   box-sizing: border-box;
 }
-.welrafe {
-  position: relative;
-  overflow: hidden;
+.inner-img {
+  vertical-align: top;
+  width: 100%;
+  height: 100%;
+}
+.master-pk {
+  padding: 1.93rem 0 1.3rem;
   min-height: 100vh;
-  background: url(./img/bg.png) no-repeat center top;
-  background-size: 100% auto;
+  background: url(./img/top-bg.png) no-repeat center top #120C40;
+  background-size: 100% 3.1rem;
   .back-btn {
     position: absolute;
     left: 0;
-    top: .2rem;
-    width: .7rem;
-    height: .45rem;
-    img {
-      vertical-align: top;
-      width: 100%;
-      height: 100%;
-    }
+    top: .17rem;
+    width: .78rem;
+    height: .56rem;
   }
   .rule-btn {
     position: absolute;
-    top: .02rem;
-    right: .02rem;
-    width: 1.1rem;
-    height: 1.3rem;
-    img {
-      vertical-align: top;
-      width: 100%;
-      height: 100%;
-    }
+    top: .97rem;
+    left: 0;
+    width: .78rem;
+    height: .56rem;
   }
-  .nav {
-    margin-bottom: .1rem;
+  .prize {
+    position: relative;
+    margin: 0 auto .15rem; 
+    padding: .97rem .24rem;
     display: flex;
-    justify-content: center;
-    .seal {
-      width: 2.02rem;
-      height: .82rem;
-      background: url(./img/nav1.png) no-repeat center top;
-      background-size: 1.88rem .82rem;
-      &.active {
-        background: url(./img/nav1-active.png) no-repeat center center;
-        background-size: 2.02rem .82rem;
+    justify-content: space-between;
+    width: 6.64rem;
+    height: 3.83rem;
+    background: url(./img/banner-bg.png) no-repeat center center;
+    background-size: 100% 100%;
+    .item {
+      padding: .66rem .2rem 0;
+      width: 3rem;
+      height: 1.8rem;
+      font-size: .22rem;
+      &.red {
+        color: #FFEBEE;
+        background: url(./img/prize-blue.png) no-repeat center center;
+        background-size: 100% 100%;
+      }
+      &.blue {
+        color: #E1E2FF;
+        background: url(./img/prize-red.png) no-repeat center center;
+        background-size: 100% 100%;
       }
     }
-    .exchange {
-      width: 2.02rem;
-      height: .82rem;
-      background: url(./img/nav2.png) no-repeat center center;
-      background-size: 1.88rem .82rem;
-      &.active {
-        background: url(./img/nav2-active.png) no-repeat center center;
-        background-size: 2.02rem .82rem;
+    .jeckpot {
+      position: absolute;
+      bottom: .08rem;
+      left: .88rem;
+      width: 4.89rem;
+      height: 1.09rem;
+      background: url(./img/jeckpot-bg.png) no-repeat center center;
+      background-size: 100% 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: .22rem;
+      color: #A4152E;
+      font-weight: bold;
+      span {
+        color: #201FF1;
+        font-size: .26rem;
       }
-    }
-    .ranking {
-      width: 2.02rem;
-      height: .82rem;
-      background: url(./img/nav3.png) no-repeat center center;
-      background-size: 1.88rem .82rem;
-      &.active {
-        background: url(./img/nav3-active.png) no-repeat center center;
-        background-size: 2.02rem .82rem;
+      .jeckpot-icon {
+        margin-left: .2rem;
+        width: .33rem;
+        height: .33rem;
       }
     }
   }
-  .activities-end {
-    margin: 3.2rem auto .46rem;
-    display: block;
-    width: 2.9rem;
-    height: .66rem;
+  .ranking {
+    position: relative;
+    margin: 0 auto;
+    width: 6.87rem;
+    min-height: 6.6rem;
+    background: url(./img/ranking-bg2.png) no-repeat center top;
+    background-size: 100% 6.6rem;
+    .total {
+      position: absolute;
+      top: -.31rem;
+      left: .21rem;
+      padding-top: 1.53rem;
+      width: 6.4rem;
+      height: 3.3rem;
+      background: url(./img/total-bg.png) no-repeat center top;
+      background-size: 100% 100%;
+      display: flex;
+      .item {
+        width: 50%;
+        &.red {
+          padding-left: .29rem;
+        }
+        &.blue {
+          padding-right: .24rem;
+          text-align: right;
+        }
+      }
+    }
   }
 }
+
 </style>
