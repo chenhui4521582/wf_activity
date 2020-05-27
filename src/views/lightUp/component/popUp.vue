@@ -170,7 +170,7 @@ export default {
         case 3:
           return '点灯任务'
         case 4:
-          return '恭喜获得'
+          return this.awardInfo.finishNum === this.awardInfo.totalNum ? '恭喜您' : '恭喜获得'
         case 5:
           return '恭喜您'
         case 6:
@@ -234,7 +234,7 @@ export default {
   watch: {
     value (val) {
       this.type = val
-      if (this.type === 1) {
+      if (this.type === 2) {
         this._userAwards()
       }
     },
@@ -357,7 +357,7 @@ export default {
         .empty {
           text-align: center;
           color: #0d2e90;
-          font-size: 0.18rem;
+          font-size: 0.3rem;
           line-height: 0.24rem;
           img {
             width: 1.26rem;
@@ -415,8 +415,8 @@ export default {
         margin-top: 0.26rem;
         .red-text {
           font-size: 0.3rem;
-          min-height: 0.5rem;
-          line-height: 0.5rem;
+          min-height: 0.6rem;
+          line-height: 0.6rem;
         }
         img {
           width: 2.56rem;
@@ -429,6 +429,13 @@ export default {
         .desc {
           font-size: 0.18rem;
           color: #09226c;
+        }
+      }
+    }
+    &.type-5 {
+      .container {
+        .red-text {
+          line-height: 0.5rem;
         }
       }
     }

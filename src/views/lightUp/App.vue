@@ -80,7 +80,8 @@ export default {
       popType: 0,
       showPop: false,
       showProfit: false,
-      awardInfo: {}
+      awardInfo: {},
+      isLoading: false
     }
   },
   computed: {
@@ -161,7 +162,12 @@ export default {
       }
     },
     async _receiveAll () {
+      if (this.isLoading) {
+        return
+      }
+      this.isLoading = true
       const res = await receiveAll(this.level)
+      this.isLoading = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.awardInfo = _get(res, 'data', {})
@@ -177,7 +183,12 @@ export default {
       }
     },
     async _receive (item) {
+      if (this.isLoading) {
+        return
+      }
+      this.isLoading = true
       const res = await receive({ level: this.level, sort: item.sort })
+      this.isLoading = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.awardInfo = _get(res, 'data', {})
@@ -215,13 +226,14 @@ export default {
             break
           case 3:
             GLOBALS.marchSetsPoint('A_H5PT0297003541') // H5平台-猩猩点灯活动-点灯任务弹窗-立即完成点击
-            this.openPop(7)
+            this.$nextTick(() => { this.openPop(7) })
             break
           case 4:
           case 5:
             if (this.info.state === 1) {
               this._activityInfo()
             }
+            break
           default:
             break
         }
@@ -234,7 +246,7 @@ export default {
   },
   watch: {
     level (value) {
-      if (this.info.levelProgressList && !this.info.levelProgressList[this.level - 1].open) {
+      if (this.info.levelProgressList && !this.info.levelProgressList[this.level - 1].open && this.level !== this.currentLevel) {
         this.openPop(0)
       }
     }
