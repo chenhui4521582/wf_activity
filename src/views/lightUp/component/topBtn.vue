@@ -43,6 +43,8 @@ export default {
   methods: {
     swtichLevel (level) {
       this.level = level
+      GLOBALS.marchSetsPoint('A_H5PT0297003544', { level: level }) // H5平台-猩猩点灯活动-关卡等级点击
+
     },
     openPop (type) {
       this.$emit('open-pop', type)
