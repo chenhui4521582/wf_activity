@@ -52,7 +52,7 @@
       },
       gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0295003518', {product_price: item.price, product_id: item.bizId,product_name:item.name})
+        GLOBALS.marchSetsPoint('A_H5PT0295003518', {product_price: item.price, product_id: item.productId,product_name:item.name})
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         localStorage.setItem('payment', JSON.stringify(item))
         location.href =
@@ -60,10 +60,11 @@
       },
     },
     mounted() {
-      this.getActInfo()
-      GLOBALS.marchSetsPoint('P_H5PT0295', {
+       GLOBALS.marchSetsPoint('P_H5PT0295', {
         source_address: GLOBALS.getUrlParam('from') || ''
-      })//页面加载完成
+      })
+
+      this.getActInfo()
     }
   }
 </script>
