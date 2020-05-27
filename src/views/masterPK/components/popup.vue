@@ -3,40 +3,53 @@
     <div class="mask"></div>
     <div class="wrap">
       <!-- 活动规则 -->
-      <template v-if="popupType == 1">
+      <template v-if="popupStatus == 1">
         <div class="rule bg1">
           <div class="title">
-            <img src="../img/title9.png" alt="">
+            <img src="../img/title-rule.png" alt="">
           </div>
           <div class="body">
-            <h5>1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} 至 {{activitiesInfo.endDate | formatTime('m-d')}} </h5>
-            <h5>2、收集图章</h5> 
-            通过消耗流水、充值、购买活动礼包可获得图章，在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动；
-            <h5>3、图章兑换奖励</h5>
-            奖励需一定数量的图章进行兑换，且兑换不限次数；
-            <h5>4、 累计排行榜</h5>
-            活动5天内，累计图章最多的玩家，前15名获得奖励；<br> 
-            5、图章注意及时领取并兑换奖品，活动结束（5月5日24点后）图章自动作废清零，不予补偿。 <br> 
-            6、如有问题，请联系在线客服。
+            <span class="yellow">1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}}-{{activitiesInfo.endDate | formatTime('m-d')}}</span><br>
+            <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>1万流水或单笔充值每满10元=1火力值以下游戏支持1万流水或单笔充值每满10元=1火力值以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多<br>
+            3、达到 <span class="yellow underline">100</span> 火力值可加入阵营，参与火力PK<br>
+            <span class="yellow">4、参与PK即可瓜分5000元话费</span><br>
+            每个队伍都有5000元话费奖励，只要加入阵营，活动结束后根据个人贡献值瓜分5000元话费（贡献值=个人火力值/全队火力值）；<br>
+            <span class="yellow">5、瓜分终极奖池</span><br>
+            最终PK获胜队伍获得80%奖池奖励，惜败队伍获得20%奖励，根据玩家的贡献值进行瓜分；奖池奖励=两队火力值总和<span class="yellow">*0.025</span>元京东券。获胜队玩家瓜分=奖池奖励*个人贡献值<br>
+            
           </div>
         </div>
       </template>
       <!-- 活动攻略 -->
-      <template v-if="popupType == 2">
+      <template v-if="popupStatus == 2">
         <div class="strategy bg1">
           <div class="title">
-            <img src="../img/title8.png" alt="">
+            <img src="../img/pk-strategy.png" alt="">
           </div>
           <div class="body">
-            <img src="../img/strategy.png" alt="">
+            <div class="item">
+              <img src="../img/rank1.png" alt="">
+              PK赛期间，玩家可通过游戏支持金叶或充值获得火力值；
+            </div>
+            <div class="item">
+              <img src="../img/rank2.png" alt="">
+              当火力值达到100时，玩家可随机加入红蓝任一队伍，参与两队对决，并瓜分5000元话费；
+            </div>
+            <div class="item">
+              <img src="../img/rank3.png" alt="">
+              最终火力值领先的队伍获胜，并获得终极奖池80%大奖！队员在队伍的贡献值越高，奖励越多。
+            </div>
+            <div class="bottom">
+              大神，期待你的对决！
+            </div>
           </div>
         </div>
       </template>
       <!-- 大家都在玩 -->
-      <template v-if="popupType == 3">
+      <template v-if="popupStatus == 3">
         <div class="game-list bg1">
           <div class="title">
-            <img src="../img/title1.png" alt="">
+            <img src="../img/play-game-title.png" alt="">
           </div>
           <div class="body">
             <div class="list">
@@ -49,141 +62,166 @@
           </div>
         </div>
       </template>
-      <!-- 图章收集记录 -->
-      <template v-if="popupType == 4">
-        <div class="seal-log bg2">
-          <div class="title">
-            <img src="../img/title12.png" alt="">
-          </div>
+      <!-- 可以加入队伍 -->
+      <template v-if="popupStatus == 4">
+        <div class="join-yes bg2">
           <div class="body">
-            <div class="total">
-              累计获得图章：{{userInfo.totalNum}}个
+            <div class="join-btn" @click="joinTeam">
+              <img src="../img/join-btn1.png" alt="">
             </div>
-            <div class="seal-wrap">
-              <div class="nav">
-                <div class="time">日期</div>
-                <div class="num">获得数</div>
-              </div>
-              <div class="list" v-if="showSealLog">
-                <div class="item" v-for="(item, index) in sealLog" :key="index">
-                  <div class="time">{{item.createTime}}</div>
-                  <div class="num">{{item.propNum}}个</div>
-                </div>
-              </div>
-              <div v-else class="empty">
-                暂无记录
-              </div>
+            <div class="hand">
+              <img src="../img/hand.png" alt="">
+            </div>
+            <div class="explain">
+              <p>系统将为您随机匹配队伍~ </p>
+              <p>祝您好运！</p>
             </div>
           </div>
         </div>
       </template>
-      <!-- 图章兑换成功 -->
-      <template v-if="popupType == 5">
-        <div class="exchange-seal bg2">
+      <!-- 不能加入队伍 -->
+      <template v-if="popupStatus == 5">
+        <div class="join-no bg2">
           <div class="title">
-            <img src="../img/title10.png" alt="">
+            <img src="../img/join-no.png" alt="">
           </div>
           <div class="body">
-            <div class="award-img">
-              <img src="../img/seal-award-img.png" alt="">
+            <div class="explain">
+              <p>当前您的火力值为<span>{{this.activitiesInfo.userExp}}</span>，</p>
+              <p>达到<span>20</span>即可参与对决哦！</p>
             </div>
-            <div class="award-name">兑奖图章 x{{sealNum}}</div>
-            <div class="explain">记得兑换奖品哟~</div>
-          </div>
-        </div>
-      </template>
-      <!-- 商品兑换记录 -->
-      <template v-if="popupType == 6">
-        <div class="exchange-award-log bg2">
-          <div class="title">
-            <img src="../img/title5.png" alt="">
-          </div>
-          <div class="body">
-            <div class="nav">
-              <div class="time">日期</div>
-              <div class="num">兑换奖品</div>
+            <div class="play-game" @click="openPopup(3)">
+              <img src="../img/play-game.png" alt="">
             </div>
-            <div class="list" v-if="showAwardLog">
-              <div class="item" v-for="(item, index) in awardLog" :key="index">
-                <div class="time">{{item.createTime}}</div>
-                <div class="num">{{item.awardsName}}</div>
-              </div>
-            </div>
-            <div v-else class="empty">
-              暂无记录
+            <div class="pay" @click="gotpay">
+              <img src="../img/pay.png" alt="">
             </div>
           </div>
         </div>
       </template>
-      <!-- 奖品兑换确认 -->
-      <template v-if="popupType == 7">
-        <div class="confirm-exchange bg2">
-          <div class="title">
-            <img src="../img/title11.png" alt="">
-          </div>
+      <!-- 加入红队 -->
+      <template v-if="popupStatus == 6">
+        <div class="join-red bg2">
           <div class="body">
-            <div class="award-img">
-              <img src="../img/seal-award-img.png" alt="">
+            <div class="title">
+              <img src="../img/title-join-red.png" alt="">
             </div>
-            <div class="explain">本次兑换消耗<span>{{consumePropNum}}</span>个图章~</div>
-            <div class="btns">
-              <div class="cancel-btn" @click="hidePopup">
-                <img src="../img/cancel-btn.png" alt="">
-              </div>
-              <div class="confirm-btn" @click="confirmExchange">
-                <img src="../img/confirm-btn.png" alt="">
-              </div>
+            <div class="red-team">
+              <img src="../img/red-icon.png" alt="">
+            </div>
+            <div class="explain">
+              <p>对决已开始！ </p>
+              <p>火力值越多瓜分奖励越多~</p>
             </div>
           </div>
         </div>
       </template>
-      <!-- 奖品兑换成功 -->
-      <template v-if="popupType == 8">
-        <div class="exchange-award bg2">
-          <div class="title">
-            <img src="../img/title3.png" alt="">
-          </div>
-          <div class="body">
-            <div class="award-img">
-              <img :src="awardsImg[awardsInfo.awardsType]" alt="">
+      <!-- 加入蓝队 -->
+      <template v-if="popupStatus == 7">
+        <div class="join-blue bg2">
+           <div class="body">
+            <div class="title">
+              <img src="../img/title-join-blue.png" alt="">
             </div>
-            <div class="award-name">{{awardsInfo.awardsName}}</div>
-            <div class="explain">奖品在<span>“我的”</span> 页面查询~</div>
+            <div class="blue-team">
+              <img src="../img/blue-icon.png" alt="">
+            </div>
+            <div class="explain">
+              <p>对决已开始！ </p>
+              <p>火力值越多瓜分奖励越多~</p>
+            </div>
           </div>
         </div>
       </template>
-      <!-- 发榜 -->
-      <template v-if="popupType == 9">
-        <div class="user-ranking bg2">
+      <!-- 得到的火力值 -->
+      <template v-if="popupStatus == 8">
+        <div class="get-hot bg2">
+          <div class="body">
+            <div class="title">
+              <img src="../img/get-hot-title.png" alt="">
+            </div>
+            <div class="hot-num">
+              <img src="../img/hot-icon.png" alt="">
+              x{{this.activitiesInfo.addExp}}
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- pk成功 -->
+      <template v-if="popupStatus == 9">
+        <div class="pk-success bg2">
+          <div class="body">
+            <div class="title">
+              <img src="../img/title-success.png" alt="">
+            </div>
+            <div class="explain">
+              <p>恭喜对决获胜，牛人如你！</p>
+              <p>您的贡献值<span>{{this.award.userGroupExpRate}}</span>，获得如下奖励：</p>
+            </div>
+            <div class="award">
+              <div class="item" v-for="(item, index) in awards" :key="index">
+                <img v-if="item.img == 'jdk'" src="../img/jd-icon.png" alt="">
+                <img v-if="item.img == 'hfq'" src="../img/hf-icon.png" alt="">
+                <p>{{item.name}}</p>
+              </div>
+            </div>
+            <div class="explain">
+              <p>奖励将自动发放到您的帐户</p>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- pk失败 -->
+      <template v-if="popupStatus == 10">
+         <div class="pk-success bg2">
+          <div class="body">
+            <div class="title">
+              <img src="../img/title-error.png" alt="">
+            </div>
+            <div class="explain">
+              <p>胜败乃兵家常事，下次再接再厉！</p>
+              <p>您的贡献值<span>{{this.award.userGroupExpRate}}</span>，获得如下奖励：</p>
+            </div>
+            <div class="award">
+              <div class="item" v-for="(item, index) in awards" :key="index">
+                <img v-if="item.img == 'jdk'" src="../img/jd-icon.png" alt="">
+                <img v-if="item.img == 'hfq'" src="../img/hf-icon.png" alt="">
+                <p>{{item.name}}</p>
+              </div>
+            </div>
+            <div class="explain">
+              <p>奖励将自动发放到您的帐户</p>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- 奖励结算中 -->
+      <template v-if="popupStatus == 11">
+        <div class="award-count bg2">
           <div class="title">
-            <img src="../img/title6.png" alt="">
+            <img src="../img/count-title.png" alt="">
           </div>
           <div class="body">
-            <!-- 上榜 -->
-            <template  v-if="myRank !=0 && myRank <=15">
-              <div class="ranking-list" :class="{big: oneAward}">
-                <div class="item" v-for="(item, index) in rankingAward" :key="index">
-                  <div class="award-img">
-                    <img :src="awardsImg[item.awardsType]" alt="">
-                  </div>
-                  <div class="award-name">{{item.awardsName}}</div>
-                </div>
-                <div class="add" v-if="showAddIcon">+</div>
-              </div>
-              <div class="explain">恭喜您排名<span>第{{myRank}}</span>，获得以上奖品</div>
-            </template>
-            <!-- 没上榜 -->
-            <template v-else>
-              <div class="no-ranking-list">
-                <div class="item">
-                  <div class="award-img">
-                    <img src="../img/no-ranking.png" alt="">
-                  </div>
-                  <div class="award-name">您暂未上榜</div>
-                </div>
-              </div>
-              <div class="explain">下次继续加油哟！</div>
-            </template>
+            <div class="explain1">
+              <p>系统正在拼命结算奖励，</p>
+              <p> 请您耐心等候。</p>
+            </div>
+            <div class="explain">
+              <p>结算后奖励将自动发放至您的帐户。 </p>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- 获取火力值 -->
+      <template v-if="popupStatus == 12">
+        <div class="gain-hot bg2">
+          <div class="body">
+            <div class="play-game" @click="openPopup(3)">
+              <img src="../img/play-game.png" alt="">
+            </div>
+            <div class="pay" @click="gotpay">
+              <img src="../img/pay.png" alt="">
+            </div>
           </div>
         </div>
       </template>
@@ -197,7 +235,7 @@ import Services from '../services/services'
 import _get from 'lodash.get'
 export default {
   name: 'popup',
-  props: ['popupType', 'value', 'sealLog', 'awardLog', 'sealNum', 'awardsInfo', 'consumePropNum', 'myRank', 'rankingAward', 'activitiesInfo', 'userInfo'],
+  props: ['popupStatus', 'value', 'activitiesInfo', 'award'],
   data: () => ({
     gameList: [
       {img: require('../img/0.png'), url: `//wap.beeplaying.com/crush/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '糖果萌消消乐'},
@@ -208,24 +246,24 @@ export default {
       {img: require('../img/5.png'), url: `//wap.beeplaying.com/Marbles/?channel=${localStorage.getItem('APP_CHANNEL')}&time=${new Date().getTime()}`, name: '王者弹珠'},
     ],
     awardsImg: {
-      jyz: require('../img/leaf-icon.png'),
       hfq: require('../img/hf-icon.png'),
       jdk: require('../img/jd-icon.png'),
-      yhq: require('../img/copon-icon.png')
     }
   }),
   computed: {
-    showSealLog () {
-      return this.sealLog.length
-    },
-    showAwardLog () {
-      return this.awardLog.length
-    },
-    oneAward () {
-      return this.rankingAward.length == 1
-    },
-    showAddIcon () {
-      return this.rankingAward.length > 1
+    awards () {
+      if(this.award) {
+        let teamPrize = {
+          img: this.award.groupAwardName.split(';')[1],
+          name: this.award.groupAwardName.split(';')[0]
+        }
+        let myPrize = {
+          img: this.award.poolAwardName.split(';')[1],
+          name: this.award.poolAwardName.split(';')[0]
+        }
+        return [teamPrize, myPrize]
+      }
+      return []
     }
   },
   methods: {
@@ -238,13 +276,19 @@ export default {
     gotoGame(item) {
       window.location.href = item.url
     },
-    confirmExchange() {
-      this.$emit('confirmExchange')
+    openPopup(status) {
+      this.$emit('openPopup', status)
+    },
+    gotpay() {
+      window.location.href = '//wap.beeplaying.com/xmWap/#/payment'
+    },
+    joinTeam () {
+      this.$emit('joinTeam')
     }
   },
   watch: {
     value (newValue) {
-      if(newValue && [4, 6].indexOf(this.popupType) == -1) {
+      if(newValue && [1].indexOf(this.popupStatus) == -1) {
         Utils.ScrollNoMove()
       }else {
         Utils.ScrollMove()
@@ -279,11 +323,11 @@ export default {
     .close {
       position: absolute;
       left: 50%;
-      bottom: -.41rem;
+      bottom: -.76rem;
       transform: translate(-50%, 0);
-      width: .92rem;
-      height: .92rem;
-      background: url(../img/closed.png) no-repeat center center;
+      width: .48rem;
+      height: .48rem;
+      background: url(../img/close.png) no-repeat center center;
       background-size: 100% 100%;
     }
     img {
@@ -293,65 +337,59 @@ export default {
     }
     .bg1 {
       overflow: hidden;
-      background: url(../img/popupBg1.png) no-repeat center top;
+      width: 5.27rem;
+      height: 9.17rem;
+      background: url(../img/popup1.png) no-repeat center top;
       background-size: 100% 100%;
-      width: 6.48rem;
-      height: 10.23rem;
     }
     .bg2 {
       overflow: hidden;
-      background: url(../img/popupBg2.png) no-repeat center top;
+      width: 5.27rem;
+      height: 7.48rem;
+      background: url(../img/popup2.png) no-repeat center top;
       background-size: 100% 100%;
-      width: 6.48rem;
-      height: 9.33rem;
     }
     .rule {
       line-height: .32rem;
       .title {
-        margin: 2.5rem auto .72rem;
-        width: 1.61rem;
-        height: .41rem;
+        margin: 3.4rem auto .3rem;
+        width: 1.93rem;
+        height: .31rem;
       }
       .body {
-        padding: 0 1rem;
-        color: #EAD9FF;
-        h5 {
-          color: #fff;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 .4rem;
+        height: 4.7rem;
+        line-height: .42rem;
+        color: #1AC3FB;
+        font-size: .24rem;
+        .yellow {
+          color: #FFF156;
         }
-      }
-    }
-    .strategy {
-      .title {
-        margin: 2.5rem auto .48rem;
-        width: 2.78rem;
-        height: .5rem;
-      }
-      .body {
-        margin: 0 auto;
-        width: 4.32rem;
-        height: 5.57rem;
+        .underline {
+          text-decoration: underline;
+        }
       }
     }
     .game-list {
       .title {
-        margin: 2.5rem auto .8rem;
-        width: 1.89rem;
-        height: .44rem;
+        margin: 3.44rem auto .3rem;
+        width: 2.39rem;
+        height: .31rem;
       }
       .body {
-        padding: 0 .86rem 0 .97rem;
+        padding: 0 .44rem 0 .6rem;
         .list {
           margin-bottom: .15rem;
           display: flex;
           justify-content: flex-start;
           flex-wrap: wrap;
           .item {
-            margin: 0 .1rem .1rem 0;
-            padding: .15rem .1rem;
-            width: 1.45rem;
-            height: 1.99rem;
-            background: url(../img/game-list-bg.png) no-repeat center top;
-            background-size: 100% 100%;
+            margin: 0 .16rem .15rem 0;
+            width: 1.24rem;
+            height: 1.6rem;
           }
         }
         .more {
@@ -363,310 +401,289 @@ export default {
         }
         .explain {
           text-align: center;
-          font-size: .24rem;
-          font-weight: bold;
-          color: #D6BFFA;
+          font-size: .22rem;
+          color: #1AC3FB;
         }
       }
     }
-    .seal-log {
-      .title {
-        margin: 2.5rem auto .68rem;
-        width: 2.26rem;
-        height: .47rem;
-      }
-      .total {
-        margin: 0 auto .2rem;
-        width: 4.4rem;
-        height: .55rem;
-        line-height: .55rem;
-        text-align: center;
-        color: #FEF84B;
-        background: url(../img/total-bg.png) no-repeat center top;
+    .join-yes {
+      overflow: hidden;
+      .body {
+        position: relative;
+        overflow: hidden;
+        margin: 2.93rem auto 0;
+        width: 4.92rem;
+        height: 4.37rem;
+        background: url(../img/join-bg.png) no-repeat center center;
         background-size: 100% 100%;
-      }
-      .seal-wrap {
-        margin: 0 auto;
-        overflow: hidden;
-        width: 4.4rem;
-        height: 3.65rem;
-        background:linear-gradient(0deg,rgba(93,34,188,1) 0%,rgba(93,36,184,1) 100%);
-        border-radius: .4rem;
-        .nav {
-          margin: .3rem 0;
-          .time, .num{
-            width: 50%;
-            height: .26rem;
-            line-height: .26rem;
-            border-right: 1px solid #AE85EF;
-            text-align: center;
-            color: #fff;
-          }
-          .num {
-            border: none
-          }
-        }
-        .list {
-          height: 2.6rem;
-          overflow-x: hidden;
-          overflow-y: scroll;
-          -webkit-overflow-scrolling: touch;
-          .item {
-            margin-bottom: .2rem;
-            display: flex;
-            justify-content: flex-start;
-            .time, .num{
-              width: 50%;
-              text-align: center;
-              color: #fff;
-              white-space: nowrap;
-              color: #D6BFFA;
-            }
-          }
-        }
-        .empty {
-          margin: 1.3rem;
-          text-align: center;
-          font-size: .36rem;
-          font-weight: bold;
-          color: #D6BFFA;
-        }
-      }
-    }
-    .exchange-seal {
-      .title {
-        margin: 2.5rem auto .85rem;
-        width: 1.53rem;
-        height: .42rem;
-      }
-      .body {
-        .award-img {
-          margin: 0 auto .4rem;
-          padding: .38rem .47rem .3rem;
-          width: 2.7rem;
-          height: 2.5rem;
-          background: url(../img/seal-award-bg.png) no-repeat center center;
-          background-size: 100% 100%;
-        }
-        .award-name {
-          text-align: center;
-          margin-bottom: .7rem;
-          font-size: .3rem;
-          color: #FEF84B;
-          font-weight: bold;
+        .join-btn {
+          margin: .92rem auto .64rem;
+          width: 3.86rem;
+          height: 1.93rem;
         }
         .explain {
-          text-align: center;
-          color: #D6BFFA;
-        }
-      }
-    }
-    .exchange-award-log {
-      .title {
-        margin: 2.5rem auto .73rem;
-        width: 1.51rem;
-        height: .42rem;
-      }
-      .body {
-        margin: 0 auto;
-        overflow: hidden;
-        width: 4.4rem;
-        height: 4.35rem;
-        background:linear-gradient(0deg,rgba(93,34,188,1) 0%,rgba(93,36,184,1) 100%);
-        border-radius: .4rem;
-        .nav {
-          margin: .3rem 0;
-          .time, .num{
-            width: 50%;
-            height: .26rem;
-            line-height: .26rem;
-            border-right: 1px solid #AE85EF;
-            text-align: center;
-            color: #fff;
-          }
-          .num {
-            border: none
-          }
-        }
-        .list {
-          height: 3.3rem;
-          overflow-x: hidden;
-          overflow-y: scroll;
-          -webkit-overflow-scrolling: touch;
-          .item {
-            margin-bottom: .2rem;
-            display: flex;
-            justify-content: flex-start;
-            .time, .num{
-              width: 50%;
-              text-align: center;
-              color: #fff;
-              white-space: nowrap;
-              color: #D6BFFA;
-            }
-          }
-        }
-        .empty {
-          margin: 1.3rem;
-          text-align: center;
-          font-size: .36rem;
-          font-weight: bold;
-          color: #D6BFFA;
-        }
-      }
-    }
-    .confirm-exchange  {
-      .title {
-        margin: 2.5rem auto .91rem;
-        width: 1.53rem;
-        height: .43rem;
-      }
-      .body {
-        .award-img {
-          margin: 0 auto .25rem;
-          padding: .38rem .47rem .3rem;
-          width: 2.7rem;
-          height: 2.5rem;
-          background: url(../img/seal-award-bg.png) no-repeat center center;
-          background-size: 100% 100%;
-        }
-        .explain {
-          margin-bottom: .3rem;
-          text-align: center;
-          font-size: .3rem;
-          color: #D6BFFA;
-          font-weight: bold;
-          span {
-            color: #FEF84B;
-          }
-        }
-        .btns {
           margin: 0 auto;
-          width: 4.8rem;
+          width: 2.6rem;
+          white-space: nowrap;
+          text-align: center;
+          font-size: .22rem;
+          color: #1AC3FB;
+        }
+        .hand {
+          position: absolute;
+          left: 3.47rem;
+          top: 2.09rem;
+          z-index: 1;
+          width: .95rem;
+          height: 1.16rem;
+          animation: hand infinite 1s;
+        }
+      }
+    }
+    .join-no {
+      .title {
+        margin: 3.44rem auto .2rem;
+        width: 3.76rem;
+        height: .31rem;
+      }
+      .body {
+        .explain {
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+          span {
+            text-decoration: underline;
+            color: #FFCE09;
+          }
+        }
+        .play-game {
+          margin: 0 auto;
+          width: 3.26rem;
+          height: 1.33rem;
+        }
+        .pay {
+          margin: 0 auto;
+          width: 3.26rem;
+          height: 1.33rem;
+        }
+      }
+    }
+    .join-red {
+      .body {
+        overflow: hidden;
+        margin: 3rem auto 0;
+        width: 4.04rem;
+        height: 4.1rem;
+        background: url(../img/linght.png) no-repeat center center;
+        background-size: 100% 100%;
+        .title {
+          margin: .44rem auto .87rem;
+          width: 2.86rem;
+          height: .31rem;
+        }
+        .explain {
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+        }
+        .red-team {
+          margin: 0 auto 1rem;
+          left: 1rem;
+          top: .98rem;
+          width: 2.67rem;
+          height: .74rem;
+        }
+      }
+    }
+    .join-blue {
+     .body {
+        overflow: hidden;
+        margin: 3rem auto 0;
+        width: 4.04rem;
+        height: 4.1rem;
+        background: url(../img/linght.png) no-repeat center center;
+        background-size: 100% 100%;
+        .title {
+          margin: .44rem auto .87rem;
+          width: 2.86rem;
+          height: .31rem;
+        }
+        .explain {
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+        }
+        .blue-team {
+          margin: 0 auto 1rem;
+          left: 1rem;
+          top: .98rem;
+          width: 2.67rem;
+          height: .74rem;
+        }
+      }
+    }
+    .get-hot {
+     .body {
+       overflow: hidden;
+        margin: 2.94rem auto 0;
+        width: 4.04rem;
+        height: 4.1rem;
+        background: url(../img/linght.png) no-repeat center center;
+        background-size: 100% 100%;
+        .title {
+          margin: .45rem auto .7rem;
+          width: 2.39rem;
+          height: .31rem;
+        }
+        .hot-num {
+          margin: 0 auto 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: .72rem;
+          font-weight: 800;
+          color: #FFE719;
+          img {
+            margin-right: .1rem;
+            width: .69rem;
+            height: .79rem;
+          }
+        }
+      }
+    }
+    .pk-success {
+      .title {
+        margin: 3.44rem auto .2rem;
+        width: 1.53rem;
+        height: .31rem;
+      }
+     .body {
+        .explain {
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+          span {
+            color: #FFD009;
+          }
+        }
+        .award {
+          margin: .33rem auto ;
+          padding: 0 .5rem;
+          display: flex;
+          justify-content: space-between;
+          .item {
+            img {
+              width: 1.87rem;
+              height: 1.09rem;
+            }
+            p {
+              text-align: center;
+              font-size: .26rem;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .pk-error {
+      .title {
+        margin: 3.44rem auto .2rem;
+        width: 1.53rem;
+        height: .31rem;
+      }
+     .body {
+        .explain {
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+        }
+        .award {
+          margin: .33rem auto ;
+          padding: 0 .5rem;
+          display: flex;
+          justify-content: center;
+          
+        }
+      }
+    }
+    .award-count {
+      .title {
+        margin: 3.44rem auto .2rem;
+        width: 2.41rem;
+        height: .31rem;
+      }
+     .body {
+        .explain1 {
+          margin: 1rem 0;
+          text-align: center;
+          font-size: .26rem;
+          color: #1AC3FB;
+          line-height: .5rem;
+        }
+        .explain {
+          text-align: center;
+          font-size: .22rem;
+          color: #1AC3FB;
+        }
+      }
+    }
+    .strategy {
+      .title {
+        margin: 3.44rem auto .2rem;
+        width: 2.92rem;
+        height: .31rem;
+      }
+     .body {
+        padding: .26rem .5rem 0;
+        .item {
+          margin-bottom: .3rem;
           display: flex;
           justify-content: flex-start;
+          font-size: .26rem;
+          color: #1AC3FB;
+          line-height: .42rem;
+          img {
+            margin-right: .15rem;
+            width: .34rem;
+            height: .41rem;
+          }
         }
-        .cancel-btn ,.confirm-btn {
-          width: 2.4rem;
-          height: 1.07rem;
+        .bottom {
+          font-size: .22rem;
+          color: #1AC3FB;
+          text-align: center;
         }
       }
     }
-    .exchange-award {
-      .title {
-        margin: 2.5rem auto .73rem;
-        width: 1.51rem;
-        height: .42rem;
-      }
+    .gain-hot {
       .body {
-        .award-img {
-          margin: 0 auto .5rem;
-          padding: .38rem .47rem .3rem;
-          width: 2.7rem;
-          height: 2.5rem;
-          background: url(../img/seal-award-bg.png) no-repeat center center;
-          background-size: 100% 100%;
+        margin: 3.7rem auto .2rem;
+        .play-game {
+          margin: 0 auto;
+          width: 3.26rem;
+          height: 1.33rem;
         }
-        .award-name {
-          text-align: center;
-          margin-bottom: .5rem;
-          font-size: .3rem;
-          color: #FEF84B;
-          font-weight: bold;
-        }
-        .explain {
-          text-align: center;
-          color: #D6BFFA;
-          span {
-            color: #FEF84B;
-          }
+        .pay {
+          margin: 0 auto;
+          width: 3.26rem;
+          height: 1.33rem;
         }
       }
     }
-    .user-ranking {
-      .title {
-        margin: 2.5rem auto 0;
-        width: 1.18rem;
-        height: .4rem;
-      }
-      .body {
-        .ranking-list {
-          position: relative;
-          margin: 1.41rem auto 0;
-          display: flex;
-          justify-content: space-between; 
-          width: 4.34rem;
-          .item {
-            width: 1.88rem;
-            .award-img {
-              margin: 0 auto .5rem;
-              width: 1.88rem;
-              height: 1.88rem;
-              background: url(../img/seal-award-bg.png) no-repeat center center;
-              background-size: 100% 100%;
-            }
-            .award-name {
-              text-align: center;
-              margin-bottom: .5rem;
-              font-size: .3rem;
-              color: #FEF84B;
-              font-weight: bold;
-            }
-          }
-          &.big {
-            margin-top: .85rem;
-            justify-content: center; 
-            .item {
-              width: 2.7rem;
-            }
-            .award-img {
-              margin: 0 auto .5rem;
-              width: 2.7rem;
-              height: 2.5rem;
-              background: url(../img/seal-award-bg.png) no-repeat center center;
-              background-size: 100% 100%;
-            }
-          }
-          .add {
-            position: absolute;
-            left: 50%;
-            top: .6rem;
-            transform: translate(-50%, 0);
-            font-size: .5rem;
-            color: #682BCA;
-          }
-        }
-        .no-ranking-list {
-          margin-top: .85rem;
-          .item {
-            margin: 0 auto ;
-            width: 2.7rem;
-          }
-          .award-img {
-            margin-bottom: .5rem;
-            width: 2.7rem;
-            height: 2.5rem;
-            background: url(../img/seal-award-bg.png) no-repeat center center;
-            background-size: 100% 100%;
-          }
-          .award-name {
-            text-align: center;
-            margin-bottom: .5rem;
-            font-size: .3rem;
-            color: #FEF84B;
-            font-weight: bold;
-          }
-        }
-        .explain {
-          text-align: center;
-          color: #D6BFFA;
-          span {
-            color: #FEF84B;
-          }
-        }
-
-      }
-    }
+  }
+}
+@keyframes hand {
+  0% {
+    left: 3.47rem;
+    top: 2.09rem;
+  }
+  50% {
+    left: 3.27rem;
+    top: 1.89rem;
+  }
+  100% {
+    left: 3.47rem;
+    top: 2.09rem;
   }
 }
 </style>

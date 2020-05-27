@@ -1,87 +1,42 @@
 import axios from './http'
+const host = '//ops-api.beeplaying.com'
+const host1= '//rap2.taobao.org:38080/app/mock/255689'
 /**
- *  @description  福利游乐场-获取活动信息
+ *  @description  大神PK-获取活动信息
  */
 const getInfo = ( params ) => {
-  let url = '//ops-api.beeplaying.com/ops/api/playground/activity-info'
+  let url = `${host}/ops/api/pk/activity-info`
   return axios.post(url, params)
 }
 
 /**
- *  @description  福利游乐场-奖品兑换记录
+ *  @description  福利游乐场-加入团队
  */
-const getExchangeLog = ( params ) => {
-  let url = '//ops-api.beeplaying.com/ops/api/playground/convert-record'
+const joinTeam = ( params ) => {
+  let url = `${host}/ops/api/pk/add-group`
   return axios.post(url, params)
 }
 
 /**
- *  @description  福利游乐场-兑换
+ *  @description  福利游乐场-战队列表
  */
-const exchange = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/convert/${params}`
+const getRank = ( params ) => {
+  let url = `${host}/ops/api/pk/group-top-user/${params}`
   return axios.post(url)
 }
 
 /**
- *  @description  福利游乐场-排行榜列表
+ *  @description  福利游乐场-发奖
  */
-const getRanking = ( params ) => {
-  let url = '//ops-api.beeplaying.com/ops/api/playground/rank-list'
+const getAward = ( params ) => {
+  let url = `${host}/ops/api/pk/user-awards-tips`
   return axios.post(url, params)
 }
-
-/**
- *  @description  福利游乐场-进度领取
- */
-const getProgress = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/task-receive/${params.type}/${params.sort}`
-  return axios.post(url, params)
-}
-
-/**
- *  @description  福利游乐场-用户任务进度
- */
-const getUserProgress = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/user-progress`
-  return axios.post(url, params)
-}
-
-/**
- *  @description  福利游乐场-图章获取记录
- */
-const getUserPropLog = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/user-prop-record`
-  return axios.post(url, params)
-}
-
-/**
- *  @description  福利游乐场-用户排行信息
- */
-const getUserRanking = ( params ) => {
-  let url = `//ops-api.beeplaying.com/ops/api/playground/user-rank`
-  return axios.post(url, params)
-}
-
-/**
- *  @description  福利游乐场-获取礼包列表
- */
-const getCardList = ( params ) => {
-  let url = `//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/241`
-  return axios.post(url, params)
-}
-
-
 
 const services = {
   getInfo,
-  getExchangeLog,
-  exchange,
-  getRanking,
-  getProgress,
-  getUserProgress,
-  getUserPropLog,
-  getUserRanking,
-  getCardList
+  joinTeam,
+  getRank,
+  getAward
 }
 export default services
