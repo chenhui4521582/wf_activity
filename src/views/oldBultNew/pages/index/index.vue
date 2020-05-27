@@ -17,13 +17,13 @@
         <div>
           <p>累计金叶</p>
           <p class="count">
-            {{userInfo.totalAmount | unit}}
+            {{userInfo.totalAmount}}
           </p>
         </div>
         <div>
           <p>可提现金叶</p>
           <p class="count">
-            {{userInfo.withdrawAbleAmount | unit}}
+            {{userInfo.withdrawAbleAmount}}
           </p>
           <p class="button" @click="getGoldLeaf"></p>
         </div>
