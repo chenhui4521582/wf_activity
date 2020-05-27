@@ -30,15 +30,15 @@
           <p class="title">红队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{activitiesInfo.redExp}}</span></p>
           <p class="hot-people">火力人数：<span>{{activitiesInfo.redUserNum}}</span></p>
-          <div class="lead" v-if="activitiesInfo.redExp > activitiesInfo.blueExp">
+          <div class="lead" v-if="activitiesInfo.koGroup == 1 ">
             <img class="inner-img" src="./img/leader.png" alt="">
           </div>
         </div>
         <div class="item blue">
-          <p class="title">红队</p>
+          <p class="title">蓝队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{activitiesInfo.blueExp}}</span></p>
           <p class="hot-people">火力人数：<span>{{activitiesInfo.blueUserNum}}</span></p>
-          <div class="lead" v-if="activitiesInfo.blueExp > activitiesInfo.redExp">
+          <div class="lead" v-if="activitiesInfo.koGroup == 2 ">
             <img class="inner-img" src="./img/leader.png" alt="">
           </div>
         </div>
@@ -250,6 +250,7 @@ export default {
     },
     countDownCallback() {
       this.activitiesInfo.state = 2
+      this._getInfo()
     },
     endTime() {
       let date = new Date()
