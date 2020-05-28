@@ -179,18 +179,16 @@ export default {
     },
     /** 加入队伍点击 **/
     handleJoin () {
-      if(this.activitiesInfo.userExp < 20) {
+      if(this.activitiesInfo.userExp < 200) {
         this.openPopup(5)
       }else{
         this.openPopup(4)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0296003524')
     },
     /** 加入队伍 **/
     _joinTeam () {
       Services.joinTeam().then(res => {
-        // res = {
-        //   data: {"code":200,"data":{"groupType":2},"message":null}
-        // }
         const {code, message} = _get(res, 'data')
         if(code == 200) {
           const userGroup = _get(res, 'data.data.groupType', 0)
@@ -239,14 +237,49 @@ export default {
       this.currentIndex = index
       this.rank = []
       this._getRank(index)
+      GLOBALS.marchSetsPoint('A_H5PT0296003528')
     },
     openPopup (status) {
       this.showPopup = true
       this.popupStatus = status
+      switch (status) {
+        case 1: 
+          GLOBALS.marchSetsPoint('A_H5PT0296003522')
+          break;
+        case 2: 
+          GLOBALS.marchSetsPoint('A_H5PT0296003523')
+          break;
+        case 3: 
+          GLOBALS.marchSetsPoint('A_H5PT0296003530')
+          break;
+        case 4:
+          GLOBALS.marchSetsPoint('A_H5PT0296003525')
+          break;
+        case 5:
+          GLOBALS.marchSetsPoint('A_H5PT0296003529')
+          break;
+        case 6:
+        case 7:
+          GLOBALS.marchSetsPoint('A_H5PT0296003526')
+          break;
+        case 8:
+          GLOBALS.marchSetsPoint('A_H5PT0296003532')
+          break;
+        case 9:
+        case 10:
+          GLOBALS.marchSetsPoint('A_H5PT0296003534')
+          break;
+        case 11:
+          GLOBALS.marchSetsPoint('A_H5PT0296003533')
+          break;
+        case 12:
+          GLOBALS.marchSetsPoint('A_H5PT0296003527')
+          break;
+      }
     },
     backHome() {
       window.location.href = "//wap.beeplaying.com/xmWap/"
-      GLOBALS.marchSetsPoint('A_H5PT0278003318')
+      GLOBALS.marchSetsPoint('A_H5PT0296003521')
     },
     countDownCallback() {
       this.activitiesInfo.state = 2
@@ -274,6 +307,9 @@ export default {
       localStorage.setItem('maskterPk', `${this.endTime()}`)
       this.openPopup(2)
     }
+    GLOBALS.marchSetsPoint('P_H5PT0296', {
+      source_address: document.referrer
+    })
   }
 }
 </script>

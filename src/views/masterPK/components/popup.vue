@@ -11,12 +11,12 @@
           <div class="body">
             <span class="yellow">1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}}-{{activitiesInfo.endDate | formatTime('m-d')}}</span><br>
             <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>1万流水或单笔充值每满10元=1火力值以下游戏支持1万流水或单笔充值每满10元=1火力值以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多<br>
-            3、达到 <span class="yellow underline">100</span> 火力值可加入阵营，参与火力PK<br>
+            3、达到 <span class="yellow underline">200</span> 火力值可加入阵营，参与火力PK<br>
             <span class="yellow">4、参与PK即可瓜分5000元话费</span><br>
             每个队伍都有5000元话费奖励，只要加入阵营，活动结束后根据个人贡献值瓜分5000元话费（贡献值=个人火力值/全队火力值）；<br>
             <span class="yellow">5、瓜分终极奖池</span><br>
-            最终PK获胜队伍获得80%奖池奖励，惜败队伍获得20%奖励，根据玩家的贡献值进行瓜分；奖池奖励=两队火力值总和<span class="yellow">*0.025</span>元京东券。获胜队玩家瓜分=奖池奖励*个人贡献值<br>
-            
+            最终PK获胜队伍获得80%奖池奖励，惜败队伍获得20%奖励，根据玩家的贡献值进行瓜分；奖池奖励=两队火力值总和<span class="yellow">*0.05</span>元京东券获胜队玩家瓜分=奖池奖励*个人贡献值<br>
+            6、若最终两队火力值相同，则先达成火力值的队伍视为获胜队。
           </div>
         </div>
       </template>
@@ -33,7 +33,7 @@
             </div>
             <div class="item">
               <img src="../img/rank2.png" alt="">
-              当火力值达到100时，玩家可随机加入红蓝任一队伍，参与两队对决，并瓜分5000元话费；
+              当火力值达到200时，玩家可随机加入红蓝任一队伍，参与两队对决，并瓜分5000元话费；
             </div>
             <div class="item">
               <img src="../img/rank3.png" alt="">
@@ -281,6 +281,7 @@ export default {
     },
     gotpay() {
       window.location.href = '//wap.beeplaying.com/xmWap/#/payment'
+      GLOBALS.marchSetsPoint('A_H5PT0296003531')
     },
     joinTeam () {
       this.$emit('joinTeam')
