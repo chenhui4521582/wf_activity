@@ -89,7 +89,12 @@ export default {
       let index = 0
       let arr = _clonedeep(this.list)
       if (arr) {
-        index = arr.length - 1 - arr.reverse().findIndex(item => item.status)
+        index = arr.findIndex(item => item.status === 1)
+        if (index >= 0) {
+          return index
+        } else {
+          index = arr.length - 1 - arr.reverse().findIndex(item => item.status === 2)
+        }
       }
       return index
     },
@@ -121,12 +126,18 @@ export default {
       return rightArr.includes(index)
     },
     percentWidth (now, next) {
+      let width = ''
       if (next.status) {
-        return '100%'
+        width = '100%'
       } else {
         let currentAmount = this.info.currentAmount
-        return (currentAmount - now.amount) / (next.amount - now.amount) * 100 + '%'
+        if ((currentAmount - now.amount) <= 0 || (next.amount - now.amount) <= 0) {
+          width = '0%'
+        } else {
+          width = (currentAmount - now.amount) / (next.amount - now.amount) * 100 + '%'
+        }
       }
+      return width
     },
     async _activityInfo () {
       const res = await activityInfo()
