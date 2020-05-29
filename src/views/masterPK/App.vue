@@ -30,7 +30,7 @@
           <p class="title">红队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.redExp)}}</span></p>
           <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.redUserNum)}}</span></p>
-          <div class="lead" v-if="award.isKO == 1">
+          <div class="lead" v-if="activitiesInfo.koGroup == 1">
             <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
             <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
@@ -39,7 +39,7 @@
           <p class="title">蓝队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.blueExp)}}</span></p>
           <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.blueUserNum)}}</span></p>
-          <div class="lead" v-if="award.isKO == 2">
+          <div class="lead" v-if="activitiesInfo.koGroup == 2">
             <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
             <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
