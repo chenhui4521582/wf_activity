@@ -30,16 +30,18 @@
           <p class="title">红队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.redExp)}}</span></p>
           <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.redUserNum)}}</span></p>
-          <div class="lead" v-if="activitiesInfo.koGroup == 1 ">
-            <img class="inner-img" src="./img/leader.png" alt="">
+          <div class="lead" v-if="award.isKO == 1">
+            <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
+            <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
         </div>
         <div class="item blue">
           <p class="title">蓝队</p>
           <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.blueExp)}}</span></p>
           <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.blueUserNum)}}</span></p>
-          <div class="lead" v-if="activitiesInfo.koGroup == 2 ">
-            <img class="inner-img" src="./img/leader.png" alt="">
+          <div class="lead" v-if="award.isKO == 2">
+            <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
+            <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
         </div>
       </div>
@@ -49,7 +51,7 @@
       <!-- banner -->
       <slider :list="sliderList"/>
       <div class="rank">
-        <div class="nav">
+        <div class="nav" :class="{'blue': currentIndex == 2}">
           <div class="item name">昵称</div>
           <div class="item hot">火力值</div>
           <div class="item people">贡献值</div>
@@ -160,7 +162,6 @@ export default {
           this.sliderList = _get(res, 'data.data.msg', [])
           const userGroup = _get(res, 'data.data.userGroup', 0)
           this.currentIndex = userGroup
-          
           if(_get(res, 'data.data.state', 0) == 2) {
             if(_get(res, 'data.data.tipFlog')  == 1) {
               this._getAward() 
@@ -503,6 +504,9 @@ export default {
         justify-content: center;
         border-radius: .22rem;
         background: #C8032A;
+        &.blue {
+          background: #2D16D9;
+        }
         .item {
           flex: 1;
           text-align: center;

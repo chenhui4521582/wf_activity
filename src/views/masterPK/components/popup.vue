@@ -10,7 +10,8 @@
           </div>
           <div class="body">
             <span class="yellow">1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}}-{{activitiesInfo.endDate | formatTime('m-d')}}</span><br>
-            <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>1万流水或单笔充值每满10元=1火力值；以下游戏支持1万流水或单笔充值每满10元=1火力值以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多；<br>
+            <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>游戏消耗1万金叶或单笔充值每满100元=1火力值；<br>
+            以下游戏支持1万流水或单笔充值每满100元=1火力值；以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多；<br>
             3、达到 <span class="yellow underline">200</span> 火力值可加入阵营，参与火力PK；<br>
             <span class="yellow">4、参与PK即可瓜分5000元话费</span><br>
             每个队伍都有5000元话费奖励，只要加入阵营，活动结束后根据个人贡献值瓜分5000元话费（贡献值=个人火力值/全队火力值）；<br>
@@ -265,12 +266,12 @@ export default {
     awards () {
       if(this.award) {
         let teamPrize = {
-          img: this.award.groupAwardName.split(';')[1],
-          name: this.award.groupAwardName.split(';')[0]
+          img: this.award.groupAwardName && this.award.groupAwardName.split(';')[1],
+          name: this.award.groupAwardName && this.award.groupAwardName.split(';')[0]
         }
         let myPrize = {
-          img: this.award.poolAwardName.split(';')[1],
-          name: this.award.poolAwardName.split(';')[0]
+          img: this.award.poolAwardName && this.award.poolAwardName.split(';')[1],
+          name: this.award.poolAwardName && this.award.poolAwardName.split(';')[0]
         }
         return [teamPrize, myPrize]
       }
