@@ -160,11 +160,7 @@
   }
 </script>
 <style lang="less">
-  * {
-    padding: 0;
-    margin: 0;
-  }
-
+  @import "../../../common/css/base.css";
   @keyframes change {
     0% {
       -webkit-transform: scale(0);
@@ -193,7 +189,7 @@
 
   .mask {
     width: 100%;
-    height: 12.8rem;
+    height: 100vh;
     position: absolute;
     top: 0;
     background-color: rgba(0, 0, 0, 0.5);

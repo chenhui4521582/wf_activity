@@ -526,7 +526,7 @@
     height: 100vh;
     background-color: #0b0800;
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
     &:before {
       content: '';
       position: absolute;
