@@ -167,7 +167,10 @@ export default {
               this._getAward() 
               return false
             }
-            this.openPopup(11)
+            if(_get(res, 'data.data.tipFlog')  == 0) {
+              this.openPopup(11)
+              return false
+            }
           }
           if(_get(res, 'data.data.addExp') != 0) {
             this.openPopup(8)
