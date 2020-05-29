@@ -229,16 +229,18 @@
         }
       },
       gotopay(item) {
-        localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0290003480', {
-          product_pric: item.price,
-          product_id: item.bizId,
-          product_name: item.name
-        })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
-        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-        localStorage.setItem('payment', JSON.stringify(item))
-        location.href =
-          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        if(this.actData&&this.actData.giftStatus==0){
+          localStorage.setItem('originDeffer', window.location.href)
+          GLOBALS.marchSetsPoint('A_H5PT0290003480', {
+            product_pric: item.price,
+            product_id: item.bizId,
+            product_name: item.name
+          })   // H5平台-砸金蛋-获取锤子大浮层-点击任意礼包
+          localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+          localStorage.setItem('payment', JSON.stringify(item))
+          location.href =
+            'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+        }
       },
       move(e) {
         e.preventDefault()
