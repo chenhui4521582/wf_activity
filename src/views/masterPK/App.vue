@@ -51,7 +51,7 @@
       <!-- banner -->
       <slider :list="sliderList"/>
       <div class="rank">
-        <div class="nav" :class="{'blue': currentIndex == 2}">
+        <div class="nav" :class="{'blue': currentIndex == 1}">
           <div class="item name">昵称</div>
           <div class="item hot">火力值</div>
           <div class="item people">贡献值</div>
