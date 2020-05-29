@@ -19,7 +19,7 @@
             <span v-if="activityInfo.state==0">活动未开始</span>
           </div>
         </div>
-        <p v-show="!topshow">
+        <p v-show="topshow">
           返利卡有效时间：
           <span v-for="(item,key) in newcountTime.split('')" :key="key">{{item}}</span>
           预计返利：<i>{{state.rebateAmount}}</i>金叶
@@ -71,8 +71,10 @@
             <span>{{nextConsume}}</span>
           </div>
           <div class="playgame">
-            <div class="goplay" v-if="prized.length!=10&&activityInfo.state==1"  @click.stop="startLottery">立即探宝</div>
-            <div class="goplay gray" v-if="prized.length==10||activityInfo.state==2||activityInfo.state==0" @click="notenough">立即探宝</div>
+            <div class="goplay" v-if="prized.length!=10&&activityInfo.state==1" @click.stop="startLottery">立即探宝</div>
+            <div class="goplay gray" v-if="prized.length==10||activityInfo.state==2||activityInfo.state==0"
+                 @click="notenough">立即探宝
+            </div>
           </div>
         </div>
       </article>
@@ -147,15 +149,12 @@
       this.getActivityInfo()
       this.getState(2)
       this.getUserAwards()
-      // console.log("活动倒计时", this.countTime);
-      // console.log("返利卡倒计时", this.newcountTime);
-      // 活动信息接口
-      // console.log(this.activityInfo);
-      // console.log(this.time);
-      //  this.newlist1()
     },
     computed: {},
     methods: {
+      move (e) {
+        e.preventDefault()
+      },
       getAwardName(awardType) {
         switch (awardType) {
           case 'jyz':
@@ -187,25 +186,16 @@
         this.remnantNum = this.activityInfo.remnantNum
         this.rarePropNum = this.activityInfo.rarePropNum
         this.nextConsume = this.activityInfo.nextConsume
-
         for (var i = 0; i < this.newlist.length; i++) {
           if (this.newlist[i].state == 1) {
             this.prized.push(this.newlist[i].sort - 1)
           }
         }
-
         if (this.activityInfo.incrPropNum > 0) {
           this.popType = 4
           GLOBALS.marchSetsPoint('A_H5PT0251002971')
         }
-        // console.log(this.prized);
-        // this.newlist =  this.activityInfo.wheelAwardsList;
-        // console.log("奖品列表", this.newlist);
-        // 初始化判断已领取奖励
-        // this.prized.push(this.activityInfo.);
         this.countDown(this.activityInfo.countdown)
-
-        const code = _get(res, 'code', 0)
       },
       // 投注
       async getBet() {
@@ -213,8 +203,6 @@
         this.bet = _get(res, 'data', {})
         const code = _get(res, 'code', 0)
         this.message = _get(res, 'message', null)
-        // console.log("res", res);
-        // console.log("bet", code);
         if (res.message == '您已获取所有奖励') {
           this.$toast.show({
             message: '您已获取所有奖励',
@@ -224,10 +212,9 @@
           this.popType = 5
           GLOBALS.marchSetsPoint('A_H5PT0251002970')
           return
-        } else if (this.bet.wheelAwards.sort == 1) {
+        } else if (this.bet.wheelAwards.awardsType == "flk") {
           this.popType = 7
-          this.prizeshow.sort = 1
-          this.prized.push(0)
+          this.prized.push(this.bet.wheelAwards.sort - 1)
           this.remnantNum = this.bet.remnantNum
           this.rarePropNum = this.bet.rarePropNum
           this.nextConsume = this.bet.nextConsume
@@ -240,14 +227,11 @@
             this.nextConsume = this.bet.nextConsume
           }
         }
-
-        // console.log("bet1 ", this.bet);
       },
       // 返利卡状态
       async getState(type) {
         const res = await ratePropState(type)
         this.state = _get(res, 'data', {})
-        this.fanlicountDown(100000)
         if (this.state.rebateCountdown > 0) {
           this.topshow = true
           this.fanlitime = this.state.rebateCountdown
@@ -329,43 +313,6 @@
       },
       // 钻石不够无法抽奖
       notenough() {
-        //{"code":200,"data":{"remnantNum":16900,"nextConsume":0,"rarePropNum":1,"wheelAwards":{"awardsType":"flk","awardsName":"1%超级返利卡","sort":1,"state":1}},"message":null}
-        let res={"code":200,"data":{"remnantNum":16900,"nextConsume":0,"rarePropNum":1,"wheelAwards":{"awardsType":"yhq","awardsName":"1%超级返利卡","sort":3,"state":1}},"message":null}
-        this.bet = _get(res, 'data', {})
-        const code = _get(res, 'code', 0)
-        this.message = _get(res, 'message', null)
-        // console.log("res", res);
-        // console.log("bet", code);
-        this.prizeshow=this.bet.wheelAwards
-        this.popType = 3
-        return
-        if (res.message == '您已获取所有奖励') {
-          this.$toast.show({
-            message: '您已获取所有奖励',
-            duration: 1000
-          })
-        } else if (res.message == '您的宝石不足') {
-          this.popType = 5
-          GLOBALS.marchSetsPoint('A_H5PT0251002970')
-          return
-        } else if (this.bet.wheelAwards.sort == 1) {
-          this.popType = 7
-          this.prizeshow.sort = 1
-          this.prized.push(0)
-          this.remnantNum = this.bet.remnantNum
-          this.rarePropNum = this.bet.rarePropNum
-          this.nextConsume = this.bet.nextConsume
-          GLOBALS.marchSetsPoint('A_H5PT0251002972')
-        } else {
-          this.startRoll()
-          if (this.bet) {
-            this.remnantNum = this.bet.remnantNum
-            this.rarePropNum = this.bet.rarePropNum
-            this.nextConsume = this.bet.nextConsume
-          }
-        }
-
-        return
         if (this.activityInfo.state == 2) {
           this.$toast.show({
             message: '活动已经结束',
@@ -500,11 +447,9 @@
           // 删除抽中的位置下标
           // console.log("删除数组中的抽奖位置", this.newindex);
           setTimeout(() => {
-            if (this.prizeshow.sort - 1 == 0) {
+            if (this.prizeshow.awardsType == "flk") {
               this.popType = 7
               GLOBALS.marchSetsPoint('A_H5PT0251002972')
-              // 添加超级返利
-              // this.topshow = true;
             } else {
               this.popType = 3
               GLOBALS.marchSetsPoint('A_H5PT0251002969', {
@@ -515,8 +460,6 @@
               }, 200)
             }
           }, 800)
-
-          // console.log("要传的信息", this.prizeshow);
           clearTimeout(this.timer) // 清除转动定时器，停止转动
           this.prize = -1
           this.times = 0
@@ -525,21 +468,13 @@
           if (this.times < this.cycle) {
             this.speed -= 30 // 加快转动速度
           } else if (this.times === this.cycle) {
-            // const index = parseInt(Math.random() * 10) || 0; // 随机获得一个中奖位置
             this.prize = this.bet.wheelAwards.sort - 1 // 中奖位置
-
-            // console.log(this.prize);
-            // console.log(this.prized);
-            // console.log(this.prized[0])
             if (this.prize > 9) {
               this.prize = 9
             }
           } else if (
             this.times >
             this.cycle + 5
-          // &&
-          // ((this.prize === 0 && this.index === 9) ||
-          //   this.prize === this.index + 1)
           ) {
             this.speed += 20
           } else {
@@ -553,15 +488,10 @@
       },
       oneRoll() {
         let _index = this.index
-        // 获取所有可以选择的index
         let canSelectIndexs = []
         for (var i = 0; i <= 9; i++) {
-          // 不匹配
-          // prized==1时
           if (this.prized.indexOf(i) == -1) {
             canSelectIndexs.push(i)
-            // console.log("要旋转的数组", canSelectIndexs);
-            // 里面0,2,3,4,5,6,7,8,9
           }
         }
         if (_index >= 9) {
@@ -596,6 +526,7 @@
     height: 100vh;
     background-color: #0b0800;
     position: relative;
+    overflow: hidden;
     &:before {
       content: '';
       position: absolute;
@@ -629,7 +560,7 @@
           }
           & span {
           }
-          .countdown-item:nth-child(2),
+          .countdown-item:nth-child(1), :nth-child(2),
           :nth-child(4),
           :nth-child(5),
           :nth-child(7),
@@ -694,7 +625,7 @@
       top: 0.51rem;
       right: .16rem;
     }
-    & .tips {
+    .tips {
       position: absolute;
       top: 4.8rem;
       left: 0;
@@ -714,7 +645,11 @@
     main {
       height: 6rem;
       width: 92%;
-      margin: 5.45rem auto 0;
+      position: absolute;
+      top:5.35rem;
+      left: 0;
+      right: 0;
+      margin: auto;
       .main-top {
         position: relative;
         display: flex;
@@ -752,7 +687,7 @@
           color: rgba(182, 16, 64, 1);
           text-align: center;
           line-height: .5rem;
-          &.gray{
+          &.gray {
             background: url(./images/gain_gray.png) no-repeat;
             background-size: 100% 100%;
             color: #333;
@@ -814,13 +749,16 @@
             }
             p {
               white-space: nowrap;
-              font-size: 0.24rem;
+              font-size: 0.22rem;
               font-weight: 400;
               color: rgba(255, 185, 129, 1);
             }
             img {
               width: 1.11rem;
               height: 0.64rem;
+            }
+            &:nth-child(1) {
+              left: 0.4rem;
             }
             &:nth-child(2) {
               left: 1.9rem;
@@ -872,14 +810,14 @@
             text-align: center;
             font-size: 0.18rem;
             font-weight: 400;
-            color:rgba(255,174,109,1);
+            color: rgba(255, 174, 109, 1);
           }
           .current-consume {
             display: flex;
             align-items: center;
             width: 1.2rem;
             margin: 0.05rem auto;
-            justify-content:center;
+            justify-content: center;
             img {
               width: 0.27rem;
               height: 0.24rem;
@@ -898,17 +836,17 @@
             .goplay {
               width: 2.92rem;
               height: .64rem;
-              line-height:.64rem;
+              line-height: .64rem;
               text-align: center;
               background: url("./images/startbtn.png");
               background-size: 100% 100%;
-              font-size:.3rem;
-              font-weight:bold;
-              color:rgba(159,16,52,1);
-              &.gray{
+              font-size: .3rem;
+              font-weight: bold;
+              color: rgba(159, 16, 52, 1);
+              &.gray {
                 background: url("./images/blackbtn.png");
                 background-size: 100% 100%;
-                color:#333;
+                color: #333;
               }
             }
             img {

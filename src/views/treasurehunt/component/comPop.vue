@@ -1,7 +1,7 @@
 <template>
   <div class="mask" v-if="value">
 
-    <div class="pop-bg" :class="[value==7&&prizeshow.sort-1==0?'big-pop-bg':'']">
+    <div class="pop-bg" :class="[value==7?'big-pop-bg':'']">
       <div class="pop-title" v-if="value==1">活动规则</div>
       <div class="pop-title" v-if="value==2">中奖记录</div>
       <div class="pop-title" v-if="value==3">探宝成功!</div>
@@ -10,7 +10,8 @@
 
       <div class="pop-title" v-if="value==6||value==7" :style="{marginBottom:value==7?0:''}">恭喜您!
       </div>
-      <div class="pop-container" :class="{'super-pop-container':value==7,'scroll-norecord':userAwards==''&&value==2,flag1:value==1}">
+      <div class="pop-container"
+           :class="{'super-pop-container':value==7,'scroll-norecord':userAwards.length==0&&value==2,flag1:value==1}">
         <!-- 活动规则 -->
         <template v-if="value==1">
           <p>1、活动时间：{{activityInfo.beginDate}}~{{activityInfo.endDate}}，共3天 </p>
@@ -24,7 +25,7 @@
           <p>• 返利时间：返利卡失效后奖励由系统自动结算后发放至玩家帐户； </p>
           <p>• 系统返利结算可能稍有延迟，请您耐心等待； </p>
           <p>• 返利的金叶不计入盈利榜；</p>
-          <p>• 以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多</p>
+          <p>• 以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多，斗西游</p>
           <p>7、活动结束或抽完所有奖励后，剩余宝石自动作废；</p>
           <p>8、如有问题，请联系在线客服。</p>
         </template>
@@ -36,20 +37,22 @@
               <div class="line"></div>
               <div>奖品名称</div>
             </li>
-            <div class="scroll" :class="[userAwards==''?'scroll-norecord':'']">
+            <div class="scroll" :class="[userAwards.length==0?'scroll-norecord':'']">
               <li class="prize-list" v-for="(item,key) in userAwards" :key="key">
                 <div class="left">{{item.createTime}}</div>
                 <div class="right">{{item.awardsName}}</div>
               </li>
-              <img v-if="userAwards==''" class="norecord" src="../images/compop/norecord.png"
-                   alt="">
-              <p v-if="userAwards==''" class='norecord-tips'>无记录</p>
+              <template v-if="userAwards.length==0">
+                <img class="norecord" src="../images/compop/norecord.png"
+                     alt="">
+                <p class='norecord-tips'>无记录</p>
+              </template>
             </div>
 
           </ul>
         </template>
         <!-- 探宝成功 -->
-        <template v-if="value==3&&prizeshow.sort-1!=0">
+        <template v-if="value==3">
           <img class="prize-img" :src="`${require(`../images/compop/${prizeshow.awardsType}.png`)}`" alt/>
           <p class="congra-texts">恭喜您获得</p>
           <p class="prize-name">{{prizeshow.awardsName}}</p>
@@ -105,23 +108,13 @@
   export default {
     data() {
       return {
-        list: [
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'},
-          {time: '2020-3-12', name: '112元京东卡'}
-        ],
         click: true
       }
     },
     created() {
     },
     mounted() {
-      console.log('this.value',this.value)
+      console.log('this.value', this.value)
     },
     methods: {
       // 更多了解返利卡（跳转到规则）
@@ -137,6 +130,9 @@
         this.$emit('input', 0)
         // 传父组件click开关 恢复click的值
         this.$emit('clickshow', this.click)
+      },
+      move (e) {
+        e.preventDefault()
       }
     },
     props: {
@@ -247,11 +243,11 @@
         .activity-rule {
           width: 4.7rem;
         }
-        &.flag1{
-          p{
-            font-size:.24rem;
-            font-weight:400;
-            color:rgba(157,82,46,1);
+        &.flag1 {
+          p {
+            font-size: .24rem;
+            font-weight: 400;
+            color: rgba(157, 82, 46, 1);
             line-height: .3rem;
           }
         }
@@ -284,14 +280,15 @@
           .container-title {
             width: 4.51rem;
             height: 0.57rem;
-            background:rgba(226,114,32,1);
+            background: rgba(226, 114, 32, 1);
             display: flex;
             align-items: center;
             div {
+              line-height: 0.57rem;
               text-align: center;
               font-size: 0.24rem;
               font-weight: 400;
-              color:rgba(77,37,22,1);
+              color: rgba(77, 37, 22, 1);
               &:first-child, &:last-child {
                 flex: 1;
               }
@@ -333,17 +330,17 @@
             list-style: none;
             align-items: center;
             &:nth-child(odd) {
-              background:rgba(224,171,113,0.35);
+              background: rgba(224, 171, 113, 0.35);
             }
             &:nth-child(even) {
-              background:rgba(255,255,255,0.35);
+              background: rgba(255, 255, 255, 0.35);
             }
             div {
               text-align: center;
               flex: 1;
               font-size: 0.24rem;
               font-weight: 400;
-              color:rgba(177,105,36,1);
+              color: rgba(177, 105, 36, 1);
             }
           }
         }
@@ -351,8 +348,7 @@
           width: 2.54rem;
           height: 1.47rem;
           display: block;
-          margin: 0 auto;
-          margin-top: 0.35rem;
+          margin: 0.35rem auto 0;
         }
         .congra-texts {
           font-size: 0.38rem;
@@ -375,7 +371,7 @@
           font-size: 0.3rem;
           font-family: Alibaba PuHuiTi;
           font-weight: 400;
-          color:rgba(157,82,46,1);
+          color: rgba(157, 82, 46, 1);
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
@@ -388,7 +384,7 @@
           font-size: 0.3rem;
           font-family: Alibaba PuHuiTi;
           font-weight: 400;
-          color:rgba(157,82,46,1);
+          color: rgba(157, 82, 46, 1);
         }
         .yellow-rock {
           width: 1.6rem;
@@ -397,14 +393,14 @@
           margin: 0.4rem auto 0;
         }
         .iknow {
-          background:linear-gradient(0deg,rgba(244,118,42,1),rgba(254,208,122,1));
-          box-shadow:0px .04rem 0px 0px rgba(245,107,34,0.41);
-          border-radius:.15rem;
+          background: linear-gradient(0deg, rgba(244, 118, 42, 1), rgba(254, 208, 122, 1));
+          box-shadow: 0px .04rem 0px 0px rgba(245, 107, 34, 0.41);
+          border-radius: .15rem;
           width: 2.92rem;
           height: 0.6rem;
           font-size: 0.3rem;
           font-weight: bold;
-          color:rgba(159,16,52,1);
+          color: rgba(159, 16, 52, 1);
           text-align: center;
           line-height: 0.6rem;
           margin: 0.65rem auto 0;
@@ -436,7 +432,7 @@
           text-align: center;
           margin-top: 0.8rem;
           p {
-            color:rgba(255,241,213,1);
+            color: rgba(255, 241, 213, 1);
             font-size: 0.22rem;
             font-weight: bold;
             line-height: 0.3rem;
