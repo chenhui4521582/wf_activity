@@ -47,7 +47,7 @@
             <div class="left-btn" @click="_receiveAll">奖励一键领取</div>
             <div class="right-btn" @click="openProfit">查看排行榜</div>
           </section>
-          <p>排行榜第一名可得<span>8888</span>话费券</p>
+          <p>排行榜第一名可得<span>800元</span>话费券</p>
         </article>
         <top-btn v-model="level" @open-pop="openPop" />
       </div>
