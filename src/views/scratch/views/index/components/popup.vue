@@ -81,7 +81,7 @@
         <div class="scratch" v-if="this.popupStatus == 3">
           <div class="tips" v-if="showTips">
             <p>亲爱的玩家</p>
-            <p>您确定消耗50个游戏币来 </p>
+            <p>您确定消耗{{scratch.consumeNum*10}}个游戏币来 </p>
             <p>刮取10个奖励么</p>
             <div class="btns">
               <div class="confirm" @click="hideTips">确定</div>
