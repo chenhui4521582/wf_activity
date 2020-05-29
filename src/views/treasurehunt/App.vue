@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="{fixed:popType}">
     <div class="top-container">
       <div class="top">
         <!-- 倒计时 -->
@@ -527,6 +527,9 @@
     background-color: #0b0800;
     position: relative;
     /*overflow: hidden;*/
+    &.fixed{
+      position: fixed;
+    }
     &:before {
       content: '';
       position: absolute;
