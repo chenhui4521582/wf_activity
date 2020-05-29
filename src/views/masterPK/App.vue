@@ -20,7 +20,7 @@
       <div class="blue item">获胜队赢80%奖池奖励，惜败队获20%。队员贡献值越高，奖励越多</div>
       <div class="jeckpot">
         奖池已累计 <span>{{activitiesInfo.awardPool || 0}}</span> 元京东券
-        <img class="jeckpot-icon" src="./img/jeckpot-icon.png" alt="">
+        <img class="jeckpot-icon" src="./img/jeckpot-icon.png" alt="" @click="openPopup(13)">
       </div>
     </div>
     <!-- 排行榜 -->
@@ -28,18 +28,20 @@
       <div class="total">
         <div class="item red">
           <p class="title">红队</p>
-          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{activitiesInfo.redExp}}</span></p>
-          <p class="hot-people">火力人数：<span>{{activitiesInfo.redUserNum}}</span></p>
-          <div class="lead" v-if="activitiesInfo.koGroup == 1 ">
-            <img class="inner-img" src="./img/leader.png" alt="">
+          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.redExp)}}</span></p>
+          <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.redUserNum)}}</span></p>
+          <div class="lead" v-if="award.isKO == 1">
+            <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
+            <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
         </div>
         <div class="item blue">
           <p class="title">蓝队</p>
-          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{activitiesInfo.blueExp}}</span></p>
-          <p class="hot-people">火力人数：<span>{{activitiesInfo.blueUserNum}}</span></p>
-          <div class="lead" v-if="activitiesInfo.koGroup == 2 ">
-            <img class="inner-img" src="./img/leader.png" alt="">
+          <p class="hot-num">火力值<img src="./img/hot-icon.png" alt="">：<span>{{tips(activitiesInfo.blueExp)}}</span></p>
+          <p class="hot-people">火力人数：<span>{{tips(activitiesInfo.blueUserNum)}}</span></p>
+          <div class="lead" v-if="award.isKO == 2">
+            <img class="inner-img" v-if="activitiesInfo.state==2" src="./img/win.png" alt="">
+            <img class="inner-img" v-else src="./img/leader.png" alt="">
           </div>
         </div>
       </div>
@@ -49,7 +51,7 @@
       <!-- banner -->
       <slider :list="sliderList"/>
       <div class="rank">
-        <div class="nav">
+        <div class="nav" :class="{'blue': currentIndex == 2}">
           <div class="item name">昵称</div>
           <div class="item hot">火力值</div>
           <div class="item people">贡献值</div>
@@ -69,7 +71,7 @@
                 {{item.nickName}}
               </div>
               <div class="hot">{{item.exp}}</div>
-              <div class="people">{{item.expRate}}</div>
+              <div class="people">{{item.expRate}}%</div>
             </div>
           </template>
         </div>
@@ -91,11 +93,11 @@
       </div>
       <div class="hot-num">
         <div class="title">累计火力值</div>
-        <div class="num">{{activitiesInfo.userExp}}</div>
+        <div class="num">{{activitiesInfo.userExp || 0}}</div>
       </div>
       <div class="contribution">
         <div class="title">贡献值</div>
-        <div class="num">{{activitiesInfo.userExpRate}}</div>
+        <div class="num">{{activitiesInfo.userExpRate || 0}}%</div>
       </div>
       <div class="get-hot" v-if="this.activitiesInfo.state == 1" @click="openPopup(12)">
         <div class="title">我要火力值</div>
@@ -160,13 +162,15 @@ export default {
           this.sliderList = _get(res, 'data.data.msg', [])
           const userGroup = _get(res, 'data.data.userGroup', 0)
           this.currentIndex = userGroup
-          
           if(_get(res, 'data.data.state', 0) == 2) {
             if(_get(res, 'data.data.tipFlog')  == 1) {
               this._getAward() 
               return false
             }
-            this.openPopup(11)
+            if(_get(res, 'data.data.tipFlog')  == 0) {
+              this.openPopup(11)
+              return false
+            }
           }
           if(_get(res, 'data.data.addExp') != 0) {
             this.openPopup(8)
@@ -200,6 +204,7 @@ export default {
             this.openPopup(7)
           }
           this._getRank(userGroup)
+          this._getInfo()
         } else {
           this.$toast.show({ message })
         }
@@ -232,6 +237,19 @@ export default {
           this.$toast.show({ message })
         }
       })
+    },
+    tips (value) {
+      if(this.activitiesInfo.state == 1) {
+        if(this.isJoin) {
+          return value
+        } else {
+          return '加入可见'
+        }
+      }else if(this.activitiesInfo.state == 2){
+        return value
+      }else {
+        return 0
+      }
     },
     handleClick (index) {
       this.currentIndex = index
@@ -489,6 +507,9 @@ export default {
         justify-content: center;
         border-radius: .22rem;
         background: #C8032A;
+        &.blue {
+          background: #2D16D9;
+        }
         .item {
           flex: 1;
           text-align: center;

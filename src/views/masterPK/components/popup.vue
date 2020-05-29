@@ -10,12 +10,13 @@
           </div>
           <div class="body">
             <span class="yellow">1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}}-{{activitiesInfo.endDate | formatTime('m-d')}}</span><br>
-            <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>1万流水或单笔充值每满10元=1火力值以下游戏支持1万流水或单笔充值每满10元=1火力值以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多<br>
-            3、达到 <span class="yellow underline">200</span> 火力值可加入阵营，参与火力PK<br>
+            <span class="yellow">2、玩游戏消耗金叶或充值可获得火力值，</span>游戏消耗1万金叶或单笔充值每满100元=1火力值；<br>
+            以下游戏支持1万流水或单笔充值每满100元=1火力值；以下游戏支持金叶计入活动：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多；<br>
+            3、达到 <span class="yellow underline">200</span> 火力值可加入阵营，参与火力PK；<br>
             <span class="yellow">4、参与PK即可瓜分5000元话费</span><br>
             每个队伍都有5000元话费奖励，只要加入阵营，活动结束后根据个人贡献值瓜分5000元话费（贡献值=个人火力值/全队火力值）；<br>
             <span class="yellow">5、瓜分终极奖池</span><br>
-            最终PK获胜队伍获得80%奖池奖励，惜败队伍获得20%奖励，根据玩家的贡献值进行瓜分；奖池奖励=两队火力值总和<span class="yellow">*0.05</span>元京东券获胜队玩家瓜分=奖池奖励*个人贡献值<br>
+            最终PK获胜队伍获得80%奖池奖励，惜败队伍获得20%奖励，根据玩家的贡献值进行瓜分；奖池奖励=两队火力值总和<span class="yellow">*0.05</span>元京东券；获胜队玩家瓜分=奖池奖励*个人贡献值；<br>
             6、若最终两队火力值相同，则先达成火力值的队伍视为获胜队。
           </div>
         </div>
@@ -88,7 +89,7 @@
           <div class="body">
             <div class="explain">
               <p>当前您的火力值为<span>{{this.activitiesInfo.userExp}}</span>，</p>
-              <p>达到<span>20</span>即可参与对决哦！</p>
+              <p>达到<span>200</span>即可参与对决哦！</p>
             </div>
             <div class="play-game" @click="openPopup(3)">
               <img src="../img/play-game.png" alt="">
@@ -156,7 +157,7 @@
             </div>
             <div class="explain">
               <p>恭喜对决获胜，牛人如你！</p>
-              <p>您的贡献值<span>{{this.award.userGroupExpRate}}</span>，获得如下奖励：</p>
+              <p>您的贡献值<span>{{this.award.userGroupExpRate}}%</span>，获得如下奖励：</p>
             </div>
             <div class="award">
               <div class="item" v-for="(item, index) in awards" :key="index">
@@ -225,6 +226,17 @@
           </div>
         </div>
       </template>
+      <!-- 奖池说明 -->
+      <template v-if="popupStatus == 13">
+        <div class="join-blue jackpot bg2">
+          <div class="body">
+            <div class="explain">
+              <p>奖池奖励= </p>
+              <p>两队火力值总和*<span class="yellow">0.05</span>元京东券</p>
+            </div>
+          </div>
+        </div>
+      </template>
       <div class="close" @click="hidePopup"></div>
     </div>
   </div>
@@ -254,12 +266,12 @@ export default {
     awards () {
       if(this.award) {
         let teamPrize = {
-          img: this.award.groupAwardName.split(';')[1],
-          name: this.award.groupAwardName.split(';')[0]
+          img: this.award.groupAwardName && this.award.groupAwardName.split(';')[1],
+          name: this.award.groupAwardName && this.award.groupAwardName.split(';')[0]
         }
         let myPrize = {
-          img: this.award.poolAwardName.split(';')[1],
-          name: this.award.poolAwardName.split(';')[0]
+          img: this.award.poolAwardName && this.award.poolAwardName.split(';')[1],
+          name: this.award.poolAwardName && this.award.poolAwardName.split(';')[0]
         }
         return [teamPrize, myPrize]
       }
@@ -668,6 +680,20 @@ export default {
           margin: 0 auto;
           width: 3.26rem;
           height: 1.33rem;
+        }
+      }
+    }
+
+    .jackpot {
+      color: #1AC3FB;
+      font-size: .24rem;
+      .yellow {
+        color: #FFF156;
+      }
+      .explain {
+        margin-top: 1.6rem;
+        p {
+          margin-bottom: .1rem;
         }
       }
     }
