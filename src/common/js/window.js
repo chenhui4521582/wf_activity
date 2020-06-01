@@ -125,50 +125,54 @@ window.GLOBALS = {
    * @return:
    */
   async marchSetsPoint (eventid, eventcontent) {
-    // 操作时间的毫秒数
-    let dateNumber = Date.now()
-    // 设备信息
-    let userAgent = navigator.userAgent
-    // 用户信息
-    var userInfo = JSON.parse(localStorage.getItem('user_Info'))
-    if (!userInfo) {
-      let r = await axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo')
-      userInfo = r.data.data || r.data
-      localStorage.setItem('user_Info', JSON.stringify(userInfo))
-    };
-    // 渠道id
-    let _channel = localStorage.getItem('APP_CHANNEL') || 100001
-    let defaultState = {
-      plateform: 'h5',
-      subplateform: userAgent.indexOf('Mac OS') > -1 ? 'ios' : 'android',
-      version: localStorage.getItem('version_flag') && localStorage.getItem('version_flag') == 2 ? '2.0.0' : '1.0.0',
-      channel: _channel,
-      logs: [
-        {
-          uid: userInfo.userId,
-          begintime: dateNumber,
-          eventid: eventid,
-          eventcontent: Object.assign({
-            residual_gold: userInfo.amount,
-            position_id: null,
-            target_project_id: null,
-            task_id: null,
-            task_name: null,
-            marketing_id: null,
-            residual_jingdong: null,
-            residual_phone: null,
-            entrance: localStorage.getItem('platSource') || 'plat',
-            from_project_id: this.getUrlParam('gametype') || this.getUrlParam('gameType'),
-            classify:localStorage.getItem('card_level')||0
-          }, eventcontent)
-        }
-      ]
+    try {
+      // 操作时间的毫秒数
+      let dateNumber = Date.now()
+      // 设备信息
+      let userAgent = navigator.userAgent
+      // 用户信息
+      var userInfo = JSON.parse(localStorage.getItem('user_Info'))
+      if (!userInfo) {
+        let r = await axios.post('//uic-api.beeplaying.com/uic/api/user/login/transInfo')
+        userInfo = r.data.data || r.data
+        localStorage.setItem('user_Info', JSON.stringify(userInfo))
+      };
+      // 渠道id
+      let _channel = localStorage.getItem('APP_CHANNEL') || 100001
+      let defaultState = {
+        plateform: 'h5',
+        subplateform: userAgent.indexOf('Mac OS') > -1 ? 'ios' : 'android',
+        version: localStorage.getItem('version_flag') && localStorage.getItem('version_flag') == 2 ? '2.0.0' : '1.0.0',
+        channel: _channel,
+        logs: [
+          {
+            uid: userInfo.userId,
+            begintime: dateNumber,
+            eventid: eventid,
+            eventcontent: Object.assign({
+              residual_gold: userInfo.amount,
+              position_id: null,
+              target_project_id: null,
+              task_id: null,
+              task_name: null,
+              marketing_id: null,
+              residual_jingdong: null,
+              residual_phone: null,
+              entrance: localStorage.getItem('platSource') || 'plat',
+              from_project_id: this.getUrlParam('gametype') || this.getUrlParam('gameType'),
+              classify: localStorage.getItem('card_level') || 0
+            }, eventcontent)
+          }
+        ]
+      }
+      let formData = new FormData()
+      formData.append('appName', 'wf_game')
+      formData.append('json', JSON.stringify(defaultState))
+      // 请求
+      return axios.post('https://log-center.beeplaying.com/am/log/v1/json', formData, { timeout: 500 })
+    } catch (e) {
+      return
     }
-    let formData = new FormData()
-    formData.append('appName', 'wf_game')
-    formData.append('json', JSON.stringify(defaultState))
-    // 请求
-    return axios.post('https://log-center.beeplaying.com/am/log/v1/json', formData, { timeout: 500 })
   },
   getUrlParam: function (ename) {
     var url = window.location.href

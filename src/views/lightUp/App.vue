@@ -176,19 +176,27 @@ export default {
       if (this.isLoading) {
         return
       }
+      GLOBALS.marchSetsPoint('A_H5PT0297003537', {
+        level: this.level
+      }) // H5平台-猩猩点灯活动-奖励一键领取按钮点击
       this.isLoading = true
-      const res = await receiveAll(this.level)
-      this.isLoading = false
-      const code = _get(res, 'code', 0)
-      if (code === 200) {
-        this.awardInfo = _get(res, 'data', {})
-        this.openPop(5)
-        GLOBALS.marchSetsPoint('A_H5PT0297003537', {
-          level: this.level
-        }) // H5平台-猩猩点灯活动-奖励一键领取按钮点击
-      } else if (code === 101) {
+      if (this.list && this.list.filter(item => (item.status === 0 || item.status === 1)).length) {
+        const res = await receiveAll(this.level)
+        this.isLoading = false
+        const code = _get(res, 'code', 0)
+        if (code === 200) {
+          this.awardInfo = _get(res, 'data', {})
+          this.openPop(5)
+        } else if (code === 101) {
+          this.$toast.show({
+            message: _get(res, 'message', ''),
+            duration: 3000
+          })
+        }
+      } else {
+        this.isLoading = false
         this.$toast.show({
-          message: _get(res, 'message', ''),
+          message: '当前层级奖励已领完',
           duration: 3000
         })
       }
