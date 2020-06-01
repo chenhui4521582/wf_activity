@@ -51,7 +51,7 @@
       <!-- banner -->
       <slider :list="sliderList"/>
       <div class="rank">
-        <div class="nav" :class="{'blue': currentIndex == 1}">
+        <div class="nav" :class="{'blue': currentIndex == 2}">
           <div class="item name">昵称</div>
           <div class="item hot">火力值</div>
           <div class="item people">贡献值</div>
@@ -76,8 +76,8 @@
           </template>
         </div>
         <div class="switch-btn" v-if="isJoin">
-          <img v-if="currentIndex == 1" class="inner-img" src="./img/switch-red.png" alt="" @click="handleClick(2)">
-          <img v-if="currentIndex == 2" class="inner-img" src="./img/switch-blue.png" alt="" @click="handleClick(1)">
+          <img v-if="currentIndex == 2" class="inner-img" src="./img/switch-red.png" alt="" @click="handleClick(1)">
+          <img v-if="currentIndex == 1" class="inner-img" src="./img/switch-blue.png" alt="" @click="handleClick(2)">
         </div>
       </div>
     </div>

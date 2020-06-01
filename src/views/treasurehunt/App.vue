@@ -726,10 +726,6 @@
             .text-two {
               margin-top: 0.05rem;
             }
-            &.on {
-              background: rgba(120, 8, 41, 1);
-              border: .03rem solid rgba(249, 217, 88, 1);
-            }
             &.flk {
               left: 0.4rem;
               border: none;
@@ -737,6 +733,10 @@
                 width: 100%;
                 height: 100%;
               }
+            }
+            &.on {
+              background: rgba(120, 8, 41, 1);
+              border: .03rem solid rgba(249, 217, 88, 1);
             }
             .end {
               background: url(./images/received.png) no-repeat;
