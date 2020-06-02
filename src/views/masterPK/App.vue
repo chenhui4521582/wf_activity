@@ -302,26 +302,13 @@ export default {
     countDownCallback() {
       this.activitiesInfo.state = 2
       this._getInfo()
-    },
-    endTime() {
-      let date = new Date()
-      let y = date.getFullYear()
-      let m = date.getMonth() + 1
-      let d = date.getDate()
-      return new Date(`${y}/${m}/${d}`).getTime()
     }
   },
   mounted() {
     this._getInfo()
-    let endTime = this.endTime()
     let cacheTime = localStorage.getItem('maskterPk')
     /** 假如缓存时间小于当前时间, 打开弹框更新缓存**/
     if (cacheTime) {
-      if(endTime != cacheTime){
-        localStorage.setItem('maskterPk', `${this.endTime()}`)
-        this.openPopup(2)
-      }
-    } else {
       localStorage.setItem('maskterPk', `${this.endTime()}`)
       this.openPopup(2)
     }
