@@ -44,16 +44,15 @@ export default {
     swtichLevel (level) {
       this.level = level
       GLOBALS.marchSetsPoint('A_H5PT0297003544', { level: level }) // H5平台-猩猩点灯活动-关卡等级点击
-
     },
     openPop (type) {
       this.$emit('open-pop', type)
       switch (type) {
         case 1:
-          GLOBALS.marchSetsPoint('A_H5PT0297003536') // H5平台-猩猩点灯活动-奖励按钮点击
+          GLOBALS.marchSetsPoint('A_H5PT0297003543') // H5平台-猩猩点灯活动-规则按钮点击
           break
         case 2:
-          GLOBALS.marchSetsPoint('A_H5PT0297003543') // H5平台-猩猩点灯活动-规则按钮点击
+          GLOBALS.marchSetsPoint('A_H5PT0297003536') // H5平台-猩猩点灯活动-奖励按钮点击
           break
 
         default:
