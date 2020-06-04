@@ -309,7 +309,7 @@ export default {
     let cacheTime = localStorage.getItem('maskterPk')
     /** 假如缓存时间小于当前时间, 打开弹框更新缓存**/
     if (!cacheTime) {
-      localStorage.setItem('maskterPk', `${this.endTime()}`)
+      localStorage.setItem('maskterPk', `${Date.now()}`)
       this.openPopup(2)
     }
     GLOBALS.marchSetsPoint('P_H5PT0296', {
