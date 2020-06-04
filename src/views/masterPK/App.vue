@@ -308,7 +308,7 @@ export default {
     this._getInfo()
     let cacheTime = localStorage.getItem('maskterPk')
     /** 假如缓存时间小于当前时间, 打开弹框更新缓存**/
-    if (cacheTime) {
+    if (!cacheTime) {
       localStorage.setItem('maskterPk', `${this.endTime()}`)
       this.openPopup(2)
     }
