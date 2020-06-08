@@ -11,7 +11,7 @@
           活动结束，已发榜
         </template>
         <template v-else>
-          发榜时间 ：{{info.endDate}}
+          活动结束时间 ：{{info.endDate}} 23:59:59
         </template>
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
