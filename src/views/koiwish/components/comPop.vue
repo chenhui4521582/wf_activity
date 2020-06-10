@@ -470,6 +470,7 @@
                           height: .63rem;
                           background: url("../images/compop/receive.png");
                           background-size: 100% 100%;
+                          margin: auto;
                           &.gray {
                             background: url("../images/compop/received.png");
                             background-size: 100% 100%;
