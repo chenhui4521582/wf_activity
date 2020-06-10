@@ -166,10 +166,10 @@
         this['expand' + flag] = false
       },
       async gotowish(poolitem) {
-        GLOBALS.marchSetsPoint(poolitem.jackpotType == 1 ? 'A_H5PT0300003570' : 'A_H5PT0300003577')
         this.resetExpand()
         //剩余珠珠小于选择的梯度即珠珠不够许愿
         if (poolitem.jackpotStatus == 2) return
+        GLOBALS.marchSetsPoint(poolitem.jackpotType == 1 ? 'A_H5PT0300003570' : 'A_H5PT0300003577')
         if (this.actInfo.userInfo.remnantNum < poolitem.betArray[poolitem.jackpotType == 1 ? this.gradientIndex0 : this.gradientIndex1]) {
           this.showPop(3, false)
         } else {
