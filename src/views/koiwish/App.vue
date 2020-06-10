@@ -31,29 +31,25 @@
             </div>
           </div>
           <div class="btnwish" :class="{gray:poolitem.jackpotStatus==2}" @click="gotowish(poolitem)"></div>
+          <div class="gradient_pop"
+               :class="{expand:(poolindex==0&&expand0)||(poolindex==1&&expand1),wish0:poolindex==0,wish1:poolindex==1}" v-if="(poolindex==0&&expand0)||(poolindex==1&&expand1)">
+            <div class="item" v-for="(item,index) in poolitem.betArray">
+              <div class="item_item" @click="selectGradient(poolindex,index)">
+                <img src="./images/zhuzhu0.png" alt="">
+                <span>{{item}}</span>
+              </div>
+            </div>
+          </div>
           <div class="gradient"
-               :class="{expand:(poolindex==0&&expand0)||(poolindex==1&&expand1),gray:poolitem.jackpotStatus==2,wish0:poolindex==0,wish1:poolindex==1}">
-            <template v-if="(poolindex==0&&expand0)||(poolindex==1&&expand1)">
-              <div class="item" v-for="(item,index) in poolitem.betArray">
-                <div class="item_item" @click="selectGradient(poolindex,index)">
-                  <img src="./images/zhuzhu0.png" alt="">
-                  <span>{{item}}</span>
-                </div>
-                <i class="iconfont icon-next" v-if="index==poolitem.betArray.length-1"
-                   @click="poolindex==0&&(expand0=false)||poolindex==1&&(expand1=false)"></i>
+               :class="{gray:poolitem.jackpotStatus==2,wish0:poolindex==0,wish1:poolindex==1}">
+            <div class="item single" @click="poolitem.jackpotStatus<2&&(poolindex==0&&(expand0=!expand0)||poolindex==1&&(expand1=!expand1))">
+              <div class="item_item">
+                <img src="./images/zhuzhu0.png" alt="">
+                <span v-if="poolindex==0">{{poolitem.betArray[gradientIndex0]}}</span>
+                <span v-else>{{poolitem.betArray[gradientIndex1]}}</span>
               </div>
-            </template>
-            <template v-else>
-              <div class="item single">
-                <div class="item_item">
-                  <img src="./images/zhuzhu0.png" alt="">
-                  <span v-if="poolindex==0">{{poolitem.betArray[gradientIndex0]}}</span>
-                  <span v-else>{{poolitem.betArray[gradientIndex1]}}</span>
-                </div>
-                <i class="iconfont icon-next" @click="poolitem.jackpotStatus<2&&(expand0=true)" v-if="poolindex==0"></i>
-                <i class="iconfont icon-next" @click="poolitem.jackpotStatus<2&&(expand1=true)" v-else></i>
-              </div>
-            </template>
+              <i class="iconfont icon-next" :class="{expand:(poolindex==0&&expand0||poolindex==1&&expand1)}"></i>
+            </div>
           </div>
           <div class="counttime" v-if="poolindex==0&&countdown1.time || (poolindex==1&&countdown2.time)">
             许愿抽锦鲤<br>
@@ -464,6 +460,7 @@
             justify-content: center;
             position: relative;
             i {
+              font-size: .28rem;
               color: #FFFC0D;
             }
             img {
@@ -474,10 +471,6 @@
             &.wish1 {
               background: url("./images/wish1_total.png");
               background-size: 100% 100%;
-              color: #AE0107;
-              i {
-                color: #AE0107;
-              }
             }
             &:before {
               content: '';
@@ -495,13 +488,14 @@
             }
           }
           .r_info {
-            margin: .05rem 0 .29rem;
-            font-size: 20px;
+            margin: .05rem 0 .2rem;
+            font-size: .2rem;
             font-family: PingFang SC;
             font-weight: bold;
             color: rgba(255, 242, 189, 1);
             text-align: center;
             &.wish1 {
+              margin: .05rem 0 .29rem;
               color: #FEEFBA
             }
           }
@@ -555,6 +549,46 @@
               background-size: 100% 100%;
             }
           }
+          .gradient_pop {
+            position: absolute;
+            bottom: .3rem;
+            right: .28rem;
+            width: 1.7rem;
+            height: 1.6rem;
+            background: url("./images/gradientpop0.png");
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            font-size: .24rem;
+            font-weight: bold;
+            color: rgba(255, 241, 189, 1);
+            padding: .1rem 0;
+            box-sizing: border-box;
+            .item {
+              width: 1.15rem;
+              img {
+                width: .3rem;
+                height: .3rem;
+                margin-right: .13rem;
+              }
+              display: flex;
+              align-items: center;
+              line-height: .3rem;
+              &.single {
+                justify-content: center;
+              }
+              .item_item {
+                display: flex;
+                align-items: center;
+              }
+            }
+            &.wish1 {
+              background: url("./images/gradientpop1.png");
+              background-size: 100% 100%;
+            }
+          }
           .gradient {
             position: absolute;
             bottom: -.29rem;
@@ -588,27 +622,17 @@
                 align-items: center;
               }
               i {
+                font-size: .16rem;
                 transform: rotate(-90deg);
                 margin-left: .13rem;
-              }
-            }
-            &.expand {
-              height: 1.6rem;
-              background: url("./images/gradientpop0.png");
-              background-size: 100% 100%;
-              i {
-                transform: rotate(-270deg);
-                margin-left: .13rem;
+                &.expand{
+                  transform: rotate(-270deg);
+                }
               }
             }
             &.wish1 {
               background: url("./images/gradientbtn1.png");
               background-size: 100% 100%;
-              &.expand {
-                height: 1.6rem;
-                background: url("./images/gradientpop1.png");
-                background-size: 100% 100%;
-              }
             }
             &.gray {
               background: url("./images/gradientbtngray.png");
