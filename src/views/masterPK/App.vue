@@ -16,8 +16,8 @@
     </div>
     <!-- 奖池 -->
     <div class="prize">
-      <div class="red item">加入任一队伍即可瓜分5000元话费，玩家贡献值越高，奖励越多</div>
-      <div class="blue item">获胜队赢80%奖池奖励，惜败队获20%。队员贡献值越高，奖励越多</div>
+      <div class="blue item">加入任一队伍即可瓜分5000元话费，玩家贡献值越高，奖励越多</div>
+      <div class="red item">获胜队赢80%奖池奖励，惜败队获20%。队员贡献值越高，奖励越多</div>
       <div class="jeckpot">
         奖池已累计 <span>{{activitiesInfo.awardPool || 0}}</span> 元京东券
         <img class="jeckpot-icon" src="./img/jeckpot-icon.png" alt="" @click="openPopup(13)">
