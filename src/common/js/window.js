@@ -215,6 +215,26 @@ window.GLOBALS = {
       millisecond = millisecond - 1000
     }
   },
+  remainingTimeExt (_this, millisecond, obj, isText = false, fn) {
+    var that = this
+    timer()
+    var t = setInterval(timer, 1000)
+
+    function timer () {
+      if (millisecond <= 1) {
+        _this.$set(obj, 'time', '')
+        clearInterval(t)
+        if (fn) {
+          fn()
+        }
+        return
+      }
+      var minute = Math.floor((millisecond % (1000 * 60 * 60)) / (1000 * 60))
+      var second = Math.floor((millisecond % (1000 * 60)) / 1000)
+      _this.$set(obj,'time',minute*60+ second)
+      millisecond = millisecond - 1000
+    }
+  },
   getJumpToGameUrl (url) {
     return util.jumpToGameUrl({ url: url })
   },
