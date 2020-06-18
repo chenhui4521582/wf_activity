@@ -14,9 +14,9 @@
                 <scroll>
                   <div>
                     <p>1、活动时间：{{actInfo.beginDate}}-{{actInfo.endDate}}</p>
-                    <p>2、天降福粽</p>
+                    <p>2、<span style="font-weight: bold">天降福粽</span></p>
                     <p>每天{{actInfo.zongzi.beginHour}}-{{actInfo.zongzi.endHour}}点平台发放【福棕】，过时未领取作废</p>
-                    <p>3、龙舟大会</p>
+                    <p>3、<span style="font-weight: bold">龙舟大会</span></p>
                     <p>①赛制</p>
                     <p class="highlight">
                       每天开展龙舟大会，每天0-24点为1个赛程回合，共有7个回合。分铜、银、金3个赛道，各赛道长度和奖励不同；玩家需在{{actInfo.applyDeadlineHour}}点前报名，且仅可报名1个赛道。{{actInfo.applyDeadlineHour}}点后未报名的，则无法参与当日竞赛；</p>
@@ -79,7 +79,7 @@
                   <img src="../images/compop/sad.png" alt="" v-else class="awardImg sad">
                 </template>
                 <div class="title5" v-if="popType==5">您可冲刺<i>{{awardData.awardsName}}米</i>划桨距离<br><i
-                  v-if="!awardData.isFromPackage">报名后可划桨</i>
+                  v-if="!awardData.isFromPackage">{{awardData.isAppointment?'':'报名后可划桨'}}</i>
                   <template v-else>（含礼包赠送）</template>
                 </div>
                 <div class="title5" v-else-if="popType==6&&!awardData.awardsType">昨日在铜赛道暂未获得上榜，<br>再接再厉！</div>

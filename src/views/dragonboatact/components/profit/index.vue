@@ -11,7 +11,7 @@
             <span class="s-text">{{item.nickname || '暂无昵称'}}</span>
             <span class="hammer-number">{{item.amount}}米</span>
             <span class="award-names">
-              {{item.awardsName}}
+              {{item.awardsName||'暂无超级奖励'}}
             </span>
           </li>
         </ul>
