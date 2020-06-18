@@ -83,7 +83,7 @@
                   <template v-else>（含礼包赠送）</template>
                 </div>
                 <div class="title5" v-else-if="popType==6&&!awardData.awardsType">昨日在铜赛道暂未获得上榜，<br>再接再厉！</div>
-                <div class="title5" v-else-if="popType==8">{{awardData.awardsName}}{{awardData}}</div>
+                <div class="title5" v-else-if="popType==8">{{awardData.awardsName}}</div>
                 <template v-else>
                   <div class="award_name">{{awardData.awardsName}}</div>
                   <div class="info awardsType" v-if="popType==3">
