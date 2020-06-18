@@ -1,5 +1,5 @@
 <template>
-  <div class="koiwish" v-if="actInfo" :class="{rank:showRank}">
+  <div id="app" class="koiwish" v-if="actInfo" :class="{rank:showRank}">
     <div class="koiwish_container" :class="{bg1:tabIndex==1}" v-if="!showRank">
       <img class="back" src="./images/back.png" alt="" @click="back">
       <img class="rule" src="./images/rule.png" alt="" @click="showPop(1)">
@@ -73,7 +73,7 @@
                   <div class="amount">{{actInfo.userInfo.topBoat.amount||0}}米</div>
                 </template>
               </div>
-              <div class="item" :style="{top:getTop(actInfo.userInfo,1)}">
+              <div class="item" :style="{top:getTop(actInfo.userInfo,1)}" id="myboat">
                 <img src="./images/boat1.png" alt="">
                 <div class="name mine"></div>
                 <div class="amount">{{actInfo.userInfo.currentAmount||0}}米</div>
@@ -104,7 +104,7 @@
         </div>
       </template>
     </div>
-    <rank v-else @back="showRank=false" @showPop="showPop"></rank>
+    <rank v-else @back="rankBack" @showPop="showPop"></rank>
     <com-pop :pop-type="popType" :awardData="awardData" ref="comPop" @close="popType=0"
              @refresh="getActInfo" :ruleTime="actInfo&&actInfo.beginDate" @chooseChannel="chooseChannel"
              @showPop5="showPop5" :channels="actInfo.trackList" :actInfo="actInfo"></com-pop>
@@ -156,6 +156,14 @@
       dropDown: () => import('./components/dropDown')
     },
     methods: {
+      rankBack() {
+        this.showRank = false
+        if (this.appointState == 1) {
+          setTimeout(() => {
+            this.getAnchor('myboat')
+          }, 100)
+        }
+      },
       getTop(item, flag) {
         let amount = flag ? item.currentAmount : (item && item.amount || 0)
         let totalAmount = this.actInfo.trackList[this.selectChannel].totalAmount
@@ -166,6 +174,11 @@
         if (index != this.tabIndex) {
           GLOBALS.marchSetsPoint(this.tabIndex ? 'A_H5PT0302003617' : 'A_H5PT0302003614')
           this.tabIndex = index
+          if (index == 1 && this.appointState == 1) {
+            setTimeout(() => {
+              this.getAnchor('myboat')
+            }, 100)
+          }
         }
       },
       getAwardName(awardType) {
@@ -247,8 +260,9 @@
       showPop5(num) {
         if (this.actInfo.incrBagAmount || this.actInfo.incrGameAmount) {
           this.awardData = {
-            awardsType: '', awardsName: (this.actInfo.incrBagAmount || this.actInfo.incrGameAmount),
-            isFromPackage: this.actInfo.incrBagAmount > 0
+            awardsType: '', awardsName: (this.actInfo.incrBagAmount + this.actInfo.incrGameAmount),
+            isFromPackage: this.actInfo.incrBagAmount > 0,
+            isAppointment: this.appointState == 1
           }
           setTimeout(() => {
             this.showPop(5)
@@ -281,7 +295,8 @@
           } else {
             this.showLoading = false
             this.$toast.show({
-              message
+              message,
+              duration: 1000
             })
           }
         }
@@ -301,7 +316,8 @@
         } else {
           this.showLoading = false
           this.$toast.show({
-            message: message
+            message: message,
+            duration: 1000
           })
         }
       },
@@ -312,11 +328,18 @@
         }
       },
       setChannel(index) {
-        if (!this.isEnd && this.appointState == 0) {
-          this.selectChannel != index && (setTimeout(() => {
-            this.selectChannel = index
-          }, 500))
-          this.getHornList(this.selectChannel + 1)
+        if (!this.isEnd) {
+          if (this.appointState == 0) {
+            this.selectChannel != index && (setTimeout(() => {
+              this.selectChannel = index
+            }, 500))
+            this.getHornList(this.selectChannel + 1)
+          } else if (this.appointState == 1 && (index != this.selectChannel)) {
+            this.$toast.show({
+              message: `你已报名${this.channelNames[this.selectChannel]}`,
+              duration: 1000
+            })
+          }
         }
       },
       async getHornList(idx) {
@@ -331,7 +354,8 @@
             this.showRank = true
           } else {
             this.$toast.show({
-              message: '报名后可见'
+              message: '报名后可见',
+              duration: 1000
             })
           }
         } else {
@@ -356,11 +380,20 @@
           } else {
             this.showLoading = false
             this.$toast.show({
-              message
+              message,
+              duration: 1000
             })
           }
         }
-      }
+      },
+      getAnchor(name) {
+        if (window == window.top) {
+          document.body.scrollTop = document.getElementById(name).offsetTop + document.getElementById(name).offsetHeight
+          !document.body.scrollTop && (document.documentElement.scrollTop = document.getElementById(name).offsetTop + document.getElementById(name).offsetHeight)
+        } else {
+          document.getElementById('app').scrollTop = document.getElementById(name).offsetTop + document.getElementById(name).offsetHeight
+        }
+      },
     },
     async mounted() {
       GLOBALS.marchSetsPoint('P_H5PT0302', {
@@ -593,7 +626,7 @@
             height: .77rem;
             background: url("./images/tips0.png");
             background-size: 100% 100%;
-            animation: toggleTip0 1s infinite ease-in-out;
+            animation: toggleTip0 .5s infinite ease-in-out;
           }
           &:after {
             content: '';
@@ -604,7 +637,7 @@
             height: .77rem;
             background: url("./images/tips1.png");
             background-size: 100% 100%;
-            animation: toggleTip1 1s infinite ease-in-out;
+            animation: toggleTip1 .5s infinite ease-in-out;
           }
         }
         .btn {
