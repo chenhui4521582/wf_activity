@@ -15,11 +15,6 @@ new function () {
     _self.changePage()
   }, false)
 
-  // let hm = document.createElement("script");
-  // hm.src = `https://wap.beeplaying.com/ErrorPage/linkUrl.js?time=${new Date().getTime()}`;
-  // let s = document.getElementsByTagName("script")[0];
-  // s.parentNode.insertBefore(hm, s);
-
   var script1 = document.createElement('script')
   script1.type = 'text/javascript'
   script1.src = 'https://wap.beeplaying.com/ErrorPage/linkUrl.js?time=' + (new Date().getTime())
