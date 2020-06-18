@@ -6,7 +6,8 @@
       <img class="gonglue" src="./images/gonglue.png" alt="" @click="showPop(2)">
       <template v-if="tabIndex==1">
         <div class="myprize" @click="showPop(10)"></div>
-        <div class="detail" @click="openRank">赛况</div>
+        <div class="detail" @click="openRank" v-if="!isEnd">赛况</div>
+        <div class="yesterday" @click="showPop(9)" v-else>昨日排行</div>
       </template>
       <div class="time" :class="{end:isEnd}">
         <template v-if="!isEnd">
@@ -529,6 +530,23 @@
         color: rgba(106, 33, 19, 1);
         text-align: center;
         line-height: .75rem;
+      }
+      .yesterday {
+        width: .61rem;
+        height: 1.59rem;
+        padding: 0 .2rem;
+        box-sizing: border-box;
+        background: rgba(255, 108, 0, 1);
+        border-radius: .2rem 0 0 .2rem;
+        position: absolute;
+        top: 2rem;
+        right: 0;
+        font-size: .3rem;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+        display: flex;
+        align-items: center;
       }
       .content {
         position: absolute;
