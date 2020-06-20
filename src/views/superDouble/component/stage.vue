@@ -40,10 +40,15 @@
     </section>
     <section>
       <div class="cost-btn" :style="{backgroundImage:`url(${curStageInfo.btn})`}" @click="_lot()">
-        消耗{{curStageInfo.consumeNum}}颗<br />
-        糖豆开始
+        <template v-if="curStageInfo.round===1">
+          消耗{{curStageInfo.consumeNum}}颗<br />
+          糖豆开始
+        </template>
+        <template v-else>
+          继续翻倍
+        </template>
       </div>
-      <div class="quit-btn" @click="openPop(4)">
+      <div v-if="curStageInfo.round!==1" class="quit-btn" @click="openPop(4)">
         <img src="../img/quit-icon.png" alt="">
       </div>
     </section>
@@ -60,7 +65,8 @@ export default {
   data () {
     return {
       selectedHand: '',
-      curStage: ''
+      curStage: '',
+      clicked: false
     }
   },
   computed: {
@@ -112,27 +118,94 @@ export default {
   },
   mounted () {
     this.curStage = `stage-${this.info.curStage}`
-    this.selected = ''
+    this.selectedHand = ''
   },
   methods: {
     toggleStage (name) {
       this.curStage = name
       this.selectedHand = ''
+      GLOBALS.marchSetsPoint('A_H5PT0301003584', { level: this.curStage }) // H5平台-疯狂翻倍活动-场次按钮点击
     },
     selectHand (hand) {
       this.selectedHand = hand
     },
     async _lot () {
-      if (this.selectedHand) {
+      GLOBALS.marchSetsPoint('A_H5PT0301003585', { level: this.curStage }) // H5平台-疯狂翻倍活动-开始按钮点击
+      if (!this.selectedHand) {
+        this.$toast.show({
+          message: '请选择一只手',
+          duration: 2000,
+          isOneLine: true
+        })
+      } else if (this.info.totalNum < this.curStageInfo.consumeNum && this.curStageInfo.round === 1) {
+        this.openPop(6)
+      } else if (!this.clicked) {
+        this.clicked = true
         const { code, data } = await lot(this.stageInfo[this.curStage].stage)
+        if (code === 200) {
+          this.selectedHand = ""
+          let activityInfo = {
+            betNum: data.awardNum,
+            round: data.round,
+            totalNum: data.totalNum
+          }
+          if (data.flag) {
+            this.openPop(9, {
+              betNum: data.awardNum
+            })
+          } else {
+            this.openPop(5, {
+              betNum: data.awardNum
+            })
+          }
+          this.clicked = false
+          this.$emit('change-activity-info', activityInfo)
+        }
       }
     },
-    openPop (type) {
-      this.$emit('open-pop', type)
+    openPop (type, item) {
+      switch (type) {
+        case 4:
+          GLOBALS.marchSetsPoint('A_H5PT0301003599') // H5平台-疯狂翻倍活动-请留步退出弹窗加载完成
+          break
+        case 5:
+          GLOBALS.marchSetsPoint('A_H5PT0301003597') // H5平台-疯狂翻倍活动-翻倍失败弹窗加载完成
+          break
+        case 6:
+          GLOBALS.marchSetsPoint('A_H5PT0301003601') // H5平台-疯狂翻倍活动-糖豆不足弹窗加载完成
+          break
+        case 9:
+          GLOBALS.marchSetsPoint('A_H5PT0301003595') // H5平台-疯狂翻倍活动-翻倍成功弹窗加载完成
+          break
+
+        default:
+          break
+      }
+      this.$emit('open-pop', type, item)
     },
     async _quit () {
-      const { code, data } = await quit(this.stageInfo[this.curStage].stage)
+      const { code, data, message } = await quit(this.stageInfo[this.curStage].stage)
+      if (code === 200) {
+        let activityInfo = {
+          betNum: data.round === 1 ? 0 : data.awardNum,
+          round: data.round,
+          totalNum: data.totalNum
+        }
+        this.$emit('change-activity-info', activityInfo)
+        this.$toast.show({
+          message: '已退出翻倍',
+          duration: 1000,
+          isOneLine: true
+        })
+      } else {
+        this.$toast.show({
+          message: message,
+          duration: 1000,
+          isOneLine: true
+        })
+      }
     }
+
   },
   watch: {
     curStage (val) {
@@ -198,7 +271,7 @@ export default {
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 7.2rem;
+    width: 100%;
     bottom: 0.54rem;
     .hand-content {
       display: flex;
@@ -241,7 +314,7 @@ export default {
     height: 0.8rem;
     position: absolute;
     bottom: 0.1rem;
-    right: 0.2rem;
+    left: 76%;
     font-size: 0;
     img {
       width: 100%;

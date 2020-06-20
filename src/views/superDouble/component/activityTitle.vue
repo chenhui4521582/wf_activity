@@ -44,9 +44,21 @@ export default {
       }
     },
     back () {
+      GLOBALS.marchSetsPoint('A_H5PT0301003586') // H5平台-疯狂翻倍活动-返回按钮点击
       window.history.go(-1)
     },
     openPop (type) {
+      switch (type) {
+        case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0301003587') // H5平台-疯狂翻倍活动-规则按钮点击
+          break
+
+        case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0301003588') // H5平台-疯狂翻倍活动-奖励按钮点击
+          break
+        default:
+          break
+      }
       this.$emit('open-pop', type)
     }
   }
@@ -72,7 +84,7 @@ export default {
     padding: 0.04rem 0.8rem 0 0.4rem;
     position: absolute;
     top: 2.52rem;
-    left: 3.6rem;
+    left: 50%;
     margin-left: -3.12rem;
     img {
       width: 0.3rem;
