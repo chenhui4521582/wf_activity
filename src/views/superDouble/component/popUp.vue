@@ -68,25 +68,6 @@
                   </div>
                 </li>
               </ul>
-              <ul class="my-rank-info">
-                <li>
-                  <div>我的排名</div>
-                  <div>累计糖豆</div>
-                  <div>奖励</div>
-                </li>
-                <li>
-                  <div>{{rankInfo.myRank?rankInfo.myRank:'30+'}}</div>
-                  <div>{{rankInfo.totalNum}}</div>
-                  <div>
-                    <template v-if="rankInfo.currentAwards&&rankInfo.currentAwards.includes('+')">
-                      {{rankInfo.currentAwards.split('+')[0]}}<br />+{{rankInfo.currentAwards.split('+')[1]}}
-                    </template>
-                    <template v-else>
-                      {{rankInfo.currentAwards}}
-                    </template>
-                  </div>
-                </li>
-              </ul>
             </template>
             <template v-if="type===4||type===5||type===6||type===7">
               <p class="message">
@@ -161,6 +142,27 @@
               </p>
             </template>
           </div>
+          <template v-if="type===3">
+            <ul class="my-rank-info">
+              <li>
+                <div>我的排名</div>
+                <div>累计糖豆</div>
+                <div>奖励</div>
+              </li>
+              <li>
+                <div>{{rankInfo.myRank?rankInfo.myRank:'30+'}}</div>
+                <div>{{rankInfo.totalNum}}</div>
+                <div>
+                  <template v-if="rankInfo.currentAwards&&rankInfo.currentAwards.includes('+')">
+                    {{rankInfo.currentAwards.split('+')[0]}}<br />+{{rankInfo.currentAwards.split('+')[1]}}
+                  </template>
+                  <template v-else>
+                    {{rankInfo.currentAwards}}
+                  </template>
+                </div>
+              </li>
+            </ul>
+          </template>
           <div class="btn" v-if="btnText" @click="handleClick">{{btnText}}</div>
         </section>
         <div class="close-icon" v-if="info.state===1" :class="btnText?'':'no-btn'"
@@ -387,6 +389,28 @@ export default {
         font-weight: 500;
         color: #b2fff8;
       }
+      .my-rank-info {
+        position: absolute;
+        bottom: 0.44rem;
+        left: 0.21rem;
+        width: 6rem;
+        background: #2ee6ff;
+        color: #003e5c;
+        padding: 0.14rem 0;
+        border-radius: 0 0 0.1rem 0.1rem;
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          line-height: 0.3rem;
+          div {
+            flex: 1;
+          }
+          &:first-child {
+            font-weight: 800;
+          }
+        }
+      }
       .btn {
         width: 3.44rem;
         height: 1.14rem;
@@ -452,7 +476,7 @@ export default {
         position: relative;
         .container {
           width: 6rem;
-          height: 4.2rem;
+          height: 4.5rem;
           p {
             color: #ffdc4e;
             font-weight: 800;
@@ -506,28 +530,6 @@ export default {
                 &:nth-child(4) {
                   flex: 1;
                 }
-              }
-            }
-          }
-          .my-rank-info {
-            position: absolute;
-            bottom: 0.44rem;
-            left: 0.21rem;
-            width: 6rem;
-            background: #2ee6ff;
-            color: #003e5c;
-            padding: 0.14rem 0;
-            border-radius: 0 0 0.1rem 0.1rem;
-            li {
-              display: flex;
-              align-items: center;
-              justify-content: space-around;
-              line-height: 0.3rem;
-              div {
-                flex: 1;
-              }
-              &:first-child {
-                font-weight: 800;
               }
             }
           }
