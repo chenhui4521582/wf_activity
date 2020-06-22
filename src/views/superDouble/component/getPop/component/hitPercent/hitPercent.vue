@@ -156,6 +156,7 @@ export default {
     }
   },
   methods: {
+    /* eslint-disable no-undef */
     getList (newArr, completeArr, maxItem) {
       if (newArr.length < 4) {
         var len = 4 - newArr.length
