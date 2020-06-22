@@ -476,7 +476,7 @@ export default {
         position: relative;
         .container {
           width: 6rem;
-          height: 4.5rem;
+          height: 4.2rem;
           p {
             color: #ffdc4e;
             font-weight: 800;
@@ -497,6 +497,7 @@ export default {
               div {
                 text-align: center;
                 margin: 0.1rem;
+                white-space: nowrap;
                 &:nth-child(1) {
                   width: 0.5rem;
                   span {
