@@ -514,6 +514,7 @@
         position: absolute;
         top: .17rem;
         left: .15rem;
+        z-index: 1;
       }
       .rule {
         width: .68rem;
