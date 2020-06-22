@@ -69,8 +69,8 @@
               <template v-else-if="[3,4,5,6,8].includes(popType)">
                 <div class="title5" v-if="popType==4">你已成功累计划桨<i>{{awardData.amount}}米</i>,<br>获得以下奖励</div>
                 <div class="title5" v-else-if="popType==6&&awardData.awardsType">
-                  昨日在金赛道获得第
-                  <i>8名，</i><br>获得以下奖励
+                  昨日在{{channelNames[awardData.trackLevel-1]}}获得第
+                  <i>{{awardData.rank}}名，</i><br>获得以下奖励
                 </div>
                 <img :src="`${require(`../images/compop/${awardData.awardsType}.png`)}`" alt=""
                      class="awardImg" :class="{channel:popType==8}" v-if="awardData.awardsType">
