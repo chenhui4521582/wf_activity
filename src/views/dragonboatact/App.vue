@@ -198,8 +198,9 @@
         }
       },
       back() {
-        GLOBALS.marchSetsPoint('A_H5PT0302003608')
-        history.back(-1)
+        console.log('9999')
+        // GLOBALS.marchSetsPoint('A_H5PT0302003608')
+        // history.back(-1)
       },
       showPop(popType) {
         //'活动规则', '端午争霸须知', '恭喜获得', '恭喜您！', '快去冲刺龙舟', '昨日战报', '点击选择赛道', '报名成功！', '昨日排行'
@@ -514,6 +515,7 @@
         position: absolute;
         top: .17rem;
         left: .15rem;
+        z-index: 1;
       }
       .rule {
         width: .68rem;
