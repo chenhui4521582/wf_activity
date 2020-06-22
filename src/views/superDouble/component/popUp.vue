@@ -38,7 +38,11 @@
                 <li v-for="(item,index) in awardList" :key="index">
                   <div>{{item.createTime}}</div>
                   <div>{{item.source}}</div>
-                  <div>{{item.awardsName}}</div>
+                  <div>
+                    <template v-if="item.awardsName.includes('iPhone')"><span
+                        @click="toMyprize()">{{item.awardsName}}</span></template>
+                    <template v-else>{{item.awardsName}}</template>
+                  </div>
                 </li>
               </ul>
               <p v-if="!awardList||!awardList.length">这里空空如也</p>
@@ -279,7 +283,7 @@ export default {
     async _myRank () {
       const { code, data } = await myRank()
       if (code === 200 && data.popup) {
-        let message = ""
+        let message = ''
         if (data.myRank >= 1 && data.myRank <= 30) {
           message = '奖励已发放请注意查收'
         } else {
@@ -308,6 +312,9 @@ export default {
       } else {
         this.type = 3
       }
+    },
+    toMyprize () {
+      location.href = '/xmWap/#/my/prize'
     }
   },
   watch: {
@@ -353,7 +360,7 @@ export default {
     font-size: 0.24rem;
     text-align: center;
     .content {
-      margin-top: 1rem;
+      margin-top: 36%;
       width: 6.46rem;
       height: 7.24rem;
       background-image: url(../img/pop-up-bg.png);
@@ -413,7 +420,9 @@ export default {
           align-items: center;
           justify-content: space-between;
           line-height: 0.5rem;
-
+          span {
+            text-decoration: underline;
+          }
           div:nth-child(1) {
             flex: 25%;
             line-height: 0.3rem;

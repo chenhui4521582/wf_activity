@@ -31,6 +31,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { exchange } from '../services/api'
 export default {
   name: 'exchange',
@@ -132,11 +133,9 @@ export default {
       overflow-y: hidden;
       overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-start;
+      white-space: nowrap;
       li {
+        display: inline-block;
         &:not(:last-child) {
           margin-right: 0.22rem;
         }

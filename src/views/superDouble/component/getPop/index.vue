@@ -131,14 +131,15 @@ export default {
         task_id: index + 1,
         task_name: index === 0 ? `今日完成${item.totalNum}个每日任务给1个糖豆` : `充值任意金额，送1个糖豆`
       }) // H5平台-疯狂翻倍活动-每日任务去完成点击
-      if (index == 0) {
+      if (index === 0) {
         if (window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) === 'xmWap') {
           location.href = 'https://wap.beeplaying.com/xmWap/#/task'
         } else {
           location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'), '', '', true, '#/taskview')
         }
       } else {
-        location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
+        localStorage.setItem('paymentIsBack', true)
+        location.href = '/xmWap/#/payment'
       }
     },
     async gain (item, index) {
