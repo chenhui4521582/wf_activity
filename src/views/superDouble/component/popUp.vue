@@ -391,8 +391,8 @@ export default {
       }
       .my-rank-info {
         position: absolute;
-        bottom: 0.44rem;
-        left: 0.21rem;
+        bottom: 0.43rem;
+        left: 0.22rem;
         width: 6rem;
         background: #2ee6ff;
         color: #003e5c;
