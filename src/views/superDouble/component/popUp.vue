@@ -360,7 +360,7 @@ export default {
     font-size: 0.24rem;
     text-align: center;
     .content {
-      margin-top: 36%;
+      margin-top: 2.2rem;
       width: 6.46rem;
       height: 7.24rem;
       background-image: url(../img/pop-up-bg.png);
