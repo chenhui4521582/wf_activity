@@ -172,7 +172,7 @@
       },
       setTabIndex(index) {
         if (index != this.tabIndex) {
-          GLOBALS.marchSetsPoint(this.tabIndex ? 'A_H5PT0302003617' : 'A_H5PT0302003614')
+          GLOBALS.marchSetsPoint(index ? 'A_H5PT0302003617' : 'A_H5PT0302003614')
           this.tabIndex = index
           if (index == 1 && this.appointState == 1) {
             setTimeout(() => {
