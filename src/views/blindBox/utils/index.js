@@ -36,3 +36,13 @@ export const isShowMyPrizeNotice = () => {
   if (isFirst('myPrizeNotice')) return true
   return false
 }
+export const isShowHeader = () => {
+  let APP_CHANNEL = localStorage.getItem('APP_CHANNEL') || 'default'
+  // let noHeadChannels = ['100000', '100061', '100030', '100070', '100039']
+  let noHeadChannels = ['100039']
+  if (noHeadChannels.indexOf(APP_CHANNEL) > -1) {
+    return false
+  } else {
+    return true
+  }
+}
