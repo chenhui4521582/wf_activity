@@ -309,6 +309,9 @@ export default {
     },
     closePop () {
       if (this.info.state === 1) {
+        if (this.type === 5 || this.type === 9) {
+          this.$emit('callback', this.type)
+        }
         this.type = 0
       } else {
         if (this.type === 3) {

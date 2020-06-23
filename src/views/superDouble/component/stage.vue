@@ -56,6 +56,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { lot, quit } from '../services/api'
 export default {
   name: 'stage',
@@ -143,7 +144,7 @@ export default {
         this.clicked = true
         const { code, data } = await lot(this.stageInfo[this.curStage].stage)
         if (code === 200) {
-          this.selectedHand = ""
+          this.selectedHand = ''
           let activityInfo = {
             betNum: data.awardNum,
             round: data.round,
