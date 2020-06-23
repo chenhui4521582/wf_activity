@@ -165,8 +165,7 @@
           </template>
           <div class="btn" v-if="btnText" @click="handleClick">{{btnText}}</div>
         </section>
-        <div class="close-icon" v-if="info.state===1" :class="btnText?'':'no-btn'"
-          @click="closePop"></div>
+        <div class="close-icon" :class="btnText?'':'no-btn'" @click="closePop"></div>
       </section>
     </article>
   </transition>
@@ -312,7 +311,11 @@ export default {
       if (this.info.state === 1) {
         this.type = 0
       } else {
-        this.type = 3
+        if (this.type === 3) {
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
+        } else {
+          this.type = 3
+        }
       }
     },
     toMyprize () {
