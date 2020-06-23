@@ -65,7 +65,7 @@
                 <div class="g-package-info">
                   <ul class="li0">
                     <li>
-                      <span>累计充值:
+                      <span>今日累计充值:
                         {{taskProgressInfoData.rechargeProgress.gameBetting | conversion}}</span>
                     </li>
                     <li>
