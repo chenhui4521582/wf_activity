@@ -10,7 +10,7 @@
                 <div class="item" v-for="(item,index) in awardData.content.split('+')">
                   <img :src="awardData.productIcon|filter" alt="" v-if="index==0">
                   <img src="../images/leaf.png" alt="" v-else class="leaf">
-                  <div class="awardname">{{index==1?item:awardData.name}}</div>
+                  <div class="awardname">{{item}}</div>
                 </div>
               </div>
               <div class="btn" @click="gotogame(awardData.isCat)"></div>

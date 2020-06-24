@@ -17,7 +17,7 @@
       <div class="package2" v-if="packages.length>=4">
         <div class="item" v-for="(item,index) in packages.slice(-1)">
           <img :src="item.productIcon|filter" alt="">
-          <div class="content" v-html="item.content.replace('+','<br>')"></div>
+          <div class="content" v-html="'猫皮肤：'+item.content.replace('+','<br>')"></div>
           <div class="btn" :class="{buyed:item.buyFlag == 0}" @click="gotopay(item)">{{item.buyFlag ==
             0?'':item.price+'元'}}
           </div>
@@ -90,10 +90,6 @@
       async getPackages() {
         let {code, data} = await getPackages()
         if (code == 200) {
-          let test = ['头像框：桌球+188000金叶子', '头像框：弹珠+5000金叶子', '头像框：糖果+5000金叶子', '招财猫皮肤：春意盎然+588000金叶子']
-          test.map((item, index) => {
-            data.mallBizConfigs[index].content = item
-          })
           this.packages = data.mallBizConfigs
 
         }
