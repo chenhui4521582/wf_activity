@@ -4,7 +4,7 @@
       <div ref="hornDivWraper" :class="{channel0:channel==0}">
         <ul ref="hornUl" id="hornUl" :style="hornStyles">
           <li v-for="(item,index) in noticeList" :key="index" ref="hornLi">
-            {{item.nickname}}超过划桨超过{{item.amount}}米
+            {{item.nickname}}划桨超过{{item.amount}}米
           </li>
         </ul>
         <ul id="copyHornUl" :style="copyStyles"></ul>
