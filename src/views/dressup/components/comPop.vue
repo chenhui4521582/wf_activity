@@ -58,6 +58,7 @@
         e.preventDefault()
       },
       gotogame(isCat) {
+        GLOBALS.marchSetsPoint('A_H5PT0304003701')
         if (isCat) {
           GLOBALS.jumpOutsideGame('/petcat')
         } else {

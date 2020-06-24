@@ -1,6 +1,6 @@
 <template>
   <section class="payeddecoration">
-    <div class="time" v-if="countdown.time">{{countdown.time}}结束</div>
+    <div class="time" v-if="countdown.time">{{countdown.time.split('分')[0]+'分'}}结束</div>
     <img src="./images/back.png" alt="" class="back" @click="back">
     <template v-if="actInfo&&actInfo.state==1">
       <div class="package1">
@@ -52,7 +52,7 @@
     async mounted() {
       await this.getPackages()
       await this.getActInfo()
-      GLOBALS.marchSetsPoint('P_H5PT0284', {
+      GLOBALS.marchSetsPoint('P_H5PT0304', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })
     },
@@ -74,6 +74,7 @@
                 isCat: this.packages.length >= 4 && this.packages.slice(-1)[0].bizId == this.actInfo.bizId
               }
               setTimeout(() => {
+                GLOBALS.marchSetsPoint('A_H5PT0304003700')
                 this.$refs.comPop.showPop()
               }, 1000)
             }
@@ -100,10 +101,9 @@
       gotopay(item) {
         if (item.buyFlag == 1) {
           localStorage.setItem('originDeffer', window.location.href)
-          GLOBALS.marchSetsPoint('A_H5PT0274003251', {
-            recharge_rmb: item.price,
+          GLOBALS.marchSetsPoint('A_H5PT0304003699', {
+            product_price: item.price,
             product_id: item.bizId,
-            awards_name: item.name,
             product_name: item.name
           })   // 点击任意礼包
           localStorage.setItem('JDD_PARAM', JSON.stringify(item))
@@ -152,7 +152,7 @@
     }
     .time {
       position: absolute;
-      top:1.83rem;
+      top: 1.83rem;
       left: 0;
       right: 0;
       z-index: 2;
@@ -163,7 +163,7 @@
     }
     .back {
       position: absolute;
-      top:.2rem;
+      top: .2rem;
       left: -.1rem;
       width: .76rem;
       height: .5rem;
