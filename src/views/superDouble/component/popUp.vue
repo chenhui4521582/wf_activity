@@ -17,7 +17,7 @@
                 中途退出押宝，则可直接获得当前糖豆奖励。<br />
                 2、每次押宝都有8次翻倍机会，全部猜中最多可以将押宝糖豆数量翻256倍。翻倍过程中当糖豆数量小于初始翻倍数量时，游戏退出；当8次翻倍机会用尽时，游戏退出。<br />
                 3、本次活动分为初级、中级、高级场，级别越高，翻倍获得糖豆越多。<br />
-                4、糖豆可以通过通过游戏充值获得。<br />
+                4、糖豆可以通过游戏充值获得。<br />
                 5、活动期间内，玩家在指定游戏中消耗金叶子数量达到一定值即可领取活动糖豆。<br />
                 <span>（金叶消耗计入活动的游戏包括：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云，福满多，斗西游，飞机大作战）</span><br />
                 6、活动期间所获得的糖豆可在“欢乐兑换专区”兑换丰厚奖励。<br />
@@ -165,8 +165,7 @@
           </template>
           <div class="btn" v-if="btnText" @click="handleClick">{{btnText}}</div>
         </section>
-        <div class="close-icon" v-if="info.state===1" :class="btnText?'':'no-btn'"
-          @click="closePop"></div>
+        <div class="close-icon" :class="btnText?'':'no-btn'" @click="closePop"></div>
       </section>
     </article>
   </transition>
@@ -310,9 +309,16 @@ export default {
     },
     closePop () {
       if (this.info.state === 1) {
+        if (this.type === 5 || this.type === 9) {
+          this.$emit('callback', this.type)
+        }
         this.type = 0
       } else {
-        this.type = 3
+        if (this.type === 3) {
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
+        } else {
+          this.type = 3
+        }
       }
     },
     toMyprize () {
@@ -561,6 +567,7 @@ export default {
         position: relative;
         font-size: 0.36rem;
         height: 1rem;
+        white-space: nowrap;
       }
       .status-img {
         position: relative;

@@ -35,7 +35,8 @@ export default {
         desc: 'tg',
         img: require('./img/crush-icon.png')
       },
-      showGetPop: false
+      showGetPop: false,
+      timer: null
     }
   },
   computed: {
@@ -51,7 +52,8 @@ export default {
       const { code, data } = await activityInfo()
       if (code === 200) {
         this.activityInfo = data
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer)
           if (this.activityInfo.state !== 1) {
             this.popType = 3
           }
@@ -59,11 +61,15 @@ export default {
       }
     },
     changeActivityInfo (info) {
-      info.totalNum && this.$set(this.activityInfo, 'totalNum', info.totalNum)
+      if (info.totalNum || info.totalNum === 0) {
+        this.$set(this.activityInfo, 'totalNum', info.totalNum)
+      }
       if (info.betNum || info.betNum === 0) {
         this.$set(this.curStageInfo, 'betNum', info.betNum)
       }
-      info.round && this.$set(this.curStageInfo, 'round', info.round)
+      if (info.round || info.round === 0) {
+        this.$set(this.curStageInfo, 'round', info.round)
+      }
     },
     openPop (type, info) {
       if (type === 99) {
@@ -102,25 +108,30 @@ export default {
           GLOBALS.marchSetsPoint('A_H5PT0301003604') // H5平台-疯狂翻倍活动-确认兑换弹窗-立即兑换点击
           break
         case 5:
-          this.$nextTick(() => {
+          this.timer = setTimeout(() => {
+            clearTimeout(this.timer)
             if (this.curStageInfo.round === 1) {
               this.curStageInfo.betNum = 0
             }
-          })
+          }, 300)
           GLOBALS.marchSetsPoint('A_H5PT0301003598') // H5平台-疯狂翻倍活动-翻倍失败弹窗-知道了点击
           break
         case 9:
-          this.$nextTick(() => {
+          this.timer = setTimeout(() => {
+            clearTimeout(this.timer)
             if (this.curStageInfo.round === 1) {
               this.curStageInfo.betNum = 0
             }
-          })
+          }, 300)
           GLOBALS.marchSetsPoint('A_H5PT0301003596') // H5平台-疯狂翻倍活动-翻倍成功弹窗-知道了点击
           break
         default:
           break
       }
     }
+  },
+  destroyed () {
+    clearTimeout(this.timer)
   }
 }
 </script>
