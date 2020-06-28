@@ -131,7 +131,7 @@
         countdown: {
           time: ''
         },
-        tabIndex: 0,
+        tabIndex: 1,
         isEnd: false,
         totalDays: 0,
         selectChannel: 0,
@@ -399,8 +399,13 @@
       GLOBALS.marchSetsPoint('P_H5PT0302', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })//H5平台-端午争霸活动-页面加载完成(默认奖励页)
-      this.getActInfo()
-      GLOBALS.marchSetsPoint('A_H5PT0302003614')//H5平台-端午争霸活动-天降福粽页加载完成
+      await this.getActInfo()
+      if (this.tabIndex == 1 && this.appointState == 1) {
+        setTimeout(() => {
+          this.getAnchor('myboat')
+        }, 100)
+      }
+      GLOBALS.marchSetsPoint('A_H5PT0302003617')//H5平台-端午争霸活动-龙舟大会页加载完成
       this.getPackages()
     },
     watch: {
