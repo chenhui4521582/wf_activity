@@ -18,6 +18,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import utils from '../../common/js/utils'
 export default {
   name: '',
@@ -39,13 +40,26 @@ export default {
     }
   },
   mounted () {
+    GLOBALS.marchSetsPoint('P_H5PT0305', {
+      source_address: GLOBALS.getUrlParam('from') || ''
+    }) // H5平台-百度联运包-下载中间页加载完成
     if (this.isIOS) {
       return
     }
-    this.download()
+    switch (this.channel) {
+      case '100039':
+        location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+        break
+      case '100042':
+        location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
+        break
+      default:
+        break
+    }
   },
   methods: {
     download () {
+      GLOBALS.marchSetsPoint('A_H5PT0305003707') // H5平台-百度联运包-下载中间页-下载按钮点击
       switch (this.channel) {
         case '100039':
           location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
@@ -59,9 +73,11 @@ export default {
       }
     },
     onCopyUrl () {
+      GLOBALS.marchSetsPoint('A_H5PT0305003707') // H5平台-百度联运包-下载中间页-下载按钮点击
       this.$toast.show({ message: '链接已复制，请在浏览器打开。', isOneLine: true })
     },
     onCopy () {
+      GLOBALS.marchSetsPoint('A_H5PT0305003708') // H5平台-百度联运包-下载中间页-复制客服微信点击
       this.$toast.show({ message: '已复制' })
     },
     onError () {
