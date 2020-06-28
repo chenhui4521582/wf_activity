@@ -11,7 +11,7 @@
             <h4 class="s-title"><em></em>{{tItem}}</h4>
             <template v-if="tIndex===0">
               <span class="info">
-                在游戏中（欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多，斗西游，飞机大作战）消耗金叶可获得对应数量的糖豆
+                在游戏中（欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多，斗西游）消耗金叶可获得对应数量的糖豆
               </span>
               <div class="g-package">
                 <div class="g-package-container g2">
