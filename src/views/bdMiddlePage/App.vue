@@ -1,7 +1,9 @@
 <template>
   <main>
     <article>
-      <div @click="download">立即下载领奖</div>
+      <div v-if="isIOS" v-clipboard:copy="copyText" v-clipboard:success="onCopyUrl"
+        v-clipboard:error="onError">复制下载链接</div>
+      <div v-else @click="download">立即下载领奖</div>
       <p class="desc">用户已绑定手机号登录，奖品即可到账</p>
       <p>
         游戏服务由第三方多多玩提供<br />
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import utils from '../../common/js/utils'
 export default {
   name: '',
   components: {
@@ -23,15 +26,22 @@ export default {
   },
   data () {
     return {
-      wechatName: 'youxikefu2020'
+      wechatName: 'youxikefu2020',
+      copyText: 'https://wap.beeplaying.com/ddwgame/'
     }
   },
   computed: {
     channel () {
       return localStorage.getItem('APP_CHANNEL') || ''
+    },
+    isIOS () {
+      return utils.isIOS()
     }
   },
   mounted () {
+    if (this.isIOS) {
+      return
+    }
     this.download()
   },
   methods: {
@@ -48,8 +58,11 @@ export default {
           break
       }
     },
+    onCopyUrl () {
+      this.$toast.show({ message: '链接已复制，请在浏览器打开。', isOneLine: true })
+    },
     onCopy () {
-      this.$toast.show({ message: '复制成功' })
+      this.$toast.show({ message: '已复制' })
     },
     onError () {
       this.$toast.show({ message: '复制失败' })
