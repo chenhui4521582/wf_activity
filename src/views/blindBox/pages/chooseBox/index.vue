@@ -1,22 +1,17 @@
 <template>
   <article class="wrapper">
-    <img class="back"
-      @click="$router.push({name:'Index'})"
-      src="./assets/arrow.png">
-    <HornList class="notice"
-      :notice-list="noticeList"
-      v-if="noticeList.length" />
+    <img class="back" @click="$router.push({name:'Index'})" src="./assets/arrow.png">
+    <HornList class="notice" :notice-list="noticeList" v-if="noticeList.length" />
     <section class="box__section">
       <div class="bg__div--rotate"></div>
       <Box />
     </section>
-    <img class="goods-detail"
-      @click="toAllProduct"
-      src="./assets/detail.png">
+    <img class="goods-detail" @click="toAllProduct" src="./assets/detail.png">
   </article>
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import HornList from '../blindBox/components/hornList'
 import Box from './components/box'
 import { NoticeList } from '../../apis/box'
@@ -80,7 +75,7 @@ export default {
   .box__section {
     position: relative;
     .bg__div--rotate {
-      background: url("./components/box/assets/shine.png") no-repeat;
+      background: url('./components/box/assets/shine.png') no-repeat;
       background-size: cover;
       position: absolute;
       width: 7.2rem;

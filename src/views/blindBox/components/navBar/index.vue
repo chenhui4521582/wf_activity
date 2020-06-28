@@ -1,9 +1,7 @@
 <template>
-  <section class="header">
+  <section class="header" v-if="isShowHeader">
     <div class="wrap">
-      <img v-if="showBack" @click="$emit('back')"
-        src="./assets/back.png"
-        alt="返回">
+      <img v-if="showBack" @click="$emit('back')" src="./assets/back.png" alt="返回">
     </div>
     <span>{{title}}</span>
     <span></span>
@@ -11,6 +9,7 @@
 </template>
 
 <script>
+import { isShowHeader } from '../../utils/index'
 export default {
   props: {
     title: {
@@ -19,6 +18,11 @@ export default {
     showBack: {
       type: Boolean,
       default: true
+    }
+  },
+  computed: {
+    isShowHeader () {
+      return isShowHeader()
     }
   }
 }
