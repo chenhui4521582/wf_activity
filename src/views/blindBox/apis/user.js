@@ -48,10 +48,11 @@ export const EditPostInfo = ({
   name,
   placeId
 }) => {
-  return client.post('@box/user/edit-post-info', {
-    address,
-    mobile,
-    name,
+  return client.post('@uci/user/receiver/saveReceiverInfoNew', {
+    defaultFlag: true,
+    recAddress: address,
+    recMobile: mobile,
+    recName: name,
     placeId
   })
 }
