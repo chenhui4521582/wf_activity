@@ -145,11 +145,6 @@ export default {
         const { code, data } = await lot(this.stageInfo[this.curStage].stage)
         if (code === 200) {
           this.selectedHand = ''
-          let activityInfo = {
-            betNum: data.awardNum,
-            round: data.round,
-            totalNum: data.totalNum
-          }
           if (data.flag) {
             this.openPop(9, {
               betNum: data.awardNum
@@ -160,7 +155,7 @@ export default {
             })
           }
           this.clicked = false
-          this.$emit('change-activity-info', activityInfo)
+          this.$emit('change-activity-info')
         }
       }
     },
@@ -185,14 +180,9 @@ export default {
       this.$emit('open-pop', type, item)
     },
     async _quit () {
-      const { code, data, message } = await quit(this.stageInfo[this.curStage].stage)
+      const { code, message } = await quit(this.stageInfo[this.curStage].stage)
       if (code === 200) {
-        let activityInfo = {
-          betNum: data.round === 1 ? 0 : data.awardNum,
-          round: data.round,
-          totalNum: data.totalNum
-        }
-        this.$emit('change-activity-info', activityInfo)
+        this.$emit('change-activity-info')
         this.$toast.show({
           message: '已退出翻倍',
           duration: 1000,
@@ -211,6 +201,9 @@ export default {
   watch: {
     curStage (val) {
       this.$emit('input', this.stageInfo[val])
+    },
+    curStageInfo (val) {
+      this.$emit('input', val)
     }
   }
 }

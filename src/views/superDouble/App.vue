@@ -7,7 +7,7 @@
       <exchange ref="exchange" :info="activityInfo" @change-activity-info="changeActivityInfo"
         @open-pop="openPop" />
       <get-pop v-if="showGetPop" @open-pop="openPop" @on-close="showGetPop=false"
-        @refresh="getActivityInfo" />
+        @refresh="changeActivityInfo" />
     </template>
     <pop-up v-model="popType" v-show="popType" :cur-stage-info="curStageInfo"
       :award-info="awardInfo" :info="activityInfo" @callback="popUpCallback" />
@@ -45,10 +45,10 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0301', {
       source_address: GLOBALS.getUrlParam('from') || ''
     }) // H5平台-猩猩点灯活动-页面加载完成
-    this.getActivityInfo()
+    this.init()
   },
   methods: {
-    async  getActivityInfo () {
+    async  init () {
       const { code, data } = await activityInfo()
       if (code === 200) {
         this.activityInfo = data
@@ -60,15 +60,10 @@ export default {
         }, 100)
       }
     },
-    changeActivityInfo (info) {
-      if (info.totalNum || info.totalNum === 0) {
-        this.$set(this.activityInfo, 'totalNum', info.totalNum)
-      }
-      if (info.betNum || info.betNum === 0) {
-        this.$set(this.curStageInfo, 'betNum', info.betNum)
-      }
-      if (info.round || info.round === 0) {
-        this.$set(this.curStageInfo, 'round', info.round)
+    async changeActivityInfo () {
+      const { code, data } = await activityInfo()
+      if (code === 200) {
+        this.activityInfo = data
       }
     },
     openPop (type, info) {
@@ -108,21 +103,9 @@ export default {
           GLOBALS.marchSetsPoint('A_H5PT0301003604') // H5平台-疯狂翻倍活动-确认兑换弹窗-立即兑换点击
           break
         case 5:
-          this.timer = setTimeout(() => {
-            clearTimeout(this.timer)
-            if (this.curStageInfo.round === 1) {
-              this.curStageInfo.betNum = 0
-            }
-          }, 300)
           GLOBALS.marchSetsPoint('A_H5PT0301003598') // H5平台-疯狂翻倍活动-翻倍失败弹窗-知道了点击
           break
         case 9:
-          this.timer = setTimeout(() => {
-            clearTimeout(this.timer)
-            if (this.curStageInfo.round === 1) {
-              this.curStageInfo.betNum = 0
-            }
-          }, 300)
           GLOBALS.marchSetsPoint('A_H5PT0301003596') // H5平台-疯狂翻倍活动-翻倍成功弹窗-知道了点击
           break
         default:
