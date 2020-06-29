@@ -86,7 +86,7 @@ export default {
           img: data.img
         }
         this.openPop(11, awardInfo)
-        this.$emit('change-activity-info', { totalNum: data.totalNum })
+        this.$emit('change-activity-info')
       }
     }
   }
