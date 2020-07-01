@@ -7,7 +7,7 @@
       <p class="desc">用户已绑定手机号登录，奖品即可到账</p>
       <p>
         游戏服务由第三方多多玩提供<br />
-        如有问题咨询多多玩客服:
+        如有问题咨询多多玩客服微信:
         <span v-clipboard:copy="wechatName" v-clipboard:success="onCopy"
           v-clipboard:error="onError">
           {{wechatName}}
@@ -103,6 +103,7 @@ main {
     width: 100vw;
     margin-left: -50vw;
     height: 3.96rem;
+    background: #fff;
     background: radial-gradient(
       21rem at 50% -20.6rem,
       transparent 20.96rem,
@@ -116,6 +117,8 @@ main {
       border-radius: 0.16rem;
       color: #fff;
       margin: 0.94rem auto 0.2rem;
+      font-size: 0.26rem;
+      font-weight: bold;
     }
     p {
       color: #bbb;
