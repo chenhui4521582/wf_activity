@@ -9,7 +9,7 @@
         1、活动时间：{{info.beginDate | formatTime('m:d')}}-{{info.endDate | formatTime('m:d')}}<br>
         2、活动期间，玩家累计充值达到一定梯度，可领取奖品；<br>
         3、任务分为【每日充值】和【一周充值】两种，达到每日充值任务可在每天24点前领取奖品；<br>
-        4、【一周充值】奖品需在5月25日24点前手动领取；<br>
+        4、【一周充值】奖品需在{{info.endDate | formatTime('m@d@h')}}前手动领取；<br>
         5、奖品请及时领取
       </div>
       <div class="closed" @click="hide"></div>
