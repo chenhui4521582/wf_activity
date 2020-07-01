@@ -68,10 +68,11 @@ export default [
         return `${m}.${d}`
       } else if (type === 'm-d h:f') {
         return `${m}-${d} ${h}:${minute}`
+      } else if (type === 'm@d@h') {
+        return `${m}月${d}日${h}点${minute}分`
       } else if (type === 'm:d') {
         return `${m}月${d}日`
-      }
-      else {
+      } else {
         return `${y}-${m}-${d} ${h}:${minute}:${second}`
       }
     }
