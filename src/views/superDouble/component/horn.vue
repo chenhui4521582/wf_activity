@@ -58,6 +58,8 @@ export default {
         this.copyStyles.left = `${offsetWidth}px` // 设置拷贝ul初始位置
         let x = 0
         let fun = () => {
+          clearTimeout(this.hornTimer)
+          this.hornTimer = setTimeout(fun, 17)
           this.hornStyles.left = x + 'px'
           this.copyStyles.left = (x + parseInt(offsetWidth)) + 'px'
           x--
@@ -65,12 +67,12 @@ export default {
             x = 0
           }
         }
-        this.hornTimer = setInterval(fun, 20)
+        this.hornTimer = setTimeout(fun, 17)
       })
     }
   },
   destroyed () {
-    clearInterval(this.hornTimer)
+    clearTimeout(this.hornTimer)
   }
 }
 </script>
