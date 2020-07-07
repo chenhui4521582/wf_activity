@@ -15,10 +15,7 @@
               </span>
               <div class="g-package">
                 <div class="g-package-container g2">
-                  <hit-percent :type="1"
-                    :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
-                    :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
-                    @refresh="refresh" @open-pop="openPop"></hit-percent>
+                  <hit-percent :type="1" :gameBetting="taskProgressInfoData.gameProgress.gameBetting" :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
@@ -37,12 +34,11 @@
             <template v-else-if="tIndex===1">
               <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
                 <div class="item">
-                  <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个糖豆</p>
-                  <p v-else-if="index==1">充值任意金额，送1个糖豆</p>
+                  <p v-if="index==0">今日完成{{item.totalNum}}个每日任务, 送1个糖豆</p>
+                  <p v-else-if="index==1">今日充值10元, 送1个糖豆</p>
                 </div>
                 <div class="item">
-                  <div class="btn btn_complete" v-if="item.state==0"
-                    @click="gotocomplete(item,index)">
+                  <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
                     去完成</div>
                   <div class="btn btn-receive" v-else-if="item.state==1" @click="gain(item,index)">
                     领取
@@ -57,10 +53,7 @@
             <template v-else>
               <div class="g-package">
                 <div class="g-package-container g2">
-                  <hit-percent :type="2"
-                    :gameBetting="taskProgressInfoData.rechargeProgress.gameBetting"
-                    :hbItems="taskProgressInfoData.rechargeProgress.progressList"
-                    :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
+                  <hit-percent :type="2" :gameBetting="taskProgressInfoData.rechargeProgress.gameBetting" :hbItems="taskProgressInfoData.rechargeProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
