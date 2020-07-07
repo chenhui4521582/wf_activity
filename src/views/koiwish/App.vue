@@ -84,7 +84,7 @@
       </div>
     </div>
     <com-pop :pop-type="popType" :awardData="awardData" ref="comPop" @close="popType=0"
-             :isNotEnough="isNotEnough" @refresh="getActInfo" :ruleTime="actInfo.beginDate"></com-pop>
+             :isNotEnough="isNotEnough" @refresh="getActInfo" :ruleTime="actInfo.beginDate" :totalRound="actInfo.totalRound"></com-pop>
     <loading v-show="showLoading" :showBar="false"></loading>
   </div>
 </template>
