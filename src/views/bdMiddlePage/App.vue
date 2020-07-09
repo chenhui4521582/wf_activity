@@ -57,7 +57,7 @@ export default {
         default:
           break
       }
-    }, 2000)
+    }, 6000)
   },
   methods: {
     download () {
