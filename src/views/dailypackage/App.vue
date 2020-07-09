@@ -36,7 +36,7 @@
               </div>
               <!-- 礼包内容 -->
               <div class="award-wrap">
-                <div 
+                <div
                   class="sec1"
                   v-for="(item1,index1) in item.awardsList.slice().sort((a,b)=>(b.awardsType-a.awardsType))"
                   :key="index1"
@@ -56,12 +56,13 @@
               <div class="btn" @click="gotopay(item,true)" >{{ item.price }}元抢购>></div>
             </div>
             <!-- 全部购买 -->
-            <div 
+            <div
               v-else
               :key="index"
-              class="btn-all" 
+              class="btn-all"
               :class="{ gray: item.buyFlag == 0 }"
               @click="gotopay(item, item.buyFlag != 0)">
+              <span :class="{ gray: item.buyFlag == 0 }">{{item.price}}元全部抢购</span>
               <div class="tips">每日限1次</div>
             </div>
           </template>
@@ -77,7 +78,7 @@
               <div class="light">
                 <img src="./images/light.png" alt="">
               </div>
-              <img class="award-img" :src="item.awardsImg | filter" alt="">
+              <img class="award-img" :src="`${require(`./images/${item.awardsType}.png`)}`" alt="">
               <div class="award-name">{{ item.awardsName }}</div>
               <div class="exchange-num">
                 <img src="./images/lucky-icon.png" alt=""> x{{item.costCoin}}
@@ -90,26 +91,26 @@
         </div>
       </div>
       <!-- 公共弹框 -->
-      <common-pop 
-        :is-show-pop="isShowPop" 
-        :fail="fail" 
-        :surplus='surplus' 
+      <common-pop
+        :is-show-pop="isShowPop"
+        :fail="fail"
+        :surplus='surplus'
         :awardData="awardData"
-        @close-pop="isShowPop=false" 
-        @gototask="gototask" 
+        @close-pop="isShowPop=false"
+        @gototask="gototask"
         @exchange="exchange"
       />
       <!-- 公共弹框 -->
-      <common-package-pop 
-        :is-show-pop="isShowPackagePop" 
-        :fail="fail" 
+      <common-package-pop
+        :is-show-pop="isShowPackagePop"
+        :fail="fail"
         :awardData="awardPackageData"
         @close-pop="isShowPackagePop=false"
         @gototask="gototask"
         @exchange="exchange"
       />
       <!-- 规则 -->
-      <rule ref="rule" :info="myInfo"></rule>
+      <rule ref="rule" :info="myInfo" :packages="taskInfo"></rule>
       <!-- loading -->
       <loading v-show="isLoading"></loading>
     </section>
@@ -432,11 +433,13 @@ export default {
           .award-img {
             display: block;
             position: absolute;
-            left: -.02rem;
-            top: -.25rem;
+            left:0;
+            right: 0;
+            margin: auto;
+            top: .1rem;
             z-index: 2;
-            width: 2.2rem;
-            height: 2.2rem;
+            width: 3*.6rem;
+            height: 2.44*.6rem;
           }
           .award-name {
             margin-top: 1.38rem;
@@ -572,7 +575,7 @@ export default {
           font-weight:bold;
           font-size: .26rem;
         }
- 
+
       }
       .btn-all {
         position: relative;
@@ -584,6 +587,20 @@ export default {
         &.gray {
           background: url(./images/buy-all-disable.png) no-repeat center center;
           background-size: 100% 100%;
+        }
+        span{
+          font-size: .24rem;
+          color: #ef7613;
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: auto;
+          text-align: center;
+          top: .32rem;
+          font-weight: bold;
+          &.gray{
+            color: #5f4ec9;
+          }
         }
         .tips {
           position: absolute;

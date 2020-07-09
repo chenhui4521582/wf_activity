@@ -10,13 +10,15 @@
           <div class="main">
             <p>①活动时间：{{info.startTime | formatTime('m-d')}} 至 {{info.endTime | formatTime('m-d')}}，共7天。</p>
             <p>②幸运币是限购礼包内的特有货币，用于兑换对应奖品； </p>
-            <p>③75元为全部礼包抢购价，每天限购1次，每天0点刷新购买机会； </p>
-            <p>④礼包共有6元、26元、46元3种，单个礼包购买不限次数； </p>
+            <template v-if="packages.length">
+              <p>③{{packages[packages.length-1].price}}元为全部礼包抢购价，每天限购1次，每天0点刷新购买机会； </p>
+              <p>④礼包共有{{packages.slice(0,3).map(item=>item.price+'元').join('、')}}3种，单个礼包购买不限次数； </p>
+            </template>
             <p>⑤购买礼包可获得对应金叶，并有概率获得超级幸运币； </p>
             <p>⑥幸运币累计一定数量可在兑换页中换取各类奖品，奖品兑换不限次数； </p>
             <p>⑦活动结束后，幸运币清零，且无法兑换奖品； </p>
             <p>⑧如有任何问题可联系在线客服。</p>
-            <div class="btn" @click="isShowPop = false"></div>     
+            <div class="btn" @click="isShowPop = false"></div>
           </div>
         </div>
       </div>
@@ -37,6 +39,10 @@ export default {
       type: Object,
       default: () => {}
     },
+    packages:{
+      type: Array,
+      default: () => []
+    }
   },
   filters: {
     formatTime (date, type) {
