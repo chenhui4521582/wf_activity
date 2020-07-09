@@ -24,7 +24,7 @@
                   <div class="info">幸运币不足</div>
                 </template>
                 <template v-else>
-                  <img :src="awardData.awardsImg | filter" alt="" style="width: 2.2rem;height:2.2rem">
+                  <img :src="`${require(`../images/${awardData.awardsType}.png`)}`" alt="" style="width: 3rem;height:2.44rem">
                   <div v-if="!fail" class="info" :class="{success:!fail}">{{awardData.awardsName}}</div>
                   <div v-else class="info" :class="{success:!fail}">本次兑换消耗幸运币x{{awardData.costCoin}}</div>
                   <p v-if="!fail" style="margin-bottom: .5rem;color:#fff">请前往我的页面查询使用~</p>
