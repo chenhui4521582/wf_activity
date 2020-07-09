@@ -46,16 +46,18 @@ export default {
     if (this.isIOS) {
       return
     }
-    switch (this.channel) {
-      case '100039':
-        location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-        break
-      case '100042':
-        location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
-        break
-      default:
-        break
-    }
+    setTimeout(() => {
+      switch (this.channel) {
+        case '100039':
+          location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+          break
+        case '100042':
+          location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
+          break
+        default:
+          break
+      }
+    }, 2000)
   },
   methods: {
     download () {
