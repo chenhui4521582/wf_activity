@@ -23,7 +23,7 @@
           <div class="exchange-error">
             <div class="body">
               <p>钥匙不足</p>
-              <p>银宝箱需要消耗<span>{{currentBox.cost}}</span>把钥匙，才能打开。 你目前有用<span>{{keyNum}}</span>把，数量不足。</p>
+              <p>银宝箱需要消耗<span>{{currentBox.cost}}</span>把钥匙，才能打开。 你目前有<span>{{keyNum}}</span>把，数量不足。</p>
             </div>
             <div class="btn" @click="openShare">获得更多钥匙</div>
           </div>

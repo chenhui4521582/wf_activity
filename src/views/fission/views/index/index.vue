@@ -35,10 +35,10 @@
     <!-- 底部按钮 -->
     <div class="footer-btns">
       <div class="invite-btn" @click="openShare">邀请好友得<img src="../../img/red-key-icon.png" alt=""></div>
-      <div class="open-box-btn" @click="openBox"><img src="../../img/red-key-icon.png" alt="">x5立即开箱</div>
+      <div class="open-box-btn" @click="openBox"><img src="../../img/red-key-icon.png" alt="">x{{currentBox.cost}}立即开箱</div>
     </div>
     <!-- share弹出框 -->
-    <Share v-model="showShare"/>
+    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum"/>
     <!-- 弹出框 -->
     <Popup 
       v-model="showPopup" 
@@ -49,7 +49,6 @@
       @openShare="openShare"
       @openBox="_getAward"
     />
-    <button @click="_register">邀请</button>
   </div>
 </template>
 <script>
@@ -117,8 +116,7 @@ export default {
     },
     /** 开宝箱 **/
     openBox () {
-      // const keyNum = _get(this.boxInfo, 'keyNum', 0)
-      const keyNum = 1000
+      const keyNum = _get(this.boxInfo, 'keyNum', 0)
       const costNum = _get(this.currentBox, 'cost', 0)
       if(keyNum && costNum && keyNum >= costNum) {
         /** 钥匙足够 **/

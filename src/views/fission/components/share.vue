@@ -4,11 +4,11 @@
     <transition name="slide1">
       <div class="share-box" v-if="value">
         <div class="list">
-          <div class="item">
+          <div class="item" @click="shareWechat('1')">
             <img src="../img/wechat1.png" alt="">
             <p>朋友圈</p>
           </div>
-          <div class="item">
+          <div class="item" @click="shareWechat('0')">
             <img src="../img/wechat.png" alt="">
             <p>微信</p>
           </div>
@@ -18,21 +18,47 @@
         </div>
       </div>
     </transition>
+    <!-- 原生粘贴板 -->
+    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
   </div>
 </template>
 <script>
+import AppCall from './native'
 export default {
   name: 'Share',
   props: {
     value: {
       type: Boolean,
       default: false
+    },
+    hfqNum: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
     hide () {
       this.$emit('input')
-    }
+    },
+    /** 复制src到原生粘贴板 **/
+    copy () {
+      let text = `from=fission&token=${localStorage.getItem('ACCESS_TOKEN')}`
+      let input = document.getElementById("copy")
+      input.value = text;
+      input.select()
+      document.execCommand("copy")
+    },
+    shareWechat (type) {
+      const url = `https://wap.beeplaying.com/activities/bdMiddlePage.html?token=${localStorage.getItem('ACCESS_TOKEN')}`
+      const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
+      const content = '玩游戏就能赚话费，真的能领！'
+      try {
+        AppCall.shareContent(JSON.stringify({ url, title, content, type }))
+        this.copy()
+      } catch (e) {
+
+      }
+    },
   }
 }
 </script>
@@ -106,5 +132,4 @@ export default {
     background: #F0F0F0;
   }
 }
-
 </style>

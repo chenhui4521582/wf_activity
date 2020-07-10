@@ -71,7 +71,7 @@
       获得更多钥匙
     </div>
     <!-- share弹出框 -->
-    <Share v-model="showShare"/>
+    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum"/>
   </div>
 </template>
 <script>
@@ -84,7 +84,8 @@ export default {
     currentIndex: 1,
     consumeList: [],
     getList: [],
-    showShare: false
+    showShare: false,
+    boxInfo: {}
   }),
   components: {
     Share
@@ -134,9 +135,20 @@ export default {
     /** 打开分享弹框 **/
     openShare () {
       this.showShare = true
-    }
+    },
+    /** 获取活动信息 **/
+    _getInfo () {
+      Services.getInfo().then(res => {
+        const {code, data} = _get(res, 'data')
+        if(code == 200) {
+          this.boxInfo = data
+          this.boxAward = data.boxList
+        }
+      })
+    },
   },
   mounted () {
+    this._getInfo()
     this._getList()
     this._consumeList()
   }
