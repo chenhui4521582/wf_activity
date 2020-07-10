@@ -86,8 +86,8 @@ export default {
       let iframe = document.createElement('iframe')
       iframe.src = url
       iframe.style.display = 'none'
-      document.body.appendChild(iframe);
-      setTimeout( () => {
+      document.body.appendChild(iframe)
+      setTimeout(() => {
         iframe.remove()
       }, 1000)
     }
