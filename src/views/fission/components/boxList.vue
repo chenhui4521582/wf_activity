@@ -1,14 +1,4 @@
 <template>
-  <!-- <div class="box-list">
-    <swiper :options="options" ref="mySwiper">
-      <swiper-slide v-for="(item, index) in list" :key="index">
-        <div class="award-img">
-          <img :src="item.img | filter" class="inner-img" alt="" />
-        </div>
-        <p>{{item.name}}</p>
-      </swiper-slide>
-    </swiper>
-  </div> -->
   <div class="box-list">
     <div ref="boxListWraper">
       <ul ref="list" id="listUl" :style="listStyles">
