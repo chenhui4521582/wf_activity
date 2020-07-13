@@ -63,14 +63,6 @@ import _get from 'lodash.get'
 export default {
   name: 'popup',
   props: ['popupType', 'value', 'keyNum', 'currentBox', 'award'],
-  data: () => ({
-    // awardsImg: {
-    //   jyz: require('../img/leaf-icon.png'),
-    //   hfq: require('../img/hf-icon.png'),
-    //   jdk: require('../img/jd-icon.png'),
-    //   yhq: require('../img/copon-icon.png')
-    // }
-  }),
   computed: {
     showSealLog () {
       return this.sealLog.length

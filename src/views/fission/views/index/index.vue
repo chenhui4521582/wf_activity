@@ -133,6 +133,7 @@ export default {
         /** 钥匙不够 **/
         this.openPopup(2)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0308003734')
     },
     /** 获取宝箱数据 **/
     _getAward () {
