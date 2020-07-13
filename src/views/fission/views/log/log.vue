@@ -291,10 +291,10 @@ export default {
       .item {
         text-align: center;
         &:nth-child(1){
-          width: 30%;
+          width: 25%;
         }
         &:nth-child(2){
-          width: 50%;
+          width: 55%;
         }
         &:nth-child(3){
           width: 20%;
@@ -358,7 +358,7 @@ export default {
     left: .24rem;
     right: .24rem;
     top: 2.4rem;
-    bottom: 1.9rem;
+    bottom: 1.4rem;
     z-index: 2;
     background: #fff;
     .img1 {

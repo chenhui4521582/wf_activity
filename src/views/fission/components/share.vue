@@ -49,7 +49,7 @@ export default {
       document.execCommand("copy")
     },
     shareWechat (type) {
-      const url = `https://wap.beeplaying.com/activities/bdMiddlePage.html?token=${localStorage.getItem('ACCESS_TOKEN')}`
+      const url = `https://wap.beeplaying.com/ddwgame/?token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
       const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
       try {
