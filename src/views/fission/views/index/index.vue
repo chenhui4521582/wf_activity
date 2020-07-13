@@ -108,6 +108,7 @@ export default {
     /** 打开分享弹框 **/
     openShare () {
       this.showShare = true
+      GLOBALS.marchSetsPoint('A_H5PT0308003735')
     },
     /** 打开popup **/
     openPopup (type) {
@@ -116,9 +117,13 @@ export default {
       switch (type) {
         case 1 :
           GLOBALS.marchSetsPoint('A_H5PT0308003730')
+          GLOBALS.marchSetsPoint('A_H5PT0308003744')
           break
         case 2: 
           GLOBALS.marchSetsPoint('P_H5PT0308')
+          break
+        case 4: 
+          GLOBALS.marchSetsPoint('A_H5PT0308003746')
           break
       }
     },
@@ -129,9 +134,11 @@ export default {
       if(keyNum && costNum && keyNum >= costNum) {
         /** 钥匙足够 **/
         this.openPopup(3)
+        GLOBALS.marchSetsPoint('A_H5PT0308003741')
       }else {
         /** 钥匙不够 **/
         this.openPopup(2)
+        GLOBALS.marchSetsPoint('A_H5PT0308003738')
       }
       GLOBALS.marchSetsPoint('A_H5PT0308003734')
     },

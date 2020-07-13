@@ -117,6 +117,11 @@ export default {
   methods: {
     handclick (index) {
       this.currentIndex = index
+      if(index == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0308003748')
+      }else {
+        GLOBALS.marchSetsPoint('A_H5PT0308003749')
+      }
     },
     _getList () {
       Services.getMyKeyLog(1).then(res => {
@@ -137,6 +142,7 @@ export default {
     /** 打开分享弹框 **/
     openShare () {
       this.showShare = true
+      GLOBALS.marchSetsPoint('A_H5PT0308003750')
     },
     /** 获取活动信息 **/
     _getInfo () {
@@ -153,6 +159,7 @@ export default {
     this._getInfo()
     this._getList()
     this._consumeList()
+    GLOBALS.marchSetsPoint('A_H5PT0308003747')
   }
 }
 </script>

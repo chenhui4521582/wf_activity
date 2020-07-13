@@ -40,6 +40,11 @@ export default {
       this.$emit('input')
     },
     shareWechat (type) {
+      if(type == 0) {
+        GLOBALS.marchSetsPoint('A_H5PT0308003737')
+      } else { 
+        GLOBALS.marchSetsPoint('A_H5PT0308003736')
+      }
       let userId = localStorage.getItem('user_info')
       userId = JSON.parse(userId)
       const url = `https://wap.beeplaying.com/ddwgame/?from=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`

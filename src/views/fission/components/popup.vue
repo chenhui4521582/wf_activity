@@ -80,14 +80,27 @@ export default {
   methods: {
     hidePopup () {
       this.$emit('input', false)
+      switch (this.popupType) {
+        case 1: 
+          GLOBALS.marchSetsPoint('A_H5PT0308003745')
+          break
+        case 2: 
+          GLOBALS.marchSetsPoint('A_H5PT0308003740')
+          break
+        case 3: 
+          GLOBALS.marchSetsPoint('A_H5PT0308003743')
+          break
+      }
     },
     openShare () {
       this.hidePopup()
       this.$emit('openShare')
+      GLOBALS.marchSetsPoint('A_H5PT0308003739')
     },
     openBox () {
       this.hidePopup()
       this.$emit('openBox')
+      GLOBALS.marchSetsPoint('A_H5PT0308003742')
     },
     gotoGame(item) {
       window.location.href = item.url
