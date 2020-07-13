@@ -40,19 +40,19 @@ export default {
       this.$emit('input')
     },
     shareWechat (type) {
-      if(type == 0) {
-        GLOBALS.marchSetsPoint('A_H5PT0308003737')
-      } else { 
-        GLOBALS.marchSetsPoint('A_H5PT0308003736')
-      }
-      let userId = localStorage.getItem('user_info')
-      userId = JSON.parse(userId)
+      let userInfo = localStorage.getItem('user_Info')
+      let {userId} = JSON.parse(userInfo)
       const url = `https://wap.beeplaying.com/ddwgame/?from=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
       const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
       try {
         AppCall.shareContent(JSON.stringify({ url, title, content, type }))
       } catch (e) {
+      }
+      if(type == 0) {
+        GLOBALS.marchSetsPoint('A_H5PT0308003737')
+      } else { 
+        GLOBALS.marchSetsPoint('A_H5PT0308003736')
       }
     }
   }
