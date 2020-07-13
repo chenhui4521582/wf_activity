@@ -178,7 +178,7 @@ export default {
       }
     }
     .exchange-error {
-      padding: 1rem .6rem 0;
+      padding: .9rem .6rem 0;
       width: 5.16rem;
       height: 5.5rem;
       background: url(../img/exchange-error.png) no-repeat center top;

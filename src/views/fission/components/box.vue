@@ -30,6 +30,7 @@ export default {
         slideChangeTransitionEnd: () => {
           let element = document.querySelector('.swiper-slide-active')
           boxVm.$emit('slideChange', element.getAttribute('data'))
+          GLOBALS.marchSetsPoint('A_H5PT0308003732')
         }
       }
     }
@@ -135,11 +136,12 @@ export default {
     justify-content: flex-start;
   }
   .swiper-button-prev {
-    top: 1.55rem;
     width: .9rem;
     height: .9rem;
     background: url(../img/box-btn.png) no-repeat center center;
     background-size: 100% 100%;
+    cursor: auto;
+    outline: none;
   }
   .swiper-button-next {
     transform: rotate(180deg);
@@ -147,8 +149,9 @@ export default {
     height: .9rem;
     background: url(../img/box-btn.png) no-repeat center center;
     background-size: 100% 100%;
+    cursor: auto;
+    outline: none;
   }
-
   @keyframes box {
     0% {
       transform: translate(0, 0);

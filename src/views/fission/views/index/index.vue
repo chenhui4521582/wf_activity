@@ -18,7 +18,7 @@
     <Box @slideChange="slideChange"/>
     <!-- 宝箱内容 -->
     <div class="award-list">
-      <div class="header">
+      <div class="header" @click="openBox">
         <p class="name">当前为{{currentBox.name}}</p>
         <p class="key"><img src="../../img/red-key-icon.png" alt=""> x{{currentBox.cost}}可打开</p>
       </div>
@@ -113,6 +113,14 @@ export default {
     openPopup (type) {
       this.popupType = type
       this.showPopup = true
+      switch (type) {
+        case 1 :
+          GLOBALS.marchSetsPoint('A_H5PT0308003730')
+          break
+        case 2: 
+          GLOBALS.marchSetsPoint('P_H5PT0308')
+          break
+      }
     },
     /** 开宝箱 **/
     openBox () {
@@ -152,6 +160,7 @@ export default {
     },
     /** 跳转log **/
     goLog () {
+      GLOBALS.marchSetsPoint('A_H5PT0308003731')
       this.$router.push({
         name: 'log'
       })
@@ -162,15 +171,11 @@ export default {
         this.$toast.show( {message: data} )
       })
     },
-    openRule () {
-      this.popupType = 1
-      this.showPopup = true
-      GLOBALS.marchSetsPoint('A_H5PT0278003317')
-    },
     goAward () {
       this.$router.push({
         name: 'award'
       })
+      GLOBALS.marchSetsPoint('A_H5PT0308003733')
     },
     backHome() {
       window.location.href = "//wap.beeplaying.com/xmWap/"
@@ -239,8 +244,11 @@ export default {
     background-size: 100% auto;
     .header {
       overflow: hidden;
+      margin: 0 auto;
+      width: 3rem;
       height: 1.2rem;
       text-align: center;
+
       .name {
         margin-top: .2rem;
         font-weight: 800;

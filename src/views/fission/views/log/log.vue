@@ -2,7 +2,7 @@
   <div class="log">
     <Header>
       <div class="log-title">
-        我的钥匙 <span>(</span><span>5</span><img src="../../img/orange-key.png" alt=""> <span>)</span>
+        我的钥匙 <span>(</span><span>{{boxInfo.keyNum}}</span><img src="../../img/orange-key.png" alt=""> <span>)</span>
       </div>
     </Header>
     <div class="tab-bar">
