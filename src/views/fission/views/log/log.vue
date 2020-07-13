@@ -7,16 +7,18 @@
     </Header>
     <div class="tab-bar">
       <div class="item" :class="{'active': currentIndex == 1}" @click="handclick(1)">
-        获取记录 
-        <span class="green">({{getNum}}</span>
+        <span class="line1">获取记录</span>
+        <span class="green">(</span>
+        <span class="green line1">{{getNum}}</span>
         <img v-if="currentIndex == 1" src="../../img/green-key.png" alt="">
         <img v-else src="../../img/grey-key.png" alt="">
         <span class="green">) </span>
         <div class="line" v-if="currentIndex == 1"></div>
       </div>
       <div class="item" :class="{'active': currentIndex == 2}" @click="handclick(2)">
-        消耗记录
-        <span class="red">({{consumeNum}}</span>
+        <span class="line1">消耗记录</span>
+        <span class="red">(</span>
+        <span class="red line1">{{consumeNum}}</span>
         <img v-if="currentIndex == 2" src="../../img/red-key.png" alt="">
         <img v-else src="../../img/grey-key.png" alt="">
         <span class="red">) </span>
@@ -172,12 +174,16 @@ export default {
     }
   }
   .tab-bar {
+    position: fixed;
+    left: .24rem;
+    right: .24rem;
+    top: .9rem;
     display: flex;
     justify-content: center;
-    height: .7rem;
     .item {
       position: relative;
       width: 50%;
+      height: .7rem;
       display: flex;
       justify-content: center;
       align-items: flex-end;
@@ -186,10 +192,10 @@ export default {
       color: #888888;
       &.active {
         color: #000000;
-        vertical-align: middle;
         .green {
           color: #44BC64;
         }
+  
         .red {
           color: #FF4141;
         }
@@ -206,6 +212,9 @@ export default {
         height: .06rem;
         background: #FF4141;
         border-radius: .03rem;
+      }
+      .line1 {
+        line-height: 1;
       }
     }
   }
