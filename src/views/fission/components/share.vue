@@ -56,7 +56,6 @@ export default {
         AppCall.shareContent(JSON.stringify({ url, title, content, type }))
         this.copy()
       } catch (e) {
-
       }
     },
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box" :class="{'product': isProduct}">
     <div class="wrap">
       <swiper :options="options" ref="mySwiper">
         <swiper-slide data="1"><img src="../img/box-3.png" alt="" /><div class="bottom"></div></swiper-slide>
@@ -20,13 +20,12 @@ export default {
     options: {
       slidesPerView: 3,
       spaceBetween: 15,
+      centeredSlides: true,
       loop: true,
-      loopFillGroupWithBlank: false,
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
       },
-      centeredSlides: true,
       on: {
         slideChangeTransitionEnd: () => {
           let element = document.querySelector('.swiper-slide-active')
@@ -35,6 +34,12 @@ export default {
       }
     }
   }),
+  computed: {
+    /** 解决swiper 上了生产环境样式问题 **/
+    isProduct () {
+      return process.env.NODE_ENV === "production"
+    }
+  },
   components: {
     swiper,
     swiperSlide
@@ -44,7 +49,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style lang="less">
 .box {
   margin-top: -.1rem;
   position: relative;
@@ -80,9 +85,11 @@ export default {
     transform: translate(-50%, 0);
     z-index: 2;
     width: 12rem;
+    height: 4rem;
   }
   .swiper-slide {
     display: flex;
+    justify-content: flex-start;
     height: 4rem;
     justify-items: center;
     align-items: center;
@@ -128,6 +135,7 @@ export default {
     justify-content: flex-start;
   }
   .swiper-button-prev {
+    top: 1.55rem;
     width: .9rem;
     height: .9rem;
     background: url(../img/box-btn.png) no-repeat center center;
@@ -209,6 +217,35 @@ export default {
     100% {
       transform: translate(0, -.05rem)
     }
+  }
+}
+
+.product {
+  .swiper-wrapper {
+    display: flex;
+    position: absolute;
+    height: 4rem;
+  }
+  .swiper-button-prev {
+    position: absolute;
+    left: 0;
+    z-index: 4;
+    top: 1.55rem;
+    width: .9rem;
+    height: .9rem;
+    background: url(../img/box-btn.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .swiper-button-next {
+    position: absolute;
+    right: 0;
+    top: 1.55rem;
+    z-index: 4;
+    transform: rotate(180deg);
+    width: .9rem;
+    height: .9rem;
+    background: url(../img/box-btn.png) no-repeat center center;
+    background-size: 100% 100%;
   }
 }
 

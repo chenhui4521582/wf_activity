@@ -128,21 +128,18 @@ export default {
     },
     /** 获取宝箱数据 **/
     _getAward () {
-      const res = {
-        data: {"code":200,"data":{"awardsName":"2元话费券","img":"/group1/M00/42/6D/CmcEHF7GMS6AAt6vAAESsuNtq9w484.png"},"message":null}
-      }
-      const {code, data, message} = _get(res, 'data')
-      if(code == 200) {
-        this.award = data
-        this.openAnimation(() => {
-          this.openPopup(4)
-        })
-      }else {
-        this.$toast.show( message )
-      }
-      // const level = this.currentBox.level
-      // Services.getAward(level).then(res => {
-      // })
+      const level = this.currentBox.level
+      Services.getAward(level).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.award = data
+          this.openAnimation(() => {
+            this.openPopup(4)
+          })
+        }else {
+          this.$toast.show( message )
+        }
+      })
     },
     /** 开箱动画 **/
     openAnimation (callback) {
@@ -183,6 +180,9 @@ export default {
   mounted() {
     window._register = this._register
     this._getInfo()
+    GLOBALS.marchSetsPoint('P_H5PT0308', {
+      source_address: document.referrer
+    })
   }
 }
 </script>
