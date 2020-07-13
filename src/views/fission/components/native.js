@@ -24,7 +24,6 @@ AppCall.extend({
         return this.call("openUrl",callback);
     },
     shareContent: function(params) {
-        console.log(params)
         return this.call("shareContent", params);
     },
     //清空缓存
