@@ -20,13 +20,12 @@ export default {
     options: {
       slidesPerView: 3,
       spaceBetween: 15,
+      centeredSlides: true,
       loop: true,
-      loopFillGroupWithBlank: false,
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev'
       },
-      centeredSlides: true,
       on: {
         slideChangeTransitionEnd: () => {
           let element = document.querySelector('.swiper-slide-active')
@@ -44,7 +43,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style lang="less">
 .box {
   margin-top: -.1rem;
   position: relative;
@@ -80,9 +79,11 @@ export default {
     transform: translate(-50%, 0);
     z-index: 2;
     width: 12rem;
+    height: 4rem;
   }
   .swiper-slide {
     display: flex;
+    justify-content: flex-start;
     height: 4rem;
     justify-items: center;
     align-items: center;
@@ -92,6 +93,11 @@ export default {
     .bottom {
       display: none;
     }
+  }
+  .swiper-wrapper {
+    display: flex;
+    position: absolute;
+    height: 4rem;
   }
   .swiper-slide-active {
     position: relative;
@@ -128,12 +134,20 @@ export default {
     justify-content: flex-start;
   }
   .swiper-button-prev {
+    position: absolute;
+    left: 0;
+    z-index: 4;
+    top: 1.55rem;
     width: .9rem;
     height: .9rem;
     background: url(../img/box-btn.png) no-repeat center center;
     background-size: 100% 100%;
   }
   .swiper-button-next {
+    position: absolute;
+    right: 0;
+    top: 1.55rem;
+    z-index: 4;
     transform: rotate(180deg);
     width: .9rem;
     height: .9rem;
