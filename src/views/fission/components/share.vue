@@ -42,7 +42,7 @@ export default {
     shareWechat (type) {
       let userInfo = localStorage.getItem('user_Info')
       let {userId} = JSON.parse(userInfo)
-      const url = `https://wap.beeplaying.com/ddwgame/?from=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
+      const url = `https://wap.beeplaying.com/ddwgame/?type=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
       const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
       try {
