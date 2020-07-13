@@ -18,8 +18,7 @@
         </div>
       </div>
     </transition>
-    <!-- 原生粘贴板 -->
-    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
+    
   </div>
 </template>
 <script>
@@ -40,24 +39,22 @@ export default {
     hide () {
       this.$emit('input')
     },
-    /** 复制src到原生粘贴板 **/
-    copy () {
-      let text = `from=fission&token=${localStorage.getItem('ACCESS_TOKEN')}`
-      let input = document.getElementById("copy")
-      input.value = text;
-      input.select()
-      document.execCommand("copy")
-    },
     shareWechat (type) {
-      const url = `https://wap.beeplaying.com/ddwgame/?token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
+      let userInfo = localStorage.getItem('user_Info')
+      let {userId} = JSON.parse(userInfo)
+      const url = `https://wap.beeplaying.com/ddwgame/?from=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
       const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
       try {
         AppCall.shareContent(JSON.stringify({ url, title, content, type }))
-        this.copy()
       } catch (e) {
       }
-    },
+      if(type == 0) {
+        GLOBALS.marchSetsPoint('A_H5PT0308003737')
+      } else { 
+        GLOBALS.marchSetsPoint('A_H5PT0308003736')
+      }
+    }
   }
 }
 </script>

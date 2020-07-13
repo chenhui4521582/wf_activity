@@ -48,6 +48,7 @@ export default {
       })
     },
     goIndex () {
+      GLOBALS.marchSetsPoint('A_H5PT0308003752')
       this.$router.push({
         name: 'index'
       })
@@ -55,6 +56,7 @@ export default {
   },
   mounted () {
     this._getAward()
+    GLOBALS.marchSetsPoint('A_H5PT0308003751')
   }
 }
 </script>
