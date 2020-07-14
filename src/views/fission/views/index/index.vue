@@ -131,7 +131,10 @@ export default {
     openBox () {
       const keyNum = _get(this.boxInfo, 'keyNum', 0)
       const costNum = _get(this.currentBox, 'cost', 0)
-      if(keyNum && costNum && keyNum >= costNum) {
+      if(this.lock) {
+        /** 开奖中弹框 **/
+        this.$toast.show({message: '正在开奖中,请稍等！'})
+      } else if(keyNum && costNum && keyNum >= costNum) {
         /** 钥匙足够 **/
         this.openPopup(3)
         GLOBALS.marchSetsPoint('A_H5PT0308003741')
@@ -144,6 +147,8 @@ export default {
     },
     /** 获取宝箱数据 **/
     _getAward () {
+      if(this.lock) return
+      this.lock = true
       const level = this.currentBox.level
       Services.getAward(level).then(res => {
         const {code, data, message} = _get(res, 'data')
@@ -151,9 +156,11 @@ export default {
           this.award = data
           this.openAnimation(() => {
             this.openPopup(4)
+            this._getInfo()
+            this.lock = false
           })
         }else {
-          this.$toast.show( message )
+          this.$toast.show({message})
         }
       })
     },
@@ -162,8 +169,8 @@ export default {
       let element = document.querySelector('.swiper-slide-active')
       element.classList.add('active')
       setTimeout(()=> {
-        callback && callback()
         element.classList.remove('active')
+        callback && callback()
       }, 1300)
     },
     /** 跳转log **/
@@ -174,7 +181,7 @@ export default {
       })
     },
     _register (id) {
-      Services.register(`10011142_${id}`).then(res=> {
+      Services.register(`25052_${id}`).then(res=> {
         const {data} = _get(res, 'data')
         this.$toast.show( {message: data} )
       })
