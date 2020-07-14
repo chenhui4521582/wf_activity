@@ -133,7 +133,7 @@ export default {
       const costNum = _get(this.currentBox, 'cost', 0)
       if(this.lock) {
         /** 开奖中弹框 **/
-        this.$toast.show({message: '正在开奖,请稍等'})
+        this.$toast.show({message: '正在开奖中,请稍等！'})
       } else if(keyNum && costNum && keyNum >= costNum) {
         /** 钥匙足够 **/
         this.openPopup(3)
