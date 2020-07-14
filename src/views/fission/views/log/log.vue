@@ -331,10 +331,10 @@ export default {
       .item {
         text-align: center;
         &:nth-child(1) {
-          width: 30%;
+          width: 25%;
         }
         &:nth-child(2) {
-          width: 50%;
+          width: 55%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
