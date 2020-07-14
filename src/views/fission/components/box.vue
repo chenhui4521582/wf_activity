@@ -50,7 +50,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped> 
 .box {
   margin-top: -.1rem;
   position: relative;
@@ -87,70 +87,6 @@ export default {
     z-index: 2;
     width: 12rem;
     height: 4rem;
-  }
-  .swiper-slide {
-    display: flex;
-    justify-content: flex-start;
-    height: 4rem;
-    justify-items: center;
-    align-items: center;
-    img {
-      width: 2.5rem;
-    }
-    .bottom {
-      display: none;
-    }
-  }
-  .swiper-slide-active {
-    position: relative;
-    justify-content: center;
-    img {
-      position: relative;
-      z-index: 1;
-      width: 3.9rem;
-      animation: box infinite 2s;
-    }
-    .bottom {
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 2.8rem;
-      transform:  translate(-50%, 0);
-      margin-left: -1.92rem;
-      width: 3.84rem;
-      height: 1.42rem;
-      background: url(../img/bottom.png) no-repeat center center;
-      background-size: 100% 100%;
-      animation: cover infinite 2s;
-    }
-    &.active {
-      img {
-        animation: award 1s 1;
-      }
-    }
-  }
-  .swiper-slide-prev {
-    justify-content: flex-end;
-  }
-  .swiper-slide-next {
-    justify-content: flex-start;
-  }
-  .swiper-button-prev {
-    width: .9rem;
-    height: .9rem;
-    background: url(../img/box-btn.png) no-repeat center center;
-    background-size: 100% 100%;
-    cursor: auto;
-    outline: none;
-  }
-  .swiper-button-next {
-    transform: rotate(180deg);
-    width: .9rem;
-    height: .9rem;
-    background: url(../img/box-btn.png) no-repeat center center;
-    background-size: 100% 100%;
-    cursor: auto;
-    outline: none;
   }
   @keyframes box {
     0% {
@@ -220,6 +156,75 @@ export default {
     100% {
       transform: translate(0, -.05rem)
     }
+  }
+}
+
+</style>
+<style lang="less">
+.box {
+  .swiper-slide {
+    display: flex;
+    justify-content: flex-start;
+    height: 4rem;
+    justify-items: center;
+    align-items: center;
+    img {
+      width: 2.5rem;
+    }
+    .bottom {
+      display: none;
+    }
+  }
+  .swiper-slide-active {
+    position: relative;
+    justify-content: center;
+    img {
+      position: relative;
+      z-index: 1;
+      width: 3.9rem;
+      animation: box infinite 2s;
+    }
+    .bottom {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 2.8rem;
+      transform:  translate(-50%, 0);
+      margin-left: -1.92rem;
+      width: 3.84rem;
+      height: 1.42rem;
+      background: url(../img/bottom.png) no-repeat center center;
+      background-size: 100% 100%;
+      animation: cover infinite 2s;
+    }
+    &.active {
+      img {
+        animation: award 1s 1;
+      }
+    }
+  }
+  .swiper-slide-prev {
+    justify-content: flex-end;
+  }
+  .swiper-slide-next {
+    justify-content: flex-start;
+  }
+  .swiper-button-prev {
+    width: .9rem;
+    height: .9rem;
+    background: url(../img/box-btn.png) no-repeat center center;
+    background-size: 100% 100%;
+    cursor: auto;
+    outline: none;
+  }
+  .swiper-button-next {
+    transform: rotate(180deg);
+    width: .9rem;
+    height: .9rem;
+    background: url(../img/box-btn.png) no-repeat center center;
+    background-size: 100% 100%;
+    cursor: auto;
+    outline: none;
   }
 }
 
