@@ -2,7 +2,7 @@
   <div class="eggs-container">
     <!--返回-->
     <img src="../images/back.png" class="e-back" @click.stop="back">
-    <template v-if="actInfoData&&actInfoData.state==1">
+    <template >
       <!--规则-->
       <rule :ruleMain="actInfoData.timeline"></rule>
       <!--记录-->
