@@ -46,30 +46,27 @@ export default {
     if (this.isIOS) {
       return
     }
-    setTimeout(() => {
-      switch (this.channel) {
-        case '100039':
-          location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-          break
-        case '100042':
-          location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
-          break
-        default:
-          break
-      }
-    }, 6000)
+    switch (this.channel) {
+      case '100039':
+        this.createIframe('https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk')
+        break
+      case '100042':
+        this.createIframe('https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk')
+        break
+      default:
+        break
+    }
   },
   methods: {
     download () {
       GLOBALS.marchSetsPoint('A_H5PT0305003707') // H5平台-百度联运包-下载中间页-下载按钮点击
       switch (this.channel) {
         case '100039':
-          location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+          this.createIframe('https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk')
           break
         case '100042':
-          location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
+          this.createIframe('https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk')
           break
-
         default:
           break
       }
@@ -84,6 +81,15 @@ export default {
     },
     onError () {
       this.$toast.show({ message: '复制失败' })
+    },
+    createIframe (url) {
+      let iframe = document.createElement('iframe')
+      iframe.src = url
+      iframe.style.display = 'none'
+      document.body.appendChild(iframe)
+      setTimeout(() => {
+        iframe.remove()
+      }, 1000)
     }
   }
 }

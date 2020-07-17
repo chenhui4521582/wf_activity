@@ -20,7 +20,7 @@ const ModuleConfig = {
     dropDown: {
       out: {
         bg: {
-          background: '#FFA200',
+          background: '#F9D5C7',
           height: '.94rem',
           borderRadius: '.2rem .2rem 0 0'
         },
@@ -51,7 +51,7 @@ const ModuleConfig = {
       },
       inner: {
         bg: {
-          background: '#FFA200',
+          background: '#F9D5C7',
           borderRadius: '.2rem .2rem 0 0'
         },
         tabBg: {
@@ -61,7 +61,7 @@ const ModuleConfig = {
           btnText: ['获得号码', '有奖排行榜'],
           btnDefaultStyle: {
             color: '#FFF',
-            background: '#FF7101'
+            background: '#FFF'
           },
           activeStyle: {
             color: '#FFF',
@@ -69,23 +69,14 @@ const ModuleConfig = {
           }
         },
         info: {
-          titles: ['每日任务送随机数字', '玩游戏得随机号码（每日重置）', '超值礼包额外加赠'],
-          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，斗西游，飞机大战，生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
+          titles: ['当天玩游戏累计消耗金叶获得抽奖券（每天24点清零)', '当天购买礼包获得抽奖券（每天24点清零）'],
+          sideTitle: '参与活动游戏包括：糖果萌消消、欢乐竞技台球、街机欢乐 捕鱼、三国大作战、众神风云、福满多、斗西游、深海探一探、 欢乐的小鸟、炸弹人'
         },
         percentBg: '#dc322a',
-        packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`],
+        packageImgs: [`${require(`./images/package1.png`)}`, `${require(`./images/package2.png`)}`, `${require(`./images/package3.png`)}`],
         packageBlockBg: '#ffecca',
         packageBlockTextColor: '#9A5619',
         packageBlockBtnBg: '#E74615',
-        rank: {
-          title: {
-            url: `${require(`./img/common/rank_title.png`)}`,
-            style: {
-              width: '4.66rem',
-              height: '.46rem'
-            }
-          }
-        }
       }
     }
   }
