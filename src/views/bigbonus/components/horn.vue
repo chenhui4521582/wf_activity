@@ -18,10 +18,6 @@
       noticeList: {
         type: Array,
         default: []
-      },
-      bestname:{
-        type: Array,
-        default: []
       }
     },
     data() {
