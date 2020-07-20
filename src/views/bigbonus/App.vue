@@ -14,7 +14,8 @@
         </div>
       </div>
       <div class="gain_quan" v-if="actInfo.state==1">
-        <img src="./images/quan.png" alt="" class="quan" :class="{animation:!countdown1.time}" @click="gainQuan">
+        <img src="./images/quan.png" alt="" class="quan" v-if="countdown1.time">
+        <img src="./images/animation.gif" alt="" class="quan animation" @click="gainQuan" v-else>
         <template v-if="countdown1.time">
           <img src="./images/gain_quancountdown.png" alt="" class="quancountdown">
           <div class="counttime">
@@ -52,7 +53,7 @@
             <div class="percent">
               <div class="percent_div" :class="{gray:item.state==2,light:item.state==1}">
                 <span>最高瓜分奖池</span>
-                <span class="percent_num">{{item.rate}}%</span>
+                <span class="percent_num">{{percent[index]}}%</span>
               </div>
               <img src="./images/extra_next.png" alt="" v-if="index<2">
             </div>
@@ -87,7 +88,8 @@
       countdown1: {//倒计时
         time: ''
       },
-      timer: null
+      timer: null,
+      percent:['0.5','1','3']
     }),
     components: {
       horn: () => import('./components/horn'),
@@ -338,7 +340,7 @@
       }
       .horn_container {
         position: absolute;
-        top: 0;
+        top: -.05rem;
         left: 1.01rem;
         width: 5.15rem;
         height: 2.65rem;
@@ -371,8 +373,9 @@
         .quan {
           width: .84rem;
           height: .95rem;
-          &.animation {
-            animation: tranRotateZ .5s linear infinite;
+          &.animation{
+            width: .97rem;
+            height: 1.05rem;
           }
         }
         .quancountdown {
