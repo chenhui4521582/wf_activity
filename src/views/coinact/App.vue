@@ -2,7 +2,9 @@
   <section class="coinact">
     <div class="coin-click" style="height: 5.4rem">
       <img src="./images/back.png" alt="" class="back" @click="back">
-      <img src="./images/rule.png" alt="" class="rule" @click="back">
+      <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
+      <img src="./images/canGain.png" class="gain" alt="" @click="gain" v-if="list.filter(item=>item.status==1).length">
+      <img src="./images/unGain.png" class="gain" alt="" @click="gain" v-else>
       <div class="time">活动时间:10/11 23:59:50-10/12 23:59:50</div>
       <div class="total_gain">
         <div class="item">累计获得：<i>000/300金币</i></div>
@@ -18,28 +20,41 @@
         <div class="item" v-for="item in list"
              :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
           <div class="price">{{item.price}}元</div>
-          <div class="status">{{status[item.status]}}</div>
+          <div class="status" @click="gain(item)">{{status[item.status]}}</div>
         </div>
       </div>
       <div class="coin_percent">
         <div class="item" v-for="(item,index) in list" :class="{gray:item.status==0}">
           <span>{{index+1}}</span>
         </div>
+        <div class="percent_box" v-if="list.length>1">
+          <div class="percent_progress" style="max-height: 100%"
+               :style="{height:(list.filter(item=>item.status>0).length/(list.length-1))*100+'%'}"></div>
+        </div>
       </div>
       <div class="coin_right">
         <div class="item" v-for="item in list"
              :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
           <div class="price">{{item.price}}元</div>
-          <div class="status">{{status[item.status]}}</div>
+          <div class="status" @click="gain(item)">{{status[item.status]}}</div>
+        </div>
+        <div class="pop">
+          <img src="./images/text.png" alt="">
+          <span>解锁挑战奖励翻倍</span>
+          <div class="award">
+            <img src="./images/compop/jyz.png" alt="">
+            <div class="award_name">立得10000金叶</div>
+          </div>
+          <div class="btn" @click="gotopay">100元解锁</div>
         </div>
       </div>
     </div>
-    <com-pop ref="comPop" :awardData="awardData"></com-pop>
+    <com-pop :popType="popType" ref="comPop" :awardData="awardData" @close="popType=0"></com-pop>
   </section>
 </template>
 
 <script>
-  import {getActInfo, getPackages} from './utils/api'
+  import {getActInfo} from './utils/api'
 
   export default {
     name: 'coinact',
@@ -48,6 +63,7 @@
     },
     data() {
       return {
+        popType: 0,
         actInfo: null,
         packages: [],
         countdown: {
@@ -57,34 +73,22 @@
         status: ["去完成", "未领取", "已领取"],
         list: [{
           price: 1,
-          status: 0
+          status: 1
         }, {
           price: 11,
           status: 1
-        }, {
-          price: 111,
-          status: 2
-        }, {
-          price: 1,
-          status: 0
-        }, {
-          price: 1,
-          status: 0
-        }, {
-          price: 1,
-          status: 0
         }]
       }
     },
     async mounted() {
-      await this.getPackages()
       await this.getActInfo()
-      GLOBALS.marchSetsPoint('P_H5PT0304', {
+      GLOBALS.marchSetsPoint('P_H5PT0310', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })
     },
     methods: {
       back() {
+        GLOBALS.marchSetsPoint('A_H5PT0310003852')
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
       async getActInfo() {
@@ -101,8 +105,7 @@
                 isCat: this.packages.length >= 4 && this.packages.slice(-1)[0].bizId == this.actInfo.bizId
               }
               setTimeout(() => {
-                GLOBALS.marchSetsPoint('A_H5PT0304003700')
-                this.$refs.comPop.showPop()
+                this.showPop(2)
               }, 1000)
             }
           }
@@ -114,26 +117,18 @@
           )
         }
       },
-      async getPackages() {
-        let {code, data} = await getPackages()
-        if (code == 200) {
-          this.packages = data.mallBizConfigs
-
-        }
+      gotopay() {
+        location.href = '//wap.beeplaying.com/xmWap/#/payment/'
       },
-      gotopay(item) {
-        if (item.buyFlag == 1) {
-          localStorage.setItem('originDeffer', window.location.href)
-          GLOBALS.marchSetsPoint('A_H5PT0304003699', {
-            product_price: item.price,
-            product_id: item.bizId,
-            product_name: item.name
-          })   // 点击任意礼包
-          localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-          localStorage.setItem('payment', JSON.stringify(item))
-          location.href =
-            'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
-        }
+      //弹窗
+      showPop(type) {
+        this.popType = type
+        setTimeout(() => {
+          this.$refs.comPop.showPop()
+        })
+      },
+      gain(item) {
+        this.showPop(3)
       }
     },
     watch: {
@@ -151,38 +146,20 @@
   .coinact {
     min-height: 100vh;
     position: relative;
+    background: url("./images/bgline.png");
+    background-size: 100% 2.36rem;
     border-bottom: .3rem solid #FFEFDE;
-    /*&:before {*/
-    /*content: '';*/
-    /*position: absolute;*/
-    /*left: 0;*/
-    /*right: 0;*/
-    /*bottom: 0;*/
-    /*height: 2.28rem;*/
-    /*background: url("./images/bgline.png");*/
-    /*background-size: 100% 100%;*/
-    /*}*/
+    box-sizing: border-box;
     &:after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 14.86rem;
+      height: 5.33rem;
       background: url("./images/bg.png");
       background-size: 100% 100%;
     }
-    /*.coinact_bg {*/
-    /*position: relative;*/
-    /*left: 0;*/
-    /*right: 0;*/
-    /*height: 14.86rem;*/
-    /*background: url("./images/bg.png");*/
-    /*background-size: 100% 100%;*/
-    /*padding-top: 5.5rem;*/
-    /*box-sizing: border-box;*/
-    /*z-index: 1;*/
-    /*}*/
     .time {
       position: absolute;
       top: 3.84rem;
@@ -205,6 +182,14 @@
       &.rule {
         top: 1.06rem;
       }
+    }
+    .gain {
+      position: absolute;
+      top: 5.37rem;
+      left: 0;
+      width: 1.07rem;
+      height: .68rem;
+      z-index: 2;
     }
     .total_gain {
       position: absolute;
@@ -263,11 +248,7 @@
       justify-content: space-around;
       position: relative;
       z-index: 1;
-      background: #F8B97C;
-      border-left: .17rem solid #FFEFDE;
-      border-right: .2rem solid #FFEFDE;
       box-sizing: border-box;
-      min-height: calc(14.6rem - 5.4rem);
       padding-bottom: .2rem;
       .coin_left {
         .item {
@@ -285,7 +266,7 @@
           align-items: center;
           justify-content: center;
           margin-top: .34rem;
-          &:nth-child(1){
+          &:nth-child(1) {
             margin-top: 0;
           }
           .status {
@@ -320,13 +301,16 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        position: relative;
         .item {
           height: 1.39rem;
           display: flex;
           justify-content: center;
           align-items: center;
           margin-top: .34rem;
-          &:nth-child(1){
+          position: relative;
+          z-index: 1;
+          &:nth-child(1) {
             margin-top: 0;
           }
           span {
@@ -336,16 +320,34 @@
             line-height: .88rem;
             background: url("./images/round.png");
             background-size: 100% 100%;
+            font-size: .36rem;
+            font-weight: bold;
+            color: rgba(247, 219, 191, 1);
           }
           &.gray {
             span {
+              color: rgba(167, 93, 26, 1);
               background: url("./images/round_gray.png");
               background-size: 100% 100%;
             }
           }
         }
+        .percent_box {
+          width: .17rem;
+          position: absolute;
+          top: .3rem;
+          left: 0;
+          right: 0;
+          bottom: .3rem;
+          margin: auto;
+          background: #F8ECF0;
+          .percent_progress {
+            background: #A95C16;
+          }
+        }
       }
       .coin_right {
+        position: relative;
         .item {
           width: 2.41rem;
           height: 1.39rem;
@@ -361,7 +363,7 @@
           align-items: center;
           justify-content: center;
           margin-top: .34rem;
-          &:nth-child(1){
+          &:nth-child(1) {
             margin-top: 0;
           }
           .status {
@@ -389,6 +391,65 @@
             .status {
               background: rgba(110, 108, 108, 1);
             }
+          }
+        }
+        .pop {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          min-height: 4.5rem;
+          background: rgba(0, 0, 0, 0.63);
+          border-radius: .1rem;
+          padding-top: .53rem;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          img {
+            width: 1.44rem;
+            height: .37rem;
+          }
+          span {
+            margin: .1rem 0 .04rem;
+            font-size: .24rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+          }
+          .award {
+            margin-bottom: .24rem;
+            width: 2.08rem;
+            height: 2.1rem;
+            background: url("./images/light.png");
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: .4rem;
+            box-sizing: border-box;
+            img {
+              width: 1.27rem;
+              height: 1.27rem;
+            }
+            .award_name {
+              font-size: .26rem;
+              font-weight: bold;
+              color: rgba(254, 239, 110, 1);
+            }
+          }
+          .btn {
+            width: 1.64rem;
+            height: .6rem;
+            line-height: .6rem;
+            background: rgba(156, 63, 219, 1);
+            border-radius: .3rem;
+            font-size: .24rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+            margin-bottom: .2rem;
           }
         }
       }
