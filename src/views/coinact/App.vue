@@ -1,6 +1,6 @@
 <template>
   <section class="coinact">
-    <div class="coinact_bg">
+    <div class="coin-click" style="height: 5.4rem">
       <img src="./images/back.png" alt="" class="back" @click="back">
       <img src="./images/rule.png" alt="" class="rule" @click="back">
       <div class="time">活动时间:10/11 23:59:50-10/12 23:59:50</div>
@@ -12,21 +12,25 @@
         <div class="item">3</div>
         <div class="item">下一达成阶段</div>
       </div>
-      <div class="coin_list">
-        <div class="coin_left">
-          <div class="item" v-for="item in list"
-               :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
-            <div class="price">{{item.price}}元</div>
-            <div class="status">{{status[item.status]}}元</div>
-          </div>
+    </div>
+    <div class="coin_list">
+      <div class="coin_left">
+        <div class="item" v-for="item in list"
+             :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
+          <div class="price">{{item.price}}元</div>
+          <div class="status">{{status[item.status]}}</div>
         </div>
-        <div class="coin_percent" v-for="(item,index) in list" :class="{gray:item.status==0}">{{index+1}}</div>
-        <div class="coin_right">
-          <div class="item" v-for="item in list"
-               :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
-            <div class="price">{{item.price}}元</div>
-            <div class="status">{{status[item.status]}}元</div>
-          </div>
+      </div>
+      <div class="coin_percent">
+        <div class="item" v-for="(item,index) in list" :class="{gray:item.status==0}">
+          <span>{{index+1}}</span>
+        </div>
+      </div>
+      <div class="coin_right">
+        <div class="item" v-for="item in list"
+             :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
+          <div class="price">{{item.price}}元</div>
+          <div class="status">{{status[item.status]}}</div>
         </div>
       </div>
     </div>
@@ -147,25 +151,38 @@
   .coinact {
     min-height: 100vh;
     position: relative;
-    &:before {
+    border-bottom: .3rem solid #FFEFDE;
+    /*&:before {*/
+    /*content: '';*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*height: 2.28rem;*/
+    /*background: url("./images/bgline.png");*/
+    /*background-size: 100% 100%;*/
+    /*}*/
+    &:after {
       content: '';
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2.28rem;
-      background: url("./images/bgline.png");
-      background-size: 100% 100%;
-      z-index: 1;
-    }
-    .coinact_bg {
-      position: relative;
+      top: 0;
       left: 0;
       right: 0;
       height: 14.86rem;
       background: url("./images/bg.png");
       background-size: 100% 100%;
     }
+    /*.coinact_bg {*/
+    /*position: relative;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*height: 14.86rem;*/
+    /*background: url("./images/bg.png");*/
+    /*background-size: 100% 100%;*/
+    /*padding-top: 5.5rem;*/
+    /*box-sizing: border-box;*/
+    /*z-index: 1;*/
+    /*}*/
     .time {
       position: absolute;
       top: 3.84rem;
@@ -176,6 +193,7 @@
       font-size: .2rem;
       font-weight: 400;
       color: rgba(171, 74, 32, 1);
+      z-index: 1;
     }
     .back, .rule {
       position: absolute;
@@ -198,6 +216,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 1;
       .item {
         font-size: .18rem;
         font-weight: 400;
@@ -224,6 +243,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 1;
       .item {
         font-size: .18rem;
         font-weight: 400;
@@ -238,41 +258,136 @@
         }
       }
     }
-    .coin_list{
+    .coin_list {
       display: flex;
-      justify-content: space-between;
-      .coin_left{
-        .item{
+      justify-content: space-around;
+      position: relative;
+      z-index: 1;
+      background: #F8B97C;
+      border-left: .17rem solid #FFEFDE;
+      border-right: .2rem solid #FFEFDE;
+      box-sizing: border-box;
+      min-height: calc(14.6rem - 5.4rem);
+      padding-bottom: .2rem;
+      .coin_left {
+        .item {
           width: 2.41rem;
           height: 1.39rem;
           background: url("./images/left.png");
           background-size: 100% 100%;
-          font-size:.36rem;
-          font-weight:bold;
-          color:rgba(254,240,91,1);
-          .status{
-            width:1.04rem;
-            height:.44rem;
-            line-height:.44rem;
-            text-align: center;
-            background:rgba(110,26,173,1);
-            border-radius:.22rem;
-            font-size:.24rem;
-            font-weight:400;
-            color:rgba(255,255,255,1);
+          font-size: .36rem;
+          font-weight: bold;
+          color: rgba(254, 240, 91, 1);
+          padding-left: 1rem;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-top: .34rem;
+          &:nth-child(1){
+            margin-top: 0;
           }
-          &.receive{
-            .status{
-              background:rgba(255,240,225,1);
-              color:rgba(207,54,54,1);
+          .status {
+            margin-top: .17rem;
+            width: 1.04rem;
+            height: .44rem;
+            line-height: .44rem;
+            text-align: center;
+            background: rgba(110, 26, 173, 1);
+            border-radius: .22rem;
+            font-size: .24rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+          }
+          &.receive {
+            .status {
+              background: rgba(255, 240, 225, 1);
+              color: rgba(207, 54, 54, 1);
             }
           }
-          &.gray{
+          &.gray {
             background: url("./images/l_gray.png");
-            background: 100% 100%;
-            color:rgba(232,232,232,1);
-            .status{
-              background:rgba(110,108,108,1);
+            background-size: 100% 100%;
+            color: rgba(232, 232, 232, 1);
+            .status {
+              background: rgba(110, 108, 108, 1);
+            }
+          }
+        }
+      }
+      .coin_percent {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .item {
+          height: 1.39rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: .34rem;
+          &:nth-child(1){
+            margin-top: 0;
+          }
+          span {
+            width: .9rem;
+            height: .88rem;
+            text-align: center;
+            line-height: .88rem;
+            background: url("./images/round.png");
+            background-size: 100% 100%;
+          }
+          &.gray {
+            span {
+              background: url("./images/round_gray.png");
+              background-size: 100% 100%;
+            }
+          }
+        }
+      }
+      .coin_right {
+        .item {
+          width: 2.41rem;
+          height: 1.39rem;
+          background: url("./images/right.png");
+          background-size: 100% 100%;
+          font-size: .36rem;
+          font-weight: bold;
+          color: rgba(254, 240, 91, 1);
+          padding-right: 1rem;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-top: .34rem;
+          &:nth-child(1){
+            margin-top: 0;
+          }
+          .status {
+            margin-top: .17rem;
+            width: 1.04rem;
+            height: .44rem;
+            line-height: .44rem;
+            text-align: center;
+            background: rgba(110, 26, 173, 1);
+            border-radius: .22rem;
+            font-size: .24rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+          }
+          &.receive {
+            .status {
+              background: rgba(255, 240, 225, 1);
+              color: rgba(207, 54, 54, 1);
+            }
+          }
+          &.gray {
+            background: url("./images/r_gray.png");
+            background-size: 100% 100%;
+            color: rgba(232, 232, 232, 1);
+            .status {
+              background: rgba(110, 108, 108, 1);
             }
           }
         }
