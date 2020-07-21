@@ -286,7 +286,6 @@
         source_address: GLOBALS.getUrlParam('from') || ''
       })
       this.init()
-      this.getShowLeaguePacksList()
     },
     watch: {
       "countdown.time"(value) {
