@@ -226,7 +226,7 @@
               this.showPop(12, {
                 awardsName: `${data.amount}个话费碎片${data.businessType == 4 ? `<br><i style="font-size: .26rem;font-weight:400;">（${data.rate}%奖池奖励）</i>` : ``}`,
                 awardsType: 'hfq',
-                info: `${data.progress.unlock ? `今日您已累计消耗${data.progress.total}张抽奖券，<br>下次高额券抽必中${data.progress.rate}%奖池大奖！` : `奖励将自动发放到账<br>（10个话费碎片=1元话费券）`}`
+                info: `${data.progress.unlock ? `今日您已累计消耗${data.progress.total}张抽奖券，<br>下次高额券抽必中奖池大奖！` : `奖励将自动发放到账<br>（10个话费碎片=1元话费券）`}`
               })
               if (data.progress.unlock) {
                 GLOBALS.marchSetsPoint('A_H5PT0309003776')
@@ -270,6 +270,7 @@
               message: message,
               duration: 1000
             })
+            this._getInfo()
           }
         }
       },
