@@ -526,6 +526,9 @@
                   &:before {
                     content: '';
                     position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
                     width: 1.27rem;
                     height: 1.27rem;
                     background: url("../images/comPop/empty.png");
@@ -534,10 +537,14 @@
                   &:after {
                     content: '没有记录';
                     position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
                     font-size: .24rem;
                     font-weight: 500;
                     color: rgba(207, 117, 66, 1);
                     align-self: flex-end;
+                    text-align: center;
                   }
                 }
               }

@@ -307,6 +307,7 @@
   .bigbonus {
     min-height: 100vh;
     background: #2E016A;
+    padding-bottom: .94rem;
     .bigbonus-container {
       width: 100%;
       height: 11.35rem;
@@ -395,7 +396,7 @@
               width: 0.14rem;
               height: 0.18rem;
               color: rgba(255, 51, 42, 1);
-              line-height: 0.18rem;
+              line-height: 0.2rem;
               text-align: center;
               background: rgba(255, 238, 214, 1);
               border-radius: 0.02rem;
@@ -571,6 +572,8 @@
                 padding-top: .16rem;
                 box-sizing: border-box;
                 text-align: center;
+                display: flex;
+                flex-direction: column;
                 span {
                   font-size: .18rem;
                   font-weight: 400;
