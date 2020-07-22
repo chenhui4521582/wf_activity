@@ -17,19 +17,11 @@ export const receiveAll = async () => {
   return data
 }
 /**
- * @description 领取扩展奖励
+ * @description 领取奖励
  * @return {Object} data
  */
-export const receiveExtend = async (sort) => {
-  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/gold-coin/receive-extend/' + sort)
-  return data
-}
-/**
- * @description 领取正常奖励
- * @return {Object} data
- */
-export const receiveNormal = async (sort) => {
-  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/gold-coin/receive-normal/' + sort)
+export const receivePrize = async (category, sort) => {
+  const {data} = await $axios.post(`//ops-api.beeplaying.com/ops/api/gold-coin/receive/${category}/${sort}`)
   return data
 }
 /**

@@ -11,7 +11,7 @@
                 <scroll>
                   <div>
                     <p>1、恭喜你成为幸运儿，金币挑战对幸运儿单独开放！ </p>
-                    <p>2、活动时间：2019-10-11 23：59：50-2019-10-12 23：59：50 </p>
+                    <p>2、活动时间：{{actInfo.timeline}} </p>
                     <p>3、金币挑战中，每支持1W金叶即可获得一个金币！ </p>
                     <p>4、在斗地主、麻将、枪火英雄、套圈、天天飞机大战、打地鼠中消耗金叶不计入其中。</p>
                     <p>5、如有疑问，请联系在线客服。</p>
@@ -24,12 +24,12 @@
                 <div class="info">金叶子已到账</div>
               </template>
               <template v-else-if="popType==3">
-                <div class="yhq">
-                  <i>1元</i>
-                  <div>话费券</div>
+                <img src="../images/compop/jinbi.png" alt="" v-if="awardData.awardsType=='jinbi'">
+                <div class="yhq" v-else>
+                  <i>{{awardData.awardsName.replace(getAwardName(awardData.awardsType),'')}}</i>
+                  <div>{{getAwardName(awardData.awardsType)}}</div>
                 </div>
-                <!--<img src="../images/compop/jinbi.png" alt="">-->
-                <div class="info">1元话费券</div>
+                <div class="info">{{awardData.awardsName}}</div>
               </template>
             </div>
             <div class="close" @click="close">
@@ -67,27 +67,37 @@
       scroll: () => import('./scroll')
     },
     methods: {
+      getAwardName(awardType) {
+        switch (awardType) {
+          case 'jyz':
+            return '金叶子'
+            break
+          case 'yg':
+            return '鱼干'
+            break
+          case 'jdk':
+            return '京东券'
+            break
+          case 'hfq':
+            return '话费券'
+            break
+          case 'yhq':
+            return '优惠券'
+            break
+        }
+      },
       getClassName(name) {
         return `${name} flag${this.popType}`
       },
       async showPop() {
-        console.log('9999')
         this.isShowPop = true
       },
       close() {
-        this.$emit('close')
+        this.$emit('close',this.awardData)
         this.isShowPop = false;
       },
       move(e) {
         e.preventDefault()
-      },
-      gotogame(isCat) {
-        GLOBALS.marchSetsPoint('A_H5PT0304003701')
-        if (isCat) {
-          GLOBALS.jumpOutsideGame('/petcat')
-        } else {
-          location.href = '//wap.beeplaying.com/xmWap/#/personalCenter/headFrame'
-        }
       }
     },
     watch: {

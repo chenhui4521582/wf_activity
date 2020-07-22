@@ -1,17 +1,18 @@
 <template>
-  <section class="coinact">
+  <section class="coinact" v-if="actInfo">
     <div class="coin-click" style="height: 5.4rem">
       <img src="./images/back.png" alt="" class="back" @click="back">
       <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
-      <img src="./images/canGain.png" class="gain" alt="" @click="gain" v-if="list.filter(item=>item.status==1).length">
-      <img src="./images/unGain.png" class="gain" alt="" @click="gain" v-else>
+      <img src="./images/canGain.png" class="gain" alt="" @click="gain(0,null)"
+           v-if="[...actInfo.leftProgressList,...actInfo.rightProgressList].filter(item=>item.awardsState==1).length">
+      <img src="./images/unGain.png" class="gain" alt="" v-else>
       <div class="time">活动时间:{{actInfo.timeline}}</div>
       <div class="total_gain">
-        <div class="item">累计获得：<i>{{actInfo.userBetting}}/{{actInfo.userCoinNum}}金币</i></div>
+        <div class="item">累计获得：<i>{{actInfo.userCoinNum}}/{{actInfo.nextConsume}}金币</i></div>
         <div class="item">每支持10000金叶=1个金币（部分游戏不计入）</div>
       </div>
       <div class="coin_stage">
-        <template v-if="!actInfo.nextStage">
+        <template v-if="actInfo.nextStage">
           <div class="item">{{actInfo.nextStage}}</div>
           <div class="item">下一达成阶段</div>
         </template>
@@ -23,44 +24,44 @@
     </div>
     <div class="coin_list">
       <div class="coin_left">
-        <div class="item" v-for="item in list"
-             :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
-          <div class="price">{{item.price}}元</div>
-          <div class="status" @click="gain(item)">{{status[item.status]}}</div>
+        <div class="item" v-for="item in actInfo.leftProgressList"
+             :class="{gray:item.awardsState==2,complete:item.awardsState==0,receive:item.awardsState==1}">
+          <div class="price">{{item.awardsNum*0.1}}元</div>
+          <div class="status" @click="gain(1,item)">{{status[item.awardsState]}}</div>
         </div>
       </div>
       <div class="coin_percent">
-        <div class="item" v-for="(item,index) in list" :class="{gray:item.status==0}">
+        <div class="item" v-for="(item,index) in actInfo.leftProgressList" :class="{gray:item.awardsState==0}">
           <span>{{index+1}}</span>
         </div>
-        <div class="percent_box" v-if="list.length>1">
+        <div class="percent_box" v-if="actInfo.leftProgressList.length>1">
           <div class="percent_progress" style="max-height: 100%"
-               :style="{height:(list.filter(item=>item.status>0).length/(list.length-1))*100+'%'}"></div>
+               :style="{height:(actInfo.leftProgressList.filter(item=>item.awardsState>0).length/(actInfo.leftProgressList.length-1))*100+'%'}"></div>
         </div>
       </div>
       <div class="coin_right">
-        <div class="item" v-for="item in list"
-             :class="{gray:item.status==2,complete:item.status==0,receive:item.status==1}">
-          <div class="price">{{item.price}}元</div>
-          <div class="status" @click="gain(item)">{{status[item.status]}}</div>
+        <div class="item" v-for="item in actInfo.rightProgressList"
+             :class="{gray:item.awardsState==2,complete:item.awardsState==0,receive:item.awardsState==1}">
+          <div class="price">{{item.awardsNum*0.1}}元</div>
+          <div class="status" @click="gain(2,item)">{{status[item.awardsState]}}</div>
         </div>
-        <div class="pop">
+        <div class="pop" v-if="actInfo.bagLock&&mallBizConfigs.length">
           <img src="./images/text.png" alt="">
           <span>解锁挑战奖励翻倍</span>
           <div class="award">
             <img src="./images/compop/jyz.png" alt="">
-            <div class="award_name">立得10000金叶</div>
+            <div class="award_name">{{mallBizConfigs[0].content}}</div>
           </div>
-          <div class="btn" @click="gotopay">100元解锁</div>
+          <div class="btn" @click="gotopay(mallBizConfigs[0])">{{mallBizConfigs[0].price}}元解锁</div>
         </div>
       </div>
     </div>
-    <com-pop :popType="popType" ref="comPop" :awardData="awardData" @close="popType=0"></com-pop>
+    <com-pop :popType="popType" ref="comPop" :actInfo="actInfo" :awardData="awardData" @close="closePop"></com-pop>
   </section>
 </template>
 
 <script>
-  import {getActInfo, receiveAll, receiveExtend, receiveNormal, getPackages} from './utils/api'
+  import {getActInfo, receiveAll, receivePrize, getPackages} from './utils/api'
 
   export default {
     name: 'coinact',
@@ -71,19 +72,9 @@
       return {
         popType: 0,
         actInfo: null,
-        packages: [],
-        countdown: {
-          time: ''
-        },
         awardData: null,
         status: ["去完成", "未领取", "已领取"],
-        list: [{
-          price: 1,
-          status: 1
-        }, {
-          price: 11,
-          status: 1
-        }]
+        mallBizConfigs: []
       }
     },
     async mounted() {
@@ -101,47 +92,109 @@
         let {code, data} = await getActInfo()
         if (code == 200) {
           this.actInfo = data
-          if (this.actInfo.popup) {
-            let packageBag = this.packages.filter(item => item.bizId == this.actInfo.bizId)[0]
-            if (packageBag) {
-              this.awardData = {
-                name: packageBag.name,
-                content: packageBag.content,
-                productIcon: packageBag.productIcon,
-                isCat: this.packages.length >= 4 && this.packages.slice(-1)[0].bizId == this.actInfo.bizId
-              }
-              setTimeout(() => {
-                this.showPop(2)
-              }, 1000)
-            }
+          //锁定
+          if (this.actInfo.bagLock) {
+            this.getShowLeaguePacksList()
           }
-          !this.countdown.time && this.actInfo.countdown && GLOBALS.remainingTime(
-            this,
-            this.actInfo.countdown,
-            this.countdown,
-            true
-          )
+          //金币新增
+          if (this.actInfo.incrCoinNum) {
+            setTimeout(() => {
+              this.awardData = {
+                awardsName: this.actInfo.incrCoinNum + '金币',
+                awardsType: 'jinbi',
+                bagPopup: this.actInfo.bagPopup,
+                awardsNum: this.actInfo.incrCoinNum
+              }
+              this.showPop(3)
+            }, 1000)
+          } else if (this.actInfo.bagPopup) {//购买礼包成功
+            setTimeout(() => {
+              this.showPop(2)
+            }, 1000)
+          }
         }
       },
-      gotopay() {
-        location.href = '//wap.beeplaying.com/xmWap/#/payment/'
+      gotopay(item) {
+        localStorage.setItem('originDeffer', window.location.href)
+        GLOBALS.marchSetsPoint('A_H5PT0277003315', {
+          recharge_rmb: item.price,
+          product_id: item.bizId,
+          awards_name: item.name,
+          product_name: item.name
+        })   // H5平台-超级大赢家活动-礼包点击
+        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+        localStorage.setItem('payment', JSON.stringify(item))
+        location.href =
+          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       },
       //弹窗
       showPop(type) {
         this.popType = type
+        if (type == 1) {//规则点击
+          GLOBALS.marchSetsPoint('A_H5PT0310003853')
+        }
         setTimeout(() => {
+          // A_H5PT0310003856 H5平台-金币挑战活动-活动规则弹窗加载完成
+          // A_H5PT0310003858 H5平台-金币挑战活动-特别挑战开启弹窗加载完成
+          let points = ['A_H5PT0310003856', 'A_H5PT0310003858']
+          points[type] && GLOBALS.marchSetsPoint(points[type])
+          if (this.awardData) {
+            GLOBALS.marchSetsPoint(this.awardData.awardType == 'jinbi' ? 'A_H5PT0310003857' : 'A_H5PT0310003855', {
+              awards_name: this.awardData.awardsName,
+              awards_num: this.awardData.awardsNum
+            })
+          }
           this.$refs.comPop.showPop()
         })
       },
-      gain(item) {
-        this.showPop(3)
-      }
-    },
-    watch: {
-      'countdown.time': function (val) {
-        if (!val) {
-          this.getActInfo()
+      async gain(category, item) {
+        if (category) {
+          if (item.awardsState == 0) {
+            location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
+
+          } else if (item.awardsState == 1) {
+            GLOBALS.marchSetsPoint('A_H5PT0310003854')
+            let {code, data, message} = await receivePrize(category, item.sort)
+            if (code == 200) {
+              this.awardData = Object.assign(data, {
+                awardsNum: item.awardsNum
+              })
+              this.showPop(3)
+              this.getActInfo()
+            } else {
+              this.$toast.show({
+                message,
+                duration: 1000
+              })
+            }
+          }
+        } else {
+          GLOBALS.marchSetsPoint('A_H5PT0310003854')
+          let {code, data, message} = await receiveAll()
+          if (code == 200) {
+            this.awardData = data
+            this.showPop(3)
+            this.getActInfo()
+          } else {
+            this.$toast.show({
+              message,
+              duration: 1000
+            })
+          }
         }
+      },
+      async getShowLeaguePacksList() {
+        const {code, data} = await getPackages(this.actInfo.bagBatchId)
+        if (code === 200) {
+          this.mallBizConfigs = data.mallBizConfigs
+        }
+      },
+      closePop(data) {
+        this.popType = 0
+        if (data && data.bagPopup) {
+          this.showPop(2)
+        }
+        this.awardData = null
       }
     }
   }
@@ -190,7 +243,7 @@
       }
     }
     .gain {
-      position: absolute;
+      position: fixed;
       top: 5.37rem;
       left: 0;
       width: 1.07rem;
