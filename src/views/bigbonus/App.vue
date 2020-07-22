@@ -149,7 +149,7 @@
       //返回
       backHome() {
         GLOBALS.marchSetsPoint('A_H5PT0309003761')
-        window.location.href = "//wap.beeplaying.com/xmWap/#/"
+        history.back(-1)
       },
       //获取活动信息
       async _getInfo() {
@@ -174,7 +174,7 @@
             } else {
               this.$toast.show({
                 message: '昨日您与排行榜失之交臂啦~',
-                duration: 1000
+                duration: 3000
               })
               setTimeout(() => {
                 this.showPop(3)
