@@ -5,14 +5,20 @@
       <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
       <img src="./images/canGain.png" class="gain" alt="" @click="gain" v-if="list.filter(item=>item.status==1).length">
       <img src="./images/unGain.png" class="gain" alt="" @click="gain" v-else>
-      <div class="time">活动时间:10/11 23:59:50-10/12 23:59:50</div>
+      <div class="time">活动时间:{{actInfo.timeline}}</div>
       <div class="total_gain">
-        <div class="item">累计获得：<i>000/300金币</i></div>
+        <div class="item">累计获得：<i>{{actInfo.userBetting}}/{{actInfo.userCoinNum}}金币</i></div>
         <div class="item">每支持10000金叶=1个金币（部分游戏不计入）</div>
       </div>
       <div class="coin_stage">
-        <div class="item">3</div>
-        <div class="item">下一达成阶段</div>
+        <template v-if="!actInfo.nextStage">
+          <div class="item">{{actInfo.nextStage}}</div>
+          <div class="item">下一达成阶段</div>
+        </template>
+        <template v-else>
+          <div class="item" style="font-size: .24rem">已完成</div>
+          <div class="item" style="font-size: .24rem;color: #fff;font-weight: bold;">全部阶段</div>
+        </template>
       </div>
     </div>
     <div class="coin_list">
@@ -54,7 +60,7 @@
 </template>
 
 <script>
-  import {getActInfo} from './utils/api'
+  import {getActInfo, receiveAll, receiveExtend, receiveNormal, getPackages} from './utils/api'
 
   export default {
     name: 'coinact',
