@@ -13,7 +13,7 @@
         </div>
       </div>
     </transition>
-    <div class="bottom-wrap" v-if="!curIndex" :style="$moduleConfig.superLotto.dropDown.out.bg" @click="curIndex=1">
+    <div class="bottom-wrap" v-if="!curIndex" :style="$moduleConfig.superLotto.dropDown.out.bg" @click="outHandleTab">
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
     innerHandleTab (idx) {
       this.handleTab(idx + 1)
     },
-    outHandleTab (idx) {
+    outHandleTab () {
       GLOBALS.marchSetsPoint('A_H5PT0309003770')//H5平台-奖池大满贯活动-获取抽奖券按钮点击
       this.curIndex=1
       GLOBALS.marchSetsPoint('A_H5PT0309003771')//H5平台-奖池大满贯活动-获取抽奖券上弹窗加载完成
