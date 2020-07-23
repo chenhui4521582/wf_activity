@@ -178,7 +178,7 @@
               })
               setTimeout(() => {
                 this.showPop(3)
-              }, 1000)
+              }, 3000)
             }
           }
           if (this.timer) {
