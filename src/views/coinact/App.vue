@@ -488,14 +488,20 @@
             justify-content: space-between;
             padding-top: .4rem;
             box-sizing: border-box;
+            position: relative;
             img {
               width: 1.27rem;
               height: 1.27rem;
             }
             .award_name {
+              position: absolute;
+              left: -.16rem;
+              right:-.16rem;
+              bottom: 0;
               font-size: .26rem;
               font-weight: bold;
               color: rgba(254, 239, 110, 1);
+              text-align: center;
             }
           }
           .btn {
