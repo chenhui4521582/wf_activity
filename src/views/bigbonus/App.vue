@@ -89,7 +89,7 @@
         time: ''
       },
       timer: null,
-      percent:['0.5','1','3']
+      percent: ['0.5', '1', '3']
     }),
     components: {
       horn: () => import('./components/horn'),
@@ -184,9 +184,11 @@
           if (this.timer) {
             clearInterval(this.timer)
           }
-          this.timer = setInterval(() => {
-            this.setJackpotAmount()
-          }, 5000)
+          if (this.actInfo.state == 1) {//活动期间轮询接口
+            this.timer = setInterval(() => {
+              this.setJackpotAmount()
+            }, 5000)
+          }
           !this.countdown.time && data.countdown && GLOBALS.remainingTime(
             this,
             data.countdown,
@@ -374,7 +376,7 @@
         .quan {
           width: .84rem;
           height: .95rem;
-          &.animation{
+          &.animation {
             width: .97rem;
             height: 1.05rem;
           }
