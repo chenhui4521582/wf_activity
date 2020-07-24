@@ -13,7 +13,7 @@
           <horn :noticeList="hornList"></horn>
         </div>
       </div>
-      <div class="gain_quan" v-if="actInfo.state==1">
+      <div class="gain_quan" v-if="actInfo.state==1&&actInfo.couponInfo.state!=2">
         <img src="./images/quan.png" alt="" class="quan" v-if="countdown1.time">
         <img src="./images/animation.gif" alt="" class="quan animation" @click="gainQuan" v-else>
         <template v-if="countdown1.time">
