@@ -211,7 +211,7 @@
               .yhq {
                 width: 2.65rem;
                 height: 2.97rem;
-                background: url("../images/comPop/hfq.png");
+                background: url("../images/compop/hfq.png");
                 background-size: 100% 100%;
                 font-size: .22rem;
                 font-weight: bold;

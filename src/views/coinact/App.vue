@@ -26,7 +26,7 @@
       <div class="coin_left">
         <div class="item" v-for="item in actInfo.leftProgressList"
              :class="{gray:item.awardsState==2,complete:item.awardsState==0,receive:item.awardsState==1}">
-          <div class="price">{{item.awardsNum*0.1}}元</div>
+          <div class="price">{{item.awardsName.replace('话费券','')}}</div>
           <div class="status" @click="gain(1,item)">{{status[item.awardsState]}}</div>
         </div>
       </div>
@@ -42,7 +42,7 @@
       <div class="coin_right">
         <div class="item" v-for="item in actInfo.rightProgressList"
              :class="{gray:item.awardsState==2,complete:item.awardsState==0,receive:item.awardsState==1}">
-          <div class="price">{{item.awardsNum*0.1}}元</div>
+          <div class="price">{{item.awardsName.replace('话费券','')}}</div>
           <div class="status" @click="gain(2,item)">{{status[item.awardsState]}}</div>
         </div>
         <div class="pop" v-if="actInfo.bagLock&&mallBizConfigs.length">
