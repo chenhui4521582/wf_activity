@@ -308,7 +308,7 @@
       position: relative;
       z-index: 1;
       box-sizing: border-box;
-      padding-bottom: .2rem;
+      padding: 0 .2rem .2rem;
       .coin_left {
         .item {
           width: 2.41rem;
@@ -454,8 +454,8 @@
         }
         .pop {
           position: absolute;
-          left: 0;
-          right: 0;
+          left: -.1rem;
+          right: -.1rem;
           top: 0;
           bottom: 0;
           min-height: 4.5rem;
