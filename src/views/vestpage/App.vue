@@ -52,7 +52,7 @@
               </div>
             </div>
           </template>
-          <div class="user-agreement">多多完隐私政策和用户协议</div>
+          <div class="user-agreement" @click="goUserAgreement">多多完隐私政策和用户协议</div>
         </div>
       </div>
       <div class="footer">
@@ -120,6 +120,9 @@
       })// H5平台-马甲包游戏社区-页面加载完成
     },
     methods: {
+      goUserAgreement() {
+        window.location.href = `https://wap.beeplaying.com/xmWap/#/my/userAgreement`
+      },
       onSuccess() {
         this.$toast.show({
           message: '复制成功'
