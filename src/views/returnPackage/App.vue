@@ -1,14 +1,21 @@
 <template>
   <main class="return-packet">
     <div class="bg">
+      <img src="./img/bg.png" alt="">
     </div>
     <div class="back">返回</div>
     <rule />
-    <article class="main-content">
+    <article class="main-content" v-if="info.state===1">
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
       <task ref="task" :info="info" @show-pop="showPop" />
-      <gift ref="gift" @show-pop="showPop" />
+      <gift ref="gift" :state="info.state" @show-pop="showPop" />
+    </article>
+    <article class="main-content" v-else>
+      <div class="time end-time">活动已结束，未领奖励限今日领完</div>
+      <task ref="task" :info="info" @show-pop="showPop" />
+      <gift ref="gift" :state="info.state" @show-pop="showPop" />
+      <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
     <welcome />
@@ -67,7 +74,8 @@ export default {
 .return-packet {
   position: relative;
   font-size: 0.24rem;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   height: 100vh;
   width: 100vw;
   background: linear-gradient(
@@ -79,12 +87,9 @@ export default {
     position: absolute;
     top: 0;
     left: 50%;
-    overflow: hidden;
     transform: translateX(-50%);
     width: 100vw;
     min-height: 100vh;
-    background: url(./img/bg.png) no-repeat center top;
-    background-size: 100% auto;
   }
   .back {
     position: absolute;
@@ -109,6 +114,17 @@ export default {
       font-weight: bold;
       text-align: center;
       font-style: italic;
+    }
+    .end-time {
+      background: #849be9;
+      width: 4.1rem;
+      padding: 0 0.24rem;
+      height: 0.48rem;
+      margin: -0.04rem auto;
+      text-align: center;
+      line-height: 0.46rem;
+      border-radius: 0.24rem;
+      color: #1f2961;
     }
   }
 }

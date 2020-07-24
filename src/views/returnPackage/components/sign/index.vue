@@ -1,41 +1,48 @@
 <template>
   <section class="sign">
-    <ul>
-      <li v-for="item in signInVo" :key="'sign-'+item.day" :class="`status-${item.status}`"
-        @click="toggleTips(item)">
-        <p>第{{item.day}}天</p>
-        <div class="icon-wrapper"><img :src="item.status|imgGet" alt=""></div>
-        <p class="award-name">{{item.awardName}}</p>
-        <div class="tips"
-          v-if="showTips===item.day&&(item.awardName.includes('彩虹糖果')||item.awardName.includes('聚宝盆'))">
-          <template v-if="item.awardName.includes('彩虹糖果')">
-            糖果萌消消道具<br />
-            可以兑换收益加成的buff
+    <template v-if="info.state===1">
+      <div class="bg">
+        <ul>
+          <li v-for="item in signInVo" :key="'sign-'+item.day" :class="`status-${item.status}`"
+            @click="toggleTips(item)">
+            <p>第{{item.day}}天</p>
+            <div class="icon-wrapper"><img :src="item.status|imgGet" alt=""></div>
+            <p class="award-name">{{item.awardName}}</p>
+            <div class="tips"
+              v-if="showTips===item.day&&(item.awardName.includes('彩虹糖果')||item.awardName.includes('聚宝盆'))">
+              <template v-if="item.awardName.includes('彩虹糖果')">
+                糖果萌消消道具<br />
+                可以兑换收益加成的buff
+              </template>
+              <template v-if="item.awardName.includes('聚宝盆')">
+                街机欢乐捕鱼道具<br />
+                有大概率获得高额金叶子
+              </template>
+            </div>
+          </li>
+        </ul>
+        <div class="btn" :class="`btn-type-${btnType}`" @click="_sign()">
+          <template v-if="btnType===1">
+            <img src="./img/sign-btn.png" alt="">
           </template>
-          <template v-if="item.awardName.includes('聚宝盆')">
-            街机欢乐捕鱼道具<br />
-            有大概率获得高额金叶子
+          <template v-if="btnType===2">
+            <img src="./img/use-btn.png" alt="">
+            <span>立即使用彩虹糖果</span>
+          </template>
+          <template v-if="btnType===3">
+            <img src="./img/use-btn.png" alt="">
+            <span>立即使用聚宝盆</span>
+          </template>
+          <template v-if="btnType===4">
+            <img src="./img/signed-btn.png" alt="">
+            <span>今日已领{{currentDayInfo.awardName}}</span>
           </template>
         </div>
-      </li>
-    </ul>
-    <div class="btn" :class="`btn-type-${btnType}`" @click="_sign()">
-      <template v-if="btnType===1">
-        <img src="./img/sign-btn.png" alt="">
-      </template>
-      <template v-if="btnType===2">
-        <img src="./img/use-btn.png" alt="">
-        <span>立即使用彩虹糖果</span>
-      </template>
-      <template v-if="btnType===3">
-        <img src="./img/use-btn.png" alt="">
-        <span>立即使用聚宝盆</span>
-      </template>
-      <template v-if="btnType===4">
-        <img src="./img/signed-btn.png" alt="">
-        <span>今日已领{{currentDayInfo.awardName}}</span>
-      </template>
-    </div>
+      </div>
+    </template>
+    <template v-else>
+      <img src="./img/end.png" alt="">
+    </template>
   </section>
 </template>
 
@@ -161,12 +168,15 @@ export default {
 <style lang="less" scoped>
 .sign {
   width: 6.68rem;
-  height: 4.4rem;
-  box-sizing: border-box;
-  margin: auto;
-  background: url('./img/sign-bg.png') no-repeat center center;
-  background-size: 100% 100%;
-  padding-top: 1.4rem;
+  margin: 0.2rem auto 0;
+  .bg {
+    width: 6.68rem;
+    height: 4.4rem;
+    box-sizing: border-box;
+    background: url('./img/sign-bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    padding-top: 1.4rem;
+  }
   ul {
     display: flex;
     align-items: center;
@@ -221,7 +231,7 @@ export default {
     width: 4.8rem;
     height: 0.86rem;
     position: relative;
-    margin: 0.2rem auto 0;
+    margin: 0.26rem auto 0;
     text-align: center;
     img {
       width: 100%;
