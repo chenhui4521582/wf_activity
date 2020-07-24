@@ -40,6 +40,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { sign } from '../../services/api'
 import _get from 'lodash.get'
 export default {
@@ -115,9 +116,10 @@ export default {
           }
           break
         case 2:
-
+          GLOBALS.jumpOutsideGame('/crush')
           break
         case 3:
+          GLOBALS.jumpOutsideGame('/fish')
 
           break
         case 4:
@@ -127,6 +129,9 @@ export default {
         default:
           break
       }
+    },
+    gotogame ({ url, id }) {
+      GLOBALS.jumpOutsideGame(url)
     },
     getAwardDesc (name) {
       if (name.includes('彩虹糖果')) {
@@ -237,7 +242,9 @@ export default {
     }
     &.btn-type-2,
     &.btn-type-3 {
-      color: #ab2303;
+      span {
+        color: #ab2303;
+      }
     }
   }
 }

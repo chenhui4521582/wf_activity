@@ -28,7 +28,7 @@
                 <div class="bottom" v-html="awardsInfo.desc">
                 </div>
               </div>
-              <div class="btn">
+              <div class="btn" @click="sure()">
                 <img src="./img/popup-btn.png" alt="">
               </div>
             </template>
@@ -80,17 +80,18 @@ export default {
 
   },
   methods: {
-    openPop () {
-      this.isShowPop = true
-    },
     closePop () {
       this.isShowPop = false
       this.$emit('on-close')
+    },
+    sure () {
+      this.isShowPop = false
+      this.$emit('on-confirm')
     }
   },
   watch: {
     value (val) {
-      this.show = val
+      this.isShowPop = val
     },
     isShowPop (val) {
       this.$emit('input', val)
@@ -135,7 +136,7 @@ export default {
             text-align: center;
             li {
               margin: 0 0.1rem;
-              width: 50%;
+              flex: 1;
               white-space: nowrap;
               .img-wrapper {
                 width: 1.4rem;
@@ -147,7 +148,7 @@ export default {
                 border-radius: 50%;
                 margin: auto;
                 img {
-                  max-width: 1.4rem;
+                  max-width: 1rem;
                 }
               }
               p {

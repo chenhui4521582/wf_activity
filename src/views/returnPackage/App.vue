@@ -8,7 +8,7 @@
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
       <task ref="task" :info="info" @show-pop="showPop" />
-      <gift ref="gift" />
+      <gift ref="gift" @show-pop="showPop" />
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
     <welcome />
@@ -38,7 +38,7 @@ export default {
     return {
       info: {},
       isShowPop: false,
-      popType: '',
+      popType: 'award',
       awardsInfo: {}
     }
   },
@@ -53,6 +53,11 @@ export default {
       if (code === 200) {
         this.info = data
       }
+    },
+    showPop (type, info) {
+      this.popType = type
+      this.awardsInfo = info
+      this.isShowPop = true
     }
   }
 }
