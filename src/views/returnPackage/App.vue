@@ -46,8 +46,7 @@ export default {
       info: {},
       isShowPop: false,
       popType: 'award',
-      awardsInfo: {},
-      a:''
+      awardsInfo: {}
     }
   },
   mounted () {
