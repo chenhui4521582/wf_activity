@@ -8,7 +8,7 @@
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
       <task ref="task" :info="info" @show-pop="showPop" />
-      <gift />
+      <gift ref="gift" />
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
     <welcome />
