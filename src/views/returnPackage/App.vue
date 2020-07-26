@@ -8,7 +8,7 @@
     <article class="main-content" v-if="info.state===1">
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
-      <task ref="task" :info="info" @show-pop="showPop" />
+      <task ref="task" :info="info" @show-pop="showPop" @show-game="showGame" />
       <gift ref="gift" :state="info.state" @show-pop="showPop" />
     </article>
     <article class="main-content" v-else>
@@ -18,7 +18,8 @@
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
-    <welcome />
+    <gamelist v-model="isShowGame" />
+    <welcome ref="welcome" />
   </main>
 </template>
 
@@ -29,6 +30,7 @@ import task from './components/task/index'
 import gift from './components/gift/index'
 import popup from './components/popup/index'
 import welcome from './components/welcome/index'
+import gamelist from './components/gamelist/index'
 import { activityHome } from './services/api'
 import _get from 'lodash.get'
 export default {
@@ -39,12 +41,14 @@ export default {
     task,
     gift,
     popup,
-    welcome
+    welcome,
+    gamelist
   },
   data () {
     return {
       info: {},
       isShowPop: false,
+      isShowGame: false,
       popType: 'award',
       awardsInfo: {}
     }
@@ -57,14 +61,21 @@ export default {
       const res = await activityHome()
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', 0)
+      let isShowedWelcome = localStorage.getItem('returnPackageWelcom')
       if (code === 200) {
         this.info = data
+      }
+      if (!isShowedWelcome) {
+        this.$refs.welcome.openPop()
       }
     },
     showPop (type, info) {
       this.popType = type
       this.awardsInfo = info
       this.isShowPop = true
+    },
+    showGame () {
+      this.isShowGame = true
     }
   }
 }

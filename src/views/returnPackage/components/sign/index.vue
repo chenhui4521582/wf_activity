@@ -159,7 +159,9 @@ export default {
   },
   watch: {
     info (info) {
-      this.signInVo = this.info.signInVo
+      if (info) {
+        this.signInVo = JSON.parse(JSON.stringify(info.signInVo))
+      }
     }
   }
 }

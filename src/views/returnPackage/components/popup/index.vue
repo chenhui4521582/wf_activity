@@ -4,7 +4,7 @@
       <section class="pop-wrapper" v-show="isShowPop">
         <div class="mask"></div>
         <div class="content-wrapper">
-          <div class="content">
+          <div class="content" :class="type">
             <div class="title">
               <img :src="titleImg" alt="">
             </div>
@@ -20,7 +20,12 @@
                 <ul class="top">
                   <li v-for="(item,index) in awardsInfo.list">
                     <div class="img-wrapper">
-                      <img :src="item.img|filter" alt="">
+                      <template v-if="item.nofilter">
+                        <img :src="item.img" alt="">
+                      </template>
+                      <template v-else>
+                        <img :src="item.img|filter" alt="">
+                      </template>
                     </div>
                     <p>{{item.name}}</p>
                   </li>
@@ -122,6 +127,14 @@ export default {
             height: 0.36rem;
           }
         }
+        &.give {
+          padding-top: 0.42rem;
+          .title {
+            img {
+              height: 0.28rem;
+            }
+          }
+        }
         .container {
           height: 3.08rem;
           display: flex;
@@ -134,6 +147,7 @@ export default {
             align-items: center;
             justify-content: center;
             text-align: center;
+            width: 100%;
             li {
               margin: 0 0.1rem;
               flex: 1;
