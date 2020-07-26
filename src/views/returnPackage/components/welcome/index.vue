@@ -29,6 +29,7 @@ export default {
   methods: {
     openPop () {
       this.isShowPop = true
+      localStorage.setItem('returnPackageWelcom', true)
     },
     closePop () {
       this.isShowPop = false

@@ -19,7 +19,7 @@
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
     <gamelist v-model="isShowGame" />
-    <welcome />
+    <welcome ref="welcome" />
   </main>
 </template>
 
@@ -61,8 +61,12 @@ export default {
       const res = await activityHome()
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', 0)
+      let isShowedWelcome = localStorage.getItem('returnPackageWelcom')
       if (code === 200) {
         this.info = data
+      }
+      if (!isShowedWelcome) {
+        this.$refs.welcome.openPop()
       }
     },
     showPop (type, info) {

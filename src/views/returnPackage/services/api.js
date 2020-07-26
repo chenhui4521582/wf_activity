@@ -12,9 +12,9 @@ export const activityHome = async () => {
   const data = {
     'code': 200,
     'data': {
-      'state': 1,
+      'state': 2,
       'endDate': '07月26日 23:59:59',
-      'userPoints': 1000,
+      'userPoints': 140,
       'signInVo': [
         {
           'day': 1,
@@ -55,21 +55,27 @@ export const activityHome = async () => {
       'pointVo': [
         {
           'id': 1,
-          'points': 10,
+          'points': 20,
           'status': 1,
-          'awardImg': '/group1/M00/42/66/CmcEHF6pUOGAaMaCAAALg0Zwq8c064.png'
+          'awardName': '5元话费'
         },
         {
           'id': 2,
-          'points': 30,
+          'points': 40,
           'status': 1,
-          'awardImg': '/group1/M00/42/66/CmcEHF6pUOGAaMaCAAALg0Zwq8c064.png'
+          'awardName': '5元话费'
         },
         {
           'id': 3,
-          'points': 50,
+          'points': 80,
           'status': 1,
-          'awardImg': '/group1/M00/42/66/CmcEHF6pUOGAaMaCAAALg0Zwq8c064.png'
+          'awardName': '10元话费'
+        },
+        {
+          'id': 4,
+          'points': 140,
+          'status': 1,
+          'awardName': '15元话费'
         }
       ],
       'taskVo': [
@@ -102,6 +108,26 @@ export const activityHome = async () => {
           'awardName': '大户召回积分',
           'awardImg': '',
           'sort': 1
+        },
+        {
+          'taskId': 7,
+          'taskName': '今日累计支持20W金叶志',
+          'taskProgress': 0,
+          'userTaskProgress': null,
+          'taskStatus': 1,
+          'awardName': '大户召回积分',
+          'awardImg': '',
+          'sort': 1
+        },
+        {
+          'taskId': 8,
+          'taskName': '今日累计支持20W金叶志',
+          'taskProgress': 0,
+          'userTaskProgress': null,
+          'taskStatus': 1,
+          'awardName': '大户召回积分',
+          'awardImg': '',
+          'sort': 1
         }
       ]
     },
@@ -122,7 +148,16 @@ export const inlet = async () => {
  * @return {Object} data
  */
 export const pointConvert = async (id) => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/biguser-backflow/pointConvert/${id}`)
+  // const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/biguser-backflow/pointConvert/${id}`)
+  const data = {
+    'code': 200,
+    'data': {
+
+      'awardImg': '',
+      'awardName': '1积分',
+      'awardNum': 1
+    }
+  }
   return data
 }
 /**

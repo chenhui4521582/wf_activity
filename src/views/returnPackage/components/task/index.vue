@@ -1,70 +1,69 @@
 <template>
   <section class="task">
-    <template v-if="info.state===1">
-      <div class="bg">
-        <section class="point-wrapper">
-          <section class="point-title">
-            <p class="left">
-              任务累计积分：<span>{{info.userPoints}}</span>
-            </p>
-            <p class="right" @click="showPop('rule')">
-              哪些游戏流水计入任务
-              <img src="./img/problem-icon.png" alt="">
-            </p>
-          </section>
-          <ul class="point-content">
-            <li v-for="item in pointVo" :key="item.id">
-              <div class="point-tips">
-                {{item.points}}
-              </div>
-              <div class="red-packet">
-                <img v-if="item.status===2" src="./img/open-red-packet-icon.png" alt="">
-                <img v-else src="./img/red-packet-icon.png" alt="">
-              </div>
-              <p>{{item.awardName||'5元话费'}}</p>
-              <div class="small-btn">
-                <img src="./img/received-small-btn.png" v-if="item.status===2">
-                <img src="./img/receive-small-btn.png" v-else>
-              </div>
-            </li>
-          </ul>
+    <div class="bg" :class="`state-${info.state}`">
+      <section class="point-wrapper">
+        <section class="point-title">
+          <p class="left">
+            任务累计积分：<span>{{info.userPoints}}</span>
+          </p>
+          <p class="right" @click="showPop('rule')">
+            哪些游戏流水计入任务
+            <img src="./img/problem-icon.png" alt="">
+          </p>
         </section>
-        <section class="task-wrapper">
-          <ul>
-            <li v-for="item in taskVo">
-              <p class="title">{{item.taskName}}</p>
-              <div class="percent">
-                <div class="percent-bg">
-                  <div class="percent-content" :style="{width:percentWidth(item)}"></div>
-                  <div class="percent-text">
-                    {{item.userTaskProgress|conversion}}/{{item.taskProgress|conversion}}</div>
-                </div>
-                <div class="award-wrapper">
-                  <img src="./img/task-award-icon.png" alt="">
-                  <span>{{item.awardName}}</span>
-                </div>
+        <div class="point-line">
+          <div class="point-line-content" :style="{width:pointWidth}"></div>
+        </div>
+        <ul class="point-content">
+          <li v-for="(item,index) in pointVo" :key="item.id">
+            <div class="point-tips">
+              {{item.points}}积分
+            </div>
+            <div class="red-packet">
+              <img v-if="item.status===2" src="./img/open-red-packet-icon.png" alt="">
+              <img v-else src="./img/red-packet-icon.png" alt="">
+            </div>
+            <p>{{item.awardName}}</p>
+            <div class="small-btn">
+              <img src="./img/received-small-btn.png" v-if="item.status===2">
+              <img src="./img/receive-small-btn.png" v-else-if="item.status===1"
+                @click="pointReceive(item,index)">
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="task-wrapper" v-if="info.state===1">
+        <ul>
+          <li v-for="item in taskVo">
+            <p class="title">{{item.taskName}}</p>
+            <div class="percent">
+              <div class="percent-bg">
+                <div class="percent-content" :style="{width:percentWidth(item)}"></div>
+                <div class="percent-text">
+                  {{item.userTaskProgress|conversion}}/{{item.taskProgress|conversion}}</div>
               </div>
-              <div class="btn">
-                <img src="./img/receive-btn.png" alt="" v-if="item.taskStatus===0"
-                  @click="receive(item)">
-                <img src="./img/finish-btn.png" alt="" v-if="item.taskStatus===1"
-                  @click="toOpenGame(item)">
-                <img src="./img/received-btn.png" alt="" v-if="item.taskStatus===2">
+              <div class="award-wrapper">
+                <img src="./img/task-award-icon.png" alt="">
+                <span>{{item.awardName}}</span>
               </div>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </template>
-    <template v-else>
-      <!-- <img src="./img/end.png" alt=""> -->
-    </template>
+            </div>
+            <div class="btn">
+              <img src="./img/receive-btn.png" alt="" v-if="item.taskStatus===0"
+                @click="receive(item)">
+              <img src="./img/finish-btn.png" alt="" v-if="item.taskStatus===1"
+                @click="toOpenGame(item)">
+              <img src="./img/received-btn.png" alt="" v-if="item.taskStatus===2">
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
   </section>
 </template>
 
 <script>
 /* eslint-disable no-undef */
-import { taskFinish } from '../../services/api'
+import { taskFinish, pointConvert } from '../../services/api'
 import _get from 'lodash.get'
 export default {
   name: 'task',
@@ -83,6 +82,29 @@ export default {
       taskVo: [],
       awardInfo: {},
       actInfo: {}
+    }
+  },
+  computed: {
+    pointWidth () {
+      if (!this.info.userPoints) {
+        return '0%'
+      } else if (this.info.userPoints < this.pointVo[0].points) {
+        return 10 * (this.info.userPoints * 1.0 / this.pointVo[0].points) + '%'
+      } else if (this.info.userPoints === this.pointVo[0].points) {
+        return '13%'
+      } else if (this.info.userPoints < this.pointVo[1].points) {
+        return (13 + 20 * (this.info.userPoints - this.pointVo[0].points) / (this.pointVo[1].points - this.pointVo[0].points)) + '%'
+      } else if (this.info.userPoints === this.pointVo[1].points) {
+        return '34%'
+      } else if (this.info.userPoints < this.pointVo[2].points) {
+        return (34.5 + 27 * (this.info.userPoints - this.pointVo[1].points) / (this.pointVo[2].points - this.pointVo[1].points)) + '%'
+      } else if (this.info.userPoints === this.pointVo[2].points) {
+        return '63%'
+      } else if (this.info.userPoints < this.pointVo[3].points) {
+        return (64 + 26 * (this.info.userPoints - this.pointVo[2].points) / (this.pointVo[3].points - this.pointVo[2].points)) + '%'
+      } else {
+        return '100%'
+      }
     }
   },
   filters: {
@@ -122,6 +144,22 @@ export default {
         this.$emit('show-pop', 'award', this.awardInfo)
       }
     },
+    async pointReceive (item, index) {
+      const res = await pointConvert(item.id)
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', {})
+      if (code === 200) {
+        this.pointVo[index].status = 2
+        this.awardInfo = {
+          list: [{
+            img: data.awardImg,
+            name: data.awardName
+          }],
+          desc: ''
+        }
+        this.$emit('show-pop', 'award', this.awardInfo)
+      }
+    },
     toOpenGame () {
       this.$emit('show-game')
     }
@@ -149,6 +187,11 @@ export default {
     background: url('./img/task-bg.png') no-repeat center center;
     background-size: 100% 100%;
     padding-top: 1.3rem;
+    position: relative;
+    &.state-2 {
+      height: 4.16rem;
+      background-image: url('./img/task-bg-2.png');
+    }
     .point-title {
       display: flex;
       align-items: center;
@@ -173,10 +216,50 @@ export default {
         }
       }
     }
+    .point-line {
+      position: absolute;
+      z-index: 1;
+      top: 2.6rem;
+      left: 50%;
+      margin-left: -3.06rem;
+      width: 6.12rem;
+      height: 0.1rem;
+      background: #1f2961;
+      border-radius: 0.05rem;
+      overflow: hidden;
+      .point-line-content {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: #feee9a;
+      }
+    }
     .point-content {
+      position: relative;
       display: flex;
       text-align: center;
       align-items: center;
+      z-index: 2;
+      margin-top: 0.2rem;
+      height: 2.14rem;
+      li {
+        position: absolute;
+        top: 0;
+        &:nth-child(1) {
+          left: 8%;
+        }
+        &:nth-child(2) {
+          left: 29%;
+        }
+        &:nth-child(3) {
+          left: 54%;
+        }
+        &:nth-child(4) {
+          left: 80%;
+        }
+      }
       .point-tips {
         width: 1rem;
         height: 0.4rem;
@@ -203,6 +286,10 @@ export default {
     }
     .task-wrapper {
       ul {
+        height: 6.2rem;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
         li {
           position: relative;
           width: 6.2rem;
