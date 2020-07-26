@@ -4,7 +4,7 @@
       <div class="bg">
         <p>
           加赠的金叶：<span>{{giftInfo.dateRange}}</span>连续登录<br />
-          可领完全部<span>{{giftInfo.extraAmount|conversion}}</span>加赠金叶
+          可领完全部<span>{{conversion(giftInfo.extraAmount)}}</span>加赠金叶
         </p>
         <img src="./img/bought-icon.png" alt="" class="bought-icon">
       </div>
@@ -42,16 +42,8 @@ export default {
   },
   data () {
     return {
-      giftInfo: {}
-    }
-  },
-  filters: {
-    conversion (value) {
-      if (value >= 10000) {
-        return `${Math.floor(value / 1000) / 10}万`
-      } else {
-        return value
-      }
+      giftInfo: {},
+      awardInfo: {}
     }
   },
   mounted () {
@@ -64,19 +56,39 @@ export default {
       const data = _get(res, 'data', {})
       if (code === 200) {
         this.giftInfo = data
-        if (data.haveNuy) {
+        if (data.haveBuy) {
           this._sendBigCustomerAdditionalRewards()
         }
       }
     },
     async _sendBigCustomerAdditionalRewards () {
       const res = await sendBigCustomerAdditionalRewards()
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', {})
+      if (code === 200) {
+        this.awardInfo = {
+          list: [{
+            img: require('./img/leaf.png'),
+            name: this.conversion(data.dailyAmount) + '金叶',
+            nofilter: true
+          }],
+          desc: `${data.dateRange}连续登录<br/>可领完全部${this.conversion(data.amount)}金叶`
+        }
+        this.$emit('show-pop', 'give', this.awardInfo)
+      }
     },
     goPay (index, val) {
       GLOBALS.marchSetsPoint('A_H5PT0074001435', { product_id: val.bizId })
       localStorage.setItem('payment', JSON.stringify(val))
       localStorage.setItem('originDeffer', location.href)
       location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist'
+    },
+    conversion (value) {
+      if (value >= 10000) {
+        return `${Math.floor(value / 1000) / 10}万`
+      } else {
+        return value
+      }
     }
   }
 }
