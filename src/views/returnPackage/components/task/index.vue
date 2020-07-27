@@ -131,7 +131,11 @@ export default {
     percentWidth (item) {
       let userTaskProgress = item.userTaskProgress || 0
       let taskProgress = item.taskProgress || 1
-      return `${userTaskProgress / taskProgress}%`
+      let percent = userTaskProgress / taskProgress * 100
+      if (percent > 100) {
+        percent = 100
+      }
+      return `${percent}%`
     },
     async receive (item) {
       GLOBALS.marchSetsPoint('A_H5PT0074001440', { task_id: item.taskId, task_name: item.taskName })
