@@ -189,7 +189,7 @@ export default {
     padding-top: 1.3rem;
     position: relative;
     &.state-2 {
-      height: 4.16rem;
+      height: 4.18rem;
       background-image: url('./img/task-bg-2.png');
     }
     .point-title {
