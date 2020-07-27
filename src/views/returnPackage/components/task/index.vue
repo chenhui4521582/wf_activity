@@ -34,7 +34,7 @@
       </section>
       <section class="task-wrapper" v-if="info.state===1">
         <ul>
-          <li v-for="item in taskVo">
+          <li v-for="item in taskList">
             <p class="title">{{item.taskName}}</p>
             <div class="percent">
               <div class="percent-bg">
@@ -105,6 +105,12 @@ export default {
       } else {
         return '100%'
       }
+    },
+    taskList () {
+      let statusA = this.taskVo.filter(item => item.taskStatus === 0).sort((itemA, itemB) => itemA - itemB)
+      let statusB = this.taskVo.filter(item => item.taskStatus === 1).sort((itemA, itemB) => itemA - itemB)
+      let statusC = this.taskVo.filter(item => item.taskStatus === 2).sort((itemA, itemB) => itemA - itemB)
+      return [...statusA, ...statusB, ...statusC]
     }
   },
   filters: {
@@ -133,7 +139,7 @@ export default {
       const code = _get(res, 'code', 0)
       if (code === 200) {
         const awardRsp = _get(res, 'data.awardRsp', {})
-        this.taskVo = _get(res, 'data.taskRsp', [])
+        this.taskVo = _get(res, 'data.taskRsps', [])
         this.info.userPoints = _get(res, 'data.userPoint', this.info.userPoints)
         this.awardInfo = {
           list: [{
