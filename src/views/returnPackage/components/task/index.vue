@@ -11,7 +11,7 @@
             <img src="./img/problem-icon.png" alt="">
           </p>
         </section>
-        <div class="point-line">
+        <div class="point-line" v-if="info.state===1">
           <div class="point-line-content" :style="{width:pointWidth}"></div>
         </div>
         <ul class="point-content">
@@ -185,15 +185,15 @@ export default {
   margin: 0.2rem auto 0;
   .bg {
     width: 6.68rem;
-    height: 10.24rem;
+    height: 4.18rem;
     box-sizing: border-box;
-    background: url('./img/task-bg.png') no-repeat center center;
+    background: url('./img/task-bg-2.png') no-repeat center center;
     background-size: 100% 100%;
     padding-top: 1.3rem;
     position: relative;
-    &.state-2 {
-      height: 4.18rem;
-      background-image: url('./img/task-bg-2.png');
+    &.state-1 {
+      background-image: url('./img/task-bg.png');
+      height: 10.24rem;
     }
     .point-title {
       display: flex;
