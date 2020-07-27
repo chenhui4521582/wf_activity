@@ -9,8 +9,8 @@
             <div class="icon-wrapper"><img :src="item.status|imgGet" alt=""></div>
             <p class="award-name">{{item.awardName}}</p>
             <div class="tips"
-              v-if="showTips===item.day&&(item.awardName.includes('彩虹糖果')||item.awardName.includes('聚宝盆'))">
-              <template v-if="item.awardName.includes('彩虹糖果')">
+              v-if="showTips===item.day&&(item.awardName.includes('彩虹糖')||item.awardName.includes('聚宝盆'))">
+              <template v-if="item.awardName.includes('彩虹糖')">
                 糖果萌消消道具<br />
                 可以兑换收益加成的buff
               </template>
@@ -27,7 +27,7 @@
           </template>
           <template v-if="btnType===2">
             <img src="./img/use-btn.png" alt="">
-            <span>立即使用彩虹糖果</span>
+            <span>立即使用彩虹糖</span>
           </template>
           <template v-if="btnType===3">
             <img src="./img/use-btn.png" alt="">
@@ -78,7 +78,7 @@ export default {
         case 1:
           return 1
         case 2:
-          if (this.currentDayInfo.awardName.includes('彩虹糖果')) {
+          if (this.currentDayInfo.awardName.includes('彩虹糖')) {
             return 2
           }
           if (this.currentDayInfo.awardName.includes('聚宝盆')) {
@@ -116,7 +116,7 @@ export default {
             this.awardInfo = {
               list: [{
                 img: data.awardRsp.awardImg,
-                name: data.awardRsp.awardName
+                name: data.awardRsp.awardName.includes('金叶') ? data.awardRsp.awardName : data.awardRsp.awardName + 'x' + data.awardRsp.awardNum
               }],
               desc: this.getAwardDesc(data.awardRsp.awardName)
             }
@@ -144,7 +144,7 @@ export default {
       GLOBALS.jumpOutsideGame(url)
     },
     getAwardDesc (name) {
-      if (name.includes('彩虹糖果')) {
+      if (name.includes('彩虹糖')) {
         return '可在糖果萌消消-糖果小店中查看'
       }
       if (name.includes('聚宝盆')) {
