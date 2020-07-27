@@ -107,6 +107,7 @@ export default {
     async _sign () {
       switch (this.btnType) {
         case 1:
+          GLOBALS.marchSetsPoint('A_H5PT0074001434')
           const res = await sign()
           const code = _get(res, 'code', 0)
           const data = _get(res, 'data', 0)
@@ -123,9 +124,11 @@ export default {
           }
           break
         case 2:
+          GLOBALS.marchSetsPoint('A_H5PT0290003862')
           GLOBALS.jumpOutsideGame('/crush')
           break
         case 3:
+          GLOBALS.marchSetsPoint('A_H5PT0290003863')
           GLOBALS.jumpOutsideGame('/fish')
 
           break

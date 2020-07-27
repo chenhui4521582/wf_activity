@@ -88,19 +88,19 @@ export default {
     pointWidth () {
       if (!this.info.userPoints) {
         return '0%'
-      } else if (this.info.userPoints < this.pointVo[0].points) {
+      } else if (this.pointVo[0] && this.info.userPoints < this.pointVo[0].points) {
         return 10 * (this.info.userPoints * 1.0 / this.pointVo[0].points) + '%'
       } else if (this.info.userPoints === this.pointVo[0].points) {
         return '13%'
-      } else if (this.info.userPoints < this.pointVo[1].points) {
+      } else if (this.pointVo[1] && this.info.userPoints < this.pointVo[1].points) {
         return (13 + 20 * (this.info.userPoints - this.pointVo[0].points) / (this.pointVo[1].points - this.pointVo[0].points)) + '%'
       } else if (this.info.userPoints === this.pointVo[1].points) {
         return '34%'
-      } else if (this.info.userPoints < this.pointVo[2].points) {
+      } else if (this.pointVo[2] && this.info.userPoints < this.pointVo[2].points) {
         return (34.5 + 27 * (this.info.userPoints - this.pointVo[1].points) / (this.pointVo[2].points - this.pointVo[1].points)) + '%'
       } else if (this.info.userPoints === this.pointVo[2].points) {
         return '63%'
-      } else if (this.info.userPoints < this.pointVo[3].points) {
+      } else if (this.pointVo[3] && this.info.userPoints < this.pointVo[3].points) {
         return (64 + 26 * (this.info.userPoints - this.pointVo[2].points) / (this.pointVo[3].points - this.pointVo[2].points)) + '%'
       } else {
         return '100%'
@@ -128,6 +128,7 @@ export default {
       return `${userTaskProgress / taskProgress}%`
     },
     async receive (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001440', { task_id: item.taskId, task_name: item.taskName })
       const res = await taskFinish(item.taskId)
       const code = _get(res, 'code', 0)
       if (code === 200) {
@@ -145,6 +146,7 @@ export default {
       }
     },
     async pointReceive (item, index) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001437', { task_id: item.id, task_name: item.awardName })
       const res = await pointConvert(item.id)
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', {})
@@ -160,7 +162,8 @@ export default {
         this.$emit('show-pop', 'award', this.awardInfo)
       }
     },
-    toOpenGame () {
+    toOpenGame (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001439', { task_id: item.taskId, task_name: item.taskName })
       this.$emit('show-game')
     }
   },

@@ -26,6 +26,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 export default {
   name: 'rule',
   components: {
@@ -38,6 +39,7 @@ export default {
   },
   methods: {
     showPop () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001436')
       this.isShowPop = true
     },
     closePop () {

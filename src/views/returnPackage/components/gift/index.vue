@@ -78,7 +78,7 @@ export default {
       }
     },
     goPay (index, val) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001435', { product_id: val.bizId })
+      GLOBALS.marchSetsPoint('A_H5PT0074001435', { recharge_rmb: val.price, product_id: val.bizId })
       localStorage.setItem('payment', JSON.stringify(val))
       localStorage.setItem('originDeffer', location.href)
       location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist'

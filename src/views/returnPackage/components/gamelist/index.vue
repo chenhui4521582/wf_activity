@@ -23,9 +23,6 @@
 import utils from '@/common/js/utils'
 export default {
   name: 'gamelist',
-  components: {
-
-  },
   data () {
     return {
       isShowPop: this.value,
