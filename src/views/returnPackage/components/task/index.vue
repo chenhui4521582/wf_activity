@@ -252,7 +252,7 @@ export default {
       align-items: center;
       z-index: 2;
       margin-top: 0.2rem;
-      height: 2.14rem;
+      height: 1.62rem;
       li {
         position: absolute;
         top: 0;
@@ -295,7 +295,7 @@ export default {
     }
     .task-wrapper {
       ul {
-        height: 6.2rem;
+        height: 6.6rem;
         overflow-x: hidden;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
