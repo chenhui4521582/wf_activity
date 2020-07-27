@@ -7,7 +7,7 @@
             任务累计积分：<span>{{info.userPoints}}</span>
           </p>
           <p class="right" @click="showPop('rule')">
-            哪些游戏流水计入任务
+            <span>哪些游戏流水计入任务</span>
             <img src="./img/problem-icon.png" alt="">
           </p>
         </section>
@@ -214,7 +214,7 @@ export default {
         align-items: center;
         justify-content: right;
         img {
-          width: 0.28rem;
+          height: 0.28rem;
           margin-left: 0.1rem;
         }
       }
