@@ -137,9 +137,9 @@
           // A_H5PT0310003856 H5平台-金币挑战活动-活动规则弹窗加载完成
           // A_H5PT0310003858 H5平台-金币挑战活动-特别挑战开启弹窗加载完成
           let points = ['A_H5PT0310003856', 'A_H5PT0310003858']
-          points[type] && GLOBALS.marchSetsPoint(points[type])
+          points[type-1] && GLOBALS.marchSetsPoint(points[type-1])
           if (this.awardData) {
-            GLOBALS.marchSetsPoint(this.awardData.awardType == 'jinbi' ? 'A_H5PT0310003857' : 'A_H5PT0310003855', {
+            GLOBALS.marchSetsPoint(this.awardData.awardsType == 'jinbi' ? 'A_H5PT0310003857' : 'A_H5PT0310003855', {
               awards_name: this.awardData.awardsName,
               awards_num: this.awardData.awardsNum
             })
