@@ -3,7 +3,7 @@
     <div class="bg">
       <img src="./img/bg.png" alt="">
     </div>
-    <div class="back">返回</div>
+    <div class="back" @click="back()">返回</div>
     <rule />
     <article class="main-content" v-if="info.state===1">
       <div class="time">截止时间：{{info.endDate}}</div>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import rule from './components/rule/index'
 import sign from './components/sign/index'
 import task from './components/task/index'
@@ -68,6 +69,7 @@ export default {
       if (!isShowedWelcome) {
         this.$refs.welcome.openPop()
       }
+      GLOBALS.marchSetsPoint('A_H5PT0074001432')
     },
     showPop (type, info) {
       this.popType = type
@@ -76,6 +78,10 @@ export default {
     },
     showGame () {
       this.isShowGame = true
+    },
+    back () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001433')
+      location.href = window.linkUrl.getBackUrl(this.curChannel)
     }
   }
 }
