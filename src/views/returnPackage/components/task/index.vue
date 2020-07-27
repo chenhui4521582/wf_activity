@@ -63,7 +63,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { taskFinish, pointConvert } from '../../services/api'
+import { taskFinish, pointConvert, userPoint } from '../../services/api'
 import _get from 'lodash.get'
 export default {
   name: 'task',
@@ -145,6 +145,7 @@ export default {
         const awardRsp = _get(res, 'data.awardRsp', {})
         this.taskVo = _get(res, 'data.taskRsps', [])
         this.info.userPoints = _get(res, 'data.userPoint', this.info.userPoints)
+        this.getUserPoint()
         this.awardInfo = {
           list: [{
             img: awardRsp.awardImg,
@@ -153,6 +154,13 @@ export default {
           desc: ''
         }
         this.$emit('show-pop', 'award', this.awardInfo)
+      }
+    },
+    async getUserPoint () {
+      const res = await userPoint()
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.pointVo = _get(res, 'data', [])
       }
     },
     async pointReceive (item, index) {
@@ -256,7 +264,7 @@ export default {
       align-items: center;
       z-index: 2;
       margin-top: 0.2rem;
-      height: 1.62rem;
+      height: 2.14rem;
       li {
         position: absolute;
         top: 0;
@@ -281,6 +289,7 @@ export default {
         background: url('./img/tips-bg.png') no-repeat center center;
         background-size: 100% 100%;
         line-height: 0.3rem;
+        margin: auto;
       }
       .red-packet {
         width: 0.5rem;
@@ -299,7 +308,7 @@ export default {
     }
     .task-wrapper {
       ul {
-        height: 6.6rem;
+        height: 6.2rem;
         overflow-x: hidden;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;

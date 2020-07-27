@@ -44,6 +44,14 @@ export const taskFinish = async (taskId) => {
   return data
 }
 /**
+ * @description 用户积分
+ * @return {Object} data
+ */
+export const userPoint = async () => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/biguser-backflow/userPoint`)
+  return data
+}
+/**
  * @description 礼包
  * @return {Object} data
  */
@@ -66,6 +74,7 @@ const Service = {
   pointConvert,
   sign,
   taskFinish,
+  userPoint,
   bigCustomerRecallProducts,
   sendBigCustomerAdditionalRewards
 }
