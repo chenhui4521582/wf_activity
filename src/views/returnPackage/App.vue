@@ -65,9 +65,9 @@ export default {
       let isShowedWelcome = localStorage.getItem('returnPackageWelcom')
       if (code === 200) {
         this.info = data
-      }
-      if (!isShowedWelcome) {
-        this.$refs.welcome.openPop()
+        if (!isShowedWelcome) {
+          this.$refs.welcome.openPop()
+        }
       }
       GLOBALS.marchSetsPoint('A_H5PT0074001432')
     },
