@@ -58,19 +58,19 @@ export default {
           type: 10
         },
         {
-          img: require('./img/kingdom2.gif'),
+          img: require('./img/kingdom2.png'),
           name: '三国大作战',
           url: '/kingdom2',
           type: 13
         },
         {
-          img: require('./img/bird.gif'),
+          img: require('./img/bird.png'),
           name: '欢乐的小鸟',
           url: '/bird',
           type: 26
         },
         {
-          img: require('./img/boom.gif'),
+          img: require('./img/boom.png'),
           name: '疯狂炸弹',
           url: '/boom',
           type: 30
