@@ -42,7 +42,7 @@ export default {
         {
           img: require('./img/marbles.png'),
           name: '王者弹珠',
-          url: '/marbles',
+          url: '/Marbles',
           type: 21
         },
         {
