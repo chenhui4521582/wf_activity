@@ -70,10 +70,10 @@ export default {
           type: 26
         },
         {
-          img: require('./img/boom.png'),
-          name: '疯狂炸弹',
-          url: '/boom',
-          type: 30
+          img: require('./img/xiyou.png'),
+          name: '斗西游',
+          url: '/xiyou',
+          type: 29
         }
       ]
     }
