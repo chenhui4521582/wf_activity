@@ -10,8 +10,15 @@
       <img src="./img/problem-icon.png" alt="">
     </div>
     <cash-out />
-    <sign-in />
-    <task-list />
+    <template v-if="info.state===1">
+      <sign-in />
+      <task-list />
+    </template>
+    <template v-else>
+      <div class="end">
+        <img src="./img/end.png" alt="">
+      </div>
+    </template>
   </main>
 </template>
 
@@ -31,7 +38,9 @@ export default {
   },
   data () {
     return {
-      info: {},
+      info: {
+        state: 2
+      },
       isShowPop: false,
       isShowGame: false,
       popType: 'award',
@@ -78,6 +87,10 @@ export default {
     font-size: 0;
     margin-top: 0.15rem;
     margin-left: 0.16rem;
+  }
+  .end {
+    width: 2.48rem;
+    margin: 1.32rem auto 0;
   }
 }
 </style>

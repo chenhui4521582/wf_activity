@@ -25,6 +25,9 @@
       </section>
       <section class="desc">最晚提现时间为 x月x日 23:59:59 逾期作废</section>
     </section>
+    <section class="cash-out-end">
+      <img src="../../img/cash-out.png" alt="">
+    </section>
   </article>
 </template>
 
@@ -137,6 +140,24 @@ export default {
     margin: 0.26rem auto 0;
     line-height: 1;
     padding: 0.2rem 0 0.42rem;
+  }
+  .cash-out-end {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 6.62rem;
+    height: 2.8rem;
+    margin: 0 auto 0;
+    border-radius: 0.16rem;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0.4rem 0;
+    img {
+      width: 1.74rem;
+    }
   }
 }
 </style>
