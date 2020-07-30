@@ -9,41 +9,22 @@
     <div class="problem">
       <img src="./img/problem-icon.png" alt="">
     </div>
-    <article>
-      <section class="cash-out">
-        <section>
-          <p>0</p>
-          <div class="percent">
-            <div class="percent-wrapper">
-              <div class="percent-content"></div>
-            </div>
-            <div class="percent-tips">已获得1.5元</div>
-          </div>
-          <p>10元红包</p>
-        </section>
-        <p>
-          <span>集满10元红包即可提现10元话费</span>
-          <span class="line"></span>
-          <span class="history">
-            领取记录>>
-          </span>
-        </p>
-      </section>
-      <section :class="`btn-wrapper status-${status}`">
-        <button type="button">{{status?'未达提现资格':'立即提现'}}</button>
-      </section>
-      <section>最晚提现时间为 x月x日 23:59:59 逾期作废</section>
-    </article>
+    <cash-out />
+    <sign-in />
   </main>
 </template>
 
 <script>
 /* eslint-disable no-undef */
+import cashOut from './components/cashOut/index'
+import signIn from './components/signIn/index'
 import { } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'returnBackUser',
   components: {
+    cashOut,
+    signIn
   },
   data () {
     return {
@@ -51,8 +32,7 @@ export default {
       isShowPop: false,
       isShowGame: false,
       popType: 'award',
-      awardsInfo: {},
-      status: 1
+      awardsInfo: {}
     }
   },
   mounted () {
@@ -69,6 +49,8 @@ export default {
   background: linear-gradient(#b52a2e 9.2rem, #b7292e);
   padding-top: 0.01rem;
   box-sizing: border-box;
+  font-size: 0.2rem;
+  font-family: Alibaba PuHuiTi;
   .bg {
     position: absolute;
     top: 0;
