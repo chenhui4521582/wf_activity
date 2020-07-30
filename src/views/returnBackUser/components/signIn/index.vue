@@ -66,7 +66,7 @@ export default {
     margin: auto;
   }
   .sign-in-wrapper {
-    width: 6.62rem;
+    width: 6.6rem;
     height: 2.36rem;
     margin: 0.1rem auto 0;
     background: url('../../img/sign-bg.png') no-repeat center center;
