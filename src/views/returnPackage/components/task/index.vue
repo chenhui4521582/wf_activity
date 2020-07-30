@@ -107,9 +107,9 @@ export default {
       }
     },
     taskList () {
-      let statusA = this.taskVo.filter(item => item.taskStatus === 0).sort((itemA, itemB) => itemA - itemB)
-      let statusB = this.taskVo.filter(item => item.taskStatus === 1).sort((itemA, itemB) => itemA - itemB)
-      let statusC = this.taskVo.filter(item => item.taskStatus === 2).sort((itemA, itemB) => itemA - itemB)
+      let statusA = this.taskVo.filter(item => item.taskStatus === 0).sort((itemA, itemB) => itemA.sort - itemB.sort)
+      let statusB = this.taskVo.filter(item => item.taskStatus === 1).sort((itemA, itemB) => itemA.sort - itemB.sort)
+      let statusC = this.taskVo.filter(item => item.taskStatus === 2).sort((itemA, itemB) => itemA.sort - itemB.sort)
       return [...statusA, ...statusB, ...statusC]
     }
   },
