@@ -100,18 +100,21 @@ export default {
     }
   },
   async mounted () {
-    const data = await FirstLoad()
     const coupon = await BoxCoupon()
     if (coupon.data.data) {
       this.couponInfo = coupon.data.data
       this.showCoupon = true
     }
+    // H5平台-盲盒页面加载完成
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
-    }) // H5平台-盲盒页面加载完成
-    if (data.data.data) {
-      this.guideTest()
-    }
+    }) 
+    /*  新手AB测试功能关闭 （胡瑶）
+      const data = await FirstLoad()
+      if (data.data.data) {
+        this.guideTest()
+      }
+     */
   }
 }
 </script>
