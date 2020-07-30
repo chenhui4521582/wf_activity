@@ -107,6 +107,10 @@ export default {
     transform: translateX(-50%);
     width: 100vw;
     min-height: 100vh;
+    img {
+      display: block;
+      margin: auto;
+    }
   }
   .back {
     position: absolute;

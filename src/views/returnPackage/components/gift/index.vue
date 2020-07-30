@@ -97,7 +97,7 @@ export default {
 <style lang="less" scoped>
 .gift {
   width: 6.68rem;
-  margin: 0.28rem auto 0;
+  margin: 0.28rem auto 0.3rem;
   .bg {
     width: 6.68rem;
     height: 5.12rem;
@@ -126,9 +126,11 @@ export default {
       flex-wrap: nowrap;
       overflow-x: scroll;
       overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
       li {
         margin-left: 0.14rem;
         min-width: 2.52rem;
+        max-width: 2.52rem;
         height: 3.02rem;
         img {
           width: 100%;
