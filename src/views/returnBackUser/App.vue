@@ -11,6 +11,7 @@
     </div>
     <cash-out />
     <sign-in />
+    <task-list />
   </main>
 </template>
 
@@ -18,13 +19,15 @@
 /* eslint-disable no-undef */
 import cashOut from './components/cashOut/index'
 import signIn from './components/signIn/index'
+import taskList from './components/taskList/index'
 import { } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'returnBackUser',
   components: {
     cashOut,
-    signIn
+    signIn,
+    taskList
   },
   data () {
     return {
