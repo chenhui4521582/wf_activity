@@ -6,47 +6,84 @@
           <p>0</p>
           <div class="percent">
             <div class="percent-wrapper">
-              <div class="percent-content"></div>
+              <div class="percent-content"
+                :style="{width:`${info.userRedPack/info.convertRedPack*100}%`}"></div>
             </div>
-            <div class="percent-tips">已获得1.5元</div>
+            <div class="percent-tips"
+              v-if="info.userRedPack&&info.convertRedPack-info.userRedPack>0&&!info.redPackConvert">
+              已获得{{(info.userRedPack/10).toFixed(1)}}元</div>
           </div>
           <p>10元红包</p>
         </section>
         <p class="other">
           <span>集满10元红包即可提现10元话费</span>
           <span class="line"></span>
-          <span class="history">
+          <span class="history" @click="showHistory">
             领取记录>>
           </span>
         </p>
       </section>
-      <section :class="`btn-wrapper status-${status}`">
-        <button type="button">{{status?'未达提现资格':'立即提现'}}</button>
+      <section :class="`btn-wrapper status-${convertStatus}`">
+        <button type="button" @click="convert()">{{convertStatus?'立即提现':'未达提现资格'}}</button>
       </section>
-      <section class="desc">最晚提现时间为 x月x日 23:59:59 逾期作废</section>
+      <section class="desc">最晚提现时间为 {{info.convertEndDate}} 逾期作废</section>
     </section>
-    <section class="cash-out-end">
+    <section class="cash-out-end" v-if="info.redPackConvert">
       <img src="../../img/cash-out.png" alt="">
     </section>
   </article>
 </template>
 
 <script>
+import { redPackConvert } from '../../services/api'
+import _get from 'lodash.get'
 export default {
   name: 'cashOut',
   components: {
 
   },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  computed: {
+    convertStatus () {
+      return (this.info.convertRedPack - this.info.userRedPack > 0) ? 0 : 1
+    }
+  },
   data () {
     return {
-      status: 1
     }
   },
   mounted () {
 
   },
   methods: {
-
+    showHistory () {
+      if (this.info.userRedPack) {
+        this.$emit('show-pop', 'history', null, '话费红包记录')
+      } else {
+        this.$toast.show({
+          message: '暂无记录',
+          duration: 3000
+        })
+      }
+    },
+    async convert () {
+      if (this.convertStatus) {
+        const res = await redPackConvert()
+        const code = _get(res, 'code', 0)
+        const data = _get(res, 'data', 0)
+        if (code === 200) {
+          let award = {
+            name: data.awardName
+          }
+          this.$emit('show-pop', 'cashout', award, '恭喜您!!')
+        }
+      }
+    }
   }
 }
 </script>
@@ -57,7 +94,7 @@ export default {
   .cash-out-wrapper {
     width: 6.62rem;
     height: 2.8rem;
-    margin: 1.06rem auto 0;
+    margin: 0.4rem auto 0;
     background: #f35171;
     border-radius: 0.16rem;
     .percent-block {
@@ -140,6 +177,11 @@ export default {
     margin: 0.26rem auto 0;
     line-height: 1;
     padding: 0.2rem 0 0.42rem;
+  }
+  .status-1 {
+    button {
+      background-image: url('../../img/yellow-long-btn.png');
+    }
   }
   .cash-out-end {
     position: absolute;

@@ -4,17 +4,17 @@
     <section class="sign-in-wrapper">
       <p class="desc">
         已累计登陆
-        <span>3天</span>
+        <span>{{info.loginDayNum}}天</span>
       </p>
       <ul class="list">
-        <li v-for="item in list" :class="`type-${item.day}${item.status}`">
+        <li v-for="item in list" :class="`type-${item.day}${item.status}`" @click="receive(item)">
           <p>
             <template v-if="item.day%2"><span class="fs24">{{item.day}}天</span></template>
             <template v-else-if="item.status===2">
               <span class="fs18">红包</span> <br /><span class="fs18">已领取</span>
             </template>
             <template v-else>
-              <span class="fs20">{{item.day}}个</span> <br /><span class="fs18">话费红包</span>
+              <span class="fs20">{{item.awardNum}}个</span> <br /><span class="fs18">话费红包</span>
             </template>
           </p>
         </li>
@@ -24,28 +24,67 @@
 </template>
 
 <script>
+import { loginAward } from '../../services/api'
+import _get from 'lodash.get'
 export default {
   name: 'signIn',
   components: {
 
   },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data () {
     return {
-      list: [
-        { day: 1, status: 2 },
-        { day: 2, status: 1 },
-        { day: 3, status: 1 },
-        { day: 4, status: 1 },
-        { day: 5, status: 1 },
-        { day: 6, status: 1 }
-      ]
+      actInfo: JSON.parse(JSON.stringify(this.info))
+    }
+  },
+  computed: {
+    list () {
+      let currentDay = this.actInfo.loginDayNum
+      let list = [{ day: 1, status: 0, num: 0 }, { day: 2, status: 0, num: 0 }, { day: 3, status: 0, num: 0 }, { day: 4, status: 0, num: 0 }, { day: 5, status: 0, num: 0 }, { day: 6, status: 0, num: 0 }]
+      let loginAwardRsps = this.actInfo.loginAwardRsps.map(item => ({
+        day: item.loginDayNum,
+        status: item.status,
+        awardNum: item.awardNum || 0
+      }))
+      loginAwardRsps.forEach(element => {
+        let index = list.findIndex(item => {
+          return element.day === item.day
+        })
+        list[index].status = element.status
+        list[index].awardNum = element.awardNum
+      })
+      list = list.map(item => ({
+        day: item.day,
+        status: (item.day % 2 ? currentDay >= item.day ? 2 : 0 : item.status),
+        awardNum: item.awardNum
+      }))
+      return list
     }
   },
   mounted () {
 
   },
   methods: {
-
+    async receive (item) {
+      if (!(item.day % 2) && item.status === 1) {
+        const res = await loginAward(item.day)
+        const code = _get(res, 'code', 0)
+        const data = _get(res, 'data', 0)
+        if (code === 200) {
+          let award = {
+            name: `话费红包*${item.awardNum}，价值${item.awardNum / 10}元`,
+            desc: ''
+          }
+          this.$set(this.actInfo.loginAwardRsps, item.day / 2 - 1, data)
+          this.$emit('show-pop', 'redpackage', award, '恭喜获得')
+        }
+      }
+    }
   }
 }
 </script>
@@ -111,9 +150,9 @@ export default {
         }
         background: no-repeat center center;
         background-size: 100% 100%;
-        &.type-11,
-        &.type-31,
-        &.type-51 {
+        &.type-10,
+        &.type-30,
+        &.type-50 {
           color: #4e4c4c;
           background-image: url('../../img/odd-grey-bg.png');
         }
@@ -134,6 +173,7 @@ export default {
         &.type-61 {
           color: #fff;
           background-image: url('../../img/even-red-bg.png');
+          animation: shake 0.5s infinite;
         }
         &.type-22,
         &.type-42,
@@ -143,6 +183,32 @@ export default {
         }
       }
     }
+  }
+}
+@keyframes shake {
+  0% {
+    transform-origin: center center;
+    transform: rotateZ(0deg);
+  }
+  20% {
+    transform-origin: center center;
+    transform: rotateZ(10deg);
+  }
+  40% {
+    transform-origin: center center;
+    transform: rotateZ(-10deg);
+  }
+  60% {
+    transform-origin: center center;
+    transform: rotateZ(5deg);
+  }
+  80% {
+    transform-origin: center center;
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform-origin: center center;
+    transform: rotateZ(0deg);
   }
 }
 </style>

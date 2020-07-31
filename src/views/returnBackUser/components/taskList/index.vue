@@ -5,7 +5,7 @@
     <section class="task-list-wrapper">
       <p class="sub-title">每日任务</p>
       <ul>
-        <li v-for="item in list">
+        <li v-for="item in taskList">
           <p class="name">{{item.taskName}}</p>
           <div class="percent">
             <div class="percent-bg">
@@ -16,7 +16,7 @@
             </div>
             <div class="award-wrapper">
               <img src="../../img/little-red-icon.png" alt="">
-              <span>{{item.awardName}}</span>
+              <span>话费红包</span>
             </div>
           </div>
           <div class="btn receive" v-if="item.taskStatus===0" @click="receive(item)">可领取</div>
@@ -29,50 +29,31 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+import { taskFinish, singleBehavior } from '../../services/api'
+import _get from 'lodash.get'
 export default {
   name: 'taskList',
   components: {
 
   },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data () {
     return {
-      list: [
-        {
-          taskName: '体验2局欢乐竞技台球',
-          userTaskProgress: 1,
-          taskProgress: 3,
-          awardName: '话费红包',
-          taskStatus: 1
-        },
-        {
-          taskName: '体验2局欢乐竞技台球',
-          userTaskProgress: 1,
-          taskProgress: 3,
-          awardName: '话费红包',
-          taskStatus: 1
-        },
-        {
-          taskName: '体验2局欢乐竞技台球',
-          userTaskProgress: 1,
-          taskProgress: 3,
-          awardName: '话费红包',
-          taskStatus: 1
-        },
-        {
-          taskName: '体验2局欢乐竞技台球',
-          userTaskProgress: 1,
-          taskProgress: 3,
-          awardName: '话费红包',
-          taskStatus: 1
-        },
-        {
-          taskName: '体验2局欢乐竞技台球',
-          userTaskProgress: 1,
-          taskProgress: 3,
-          awardName: '话费红包',
-          taskStatus: 1
-        }
-      ]
+      taskVo: this.info.taskVo
+    }
+  },
+  computed: {
+    taskList () {
+      let statusA = this.taskVo.filter(item => item.taskStatus === 0).sort((itemA, itemB) => itemA.sort - itemB.sort)
+      let statusB = this.taskVo.filter(item => item.taskStatus === 1).sort((itemA, itemB) => itemA.sort - itemB.sort)
+      let statusC = this.taskVo.filter(item => item.taskStatus === 2).sort((itemA, itemB) => itemA.sort - itemB.sort)
+      return [...statusA, ...statusB, ...statusC]
     }
   },
   filters: {
@@ -96,6 +77,27 @@ export default {
         percent = 100
       }
       return `${percent}%`
+    },
+    async toFinish (item) {
+      if (item.url.includes('ring')) {
+        await singleBehavior(10)
+      }
+      GLOBALS.jumpOutsideGame(item.url)
+    },
+    async receive (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0074001440', { task_id: item.taskId, task_name: item.taskName })
+      const res = await taskFinish(item.taskId)
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', {})
+      if (code === 200) {
+        this.taskVo = _get(data, 'taskRsps', [])
+        this.getUserPoint()
+        let award = {
+          name: `话费红包*${data.awardNum}，价值${data.awardNum / 10}元`,
+          desc: ''
+        }
+        this.$emit('show-pop', 'redpackage', award, '恭喜获得')
+      }
     }
   }
 }

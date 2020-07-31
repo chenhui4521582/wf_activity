@@ -3,22 +3,25 @@
     <div class="bg">
       <img src="./img/bg.png" alt="">
     </div>
-    <div class="back">
+    <div class="back" @click="back">
       <img src="./img/back-icon.png" alt="">
     </div>
-    <div class="problem">
+    <div class="problem" @click="openRule">
       <img src="./img/problem-icon.png" alt="">
     </div>
-    <cash-out />
+    <p class="endtime">活动截至{{info.endDate}}</p>
+    <cash-out :info="info" @show-pop="showPop" />
     <template v-if="info.state===1">
-      <sign-in />
-      <task-list />
+      <sign-in :info="info" @show-pop="showPop" />
+      <task-list :info="info" @show-pop="showPop" />
     </template>
     <template v-else>
       <div class="end">
         <img src="./img/end.png" alt="">
       </div>
     </template>
+    <popup v-model="isShowPop" :title="title" :type="popType" :awards-info="awardsInfo"
+      @on-confirm="callback" />
   </main>
 </template>
 
@@ -27,29 +30,69 @@
 import cashOut from './components/cashOut/index'
 import signIn from './components/signIn/index'
 import taskList from './components/taskList/index'
-import { } from './services/api'
+import popup from './components/popup/index'
+import { activityHome } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'returnBackUser',
   components: {
     cashOut,
     signIn,
-    taskList
+    taskList,
+    popup
   },
   data () {
     return {
-      info: {
-        state: 2
-      },
+      info: {},
       isShowPop: false,
-      isShowGame: false,
       popType: 'award',
-      awardsInfo: {}
+      awardsInfo: {},
+      title: ''
     }
   },
   mounted () {
+    this.init()
   },
   methods: {
+    async init () {
+      const res = await activityHome()
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', 0)
+      if (code === 200) {
+        this.info = data
+        if (data.awardNum) {
+          let award = {
+            name: `话费红包*${data.awardNum}，价值${data.awardNum / 10}元`,
+            desc: '集满10元话费红包即可提现10元话费'
+          }
+          this.showPop('redpackage', award, '恭喜获得')
+        }
+      }
+      GLOBALS.marchSetsPoint('A_H5PT0074001432')
+    },
+    openRule () {
+      this.showPop('rule', null, '活动规则')
+    },
+    showPop (type, info, title) {
+      this.popType = type
+      this.awardsInfo = info
+      this.title = title
+      this.isShowPop = true
+    },
+    callback (type) {
+      switch (type) {
+        case 'cashout':
+          GLOBALS.jumpOutsideGame('/xmWap/#/my/prize')
+          break
+
+        default:
+          break
+      }
+    },
+    back () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001433')
+      location.href = window.linkUrl.getBackUrl(this.curChannel)
+    }
   }
 }
 </script>
@@ -87,6 +130,12 @@ export default {
     font-size: 0;
     margin-top: 0.15rem;
     margin-left: 0.16rem;
+  }
+  .endtime {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    margin-top: 0.4rem;
   }
   .end {
     width: 2.48rem;
