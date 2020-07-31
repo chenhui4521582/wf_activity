@@ -52,6 +52,7 @@
               </div>
             </div>
           </template>
+          <div class="user-agreement" @click="goUserAgreement">多多完隐私政策和用户协议</div>
         </div>
       </div>
       <div class="footer">
@@ -119,6 +120,9 @@
       })// H5平台-马甲包游戏社区-页面加载完成
     },
     methods: {
+      goUserAgreement() {
+        window.location.href = `https://wap.beeplaying.com/xmWap/#/my/userAgreement`
+      },
       onSuccess() {
         this.$toast.show({
           message: '复制成功'
@@ -202,10 +206,18 @@
     &.nodetail {
       position: relative;
       .vestpage_container {
-        padding: 1rem 0;
+        height: 100vh;
         background: rgba(247, 247, 247, 1);
         .content {
-          padding: .2rem .24rem;
+          position: absolute;
+          left: .2rem;
+          right: .2rem;
+          top: 1.24rem;
+          bottom: 1.6rem;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
+          box-sizing: border-box;
           .content_item {
             background: rgba(255, 255, 255, 1);
             padding: .26rem .21rem .23rem;
@@ -362,6 +374,15 @@
               }
             }
           }
+        }
+        .user-agreement {
+          position: fixed;
+          left: 0;
+          bottom: 1.13rem;
+          width: 100%;
+          color: #1d75e7;
+          text-decoration: underline;
+          text-align: center;
         }
       }
       .footer {
