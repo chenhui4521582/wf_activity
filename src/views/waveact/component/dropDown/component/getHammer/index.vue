@@ -12,7 +12,7 @@
       <div class="g-package-info">
         <ul>
           <li>已消耗金叶：{{pUserInfo.gameBetting | filterPrice}}</li>
-          <li>累计获得游戏币：{{pUserInfo.receiveNum| filterPrice}}个币</li>
+          <li>累计获得：{{pUserInfo.receiveNum| filterPrice}}个币</li>
         </ul>
       </div>
     </div>

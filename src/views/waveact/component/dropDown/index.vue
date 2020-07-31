@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pop-mask" v-if="isDropDown" @touchmove.prevent></div>
+    <div class="pop-mask" v-if="isDropDown" @touchmove.prevent @click="close"></div>
     <transition name="fade">
       <div class="drop-down" v-if="isDropDown">
         <div class="drop-down-content">
