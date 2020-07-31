@@ -506,8 +506,7 @@
   }
 
   .pop_inner1 div {
-    padding-top: 0.12rem;
-    padding-bottom: 0.1rem;
+    padding: 0.12rem 0 0.1rem 0.1rem;
     height: 0.5rem;
     display: flex;
     align-items: center;
@@ -516,21 +515,8 @@
   .pop_inner1 img {
     width: 0.24rem;
     height: 0.24rem;
-    position: absolute;
-    left: 0.1rem;
+    margin-right: .1rem;
   }
-
-  .pop_inner span {
-    position: absolute;
-    white-space: nowrap;
-    height: 0.24rem;
-    left: 0.45rem;
-  }
-
-  .pop_inner1 div:last-child {
-    border-bottom: 0px;
-  }
-
   @keyframes changeBg {
     0% {
       background: url('../images/light1.png') no-repeat center center / 100%

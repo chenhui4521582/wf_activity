@@ -141,10 +141,6 @@
         })   // H5平台-双旦活动页-获得抽奖机会页-玩游戏-领取奖励点击
         Services.gameReceive(item.sort).then((res) => {
           if (res.data.code == 200) {
-            this.$toast.show({
-              message: '领取成功',
-              duration: 2000
-            })
             this.getGameProgress()
             this.$emit('refresh', res.data.data)
           }
