@@ -598,7 +598,7 @@
                 &.btn_yellow_flag5 {
                   width: 2.74rem;
                   color: rgba(237, 36, 55, 1);
-                  background: url("../images/compop/button.png") no-repeat center
+                  background: url("../images/sorry2-button.png") no-repeat center
                     center / 100% 100%;
                 }
                 &.btn_purple {
