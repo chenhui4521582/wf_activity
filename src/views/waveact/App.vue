@@ -261,6 +261,7 @@
     min-height: 100vh;
     background: #FC4B2E;
     .waveact_container {
+      width: 7.2rem;
       height: 14.43rem;
       background: url("./images/bg.png");
       background-size: 100% 100%;
