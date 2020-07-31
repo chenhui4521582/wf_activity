@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     convertStatus () {
-      return (this.info.convertRedPack - this.info.userRedPack > 0) ? 0 : 1
+      return (this.info.convertRedPack - this.info.userRedPack <= 0) ? 1 : 0
     }
   },
   data () {
