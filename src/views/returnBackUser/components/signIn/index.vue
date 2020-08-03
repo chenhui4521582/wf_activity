@@ -24,6 +24,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { loginAward } from '../../services/api'
 import _get from 'lodash.get'
 export default {
@@ -82,6 +83,7 @@ export default {
           }
           this.$set(this.actInfo.loginAwardRsps, item.day / 2 - 1, data)
           this.$emit('show-pop', 'redpackage', award, '恭喜获得')
+          GLOBALS.marchSetsPoint('A_H5PT0312003886', { 'awards_id': item.day, 'awards_name': item.awardNum + '个话费红包' }) // H5平台-累充0用户回流活动-登录奖励领取
         }
       }
     }

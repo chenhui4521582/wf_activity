@@ -82,10 +82,10 @@ export default {
       if (item.url.includes('ring')) {
         await singleBehavior(10)
       }
+      GLOBALS.marchSetsPoint('A_H5PT0312003888', { 'task_id': item.taskId, 'task_name': item.taskName }) // H5平台-累充0用户回流活动-任务去完成点击
       GLOBALS.jumpOutsideGame(item.url)
     },
     async receive (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001440', { task_id: item.taskId, task_name: item.taskName })
       const res = await taskFinish(item.taskId)
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', {})
@@ -97,6 +97,7 @@ export default {
           desc: ''
         }
         this.$emit('show-pop', 'redpackage', award, '恭喜获得')
+        GLOBALS.marchSetsPoint('A_H5PT0312003889', { 'task_id': item.taskId, 'task_name': item.taskName }) // H5平台-累充0用户回流活动-任务领取点击
       }
     }
   }

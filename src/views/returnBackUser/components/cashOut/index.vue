@@ -35,6 +35,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { redPackConvert } from '../../services/api'
 import _get from 'lodash.get'
 export default {
@@ -70,6 +71,7 @@ export default {
           duration: 3000
         })
       }
+      GLOBALS.marchSetsPoint('A_H5PT0312003883') // H5平台-累充0用户回流活动-领取记录点击
     },
     async convert () {
       if (this.convertStatus) {
@@ -81,6 +83,7 @@ export default {
             name: data.awardName
           }
           this.$emit('show-pop', 'cashout', award, '恭喜您!!')
+          GLOBALS.marchSetsPoint('A_H5PT0312003884') // H5平台-累充0用户回流活动-提现点击
         }
       }
     }
