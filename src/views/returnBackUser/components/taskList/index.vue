@@ -154,7 +154,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         &:not(:last-child) {
-          border-bottom: 1px solid #f59898;
+          border-bottom: 1px solid rgba(245, 152, 152, 0.5);
         }
         .name {
           width: 100%;
