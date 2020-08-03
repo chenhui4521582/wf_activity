@@ -10,7 +10,8 @@
                 :style="{width:`${info.userRedPack/info.convertRedPack*100}%`}"></div>
             </div>
             <div class="percent-tips"
-              v-if="info.userRedPack&&info.convertRedPack-info.userRedPack>0&&!info.redPackConvert">
+              v-if="info.userRedPack&&info.convertRedPack-info.userRedPack>0&&!info.redPackConvert"
+              :style="{left:`calc(${info.userRedPack/info.convertRedPack*100}% - 0.02rem)`}">
               已获得{{(info.userRedPack/10).toFixed(1)}}元</div>
           </div>
           <p>10元红包</p>
