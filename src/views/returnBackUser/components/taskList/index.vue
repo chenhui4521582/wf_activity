@@ -91,7 +91,6 @@ export default {
       const data = _get(res, 'data', {})
       if (code === 200) {
         this.taskVo = _get(data, 'taskRsps', [])
-        this.getUserPoint()
         let award = {
           name: `话费红包*${data.awardNum}，价值${data.awardNum / 10}元`,
           desc: ''
