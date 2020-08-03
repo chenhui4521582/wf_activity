@@ -55,6 +55,10 @@ export default {
   },
   methods: {
     async init () {
+      await this._activityHome()
+      GLOBALS.marchSetsPoint('P_H5PT0312', { 'source_address': GLOBALS.getUrlParam('from') || '' }) // H5平台-累充0用户回流活动-页面加载完成
+    },
+    async _activityHome () {
       const res = await activityHome()
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', 0)
@@ -68,7 +72,6 @@ export default {
           this.showPop('redpackage', award, '恭喜获得')
         }
       }
-      GLOBALS.marchSetsPoint('P_H5PT0312', { 'source_address': GLOBALS.getUrlParam('from') || '' }) // H5平台-累充0用户回流活动-页面加载完成
     },
     openRule () {
       this.showPop('rule', null, '活动规则')
@@ -84,6 +87,19 @@ export default {
         case 'cashout':
           GLOBALS.marchSetsPoint('A_H5PT0312003885') // H5平台-累充0用户回流活动-提现成功-去充话费点击
           GLOBALS.jumpOutsideGame('/xmWap/#/my/prize')
+          break
+        case 'redpackage':
+          this._activityHome()
+
+        default:
+
+          break
+      }
+    },
+    closeCallback (type) {
+      switch (type) {
+        case 'redpackage':
+          this._activityHome()
           break
 
         default:
