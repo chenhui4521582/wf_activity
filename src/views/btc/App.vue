@@ -1,12 +1,16 @@
 <template>
   <div class="btc">
-    <div class="back">
+    <div class="back" @click="back">
       <img class="inner-img" src="./img/back.png" alt="">
     </div>
     <div class="list">
       <div class="item" v-for="item in img" :key="item" @click="openPop">
         <img class="inner-img" :src="item" alt="">
       </div>
+    </div>
+    <div class="explain">
+      多多玩APP由多多玩官方提供， <br>
+      如有问题咨询多多玩官方客服微信：youxikefu2020
     </div>
     <div class="btn" @click="bottomClick"></div>
     <div class="popup" v-if="showPop">
@@ -130,6 +134,12 @@ export default {
       width: 3rem;
       height: 2.2rem;
     }
+  }
+  .explain {
+    margin-top: .2rem;
+    text-align: center;
+    font-size: .2rem;
+    color: #278059;
   }
   .btn {
     position: absolute;
