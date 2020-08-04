@@ -81,7 +81,7 @@ export default {
             name: `话费红包*${item.awardNum}，价值${item.awardNum / 10}元`,
             desc: ''
           }
-          this.$set(this.actInfo.loginAwardRsps, item.day / 2 - 1, data)
+          this.$set(this.actInfo, 'loginAwardRsps', _get(data, 'loginAwardRsps', []))
           this.$emit('show-pop', 'redpackage', award, '恭喜获得')
           GLOBALS.marchSetsPoint('A_H5PT0312003886', { 'awards_id': item.day, 'awards_name': item.awardNum + '个话费红包' }) // H5平台-累充0用户回流活动-登录奖励领取
         }
