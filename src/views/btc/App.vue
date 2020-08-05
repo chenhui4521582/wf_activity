@@ -83,7 +83,11 @@ export default {
     },
     bottomClick () {
       GLOBALS.marchSetsPoint('A_H5PT0313003893')
-      this.handClick()
+      if(this.isAndroid) {
+        this.handClick()
+      }else {
+        this.openPop()
+      }
     },
     openPop () {
       this.showPop = true
