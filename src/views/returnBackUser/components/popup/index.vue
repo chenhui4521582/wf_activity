@@ -123,7 +123,7 @@ export default {
   methods: {
     closePop () {
       this.isShowPop = false
-      this.$emit('on-close')
+      this.$emit('on-close', this.type)
     },
     sure () {
       this.isShowPop = false
