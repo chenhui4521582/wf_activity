@@ -4,6 +4,7 @@
       <img src="./img/bg.png" alt="">
     </div>
     <div class="back" @click="back()">返回</div>
+    <rule />
     <article class="main-content" v-if="info.state===1">
       <div class="time">
         <p>活动时间</p>
@@ -14,10 +15,11 @@
 </template>
 
 <script>
+import rule from './components/rule/index'
 export default {
   name: '',
   components: {
-
+    rule
   },
   data () {
     return {

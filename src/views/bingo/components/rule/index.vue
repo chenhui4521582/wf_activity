@@ -1,7 +1,7 @@
 <template>
   <article class="rule">
     <div class="rule-icon" @click.stop="showPop()">
-      <img src="./img/rule-icon.png" alt="">
+      规则
     </div>
     <transition name="mask">
       <section class="pop-wrapper" v-show="isShowPop">
@@ -53,17 +53,23 @@ export default {
 .rule {
   .rule-icon {
     position: absolute;
-    top: 0.12rem;
-    right: 0.06rem;
-    width: 0.82rem;
-    height: 1.06rem;
+    right: 0;
+    top: 0.3rem;
+    font-weight: bold;
+    color: #fff;
+    background: #ff742f;
+    width: 0.7rem;
+    line-height: 0.4rem;
+    padding-left: 0.1rem;
+    box-sizing: border-box;
+    border-radius: 0.2rem 0 0 0.2rem;
   }
   .pop-wrapper {
     .content-wrapper {
       .content {
         padding: 1.58rem 0.78rem 0;
         height: 9.42rem;
-        background: url(./img/rule-popup.png) no-repeat center center;
+        background: url(./img/rule-pop.png) no-repeat center center;
         background-size: 100% 100%;
         box-sizing: border-box;
       }
