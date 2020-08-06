@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta name="wap-font-scale" content="no" />
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta name="msapplication-tap-highlight" content="no" />
+  <script type="text/javascript" src="https://wap.beeplaying.com/ErrorPage/sdkLink.js"></script>
+  <script type="text/javascript" src="./static/js/autoSize.js"></script>
+  <style>
+    html,
+    body,
+    div,
+    p,
+    section,
+    ul,
+    li {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+
+    img {
+      transform: translate3D(0, 0, 0);
+      max-width: 100%;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .pop-wrapper {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+
+    .pop-wrapper .mask {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .mask-enter-active {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .mask-leave-to {
+      opacity: 0;
+    }
+
+    .mask-leave-active {
+      transition: opacity 0.3s;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        transform: scale(0);
+      }
+
+      40% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pop-wrapper .content-wrapper {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -59%, 0);
+      z-index: 99;
+    }
+
+    .pop-wrapper .content-wrapper .content {
+      width: 5.9rem;
+      font-size: 0.2rem;
+      color: #6F2418;
+      font-weight: bold;
+    }
+
+    .pop-wrapper .content-wrapper .close-icon {
+      width: .6rem;
+      height: .6rem;
+      margin: 0.5rem auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+<!-- 百度统计代码 -->
+<script type="text/javascript" src="./static/js/BaiduTongji.js"></script>
+
+</html>
