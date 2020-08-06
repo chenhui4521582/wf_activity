@@ -23,9 +23,8 @@
                :class="{end:[2,3].includes(item.state),goComplete:[1,4].includes(item.state),unBegin:item.state==0}">
             <div class="percent_bar" :class="{full:item.currentAmount==item.amount}"
                  :style="{width:(item.currentAmount/item.amount)*100+'%'}" v-if="[1,4].includes(item.state)">
-              {{item.currentAmount|filterPrice}}
             </div>
-            <span v-else-if="[2,3].includes(item.state)">{{item.currentAmount|filterPrice}}</span>
+            <span v-if="[1,2,3,4].includes(item.state)" :class="{left:[1,4].includes(item.state)}">{{([1,4].includes(item.state)?item.currentAmount:item.amount)|filterPrice}}</span>
             <span v-else>未开始</span>
           </div>
           <div class="task_btn"
@@ -42,7 +41,7 @@
       </div>
       <div class="fighthours_case">
         <img src="./images/participatebtn.png" alt="" v-if="actInfo.state==0" @click="goApply">
-        <span v-if="actInfo.state==2">本次火拼任务已全部完成，即将关闭入口，<br>请尽快领取奖励哟~</span>
+        <span v-else-if="actInfo.state==2">本次火拼任务已全部完成，即将关闭入口，<br>请尽快领取奖励哟~</span>
         <span v-else-if="actInfo.state==3">好遗憾~未达成本次火拼任务</span>
       </div>
       <div class="fighthours_rule">
@@ -74,7 +73,6 @@
         popType: 0,
         actInfo: null,
         awardData: null,
-        status: ["去完成", "未领取", "已领取"],
         mallBizConfigs: [],
         taskData: [{
           levelStatus: 2,
@@ -103,13 +101,13 @@
     },
     async mounted() {
       await this.getActInfo()
-      GLOBALS.marchSetsPoint('P_H5PT0310', {
+      GLOBALS.marchSetsPoint('P_H5PT0314', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })
     },
     methods: {
       back() {
-        GLOBALS.marchSetsPoint('A_H5PT0310003852')
+        GLOBALS.marchSetsPoint('A_H5PT0314003911')
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
       async getActInfo() {
@@ -122,67 +120,20 @@
         }
       },
       async goApply() {
+        GLOBALS.marchSetsPoint('A_H5PT0314003912')
         let {code, data} = await goApply()
         if (code == 200) {
           this.showPop(3)
+          GLOBALS.marchSetsPoint('A_H5PT0314003913')
           this.getActInfo()
         }
       },
       //弹窗
       showPop(type) {
         this.popType = type
-        if (type == 1) {//规则点击
-          GLOBALS.marchSetsPoint('A_H5PT0310003853')
-        }
         setTimeout(() => {
-          // A_H5PT0310003856 H5平台-金币挑战活动-活动规则弹窗加载完成
-          // A_H5PT0310003858 H5平台-金币挑战活动-特别挑战开启弹窗加载完成
-          let points = ['A_H5PT0310003856', 'A_H5PT0310003858']
-          points[type - 1] && GLOBALS.marchSetsPoint(points[type - 1])
-          if (this.awardData) {
-            GLOBALS.marchSetsPoint(this.awardData.awardsType == 'jinbi' ? 'A_H5PT0310003857' : 'A_H5PT0310003855', {
-              awards_name: this.awardData.awardsName,
-              awards_num: this.awardData.awardsNum
-            })
-          }
           this.$refs.comPop.showPop()
         })
-      },
-      async gain(category, item) {
-        if (category) {
-          if (item.awardsState == 0) {
-            location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
-
-          } else if (item.awardsState == 1) {
-            GLOBALS.marchSetsPoint('A_H5PT0310003854')
-            let {code, data, message} = await receivePrize(category, item.sort)
-            if (code == 200) {
-              this.awardData = Object.assign(data, {
-                awardsNum: item.awardsNum
-              })
-              this.showPop(3)
-              this.getActInfo()
-            } else {
-              this.$toast.show({
-                message,
-                duration: 1000
-              })
-            }
-          }
-        } else {
-          GLOBALS.marchSetsPoint('A_H5PT0310003854')
-          let {code, data, message} = await receiveAll()
-          if (code == 200) {
-            this.awardData = data
-            this.showPop(3)
-            this.getActInfo()
-          } else {
-            this.$toast.show({
-              message,
-              duration: 1000
-            })
-          }
-        }
       },
       countDown(item) {
         if (!item) return false
@@ -214,12 +165,22 @@
       async doTask(item) {
         //received:item.state==3||item.state==4,receive:item.state==2,goComplete:item.state==1,unBegin:item.state==0
         if (item.state == 1) {
+          GLOBALS.marchSetsPoint('A_H5PT0314003914', {
+            task_id: item.stage,
+            task_name: '游戏支持金叶' + item.amount
+          })
           this.showPop(1)
+          GLOBALS.marchSetsPoint('A_H5PT0314003915')
         } else if (item.state == 2) {
+          GLOBALS.marchSetsPoint('A_H5PT0314003916', {
+            task_id: item.stage,
+            task_name: '游戏支持金叶' + item.amount
+          })
           let {code, data} = await receivePrize(item.stage)
           if (code == 200) {
             this.awardData = data
             this.showPop(2)
+            GLOBALS.marchSetsPoint('A_H5PT0314003917')
             this.getActInfo()
           }
         }
@@ -418,10 +379,17 @@
           left: 0;
           background: rgba(251, 111, 50, 1);
           border-radius: .15rem 0 0 .15rem;
-          text-align: center;
-          line-height: .3rem;
           &.full {
             border-radius: .15rem;
+          }
+        }
+        span{
+          &.left{
+            text-align: left;
+            line-height: .3rem;
+            display: inline-block;
+            width: 100%;
+            position: absolute;
           }
         }
       }
@@ -465,8 +433,7 @@
       display: flex;
       justify-content: center;
       span {
-        font-size: 32px;
-        font-family: Alibaba PuHuiTi;
+        font-size: .32rem;
         font-weight: bold;
         color: rgba(247, 39, 1, 1);
         line-height: .48rem;
@@ -475,6 +442,7 @@
       img {
         width: 4.83rem;
         height: 1.29rem;
+        animation: huxi 3s infinite ease-in-out;
       }
     }
     .fighthours_rule {
@@ -496,6 +464,41 @@
           line-height: .36rem;
         }
       }
+    }
+  }
+  @keyframes huxi {
+    0% {
+      transform: scale(0.9);
+    }
+    10% {
+      transform: scale(1.2);
+    }
+    20% {
+      transform: scale(0.9);
+    }
+    30% {
+      transform: scale(1.2);
+    }
+    40% {
+      transform: scale(0.9);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    60% {
+      transform: scale(0.9);
+    }
+    70% {
+      transform: scale(1.2);
+    }
+    80% {
+      transform: scale(0.9);
+    }
+    90% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(0.9);
     }
   }
 </style>

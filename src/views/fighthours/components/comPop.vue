@@ -43,9 +43,6 @@
     data() {
       return {
         isShowPop: false,
-        record: [],
-        allRecord: [],
-        mineData: null,
         games: [{
           id: 12,
           url: '/crush'
@@ -113,21 +110,9 @@
       close() {
         this.$emit('close')
         this.isShowPop = false
-        this.allRecord = []
-        if (this.awardData && this.awardData.isRank) {
-          this.$emit('showPop', 3)
-        }
       },
       move(e) {
         e.preventDefault()
-      },
-      gotopay() {
-        this.close()
-        this.$emit('opendown')
-      },
-      show(type) {
-        this.close()
-        this.$emit('showPop', type)
       },
       gotogame({url, id}) {
         GLOBALS.jumpOutsideGame(url)
@@ -223,7 +208,7 @@
           &.flag2 {
             height: 3.6rem
           }
-          &.flag3{
+          &.flag3 {
             width: 5.37rem;
             height: 5.32rem;
             background: url("../images/comPop/beginpop.png");
@@ -258,7 +243,7 @@
                 p {
                   font-size: .36rem;
                   font-weight: bold;
-                  color:rgba(160,88,2,1);
+                  color: rgba(160, 88, 2, 1);
                   line-height: .4rem;
                   text-align: center;
                 }
@@ -282,17 +267,17 @@
               .gogames {
                 font-size: 0.3rem;
                 font-weight: bold;
-                color:rgba(237,43,56,1);
+                color: rgba(237, 43, 56, 1);
                 text-align: center;
                 position: absolute;
                 bottom: .3rem;
                 left: 0;
                 right: 0;
               }
-              .games_info{
+              .games_info {
                 font-size: 0.24rem;
-                font-weight:400;
-                color:rgba(160,88,2,1);
+                font-weight: 400;
+                color: rgba(160, 88, 2, 1);
                 text-align: center;
                 position: absolute;
                 bottom: -.1rem;
@@ -312,7 +297,7 @@
           left: 0;
           right: 0;
           margin: auto;
-          &.flag3{
+          &.flag3 {
             bottom: -.5rem;
           }
         }
