@@ -4,6 +4,12 @@
       <img src="./img/bg.png" alt="">
     </div>
     <div class="back" @click="back()">返回</div>
+    <article class="main-content" v-if="info.state===1">
+      <div class="time">
+        <p>活动时间</p>
+        <p>{{info.startDate}}-{{info.endDate}}</p>
+      </div>
+    </article>
   </main>
 </template>
 
@@ -15,7 +21,11 @@ export default {
   },
   data () {
     return {
-
+      info: {
+        state: 1,
+        startDate: '2020.07.10',
+        endDate: '2020.07.12'
+      }
     }
   },
   mounted () {
@@ -64,23 +74,12 @@ export default {
   .main-content {
     position: absolute;
     width: 100vw;
-    top: 2.18rem;
+    top: 1.1rem;
     .time {
       color: #fff;
-      font-weight: bold;
+      font-weight: 800;
       text-align: center;
-      font-style: italic;
-    }
-    .end-time {
-      background: #849be9;
-      width: 4.1rem;
-      padding: 0 0.24rem;
-      height: 0.48rem;
-      margin: -0.04rem auto;
-      text-align: center;
-      line-height: 0.46rem;
-      border-radius: 0.24rem;
-      color: #1f2961;
+      font-size: 0.26rem;
     }
   }
 }
