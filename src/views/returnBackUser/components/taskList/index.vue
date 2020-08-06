@@ -83,7 +83,7 @@ export default {
         await singleBehavior(10)
       }
       GLOBALS.marchSetsPoint('A_H5PT0312003888', { 'task_id': item.taskId, 'task_name': item.taskName }) // H5平台-累充0用户回流活动-任务去完成点击
-      GLOBALS.jumpOutsideGame(item.url)
+      location.href = GLOBALS.getJumpToGameUrl(item.url)
     },
     async receive (item) {
       const res = await taskFinish(item.taskId)

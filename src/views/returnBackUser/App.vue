@@ -21,7 +21,7 @@
       </div>
     </template>
     <popup v-model="isShowPop" :title="title" :type="popType" :awards-info="awardsInfo"
-      @on-confirm="callback" />
+      @on-confirm="callback" @on-close="closeCallback" />
   </main>
 </template>
 
@@ -85,12 +85,13 @@ export default {
     callback (type) {
       switch (type) {
         case 'cashout':
+          this._activityHome()
           GLOBALS.marchSetsPoint('A_H5PT0312003885') // H5平台-累充0用户回流活动-提现成功-去充话费点击
           GLOBALS.jumpOutsideGame('/xmWap/#/my/prize')
           break
         case 'redpackage':
           this._activityHome()
-
+          break
         default:
 
           break
@@ -98,6 +99,7 @@ export default {
     },
     closeCallback (type) {
       switch (type) {
+        case 'cashout':
         case 'redpackage':
           this._activityHome()
           break
