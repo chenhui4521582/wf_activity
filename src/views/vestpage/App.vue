@@ -52,7 +52,9 @@
               </div>
             </div>
           </template>
-          <div class="user-agreement" @click="goUserAgreement">多多完隐私政策和用户协议</div>
+          <div class="user-agreement" >
+            <span @click="goUserPrivacy">多多玩隐私政策</span> | <span @click="goUserAgreement">多多玩用户协议</span>
+          </div>
         </div>
       </div>
       <div class="footer">
@@ -122,6 +124,9 @@
     methods: {
       goUserAgreement() {
         window.location.href = `https://wap.beeplaying.com/xmWap/#/my/userAgreement`
+      },
+      goUserPrivacy () {
+        window.location.href = `https://wap.beeplaying.com/xmWap/#/my/userPrivacy`
       },
       onSuccess() {
         this.$toast.show({
@@ -381,7 +386,7 @@
           bottom: 1.13rem;
           width: 100%;
           color: #1d75e7;
-          text-decoration: underline;
+          // text-decoration: underline;
           text-align: center;
         }
       }
