@@ -81,7 +81,7 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0074001433')
-      location.href = window.linkUrl.getBackUrl(this.curChannel)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }
 }

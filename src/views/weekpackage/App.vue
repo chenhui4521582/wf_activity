@@ -137,7 +137,7 @@ export default {
       return Request[ename]
     },
     back () {
-      location.href = window.linkUrl.getBackUrl(this.curChannel)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }, // 回到首页
     fetch (url, params) {
       if (url.startsWith('/ops/api')) {
@@ -263,7 +263,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
-@import "../../common/css/base.css";
+@import '../../common/css/base.css';
 .banner-set {
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -273,7 +273,7 @@ export default {
   height: 18.51rem;
   left: 0;
   right: 0;
-  background: url("./imgs/bg.png");
+  background: url('./imgs/bg.png');
   background-size: 100% 100%;
   color: rgba(255, 255, 255, 1);
 }
@@ -283,7 +283,7 @@ export default {
   left: 0.2rem;
   width: 0.63rem;
   height: 0.63rem;
-  background: url("./imgs/back.png") no-repeat;
+  background: url('./imgs/back.png') no-repeat;
   background-size: 100% 100%;
   z-index: 10;
 }
@@ -355,30 +355,30 @@ export default {
       height: 6.52rem;
       margin-left: -0.3rem;
       margin-top: -0.25rem;
-      background: url("./imgs/light1.png") no-repeat center center / 100% 100%;
+      background: url('./imgs/light1.png') no-repeat center center / 100% 100%;
       animation: changeBg 0.3s alternate infinite ease,
         changeBg1 0.3s infinite ease;
     }
     @keyframes changeBg {
       0% {
         opacity: 1;
-        background: url("./imgs/light1.png") no-repeat center center / 100% 100%;
+        background: url('./imgs/light1.png') no-repeat center center / 100% 100%;
       }
 
       100% {
         opacity: 0;
-        background: url("./imgs/light2.png") no-repeat center center / 100% 100%;
+        background: url('./imgs/light2.png') no-repeat center center / 100% 100%;
       }
     }
     @keyframes changeBg1 {
       0% {
         opacity: 0;
-        background: url("./imgs/light1.png") no-repeat center center / 100% 100%;
+        background: url('./imgs/light1.png') no-repeat center center / 100% 100%;
       }
 
       100% {
         opacity: 1;
-        background: url("./imgs/light2.png") no-repeat center center / 100% 100%;
+        background: url('./imgs/light2.png') no-repeat center center / 100% 100%;
       }
     }
     .btn-lottery {
