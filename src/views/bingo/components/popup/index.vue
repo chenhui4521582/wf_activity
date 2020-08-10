@@ -6,13 +6,19 @@
         <div class="content-wrapper">
           <div class="content" :class="type">
             <div class="title">
-              <img :src="titleImg" alt="">
+              {{title}}
             </div>
-            <template v-if="type==='rule'">
+            <template v-if="type==='warning'">
               <div class="text">
-                1.做每日任务，可领取积分。累计积分至一定数值，可领取到对应话费奖励；活动期内的积分不会每日清零，而是一直累计；每日任务达成的流水第二天会清零。<br />
-                2.以下游戏流水计入任务：<br />
-                欢乐竞技台球、糖果萌消消、王者弹珠、街机欢乐捕鱼、三国大作战、众神风云、欢乐的小鸟、深海探一探、斗西游、破晓方块消消乐
+                <p>
+                  清空目前所有已购买礼包
+                </p>
+                <p>
+                  的状态，可以重新购买，并继续
+                </p>
+                <p>
+                  完成bingo领取奖励哟～
+                </p>
               </div>
             </template>
             <template v-else>
@@ -33,10 +39,11 @@
                 <div class="bottom" v-html="awardsInfo.desc">
                 </div>
               </div>
-              <div class="btn" @click="sure()">
-                <img src="./img/popup-btn.png" alt="">
-              </div>
             </template>
+            <div class="btn-wrapper" :class="{'two-btn':showCancel}">
+              <button class="cancel" @click="cancel()" v-if="showCancel">取消</button>
+              <button @click="confirm()">{{confirmText}}</button>
+            </div>
           </div>
           <div class="close-icon" @click="closePop()">
             <img src="../../img/close-icon.png" alt="">
@@ -48,6 +55,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import utils from '@/common/js/utils'
 export default {
   name: '',
@@ -66,7 +74,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'rule'
+      default: 'award'
     },
     awardsInfo: {
       type: Object,
@@ -77,8 +85,17 @@ export default {
     }
   },
   computed: {
-    titleImg () {
-      return require(`./img/${this.type}-title.png`)
+    title () {
+      return this.type === 'warning' ? '友情提示' : '恭喜获得'
+    },
+    showCancel () {
+      return this.type === 'warning'
+    },
+    confirmText () {
+      if (this.type === 'warning') {
+        return '再来一次'
+      }
+      return '收下'
     }
   },
   mounted () {
@@ -89,7 +106,11 @@ export default {
       this.isShowPop = false
       this.$emit('on-close')
     },
-    sure () {
+    cancel () {
+      this.isShowPop = false
+      this.$emit('on-cancel')
+    },
+    confirm () {
       this.isShowPop = false
       this.$emit('on-confirm')
     }
@@ -116,24 +137,17 @@ export default {
     .content-wrapper {
       .content {
         height: 6.12rem;
-        padding: 0.38rem 0.5rem 0;
+        padding: 0 0.5rem;
         background: url(./img/popup-bg.png) no-repeat center center;
         background-size: 100% 100%;
         box-sizing: border-box;
         position: relative;
         .title {
+          height: 1.14rem;
+          line-height: 1.14rem;
           text-align: center;
-          img {
-            height: 0.36rem;
-          }
-        }
-        &.give {
-          padding-top: 0.42rem;
-          .title {
-            img {
-              height: 0.28rem;
-            }
-          }
+          font-size: 0.36rem;
+          margin-bottom: 0.2rem;
         }
         .container {
           height: 3.08rem;
@@ -141,7 +155,6 @@ export default {
           flex-wrap: wrap;
           justify-content: center;
           align-items: center;
-          margin-top: 0.6rem;
           .top {
             display: flex;
             align-items: center;
@@ -153,17 +166,17 @@ export default {
               flex: 1;
               white-space: nowrap;
               .img-wrapper {
-                width: 1.4rem;
-                height: 1.4rem;
-                background: #1c2458;
+                width: 1.6rem;
+                height: 1.6rem;
+                background: #111551;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
                 margin: auto;
                 img {
-                  width: 100%;
-                  height: 100%;
+                  width: 84%;
+                  height: auto;
                 }
               }
               p {
@@ -179,17 +192,41 @@ export default {
             line-height: 0.4rem;
           }
         }
-        .btn {
+        .btn-wrapper {
           position: absolute;
           bottom: 0.8rem;
-          width: 3.2rem;
-          height: 0.72rem;
+          width: 100%;
           left: 50%;
-          margin-left: -1.6rem;
+          margin-left: -50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          button {
+            height: 0.72rem;
+            width: 3.2rem;
+            background: #ffee4b;
+            color: #a84401;
+            border-radius: 0.36rem;
+            font-size: 0.28rem;
+            font-weight: 800;
+            margin: 0 0.26rem;
+          }
+          &.two-btn {
+            button {
+              width: 2rem;
+            }
+            .cancel {
+              background: #f6722a;
+              color: #fff;
+            }
+          }
         }
         .text {
           padding: 0.8rem 0.3rem 0;
           line-height: 0.36rem;
+          text-align: center;
+          font-size: 0.28rem;
+          line-height: 0.4rem;
         }
       }
     }
