@@ -248,7 +248,7 @@ export default {
       }
     },
     cancelCallback () {
-      if (this.popType === 'award') {
+      if (this.popType === 'warning') {
         GLOBALS.marchSetsPoint('A_H5PT0311003872') // H5平台-bingo冲冲冲-再来一次Bingo页面-点击取消
       }
     },
@@ -283,7 +283,7 @@ export default {
   overflow-y: scroll;
   height: 100vh;
   width: 100vw;
-  background: #00040c;
+  background: linear-gradient(90deg, #750433, #260419);
   .bg {
     position: absolute;
     top: 0;
@@ -419,7 +419,6 @@ export default {
             .tips {
               position: absolute;
               padding: 0 0.06rem;
-              height: 0.26rem;
               border: 0.02rem solid #000;
               font-size: 0.18rem;
               line-height: 0.26rem;
