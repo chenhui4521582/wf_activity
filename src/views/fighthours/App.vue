@@ -143,6 +143,8 @@
           if (date <= 0) {
             date = 0
             clearInterval(this.timer)
+            this.countTime=''
+            return
           }
           let day = Math.floor(date / 86400)
           let hour = Math.floor(parseInt(date / 60 / 60) % 24)
