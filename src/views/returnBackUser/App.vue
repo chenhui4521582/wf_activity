@@ -109,7 +109,7 @@ export default {
       }
     },
     back () {
-      location.href = window.linkUrl.getBackUrl(this.curChannel)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     }
   }
 }
