@@ -19,7 +19,7 @@
             <template v-if="item.type===1">
               <div class="item item-gift" :class="`status-${item.status}`">
                 <p class="name">充<br />{{item.name}}</p>
-                <p class="content">{{item.content}}</p>
+                <p class="content">{{item.content|contentFilter}}</p>
                 <p class="tips" v-if="item.status===2">已完成</p>
               </div>
             </template>
@@ -139,6 +139,13 @@ export default {
         return time.split(' ')[0]
       }
       return ''
+    },
+    contentFilter (content) {
+      let name = content || ''
+      if (content && content.split('+').length > 1 && content.split('+')[1]) {
+        name = '送' + content.split('+')[1]
+      }
+      return name
     }
   },
   computed: {
