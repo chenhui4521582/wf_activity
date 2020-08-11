@@ -5,7 +5,7 @@
     </div>
     <div class="back" @click="back()">返回</div>
     <rule :info="actData" />
-    <article class="main-content" v-if="actData.state===1">
+    <article class="main-content" v-if="actData.state">
       <section class="time">
         <p>活动时间</p>
         <p>{{actData.startDate|timeFilter}} - {{actData.endDate|timeFilter}}</p>
@@ -17,10 +17,11 @@
         <ul v-for="items in actList">
           <li v-for="item in items" @click="handleClick(item)">
             <template v-if="item.type===1">
-              <div class="item item-gift" :class="`status-${item.status}`">
+              <div class="item item-gift" :class="`status-${actData.state===2?2:item.status}`">
                 <p class="name">充<br />{{item.name}}</p>
                 <p class="content">{{item.content|contentFilter}}</p>
-                <p class="tips" v-if="item.status===2">已完成</p>
+                <p class="tips" v-if="actData.state===2">已结束</p>
+                <p class="tips" v-else-if="item.status===2">已完成</p>
               </div>
             </template>
             <template v-else-if="item.type===2">
@@ -98,7 +99,8 @@
           </template>
         </div>
       </section>
-      <button class="one-more" @click="oneMore"></button>
+      <button v-if="actData.state===1" class="one-more" @click="oneMore"></button>
+      <button v-else class="one-more end" @click="end"></button>
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo"
       @on-confirm="confirmCallback" @on-close="closeCallback" @on-cancel="cancelCallback" />
@@ -204,6 +206,12 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0311003871') // H5平台-bingo冲冲冲页面-点击再来一次bingo按钮
       this.showPop('warning')
     },
+    end () {
+      this.$toast.show({
+        message: '活动已结束',
+        duration: 3000
+      })
+    },
     async _initAct () {
       const { actRes, giftRes } = await initAct()
       if (_get(actRes, 'code', 0) === 200 && _get(giftRes, 'code', 0) === 200) {
@@ -216,7 +224,11 @@ export default {
     },
     handleClick (item) {
       if (item.type === 1) {
-        this.goToPay(item)
+        if (this.actData.state === 1) {
+          this.goToPay(item)
+        } else {
+          this.end()
+        }
       } else if (item.status === 0) {
         this._receiveAddedAward(item)
       }
@@ -494,6 +506,9 @@ export default {
       background-size: 100% 100%;
       display: block;
       margin: 0.38rem auto 0;
+      &.end {
+        background-image: url('./img/end.png');
+      }
     }
     .normal-item {
       width: 1.4rem;
