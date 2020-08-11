@@ -26,7 +26,7 @@
                 <template v-else>{{item}}</template>
               </div>
             </div>
-            <span style="white-space: nowrap;" v-else>活动已结束</span>
+            <!--<span style="white-space: nowrap;" v-else>活动已结束</span>-->
           </div>
         </div>
         <game @gotowave="gotowave" :my-info="userData" :act-info="actData" :horn-list="hornList"
