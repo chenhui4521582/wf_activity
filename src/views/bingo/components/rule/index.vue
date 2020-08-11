@@ -29,9 +29,8 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空目前所有已购买的礼包状态，可以重新进行充值，并领取Bingo奖励；
             </p>
             <p>
-              6、以上所有奖励请在{{info.showEndDate}}前完成领取，过期不予领取；
+              6、以上所有奖励请在{{info.showEndDate}}前完成领取，过期不予领取。
             </p>
-
           </div>
           <div class="close-icon" @click="closePop()">
             <img src="../../img/close-icon.png" alt="">
