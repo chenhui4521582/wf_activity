@@ -204,6 +204,17 @@ export default {
     },
     oneMore () {
       GLOBALS.marchSetsPoint('A_H5PT0311003871') // H5平台-bingo冲冲冲页面-点击再来一次bingo按钮
+      if (this.payGiftBigIds.length < 1) {
+        return
+      }
+      let awardsReceive = this.addedAwardRsps.filter(item => item.status === 0)
+      if (awardsReceive.length) {
+        this.$toast.show({
+          message: '请先领取奖励哟～',
+          duration: 3000
+        })
+        return
+      }
       this.showPop('warning')
     },
     end () {
