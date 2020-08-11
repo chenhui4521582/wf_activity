@@ -38,8 +38,8 @@
                   <div class='percent'>
                     <div class="percent-bg">
                       <div class="percent-content"
-                        :style="{width:bingoInfo.userProgress/bingoInfo.progress*100+'%'}"
-                        :class="{'full-width':bingoInfo.userProgress-bingoInfo.progress>=0}">
+                        :style="{width:item.userProgress/item.progress*100+'%'}"
+                        :class="{'full-width':item.userProgress-item.progress>=0}">
                       </div>
                       <div class="percent-text">{{item.userProgress}}/{{item.progress}}</div>
                     </div>
