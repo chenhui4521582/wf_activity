@@ -22,15 +22,15 @@
               </div>
             </template>
             <template v-else-if="type==='end'">
+              <div class="img">
+                <img src="./img/end-icon.png" alt="">
+              </div>
               <div class="text">
                 <p>
-                  很抱歉,
+                  本期活动已结束了，
                 </p>
                 <p>
-                  该活动本期已结束了,
-                </p>
-                <p>
-                  去看看其他活动吧~
+                  去看看其他游戏吧
                 </p>
               </div>
             </template>
@@ -103,7 +103,7 @@ export default {
         case 'warning':
           return '友情提示'
         case 'end':
-          return '活动提示'
+          return '很抱歉'
 
         default:
           return '恭喜获得'
@@ -169,10 +169,13 @@ export default {
         box-sizing: border-box;
         position: relative;
         &.end {
+          .img {
+            width: 1.6rem;
+            height: 1.76rem;
+            margin: auto;
+          }
           .text {
-            padding-top: 0.5rem;
-            font-size: 0.36rem;
-            line-height: 0.56rem;
+            padding-top: 0.1rem;
           }
         }
         .title {
@@ -227,7 +230,7 @@ export default {
         }
         .btn-wrapper {
           position: absolute;
-          bottom: 0.8rem;
+          bottom: 0.86rem;
           width: 100%;
           left: 50%;
           margin-left: -50%;
