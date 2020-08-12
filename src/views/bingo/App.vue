@@ -238,6 +238,8 @@ export default {
         this.payGiftBigIds = _get(actRes, 'data.payGiftBigIds', [])
         this.bingoInfo = _get(actRes, 'data.addedAwardRsps[6]', {})
         this.giftData = _get(giftRes, 'data', {})
+      } else if (_get(actRes, 'code', 0) === 101) {
+        this.showPop('end')
       }
     },
     handleClick (item) {
@@ -283,16 +285,30 @@ export default {
       }
     },
     closeCallback () {
-      if (this.popType === 'award') {
-        this._initAct()
+      switch (this.popType) {
+        case 'award':
+          this._initAct()
+          break
+
+        case 'end':
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+          break
+        default:
+          break
       }
     },
     confirmCallback () {
-      if (this.popType === 'warning') {
-        this._resetUserActivity()
-        GLOBALS.marchSetsPoint('A_H5PT0311003873') // H5平台-bingo冲冲冲-再来一次Bingo页面-点击再来一次
-      } else {
-        this._initAct()
+      switch (this.popType) {
+        case 'warning':
+          this._resetUserActivity()
+          GLOBALS.marchSetsPoint('A_H5PT0311003873') // H5平台-bingo冲冲冲-再来一次Bingo页面-点击再来一次
+          break
+        case 'end':
+          location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+          break
+        default:
+          this._initAct()
+          break
       }
     },
     async _resetUserActivity () {
