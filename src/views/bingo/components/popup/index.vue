@@ -21,6 +21,19 @@
                 </p>
               </div>
             </template>
+            <template v-else-if="type==='end'">
+              <div class="text">
+                <p>
+                  很抱歉,
+                </p>
+                <p>
+                  该活动本期已结束了,
+                </p>
+                <p>
+                  去看看其他活动吧~
+                </p>
+              </div>
+            </template>
             <template v-else>
               <div class="container">
                 <ul class="top">
@@ -86,16 +99,29 @@ export default {
   },
   computed: {
     title () {
-      return this.type === 'warning' ? '友情提示' : '恭喜获得'
+      switch (this.type) {
+        case 'warning':
+          return '友情提示'
+        case 'end':
+          return '活动提示'
+
+        default:
+          return '恭喜获得'
+      }
     },
     showCancel () {
       return this.type === 'warning'
     },
     confirmText () {
-      if (this.type === 'warning') {
-        return '再来一次'
+      switch (this.type) {
+        case 'warning':
+          return '再来一次'
+        case 'end':
+          return '返回游戏大厅'
+
+        default:
+          return '收下'
       }
-      return '收下'
     }
   },
   mounted () {
@@ -142,6 +168,13 @@ export default {
         background-size: 100% 100%;
         box-sizing: border-box;
         position: relative;
+        &.end {
+          .text {
+            padding-top: 0.5rem;
+            font-size: 0.36rem;
+            line-height: 0.56rem;
+          }
+        }
         .title {
           height: 1.14rem;
           line-height: 1.14rem;
