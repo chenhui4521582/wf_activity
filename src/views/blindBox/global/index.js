@@ -4,6 +4,13 @@ import { UserInfo } from '../apis/user'
 export const WechatUrl = ''
 // 是否是公众号渠道
 export const isWechat = localStorage.getItem('APP_CHANNEL') === '110005001'
+// 是否显示七鱼客服
+export const isQiyukfShow = () => {
+  let channelArr = ['100100']
+  let currentChannel = localStorage.getItem('APP_CHANNEL') || ''
+  return !channelArr.includes(currentChannel)
+}
+
 // 是否关注公众号
 export const isFollowWechat = async () => {
   const { data: { data: { binding, openBoxOrTransparent } } } = await UserInfo()
