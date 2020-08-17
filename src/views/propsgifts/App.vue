@@ -177,7 +177,7 @@
         let points = ['A_H5PT0315003923', 'A_H5PT0315003928', 'A_H5PT0315003929', '', 'A_H5PT0315003925', 'A_H5PT0315003926']
         points[type - 1] && GLOBALS.marchSetsPoint(points[type - 1])
         setTimeout(() => {
-          if (this.awardData) {
+          if (this.awardData&&this.awardData.awardsName) {
             GLOBALS.marchSetsPoint(this.awardData.source == 'exhange' ? 'A_H5PT0315003931' : 'A_H5PT0315003930', {
               awards_name: this.awardData.awardsName,
               awards_id: this.awardData.sort
