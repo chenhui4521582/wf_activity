@@ -4,12 +4,12 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop&&popType">
         <div :class="getClassName('wrap')">
-          <div class="title_bg">
-            <div class="title_txt">
-              {{titles[popType-1]}}
-            </div>
-          </div>
           <div :class="getClassName('main')">
+            <div class="title_bg">
+              <div class="title_txt">
+                {{titles[popType-1]}}
+              </div>
+            </div>
             <div :class="getClassName('container_compop')">
               <template v-if="popType==1||popType==2">
                 <div class="bonus-record" :class="{empty:!record.length}">
@@ -101,7 +101,12 @@
                       <p>7、参与活动的游戏包括：糖果萌消消、欢乐竞技台球、街机欢乐捕鱼、三国大作战、众神风云、福满多、斗西游、深海探一探、欢乐的小鸟、炸弹人</p>
                     </template>
                     <template v-else-if="popType==8">
-                      <p>奖池计算方式：每日从平台系统抽取一定比例奖励作为奖池，随着玩家消耗金叶增长，奖池持续累积，并于<i>当天24点清零</i>，从0累计。（10个话费碎片=1元话费券）</p>
+                      <p class="weight">1.【本场团队预估奖励】</p>
+                      <p>=鹊桥会达成发放总奖励*当前团队助力值占比（如牛郎和织女当前收获助力10000米，所在团队助力5000米，则助力值占比50%）</p>
+                      <p>注：<i>奖励需完成鹊桥会才可发放。</i>单场鹊桥会失败，则牛郎织女助力值需达成总路程50%以上，两队可共同瓜分对应比例奖励。</p>
+                      <p class="weight">2.【个人预估奖励】</p>
+                      <p>=团队预计奖励*当前个人贡献（比如团队预计可瓜分10000元，个人助力值占比30%，则预计奖励=10000*30%）<br>*团队前3名再分别加奖团队奖励的3%、2%、1%</p>
+                      <p>3.入队后，单个玩家在单场鹊桥会贡献比需1%以上才可瓜分团队奖励。</p>
                     </template>
                     <template v-else-if="popType==9">
                       <p>1.每天玩游戏或买礼包获得抽奖券</p>
@@ -120,27 +125,23 @@
               </template>
               <template v-else-if="popType==10">
                 <div class="sad_content">
-                  <div class="yhq">
-                    ¥<i>{{awardData.couponValue}}</i>
-                  </div>
-                  <p>抢到一张{{awardData.couponName}}优惠券</p>
-                  <div class="info">有效期仅1天，请及时使用<br>（折扣礼包不适用此券）</div>
+                  <img src="../images/comPop/ball.png" alt="" class="box">
+                  <p>你已新增助力值100</p>
+                  <div class="info">助力值已自动累计到今日鹊桥会各场次和<br>个人榜~</div>
                 </div>
               </template>
               <template v-else-if="popType==11">
                 <div class="sad_content">
-                  <img src="../images/comPop/cjq.png" alt="" class="cjq">
-                  <p>您有抽奖券待领取</p>
-                  <div class="btns">
-                    <div class="btnred" @click="gotopay">快去页面查看</div>
-                  </div>
+                  <img src="../images/comPop/box.png" alt="" class="box">
+                  <p>你有奖励待领取，<br>记得尽快领取~</p>
                 </div>
               </template>
               <template v-else-if="popType==12">
                 <div class="sad_content">
-                  <img :src="`${require(`../images/comPop/${awardData.awardsType}.png`)}`" alt="" class="award">
-                  <p v-html="awardData.awardsName"></p>
-                  <div class="info" v-html="awardData.info" v-if="awardData.info"></div>
+                  <img src="../images/comPop/boy.png" alt="" class="person">
+                  <div class="add">你已成功加入</div>
+                  <p>织女助力队</p>
+                  <div class="info">鹊桥会将有多个场次，你的助力值会自动累计到各场次，并分别计算所得奖励哟~</div>
                 </div>
               </template>
             </div>
@@ -200,7 +201,7 @@
         }, {
           id: 30, url: '/boom'
         }],
-        titles: ["中奖记录", "抽奖券获得记录", "昨日排行", "今日排行", "很遗憾", "大家都在玩", "活动规则", "奖池计算说明", "中奖攻略", "恭喜您", "温馨提示", "恭喜获得！"]
+        titles: ["中奖记录", "抽奖券获得记录", "昨日排行", "今日排行", "很遗憾", "大家都在玩", "活动规则", "奖励计算方式", "中奖攻略", "恭喜!!", "温馨提示", "恭喜!!"]
       }
     },
     props: {
@@ -291,8 +292,8 @@
         this.$emit('close')
         this.isShowPop = false
         this.allRecord = []
-        if (this.awardData && this.awardData.isRank) {
-          this.$emit('showPop', 3)
+        if (this.awardData && this.awardData.isAdd) {
+          this.$emit('showPop', 10)
         }
       },
       move(e) {
@@ -332,7 +333,7 @@
     position: fixed;
     left: 50%;
     top: 2rem;
-    margin-left: -3.28rem;
+    margin-left: -3.08rem;
     &.flag9 {
       top: .5rem;
     }
@@ -350,68 +351,58 @@
       .wrap {
         margin: 0 auto;
         box-sizing: border-box;
-        .title_bg {
-          width: 6.56rem;
-          height: 1.52rem;
-          background: url("../images/comPop/top.png");
-          background-size: 100% 100%;
-          position: relative;
-          .title_txt {
-            position: absolute;
-            left: 0;
-            right: 0;
-            margin: auto;
-            font-size: .36rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 1);
-            text-align: center;
-            line-height: 1.8rem;
-          }
-        }
         .main {
-          width: 6.56rem;
-          height: 4.72rem;
-          background: url("../images/comPop/bgline.png");
-          background-size: 6.56rem 2.88rem;
+          width: 6.16rem;
+          height: 7.85rem;
+          background: url("../images/comPop/bg.png");
+          background-size: 100% 100%;
           font-size: 0.2rem;
           color: #fff;
           position: relative;
           top: -.1rem;
-          padding: .3rem .5rem 0;
+          padding: 2.2rem .33rem 0;
           box-sizing: border-box;
-          &:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -.5rem;
-            width: 6.56rem;
-            height: 1.31rem;
-            background: url("../images/comPop/bottom.png");
-            background-size: 100% 100%;
-          }
           &.flag4 {
             height: 4.8rem;
           }
           &.flag9 {
             height: 7rem;
           }
+          .title_bg {
+            width: 6.16rem;
+            height: .94rem;
+            position: absolute;
+            left: 0;
+            top: 1.1rem;
+            .title_txt {
+              position: absolute;
+              left: 0;
+              right: 0;
+              margin: auto;
+              font-size: .42rem;
+              font-weight: bold;
+              color: rgba(230, 75, 21, 1);
+              text-align: center;
+              line-height: .94rem;
+            }
+          }
           .container_compop {
             &.flag7, &.flag8, &.flag9 {
               position: absolute;
-              height: 4.5rem;
+              height: 5.3rem;
               width: 5.5rem;
               p {
                 /*font-weight: bold;*/
-                color: #3D209C;
+                color: rgba(255, 255, 255, 1);
                 box-sizing: border-box;
-                font-size: .24rem;
+                font-size: .26rem;
                 line-height: .36rem;
                 &.center {
                   text-align: center;
                   text-decoration: underline;
                 }
                 i {
-                  color: #D63240;
+                  color: #FFE795;
                   font-weight: bold;
                 }
                 span {
@@ -420,9 +411,11 @@
               }
               &.flag8 {
                 p {
-                  font-size: .3rem;
+                  font-size: .26rem;
                   line-height: .5rem;
-                  font-weight: bold;
+                  &.weight {
+                    font-weight: bold;
+                  }
                 }
               }
               &.flag9 {
@@ -597,127 +590,56 @@
             }
             &.flag5, &.flag10, &.flag11, &.flag12 {
               position: relative;
-              &:before {
-                content: '';
-                position: absolute;
-                top: -.8rem;
-                width: 5.15rem;
-                height: 5.1rem;
-                background: url("../images/comPop/light.png");
-                background-size: 100% 100%;
-              }
               .sad_content {
                 position: absolute;
                 left: 0;
                 right: 0;
-                margin: auto;
+                margin:.5rem auto 0;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 align-items: center;
-                .sad {
-                  width: 1.67rem;
-                  height: 1.79rem;
-                }
-                .cjq {
-                  width: 2.41rem;
-                  height: 1.39rem;
+                .box {
+                  width: 2.83rem;
+                  height: 2.38rem;
                   margin-bottom: .4rem;
                 }
-                .award {
-                  width: 2.54rem;
-                  margin: .4rem;
+                .person {
+                  width: 2.56rem;
+                  height: 2.88rem;
+                }
+                .add{
+                  font-size:.3rem;
+                  font-weight:400;
+                  color:rgba(255,255,255,1);
+                  margin: .15rem 0 .13rem;
                 }
                 p {
-                  font-size: .3rem;
+                  font-size: .4rem;
                   font-weight: bold;
-                  color: rgba(219, 38, 34, 1);
+                  color: rgba(255, 236, 131, 1);
                   line-height: .4rem;
                   text-align: center;
                 }
-                .btns {
-                  margin: .38rem 0 .34rem;
-                  display: flex;
-                  justify-content: center;
-                  .btnred {
-                    width: 2.25rem;
-                    height: .8rem;
-                    background: rgba(91, 69, 255, 1);
-                    border: .02rem solid rgba(255, 198, 169, 1);
-                    border-radius: .4rem;
-                    font-size: .24rem;
-                    font-weight: 400;
-                    color: rgba(255, 255, 255, 1);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  }
-                  .btnOrange {
-                    margin-left: .2rem;
-                    width: 2.25rem;
-                    height: .8rem;
-                    background: rgba(193, 26, 255, 1);
-                    border: .02rem solid rgba(255, 198, 169, 1);
-                    border-radius: .4rem;
-                    font-size: .24rem;
-                    font-weight: 400;
-                    color: rgba(255, 255, 255, 1);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    text-align: center;
-                  }
-                }
                 .info {
+                  margin-top: .29rem;
                   font-size: .26rem;
                   font-weight: 400;
-                  color: rgba(60, 39, 128, 1);
+                  color:rgba(255,255,255,1);
                   text-align: center;
                 }
               }
-              &.flag11 .sad_content {
-                .btns {
-                  margin: .52rem 0 .34rem;
-                  .btnred {
-                    width: 2.75rem;
-                  }
-                }
-              }
-              .yhq {
-                width: 2.65rem;
-                height: 2.97rem;
-                background: url("../images/comPop/yhq.png");
-                background-size: 100% 100%;
-                font-size: .22rem;
-                font-weight: bold;
-                color: rgba(245, 96, 62, 1);
-                padding-top: .8rem;
-                box-sizing: border-box;
-                text-align: center;
-                i {
-                  font-size: .72rem;
-                  font-weight: bold;
-                  color: rgba(245, 96, 62, 1);
-                }
-              }
-              &.flag10 {
+              &.flag11 {
                 .sad_content {
-                  .info {
-                    margin-top: .29rem;
-                    font-size: .2rem;
-                    font-weight: 400;
-                    color: rgba(60, 39, 128, 1);
+                  p{
+                    font-size: .4rem;
+                    line-height: .5rem;
                   }
                 }
               }
               &.flag12 {
                 .sad_content {
-                  .info {
-                    margin-top: .29rem;
-                    font-size: .26rem;
-                    font-weight: 400;
-                    color: rgba(60, 39, 128, 1);
-                  }
+                  margin: .2rem auto 0;
                 }
               }
             }
@@ -780,7 +702,7 @@
           background: url("../images/comPop/close.png") no-repeat center
             center / 100% 100%;
           position: absolute;
-          bottom: -1.2rem;
+          bottom: -.8rem;
           left: 0;
           right: 0;
           margin: auto;
