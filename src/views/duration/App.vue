@@ -16,13 +16,12 @@
     <div class="user-info">
       <div class="my-game-time">
         <p class="name">我的游戏时长</p>
-        <p class="time"><span>{{myDuration}}</span>分钟</p>
+        <p class="time">{{activitiesInfo.durationDesc}}</p>
       </div>
       <div class="line"></div>
       <div class="next-prize-time">
         <p class="name">距离下级奖励</p>
-        <p class="time" v-if="activitiesInfo.state == 1 && nextDuration == 0">恭喜您已完成全部任务</p>
-        <p class="time" v-else><span>{{nextDuration}}</span>分钟</p>
+        <p class="time">{{activitiesInfo.nextAwardDurationDesc}}</p>
       </div>
     </div>
     <!-- 跑马灯 -->
@@ -175,18 +174,20 @@ export default {
       if(this.batchLock) return false
       this.batchLock = true
       Services.batchReceive().then(res => {
-         const {code} = _get(res, 'data')
-         if(code == 200) {
-            this.$toast.show({
-                message: `奖励领取成功`
-            },() => {
-              this._getInfo()
-              this.batchLock = false
-              GLOBALS.marchSetsPoint('A_H5PT0321003967')
-            })
-         }else {
-           this.batchLock = false
-         }
+        const {code, message} = _get(res, 'data')
+        if(code == 200) {
+          this.$toast.show({
+            message: `奖励领取成功`
+          },() => {
+            this._getInfo()
+            this.batchLock = false
+            GLOBALS.marchSetsPoint('A_H5PT0321003967')
+          })
+        }else {
+          this.$toast.show({ message }, () => {
+            this.batchLock = false
+          })
+        }
       }).catch(error => {
         this.batchLock = false
       })
@@ -251,6 +252,8 @@ export default {
   box-sizing: border-box;
 }
 .duration {
+  margin-top: .2rem;
+  position: relative;
   box-sizing: border-box;
   padding-bottom: 1.3rem;
   position: relative;
@@ -259,9 +262,10 @@ export default {
   background: url(./img/bg.png) no-repeat center top #E7B049;
   background-size: 7.2rem auto;
   .back-btn {
-    position: absolute;
+    position: fixed;
     left: .2rem;
     top: 1.39rem;
+    z-index: 10;
     width: .72rem;
     height: .72rem;
     img {
@@ -271,9 +275,10 @@ export default {
     }
   }
   .rule-btn {
-    position: absolute;
+    position: fixed;
     left: .2rem;
     top: 2.34rem;
+    z-index: 10;
     width: .72rem;
     height: .72rem;
     img {
@@ -283,9 +288,10 @@ export default {
     }
   }
   .my-prize-btn {
-    position: absolute;
+    position: fixed;
     left: .2rem;
     top: 3.26rem;
+    z-index: 10;
     width: .72rem;
     height: .94rem;
     img {
@@ -301,7 +307,7 @@ export default {
     right: 0;
     z-index: 10;
     padding-bottom: .2rem;
-    height: 1rem;
+    height: 1.2rem;
     background: url(./img/user-info-bg.png) no-repeat center top;
     background-size: 100% 100%;
     display: flex;
@@ -328,7 +334,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: .2rem;
+      font-size: .24rem;
       font-weight: 800;
       color: #FF3300;
       span {
@@ -481,28 +487,6 @@ export default {
         width: 1.04rem;
         height: .9rem;
       }
-      .award-tips {
-        position: absolute;
-        left: -.1rem;
-        top: -.8rem;
-        width: .94rem;
-        height: 1.06rem;
-        img {
-          position: absolute;
-          left: 0;
-          right: 0;
-          width: 100%;
-          height: 100%;
-          &:first-child {
-            opacity: 1;
-            animation: awardAnimation 4s infinite;
-          }
-          &:last-child {
-            opacity: 0;
-            animation: awardAnimation1 4s infinite;
-          }
-        }
-      }
       .click-tips {
         position: absolute;
         width: .84rem;
@@ -547,6 +531,26 @@ export default {
           width: 1.34rem;
           height: 1.16rem;
         }
+        .award-tips {
+          position: absolute;
+          left: -.1rem;
+          top: -.8rem;
+          width: .94rem;
+          height: 1.06rem;
+          img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            &:first-child {
+              animation: awardAnimation 6s infinite;
+            }
+            &:last-child {
+              animation: awardAnimation1 6s infinite;
+            }
+          }
+        }
       }
       &:nth-child(5) {
         left: 2.83rem;
@@ -577,6 +581,26 @@ export default {
         .img {
           width: 1.34rem;
           height: 1.16rem;
+        }
+        .award-tips {
+          position: absolute;
+          left: -.1rem;
+          top: -.8rem;
+          width: .94rem;
+          height: 1.06rem;
+          img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            &:first-child {
+              animation: awardAnimation 6s infinite 3s;
+            }
+            &:last-child {
+              animation: awardAnimation1 6s infinite 3s;
+            }
+          }
         }
       }
       &:nth-child(9) {
@@ -695,19 +719,30 @@ export default {
 }
 @keyframes awardAnimation {
   0% {
+    opacity: 0;
+  }
+  25% {
     opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
   100% {
     opacity: 0;
   }
 }
 @keyframes awardAnimation1 {
+  0% {
+    opacity: 0;
+  }
   50% {
     opacity: 0;
   }
-  100% {
+  75% {
     opacity: 1;
   }
+  100% {
+    opacity: 0;
+  }
 }
-
 </style>

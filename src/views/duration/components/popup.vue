@@ -11,13 +11,13 @@
             <div class="right"></div>
           </div>
           <div class="body">
-            活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} - {{activitiesInfo.endDate | formatTime('m@d@h')}}<br>
-            砸蛋方式：当前累计游戏时长满足每颗彩蛋的时长条件。<br>
-            游戏时长说明：在平台内进入任意游戏即开始统计时长，离开游戏统计时长结束。在平台页面浏览不计入游戏时长。<br>
-            奖励说明：奖励分为固定奖励和神秘奖励。固定奖励数额为页面呈现数额，神秘奖励最高可开出五百万金币奖励（约等于5000元）。<br>
-            奖励领取说明：满足彩蛋领取条件后，点击对应的彩蛋即可领取奖励。奖励领取截止时间：{{activitiesInfo.endDate | formatTime('m@d@h')}}，请及时领取奖励。<br>
-            活动期间一经发现作弊等违法、违规情形，立即取消活动参与资格和领奖资格，且活动中已获取奖励将全部收回。<br>
-            在法律允许范围内，游戏赚平台将享有本活动解释权。<br>
+            1. 活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} - {{activitiesInfo.endDate | formatTime('m@d@h')}}<br>
+            2.砸蛋方式：当前累计游戏时长满足每颗彩蛋的时长条件。<br>
+            3.游戏时长说明：在平台内进入任意游戏即开始统计时长，离开游戏统计时长结束。在平台页面浏览不计入游戏时长。<br>
+            4.奖励说明：奖励分为固定奖励和神秘奖励。固定奖励数额为页面呈现数额，神秘奖励最高可开出五百万金币奖励（约等于5000元）。<br>
+            5.奖励领取说明：满足彩蛋领取条件后，点击对应的彩蛋即可领取奖励。奖励领取截止时间：{{activitiesInfo.endDate | formatTime('m@d@h')}}，请及时领取奖励。<br>
+            6.活动期间一经发现作弊等违法、违规情形，立即取消活动参与资格和领奖资格，且活动中已获取奖励将全部收回。<br>
+            7.在法律允许范围内，游戏赚平台将享有本活动解释权。<br>
           </div>
         </div>
       </template>
@@ -126,7 +126,7 @@ export default {
           return `${year}-${month}-${day}`
           break;
         case 'h:m:s' :
-          return `${hour}-${minite}-${second}`
+          return `${hour}:${minite}:${second}`
           break; 
       }
     }
