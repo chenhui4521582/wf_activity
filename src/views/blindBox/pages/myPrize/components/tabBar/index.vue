@@ -59,7 +59,7 @@
       <Default v-if="this.goodsList && this.goodsList.length === 0"
         :title="`您没有${tabBar[active].label}的盲盒奖品哦~`" @onConfirm="toIndex" />
     </section>
-    <section @click="toOnlineService" class="service">
+    <section v-if="isQiyukfShow" @click="toOnlineService" class="service">
       <img src="./assets/service.png" alt="">
       <p>客服</p>
     </section>
@@ -76,11 +76,12 @@ import { InventoryList } from '../../../../apis/user'
 import { Recycle, CalcScore } from '../../../../apis/box'
 import Dialog from '../../../../components/dialog'
 import ProductDialog from '../../../../components/productDialog'
-import { isWechat, isFollowWechat, toService, createService } from '../../../../global'
+import { isWechat, isFollowWechat, toService, createService, isQiyukfShow } from '../../../../global'
 
 export default {
   data () {
     return {
+      isQiyukfShow: isQiyukfShow(),
       show: false,
       score: null,
       isFollow: true,
@@ -130,10 +131,14 @@ export default {
     }
   },
   created () {
-    createService()
+    if (this.isQiyukfShow) {
+      createService()
+    }
   },
   mounted () {
-    toService()
+    if (this.isQiyukfShow) {
+      toService()
+    }
     const active = Number(this.$route.query.active)
     if (active === 0 || active) this.active = active
     if (active === 3) GLOBALS.marchSetsPoint('A_H5PT0225002962')
