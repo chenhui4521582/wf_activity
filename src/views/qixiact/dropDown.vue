@@ -7,7 +7,7 @@
           <div class="bottom-wrap top" :style="$moduleConfig.superLotto.dropDown.out.bg">
           </div>
           <!-- 获取幸运币组件 -->
-          <getHammer v-if="curIndex === 1" :totalNum="totalNum" @refresh="refresh" @showPop="showPop" />
+          <getHammer v-if="curIndex === 1" :actInfoData="actInfoData" @refresh="refresh" @showPop="showPop" />
           <!-- 右下角图标 -->
           <img src="./images/close.png" class="icon-back" @click.stop="close">
         </div>
@@ -30,9 +30,9 @@ export default {
       type: Number,
       default: 0
     },
-    totalNum: {
-      type: Number,
-      default: 0
+    actInfoData: {
+      type: Object,
+      default: null
     },
     endDate: {
       type: String,
@@ -47,9 +47,7 @@ export default {
       this.handleTab(idx + 1)
     },
     outHandleTab () {
-      GLOBALS.marchSetsPoint('A_H5PT0309003770')//H5平台-奖池大满贯活动-获取抽奖券按钮点击
       this.curIndex=1
-      GLOBALS.marchSetsPoint('A_H5PT0309003771')//H5平台-奖池大满贯活动-获取抽奖券上弹窗加载完成
     },
     handleTab (idx) {
       this.curIndex = idx

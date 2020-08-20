@@ -1,67 +1,64 @@
 <template>
   <div class="get-hammer">
-    <template v-if="taskProgressInfoData">
-      <template
-        v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}}</h4>
-        <template v-if="indextitle==0">
-          <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}<br><i>累计消耗5万金叶=1米助力值</i></span>
-          <div class="g-package"
-               :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
-            <div class="g-package-container g1" style="height: 4rem;">
-              <div class="gamelist">
-                <img :src="require(`../../images/comPop/games/${index}.png`)" alt=""
-                     v-for="(item,index) in games" class="game" @click="gotogame(item)">
-              </div>
-            </div>
-            <div class="g-package-info">
-              <ul class="li0">
-                <li>今日获得助力值（米）：10</li>
-              </ul>
+    <template
+      v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
+      <h4 class="s-title"><em></em>{{itemtitle}}</h4>
+      <template v-if="indextitle==0">
+        <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}<br><i>累计消耗5万金叶=1米助力值</i></span>
+        <div class="g-package"
+             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+          <div class="g-package-container g1" style="height: 4rem;">
+            <div class="gamelist">
+              <img :src="require(`../../images/comPop/games/${index}.png`)" alt=""
+                   v-for="(item,index) in games" class="game" @click="gotogame(item)">
             </div>
           </div>
-        </template>
-        <template v-else>
-          <div class="g-package"
-               :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
-            <div class="g-package-container g1">
-              <ul>
-                <li v-for="(item,index) in mallBizConfigs.slice(0,3)" @click="gotopay(item)"
-                    :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBg}">
-                  <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
-                  <div class="item-text"
-                       :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
-                    {{item.content.split('+')[0]}}<br/>
-                    <span class="content"
-                          :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg,display: 'flex',alignItems: 'center',justifyContent: 'center'}">
+          <div class="g-package-info">
+            <ul class="li0">
+              <li>今日获得助力值（米）：{{actInfoData.todayGameAmount}}</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="g-package"
+             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
+          <div class="g-package-container g1">
+            <ul>
+              <li v-for="(item,index) in mallBizConfigs.slice(0,3)" @click="gotopay(item)"
+                  :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBg}">
+                <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
+                <div class="item-text"
+                     :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
+                  {{item.content.split('+')[0]}}<br/>
+                  <span class="content"
+                        :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg,display: 'flex',alignItems: 'center',justifyContent: 'center'}">
                       <img src="../../images/give-icon.png"
                            style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">{{item.content.split('+')[1]}}</span>
-                  </div>
-                  <a href="javascript:" class="btn-price"
-                     :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
-                </li>
-              </ul>
-            </div>
-            <div class="g-package-info">
-              <ul class="li0">
-                <li>今日获得助力值（米）：10</li>
-              </ul>
-            </div>
+                </div>
+                <a href="javascript:" class="btn-price"
+                   :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
+              </li>
+            </ul>
           </div>
-        </template>
+          <div class="g-package-info">
+            <ul class="li0">
+              <li>今日获得助力值（米）：{{actInfoData.todayBagAmount}}</li>
+            </ul>
+          </div>
+        </div>
       </template>
     </template>
   </div>
 </template>
 <script type="text/javascript">
-  import {showLeaguePacksList, userProgress} from '../../utils/api'
+  import {showLeaguePacksList} from '../../utils/api'
 
   export default {
     data() {
       return {
         mallBizConfigs: [],
         pUserInfo: {},
-        taskProgressInfoData: null,
         popType: 0,
         awardData: null,
         games: [{
@@ -69,15 +66,19 @@
           url: '/crush'
         }, {
           id: 10, url: '/fish'
+        },{
+          id: 30, url: '/boom'
         }, {
           id: 13, url: '/kingdom2'
         }, {
           id: 2, url: '/billiards'
         }, {
           id: 18, url: '/square'
+        },{
+          id: 21, url: '/Marbles',
         }, {
-          id: 30, url: '/boom'
-        }]
+            id: 27, url: '/crush3'
+          }]
       }
     },
     props: {
@@ -85,9 +86,9 @@
         type: Number,
         default: 0
       },
-      totalNum: {
-        type: Number,
-        default: 0
+      actInfoData: {
+        type: Object,
+        default: null
       }
     },
     filters: {
@@ -99,12 +100,8 @@
         }
       }
     },
-    components: {
-      hitPercent: () => import('./component/hitPercent/hitPercent.vue')
-    },
     mounted() {
-      this.taskProgressInfo()
-      this.getShowLeaguePacksList()
+      this.getShowLeaguePacksList(this.actInfoData.bagBatchId)
     },
     methods: {
       gotopay(item) {
@@ -115,15 +112,9 @@
           'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       },
       async getShowLeaguePacksList() {
-        const {code, data} = await showLeaguePacksList()
+        const {code, data} = await showLeaguePacksList(this.actInfoData.bagBatchId)
         if (code === 200) {
           this.mallBizConfigs = data.mallBizConfigs
-        }
-      },
-      async taskProgressInfo() {
-        const {code, data} = await userProgress()
-        if (code === 200) {
-          this.taskProgressInfoData = data
         }
       },
       refresh() {
