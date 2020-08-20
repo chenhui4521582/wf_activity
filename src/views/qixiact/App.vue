@@ -60,7 +60,8 @@
                 <div>{{record.user.team==0?'织女助力队':'牛郎助力队'}}</div>
                 <div>{{record.user.rank}}</div>
                 <div>{{record.user.amount}}</div>
-                <div>{{record.user.awards}}</div>
+                <div v-html="record.user.awards.replace('+','<br>(加奖')+')'" v-if="record.user.awards.includes('+')"></div>
+                <div v-else>{{record.user.awards}}</div>
               </li>
               <li v-else>
                 <div></div>
@@ -101,7 +102,8 @@
                 </div>
                 <div>{{item.nickname}}</div>
                 <div>{{item.amount}}米</div>
-                <div v-html="item.awardsName.replace('+','<br>')"></div>
+                <div v-html="item.awardsName.replace('+','<br>(加奖')+')'" v-if="item.awardsName.includes('+')"></div>
+                <div v-else>{{item.awardsName}}</div>
               </li>
             </ul>
             <template v-if="actInfo.userTeam==-1">
@@ -131,7 +133,8 @@
               <li v-if="actInfo.userTeam>-1&&record">
                 <div>{{record.myRank}}</div>
                 <div>{{record.amount}}</div>
-                <div>{{record.currentAwards}}</div>
+                <div v-html="record.currentAwards.replace('+','<br>(加奖')+')'" v-if="record.currentAwards.includes('+')"></div>
+                <div v-else>{{record.currentAwards}}</div>
               </li>
               <li v-else>
                 <div></div>
@@ -155,7 +158,8 @@
                 </div>
                 <div>{{item.nickname}}</div>
                 <div>{{item.amount}}米</div>
-                <div v-html="item.awardsName.replace('+','<br>')"></div>
+                <div v-html="item.awardsName.replace('+','<br>(加奖')+')'" v-if="item.awardsName.includes('+')"></div>
+                <div v-else>{{item.awardsName}}</div>
               </li>
             </ul>
             <template v-if="actInfo.userTeam==-1">
