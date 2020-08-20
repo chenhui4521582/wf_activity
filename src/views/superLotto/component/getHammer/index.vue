@@ -88,7 +88,21 @@ export default {
       pUserInfo: {},
       taskProgressInfoData: null,
       popType: 0,
-      awardData: null
+      awardData: null,
+      games: [{
+        id: 12,
+        url: '/crush'
+      }, {
+        id: 10, url: '/fish'
+      }, {
+        id: 13, url: '/kingdom2'
+      }, {
+        id: 2, url: '/billiards'
+      }, {
+        id: 18, url: '/square'
+      }, {
+        id: 30, url: '/boom'
+      }]
     }
   },
   props: {
