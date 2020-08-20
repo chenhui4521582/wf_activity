@@ -485,7 +485,7 @@
       content: '';
       width: 100%;
       height: 20.33rem;
-      background: url("./images/bg.png");
+      background: url("./images/bg.jpg");
       background-size: 100% 100%;
       position: absolute;
       top: 0
