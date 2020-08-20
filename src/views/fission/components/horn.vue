@@ -36,9 +36,9 @@ export default {
       this.noticeList = _get(res, 'data.data', [])
       this.noticeList.forEach(item => {
         let box = {
-          1: '金宝箱',
+          1: '铜宝箱',
           2: '银宝箱',
-          3: '铜宝箱',
+          3: '金宝箱',
         }
         item.remark = `用户${item.nickname}打开了${box[item.level]}，抽中了${item.awardsName}`
       })
