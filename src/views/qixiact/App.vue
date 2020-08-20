@@ -581,7 +581,7 @@
         position: absolute;
         width: 2.06rem;
         height: 2.56rem;
-        background: url("./images/织女.png");
+        background: url("./images/girl.png");
         background-size: 100% 100%;
         bottom: 0;
         transition: all 1s ease 0.5s;
@@ -589,7 +589,7 @@
           position: absolute;
           width: .94rem;
           height: 2.78rem;
-          background: url("./images/牛郎.png");
+          background: url("./images/boy.png");
           background-size: 100% 100%;
         }
       }
