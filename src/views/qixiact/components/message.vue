@@ -64,7 +64,7 @@ export default {
   font-weight: 400;
   font-size: 0.24rem;
   text-align: center;
-  max-width: 2.2rem;
+  min-width: 2.2rem;
   height: 0.8rem;
   border-radius: 0.35rem;
   box-sizing: border-box;

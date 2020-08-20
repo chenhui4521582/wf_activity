@@ -18,38 +18,36 @@
                   </div>
                 </div>
                 <div class="bonus-record" :class="{empty:!record.length}">
-                  <template v-if="record.length">
-                    <div class="title_items">
-                      <div class="title">日期</div>
-                      <div class="title">{{tabIndex==0?'鹊桥会场次':'排名'}}</div>
-                      <div class="title">{{tabIndex==0?'助力值':'当天累计助力'}}</div>
-                      <div class="title">{{tabIndex==0?'瓜分奖励':'排名奖励'}}</div>
-                      <div class="title"></div>
-                    </div>
-                    <div class="content">
-                      <scroll :data="record">
-                        <ul>
-                          <li v-for="(item,index) in record" :class="{last:record.length-1==index}">
-                            <div>{{item.applyDate}}</div>
-                            <div>
-                              <template v-if="tabIndex==0">{{item.round}}（{{item.roundFinish?'相会成功':'相会失败'}}）</template>
-                              <template v-else>{{item.rank}}</template>
+                  <div class="title_items">
+                    <div class="title">日期</div>
+                    <div class="title">{{tabIndex==0?'鹊桥会场次':'排名'}}</div>
+                    <div class="title">{{tabIndex==0?'助力值':'当天累计助力'}}</div>
+                    <div class="title">{{tabIndex==0?'瓜分奖励':'排名奖励'}}</div>
+                    <div class="title"></div>
+                  </div>
+                  <div class="content">
+                    <scroll :data="record">
+                      <ul>
+                        <li v-for="(item,index) in record" :class="{last:record.length-1==index}">
+                          <div>{{item.applyDate}}</div>
+                          <div>
+                            <template v-if="tabIndex==0">{{item.round}}（{{item.roundFinish?'相会成功':'相会失败'}}）</template>
+                            <template v-else>{{item.rank}}</template>
+                          </div>
+                          <div>
+                            <template v-if="tabIndex==0">{{item.amount}}（{{item.teamPercent}}%）</template>
+                            <template v-else>{{item.amount}}米</template>
+                          </div>
+                          <div v-html="item.awardsName.replace('+','<br>')"></div>
+                          <div>
+                            <div class="btn" :class="{gray:item.received}" @click="gainAwards(item,tabIndex)">
+                              {{item.received?'已领取':'领取'}}
                             </div>
-                            <div>
-                              <template v-if="tabIndex==0">{{item.amount}}（{{item.teamPercent}}）</template>
-                              <template v-else>{{item.amount}}米</template>
-                            </div>
-                            <div v-html="item.awardsName.replace('+','<br>')"></div>
-                            <div>
-                              <div class="btn" :class="{gray:item.received}" @click="gainAwards(item,tabIndex)">
-                                {{item.received?'已领取':'领取'}}
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </scroll>
-                    </div>
-                  </template>
+                          </div>
+                        </li>
+                      </ul>
+                    </scroll>
+                  </div>
                 </div>
               </template>
               <template v-else-if="popType==2">
@@ -60,59 +58,56 @@
                 </div>
                 <div class="info">*仅展示每场鹊桥会前10名玩家，排行顺序1-10名</div>
                 <div class="bonus-record" :class="{empty:!allRecord.length}">
-                  <template v-if="allRecord.length">
-                    <div class="title_items">
-                      <div class="title">日期</div>
-                      <div class="title">鹊桥会场次</div>
-                      <div class="title">昵称</div>
-                      <div class="title">助力值</div>
-                      <div class="title">排名奖励</div>
-                    </div>
-                    <div class="content content_flag2">
-                      <scroll :data="allRecord" ref="scroll" :listenScroll="true" :probeType="3"
-                              @scroll="scroll">
-                        <ul>
-                          <li v-for="(item,index) in allRecord" :class="{last:allRecord.length-1==index}">
-                            <div>{{item.applyDate}}</div>
-                            <div style="white-space: normal;">{{item.round}}({{item.roundFinish?'相会成功':'相会失败'}}
-                              助力值>{{item.roundFinishRate}})
-                            </div>
-                            <div>{{item.nickname}}</div>
-                            <div>{{item.amount}}</div>
-                            <div v-html="item.awardsName.replace('+','<br>')"></div>
-                          </li>
-                        </ul>
-                      </scroll>
-                    </div>
-                  </template>
+                  <div class="title_items">
+                    <div class="title">日期</div>
+                    <div class="title">鹊桥会场次</div>
+                    <div class="title">昵称</div>
+                    <div class="title">助力值</div>
+                    <div class="title">排名奖励</div>
+                  </div>
+                  <div class="content content_flag2">
+                    <scroll :data="allRecord" ref="scroll" :listenScroll="true" :probeType="3"
+                            @scroll="scroll">
+                      <ul>
+                        <li v-for="(item,index) in allRecord" :class="{last:allRecord.length-1==index}">
+                          <div>{{item.applyDate}}</div>
+                          <div style="white-space: normal;">{{item.round}}({{item.roundFinish?'相会成功':'相会失败'}}
+                            助力值{{item.roundFinishRate}}%)
+                          </div>
+                          <div>{{item.nickname}}</div>
+                          <div>{{item.amount?item.amount:''}}</div>
+                          <div v-html="item.awardsName.replace('+','<br>')"></div>
+                        </li>
+                      </ul>
+                    </scroll>
+                  </div>
                 </div>
               </template>
               <template v-else-if="popType==3">
                 <div class="bonus-record" :class="{empty:!lastRecord.length}">
-                  <template v-if="lastRecord.length">
-                    <div class="title_items">
-                      <div class="title">排名</div>
-                      <div class="title">昵称</div>
-                      <div class="title">助力值</div>
-                      <div class="title">排名奖励</div>
-                    </div>
-                    <div class="content">
-                      <scroll :data="lastRecord" ref="scroll" :listenScroll="true" :probeType="3">
-                        <ul>
-                          <li v-for="(item,index) in lastRecord" :class="{last:lastRecord.length-1==index}">
-                            <div :class="{first:item.rank==1,second:item.rank==2,third:item.rank==3}"><span>{{item.rank}}</span>
-                            </div>
-                            <div>{{item.nickname}}</div>
-                            <div>
-                              {{item.amount}}
-                            </div>
-                            <div v-html="item.awardsName.replace('+','<br>')">
-                            </div>
-                          </li>
-                        </ul>
-                      </scroll>
-                    </div>
-                  </template>
+                  <div class="title_items">
+                    <div class="title">排名</div>
+                    <div class="title">昵称</div>
+                    <div class="title">助力值</div>
+                    <div class="title">排名奖励</div>
+                  </div>
+                  <div class="content">
+                    <scroll :data="lastRecord" ref="scroll" :listenScroll="true" :probeType="3">
+                      <ul>
+                        <li v-for="(item,index) in lastRecord" :class="{last:lastRecord.length-1==index}">
+                          <div :class="{first:item.rank==1,second:item.rank==2,third:item.rank==3}">
+                            <span>{{item.rank}}</span>
+                          </div>
+                          <div>{{item.nickname}}</div>
+                          <div>
+                            {{item.amount}}
+                          </div>
+                          <div v-html="item.awardsName.replace('+','<br>')">
+                          </div>
+                        </li>
+                      </ul>
+                    </scroll>
+                  </div>
                 </div>
               </template>
               <template v-else-if="[7,8,9].includes(popType)">
@@ -201,7 +196,7 @@
         isShowPop: false,
         record: [],
         currentIndex: 1,
-        pageSize: 10,
+        pageSize: 20,
         /** 滚动到底部锁 **/
         scrollLock: false,
         lastRecord: [],
@@ -430,11 +425,8 @@
   .com_pop {
     position: fixed;
     left: 50%;
-    top: 2rem;
+    top: 1rem;
     margin-left: -3.08rem;
-    &.flag9 {
-      top: .5rem;
-    }
     .pop-mask {
       position: fixed;
       left: 0;
@@ -641,39 +633,67 @@
                   }
                 }
                 /*&.empty {*/
-                  /*position: absolute;*/
-                  /*top: 2rem;*/
-                  /*bottom: 0;*/
-                  /*left: 0;*/
-                  /*right: 0;*/
-                  /*margin: auto;*/
-                  /*display: flex;*/
-                  /*align-items: center;*/
-                  /*justify-content: center;*/
-                  /*&:before {*/
-                    /*content: '';*/
-                    /*position: absolute;*/
-                    /*left: 0;*/
-                    /*right: 0;*/
-                    /*margin: auto;*/
-                    /*width: 1.27rem;*/
-                    /*height: 1.27rem;*/
-                    /*background: url("../images/comPop/empty.png");*/
-                    /*background-size: 100% 100%;*/
-                  /*}*/
-                  /*&:after {*/
-                    /*content: '没有记录';*/
-                    /*position: absolute;*/
-                    /*left: 0;*/
-                    /*right: 0;*/
-                    /*margin: auto;*/
-                    /*font-size: .24rem;*/
-                    /*font-weight: 500;*/
-                    /*color: rgba(207, 117, 66, 1);*/
-                    /*align-self: flex-end;*/
-                    /*text-align: center;*/
-                  /*}*/
+                /*position: absolute;*/
+                /*top: 2rem;*/
+                /*bottom: 0;*/
+                /*left: 0;*/
+                /*right: 0;*/
+                /*margin: auto;*/
+                /*display: flex;*/
+                /*align-items: center;*/
+                /*justify-content: center;*/
+                /*&:before {*/
+                /*content: '';*/
+                /*position: absolute;*/
+                /*left: 0;*/
+                /*right: 0;*/
+                /*margin: auto;*/
+                /*width: 1.27rem;*/
+                /*height: 1.27rem;*/
+                /*background: url("../images/comPop/empty.png");*/
+                /*background-size: 100% 100%;*/
                 /*}*/
+                /*&:after {*/
+                /*content: '没有记录';*/
+                /*position: absolute;*/
+                /*left: 0;*/
+                /*right: 0;*/
+                /*margin: auto;*/
+                /*font-size: .24rem;*/
+                /*font-weight: 500;*/
+                /*color: rgba(207, 117, 66, 1);*/
+                /*align-self: flex-end;*/
+                /*text-align: center;*/
+                /*}*/
+                /*}*/
+              }
+              &.flag1 {
+                .bonus-record {
+                  .title_items {
+                    .title {
+                      &:nth-child(4) {
+                        flex: 1.2;
+                      }
+                      &:nth-child(5) {
+                        flex: .8;
+                      }
+                    }
+                  }
+                  .content {
+                    ul {
+                      li {
+                        div {
+                          &:nth-child(4) {
+                            flex: 1.2;
+                          }
+                          &:nth-child(5) {
+                            flex: .8;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
               &.flag2 {
                 .info {

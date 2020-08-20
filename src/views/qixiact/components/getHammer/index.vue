@@ -104,6 +104,9 @@
       this.getShowLeaguePacksList(this.actInfoData.bagBatchId)
     },
     methods: {
+      gotogame(item) {
+        GLOBALS.jumpOutsideGame(item.url)
+      },
       gotopay(item) {
         localStorage.setItem('originDeffer', window.location.href)
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
@@ -116,13 +119,6 @@
         if (code === 200) {
           this.mallBizConfigs = data.mallBizConfigs
         }
-      },
-      refresh() {
-        this.taskProgressInfo()
-        this.$emit('refresh')
-      },
-      showPop(type, data) {
-        this.$emit('showPop', type, data)
       }
     }
   }

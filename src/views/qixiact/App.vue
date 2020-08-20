@@ -95,7 +95,7 @@
             <div class="title">预计奖励</div>
           </div>
           <div class="content" :class="{empty:actInfo.userTeam==-1}">
-            <ul v-if="record&&record.rank.rankList.length">
+            <ul v-if="actInfo.userTeam>-1&&record&&record.rank.rankList.length">
               <li v-for="(item,index) in record.rank.rankList" :class="{last:index==record.rank.rankList.length-1}">
                 <div><em :class="{first:item.rank==1,second:item.rank==2,third:item.rank==3}">{{item.rank}}</em>
                 </div>
@@ -149,7 +149,7 @@
             <div class="title">预计奖励</div>
           </div>
           <div class="content mine" :class="{empty:actInfo.userTeam==-1}">
-            <ul v-if="record&&record.rankList.length">
+            <ul v-if="actInfo.userTeam>-1&&record&&record.rankList.length">
               <li v-for="(item,index) in record.rankList" :class="{last:index==record.rankList.length-1}">
                 <div><em :class="{first:item.rank==1,second:item.rank==2,third:item.rank==3}">{{item.rank}}</em>
                 </div>
@@ -158,7 +158,7 @@
                 <div v-html="item.awardsName.replace('+','<br>')"></div>
               </li>
             </ul>
-            <template v-else>
+            <template v-if="actInfo.userTeam==-1">
               <img src="./images/all_icon.png" alt="">
               <span v-if="actInfo.state==1">加入可见</span>
               <span v-else>活动结束</span>
@@ -302,7 +302,7 @@
             break;//奖池计算说明
           case 10:
             point = 'A_H5PT0323004017';
-            break;//H5平台-七夕鹊桥会活动-团队奖励问号提示框点击
+            break;//H5平台-七夕鹊桥会活动-新增助力值弹窗加载完成
           case 11:
             point = 'A_H5PT0323004019';
             break;//H5平台-七夕鹊桥会活动-奖励待领取弹窗加载完成
@@ -330,7 +330,6 @@
       async _getInfo() {
         let {code, data} = await activityInfo()
         if (code == 200) {
-          data.state = 1
           this.actInfo = data
           this.countDown(data.countdown)
           this.round = this.actInfo.dynamic.round
@@ -839,15 +838,19 @@
             }
           }
           .info {
+            height: .38rem;
             font-size: .24rem;
             font-weight: 400;
             color: rgba(11, 105, 123, 1);
-            padding-left: 1.5rem;
             box-sizing: border-box;
             display: flex;
             align-items: center;
+            justify-content: center;
+            position: relative;
             img {
-              margin-left: .3rem;
+              position: absolute;
+              top:0;
+              right:.18rem;
               width: 1.04rem;
               height: .38rem;
             }
@@ -983,6 +986,9 @@
               color: rgba(93, 126, 174, 1);
             }
           }
+          &.mine {
+            min-height: 5.63rem;
+          }
         }
       }
       .qixi_footer {
@@ -1019,55 +1025,6 @@
         }
       }
     }
-    .downbtn {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100vw;
-      height: 1.04rem;
-      background: url('./images/downbtn.png') center center / 100% 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-sizing: border-box;
-      font-size: .28rem;
-      font-weight: bold;
-      color: rgba(95, 9, 7, 1);
-      padding-top: .1rem;
-      box-sizing: border-box;
-      i {
-        color: #FF3131;
-      }
-      .item:nth-child(2) {
-        margin-top: .1rem;
-      }
-      &:not(.moreprize):before {
-        content: '';
-        position: absolute;
-        top: -.28rem;
-        left: 0;
-        right: 0;
-        margin: auto;
-        width: 1.79rem;
-        height: .28rem;
-        background: url('./images/uparrow.png') center center / 100% 100%;
-      }
-      .item.moreprize {
-        font-size: .32rem;
-        font-weight: bold;
-        color: rgba(95, 9, 7, 1);
-        i {
-          color: #FF1B16;
-        }
-        &:nth-child(2) {
-          font-size: .24rem;
-          font-weight: bold;
-          text-decoration: underline;
-          color: rgba(199, 61, 26, 1);
-        }
-      }
-    }
     .back_top {
       position: fixed;
       right: .05rem;
@@ -1076,176 +1033,6 @@
       height: .77rem;
       background: url("./images/backtop.png");
       background-size: 100% 100%;
-    }
-  }
-
-  .pop-mask {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1;
-  }
-
-  .drop-down {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
-    z-index: 2;
-    .drop-down-content {
-      width: 100%;
-      height: 4.2rem;
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      font-size: 0.2rem;
-      z-index: 12;
-      box-sizing: border-box;
-      background: url('./images/packages.png') center center / 100% 100%;
-      padding: 0 .26rem;
-      box-sizing: border-box;
-      p {
-        font-size: .28rem;
-        font-weight: bold;
-        color: rgba(95, 9, 7, 1);
-        text-align: center;
-        margin: .44rem 0 .31rem;
-      }
-      .packages {
-        display: flex;
-        justify-content: space-around;
-        .item {
-          width: 2.08rem;
-          height: 2.77rem;
-          text-align: center;
-          background: rgba(255, 255, 255, 1);
-          border-radius: .14rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          img {
-            width: 1.42rem;
-            height: 1.42rem;
-          }
-          .item-text {
-            font-size: 0.2rem;
-            color: rgba(108, 108, 108, 1);
-            line-height: 0.26rem;
-          }
-          .btn-price {
-            margin-top: .13rem;
-            width: 1.5rem;
-            height: 0.5rem;
-            line-height: 0.5rem;
-            color: rgba(255, 255, 255, 1);
-            border-radius: 0.25rem;
-            font-size: 0.24rem;
-            font-weight: bold;
-            text-align: center;
-            background: rgba(255, 47, 47, 1);
-            &.gray {
-              background: rgba(136, 136, 136, 1);
-            }
-          }
-        }
-      }
-      .downarrow {
-        position: absolute;
-        top: -.38rem;
-        left: 0;
-        right: 0;
-        margin: auto;
-        width: 1.79rem;
-        height: .38rem;
-        background: url('./images/downarrow.png') center center / 100% 100%;
-      }
-      &.gray:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        background: rgba(0, 0, 0, .5);
-        border-radius: .35rem .35rem 0 0;
-      }
-      &.gray:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        width: 2.17rem;
-        height: 2.17rem;
-        background: url("./images/buyover.png");
-        background-size: 100% 100%;
-      }
-    }
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 0.5s;
-  }
-
-  /*低端机型之前的样式会有严重的展示问题，暂且用下面代替*/
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
-
-  @keyframes huxi {
-    0% {
-      transform: scale(0.9);
-    }
-    10% {
-      transform: scale(1);
-    }
-    20% {
-      transform: scale(0.9);
-    }
-    30% {
-      transform: scale(1);
-    }
-    40% {
-      transform: scale(0.9);
-    }
-    50% {
-      transform: scale(1);
-    }
-    60% {
-      transform: scale(0.9);
-    }
-    70% {
-      transform: scale(1);
-    }
-    80% {
-      transform: scale(0.9);
-    }
-    90% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0.9);
-    }
-  }
-
-  @keyframes tranRotateZ {
-    0% {
-      transform: rotateZ(0deg);
-    }
-    50% {
-      transform: rotateZ(30deg);
-    }
-    100% {
-      transform: rotateZ(0deg);
     }
   }
 

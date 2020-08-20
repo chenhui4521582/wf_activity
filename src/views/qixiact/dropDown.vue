@@ -121,8 +121,8 @@ export default {
 
 .drop-down-content {
   width: 100%;
-  height: 95%;
-  max-height: 95%;
+  height: 100%;
+  max-height: 100%;
   position: fixed;
   left: 0;
   bottom: 0;
