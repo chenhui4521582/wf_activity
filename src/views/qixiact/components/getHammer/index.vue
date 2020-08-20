@@ -4,7 +4,7 @@
       v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
       <h4 class="s-title"><em></em>{{itemtitle}}</h4>
       <template v-if="indextitle==0">
-        <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}<br><i>累计消耗5万金叶=1米助力值</i></span>
+        <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}<br><i>累计消耗{{actInfoData.bettingRate|filterPrice}}金叶=1米助力值</i></span>
         <div class="g-package"
              :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
           <div class="g-package-container g1" style="height: 4rem;">
