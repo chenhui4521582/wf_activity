@@ -7,7 +7,7 @@
           <div class="bottom-wrap top" :style="$moduleConfig.superLotto.dropDown.out.bg">
           </div>
           <!-- 获取幸运币组件 -->
-          <getHammer v-if="curIndex === 1" :actInfoData="actInfoData" @refresh="refresh" @showPop="showPop" />
+          <getHammer v-if="curIndex === 1" :actInfoData="actInfoData"/>
           <!-- 右下角图标 -->
           <img src="./images/close.png" class="icon-back" @click.stop="close">
         </div>
@@ -54,12 +54,6 @@ export default {
     },
     close () {
       this.curIndex = 0
-    },
-    refresh (data) {
-      this.$emit('refresh', data)
-    },
-    showPop (type, data) {
-      this.$emit('showPop', type, data)
     }
   },
   watch: {
