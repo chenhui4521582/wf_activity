@@ -1,5 +1,5 @@
 <template>
-  <div class="bigbonus" id="app" v-if="actInfo" :class="{fixed:$refs.dropDown&&$refs.dropDown.curIndex}">
+  <div class="bigbonus" id="app" v-if="actInfo">
     <img src="./images/back.png" alt="" class="back" @click="backHome">
     <img src="./images/rule.png" alt="" class="rule" @click="showPop(7)">
     <message ref="message"></message>
