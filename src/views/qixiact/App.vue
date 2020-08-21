@@ -60,7 +60,8 @@
                 <div>{{record.user.team==0?'织女助力队':'牛郎助力队'}}</div>
                 <div>{{record.user.rank}}</div>
                 <div>{{record.user.amount}}</div>
-                <div v-html="record.user.awards.replace('+','<br>(加奖')+')'" v-if="record.user.awards.includes('+')"></div>
+                <div v-html="record.user.awards.replace('+','<br>(加奖')+')'"
+                     v-if="record.user.awards.includes('+')"></div>
                 <div v-else>{{record.user.awards}}</div>
               </li>
               <li v-else>
@@ -133,7 +134,8 @@
               <li v-if="actInfo.userTeam>-1&&record">
                 <div>{{record.myRank}}</div>
                 <div>{{record.amount}}</div>
-                <div v-html="record.currentAwards.replace('+','<br>(加奖')+')'" v-if="record.currentAwards.includes('+')"></div>
+                <div v-html="record.currentAwards.replace('+','<br>(加奖')+')'"
+                     v-if="record.currentAwards.includes('+')"></div>
                 <div v-else>{{record.currentAwards}}</div>
               </li>
               <li v-else>
@@ -331,7 +333,7 @@
         history.back(-1)
       },
       //获取活动信息
-      async _getInfo() {
+      async _getInfo(isFirst=false) {
         let {code, data} = await activityInfo()
         if (code == 200) {
           this.actInfo = data
@@ -351,15 +353,26 @@
               this.showPop(9)
             }, 1500)
           } else if (this.actInfo.personalUnReceive || this.actInfo.teamUnReceive) {
-            if (this.actInfo.incrNum) {
-              this.awardData = {
-                popType: 10,
-                amount: this.actInfo.incrNum
+            if (isFirst) {
+              if (this.actInfo.incrNum) {
+                this.awardData = {
+                  popType: 10,
+                  amount: this.actInfo.incrNum
+                }
+              }
+              setTimeout(() => {
+                this.showPop(11)
+              }, 1500)
+            }else{
+              if (this.actInfo.incrNum) {
+                this.awardData = {
+                  amount: this.actInfo.incrNum
+                }
+                setTimeout(() => {
+                  this.showPop(10)
+                }, 1500)
               }
             }
-            setTimeout(() => {
-              this.showPop(11)
-            }, 1500)
           } else if (this.actInfo.incrNum) {
             this.awardData = {
               amount: this.actInfo.incrNum
@@ -371,7 +384,7 @@
         }
       },
       init() {
-        this._getInfo()
+        this._getInfo(true)
       },
       //定时刷新
       async setJackpotAmount() {
@@ -379,7 +392,7 @@
         if (code == 200) {
           this.actInfo.dynamic = data
           if (this.round != this.actInfo.dynamic.round) {
-            this._getInfo()
+            this._getInfo(false)
           }
         }
       },
@@ -393,7 +406,7 @@
                 team: data
               }
               this.showPop(12)
-              await this._getInfo()
+              await this._getInfo(false)
               this.showFinger = true
               setTimeout(() => {
                 this.showFinger = false
@@ -466,7 +479,7 @@
     watch: {
       countTime(value) {
         if (!value) {
-          this._getInfo()
+          this._getInfo(true)
         }
       }
     }
@@ -856,8 +869,8 @@
             position: relative;
             img {
               position: absolute;
-              top:0;
-              right:.18rem;
+              top: 0;
+              right: .18rem;
               width: 1.04rem;
               height: .38rem;
             }
