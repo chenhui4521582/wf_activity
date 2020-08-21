@@ -3,22 +3,24 @@
     <div class="mask" v-if="value"></div>
     <transition name="slide1">
       <div class="share-box" v-if="value">
-        <div class="list">
-          <div class="item" @click="shareWechat('1')">
-            <img src="../img/wechat1.png" alt="">
-            <p>朋友圈</p>
+        <div class="bottom">
+          <div class="list">
+            <div class="item" @click="shareWechat('1')">
+              <img src="../img/wechat1.png" alt="">
+              <p>朋友圈</p>
+            </div>
+            <div class="item" @click="shareWechat('0')">
+              <img src="../img/wechat.png" alt="">
+              <p>微信</p>
+            </div>
           </div>
-          <div class="item" @click="shareWechat('0')">
-            <img src="../img/wechat.png" alt="">
-            <p>微信</p>
+          <div class="close" @click="hide">
+            关闭
           </div>
-        </div>
-        <div class="close" @click="hide">
-          关闭
         </div>
       </div>
     </transition>
-    
+
   </div>
 </template>
 <script>
@@ -51,7 +53,7 @@ export default {
       }
       if(type == 0) {
         GLOBALS.marchSetsPoint('A_H5PT0308003737')
-      } else { 
+      } else {
         GLOBALS.marchSetsPoint('A_H5PT0308003736')
       }
     }
@@ -84,26 +86,48 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 3.3rem;
+    height: 12.8rem;
     z-index: 12;
     background: #F5F5F5;
     border-radius: .3rem .3rem 0 0;
-    .list {
-      height: 2.4rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .item {
-        margin: 0 .8rem;
-        width: 1rem;
-        img {
+    .bottom{
+      height: 3.85rem;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      background:rgba(247,247,247,1);
+      border-radius:.32rem .32rem 0 0;
+      .list {
+        height: 2.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .item {
+          margin: 0 .8rem;
           width: 1rem;
-          height: 1rem;
+          img {
+            width: 1rem;
+            height: 1rem;
+          }
+          p {
+            font-size: .24rem;
+            color: #464545;
+          }
         }
-        p {
-          font-size: .24rem;
-          color: #464545;
-        }
+      }
+      .close {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: .9rem;
+        line-height: .92rem;
+        font-size: .24rem;
+        color: #FF4141;
+        text-align: center;
+        background: #F0F0F0;
       }
     }
     &.slide1-enter,
@@ -114,18 +138,6 @@ export default {
     .slide1-leave-active {
       transition: all .5s ease-in-out;
     }
-  }
-  .close {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: .9rem;
-    line-height: .92rem;
-    font-size: .24rem;
-    color: #FF4141;
-    text-align: center;
-    background: #F0F0F0;
   }
 }
 </style>
