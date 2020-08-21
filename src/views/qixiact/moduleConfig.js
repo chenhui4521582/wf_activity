@@ -68,7 +68,7 @@ const ModuleConfig = {
         },
         info: {
           titles: ['玩游戏消耗金叶获助力值', '购买礼包获助力值'],
-          sideTitle: '参与活动游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、福满多、西游大乱斗、王者弹珠。'
+          sideTitle: '参与活动游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠。'
         },
         percentBg: '#dc322a',
         packageImgs: [`${require(`./images/package1.png`)}`, `${require(`./images/package2.png`)}`, `${require(`./images/package3.png`)}`],
