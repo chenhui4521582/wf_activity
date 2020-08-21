@@ -3,7 +3,19 @@
     <div class="mask" v-if="value"></div>
     <transition name="slide1">
       <div class="share-box" v-if="value">
+        <div class="box">
+          <div class="wrap">
+            <swiper :options="options" ref="mySwiper">
+              <swiper-slide data="1"><img src="../img/share/pic1.png" alt="" /><div class="bottom"></div></swiper-slide>
+              <swiper-slide data="2"><img src="../img/share/pic2.png" alt="" /><div class="bottom"></div></swiper-slide>
+              <swiper-slide data="3"><img src="../img/share/pic3.png" alt="" /><div class="bottom"></div></swiper-slide>
+            </swiper>
+          </div>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+        </div>
         <div class="bottom">
+          <div class="info">邀请好友 得开宝箱钥匙</div>
           <div class="list">
             <div class="item" @click="shareWechat('1')">
               <img src="../img/wechat1.png" alt="">
@@ -25,6 +37,8 @@
 </template>
 <script>
 import AppCall from './native'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 export default {
   name: 'Share',
   props: {
@@ -36,6 +50,31 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  data(){
+    return {
+      options: {
+        slidesPerView: 3,
+        spaceBetween: 15,
+        centeredSlides: true,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        on: {
+          slideChangeTransitionEnd: () => {
+            let element = document.querySelector('.swiper-slide-active')
+            boxVm.$emit('slideChange', element.getAttribute('data'))
+            GLOBALS.marchSetsPoint('A_H5PT0308003732')
+          }
+        }
+      }
+    }
+  },
+  components: {
+    swiper,
+    swiperSlide
   },
   methods: {
     hide () {
@@ -88,8 +127,6 @@ export default {
     right: 0;
     height: 12.8rem;
     z-index: 12;
-    background: #F5F5F5;
-    border-radius: .3rem .3rem 0 0;
     .bottom{
       height: 3.85rem;
       position: absolute;
@@ -99,6 +136,13 @@ export default {
       margin: 0;
       background:rgba(247,247,247,1);
       border-radius:.32rem .32rem 0 0;
+      padding: .3rem 0 0;
+      box-sizing: border-box;
+      .info{
+        font-size:.24rem;
+        font-weight:400;
+        color:rgba(136,136,136,1);
+      }
       .list {
         height: 2.4rem;
         display: flex;
@@ -125,7 +169,7 @@ export default {
         height: .9rem;
         line-height: .92rem;
         font-size: .24rem;
-        color: #FF4141;
+        color:rgba(0,0,0,1);
         text-align: center;
         background: #F0F0F0;
       }
