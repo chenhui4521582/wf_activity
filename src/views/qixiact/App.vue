@@ -1,5 +1,5 @@
 <template>
-  <div class="bigbonus" id="app" v-if="actInfo">
+  <div class="bigbonus" id="app" v-if="actInfo" :class="{fixed:$refs.dropDown&&$refs.dropDown.curIndex}">
     <img src="./images/back.png" alt="" class="back" @click="backHome">
     <img src="./images/rule.png" alt="" class="rule" @click="showPop(7)">
     <message ref="message"></message>
@@ -496,6 +496,9 @@
     }
     &.fixed {
       position: fixed;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
     .back, .rule, .gonglue {
       width: .7rem;
