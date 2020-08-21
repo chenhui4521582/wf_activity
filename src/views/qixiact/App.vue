@@ -93,7 +93,7 @@
           <div class="title_items">
             <div class="title">名次</div>
             <div class="title">玩家昵称</div>
-            <div class="title">今日累计助力</div>
+            <div class="title">本场累计助力</div>
             <div class="title">预计奖励</div>
           </div>
           <div class="content" :class="{empty:actInfo.userTeam==-1}">
@@ -150,7 +150,7 @@
           <div class="title_items mine">
             <div class="title">名次</div>
             <div class="title">玩家昵称</div>
-            <div class="title">今日累计助力</div>
+            <div class="title">本场累计助力</div>
             <div class="title">预计奖励</div>
           </div>
           <div class="content mine" :class="{empty:actInfo.userTeam==-1}">
