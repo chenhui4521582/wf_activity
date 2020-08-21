@@ -333,12 +333,15 @@
         history.back(-1)
       },
       //获取活动信息
-      async _getInfo(isFirst=false) {
+      async _getInfo(isFirst = false) {
         let {code, data} = await activityInfo()
         if (code == 200) {
           this.actInfo = data
           this.countDown(data.countdown)
           this.round = this.actInfo.dynamic.round
+          if (this.actInfo.userTeam > -1) {
+            this.isBoyTeam = this.actInfo.userTeam == 1
+          }
           if (this.timerDynamic) {
             clearInterval(this.timerDynamic)
           }
@@ -363,7 +366,7 @@
               setTimeout(() => {
                 this.showPop(11)
               }, 1500)
-            }else{
+            } else {
               if (this.actInfo.incrNum) {
                 this.awardData = {
                   amount: this.actInfo.incrNum
