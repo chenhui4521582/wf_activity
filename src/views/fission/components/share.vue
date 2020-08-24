@@ -1,6 +1,6 @@
 <template>
   <div class="share">
-    <div class="mask" v-if="value" :class="{showAnimation:showAnimation}">
+    <div class="mask" v-if="value" :class="{showAnimation:showAnimation}" @click="maskClick">
       <template v-if="showAnimation">
         <p>选择图片</p>
         <p>点击截屏保存</p>
@@ -10,33 +10,35 @@
     <transition :name="transitionName">
       <div class="share-box" v-if="value">
         <div class="fission-box" :class="{'product': isProduct}">
-          <div class="wrap">
+          <div class="wrap" @click="showPicIndex">
             <swiper :options="options" ref="mySwiper">
               <template v-for="(item,index) in newSrc">
-                <swiper-slide :data="index+1"><img :src="item" alt="" @click="showPicIndex(index)"/></swiper-slide>
+                <swiper-slide :data="index+1"><img :src="item" alt=""/></swiper-slide>
               </template>
             </swiper>
           </div>
-          <div class="swiper-button-prev" slot="button-prev"></div>
-          <div class="swiper-button-next" slot="button-next"></div>
+          <div class="swiper-button-prev" :class="{showPic:showPic}" slot="button-prev" @click="swiperbtnClick(0)"></div>
+          <div class="swiper-button-next" :class="{showPic:showPic}" slot="button-next" @click="swiperbtnClick(1)"></div>
         </div>
-        <div class="fission-bottom">
-          <div class="tips">提示：先长按保存图片到手机相册，再选择图片分享微信好友，邀请成功 率更高哦~</div>
-          <div class="info">邀请好友 得开宝箱钥匙</div>
-          <div class="list">
-            <div class="item" @click="shareWechat('0')">
-              <img src="../img/share/wechat.png" alt="">
-              <p>邀请微信好友</p>
+        <div class="fission-bottom" :class="{showPic:showPic}">
+          <template v-show="!showPic">
+            <div class="tips">提示：选择图片，点击截屏保存到手机相册，再选择图片分享微信好友，邀请成功 率更高哦~</div>
+            <div class="info">邀请好友 得开宝箱钥匙</div>
+            <div class="list">
+              <div class="item" @click="shareWechat('0')">
+                <img src="../img/share/wechat.png" alt="">
+                <p>邀请微信好友</p>
+              </div>
+              <div class="item" @click="shareWechat('1')">
+                <img src="../img/share/wechat1.png" alt="">
+                <p>发送朋友圈</p>
+              </div>
+              <div class="item" @click="modalOpen">
+                <img src="../img/share/link.png" alt="">
+                <p>发送专属链接</p>
+              </div>
             </div>
-            <div class="item" @click="shareWechat('1')">
-              <img src="../img/share/wechat1.png" alt="">
-              <p>发送朋友圈</p>
-            </div>
-            <div class="item" @click="modalOpen">
-              <img src="../img/share/link.png" alt="">
-              <p>发送专属链接</p>
-            </div>
-          </div>
+          </template>
           <div class="close" @click="hide">
             关闭
           </div>
@@ -98,7 +100,8 @@ export default {
       },
       showAnimation:false,
       showModal:false,
-      showPic:false
+      showPic:false,
+      timer:null
     }
   },
   computed:{
@@ -117,7 +120,11 @@ export default {
   },
   methods: {
     hide () {
-      this.$emit('input')
+      if(!this.showPic){
+        this.$emit('input')
+      }else{
+        this.showPic=false
+      }
     },
     shareWechat (type) {
       const url = this.qrCodeUrl
@@ -128,31 +135,48 @@ export default {
       } catch (e) {
       }
       if(type == 0) {
-        GLOBALS.marchSetsPoint('A_H5PT0308003737')
+        GLOBALS.marchSetsPoint('A_H5PT0308004049')
       } else {
-        GLOBALS.marchSetsPoint('A_H5PT0308003736')
+        GLOBALS.marchSetsPoint('A_H5PT0308004050')
       }
     },
     onCopy () {
+      GLOBALS.marchSetsPoint('A_H5PT0308004054')
       this.$toast.show({ message: '复制成功' })
     },
     onError () {
+      GLOBALS.marchSetsPoint('A_H5PT0308004054')
       this.$toast.show({ message: '复制失败' })
     },
     modalOpen(){
+      GLOBALS.marchSetsPoint('A_H5PT0308004051')
       this.showModal = true
+      GLOBALS.marchSetsPoint('A_H5PT0308004053')
     },
     modalClose () {
       this.showModal = false
     },
-    showPicIndex(index){
-      console.log('index',index)
+    showPicIndex(){
       this.showPic=true
+    },
+    swiperbtnClick(type){
+      GLOBALS.marchSetsPoint(type?'A_H5PT0308004048':'A_H5PT0308004047')
+    },
+    maskClick(){
+      if(this.showAnimation){
+        GLOBALS.marchSetsPoint('A_H5PT0308004052')
+        if(this.timer){
+          clearTimeout(this.timer)
+          this.timer=null
+          this.showAnimation=false
+        }
+      }
     }
   },
   watch:{
     value(val){
       if(val){
+        GLOBALS.marchSetsPoint('A_H5PT0308004046')//H5平台-裂变开宝箱活动-邀请分享页面加载完成
         /** 今天12点时间搓 **/
         let resetTime = new Date(new Date().toLocaleDateString()).getTime()
         /** 查看储存状态 **/
@@ -165,8 +189,9 @@ export default {
         }
         tipsData = JSON.parse(window.localStorage.getItem('fissionTips'))
         this.showAnimation=tipsData && tipsData.show
-        setTimeout(()=>{
+        this.timer=setTimeout(()=>{
           this.showAnimation=false
+          this.timer=null
         },4000)
       }
     }
@@ -212,7 +237,7 @@ export default {
   }
   .share-box {
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
     height: 100vh;
@@ -222,9 +247,9 @@ export default {
       .swiper-slide {
         display: flex;
         justify-content: flex-start;
-        height: 10.23rem;
         justify-items: center;
         align-items: center;
+        height: 12.8rem;
         img {
           width: 100%;
         }
@@ -272,6 +297,9 @@ export default {
         background-size: 100% 100%;
         cursor: auto;
         outline: none;
+        &.showPic{
+          opacity: 0;
+        }
       }
       .swiper-button-next {
         transform: rotate(180deg);
@@ -281,12 +309,15 @@ export default {
         background-size: 100% 100%;
         cursor: auto;
         outline: none;
+        &.showPic{
+          opacity: 0;
+        }
       }
       &.product {
         .swiper-wrapper {
           display: flex;
           position: absolute;
-          height: 10.23rem;
+          height: 12.8rem;
         }
         .swiper-button-prev {
           position: absolute;
@@ -352,6 +383,10 @@ export default {
             color:rgba(0,0,0,1);
           }
         }
+      }
+      &.showPic{
+        height: .9rem;
+        border-radius:0;
       }
       .close {
         position: absolute;

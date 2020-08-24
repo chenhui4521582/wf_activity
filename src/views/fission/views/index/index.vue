@@ -51,7 +51,7 @@
     />
     <template v-if="newSrc.length<3">
       <qrcode tag="img"  id="img" :value="qrCodeUrl" name="img"></qrcode>
-      <canvas id="myCanvas" width="720vw" height="1023vw"></canvas>
+      <canvas id="myCanvas" width="720vw" height="1280vw"></canvas>
     </template>
   </div>
 </template>
@@ -218,7 +218,7 @@ export default {
       img2.src = `static/images/pic${num}.png`
       let that = this
       img2.onload = function () {
-        cas2.drawImage(img2, 0, 0, 720, 1023)
+        cas2.drawImage(img2, 0, 0, 720, 1280)
         cas2.drawImage(img1, 249, 611, 195, 195)
         that.newSrc.push(canvas2.toDataURL('images/png', 1))
       }
