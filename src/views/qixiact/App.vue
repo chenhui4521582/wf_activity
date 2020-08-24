@@ -58,7 +58,7 @@
             <ul>
               <li v-if="actInfo.userTeam>-1&&record">
                 <div>{{record.user.team==0?'织女助力队':'牛郎助力队'}}</div>
-                <div>{{record.user.rank}}</div>
+                <div>{{record.user.rank?record.user.rank:'无'}}</div>
                 <div>{{record.user.amount}}</div>
                 <div v-html="record.user.awards.replace('+','<br>(加奖')+')'"
                      v-if="record.user.awards.includes('+')"></div>
@@ -132,7 +132,7 @@
           <div class="content mine">
             <ul>
               <li v-if="actInfo.userTeam>-1&&record">
-                <div>{{record.myRank}}</div>
+                <div>{{record.myRank?record.myRank:'无'}}</div>
                 <div>{{record.amount}}</div>
                 <div v-html="record.currentAwards.replace('+','<br>(加奖')+')'"
                      v-if="record.currentAwards.includes('+')"></div>
