@@ -38,17 +38,21 @@
       <div class="open-box-btn" @click="openBox"><img src="../../img/red-key-icon.png" alt="">x{{currentBox.cost}}立即开箱</div>
     </div>
     <!-- share弹出框 -->
-    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum"/>
+    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum" :newSrc="newSrc" :qrCodeUrl="qrCodeUrl"/>
     <!-- 弹出框 -->
-    <Popup 
-      v-model="showPopup" 
-      :popupType="popupType" 
-      :keyNum="boxInfo.keyNum" 
-      :currentBox="currentBox" 
+    <Popup
+      v-model="showPopup"
+      :popupType="popupType"
+      :keyNum="boxInfo.keyNum"
+      :currentBox="currentBox"
       :award="award"
       @openShare="openShare"
       @openBox="_getAward"
     />
+    <template v-if="newSrc.length<3">
+      <qrcode tag="img"  id="img" :value="qrCodeUrl" name="img"></qrcode>
+      <canvas id="myCanvas" width="720vw" height="1023vw"></canvas>
+    </template>
   </div>
 </template>
 <script>
@@ -61,6 +65,7 @@ import Popup from '../../components/popup'
 import Services from '../../services/services'
 import utils from '../../components/utils'
 import _get from 'lodash.get'
+import qrcode from '@xkeshi/vue-qrcode'
 export default {
   name: 'fission',
   data: ()=>({
@@ -70,21 +75,28 @@ export default {
     showShare: false,
     showPopup: false,
     popupType: 1,
-    award: {}
+    award: {},
+    newSrc:[]
   }),
   components: {
     Horn,
     Box,
     BoxList,
     Share,
-    Popup
+    Popup,
+    qrcode
   },
   computed: {
-    currentBox () { 
+    currentBox () {
       if(utils.isEmptyArray(this.boxAward)) {
         return {}
-      } 
+      }
       return this.boxAward[this.level - 1] || {}
+    },
+    qrCodeUrl () {
+      let userInfo = localStorage.getItem('user_Info')
+      let {userId} = JSON.parse(userInfo)
+      return `https://wap.beeplaying.com/ddwgame/?type=fission&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
     }
   },
   methods: {
@@ -119,10 +131,10 @@ export default {
           GLOBALS.marchSetsPoint('A_H5PT0308003730')
           GLOBALS.marchSetsPoint('A_H5PT0308003744')
           break
-        case 2: 
+        case 2:
           GLOBALS.marchSetsPoint('P_H5PT0308')
           break
-        case 4: 
+        case 4:
           GLOBALS.marchSetsPoint('A_H5PT0308003746')
           break
       }
@@ -195,6 +207,21 @@ export default {
     backHome() {
       window.location.href = "//wap.beeplaying.com/xmWap/"
       GLOBALS.marchSetsPoint('A_H5PT0278003318')
+    },
+    drawImage (num) {
+      let canvas2 = document.getElementById('myCanvas')
+      let cans = document.getElementById('img')
+      let cas2 = canvas2.getContext('2d')
+      let img1 = new Image()
+      let img2 = new Image()
+      img1.src = cans.src
+      img2.src = `/static/images/pic${num}.png`
+      let that = this
+      img2.onload = function () {
+        cas2.drawImage(img2, 0, 0, 720, 1023)
+        cas2.drawImage(img1, 249, 611, 195, 195)
+        that.newSrc.push(canvas2.toDataURL('images/png', 1))
+      }
     }
   },
   mounted() {
@@ -203,6 +230,9 @@ export default {
     GLOBALS.marchSetsPoint('P_H5PT0308', {
       source_address: document.referrer
     })
+    this.drawImage(1)
+    this.drawImage(2)
+    this.drawImage(3)
   }
 }
 </script>
