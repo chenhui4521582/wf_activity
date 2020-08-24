@@ -3,17 +3,17 @@
     <div class="mask" v-if="value" :class="{showAnimation:showAnimation}">
       <template v-if="showAnimation">
         <p>选择图片</p>
-        <p>长按即可保存</p>
+        <p>点击截屏保存</p>
         <img src="../img/share/figure.png" alt="">
       </template>
     </div>
     <transition :name="transitionName">
       <div class="share-box" v-if="value">
-        <div class="fission-box">
+        <div class="fission-box" :class="{'product': isProduct}">
           <div class="wrap">
             <swiper :options="options" ref="mySwiper">
               <template v-for="(item,index) in newSrc">
-                <swiper-slide :data="index+1"><img :src="item" alt="" /></swiper-slide>
+                <swiper-slide :data="index+1"><img :src="item" alt="" @click="showPicIndex(index)"/></swiper-slide>
               </template>
             </swiper>
           </div>
@@ -97,12 +97,17 @@ export default {
         }
       },
       showAnimation:false,
-      showModal:false
+      showModal:false,
+      showPic:false
     }
   },
   computed:{
     transitionName(){
       return this.showAnimation?'':'slide1'
+    },
+    /** 解决swiper 上了生产环境样式问题 **/
+    isProduct () {
+      return process.env.NODE_ENV === "production"
     }
   },
   components: {
@@ -139,6 +144,10 @@ export default {
     },
     modalClose () {
       this.showModal = false
+    },
+    showPicIndex(index){
+      console.log('index',index)
+      this.showPic=true
     }
   },
   watch:{
@@ -206,8 +215,9 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 12.8rem;
+    height: 100vh;
     z-index: 12;
+    background: #4112bf;
     .fission-box {
       .swiper-slide {
         display: flex;
@@ -271,6 +281,34 @@ export default {
         background-size: 100% 100%;
         cursor: auto;
         outline: none;
+      }
+      &.product {
+        .swiper-wrapper {
+          display: flex;
+          position: absolute;
+          height: 10.23rem;
+        }
+        .swiper-button-prev {
+          position: absolute;
+          left: 0;
+          z-index: 4;
+          top: 50%;
+          width: .9rem;
+          height: .9rem;
+          background: url(../img/box-btn.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
+        .swiper-button-next {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          z-index: 4;
+          transform: rotate(180deg);
+          width: .9rem;
+          height: .9rem;
+          background: url(../img/box-btn.png) no-repeat center center;
+          background-size: 100% 100%;
+        }
       }
     }
     .fission-bottom{

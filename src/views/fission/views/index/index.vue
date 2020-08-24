@@ -215,7 +215,7 @@ export default {
       let img1 = new Image()
       let img2 = new Image()
       img1.src = cans.src
-      img2.src = `/static/images/pic${num}.png`
+      img2.src = `static/images/pic${num}.png`
       let that = this
       img2.onload = function () {
         cas2.drawImage(img2, 0, 0, 720, 1023)
