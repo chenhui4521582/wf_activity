@@ -314,8 +314,8 @@
       content: '';
       width: 100%;
       position: absolute;
-      top: -1.23rem;
-      height: 5.42rem;
+      top:0;
+      height: 3.8rem;
       background: url("./images/top.png");
       background-size: 100% 100%;
     }

@@ -38,7 +38,7 @@ export default {
         let box = {
           1: '铜宝箱',
           2: '银宝箱',
-          3: '金宝箱',
+          3: '金宝箱'
         }
         item.remark = `用户${item.nickname}打开了${box[item.level]}，抽中了${item.awardsName}`
       })
