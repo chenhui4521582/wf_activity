@@ -52,14 +52,14 @@
             </template>
             <template v-if="type===3 || type===4 || type===5">
               <p v-if="type===3">
-                去游戏中消耗达到{{awardInfo.amount|conversion}}金叶即可完成点亮
+                去游戏中消耗达到{{awardInfo.amount|conversion}}金叶即可完成加油
               </p>
               <p class="red-text">
                 <template v-if="type===3">
                   可获得
                 </template>
                 <template v-if="type===4">
-                  {{awardInfo.finishNum===awardInfo.totalNum?`成功点亮${awardInfo.totalNum}盏灯`:''}}
+                  {{awardInfo.finishNum===awardInfo.totalNum?`成功加油${awardInfo.totalNum}次`:''}}
                 </template>
                 <template v-if="type===5">
                   <template v-if="awardInfo.myRank">
