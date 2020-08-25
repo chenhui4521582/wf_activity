@@ -52,6 +52,14 @@ export const userPoint = async () => {
   return data
 }
 /**
+ * @description 优惠券弹窗
+ * @return {Object} data
+ */
+export const couponPopup = async () => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/biguser-backflow/couponPopup`)
+  return data
+}
+/**
  * @description 礼包
  * @return {Object} data
  */
@@ -75,6 +83,7 @@ const Service = {
   sign,
   taskFinish,
   userPoint,
+  couponPopup,
   bigCustomerRecallProducts,
   sendBigCustomerAdditionalRewards
 }

@@ -15,9 +15,11 @@
                 欢乐竞技台球、糖果萌消消、王者弹珠、街机欢乐捕鱼、三国大作战、众神风云、欢乐的小鸟、深海探一探、斗西游、破晓方块消消乐
               </div>
             </template>
-            <template v-else>
+            <template v-else-if="type==='coupon'">
               <div class="container">
-                <ul class="top">
+                <div class="desc" v-html="awardsInfo.desc">
+                </div>
+                <ul class="info">
                   <li v-for="(item,index) in awardsInfo.list">
                     <div class="img-wrapper">
                       <template v-if="item.nofilter">
@@ -30,7 +32,28 @@
                     <p>{{item.name}}</p>
                   </li>
                 </ul>
-                <div class="bottom" v-html="awardsInfo.desc">
+              </div>
+              <div class="btn">
+                <img src="./img/cancel-btn.png" alt="" @click="closePop()">
+                <img src="./img/use-btn.png" alt="" @click="sure()">
+              </div>
+            </template>
+            <template v-else>
+              <div class=" container">
+                <ul class="info">
+                  <li v-for="(item,index) in awardsInfo.list">
+                    <div class="img-wrapper">
+                      <template v-if="item.nofilter">
+                        <img :src="item.img" alt="">
+                      </template>
+                      <template v-else>
+                        <img :src="item.img|filter" alt="">
+                      </template>
+                    </div>
+                    <p>{{item.name}}</p>
+                  </li>
+                </ul>
+                <div class="desc" v-html="awardsInfo.desc">
                 </div>
               </div>
               <div class="btn" @click="sure()">
@@ -38,7 +61,7 @@
               </div>
             </template>
           </div>
-          <div class="close-icon" @click="closePop()">
+          <div class="close-icon" v-if="type!=='coupon'" @click="closePop()">
             <img src="../../img/close-icon.png" alt="">
           </div>
         </div>
@@ -135,6 +158,25 @@ export default {
             }
           }
         }
+        &.coupon {
+          .container {
+            .desc {
+              font-size: 0.28rem;
+              color: #c6d2fe;
+            }
+          }
+          .btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 4.2rem;
+            margin-left: -2.1rem;
+            img {
+              width: 1.9rem;
+              height: 0.72rem;
+            }
+          }
+        }
         .container {
           height: 3.08rem;
           display: flex;
@@ -142,7 +184,7 @@ export default {
           justify-content: center;
           align-items: center;
           margin-top: 0.6rem;
-          .top {
+          .info {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -162,8 +204,8 @@ export default {
                 border-radius: 50%;
                 margin: auto;
                 img {
-                  width: 100%;
-                  height: 100%;
+                  max-width: 100%;
+                  max-height: 100%;
                 }
               }
               p {
@@ -172,7 +214,7 @@ export default {
               }
             }
           }
-          .bottom {
+          .desc {
             font-size: 0.2rem;
             text-align: center;
             color: #0cf1ff;

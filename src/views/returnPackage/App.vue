@@ -17,7 +17,7 @@
       <gift ref="gift" :state="info.state" @show-pop="showPop" />
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
-    <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" />
+    <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm" />
     <gamelist v-model="isShowGame" />
     <welcome ref="welcome" />
   </main>
@@ -32,7 +32,7 @@ import gift from './components/gift/index'
 import popup from './components/popup/index'
 import welcome from './components/welcome/index'
 import gamelist from './components/gamelist/index'
-import { activityHome } from './services/api'
+import { activityHome, couponPopup } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'returnPacket',
@@ -68,8 +68,24 @@ export default {
         if (!isShowedWelcome) {
           this.$refs.welcome.openPop()
         }
+        this._couponPopup()
       }
       GLOBALS.marchSetsPoint('A_H5PT0074001432')
+    },
+    async _couponPopup () {
+      const res = await couponPopup()
+      const code = _get(res, 'code', 0)
+      const data = _get(res, 'data', 0)
+      if (code === 200 && data.couponIsShow) {
+        GLOBALS.marchSetsPoint('A_H5PT0290004069') // H5平台-回归礼包-优惠券加赚-弹窗加载完成
+        this.showPop('coupon', {
+          list: [{
+            img: data.opsBiguserBackflowAwardRsp.awardImg,
+            name: data.opsBiguserBackflowAwardRsp.awardName
+          }],
+          desc: '许久不见，小多赠送您优惠券一张'
+        })
+      }
     },
     showPop (type, info) {
       this.popType = type
@@ -78,6 +94,12 @@ export default {
     },
     showGame () {
       this.isShowGame = true
+    },
+    onConfirm () {
+      if (this.popType === 'coupon') {
+        GLOBALS.marchSetsPoint('A_H5PT0290004070') // H5平台-回归礼包-优惠券加赚弹窗-立即使用点击
+        GLOBALS.jumpOutsideGame('/xmWap/#/payment/')
+      }
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0074001433')

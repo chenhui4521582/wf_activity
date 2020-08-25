@@ -3,10 +3,13 @@
     <template v-if="giftInfo.haveBuy">
       <div class="bg">
         <p>
-          加赠的金叶：<span>{{giftInfo.dateRange}}</span>连续登录<br />
-          可领完全部<span>{{conversion(giftInfo.extraAmount)}}</span>加赠金叶
+          <span>{{giftInfo.dateRange}}</span>连续登录可领完全部<span>{{conversion(giftInfo.extraAmount)}}</span>加赠金叶
         </p>
         <img src="./img/bought-icon.png" alt="" class="bought-icon">
+        <p class="desc">
+          <em>已领 {{giftInfo.receiveCount}} 次</em><br />
+          <span>(今日为第{{giftInfo.continueDay}}天)</span>
+        </p>
       </div>
     </template>
     <template v-else-if="state===1">
@@ -107,7 +110,7 @@ export default {
     color: #0cf1ff;
     text-align: center;
     box-sizing: border-box;
-    padding: 1.28rem 0 0;
+    padding: 1.24rem 0 0;
     line-height: 0.36rem;
     font-weight: bold;
     padding-right: 0.1rem;
@@ -136,6 +139,20 @@ export default {
           width: 100%;
           height: 100%;
         }
+      }
+    }
+    .desc {
+      line-height: 0;
+      em {
+        font-size: 0.24rem;
+        color: #f35631;
+        font-style: normal;
+        line-height: 0.3rem;
+      }
+      span {
+        font-size: 0.2rem;
+        color: #c5d2fe;
+        line-height: 0.24rem;
       }
     }
   }
