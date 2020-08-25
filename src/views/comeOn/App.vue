@@ -33,9 +33,14 @@
                   </div>
                 </div>
               </div>
-              <div class="text">
-                <p>累计消耗</p>
-                <p>{{item.amount|conversion}}金叶</p>
+              <div class="text" :class="{receive:item.status===1}">
+                <template v-if="item.status===1">
+                  <img src="./img/receive.png" alt="">
+                </template>
+                <template v-else>
+                  <p>累计消耗</p>
+                  <p>{{item.amount|conversion}}金叶</p>
+                </template>
               </div>
             </li>
           </ul>
@@ -383,6 +388,13 @@ export default {
           box-sizing: border-box;
           position: relative;
           color: #fff;
+          &.receive {
+            background: none;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
         }
       }
     }
