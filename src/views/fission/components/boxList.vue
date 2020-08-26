@@ -37,6 +37,11 @@ export default {
       wrapWidth: 0
     }
   },
+  computed:{
+    fontsize() {
+      return parseFloat(localStorage.getItem('fontsize') || '100')
+    }
+  },
   methods: {
     listAnimation () {
       clearInterval(this.listTimer)
@@ -49,7 +54,8 @@ export default {
         }
         let offsetWidth = 0
         liNodes && liNodes.map((item, index) => {
-          offsetWidth += item.offsetWidth
+          // 解决vivoX7奖励样式重叠问题：不使用item.offsetWidth计算宽度
+          offsetWidth += 1.5*this.fontsize
         })
         // 设置UL宽度
         this.listStyles.width = `${offsetWidth}px`
@@ -71,7 +77,6 @@ export default {
   },
 
   mounted () {
-
   },
   watch: {
     list: {
