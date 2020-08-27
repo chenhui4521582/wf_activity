@@ -3,26 +3,8 @@
     <template v-if="taskProgressInfoData">
       <template
         v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}}</h4>
+        <h4 class="s-title"><em></em>{{itemtitle}} <span class="next" v-if="indextitle==0">下一梯度解锁需支持金叶：<i>XXXX万</i></span></h4>
         <template v-if="indextitle==0">
-          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
-            <div class="item">
-              <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个号码</p>
-              <p v-else-if="index==1">充值任意金额，送1个号码</p>
-            </div>
-            <div class="item">
-              <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
-                去完成</div>
-              <div class="btn btn-receive" v-else-if="item.state==1" @click="gain(item,index)">领取
-              </div>
-              <div class="btn btn-gained" v-else>已完成</div>
-              <div class="btn_progress">
-                {{item.finishNum>item.totalNum?item.totalNum:item.finishNum}}/{{item.totalNum}}
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-else-if="indextitle==1">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
