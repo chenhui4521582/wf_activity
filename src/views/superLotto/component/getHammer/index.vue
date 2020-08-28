@@ -3,7 +3,7 @@
     <template v-if="taskProgressInfoData">
       <template
         v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}} <span class="next" v-if="indextitle==0">下一梯度解锁需支持金叶：<i>XXXX万</i></span></h4>
+        <h4 class="s-title"><span><em></em>{{itemtitle}} </span><span class="next" v-if="indextitle==0">下一梯度解锁需支持金叶：<i>{{taskProgressInfoData.gameProgress.diffNextProgress| conversion}}</i></span></h4>
         <template v-if="indextitle==0">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
@@ -36,11 +36,13 @@
                   <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
                   <div class="item-text"
                     :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
-                    {{item.content.split('+')[0]}}<br />
+                    <!--{{item.content.split('+')[0]}}<br />-->
                     <span class="content"
                       :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg,display: 'flex',alignItems: 'center',justifyContent: 'center'}">
                       <img src="../../img/give-icon.png"
-                        style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">{{item.content.split('+')[1]}}</span>
+                        style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">
+                      <!--{{item.content.split('+')[1]}}-->
+                    </span>
                   </div>
                   <a href="javascript:" class="btn-price"
                     :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
@@ -186,8 +188,6 @@ export default {
     font-size: 0.24rem;
     font-weight: bold;
     color: #fff;
-    display: flex;
-    align-items: center;
     margin-bottom: 0.12rem;
     em {
       display: inline-block;
@@ -196,6 +196,19 @@ export default {
       background: #fff;
       border-radius: 50%;
       margin-right: 0.05rem;
+    }
+    .next{
+      padding: .09rem;
+      font-size:.18rem;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      background:rgba(255,68,48,1);
+      border-radius:.19rem;
+      position: absolute;
+      i{
+        color: #FFF94B;
+        font-style: normal;
+      }
     }
   }
   .info {
@@ -218,16 +231,15 @@ export default {
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
-      height: 2.94rem;
+      height: 5.6rem;
     }
     &.g2 {
       height: 2.24rem;
     }
     ul {
       display: flex;
-      justify-content: center;
       padding-top: 0.21rem;
-      justify-content: center;
+      flex-wrap: wrap;
     }
     li {
       width: 1.79rem;
@@ -237,11 +249,9 @@ export default {
       background: rgba(234, 181, 155, 1);
       border-radius: 0.1rem;
       margin-left: 0.26rem;
+      margin-bottom: 0.26rem;
       padding-top: 0.1rem;
       box-sizing: border-box;
-      &:nth-child(1) {
-        margin-left: 0;
-      }
       img {
         width: 1.28rem;
         height: 1.26rem;
