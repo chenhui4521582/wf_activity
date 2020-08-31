@@ -176,12 +176,11 @@ export default {
       Services.batchReceive().then(res => {
         const {code, message} = _get(res, 'data')
         if(code == 200) {
+          this._getInfo()
+          this.batchLock = false
+          GLOBALS.marchSetsPoint('A_H5PT0321003967')
           this.$toast.show({
             message: `奖励领取成功`
-          },() => {
-            this._getInfo()
-            this.batchLock = false
-            GLOBALS.marchSetsPoint('A_H5PT0321003967')
           })
         }else {
           this.$toast.show({ message }, () => {
@@ -212,7 +211,6 @@ export default {
           this.showPopup = true
           this._getInfo()
         }
-        
       })
     },
     /** 获取我的奖品 **/
