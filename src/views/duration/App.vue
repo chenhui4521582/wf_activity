@@ -256,7 +256,8 @@ export default {
   padding-bottom: 1.3rem;
   position: relative;
   overflow: hidden;
-  height: 12.79rem;
+  min-height: 12.79rem;
+  height: 100vh;
   background: url(./img/bg.png) no-repeat center top #E7B049;
   background-size: 7.2rem auto;
   .back-btn {
