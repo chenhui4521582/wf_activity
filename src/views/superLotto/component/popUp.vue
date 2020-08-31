@@ -62,7 +62,7 @@
                 class="bold">单组数字与中奖码数字和顺序一致越多，则瓜分的奖励越多</span><br />
               3. 玩家在活动中获得的号码越多，则组合越多。同时获奖概率越大。<br />
               4. 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费碎片。<br />
-              比例：<span class="red-text bold">100金叶=1话费碎片=0.1元话费</span><br />
+              比例：<span class="red-text bold">100金叶=1话费碎片=0.1元话费券</span><br />
               <span class="click-span" @click="type=1">点击查看瓜分示意图</span><br />
               获奖金额计算方式：<br />
               改奖项在奖池金额的占比除以该奖项的号码注数<br />
@@ -190,7 +190,7 @@
               <p>
                 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费碎片。
                 参与活动的用户可在次日依据<span class="click-span" @click="type=0">活动规则</span>进行奖池瓜分。<br />
-                比例：100金叶=1话费碎片=0.1元话费
+                比例：100金叶=1话费碎片=0.1元话费券
               </p>
               <p class="sub-title">当前金叶累计</p>
               <p class="leaf-number">{{info.awardPool*100}}金叶</p>
