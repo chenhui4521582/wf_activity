@@ -176,12 +176,11 @@ export default {
       Services.batchReceive().then(res => {
         const {code, message} = _get(res, 'data')
         if(code == 200) {
+          this._getInfo()
+          this.batchLock = false
+          GLOBALS.marchSetsPoint('A_H5PT0321003967')
           this.$toast.show({
             message: `奖励领取成功`
-          },() => {
-            this._getInfo()
-            this.batchLock = false
-            GLOBALS.marchSetsPoint('A_H5PT0321003967')
           })
         }else {
           this.$toast.show({ message }, () => {
@@ -212,7 +211,6 @@ export default {
           this.showPopup = true
           this._getInfo()
         }
-        
       })
     },
     /** 获取我的奖品 **/
@@ -258,7 +256,8 @@ export default {
   padding-bottom: 1.3rem;
   position: relative;
   overflow: hidden;
-  height: 12.79rem;
+  min-height: 12.79rem;
+  height: 100vh;
   background: url(./img/bg.png) no-repeat center top #E7B049;
   background-size: 7.2rem auto;
   .back-btn {
