@@ -60,6 +60,7 @@ export default {
       if (code === 200) {
         this.giftInfo = data
         if (data.haveBuy) {
+          this.$emit('findCoupon')
           this._sendBigCustomerAdditionalRewards()
         }
       }

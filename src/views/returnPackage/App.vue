@@ -9,12 +9,12 @@
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
       <task ref="task" :info="info" @show-pop="showPop" @show-game="showGame" />
-      <gift ref="gift" :state="info.state" @show-pop="showPop" />
+      <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
     </article>
     <article class="main-content" v-else>
       <div class="time end-time">活动已结束，未领奖励限今日领完</div>
       <task ref="task" :info="info" @show-pop="showPop" />
-      <gift ref="gift" :state="info.state" @show-pop="showPop" />
+      <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm" />
@@ -68,7 +68,6 @@ export default {
         if (!isShowedWelcome) {
           this.$refs.welcome.openPop()
         }
-        this._couponPopup()
       }
       GLOBALS.marchSetsPoint('A_H5PT0074001432')
     },
