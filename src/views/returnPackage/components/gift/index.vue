@@ -6,7 +6,7 @@
           <span>{{giftInfo.dateRange}}</span>连续登录可领完全部<span>{{conversion(giftInfo.extraAmount)}}</span>加赠金叶
         </p>
         <img src="./img/bought-icon.png" alt="" class="bought-icon">
-        <p class="desc">
+        <p class="desc" v-if="giftInfo.receiveCount&&giftInfo.continueDay">
           <em>已领 {{giftInfo.receiveCount}} 次</em><br />
           <span>(今日为第{{giftInfo.continueDay}}天)</span>
         </p>
