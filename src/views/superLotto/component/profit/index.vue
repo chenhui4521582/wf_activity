@@ -28,7 +28,7 @@
             <span class="s-text">{{item.nickname || '暂无昵称'}}</span>
             <span class="hammer-number">{{item.totalNum}}个</span>
             <span class="award-names">
-              {{item.awardsName.split('+')[0].replace('金叶子','金叶')}}<br />+{{item.awardsName.split('+')[1]&&item.awardsName.split('+')[1].replace('元','')}}
+              {{item.awardsName.split('+')[0].replace('金叶子','金叶')}}<template v-if="item.awardsName.split('+')[1]"><br />+{{item.awardsName.split('+')[1].replace('元','')}}</template>
             </span>
           </li>
         </ul>
@@ -77,7 +77,7 @@
               <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
                     class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+                class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}<template v-if="item.awardsName.split('+')[1]">+<br />{{item.awardsName.split('+')[1]}}</template></em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
@@ -85,7 +85,7 @@
               <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
                     class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}<template v-if="item.awardsName.split('+')[1]">+<br />{{item.awardsName.split('+')[1]}}</template></em></span>
             </li>
             <li v-if="!isOpen" style="border: none">
               <a href="javascript:" class="btn-check-profit"
@@ -97,7 +97,7 @@
               <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
                     class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em
-                  class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}+<br />{{item.awardsName.split('+')[1]}}</em></span>
+                class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}<template v-if="item.awardsName.split('+')[1]">+<br />{{item.awardsName.split('+')[1]}}</template></em></span>
             </li>
           </ul>
         </div>
