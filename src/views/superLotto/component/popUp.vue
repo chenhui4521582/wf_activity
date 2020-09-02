@@ -247,7 +247,7 @@
               <template v-if="awardInfo.rankAward&&awardInfo.rankAward.length">
                 <h4>恭喜你排名为第{{awardInfo.rankIdx}}名<br />
                   获得</h4>
-                <div class="prize_info lte2">
+                <div class="prize_info lte2" :class="{only:awardInfo.rankAward.length==1}">
                   <div class="prize_info_item" v-for="(item,index) in awardInfo.rankAward">
                     <div class="prize_info_img">
                       <img :src="`${require(`../img/common/${item.awardsType}.png`)}`" alt=""
@@ -1149,7 +1149,7 @@ export default {
         }
         &.lte2 {
           justify-content: center;
-          .prize_info_item:nth-child(1) {
+          &:not(.only) .prize_info_item:nth-child(1) {
             margin-right: 0.8rem;
           }
         }
@@ -1157,7 +1157,7 @@ export default {
           width: 4.5rem;
           margin: auto;
         }
-        &:after {
+        &:not(.only):after {
           content: '+';
           position: absolute;
           top: 50%;
