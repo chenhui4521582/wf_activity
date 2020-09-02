@@ -1,6 +1,6 @@
 <template>
-  <section class="coinact" v-if="actInfo">
-    <div class="coin-click">
+  <section class="giftact" v-if="actInfo">
+    <div class="gift-click">
       <img src="./images/back.png" alt="" class="back" @click="back">
       <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
       <div class="time">{{actInfo.ruleDate}}最低{{actInfo.ruleMaxDiscount}}折</div>
@@ -67,7 +67,7 @@
   import {getActInfo, getNoticeList} from './utils/api'
 
   export default {
-    name: 'coinact',
+    name: 'giftact',
     components: {
       comPop: () => import('./components/comPop'),
       horn: () => import('./components/horn')
@@ -163,7 +163,7 @@
 <style lang="less">
   @import "../../common/css/base.css";
 
-  .coinact {
+  .giftact {
     min-height: 100vh;
     position: relative;
     background: linear-gradient(0deg, #00246E 0%, #0A256E 100%);
