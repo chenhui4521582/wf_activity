@@ -36,12 +36,12 @@
                   <img :src="$moduleConfig.superLotto.dropDown.inner.packageImgs[index]" alt="">
                   <div class="item-text"
                     :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockTextColor}">
-                    <!--{{item.content.split('+')[0]}}<br />-->
+                    {{item.content.split('+')[0]}}<br />
                     <span class="content"
                       :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg,display: 'flex',alignItems: 'center',justifyContent: 'center'}">
                       <img src="../../img/give-icon.png"
                         style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">
-                      <!--{{item.content.split('+')[1]}}-->
+                      {{item.content.split('+')[1]}}
                     </span>
                   </div>
                   <a href="javascript:" class="btn-price"
