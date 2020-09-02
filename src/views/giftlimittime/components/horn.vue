@@ -105,6 +105,7 @@
     top: 0;
     height: 0.38rem;
     overflow: hidden;
+    display: flex;
     li {
       max-height: 0.38rem;
       line-height: 0.4rem;

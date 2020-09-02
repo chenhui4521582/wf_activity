@@ -38,7 +38,7 @@
         <div class="item" v-for="(item,index) in actInfo.welfareList" :class="{last:index==actInfo.welfareList.length-1}">
           <div class="left">
             <div class="img_bg">
-              <img src="./images/pic0.png" alt="">
+              <img :src="`${require(`./images/pic${index>3?3:index}.png`)}`" alt="">
             </div>
             <div class="num">{{item.amount}}</div>
           </div>
