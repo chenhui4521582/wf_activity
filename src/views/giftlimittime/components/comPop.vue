@@ -9,8 +9,8 @@
               <template v-if="popType==1">
                 <scroll>
                   <div>
-                    <p>1、活动时间：{{actInfo.timeline}} </p>
-                    <p>2、每天分别设置12点、20点两个时间节点，每个节点开放4个不同价格梯度的礼包优惠；</p>
+                    <p>1、活动时间：{{actInfo.beginDate}}~{{actInfo.endDate}}</p>
+                    <p>2、每天分别设置{{actInfo.hourList.join('点、')}}点两个时间节点，每个节点开放{{actInfo.ruleGiftNum}}个不同价格梯度的礼包优惠；</p>
                     <p>3、每种礼包的抢购数量有限。且随着价格梯度增长，折扣越高；单价越低，数量越少</p>
                     <p>4、每个时间段的礼包价格、赠品均不同</p>
                   </div>
@@ -58,7 +58,6 @@
         this.isShowPop = true
       },
       close() {
-        this.$emit('close',this.awardData)
         this.isShowPop = false;
       },
       move(e) {
@@ -133,7 +132,7 @@
                 font-size: .26rem;
                 font-weight: bold;
                 color: #FFFFFF;
-                line-height: .36rem;
+                line-height: .4rem;
               }
             }
           }

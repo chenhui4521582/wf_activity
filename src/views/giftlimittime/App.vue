@@ -3,7 +3,7 @@
     <div class="coin-click">
       <img src="./images/back.png" alt="" class="back" @click="back">
       <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
-      <div class="time">9.5-9.7最低3折</div>
+      <div class="time">{{actInfo.ruleDate}}最低{{actInfo.ruleMaxDiscount}}折</div>
       <div class="horn_container" v-if="hornList.length">
         <horn :noticeList="hornList"></horn>
       </div>
@@ -11,25 +11,31 @@
     <div class="gift_container">
       <div class="time_container">
         <div class="time_container_container">
-          <scroll :scrollX="true" :scrollY="false">
-            <div class="time_more">
-              <div class="item" v-for="(item,index) in actInfo.timelineList" :class="{last:index==actInfo.timelineList.length-1}">
-                <div class="img_bg" :class="{end:item.state==2,selected:item.state==1}" v-html="item.state==3?'敬请期待...':item.name.replace('日',`日<br>`)"></div>
-                <div class="state" :class="{end:item.state==2,selected:item.state==1}">
-                  <template v-if="item.state==1">
-                    {{countdown.time}}
-                  </template>
-                  <template v-else>
-                    {{status[item.state]}}
-                  </template>
-                </div>
+          <div class="time_more">
+            <div class="item" v-for="(item,index) in actInfo.timelineList"
+                 :class="{last:index==actInfo.timelineList.length-1}" @click="showTips(item.state)">
+              <div class="img_bg" :class="{end:item.state==2,selected:item.state==1}"
+                   v-html="item.state==3?'敬请期待...':item.name.replace('日',`日<br>`)"></div>
+              <div class="state" :class="{end:item.state==2,selected:item.state==1}">
+                <template v-if="item.state==1">
+                  {{countdown.time}}
+                </template>
+                <template v-else>
+                  {{status[item.state]}}
+                </template>
               </div>
             </div>
-          </scroll>
+          </div>
+          <div class="percent"
+               :style="{width:(1.3*actInfo.timelineList.length+0.4*(actInfo.timelineList.length-1))+'rem'}"
+               v-if="actInfo.timelineList.length>1">
+            <div class="percent_bar"
+                 :style="{width:(actInfo.timelineList[actInfo.timelineList.length-1].state==2?1:(currentIndex/(actInfo.timelineList.length-1)))*100+'%'}"></div>
+          </div>
         </div>
       </div>
       <div class="task_container">
-        <div class="item" v-for="item in actInfo.welfareList">
+        <div class="item" v-for="(item,index) in actInfo.welfareList" :class="{last:index==actInfo.welfareList.length-1}">
           <div class="left">
             <div class="img_bg">
               <img src="./images/pic0.png" alt="">
@@ -53,7 +59,7 @@
         </div>
       </div>
     </div>
-    <com-pop :popType="popType" ref="comPop" :actInfo="actInfo" :awardData="awardData" @close="closePop"></com-pop>
+    <com-pop :popType="popType" ref="comPop" :actInfo="actInfo"></com-pop>
   </section>
 </template>
 
@@ -64,20 +70,18 @@
     name: 'coinact',
     components: {
       comPop: () => import('./components/comPop'),
-      horn: () => import('./components/horn'),
-      scroll: () => import('./components/scroll')
+      horn: () => import('./components/horn')
     },
     data() {
       return {
         popType: 0,
         actInfo: null,
-        awardData: null,
-        status: ["即将开启", "", "已结束",''],
-        mallBizConfigs: [],
+        status: ["即将开启", "", "已结束", ''],
         hornList: [],
-        countdown:{
-          time:''
-        }
+        countdown: {
+          time: ''
+        },
+        currentIndex: 0
       }
     },
     async mounted() {
@@ -95,17 +99,22 @@
         let {code, data} = await getActInfo()
         if (code == 200) {
           this.actInfo = data
-          let timeData=data.timelineList.filter(item=>item.state==1)[0]
-          !this.countdown.time && timeData&&timeData.countdown && GLOBALS.remainingTime(
-            this,
-            timeData.countdown,
-            this.countdown
-          )
+          let timeData = data.timelineList.filter(item => item.state == 1)[0]
+          if (timeData) {
+            this.currentIndex = data.timelineList.findIndex(item => item.state == 1)
+            !this.countdown.time && timeData.countdown && GLOBALS.remainingTime(
+              this,
+              timeData.countdown,
+              this.countdown
+            )
+          } else {
+            this.currentIndex = 0
+          }
           this.getNoticeList()
         }
       },
       gotopay(item) {
-        if(item.buyFlag==0||item.buyStatus==2){
+        if (item.buyFlag == 0 || item.buyStatus == 2) {
           return
         }
         localStorage.setItem('originDeffer', window.location.href)
@@ -129,15 +138,17 @@
           this.$refs.comPop.showPop()
         })
       },
-      closePop() {
-        this.popType = 0
-        this.awardData = null
-      },
-      async getNoticeList(){
-        let {code,data}=await getNoticeList()
-        if(code==200){
-          this.hornList=data
+      async getNoticeList() {
+        let {code, data} = await getNoticeList()
+        if (code == 200) {
+          this.hornList = data
         }
+      },
+      showTips(state){
+        this.status[state]&&this.$toast.show({
+          message:`波次${this.status[state]}`,
+          duration:1000
+        })
       }
     },
     watch: {
@@ -170,7 +181,7 @@
     }
     .time {
       position: absolute;
-      top: 2.51rem;
+      top: 2.5rem;
       left: 0;
       right: 0;
       z-index: 2;
@@ -218,16 +229,17 @@
         margin-bottom: .18rem;
         overflow: hidden;
         position: relative;
-        .time_container_container{
+        .time_container_container {
           height: 100%;
           position: absolute;
           left: .26rem;
           right: .26rem;
-          .time_more{
+          .time_more {
             height: 100%;
             display: flex;
             align-items: center;
             position: absolute;
+            z-index: 1;
             .item {
               .img_bg {
                 width: 1.3rem;
@@ -254,7 +266,7 @@
               .state {
                 margin-top: .23rem;
                 font-size: .24rem;
-                height:.24rem;
+                height: .24rem;
                 font-weight: bold;
                 color: #780307;
                 opacity: 0.6;
@@ -267,9 +279,23 @@
                   color: #FEE94C;
                 }
               }
-              &:not(.last){
+              &:not(.last) {
                 margin-right: .4rem
               }
+            }
+          }
+          .percent {
+            width: 100%;
+            height: .2rem;
+            background: #780307;
+            opacity: 0.3;
+            position: absolute;
+            top: .85rem;
+            display: flex;
+            align-items: center;
+            .percent_bar {
+              height: .1rem;
+              background: linear-gradient(90deg, #FEEE9A 0%, #F8BF51 100%);
             }
           }
         }
@@ -280,13 +306,15 @@
           height: 1.98rem;
           background: url("./images/taskbg.png");
           background-size: 100% 100%;
-          margin-bottom: .15rem;
           padding: 0 .35rem 0 .53rem;
           box-sizing: border-box;
           display: flex;
           justify-content: space-between;
           align-items: center;
           position: relative;
+          &:not(.last){
+            margin-bottom: .15rem;
+          }
           .img_bg {
             width: 1.3rem;
             height: 1.3rem;
