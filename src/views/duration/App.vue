@@ -1,9 +1,7 @@
 <template>
   <div class="duration">
     <!-- 返回按钮 -->
-    <div class="back-btn" @click="backHome">
-      <img src="./img/back-icon.png" alt="">
-    </div>
+    <div class="back-btn" @click="backHome"></div>
     <!-- 规则按钮 -->
     <div class="rule-btn" @click="openRule">
       <img src="./img/rule-icon.png" alt="">
@@ -20,7 +18,7 @@
       </div>
       <div class="line"></div>
       <div class="next-prize-time">
-        <p class="name">距离下级奖励</p>
+        <p class="name">开启下个彩蛋还需游戏</p>
         <p class="time">{{activitiesInfo.nextAwardDurationDesc}}</p>
       </div>
     </div>
@@ -62,7 +60,10 @@
           +{{item.awardsNum}}
         </div>
         <!-- 游戏时间 -->
-        <div class="duration-time" :class="{'end': item.status == 2}">{{item.durationDesc}}</div>
+        <div class="duration-time" :class="{'end': item.status == 2}">
+          累计游戏<br>
+          {{item.durationDesc}}
+        </div>
         <!-- 当前位置 -->
         <div class="current-position" v-if="item.level == currentItem">
           <img src="./img/current-position.png" alt="">
@@ -71,9 +72,16 @@
           </div>
         </div>
         <!-- 奖品提示 -->
-        <div class="award-tips" v-if="item.status == 0 && [4, 8].indexOf(item.level) > -1">
-          <img src="./img/coin-icon3.png" alt="">
+        <div class="award-tips" v-if="item.status == 0 && [4].indexOf(item.level) > -1">
+          <img src="./img/coin-icon4.png" alt="">
           <img src="./img/phone-icon.png" alt="">
+        </div>
+        <div class="award-tips" v-if="item.status == 0 && [8].indexOf(item.level) > -1">
+          <img src="./img/coin-icon3.png" alt="">
+          <img src="./img/phone1-icon.png" alt="">
+        </div>
+        <div class="award-tips" v-if="item.status == 0 && [12].indexOf(item.level) > -1">
+          <img src="./img/coin-icon5.png" alt="">
         </div>
         <!-- 点击提示 -->
         <div class="click-tips" v-if="item.status == 1 && [4, 8].indexOf(item.level) > -1">
@@ -83,8 +91,7 @@
     </div>
     <!-- 领取按钮 -->
     <div class="btns">
-      <div class="get-btn" v-if="isBatchReceive" @click="_batchReceive">一键领取</div>
-      <div class="get-disable" v-else>一键领取</div>
+      <div class="get-btn" :class="{'get-disable': !isBatchReceive }" @click="_batchReceive">一键开蛋</div>
     </div>
     <!-- popup -->
     <popup 
@@ -171,6 +178,12 @@ export default {
     },
     /** 一键领取 **/
     _batchReceive () {
+      if(!this.isBatchReceive) {
+        this.itemDuration = this.activitiesInfo.nextAwardDurationDesc.replace(/\D/g, '')
+        this.popupType = 3
+        this.showPopup = true
+        return 
+      }
       if(this.batchLock) return false
       this.batchLock = true
       Services.batchReceive().then(res => {
@@ -250,33 +263,27 @@ export default {
   box-sizing: border-box;
 }
 .duration {
-  margin-top: .2rem;
   position: relative;
   box-sizing: border-box;
   padding-bottom: 1.3rem;
   position: relative;
   overflow: hidden;
-  min-height: 12.79rem;
+  min-height: 13.72rem;
   height: 100vh;
   background: url(./img/bg.png) no-repeat center top #E7B049;
   background-size: 7.2rem auto;
   .back-btn {
     position: fixed;
-    left: .2rem;
-    top: 1.39rem;
-    z-index: 10;
-    width: .72rem;
-    height: .72rem;
-    img {
-      vertical-align: top;
-      width: 100%;
-      height: 100%;
-    }
+    left: 0;
+    top: 0;
+    z-index: 11;
+    width: 1.05rem;
+    height: 1rem;
   }
   .rule-btn {
     position: fixed;
     left: .2rem;
-    top: 2.34rem;
+    top: 1.24rem;
     z-index: 10;
     width: .72rem;
     height: .72rem;
@@ -289,7 +296,7 @@ export default {
   .my-prize-btn {
     position: fixed;
     left: .2rem;
-    top: 3.26rem;
+    top: 2.16rem;
     z-index: 10;
     width: .72rem;
     height: .94rem;
@@ -305,8 +312,8 @@ export default {
     top: 0;
     right: 0;
     z-index: 10;
-    padding-bottom: .2rem;
-    height: 1.2rem;
+    padding: 0 0 .2rem 1.05rem;
+    height: 1rem;
     background: url(./img/user-info-bg.png) no-repeat center top;
     background-size: 100% 100%;
     display: flex;
@@ -439,7 +446,7 @@ export default {
       .duration-time {
         position: absolute;
         left: 50%;
-        bottom: 0;
+        bottom: -.25rem;
         z-index: 3;
         transform: translate(-50%, 0);
         padding: 0 .08rem;
@@ -532,10 +539,11 @@ export default {
         }
         .award-tips {
           position: absolute;
-          left: -.1rem;
+          left: .85rem;
           top: -.8rem;
-          width: .94rem;
-          height: 1.06rem;
+          z-index: 4;
+          width: 1.52rem;
+          height: 1.36rem;
           img {
             position: absolute;
             left: 0;
@@ -543,10 +551,10 @@ export default {
             width: 100%;
             height: 100%;
             &:first-child {
-              animation: awardAnimation 6s infinite;
+              animation: awardAnimation 10s infinite;
             }
             &:last-child {
-              animation: awardAnimation1 6s infinite;
+              animation: awardAnimation1 10s infinite;
             }
           }
         }
@@ -583,21 +591,23 @@ export default {
         }
         .award-tips {
           position: absolute;
-          left: -.1rem;
+          left: -1rem;
           top: -.8rem;
-          width: .94rem;
-          height: 1.06rem;
+          z-index: 4;
+          width: 1.52rem;
+          height: 1.36rem;
           img {
             position: absolute;
             left: 0;
             right: 0;
             width: 100%;
             height: 100%;
+            opacity: 0;
             &:first-child {
-              animation: awardAnimation 6s infinite 3s;
+              animation: awardAnimation1 10s  infinite 3s;
             }
             &:last-child {
-              animation: awardAnimation1 6s infinite 3s;
+              animation: awardAnimation 10s infinite 3s;
             }
           }
         }
@@ -619,9 +629,6 @@ export default {
         top: 2.83rem;
         width: 1.42rem;
         height: 1.34rem;
-        .duration-time {
-          font-size: .32rem;
-        }
         .active-img {
           width: 1.42rem;
           height: 1.1rem;
@@ -634,6 +641,22 @@ export default {
           bottom: -.4rem;
           width: 2.3rem;
           height: auto;
+        }
+        .award-tips {
+          position: absolute;
+          left: -.3rem;
+          top: -.4rem;
+          z-index: 4;
+          width: .94rem;
+          height: 1.06rem;
+          img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            animation: awardAnimation 10s infinite;
+          }
         }
       }
     }

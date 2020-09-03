@@ -1,13 +1,13 @@
 <template>
   <div class="count-down" v-if="showCountDown">
     <div class="item" v-for="(item, index) in countdownTime" :key="index">
-      <div class="num">{{item}}</div>
-      <div class="separate">
-        <span v-if="index == 0">天</span>
-        <span v-if="index == 1">时</span>
-        <span v-if="index == 2">分</span>
-        <span v-if="index == 3">秒</span>
-      </div>
+        <div class="num">{{item.time}}</div>
+        <div class="separate">
+          <span v-if="item.id == 1">天</span>
+          <span v-if="item.id == 2">时</span>
+          <span v-if="item.id == 3">分</span>
+          <span v-if="item.id == 4">秒</span>
+        </div>
     </div>
     <div class="title">后结束</div>
   </div>
@@ -17,7 +17,10 @@ export default {
   name: 'countDown',
   props: ['time'],
   data: () => ({
-    countdownTime: ['0','00','00']
+    countdownTime: [          
+      {id: 1,time: '0'},
+      {id: 2,time: '00'},
+      {id: 3,time: '00'}]
   }),
   computed: {
     showCountDown () {
@@ -38,8 +41,18 @@ export default {
       let countHour = hour >= 10 ? hour : '0' + hour
       let countMinute = minute >= 10 ? minute : '0' + minute
       let countSecond = second >= 10 ? second : '0' + second
-      // this.countdownTime = [day, countHour, countMinute, countSecond]
-      this.countdownTime = [day, countHour, countMinute]
+      if(day == '0') {
+        this.countdownTime = [
+          {id: 2,time: countHour},
+          {id: 3,time: countMinute}
+        ]
+        return
+      }
+      this.countdownTime = [
+        {id: 1,time: day},
+        {id: 2,time: countHour},
+        {id: 3,time: countMinute}
+      ]
     },
     countDown (info) {
       if (!info || info <= 0) return false
@@ -58,8 +71,19 @@ export default {
         let countHour = hour >= 10 ? hour : '0' + hour
         let countMinute = minute >= 10 ? minute : '0' + minute
         let countSecond = second >= 10 ? second : '0' + second
-        // this.countdownTime = [day, countHour, countMinute, countSecond]
-        this.countdownTime = [day, countHour, countMinute]
+        if(day == '0') {
+          this.countdownTime = [
+            {id: 2,time: countHour},
+            {id: 3,time: countMinute}
+          ]
+          return
+        }
+        this.countdownTime = [
+          {id: 1,time: day},
+          {id: 2,time: countHour},
+          {id: 3,time: countMinute}
+        ]
+
       }, 1000)
     }
   },
