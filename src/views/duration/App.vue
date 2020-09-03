@@ -647,11 +647,11 @@ export default {
           left: -.3rem;
           top: -.4rem;
           z-index: 4;
-          width: .94rem;
-          height: 1.06rem;
+          width: 1.3rem;
+          height: 1.12rem;
           img {
             position: absolute;
-            left: 0;
+            left: -.2rem;
             right: 0;
             width: 100%;
             height: 100%;
