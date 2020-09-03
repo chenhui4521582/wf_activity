@@ -1,7 +1,7 @@
 <template>
   <div class="share">
-    <div class="mask" v-if="value" :class="{showAnimation:showAnimation}" @click="maskClick">
-      <template v-if="showAnimation">
+    <div class="mask" v-if="value" :class="{showAnimation:showAnimation&&!isNewVersion}" @click="maskClick">
+      <template v-if="showAnimation&&!isNewVersion">
         <p>选择图片</p>
         <p>点击截屏保存</p>
         <img src="../img/share/figure.png" alt="">
@@ -22,7 +22,7 @@
         </div>
         <div class="fission-bottom" :class="{showPic:showPic}">
           <template v-show="!showPic">
-            <div class="tips">提示：选择图片，点击截屏保存到手机相册，再选择图片分享微信好友，邀请成功 率更高哦~</div>
+            <div class="tips" v-show="!isNewVersion">提示：选择图片，点击截屏保存到手机相册，再选择图片分享微信好友，邀请成功 率更高哦~</div>
             <div class="info">邀请好友 得开宝箱钥匙</div>
             <div class="list">
               <div class="item" @click="shareWechat('0')">
@@ -81,6 +81,10 @@ export default {
     qrCodeUrl: {
       type: String,
       default: ''
+    },
+    isNewVersion:{
+      type: Boolean,
+      default: false
     }
   },
   data(){
@@ -90,12 +94,6 @@ export default {
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
-        },
-        on: {
-          slideChangeTransitionEnd: () => {
-            let element = document.querySelector('.swiper-slide-active')
-            boxVm.$emit('slideChange', element.getAttribute('data'))
-          }
         }
       },
       showAnimation:false,
@@ -130,9 +128,16 @@ export default {
       const url = this.qrCodeUrl
       const title = `我在这个APP里赚了${this.hfqNum || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
+      const imgData=document.querySelector('.share .swiper-slide-active')
+      const imgUrl=imgData&&imgData.getAttribute('data')&&this.newSrc[parseInt(imgData.getAttribute('data'))-1]||''
       try {
-        AppCall.shareContent(JSON.stringify({ url, title, content, type }))
+        if(this.isNewVersion){
+          AppCall.shareContent(JSON.stringify({ url:'', title:'', content:'', type, imgUrl}))
+        }else{
+          AppCall.shareContent(JSON.stringify({ url, title, content, type }))
+        }
       } catch (e) {
+        console.log(e,e)
       }
       if(type == 0) {
         GLOBALS.marchSetsPoint('A_H5PT0308004049')
@@ -157,13 +162,15 @@ export default {
       this.showModal = false
     },
     showPicIndex(){
-      this.showPic=true
+      if(!this.isNewVersion){
+        this.showPic=true
+      }
     },
     swiperbtnClick(type){
       GLOBALS.marchSetsPoint(type?'A_H5PT0308004048':'A_H5PT0308004047')
     },
     maskClick(){
-      if(this.showAnimation){
+      if(this.showAnimation&&!this.isNewVersion){
         GLOBALS.marchSetsPoint('A_H5PT0308004052')
         if(this.timer){
           clearTimeout(this.timer)
