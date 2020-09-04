@@ -9,7 +9,7 @@
             <div class="has-hf">
               <img class="sub-title" src="../img/yesterday.png" alt="">
               <img src="../img/hfq-icon.png" alt="">
-              <p>{{awardInfo.awardNum}}话费</p>
+              <p>{{awardInfo.awardNum}}话费碎片</p>
             </div>
             <p v-if="info.state!==2">
               今日还没获得号码<br />
@@ -61,12 +61,12 @@
               2. 活动期间，玩家将集齐的每组号码与系统随机生成的中奖码进行匹配，<span
                 class="bold">单组数字与中奖码数字和顺序一致越多，则瓜分的奖励越多</span><br />
               3. 玩家在活动中获得的号码越多，则组合越多。同时获奖概率越大。<br />
-              4. 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费券。<br />
-              比例：<span class="red-text bold">100金叶=1话费券=0.1元话费</span><br />
+              4. 平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费碎片。<br />
+              比例：<span class="red-text bold">100金叶=1话费碎片=0.1元话费券</span><br />
               <span class="click-span" @click="type=1">点击查看瓜分示意图</span><br />
               获奖金额计算方式：<br />
               改奖项在奖池金额的占比除以该奖项的号码注数<br />
-              例：当日奖池为8万话费券，则特等奖总金额为16000话费券；如果有2注号码中特等奖，则每注可获得8000话费券。<br />
+              例：当日奖池为8万话费碎片，则特等奖总金额为8000话费碎片；如果有2注号码中特等奖，则每注获得4000话费碎片。<br />
               5. 活动期间，每期开奖时间为次日<span class="red-text bold">1点</span>，奖励会在用户次日进入活动页面后发放；<br />
               6. 活动期间，活动金叶消耗进度<span class="red-text bold">每日重置</span>，请及时领取使用；<br />
               7. <span class="red-text bold">玩家当日未使用的号码，会在次日0点开奖后删除</span><br />
@@ -74,7 +74,8 @@
               注意：<br />
               活动期间，超过当天24：00未领取的数字将清零<br />
               活动期间，未使用的数字将清零<br />
-              活动期间，号码所中奖励请于次日在活动页领取，逾期作废
+              活动期间，号码所中奖励请于次日在活动页领取，逾期作废<br>
+              本次活动设定多种难度，难度由系统为您自动匹配。
             </template>
             <template v-else-if="type===1">
               <div class="rule-img-wrapper">
@@ -188,9 +189,9 @@
             </template>
             <template v-else-if="type===11">
               <p>
-                平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费券。
+                平台内所有玩家在游戏中消耗金叶会有一部分计入活动奖池，并换算成话费碎片。
                 参与活动的用户可在次日依据<span class="click-span" @click="type=0">活动规则</span>进行奖池瓜分。<br />
-                比例：100金叶=1话费券=0.1元话费
+                比例：100金叶=1话费碎片=0.1元话费券
               </p>
               <p class="sub-title">当前金叶累计</p>
               <p class="leaf-number">{{info.awardPool*100}}金叶</p>
@@ -221,7 +222,7 @@
                   </div>
                   <div class="middle">
                     <p>累计</p>
-                    <p>{{item.hfNum}}话费券</p>
+                    <p>{{item.hfNum}}话费碎片</p>
                   </div>
                   <p class="right" @click="selectAward(item)">查看详情</p>
                 </li>
@@ -246,7 +247,7 @@
               <template v-if="awardInfo.rankAward&&awardInfo.rankAward.length">
                 <h4>恭喜你排名为第{{awardInfo.rankIdx}}名<br />
                   获得</h4>
-                <div class="prize_info lte2">
+                <div class="prize_info lte2" :class="{only:awardInfo.rankAward.length==1}">
                   <div class="prize_info_item" v-for="(item,index) in awardInfo.rankAward">
                     <div class="prize_info_img">
                       <img :src="`${require(`../img/common/${item.awardsType}.png`)}`" alt=""
@@ -420,7 +421,7 @@ export default {
         case 'jdk':
           return '京东券'
         case 'hfq':
-          return '话费券'
+          return '话费碎片'
       }
     },
     gotogame ({ url, id }) {
@@ -517,6 +518,7 @@ export default {
         })
       }
       this.type = val
+      console.log('this.type',this.type)
     },
     type (val) {
       this.$emit('input', val)
@@ -1147,7 +1149,7 @@ export default {
         }
         &.lte2 {
           justify-content: center;
-          .prize_info_item:nth-child(1) {
+          &:not(.only) .prize_info_item:nth-child(1) {
             margin-right: 0.8rem;
           }
         }
@@ -1155,7 +1157,7 @@ export default {
           width: 4.5rem;
           margin: auto;
         }
-        &:after {
+        &:not(.only):after {
           content: '+';
           position: absolute;
           top: 50%;

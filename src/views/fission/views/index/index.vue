@@ -219,7 +219,11 @@ export default {
       let that = this
       img2.onload = function () {
         cas2.drawImage(img2, 0, 0, 720, 1280)
-        cas2.drawImage(img1, 249, 611, 195, 195)
+        cas2.drawImage(img1, 249, 600, 195, 195)
+        cas2.textAlign = 'center'
+        cas2.fillStyle = 'white';
+        cas2.font ="normal bolder 24px Georgia";
+        cas2.fillText('扫码下载多多玩APP', 345, 825);
         that.newSrc.push(canvas2.toDataURL('images/png', 1))
       }
     }

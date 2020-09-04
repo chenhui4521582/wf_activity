@@ -69,11 +69,11 @@ const ModuleConfig = {
           }
         },
         info: {
-          titles: ['每日任务送随机数字', '玩游戏得随机号码（每日重置）', '超值礼包额外加赠'],
-          sideTitle: '在游戏中（除套圈，枪火英雄，麻将，斗地主，斗西游，飞机大战，生肖大作战及跑得快）消耗金叶可以获得对应数量的号码'
+          titles: ['玩游戏得随机号码（每日重置）', '超值礼包额外加赠'],
+          sideTitle: '计入活动游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、 三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、 斗西游、王者弹珠、欢乐的小鸟、深海探一探'
         },
         percentBg: '#dc322a',
-        packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`],
+        packageImgs: [`${require(`./img/common/package1.png`)}`, `${require(`./img/common/package2.png`)}`, `${require(`./img/common/package3.png`)}`, `${require(`./img/common/package4.png`)}`, `${require(`./img/common/package5.png`)}`, `${require(`./img/common/package6.png`)}`],
         packageBlockBg: '#ffecca',
         packageBlockTextColor: '#9A5619',
         packageBlockBtnBg: '#E74615',

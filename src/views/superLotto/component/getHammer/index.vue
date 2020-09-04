@@ -3,26 +3,8 @@
     <template v-if="taskProgressInfoData">
       <template
         v-for="(itemtitle,indextitle) in $moduleConfig.superLotto.dropDown.inner.info.titles">
-        <h4 class="s-title"><em></em>{{itemtitle}}</h4>
+        <h4 class="s-title"><span><em></em>{{itemtitle}} </span><span class="next" v-if="indextitle==0">下一梯度解锁需支持金叶：<i>{{taskProgressInfoData.gameProgress.diffNextProgress| conversion}}</i></span></h4>
         <template v-if="indextitle==0">
-          <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
-            <div class="item">
-              <p v-if="index==0">今日完成{{item.totalNum}}个每日任务给1个号码</p>
-              <p v-else-if="index==1">充值任意金额，送1个号码</p>
-            </div>
-            <div class="item">
-              <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
-                去完成</div>
-              <div class="btn btn-receive" v-else-if="item.state==1" @click="gain(item,index)">领取
-              </div>
-              <div class="btn btn-gained" v-else>已完成</div>
-              <div class="btn_progress">
-                {{item.finishNum>item.totalNum?item.totalNum:item.finishNum}}/{{item.totalNum}}
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-else-if="indextitle==1">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
           <div class="g-package"
             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
@@ -58,7 +40,9 @@
                     <span class="content"
                       :style="{color:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg,display: 'flex',alignItems: 'center',justifyContent: 'center'}">
                       <img src="../../img/give-icon.png"
-                        style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">{{item.content.split('+')[1]}}</span>
+                        style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">
+                      {{item.content.split('+')[1]}}
+                    </span>
                   </div>
                   <a href="javascript:" class="btn-price"
                     :style="{background:$moduleConfig.superLotto.dropDown.inner.packageBlockBtnBg}">￥{{item.price}}</a>
@@ -204,8 +188,6 @@ export default {
     font-size: 0.24rem;
     font-weight: bold;
     color: #fff;
-    display: flex;
-    align-items: center;
     margin-bottom: 0.12rem;
     em {
       display: inline-block;
@@ -214,6 +196,19 @@ export default {
       background: #fff;
       border-radius: 50%;
       margin-right: 0.05rem;
+    }
+    .next{
+      padding: .09rem;
+      font-size:.18rem;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      background:rgba(255,68,48,1);
+      border-radius:.19rem;
+      position: absolute;
+      i{
+        color: #FFF94B;
+        font-style: normal;
+      }
     }
   }
   .info {
@@ -236,16 +231,15 @@ export default {
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
-      height: 2.94rem;
+      height: 5.6rem;
     }
     &.g2 {
       height: 2.24rem;
     }
     ul {
       display: flex;
-      justify-content: center;
       padding-top: 0.21rem;
-      justify-content: center;
+      flex-wrap: wrap;
     }
     li {
       width: 1.79rem;
@@ -255,11 +249,9 @@ export default {
       background: rgba(234, 181, 155, 1);
       border-radius: 0.1rem;
       margin-left: 0.26rem;
+      margin-bottom: 0.26rem;
       padding-top: 0.1rem;
       box-sizing: border-box;
-      &:nth-child(1) {
-        margin-left: 0;
-      }
       img {
         width: 1.28rem;
         height: 1.26rem;

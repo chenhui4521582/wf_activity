@@ -387,8 +387,8 @@ export default {
   font-size: 0.24rem;
   font-family: Alibaba PuHuiTi;
   overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  /*overflow-y: scroll;*/
+  /*-webkit-overflow-scrolling: touch;*/
   &.end {
     background: #ffa200;
   }

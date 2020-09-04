@@ -308,7 +308,15 @@
       },
       async showPop() {
         if (![1, 2, 3].includes(this.popType)) {
-          this.isShowPop = true
+          if(this.popType==10){
+            if(this.awardData&&this.awardData.amount){
+              this.isShowPop = true
+            }else{
+              this.$emit('close')
+            }
+          }else{
+            this.isShowPop = true
+          }
         } else {
           if (this.popType == 1 || this.popType == 2) {
             if (this.awardData) {

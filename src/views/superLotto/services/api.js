@@ -221,7 +221,7 @@ export const userAwardsTips = async () => {
     data: {
       awardNum: 0,
       rankAward: [{
-        awardsName: '话费券100',
+        awardsName: '话费碎片100',
         awardsType: 'hfq'
       }, {
         awardsName: '金叶子100',
