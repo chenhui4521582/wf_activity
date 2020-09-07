@@ -11,7 +11,7 @@
                   <div>
                     <p>1、活动时间：{{actInfo.beginDate}}~{{actInfo.endDate}}</p>
                     <p>2、每天分别设置{{actInfo.hourList.join('点、')}}点两个时间节点，每个节点开放{{actInfo.ruleGiftNum}}个不同价格梯度的礼包优惠；</p>
-                    <p>3、每种礼包的抢购数量有限。且随着价格梯度增长，折扣越高；单价越低，数量越少</p>
+                    <p>3、每种礼包的抢购数量有限。且随着价格梯度增长，折扣越高。</p>
                     <p>4、每个时间段的礼包价格、赠品均不同</p>
                   </div>
                 </scroll>
