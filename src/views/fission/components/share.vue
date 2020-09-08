@@ -9,7 +9,7 @@
     </div>
     <transition :name="transitionName">
       <div class="share-box" v-if="value">
-        <div class="fission-box" :class="{'product': isProduct}">
+        <div class="fission-box" :class="{'fission-product': isProduct}">
           <div class="wrap" @click="showPicIndex">
             <swiper :options="options" ref="mySwiper">
               <template v-for="(item,index) in newSrc">
@@ -50,7 +50,7 @@
               {{qrCodeUrl}}</p>
             <br>
           </div>
-          <div class="btn" slot="footer" v-clipboard:copy="qrCodeUrl" v-clipboard:success="onCopy"
+          <div class="modal-btn" slot="footer" v-clipboard:copy="qrCodeUrl" v-clipboard:success="onCopy"
                v-clipboard:error="onError">复制链接</div>
         </modal>
       </div>
@@ -250,105 +250,6 @@ export default {
     height: 100vh;
     z-index: 12;
     background: #4112bf;
-    .fission-box {
-      .swiper-slide {
-        display: flex;
-        justify-content: flex-start;
-        justify-items: center;
-        align-items: center;
-        height: 12.8rem;
-        img {
-          width: 100%;
-        }
-        .bottom {
-          display: none;
-        }
-      }
-      .swiper-slide-active {
-        position: relative;
-        justify-content: center;
-        img {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-        }
-        .bottom {
-          display: block;
-          position: absolute;
-          left: 50%;
-          top: 2.8rem;
-          transform:  translate(-50%, 0);
-          margin-left: -1.92rem;
-          width: 3.84rem;
-          height: 1.42rem;
-          background: url(../img/bottom.png) no-repeat center center;
-          background-size: 100% 100%;
-          animation: cover infinite 2s;
-        }
-        &.active {
-          img {
-            animation: award 1s 1;
-          }
-        }
-      }
-      .swiper-slide-prev {
-        justify-content: flex-end;
-      }
-      .swiper-slide-next {
-        justify-content: flex-start;
-      }
-      .swiper-button-prev {
-        width: .9rem;
-        height: .9rem;
-        background: url(../img/box-btn.png) no-repeat center center;
-        background-size: 100% 100%;
-        cursor: auto;
-        outline: none;
-        &.showPic{
-          opacity: 0;
-        }
-      }
-      .swiper-button-next {
-        transform: rotate(180deg);
-        width: .9rem;
-        height: .9rem;
-        background: url(../img/box-btn.png) no-repeat center center;
-        background-size: 100% 100%;
-        cursor: auto;
-        outline: none;
-        &.showPic{
-          opacity: 0;
-        }
-      }
-      &.product {
-        .swiper-wrapper {
-          display: flex;
-          position: absolute;
-          height: 12.8rem;
-        }
-        .swiper-button-prev {
-          position: absolute;
-          left: 0;
-          z-index: 4;
-          top: 50%;
-          width: .9rem;
-          height: .9rem;
-          background: url(../img/box-btn.png) no-repeat center center;
-          background-size: 100% 100%;
-        }
-        .swiper-button-next {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          z-index: 4;
-          transform: rotate(180deg);
-          width: .9rem;
-          height: .9rem;
-          background: url(../img/box-btn.png) no-repeat center center;
-          background-size: 100% 100%;
-        }
-      }
-    }
     .fission-bottom{
       height: 4.45rem;
       position: absolute;
@@ -427,7 +328,7 @@ export default {
       word-break: break-all;
     }
   }
-  .btn {
+  .modal-btn {
     width: 4.1rem;
     height: 0.7rem;
     line-height: 0.7rem;
@@ -472,4 +373,105 @@ export default {
     transform: scale(0.9);
   }
 }
+</style>
+<style lang="less">
+  .fission-box {
+    .swiper-slide {
+      display: flex;
+      justify-content: flex-start;
+      justify-items: center;
+      align-items: center;
+      height: 12.8rem;
+      img {
+        width: 100%;
+      }
+      .bottom {
+        display: none;
+      }
+    }
+    .swiper-slide-active {
+      position: relative;
+      justify-content: center;
+      img {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+      }
+      .bottom {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 2.8rem;
+        transform:  translate(-50%, 0);
+        margin-left: -1.92rem;
+        width: 3.84rem;
+        height: 1.42rem;
+        background: url(../img/bottom.png) no-repeat center center;
+        background-size: 100% 100%;
+        animation: cover infinite 2s;
+      }
+      &.active {
+        img {
+          animation: award 1s 1;
+        }
+      }
+    }
+    .swiper-slide-prev {
+      justify-content: flex-end;
+    }
+    .swiper-slide-next {
+      justify-content: flex-start;
+    }
+    .swiper-button-prev {
+      width: .9rem;
+      height: .9rem;
+      background: url(../img/box-btn.png) no-repeat center center;
+      background-size: 100% 100%;
+      cursor: auto;
+      outline: none;
+      &.showPic{
+        opacity: 0;
+      }
+    }
+    .swiper-button-next {
+      transform: rotate(180deg);
+      width: .9rem;
+      height: .9rem;
+      background: url(../img/box-btn.png) no-repeat center center;
+      background-size: 100% 100%;
+      cursor: auto;
+      outline: none;
+      &.showPic{
+        opacity: 0;
+      }
+    }
+  }
+  .fission-product {
+    .swiper-wrapper {
+      display: flex;
+      position: absolute;
+      height: 12.8rem;
+    }
+    .swiper-button-prev {
+      position: absolute;
+      left: 0;
+      z-index: 4;
+      top: 50%;
+      width: .9rem;
+      height: .9rem;
+      background: url(../img/box-btn.png) no-repeat center center;
+      background-size: 100% 100%;
+    }
+    .swiper-button-next {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      z-index: 4;
+      transform: rotate(180deg);
+      width: .9rem;
+      height: .9rem;
+      background: url(../img/box-btn.png) no-repeat center center;
+      background-size: 100% 100%;
+    }
+  }
 </style>

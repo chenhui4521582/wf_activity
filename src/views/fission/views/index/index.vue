@@ -15,7 +15,7 @@
       我目前钥匙数量为：<img src="../../img/key-icon.png" alt=""><span>X{{boxInfo.keyNum}}</span>
     </div>
     <!-- 宝箱 -->
-    <Box @slideChange="slideChange"/>
+    <Box @slideChange="slideChange" v-if="!showShare"/>
     <!-- 宝箱内容 -->
     <div class="award-list">
       <div class="header" @click="openBox">
