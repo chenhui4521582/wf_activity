@@ -5,7 +5,7 @@
         <img v-if="close" @click.self="$emit('onClose')" class="close" src="./assets/close.png"
           alt="关闭">
         <slot name='header'>
-          <div class="title">{{title}}</div>
+          <div class="title" :style="titleStyle">{{title}}</div>
         </slot>
         <slot />
         <slot name='footer'>
@@ -43,6 +43,10 @@ export default {
     },
     cancel: {
       type: String
+    },
+    titleStyle: {
+      type: Object,
+      default: () => ({})
     }
   }
 }
