@@ -15,6 +15,7 @@
       我目前钥匙数量为：<img src="../../img/key-icon.png" alt=""><span>X{{boxInfo.keyNum}}</span>
     </div>
     <!-- 宝箱 -->
+    <!--v-if="!showShare" 暂时为了解决vivo手机分享弹窗点击发送专属弹窗到底的样式问题-->
     <Box @slideChange="slideChange" v-if="!showShare"/>
     <!-- 宝箱内容 -->
     <div class="award-list">
