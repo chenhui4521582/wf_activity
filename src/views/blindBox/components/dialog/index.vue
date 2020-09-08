@@ -1,28 +1,17 @@
 <template>
   <transition name="fade">
-    <article @click="$emit('mask')" v-if="show"
-      class="mask">
+    <article @click="$emit('mask')" v-if="show" class="mask">
       <section class="content" :style="layout">
-        <img v-if="close"
-          @click.self="$emit('onClose')"
-          class="close"
-          src="./assets/close.png"
+        <img v-if="close" @click.self="$emit('onClose')" class="close" src="./assets/close.png"
           alt="关闭">
         <slot name='header'>
           <div class="title">{{title}}</div>
         </slot>
         <slot />
         <slot name='footer'>
-          <div v-if="cancel || confirm"
-            class="footer">
-            <div class="button"
-              v-if="cancel"
-              v-html="cancel"
-              @click="$emit('onCancel')"></div>
-            <div class="button"
-              :style="{width:cancel?'50%':'100%'}"
-              v-if="confirm"
-              v-html="confirm"
+          <div v-if="cancel || confirm" class="footer">
+            <div class="button" v-if="cancel" v-html="cancel" @click="$emit('onCancel')"></div>
+            <div class="button" :style="{width:cancel?'50%':'100%'}" v-if="confirm" v-html="confirm"
               @click="$emit('onConfirm')"></div>
           </div>
         </slot>
@@ -107,7 +96,7 @@ export default {
     line-height: 0.9rem;
     display: flex;
     &::before {
-      content: "";
+      content: '';
       width: 200%;
       height: 1px;
       background: #eeeeee;
