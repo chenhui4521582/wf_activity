@@ -30,7 +30,8 @@
             <img src="./img/invited-user.png" alt="">
           </li>
           <template v-if="info.inviteNum<2">
-            <li class="user-icon empty" v-for="item in (2-info.inviteNum)" :key="`empty-${item}`">
+            <li class="user-icon empty" v-for="item in (2-info.inviteNum)" :key="`empty-${item}`"
+              @click="shareWechat">
               <img src="./img/empty-user.png" alt="">
               <img class="plus-icon" src="./img/plus-icon.png" alt="">
             </li>
@@ -39,13 +40,14 @@
             ......
           </li>
           <template v-if="info.inviteNum>=4">
-            <li class="user-icon empty" v-for="item in (6-info.inviteNum)" :key="`empty-${4+item}`">
+            <li class="user-icon empty" v-for="item in (6-info.inviteNum)" :key="`empty-${4+item}`"
+              @click="shareWechat">
               <img src="./img/empty-user.png" alt="">
               <img class="plus-icon" src="./img/plus-icon.png" alt="">
             </li>
           </template>
           <template v-if="info.inviteNum<4&&info.inviteNum<info.openBoxAwards.inviteNum">
-            <li class="user-icon empty">
+            <li class="user-icon empty" @click="shareWechat">
               <img src="./img/empty-user.png" alt="">
               <img class="plus-icon" src="./img/plus-icon.png" alt="">
             </li>
@@ -201,7 +203,7 @@ export default {
       const title = '推荐这个APP给你，下载可领取免费盲盒。盲盒可抽iPhone 11~'
       const content = '盲盒内超多奖品等你来抽！'
       try {
-        AppCall.shareContent(JSON.stringify({ url, title, content }))
+        AppCall.shareContent(JSON.stringify({ url, title, content, type: 0 }))
       } catch (e) {
       }
     }
@@ -286,6 +288,8 @@ img {
           width: 0.2rem;
           height: 0.2rem;
           bottom: -0.08rem;
+          left: 50%;
+          margin-left: -0.1rem;
         }
         &.dot {
           font-size: 0.2rem;
