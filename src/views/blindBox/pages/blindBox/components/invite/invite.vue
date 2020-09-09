@@ -1,6 +1,6 @@
 <template>
   <aside class="invite" v-if="info.showEntrance">
-    <section class="invite-icon" @click="showInvite()">
+    <section class="invite-icon" v-if="isShowEntrance" @click="showInvite()">
       <img src="./img/invite-icon.png" alt="">
     </section>
     <Dialog :show="isShowInvite" title="送你一个免费的盲盒" :close="true" :titleStyle='titleStyle'
@@ -54,10 +54,10 @@
           </template>
         </ul>
         <div class="btn-wrapper">
-          <div class="btn" v-if="info.inviteNum>=info.openBoxAwards.inviteNum"
-            @click="fissionReceiveCoupon">领取免费盲盒</div>
-          <div class="btn" v-else-if="info.inviteNum>=info.couponAwards.inviteNum"
-            @click="fissionReceiveBox">领取优惠券</div>
+          <div class="btn" v-if="info.couponAwards.state===1" @click="fissionReceiveCoupon">领取优惠券
+          </div>
+          <div class="btn" v-if="info.openBoxAwards.state===1" @click="fissionReceiveBox">领取免费盲盒
+          </div>
           <div class="btn" v-if="info.inviteNum<info.openBoxAwards.inviteNum" @click="shareWechat">
             立即邀请
           </div>
@@ -144,7 +144,8 @@ export default {
         width: '5rem'
       },
       info: {},
-      awardInfo: {}
+      awardInfo: {},
+      isShowEntrance: true
     }
   },
   computed: {
@@ -178,12 +179,16 @@ export default {
       const { code, data } = await fissionService.fissionActivityInfo()
       if (code && code === 200) {
         this.info = data
+        if (data.popup) {
+          this.isShowInvite = true
+        }
       }
     },
     async fissionReceiveCoupon () {
       const { code, data } = await fissionService.fissionReceiveCoupon()
       if (code && code === 200) {
         this.awardInfo = data
+        this.closeInvite()
         this.showCoupon()
       }
     },
@@ -191,11 +196,14 @@ export default {
       const { code } = await fissionService.fissionReceiveBox()
       if (code && code === 200) {
         this.isShowToast = true
+        this.closeInvite()
+        this.isShowEntrance = false
         let timer = setTimeout(() => {
           this.isShowToast = false
-          this.$emit('refresh')
+          this.getActivityInfo()
           clearTimeout(timer)
         }, 4000)
+        this.$emit('refresh')
       }
     },
     shareWechat () {
@@ -388,6 +396,7 @@ img {
       text-align: center;
       color: #fff;
       font-size: 0.24rem;
+      margin: 0 0.1rem;
     }
   }
 }
