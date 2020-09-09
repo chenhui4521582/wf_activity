@@ -159,12 +159,15 @@ export default {
   methods: {
     showInvite () {
       this.isShowInvite = true
+      GLOBALS.marchSetsPoint('A_H5PT0225004129')// H5平台-盲盒-首页盲盒裂变固定ICON点击
     },
     closeInvite () {
       this.isShowInvite = false
+      GLOBALS.marchSetsPoint('A_H5PT0225004124')// H5平台-盲盒-裂变活动弹窗-关闭点击
     },
     showRule () {
       this.isShowRule = true
+      GLOBALS.marchSetsPoint('A_H5PT0225004123')// H5平台-盲盒-裂变活动弹窗-活动规则点击
     },
     closeRule () {
       this.isShowRule = false
@@ -181,6 +184,7 @@ export default {
         this.info = data
         if (data.popup) {
           this.isShowInvite = true
+          GLOBALS.marchSetsPoint('A_H5PT0225004121')// H5平台-盲盒-裂变活动弹窗加载完成
         }
       }
     },
@@ -190,9 +194,11 @@ export default {
         this.awardInfo = data
         this.closeInvite()
         this.showCoupon()
+        GLOBALS.marchSetsPoint('A_H5PT0225004125', { coupon_name: data.awardsName })// H5平台-盲盒-裂变活动弹窗-领取优惠券点击
       }
     },
     async fissionReceiveBox () {
+      GLOBALS.marchSetsPoint('A_H5PT0225004126')// H5平台-盲盒-裂变活动弹窗-领取免费盲盒点击
       const { code } = await fissionService.fissionReceiveBox()
       if (code && code === 200) {
         this.isShowToast = true
@@ -204,6 +210,7 @@ export default {
           clearTimeout(timer)
         }, 4000)
         this.$emit('refresh')
+        GLOBALS.marchSetsPoint('A_H5PT0225004127')// H5平台-盲盒-裂变活动弹窗-盲盒领取成功提示加载完成
       }
     },
     shareWechat () {
@@ -211,6 +218,7 @@ export default {
       const title = '推荐这个APP给你，下载可领取免费盲盒。盲盒可抽iPhone 11~'
       const content = '盲盒内超多奖品等你来抽！'
       try {
+        GLOBALS.marchSetsPoint('A_H5PT0225004122')// H5平台-盲盒-裂变活动弹窗-立即邀请点击
         AppCall.shareContent(JSON.stringify({ url, title, content, type: 0 }))
       } catch (e) {
       }
