@@ -16,10 +16,12 @@
             邀请好友下载多多玩APP 得免费盲盒
           </template>
           <template v-else-if="info.couponAwards.inviteNum-info.inviteNum>0">
-            再邀请{{info.couponAwards.inviteNum-info.inviteNum}}位好友，即可获得{{info.couponAwards.awardsRemark}}优惠券
+            再邀请{{info.couponAwards.inviteNum-info.inviteNum}}位好友,
+            即可获得{{info.couponAwards.awardsRemark}}优惠券
           </template>
           <template v-else-if="info.openBoxAwards.inviteNum-info.inviteNum>0">
-            再邀请{{info.openBoxAwards.inviteNum-info.inviteNum}}位好友，即可获得{{info.openBoxAwards.awardsRemark}}个免费盲盒
+            再邀请{{info.openBoxAwards.inviteNum-info.inviteNum}}位好友,
+            即可获得{{info.openBoxAwards.awardsRemark}}个免费盲盒
           </template>
           <template v-else>
             恭喜获得1个免费盲盒
@@ -56,7 +58,8 @@
         <div class="btn-wrapper">
           <div class="btn" v-if="info.couponAwards.state===1" @click="fissionReceiveCoupon">领取优惠券
           </div>
-          <div class="btn" v-if="info.openBoxAwards.state===1" @click="fissionReceiveBox">领取免费盲盒
+          <div class="btn" v-else-if="info.openBoxAwards.state===1" @click="fissionReceiveBox">
+            领取免费盲盒
           </div>
           <div class="btn" v-if="info.inviteNum<info.openBoxAwards.inviteNum" @click="shareWechat">
             立即邀请
@@ -89,12 +92,16 @@
     <Dialog :show="isShowRule" title="活动规则" :close="true" :titleStyle='titleStyle' :layout='layout'
       @onClose="closeRule()">
       <p class="rule-content">
-        <span>活动时间：<em>{{info.beginDate}}—{{info.endDate}}</em></span><br>
-        <span>1.<em>邀请{{info.couponAwards.inviteNum}}位好友</em>下载多多玩APP（安卓版），可获得<em>{{info.couponAwards.awardsRemark}}盲盒优惠券</em>；如在领取免费盲盒之前未领取优惠券，视为放弃。优惠券可在购买盲盒时抵扣；</span><br>
-        <span>2.<em>邀请{{info.openBoxAwards.inviteNum}}位好友</em>下载多多玩APP（安卓版），可获得<em>{{info.openBoxAwards.awardsRemark}}个免费盲盒</em>；</span><br>
-        <span>3.邀请成功的标准为：安卓用户下载多多玩App并登录，即为邀请成功；苹果用户暂无法参与活动。</span><br>
-        <span>4.被邀请的用户需未在平台注册过，才视为新用户，邀请成功后才能获得奖励哦；</span><br>
-        <span>5.若被平台系统检测到：参与活动的用户有非正常邀请行为，平台将不再继续发放活动奖励。情节严重者，平台将取消其参与活动的资格，并扣除相应奖励不予结算；</span><br>
+        <span>活动时间: <em>{{info.beginDate}}—{{info.endDate}}</em></span><br>
+        <span>1.<em>邀请{{info.couponAwards.inviteNum}}位好友</em>下载多多玩APP (安卓版) ,
+          可获得<em>{{info.couponAwards.awardsRemark}}盲盒优惠券</em>,
+          优惠券可在购买盲盒时抵扣; </span><br>
+        <span>2.<em>邀请{{info.openBoxAwards.inviteNum}}位好友</em>下载多多玩APP (安卓版) ,
+          可获得<em>{{info.openBoxAwards.awardsRemark}}个免费盲盒</em>; </span><br>
+        <span>3.邀请成功的标准为: 安卓用户下载多多玩App并登录, 即为邀请成功; 苹果用户暂无法参与活动。</span><br>
+        <span>4.被邀请的用户需未在平台注册过, 才视为新用户, 邀请成功后才能获得奖励哦; </span><br>
+        <span>5.若被平台系统检测到: 参与活动的用户有非正常邀请行为, 平台将不再继续发放活动奖励。情节严重者, 平台将取消其参与活动的资格,
+          并扣除相应奖励不予结算; </span><br>
         <span>6.多多玩游戏平台对本活动具有最终解释权。</span>
       </p>
     </Dialog>
@@ -116,7 +123,7 @@
     <Dialog :show="isShowToast" title="领取成功" :close="false" :titleStyle='titleStyle'
       :layout='layout'>
       <section class="toast-wrapper">
-        请点击立即开盒，抽取奖品
+        请点击立即开盒, 抽取奖品
       </section>
     </Dialog>
   </aside>
@@ -175,8 +182,11 @@ export default {
     showCoupon () {
       this.isShowCoupon = true
     },
-    closeCoupon () {
+    closeCoupon (type) {
       this.isShowCoupon = false
+      if (type) {
+        this.isShowInvite = false
+      }
     },
     async getActivityInfo () {
       const { code, data } = await fissionService.fissionActivityInfo()
@@ -192,7 +202,6 @@ export default {
       const { code, data } = await fissionService.fissionReceiveCoupon()
       if (code && code === 200) {
         this.awardInfo = data
-        this.closeInvite()
         this.showCoupon()
         this.getActivityInfo()
         GLOBALS.marchSetsPoint('A_H5PT0225004125', { coupon_name: data.awardsName })// H5平台-盲盒-裂变活动弹窗-领取优惠券点击
@@ -203,7 +212,7 @@ export default {
       const { code } = await fissionService.fissionReceiveBox()
       if (code && code === 200) {
         this.isShowToast = true
-        this.closeInvite()
+        this.isShowInvite = false
         this.isShowEntrance = false
         let timer = setTimeout(() => {
           this.isShowToast = false
@@ -216,7 +225,7 @@ export default {
     },
     shareWechat () {
       const url = this.fissonUrl
-      const title = '推荐这个APP给你，下载可领取免费盲盒。盲盒可抽iPhone 11~'
+      const title = '推荐这个APP给你, 下载可领取免费盲盒。盲盒可抽iPhone 11~'
       const content = '盲盒内超多奖品等你来抽！'
       try {
         GLOBALS.marchSetsPoint('A_H5PT0225004122')// H5平台-盲盒-裂变活动弹窗-立即邀请点击
