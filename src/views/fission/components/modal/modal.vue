@@ -1,13 +1,11 @@
 <template>
   <div class="modal-warp" v-show="show">
-    <transition name="mask">
-      <div class="modal-mask" v-show="show"></div>
-    </transition>
+    <div class="modal-mask" v-show="show"></div>
     <div class="modal-content" :class="{'showWidth':isWidth}">
       <div class="header" :class="{notitile:!title}">
         <span>{{title}}</span>
       </div>
-      <div class="content" :class="{'line': type==2}">
+      <div class="modal-content-content" :class="{'line': type==2}">
         <slot></slot>
       </div>
       <div class="footer-warp" v-if="type == 1 && buttonShow">
@@ -114,30 +112,22 @@ export default {
 * {
   box-sizing: border-box;
 }
-.modal-warp {
+.modal-mask {
   position: fixed;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 99;
-}
-.modal-mask {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 99;
   overflow: hidden;
   pointer-events: none;
 }
 .modal-content {
-  position: absolute;
+  position: fixed;
   width: 4.7rem;
   min-height: 2rem;
-  z-index: 2;
+  z-index: 100;
   background-color: #ffffff;
   border-radius: .32rem;
   top: 42%;
@@ -163,7 +153,7 @@ export default {
       margin-top: .36rem;
     }
   }
-  .content {
+  .modal-content-content {
     padding: .08rem .3rem .23rem;
     &.line {
       border-bottom: 2px solid #e6e6e6;

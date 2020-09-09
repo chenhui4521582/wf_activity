@@ -15,7 +15,8 @@
       我目前钥匙数量为：<img src="../../img/key-icon.png" alt=""><span>X{{boxInfo.keyNum}}</span>
     </div>
     <!-- 宝箱 -->
-    <Box @slideChange="slideChange"/>
+    <!--v-if="!showShare" 暂时为了解决vivo手机分享弹窗点击发送专属弹窗到底的样式问题-->
+    <Box @slideChange="slideChange" v-if="!showShare"/>
     <!-- 宝箱内容 -->
     <div class="award-list">
       <div class="header" @click="openBox">
@@ -38,7 +39,7 @@
       <div class="open-box-btn" @click="openBox"><img src="../../img/red-key-icon.png" alt="">x{{currentBox.cost}}立即开箱</div>
     </div>
     <!-- share弹出框 -->
-    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum" :newSrc="newSrc" :qrCodeUrl="qrCodeUrl"/>
+    <Share v-model="showShare" :hfqNum="boxInfo.hfqNum" :newSrc="newSrc" :qrCodeUrl="qrCodeUrl" :isNewVersion="isNewVersion"/>
     <!-- 弹出框 -->
     <Popup
       v-model="showPopup"
@@ -66,6 +67,7 @@ import Services from '../../services/services'
 import utils from '../../components/utils'
 import _get from 'lodash.get'
 import qrcode from '@xkeshi/vue-qrcode'
+import AppCall from '../../components/native'
 export default {
   name: 'fission',
   data: ()=>({
@@ -76,7 +78,8 @@ export default {
     showPopup: false,
     popupType: 1,
     award: {},
-    newSrc:[]
+    newSrc:[],
+    isNewVersion:false
   }),
   components: {
     Horn,
@@ -228,7 +231,7 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     window._register = this._register
     this._getInfo()
     GLOBALS.marchSetsPoint('P_H5PT0308', {
@@ -237,6 +240,17 @@ export default {
     this.drawImage(1)
     this.drawImage(2)
     this.drawImage(3)
+    //判断版本是不是大于1.0.8
+    try{
+      let productParams=await AppCall.getProductData()
+      productParams = JSON.parse(productParams);
+      if(productParams) {
+        // productParams.appVersion='1.0.9'
+        let arr=productParams.appVersion.replace(/\./,'').split('.')//10.8
+        this.isNewVersion=parseInt(arr[0])>10||((parseInt(arr[0])==10&&parseInt(arr[1])>8))
+      }
+    }catch (e) {
+    }
   }
 }
 </script>
