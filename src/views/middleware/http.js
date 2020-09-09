@@ -10,6 +10,7 @@ class shareMiddleware {
             '100060': 'https://wap.beeplaying.com/activities/wfgames.html?channel=' + this.channel,
             '100000': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
             '100086': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
+            '100102': 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + this.channel,
             '100058': 'https://wap.beeplaying.com/downddw/',
             'other': 'https://wap.beeplaying.com/loginPages/failureLogon.html'
         }
