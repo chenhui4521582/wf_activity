@@ -7,14 +7,14 @@
         <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
-          <box-list @load="init"></box-list>
+          <box-list ref="boxList" @load="init"></box-list>
         </div>
       </article>
     </article>
     <Guide v-if="show" @close="show=false" />
     <CouponDialog @onConfirm="onCouponConfirm" @onClose="onCouponClose" :coupon-info="couponInfo"
       :show="showCoupon" />
-    <invite @refresh="init" />
+    <invite @refresh="refreshInfo" />
   </main>
 </template>
 
@@ -23,7 +23,7 @@
 import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
-import { FirstLoad } from '../../apis/box'
+// import { FirstLoad } from '../../apis/box'
 import { BoxCoupon } from '../../apis/user'
 import Guide from './components/guide'
 import { isWechat } from '../../global'
@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       show: false,
-      showCoupon: true,
+      showCoupon: false,
       isOldUser: true,
       couponInfo: null,
       startY: 0,
@@ -78,6 +78,13 @@ export default {
         this.$nextTick(this.initToucheListener)
       }
     },
+    async getCoupons () {
+      const coupon = await BoxCoupon()
+      if (coupon.data.data) {
+        this.couponInfo = coupon.data.data
+        this.showCoupon = true
+      }
+    },
     // AB测试,是否走新手引导
     guideTest () {
       let _token = localStorage.getItem('ACCESS_TOKEN') || getUrlParams('token') || ''
@@ -96,14 +103,13 @@ export default {
           }
         }
       }
+    },
+    refreshInfo () {
+      this.$refs.boxList.getUserInfo()
     }
   },
   async mounted () {
-    const coupon = await BoxCoupon()
-    if (coupon.data.data) {
-      this.couponInfo = coupon.data.data
-      this.showCoupon = true
-    }
+    await this.getCoupons()
     // H5平台-盲盒页面加载完成
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null

@@ -52,9 +52,13 @@
           </template>
         </ul>
         <div class="btn-wrapper">
-          <div class="btn" v-if="info.inviteNum>=info.openBoxAwards.inviteNum">领取免费盲盒</div>
-          <div class="btn" v-else-if="info.inviteNum>=info.couponAwards.inviteNum">领取优惠券</div>
-          <div class="btn" v-if="info.inviteNum<info.openBoxAwards.inviteNum">立即邀请</div>
+          <div class="btn" v-if="info.inviteNum>=info.openBoxAwards.inviteNum"
+            @click="fissionReceiveCoupon">领取免费盲盒</div>
+          <div class="btn" v-else-if="info.inviteNum>=info.couponAwards.inviteNum"
+            @click="fissionReceiveBox">领取优惠券</div>
+          <div class="btn" v-if="info.inviteNum<info.openBoxAwards.inviteNum" @click="shareWechat">
+            立即邀请
+          </div>
         </div>
         <section class="award-info-list">
           <section class="award-info">
@@ -92,12 +96,34 @@
         <span>6.多多玩游戏平台对本活动具有最终解释权。</span>
       </p>
     </Dialog>
+    <Dialog :show="isShowCoupon" title="恭喜你获得" :close="true" :titleStyle='titleStyle'
+      :layout='layout' @onClose="closeCoupon(0)">
+      <section class="coupon-wrapper">
+        <img src="./img/coupon-icon.png" alt="">
+        <p class="name">
+          {{awardInfo.awardsName}}
+        </p>
+        <p class="desc">可到“我的-优惠券”页面中查看</p>
+        <section class="btn-wrapper">
+          <div class="btn confirm" @click="closeCoupon(1)">
+            立即使用
+          </div>
+        </section>
+      </section>
+    </Dialog>
+    <Dialog :show="isShowToast" title="领取成功" :close="false" :titleStyle='titleStyle'
+      :layout='layout'>
+      <section class="toast-wrapper">
+        请点击立即开盒，抽取奖品
+      </section>
+    </Dialog>
   </aside>
 </template>
 
 <script>
 import Dialog from '../../../../components/dialog'
 import * as fissionService from '../../../../apis/fission'
+import AppCall from '../../../../../../common/js/AppCall'
 export default {
   name: 'invite',
   components: {
@@ -107,14 +133,21 @@ export default {
     return {
       isShowInvite: false,
       isShowRule: false,
-      isShowCoupon: true,
+      isShowCoupon: false,
+      isShowToast: false,
       titleStyle: {
         paddingBottom: '0.16rem'
       },
       layout: {
         width: '5rem'
       },
-      info: {}
+      info: {},
+      awardInfo: {}
+    }
+  },
+  computed: {
+    fissonUrl () {
+      return `https://wap.beeplaying.com/ddwgame/?type=blindBoxFission&invitationCode=${this.info.invitationCode}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
     }
   },
   mounted () {
@@ -145,16 +178,31 @@ export default {
         this.info = data
       }
     },
-    async fissionReceiveBox () {
-      const { code, data } = await fissionService.fissionReceiveBox()
+    async fissionReceiveCoupon () {
+      const { code, data } = await fissionService.fissionReceiveCoupon()
       if (code && code === 200) {
-        this.info = data
+        this.awardInfo = data
+        this.showCoupon()
       }
     },
-    async fissionReceiveCoupon () {
-      const { code } = await fissionService.fissionReceiveCoupon()
+    async fissionReceiveBox () {
+      const { code } = await fissionService.fissionReceiveBox()
       if (code && code === 200) {
-        this.$emit('refresh')
+        this.isShowToast = true
+        let timer = setTimeout(() => {
+          this.isShowToast = false
+          this.$emit('refresh')
+          clearTimeout(timer)
+        }, 4000)
+      }
+    },
+    shareWechat () {
+      const url = this.fissonUrl
+      const title = '推荐这个APP给你，下载可领取免费盲盒。盲盒可抽iPhone 11~'
+      const content = '盲盒内超多奖品等你来抽！'
+      try {
+        AppCall.shareContent(JSON.stringify({ url, title, content }))
+      } catch (e) {
       }
     }
   }
@@ -246,22 +294,6 @@ img {
         }
       }
     }
-    .btn-wrapper {
-      margin-top: 0.28rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .btn {
-        width: 2rem;
-        height: 0.7rem;
-        background: #ff4141;
-        border-radius: 0.16rem;
-        line-height: 0.7rem;
-        text-align: center;
-        color: #fff;
-        font-size: 0.24rem;
-      }
-    }
     .award-info-list {
       height: 2.5rem;
       position: relative;
@@ -315,6 +347,43 @@ img {
         left: 50%;
         margin-left: -2.28rem;
       }
+    }
+  }
+  .coupon-wrapper {
+    padding-bottom: 0.3rem;
+    text-align: center;
+    img {
+      width: 2.56rem;
+      height: 1.6rem;
+    }
+    .name {
+      font-size: 0.24rem;
+      color: #ff4141;
+      margin: 0.06rem 0;
+    }
+    .desc {
+      font-size: 0.2rem;
+      color: #bbb;
+    }
+  }
+  .toast-wrapper {
+    padding-bottom: 0.3rem;
+    color: #888;
+  }
+  .btn-wrapper {
+    margin-top: 0.28rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .btn {
+      width: 2rem;
+      height: 0.7rem;
+      background: #ff4141;
+      border-radius: 0.16rem;
+      line-height: 0.7rem;
+      text-align: center;
+      color: #fff;
+      font-size: 0.24rem;
     }
   }
 }
