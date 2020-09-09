@@ -3,8 +3,8 @@
     <section class="invite-icon" v-if="isShowEntrance" @click="showInvite()">
       <img src="./img/invite-icon.png" alt="">
     </section>
-    <Dialog :show="isShowInvite" title="送你一个免费的盲盒" :close="true" :titleStyle='titleStyle'
-      :layout='layout' @onClose="closeInvite()">
+    <Dialog :show="isShowInvite" animationName='scalc' title="送你一个免费的盲盒" :close="true"
+      :titleStyle='titleStyle' :layout='layout' @onClose="closeInvite()">
       <section class="invite-wrapper">
         <div class="icon-wrapper">
           <img src="./img/gift-icon-big.png" alt="">
@@ -194,6 +194,7 @@ export default {
         this.awardInfo = data
         this.closeInvite()
         this.showCoupon()
+        this.getActivityInfo()
         GLOBALS.marchSetsPoint('A_H5PT0225004125', { coupon_name: data.awardsName })// H5平台-盲盒-裂变活动弹窗-领取优惠券点击
       }
     },
