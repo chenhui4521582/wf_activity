@@ -52,7 +52,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       width: 1.74rem;
-      white-space: nowrap;
+      /*white-space: nowrap;*/
       font-size: .2rem;
       font-weight: bold;
       color: #fff;
