@@ -20,27 +20,28 @@
     <!-- 内容 -->
     <div class="content">
       <!-- 收集图章 -->
-      <get-seal 
-        v-if="currentIndex == 1" 
-        :userInfo="userInfo" 
+      <get-seal
+        v-if="currentIndex == 1"
+        :userInfo="userInfo"
+        :bagBatchId="activitiesInfo.bagBatchId"
         @refrshUserInfo="_getInfo"
       />
       <!-- 兑换大奖 -->
-      <exchange-prize 
-        v-if="currentIndex == 2" 
-        :userInfo="userInfo" 
+      <exchange-prize
+        v-if="currentIndex == 2"
+        :userInfo="userInfo"
         :awardsList="awardsList"
         @refrshUserInfo="_getInfo"
       />
       <!-- 排行榜 -->
-      <ranking 
-        v-if="currentIndex == 3" 
+      <ranking
+        v-if="currentIndex == 3"
         :activitiesInfo="activitiesInfo"
       />
     </div>
     <!-- popup -->
-    <popup 
-      v-model="showPopup" 
+    <popup
+      v-model="showPopup"
       :popupType="popupType"
       :rankingAward="rankingAward"
       :myRank="myRank"
@@ -93,7 +94,7 @@ export default {
           if(_get(res, 'data.data.state') == 2) {
             this._getUserRanking()
             this.currentIndex = 3
-            return 
+            return
           }
           if(_get(res, 'data.data.guidePopup', false)) {
             this.popupType = 2
