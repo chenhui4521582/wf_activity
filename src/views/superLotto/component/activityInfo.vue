@@ -58,6 +58,9 @@ export default {
         }
       }, 1000)
     }
+  },
+  destroyed () {
+    clearInterval(this.timer)
   }
 }
 </script>
