@@ -143,8 +143,11 @@ export default {
     GLOBALS.marchSetsPoint('A_H5PT0278003324')
   },
   watch:{
-    bagBatchId(val){
-      val&&this._getCardList(val)
+    bagBatchId:{
+      handler(val) {
+        val&&this._getCardList(val)
+      },
+      immediate: true
     }
   }
 }
