@@ -166,6 +166,7 @@ export default {
   methods: {
     showInvite () {
       this.isShowInvite = true
+      this.getActivityInfo()
       GLOBALS.marchSetsPoint('A_H5PT0225004129')// H5平台-盲盒-首页盲盒裂变固定ICON点击
     },
     closeInvite () {
