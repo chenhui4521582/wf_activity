@@ -10,7 +10,9 @@
           <img src="./img/gift-icon-big.png" alt="">
           <p class="rule" @click="showRule()">活动规则</p>
         </div>
-        <p class="info-number" v-if="info.inviteNum">已邀请<em>{{info.inviteNum}}</em>位好友</p>
+        <p class="info-number" v-if="info.inviteNum">
+          已邀请<em>{{info.inviteNum>info.openBoxAwards.inviteNum?info.openBoxAwards.inviteNum:info.inviteNum}}</em>位好友
+        </p>
         <p class="info-desc">
           <template v-if="!info.inviteNum">
             邀请好友下载多多玩APP 得免费盲盒
@@ -28,9 +30,12 @@
           </template>
         </p>
         <ul class="user-list-wrapper">
-          <li class="user-icon invite" v-for="item in info.inviteNum" :key="`invite-${item}`">
-            <img src="./img/invited-user.png" alt="">
-          </li>
+          <template v-for="item in info.inviteNum">
+            <li class="user-icon invite" v-if="item<=info.openBoxAwards.inviteNum"
+              :key="`invite-${item}`">
+              <img src="./img/invited-user.png" alt="">
+            </li>
+          </template>
           <template v-if="info.inviteNum<2">
             <li class="user-icon empty" v-for="item in (2-info.inviteNum)" :key="`empty-${item}`"
               @click="shareWechat">
@@ -41,14 +46,14 @@
           <li class="user-icon dot" v-if="info.inviteNum<4">
             ......
           </li>
-          <template v-if="info.inviteNum>=4">
+          <template v-else-if="info.inviteNum>=4 && info.inviteNum<info.openBoxAwards.inviteNum">
             <li class="user-icon empty" v-for="item in (6-info.inviteNum)" :key="`empty-${4+item}`"
               @click="shareWechat">
               <img src="./img/empty-user.png" alt="">
               <img class="plus-icon" src="./img/plus-icon.png" alt="">
             </li>
           </template>
-          <template v-if="info.inviteNum<4&&info.inviteNum<info.openBoxAwards.inviteNum">
+          <template v-if="info.inviteNum<4">
             <li class="user-icon empty" @click="shareWechat">
               <img src="./img/empty-user.png" alt="">
               <img class="plus-icon" src="./img/plus-icon.png" alt="">
