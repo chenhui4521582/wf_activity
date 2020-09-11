@@ -4,7 +4,7 @@
       <div class="item-img">
         <img :src="`${require(`../img/pic${index}.png`)}`" alt="">
       </div>
-      <div class="item-name">{{item.content}}</div>
+      <div class="item-name" v-html="item.content.replace('+',`<br>+`)">{{item.content}}</div>
       <div class="item-btn">
        ￥{{item.price}}
       </div>
