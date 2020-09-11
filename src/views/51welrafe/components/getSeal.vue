@@ -98,7 +98,6 @@ export default {
     },
     /** 获取礼包列表 **/
     _getCardList (id) {
-      console.log(id)
       Services.getCardList(id).then(res => {
         const {code, data, message} = _get(res, 'data')
         if (code == 200) {

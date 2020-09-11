@@ -10,13 +10,13 @@
           </div>
           <div class="body">
             <h5>1、活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} 至 {{activitiesInfo.endDate | formatTime('m-d')}} </h5>
-            <h5>2、收集图章</h5> 
-            通过消耗流水、充值、购买活动礼包可获得图章，在斗地主、麻将、跑得快、枪火英雄、套圈、天天飞机大战中消耗金叶不计入活动；
+            <h5>2、收集图章</h5>
+            通过消耗流水、充值、购买活动礼包可获得图章，欢乐竞技台球、街机欢乐捕鱼、糖果萌消消、三国大作战、众神风云、深海探一探、王者弹珠、欢乐的小鸟、福满多、斗西游中消耗金叶计入活动；
             <h5>3、图章兑换奖励</h5>
             奖励需一定数量的图章进行兑换，且兑换不限次数；
             <h5>4、 累计排行榜</h5>
-            活动5天内，累计图章最多的玩家，前15名获得奖励；<br> 
-            5、图章注意及时领取并兑换奖品，活动结束（{{activitiesInfo.endDate | formatTime('m@d@h')}}）后图章自动作废清零，不予补偿。 <br> 
+            活动5天内，累计图章最多的玩家，前15名获得奖励；<br>
+            5、图章注意及时领取并兑换奖品，活动结束（{{activitiesInfo.endDate | formatTime('m@d@h')}}）后图章自动作废清零，不予补偿。 <br>
             6、如有问题，请联系在线客服。
           </div>
         </div>
@@ -594,7 +594,7 @@ export default {
           position: relative;
           margin: 1.41rem auto 0;
           display: flex;
-          justify-content: space-between; 
+          justify-content: space-between;
           width: 4.34rem;
           .item {
             width: 1.88rem;
@@ -615,7 +615,7 @@ export default {
           }
           &.big {
             margin-top: .85rem;
-            justify-content: center; 
+            justify-content: center;
             .item {
               width: 2.7rem;
             }
