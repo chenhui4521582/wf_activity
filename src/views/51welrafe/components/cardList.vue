@@ -2,11 +2,11 @@
   <div class="card-list">
     <div class="item" v-for="(item, index) in list" :key="index" @click="gotoPayCard(item, index)">
       <div class="item-img">
-        <img :src="item.productIcon | filter" alt="">
+        <img :src="`${require(`../img/pic${index}.png`)}`" alt="">
       </div>
-      <div class="item-name">{{item.content}}</div>
+      <div class="item-name" v-html="item.content.replace('+',`<br>+`)">{{item.content}}</div>
       <div class="item-btn">
-        <img src="../img/buy-btn.png" alt="">
+       ￥{{item.price}}
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
   .item {
     .item-img {
       width: 1.74rem;
-      height: 1.74rem;
+      height: 1.39rem;
       img {
         vertical-align: top;
         width: 100%;
@@ -52,7 +52,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       width: 1.74rem;
-      white-space: nowrap;
+      /*white-space: nowrap;*/
       font-size: .2rem;
       font-weight: bold;
       color: #fff;
@@ -61,11 +61,13 @@ export default {
     .item-btn {
       width: 1.74rem;
       height: .84rem;
-      img {
-        vertical-align: top;
-        width: 100%;
-        height: 100%;
-      }
+      background: url("../img/pay_btn.png");
+      background-size: 100% 100%;
+      font-size: .26rem;
+      color:#c75e01;
+      text-align: center;
+      line-height: .84rem;
+      font-weight: bold;
     }
   }
 }

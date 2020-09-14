@@ -1,16 +1,16 @@
 <template>
   <div class="get-seal">
-    <my-seal 
-      :userInfo="userInfo" 
-      :currentIndex="1" 
+    <my-seal
+      :userInfo="userInfo"
+      :currentIndex="1"
       @openSealLog="_getSealLog"
     />
     <!-- 玩游戏集图章 -->
     <div class="play-game">
       <div class="title">累计支持金叶</div>
-      <Progress 
-        :list="betProgress" 
-        :status="1" 
+      <Progress
+        :list="betProgress"
+        :status="1"
         :probeType="3"
         @openPopup="openPopup"
         @taskFinish="_getProgress"
@@ -19,7 +19,7 @@
     <!-- 充值领图章 -->
     <div class="pay">
       <div class="title">累计充值</div>
-      <Progress 
+      <Progress
         :list="rechargeProgress"
         :status="2"
         :probeType="3"
@@ -30,8 +30,8 @@
     <!-- 购买礼包 -->
     <CardList :list="cardList"/>
     <!-- Popup -->
-    <popup 
-      v-model="showPopup" 
+    <popup
+      v-model="showPopup"
       :popupType="popupType"
       :userInfo="userInfo"
       :sealNum="sealNum"
@@ -52,6 +52,10 @@ export default {
     userInfo: {
       type: Object,
       default: () => {}
+    },
+    bagBatchId:{
+      type: String,
+      default: ''
     }
   },
   data: () => ({
@@ -78,8 +82,8 @@ export default {
           this.sealLog = _get(res, 'data.data', [])
           this.showPopup = true
           this.popupType = 4
-        } 
-      }) 
+        }
+      })
     },
 
     /** 获取-用户任务进度 **/
@@ -93,8 +97,8 @@ export default {
       })
     },
     /** 获取礼包列表 **/
-    _getCardList () {
-      Services.getCardList().then(res => {
+    _getCardList (id) {
+      Services.getCardList(id).then(res => {
         const {code, data, message} = _get(res, 'data')
         if (code == 200) {
           this.cardList = _get(res, 'data.data.mallBizConfigs')
@@ -136,8 +140,15 @@ export default {
   },
   mounted () {
     this._getUserProgress()
-    this._getCardList()
     GLOBALS.marchSetsPoint('A_H5PT0278003324')
+  },
+  watch:{
+    bagBatchId:{
+      handler(val) {
+        val&&this._getCardList(val)
+      },
+      immediate: true
+    }
   }
 }
 </script>
