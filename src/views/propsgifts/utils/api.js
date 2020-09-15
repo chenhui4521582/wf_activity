@@ -12,8 +12,8 @@ export const getActInfo = async () => {
  * @description 抽奖
  * @return {Object} data
  */
-export const drawPrize = async () => {
-  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/prop-gift/draw')
+export const drawPrize = async (times) => {
+  const {data} = await $axios.post('//ops-api.beeplaying.com/ops/api/prop-gift/draw/'+times)
   return data
 }
 /**

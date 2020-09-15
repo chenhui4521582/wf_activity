@@ -36,6 +36,18 @@
             <div class="awards-btn run" @click="runLottery"></div>
           </div>
         </div>
+        <div class="lottery_gear">
+          <div class="item">单局消耗抽奖机会</div>
+          <div class="item">
+            <div class="gear_txt">{{gearList[gearIndex]}}</div>
+            <div class="gear_btn" @click="showGearList=!showGearList"></div>
+          </div>
+        </div>
+        <div class="gear_list" v-if="showGearList">
+          <div class="list_item" v-for="(item,index) in gearList" :class="{last:index==gearList.length-1}"
+               @click="selectGear(index)">{{item}}
+          </div>
+        </div>
       </div>
       <div class="exchange_container">
         <div class="exchange_info">
@@ -57,7 +69,7 @@
         </div>
       </div>
     </div>
-    <com-pop :popType="popType" ref="comPop" :actInfo="actInfo" :awardData="awardData" @close="closePop"></com-pop>
+    <com-pop :popType="popType" ref="comPop" :actInfo="actInfo" :awardData="awardData" :awardList="awardList" @close="closePop"></com-pop>
     <loading v-show="showLoading" :showBar="false"></loading>
   </section>
 </template>
@@ -77,7 +89,11 @@
         actInfo: null,
         awardData: null,
         countTime: '',
-        showLoading: false
+        showLoading: false,
+        gearList: [],
+        gearIndex: 0,
+        showGearList: false,
+        awardList:[]
       }
     },
     async mounted() {
@@ -130,6 +146,7 @@
         }, 1000)
       },
       gotomall() {
+        this.showGearList=false
         GLOBALS.marchSetsPoint('A_H5PT0315003927')
         location.href = 'https://wap.beeplaying.com/xmWap/#/payment'
       },
@@ -139,13 +156,17 @@
         return `transform: rotate(${Math.floor(mean * (index))}deg)`
       },
       back() {
+        this.showGearList=false
         GLOBALS.marchSetsPoint('A_H5PT0315003922')
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
       async getActInfo() {
+        this.showGearList=false
         let {code, data} = await getActInfo()
         if (code == 200) {
           this.actInfo = data
+          this.gearList = data.timeList.reverse()
+          !this.gearIndex&&(this.gearIndex = this.gearList.length - 1)
           this.countDown(data.countdown)
           // 新增的抽奖次数
           if (this.actInfo.incrWheelTime) {
@@ -158,26 +179,14 @@
           }
         }
       },
-      gotopay(item) {
-        localStorage.setItem('originDeffer', window.location.href)
-        GLOBALS.marchSetsPoint('A_H5PT0277003315', {
-          recharge_rmb: item.price,
-          product_id: item.bizId,
-          awards_name: item.name,
-          product_name: item.name
-        })   // H5平台-超级大赢家活动-礼包点击
-        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
-        localStorage.setItem('payment', JSON.stringify(item))
-        location.href =
-          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
-      },
       //弹窗
       showPop(type) {
+        this.showGearList=false
         this.popType = type
         let points = ['A_H5PT0315003923', 'A_H5PT0315003928', 'A_H5PT0315003929', '', 'A_H5PT0315003925', 'A_H5PT0315003926']
         points[type - 1] && GLOBALS.marchSetsPoint(points[type - 1])
         setTimeout(() => {
-          if (this.awardData&&this.awardData.awardsName) {
+          if (this.awardData && this.awardData.awardsName) {
             GLOBALS.marchSetsPoint(this.awardData.source == 'exhange' ? 'A_H5PT0315003931' : 'A_H5PT0315003930', {
               awards_name: this.awardData.awardsName,
               awards_id: this.awardData.sort
@@ -187,6 +196,7 @@
         })
       },
       async gain(category, item) {
+        this.showGearList=false
         if (category) {
           if (item.awardsState == 0) {
             location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
@@ -234,26 +244,20 @@
         GLOBALS.marchSetsPoint('A_H5PT0315003924')
         if (this.actInfo.userInfo.wheelTime) {
           this.showLoading = true
-          let {code, data, message} = await drawPrize()
+          let {code, data, message} = await drawPrize(this.gearList[this.gearIndex])
           if (code === 200) {
-            this.awards = data
+            this.awards = data.groupAwardsList
             let dom = this.$refs.awards
             let current =
               this.actInfo.wheelList &&
               this.actInfo.wheelList.find((item, index) => {
-                return this.awards.sort === item.sort
+                return data.firstSort === item.sort
               })
             /** 打开动画 **/
             this.turntableAnimation(dom, current.sort, () => {
               /** 通知父级打开奖励弹框 **/
-              this.awardData = {
-                sort: data.sort,
-                awardsType: data.awardsType,
-                awardsName: `${data.awardsName}${data.awardsRemark ? `<br><i style="font-size:.24rem;color:rgba(34,112,144,1);">${data.awardsRemark}</i>` : ''}`,
-                info: '如抽中碎片，累计可以兑换道具哦~',
-                source: 'draw'
-              }
-              this.showPop(4)
+              this.awardList = this.awards
+              this.showPop(7)
               this.showLoading = false
               this.getActInfo()
             })
@@ -303,6 +307,7 @@
         }, 3200)
       },
       async exchagePrize(item) {
+        this.showGearList=false
         if (item.usable) {
           if (item.consume > this.actInfo.userInfo.luckySpNum) {
             this.$toast.show({
@@ -316,7 +321,7 @@
                 sort: item.sort,
                 awardsType: data.awardsType,
                 awardsName: `${data.awardsName}${data.awardsRemark ? `<br><i style="font-size:.24rem;color:rgba(34,112,144,1);">${data.awardsRemark}</i>` : ''}`,
-                info: ['hfq',' jdk','lucky-sp'].includes(data.awardsType)?'':'可前往游戏内查看',
+                info: ['hfq', ' jdk', 'lucky-sp'].includes(data.awardsType) ? '' : '可前往游戏内查看',
                 source: 'exhange'
               }
               this.showPop(4)
@@ -330,6 +335,10 @@
             }
           }
         }
+      },
+      selectGear(index) {
+        this.gearIndex = index
+        this.showGearList = false
       }
     },
     watch: {
@@ -514,6 +523,82 @@
               background-size: 100% 100%;
               animation: btnScale 2s infinite;
             }
+          }
+        }
+      }
+      .lottery_gear {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 6.54rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .item {
+          &:nth-child(1) {
+            font-size: .24rem;
+            font-weight: bold;
+            color: #FFF694;
+          }
+          &:nth-child(2) {
+            width: 1.55rem;
+            height: .78rem;
+            position: relative;
+            .gear_txt {
+              padding-left: .15rem;
+              padding-right: .65rem;
+              box-sizing: border-box;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+              width: 1.55rem;
+              height: .7rem;
+              line-height: .7rem;
+              text-align: center;
+              background: url("./images/geartxt.png");
+              background-size: 100% 100%;
+              font-size: .28rem;
+              font-weight: 800;
+              color: #8E3C30;
+            }
+            .gear_btn {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: .75rem;
+              height: .78rem;
+              background: url("./images/gearbtn.png");
+              background-size: 100% 100%;
+            }
+          }
+        }
+      }
+      .gear_list {
+        position: absolute;
+        top: 4.34rem;
+        right: 1.5rem;
+        width: 1.4rem;
+        height: 2.41rem;
+        background: url("./images/gearlist.png");
+        background-size: 100% 100%;
+        padding: .2rem .2rem .3rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .list_item {
+          width: .92rem;
+          box-sizing: border-box;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: .28rem;
+          font-weight: 800;
+          color: #8E3C30;
+          &:not(.last) {
+            border-bottom: 1px solid rgba(142, 60, 48, .2);
           }
         }
       }

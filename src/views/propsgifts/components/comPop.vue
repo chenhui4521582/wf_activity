@@ -4,7 +4,7 @@
     <transition name="scalc">
       <div class="pop" v-if="isShowPop&&popType">
         <div :class="getClassName('wrap')">
-          <div class="title_bg">{{titles[popType-1]}}</div>
+          <div :class="getClassName('title_bg')">{{titles[popType-1]}}</div>
           <div :class="getClassName('main')">
             <div :class="getClassName('container_compop')">
               <template v-if="popType==1">
@@ -43,6 +43,18 @@
                 </div>
                 <div class="info">{{awardData.info}}</div>
               </template>
+              <template v-else-if="popType==7">
+                <scroll>
+                  <div class="awards_list" :class="{onlyone:awardList.length==1}">
+                    <div class="award" v-for="item in awardList">
+                      <div class="img_bg">
+                        <img :src="`${require(`../images/awards/${item.awardsType}.png`)}`" alt="">
+                      </div>
+                      <div class="awardsName">{{item.awardsName}}<template v-if="item.awardsRemark">(<i style="font-size:.18rem;">{{item.awardsRemark}}</i>)</template></div>
+                    </div>
+                  </div>
+                </scroll>
+              </template>
               <template v-else>
                 <div class="bonus-record" :class="{empty:!record.length}">
                   <template v-if="record.length">
@@ -64,10 +76,12 @@
                     </div>
                   </template>
                 </div>
+                <div v-if="popType==5" class="info" style="position: absolute; bottom: -1rem; text-align: center; width: 100%;">超过1000条记录不显示，奖励均自动到账</div>
               </template>
             </div>
-            <div class="close" @click="close">
+            <div :class="getClassName('close')" @click="close">
             </div>
+            <div class="info flag7" v-if="popType==7">如抽中碎片，累计可以兑换道具哦~</div>
           </div>
         </div>
       </div>
@@ -82,7 +96,7 @@
     data() {
       return {
         isShowPop: false,
-        titles: ['活动规则', '', '', '恭喜获得', '抽奖记录', '兑奖记录'],
+        titles: ['活动规则', '', '', '恭喜获得', '抽奖记录', '兑奖记录','恭喜获得'],
         record: []
       };
     },
@@ -98,7 +112,11 @@
       actInfo: {
         type: Object,
         default: () => null
-      }
+      },
+      awardList: {
+        type: Array,
+        default: () => []
+      },
     },
     components: {
       scroll: () => import('./scroll')
@@ -124,7 +142,7 @@
         }
       },
       getClassName(name) {
-        return `${name} flag${this.popType}`
+        return `${name} flag${this.popType} awardNum${this.awardList.length}`
       },
       async showPop() {
         if ([5, 6].includes(this.popType)) {
@@ -175,6 +193,9 @@
     &.flag2, &.flag3 {
       margin-left: -3.41rem;
     }
+    &.flag7{
+      margin-left: -3.22rem;
+    }
     .pop-mask {
       position: fixed;
       left: 0;
@@ -204,15 +225,20 @@
           font-weight: bold;
           z-index: 1;
           color: rgba(255, 230, 173, 1);
+          &.flag7{
+            top:2.9rem;
+          }
         }
         .main {
           width: 7.12rem;
-          height: 8.45rem;
           font-size: 0.2rem;
           color: #fff;
           position: relative;
           background: url("../images/compop/pop2.png");
           background-size: 100% 100%;
+          &:not(.flag7){
+            height: 8.45rem;
+          }
           &.flag1 {
             width: 6.73rem;
             height: 8.5rem;
@@ -225,13 +251,58 @@
             background: url("../images/compop/pop1.png");
             background-size: 100% 100%;
           }
+          &.flag7 {
+            width: 6.44rem;
+            min-height: 1.5rem;
+            background: url("../images/compop/bgline.png");
+            background-size: 6.44rem 6.44rem;
+            position: relative;
+            top:3.6rem;
+            &:before{
+              width: 6.44rem;
+              height: 3.17rem;
+              background: url("../images/compop/top.png");
+              background-size: 100% 100%;
+              content: '';
+              position: absolute;
+              top:-3.1rem;
+            }
+            &:after{
+              width: 6.44rem;
+              height: 1.3rem;
+              background: url("../images/compop/bottom.png");
+              background-size: 100% 100%;
+              content: '';
+              position: absolute;
+              bottom:-1.2rem;
+            }
+            .info{
+              position: absolute;
+              left:1.7rem;
+              bottom: -.6rem;
+              margin: auto;
+              line-height: .4rem;
+              padding: 0 .1rem;
+              background: #062C4C;
+              border: .02rem solid #086E8A;
+              opacity: 0.3;
+              border-radius: .2rem;
+              font-size: .2rem;
+              font-weight: bold;
+              color: rgba(255, 255, 255, 0.8);
+              text-align: center;
+              z-index: 1;
+            }
+          }
           .container_compop {
-            position: absolute;
             top: 2.7rem;
             bottom: .2rem;
             left: .2rem;
             right: .2rem;
             margin: auto;
+            &:not(.flag7){
+              position: absolute;
+            }
             &.flag1 {
               left: 1.52rem;
               right: 1.52rem;
@@ -404,6 +475,50 @@
                 }
               }
             }
+            &.flag7{
+              padding: .1rem 1.3rem .1rem 1.6rem;
+              height: 4rem;
+              &.awardNum1,&.awardNum2{
+                height: 2rem;
+              }
+              &.awardNum3,&.awardNum4{
+                height: 3.5rem;
+              }
+              .awards_list{
+                display: flex;
+                flex-wrap: wrap;
+                width: 3.9rem;
+                &.onlyone{
+                  justify-content: center;
+                }
+                .award{
+                  .img_bg{
+                    width: 1.63rem;
+                    height: 1.21rem;
+                    background: url("../images/compop/light.png");
+                    background-size: 100% 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img{
+                      width: 80%;
+                    }
+                  }
+                  .awardsName{
+                    margin-top: .13rem;
+                    font-size: .2rem;
+                    font-weight: 500;
+                    color: #FFFFFF;
+                    text-align: center;
+                    max-width:1.63rem;
+                  }
+                  &:nth-child(2n+1){
+                    margin-right: .2rem;
+                    margin-bottom: .1rem;
+                  }
+                }
+              }
+            }
           }
           .close {
             position: absolute;
@@ -415,6 +530,9 @@
             height: .6rem;
             background: url("../images/compop/close.png");
             background-size: 100% 100%;
+            &.flag7{
+              bottom: -1.8rem;
+            }
           }
         }
       }
