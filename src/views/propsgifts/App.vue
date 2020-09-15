@@ -187,7 +187,7 @@
         points[type - 1] && GLOBALS.marchSetsPoint(points[type - 1])
         setTimeout(() => {
           if (this.awardData && this.awardData.awardsName) {
-            GLOBALS.marchSetsPoint(this.awardData.source == 'exhange' ? 'A_H5PT0315003931' : 'A_H5PT0315003930', {
+            GLOBALS.marchSetsPoint('A_H5PT0315003931', {
               awards_name: this.awardData.awardsName,
               awards_id: this.awardData.sort
             })
@@ -244,27 +244,34 @@
         GLOBALS.marchSetsPoint('A_H5PT0315003924')
         if (this.actInfo.userInfo.wheelTime) {
           this.showLoading = true
-          let {code, data, message} = await drawPrize(this.gearList[this.gearIndex])
-          if (code === 200) {
-            this.awards = data.groupAwardsList
-            let dom = this.$refs.awards
-            let current =
-              this.actInfo.wheelList &&
-              this.actInfo.wheelList.find((item, index) => {
-                return data.firstSort === item.sort
+          try {
+            let {code, data, message} = await drawPrize(this.gearList[this.gearIndex])
+            if (code === 200) {
+              this.awards = data.groupAwardsList
+              let dom = this.$refs.awards
+              let current =
+                this.actInfo.wheelList &&
+                this.actInfo.wheelList.find((item, index) => {
+                  return data.firstSort === item.sort
+                })
+              /** 打开动画 **/
+              this.turntableAnimation(dom, current.sort, () => {
+                /** 通知父级打开奖励弹框 **/
+                this.awardList = this.awards
+                this.showPop(7)
+                GLOBALS.marchSetsPoint('A_H5PT0315003930',{
+                  turn_level:this.gearList[this.gearIndex]
+                })
+                this.showLoading = false
+                this.getActInfo()
               })
-            /** 打开动画 **/
-            this.turntableAnimation(dom, current.sort, () => {
-              /** 通知父级打开奖励弹框 **/
-              this.awardList = this.awards
-              this.showPop(7)
+            } else {
+              this.$toast.show({
+                message
+              })
               this.showLoading = false
-              this.getActInfo()
-            })
-          } else {
-            this.$toast.show({
-              message
-            })
+            }
+          }catch (e) {
             this.showLoading = false
           }
         } else {
