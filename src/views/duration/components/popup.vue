@@ -49,6 +49,9 @@
             <p class="time">{{itemDuration}}<span>分钟</span></p>
           </div>
           <div class="go-game" @click="gotoTask">去玩游戏</div>
+          <div class="recommend" @click="recommendClick">
+            <img src="../img/recommend.png" alt="">
+          </div>
         </div>
       </template>
       <!-- 获取奖励 -->
@@ -159,7 +162,10 @@ export default {
     },
     goback () {
       window.location.href = "//wap.beeplaying.com/earnCoin/"
-    }
+    },
+    recommendClick () {
+      window.location.href = `//wap.beeplaying.com/earnCoin/#/task/detail?id=${this.activitiesInfo.taskId}`
+    },
   },
   watch: {
     value (newValue) {
@@ -213,28 +219,25 @@ export default {
       height: 100%;
     }
     .bg1 {
-      overflow: hidden;
       background: url(../img/popup1-bg.png) no-repeat center top;
       background-size: 100% 100%;
       width: 4.9rem;
       height: 3.7rem;
     }
     .bg2 {
-      overflow: hidden;
       background: url(../img/popup2-bg.png) no-repeat center top;
       background-size: 100% 100%;
       width: 4.9rem;
       height: 5.2rem;
     }
     .bg3 {
-      overflow: hidden;
       background: url(../img/popup3-bg.png) no-repeat center top;
       background-size: 100% 100%;
       width: 4.9rem;
       height: 6.74rem;
     }
     .title {
-      margin: .45rem auto .2rem;
+      padding: .45rem 0 .2rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -293,6 +296,7 @@ export default {
       }
     }
     .get-fail {
+      position: relative;
       .body {
         margin-bottom: .2rem;
         font-size: .24rem;
@@ -325,10 +329,18 @@ export default {
         background: url(../img/btn.png) no-repeat center center;
         background-size: 100% 100%;
       }
+      .recommend {
+        position: absolute;
+        bottom: -2.2rem;
+        left: 0;
+        width: 4.9rem;
+      }
     }
     .award {
+      overflow: hidden;
       .title {
         margin: 2rem auto .2rem;
+        padding: 0;
       }
       .body {
         .award-img {
