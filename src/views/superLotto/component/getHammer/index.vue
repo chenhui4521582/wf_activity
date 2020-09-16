@@ -9,10 +9,10 @@
           <div class="g-package"
             :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
             <div class="g-package-container g2">
-              <hit-percent :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
-                :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
-                @refresh="refresh" @showPop="showPop"></hit-percent>
-            </div>
+            <hit-percent :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
+                         :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
+                         @refresh="refresh" @showPop="showPop"></hit-percent>
+          </div>
             <div class="g-package-info">
               <ul class="li0">
                 <li>
