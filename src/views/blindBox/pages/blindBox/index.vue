@@ -7,16 +7,14 @@
         <current-product-list :show="isOldUser"></current-product-list>
         <div class="main-wrapper">
           <horn-and-more></horn-and-more>
-          <box-list @load="init"></box-list>
+          <box-list ref="boxList" @load="init"></box-list>
         </div>
       </article>
     </article>
-    <Guide v-if="show"
-      @close="show=false" />
-    <CouponDialog @onConfirm="onCouponConfirm"
-    @onClose="onCouponClose"
-      :coupon-info = "couponInfo"
+    <Guide v-if="show" @close="show=false" />
+    <CouponDialog @onConfirm="onCouponConfirm" @onClose="onCouponClose" :coupon-info="couponInfo"
       :show="showCoupon" />
+    <invite @refresh="refreshInfo" />
   </main>
 </template>
 
@@ -25,11 +23,12 @@
 import currentProductList from './components/currentProductList'
 import hornAndMore from './components/hornAndMore'
 import boxList from './components/boxList'
-import { FirstLoad } from '../../apis/box'
+// import { FirstLoad } from '../../apis/box'
 import { BoxCoupon } from '../../apis/user'
 import Guide from './components/guide'
 import { isWechat } from '../../global'
 import CouponDialog from '../../components/coupon-dialog'
+import invite from './components/invite/invite.vue'
 
 export default {
   data () {
@@ -45,7 +44,7 @@ export default {
     }
   },
   components: {
-    currentProductList, hornAndMore, boxList, Guide, CouponDialog
+    currentProductList, hornAndMore, boxList, Guide, CouponDialog, invite
   },
   computed: {
     toucheMoveY () {
@@ -79,6 +78,13 @@ export default {
         this.$nextTick(this.initToucheListener)
       }
     },
+    async getCoupons () {
+      const coupon = await BoxCoupon()
+      if (coupon.data.data) {
+        this.couponInfo = coupon.data.data
+        this.showCoupon = true
+      }
+    },
     // AB测试,是否走新手引导
     guideTest () {
       let _token = localStorage.getItem('ACCESS_TOKEN') || getUrlParams('token') || ''
@@ -97,18 +103,17 @@ export default {
           }
         }
       }
+    },
+    refreshInfo () {
+      this.$refs.boxList.getUserInfo()
     }
   },
   async mounted () {
-    const coupon = await BoxCoupon()
-    if (coupon.data.data) {
-      this.couponInfo = coupon.data.data
-      this.showCoupon = true
-    }
+    await this.getCoupons()
     // H5平台-盲盒页面加载完成
     GLOBALS.marchSetsPoint('P_H5PT0225', {
       source_address: GLOBALS.getUrlParam('from') || null
-    }) 
+    })
     /*  新手AB测试功能关闭 （胡瑶）
       const data = await FirstLoad()
       if (data.data.data) {
@@ -131,9 +136,9 @@ export default {
   position: relative;
   z-index: 2;
   &.activity {
-    background: #F2EDD7;
+    background: #f2edd7;
     .back {
-      background: #9D88EC;
+      background: #9d88ec;
     }
   }
   .main-wrapper {
@@ -152,7 +157,7 @@ export default {
   z-index: 1;
   left: 0;
   top: 0;
-  background:#30569F url("./activity/banner.png") no-repeat;
+  background: #30569f url('./activity/banner.png') no-repeat;
   background-size: cover;
   .time {
     line-height: 0.4rem;
@@ -166,7 +171,7 @@ export default {
     height: 0.59rem;
     margin: 0 auto;
     text-align: center;
-    background: url("./activity/time.png") no-repeat;
+    background: url('./activity/time.png') no-repeat;
     background-size: 100% 100%;
   }
 }
