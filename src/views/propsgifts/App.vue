@@ -252,13 +252,24 @@
               let current =
                 this.actInfo.wheelList &&
                 this.actInfo.wheelList.find((item, index) => {
-                  return data.firstSort === item.sort
+                  return data.lastSort === item.sort
                 })
               /** 打开动画 **/
               this.turntableAnimation(dom, current.sort, () => {
                 /** 通知父级打开奖励弹框 **/
-                this.awardList = this.awards
-                this.showPop(7)
+                if(this.awards.length==1){
+                  /** 通知父级打开奖励弹框 **/
+                  this.awardData = {
+                    awardsType: this.awards[0].awardsType,
+                    awardsName: `${this.awards[0].awardsName}${this.awards[0].awardsRemark ? `<br><i style="font-size:.24rem;color:rgba(34,112,144,1);">${this.awards[0].awardsRemark}</i>` : ''}`,
+                    info: '如抽中碎片，累计可以兑换道具哦~',
+                    source: 'draw'
+                  }
+                  this.showPop(4)
+                }else{
+                  this.awardList = this.awards
+                  this.showPop(7)
+                }
                 GLOBALS.marchSetsPoint('A_H5PT0315003930',{
                   turn_level:this.gearList[this.gearIndex]
                 })
