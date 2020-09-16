@@ -10,7 +10,6 @@
     </div>
     <!-- 跑马灯 -->
     <slider :list="activitiesInfo.noticeList"/>
-
     <!-- 内容 -->
     <div class="content">
       <!--任务-->
@@ -20,11 +19,51 @@
           <!-- 倒计时 -->
           <count-down :time="countdown" @countDownCallback="countDownCallback"/>
         </div>
+        <div class="list">
+
+        </div>
       </div>
       <!-- 提现 -->
-      <div class="item withdraw"></div>
+      <div class="item withdraw">
+        <div class="title">
+          <img src="./img/title2.png" alt="">
+        </div>
+        <div class="body">
+          <div class="icon">
+            <img class="inner-img" src="./img/withdraw-icon.png" alt="">
+          </div>
+          <div class="text">
+            <div class="name">提现说明:</div>
+            <div class="desc">满金<span>3000</span>币 即可提现</div>
+          </div>
+          <div class="btn-wrap">
+            <div class="btn award">去领取</div>
+            <div class="btn disable">金币不足</div>
+            <div class="btn finished">已领取</div>
+            
+          </div>
+        </div>
+      </div>
       <!-- 砸蛋 -->
-      <div class="item egg"></div>
+      <div class="item egg">
+        <div class="title">
+          <img src="./img/title3.png" alt="">
+        </div>
+        <div class="body">
+          <div class="icon">
+            <img class="inner-img" src="./img/egg-icon.png" alt="">
+          </div>
+          <div class="text">
+            <p>福利说明： </p>
+            <p>玩游戏累计时长可以砸金蛋，</p>
+            <p>最高获得5000元现金奖励</p>
+            <p>以及手机福利。</p>
+          </div>
+          <div class="btn-wrap">
+            <div class="btn to-finish">去砸蛋</div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- popup -->
     <popup 
@@ -68,7 +107,6 @@ export default {
             this.popupType = 2
           }
         }
-        
       })
     },
     openRule () {
@@ -105,7 +143,7 @@ export default {
     position: fixed;
     left: .18rem;
     top: .34rem;
-    z-index: 11;
+    z-index: 1;
     width: .78rem;
     height: .78rem;
   }
@@ -119,6 +157,7 @@ export default {
   }
   .content {
     .item {
+      margin-bottom: .2rem;
       overflow: hidden;
       background: #fff;
       border-radius: .5rem;
@@ -129,16 +168,103 @@ export default {
         align-items: flex-end;
       }
       .body {
-        padding: 0 .3rem;
+        padding: 0 .3rem .3rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .icon {
+          margin-right: .1rem;
+          width: 1.72rem;
+          height: 1.5rem;
+        }
+        .btn-wrap {
+          margin-left: auto;
+          .btn {
+            width: 1.2rem;
+            height: .7rem;
+            color: #fff;
+            border-radius: .35rem;
+            text-align: center;
+            line-height: .7rem;
+            font-weight: bold;
+            font-size: .24rem;
+            &.award {
+              background: #E42C01;
+            }
+            &.finished {
+              background: #D5D5D5;
+            }
+            &.disable {
+              background: #D5D5D5;
+            }
+            &.to-finish {
+              background: url(./img/to-finish.png) no-repeat center center;
+              background-size: 100% 100%;
+            }
+          }
+        }
       }
     }
     .task {
       .title {
         padding: 0 .3rem 0 .25rem;
+        margin-bottom: .1rem;
         img {
           vertical-align: top;
           width: 3.95rem;
           height: .36rem;
+        }
+      }
+      .list {
+
+      }
+    }
+    .withdraw {
+      .title {
+        padding: 0 .3rem 0 .25rem;
+        margin-bottom: .37rem;
+        img {
+          vertical-align: top;
+          width: 2.89rem;
+          height: .35rem;
+        }
+      }
+      .text {
+        font-size: .24rem;
+        color: #3C3C3C;
+        .name {
+          margin-bottom: .04rem;
+        }
+        .desc {
+          font-size: .26rem;
+          color: #3C3C3C;
+          span {
+            color: .3rem;
+            font-weight: bold;
+          }
+        }
+      }
+      .btn-wrap {
+        .btn {
+          width: ;
+        }
+      }
+    }
+    .egg {
+      .title {
+        padding: 0 .3rem 0 .25rem;
+        margin-bottom: .1rem;
+        img {
+          vertical-align: top;
+          width: 4.47rem;
+          height: .36rem;
+        }
+      }
+      .text {
+        p {
+          margin-bottom: .05rem;
+          line-height: 1.1;
+          color: #3C3C3C;
         }
       }
     }

@@ -5,20 +5,11 @@
       <!-- 活动规则 -->
       <template v-if="popupType == 1">
         <div class="rule bg2">
-          <div class="title">
-            <div class="left"></div>
-            <div class="title-text">温馨提示</div>
-            <div class="right"></div>
-          </div>
           <div class="body">
-            1. 活动时间：{{activitiesInfo.beginDate | formatTime('m-d')}} - {{activitiesInfo.endDate | formatTime('m@d@h')}}<br>
-            2.砸蛋方式：当前累计游戏时长满足每颗彩蛋的时长条件。<br>
-            3.游戏时长说明：在平台内进入任意游戏即开始统计时长，离开游戏统计时长结束。在平台页面浏览不计入游戏时长。<br>
-            4.奖励说明：奖励分为固定奖励和神秘奖励。固定奖励数额为页面呈现数额，神秘奖励最高可开出五百万金币奖励（约等于5000元）。<br>
-            5.奖励领取说明：满足彩蛋领取条件后，点击对应的彩蛋即可领取奖励。奖励领取截止时间：，请及时领取奖励。<br>
-            6.活动期间一经发现作弊等违法、违规情形，立即取消活动参与资格和领奖资格，且活动中已获取奖励将全部收回。<br>
-            7.活动概率说明：绿色蛋100%获得标示的金币；红色蛋0.98%机率获得100金币、9%机率获得500金币、55%机率获得1000金币、20%机率获得3000金币、15%机率获得5000金币、0.01999%机率获得华为mate30pro；紫色蛋0.01999%机率获得500金币、0.01999%机率获得3000金币、0.01999%机率获得5000金币、19%机率获得8000金币、80%机率获得10000金币、0.01999%机率获得iphone11pro max；金蛋19.98%机率获得10000金币、20%机率获得15000金币、20%机率获得20000金币、40%机率获得30000金币、0.01999%机率获得5000元现金。<br>
-            8.在法律允许范围内，游戏赚平台将享有本活动解释权。
+            <p>1.福利一中限时任务翻倍，指平台内所有的任务，包括高额奖励、充值超返，但不包含福利礼包以及金蛋奖励。</p>
+            <p>2.福利一计时在点击开始时计时，限时为一个小时</p>
+            <p>3.福利二无门槛福利只能提现一次</p>
+            <p>4.在法律允许范围内，游戏赚平台将享有本活动解释权</p>
           </div>
         </div>
       </template>
@@ -201,8 +192,6 @@ export default {
       top: .22rem;
       width: .4rem;
       height: .4rem;
-      background: url(../img/closed.png) no-repeat center center;
-      background-size: .28rem .28rem;
       &.type4 {
         top: 1.75rem;
       }
@@ -260,15 +249,18 @@ export default {
     }
     .rule {
       .body {
+        margin-top: 1.24rem;
         overflow-x: hidden;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
         padding: 0 .4rem;
         height: 3.7rem;
-        color: #EAD9FF;
         font-size: .24rem;
-        color: #C85501;
+        color: #fff;
         font-weight:bold;
+        p {
+          margin-bottom: .2rem;
+        }
       }
     }
     .active-end {
