@@ -17,10 +17,25 @@
         <div class="title">
           <img src="./img/title1.png" alt="">
           <!-- 倒计时 -->
-          <count-down :time="countdown" @countDownCallback="countDownCallback"/>
+          <count-down :time="activitiesInfo.countDown" @countDownCallback="countDownCallback"/>
         </div>
-        <div class="list">
-
+        <div class="list-item" v-for="item in activitiesInfo.taskList" :key="item.id">
+          <div class="icon">
+            <img class="inner-img" :src="item.image | filter" alt="">
+          </div>
+          <div class="desc">
+            <div class="name">
+              {{item.remark}}
+            </div>
+            <div class="remark">
+              <font>原得{{item.awards}}</font><span>现得{{item.doubleAwards }}</span> 
+            </div>
+          </div>
+          <div class="btn-wrap">
+            <div class="btn to-finish" v-if="item.status == 1" @click="goDetail(item)">去完成</div>
+            <div class="btn award" v-if="item.status == 2">去领取</div>
+            <div class="btn finished" v-if="item.status == 3">已领取</div>
+          </div>
         </div>
       </div>
       <!-- 提现 -->
@@ -37,10 +52,9 @@
             <div class="desc">满金<span>3000</span>币 即可提现</div>
           </div>
           <div class="btn-wrap">
-            <div class="btn award">去领取</div>
-            <div class="btn disable">金币不足</div>
-            <div class="btn finished">已领取</div>
-            
+            <div class="btn award" v-if="withdraw.status == 2" @click="goWithDraw">去领取</div>
+            <div class="btn disable" v-if="withdraw.status == 1">金币不足</div>
+            <div class="btn finished" v-if="withdraw.status == 3">已领取</div>
           </div>
         </div>
       </div>
@@ -60,10 +74,12 @@
             <p>以及手机福利。</p>
           </div>
           <div class="btn-wrap">
-            <div class="btn to-finish">去砸蛋</div>
+            <div class="btn to-finish" @click="goDutaionActive">去砸蛋</div>
           </div>
         </div>
       </div>
+
+
     </div>
     <!-- popup -->
     <popup 
@@ -94,18 +110,23 @@ export default {
     Popup,
     Slider
   },
+  computed: {
+    withdraw () {
+      return _get(this.activitiesInfo, 'withdraw', {})
+    }
+  },
   methods: {
     /** 获取活动信息 **/
     _getInfo () {
       Services.getInfo().then(res => {
-        const {code} = _get(res, 'data')
+        const {code, message} = _get(res, 'data')
         if(code == 200) {
           this.countdown = _get(res, 'data.data.countdown', '')
           this.activitiesInfo = _get(res, 'data.data', {})
-          if(this.activitiesInfo.state == 2) {
-            this.showPopup = true
-            this.popupType = 2
-          }
+        }else {
+          this.$toast.show({
+            message: params.message
+          })
         }
       })
     },
@@ -117,8 +138,17 @@ export default {
     backHome() {
       window.location.href = "//wap.beeplaying.com/earnCoin/"
     },
-    countDownCallback() {
-      this.activitiesInfo.state = 2
+    goWithDraw () {
+      location.href = 'https://wap.beeplaying.com/earnCoin/#/withdraw'
+    },
+    goDetail ({taskId}) {
+      location.href = `https://wap.beeplaying.com/earnCoin/#/task/detail?id=${taskId}`
+    },
+    goDutaionActive () {
+      location.href = 'https://wap.beeplaying.com/activities/duration.html'
+    },
+    countDownCallback () {
+      this._getInfo()
     }
   },
   mounted() {
@@ -208,21 +238,78 @@ export default {
     .task {
       .title {
         padding: 0 .3rem 0 .25rem;
-        margin-bottom: .1rem;
+        margin-bottom: .4rem;
         img {
           vertical-align: top;
           width: 3.95rem;
           height: .36rem;
         }
       }
-      .list {
-
+      .list-item {
+        padding: 0 .3rem;
+        margin-bottom: .4rem;
+        display: flex;
+        justify-self: flex-start;
+        align-items: center;
+        .icon {
+          margin-right: .15rem;
+          width: .8rem;
+          height: .8rem;
+          border-radius: .15rem;
+          overflow: hidden;
+        }
+        .desc {
+          .name {
+            font-size: .26rem;
+            color: #3C3C3C;
+          }
+          .remark {
+            font-size: .24rem;
+            color: #3C3C3C;
+            font {
+              margin-right: .1rem;
+              color: #AAAAAA;
+              text-decoration: line-through;
+            }
+            span {
+              font-size: .26rem;
+              color: #FC3E23;
+              font-weight: bold;
+            }
+          }
+        }
+        .btn-wrap {
+          margin-left: auto;
+          .btn {
+            width: 1.2rem;
+            height: .7rem;
+            color: #fff;
+            border-radius: .35rem;
+            text-align: center;
+            line-height: .7rem;
+            font-weight: bold;
+            font-size: .24rem;
+            &.award {
+              background: #E42C01;
+            }
+            &.finished {
+              background: #D5D5D5;
+            }
+            &.disable {
+              background: #D5D5D5;
+            }
+            &.to-finish {
+              background: url(./img/to-finish.png) no-repeat center center;
+              background-size: 100% 100%;
+            }
+          }
+        }
       }
     }
     .withdraw {
       .title {
         padding: 0 .3rem 0 .25rem;
-        margin-bottom: .37rem;
+        margin-bottom: .1rem;
         img {
           vertical-align: top;
           width: 2.89rem;
@@ -244,11 +331,6 @@ export default {
           }
         }
       }
-      .btn-wrap {
-        .btn {
-          width: ;
-        }
-      }
     }
     .egg {
       .title {
@@ -267,37 +349,6 @@ export default {
           color: #3C3C3C;
         }
       }
-    }
-  }
-  .btns {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    padding-top: .12rem;
-    width: 100%;
-    height: 1.3rem;
-    background: #fff;
-    border-radius: .2rem .2rem 0 0;
-    .get-btn {
-      font-size: .3rem;
-      font-weight: bold;
-      color: #fff;
-      text-align: center;
-      height: 1.14rem;
-      line-height: 1rem;
-      background: url(./img/btn-get.png) no-repeat center top;
-      background-size: 100% 100%;
-    }
-    .get-disable {
-      font-size: .3rem;
-      font-weight: bold;
-      color: #fff;
-      text-align: center;
-      height: 1.14rem;
-      line-height: 1rem;
-      background: url(./img/btn-disable.png) no-repeat center top;
-      background-size: 100% 100%;
     }
   }
 }

@@ -27,65 +27,6 @@
           <div class="back-home" @click="goback">返回首页</div>
         </div>
       </template>
-      <!-- 当前还不能领取奖励 -->
-      <template v-if="popupType == 3">
-        <div class="get-fail bg1">
-          <div class="title">
-            <div class="left"></div>
-            <div class="title-text">温馨提示</div>
-            <div class="right"></div>
-          </div>
-          <div class="body">
-            <p>领取奖励还需的游戏时间为</p>
-            <p class="time">{{itemDuration}}<span>分钟</span></p>
-          </div>
-          <div class="go-game" @click="gotoTask">去玩游戏</div>
-        </div>
-      </template>
-      <!-- 获取奖励 -->
-      <template v-if="popupType == 4">
-        <div class="award bg3">
-          <div class="title">
-            <div class="left"></div>
-            <div class="title-text">恭喜获得</div>
-            <div class="right"></div>
-          </div>
-          <div class="body">
-            <div class="award-img">
-              <img src="../img/coin-icon.png" alt="">
-            </div>
-            <p class="num">{{awardNum}}金币（≈{{awardNum / 10000}}元）</p>
-          </div>
-          <div class="go-game" @click="hidePopup">收下啦</div>
-        </div>
-      </template>
-      <!-- 我的奖励 -->
-      <template v-if="popupType == 5">
-        <div class="my-award bg2">
-          <div class="title">
-            <div class="left"></div>
-            <div class="title-text">我的奖励</div>
-            <div class="right"></div>
-          </div>
-          <div class="body">
-            <div class="list-nav">
-              <div class="item">获取时间</div>
-              <div class="item">游戏时长</div>
-              <div class="item">金币数量</div>
-            </div>
-            <div class="list">
-              <div class="items" v-for="(item, index) in awardLog" :key="index">
-                <div class="item">
-                  <p>{{item.receiveTime | format('y-m-d')}}</p>
-                  <p>{{item.receiveTime | format('h:m:s')}}</p>
-                </div>
-                <div class="item">{{item.duration}}</div>
-                <div class="item">+{{item.coinNum}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
       <div class="close" :class="{'type4': popupType == 4}" @click="hidePopup"></div>
     </div>
   </div>
@@ -201,51 +142,12 @@ export default {
       width: 100%;
       height: 100%;
     }
-    .bg1 {
-      overflow: hidden;
-      background: url(../img/popup1-bg.png) no-repeat center top;
-      background-size: 100% 100%;
-      width: 4.9rem;
-      height: 3.7rem;
-    }
     .bg2 {
       overflow: hidden;
       background: url(../img/popup2-bg.png) no-repeat center top;
       background-size: 100% 100%;
       width: 4.9rem;
       height: 5.2rem;
-    }
-    .bg3 {
-      overflow: hidden;
-      background: url(../img/popup3-bg.png) no-repeat center top;
-      background-size: 100% 100%;
-      width: 4.9rem;
-      height: 6.74rem;
-    }
-    .title {
-      margin: .45rem auto .2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .left {
-        width: .52rem;
-        height: .03rem;
-        background: url(../img/title.png) no-repeat center top;
-        background-size: 100% 100%;
-      }
-      .title-text {
-        margin: 0 .1rem;
-        font-size: .4rem;
-        color: #C2312A;
-        font-weight: bold;
-      }
-      .right {
-        width: .52rem;
-        height: .03rem;
-        background: url(../img/title.png) no-repeat center top;
-        background-size: 100% 100%;
-        transform: rotate(180deg);
-      }
     }
     .rule {
       .body {
@@ -260,134 +162,6 @@ export default {
         font-weight:bold;
         p {
           margin-bottom: .2rem;
-        }
-      }
-    }
-    .active-end {
-      .body {
-        margin: .4rem 0;
-        text-align: center;
-        font-size: .24rem;
-        font-weight:bold;
-        color: #C85501;
-      }
-      .back-home {
-        margin: 0 auto;
-        width: 2.76rem;
-        height: .96rem;
-        font-size: .3rem;
-        color: #FFFFFF;
-        text-align: center;
-        line-height: .88rem;
-        font-weight:800;
-        background: url(../img/btn.png) no-repeat center center;
-        background-size: 100% 100%;
-      }
-    }
-    .get-fail {
-      .body {
-        margin-bottom: .2rem;
-        font-size: .24rem;
-        color: #C85501;
-        text-align: center;
-        font-weight:bold;
-        p {
-          margin-bottom: .18rem;
-        }
-        .time {
-          display: flex;
-          justify-content: center;
-          align-items: baseline;
-          color: #753F39;
-          font-size: .36rem;
-          span {
-            font-size: .24rem;
-          }
-        }
-      }
-      .go-game {
-        margin: 0 auto;
-        width: 2.76rem;
-        height: .96rem;
-        font-size: .3rem;
-        color: #FFFFFF;
-        text-align: center;
-        line-height: .88rem;
-        font-weight:800;
-        background: url(../img/btn.png) no-repeat center center;
-        background-size: 100% 100%;
-      }
-    }
-    .award {
-      .title {
-        margin: 2rem auto .2rem;
-      }
-      .body {
-        .award-img {
-          margin: 0 auto .2rem;
-          width: 1.88rem;
-          height: 1.88rem;
-        }
-        .num {
-          margin-bottom: .2rem;
-          text-align: center;
-          font-weight:bold;
-          font-size: .24rem;
-          color: #C85501;
-        }
-      }
-      .go-game {
-        margin: 0 auto;
-        width: 2.76rem;
-        height: .96rem;
-        font-size: .3rem;
-        color: #FFFFFF;
-        text-align: center;
-        line-height: .88rem;
-        font-weight:800;
-        background: url(../img/btn.png) no-repeat center center;
-        background-size: 100% 100%;
-      }
-    }
-    .my-award {
-      .body {
-        padding: 0 .36rem;
-        .list-nav {
-          margin-bottom: .2rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          .item {
-            flex-shrink: 0;
-            text-align: center;
-            width: 33.33%;
-            font-size: .24rem;
-            color: #C85601;
-            font-weight: bold;
-          }
-        }
-        .list {
-          overflow-x: hidden;
-          overflow-y: scroll;
-          -webkit-overflow-scrolling: touch;
-          height: 3.1rem;
-          .items {
-            margin-bottom: .2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .item {
-              flex-shrink: 0;
-              text-align: center;
-              width: 33.33%;
-              font-size: .22rem;
-              color: #91623F;
-              font-weight: bold;
-            }
-            &:last-child {
-              margin-bottom: 0;
-            }
-          }
         }
       }
     }

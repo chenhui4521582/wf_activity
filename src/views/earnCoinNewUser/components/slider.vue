@@ -2,8 +2,7 @@
   <div class="slider">
     <swiper v-if="showNotice" :options="options">
       <swiper-slide v-for="(item,index) in list" :key="index">
-        {{item.nickname}}获得<br>
-        {{item.awardsName}}
+        用户{{item.nickname}}{{item.taskName}}获得{{item.awardsName}}
       </swiper-slide>
     </swiper>
   </div>
@@ -27,8 +26,7 @@ export default {
       },
       direction : 'vertical',
       loop: true,
-      slidesPerView: '2',
-      height: 80,
+      height: 30,
       spaceBetween : 10
     }
   }),
@@ -39,36 +37,30 @@ export default {
     showNotice () {
       return  this.list.length
     }
-  },
-  methods: {
-  },
-  mounted () {
-    this._getNotice()
   }
 }
 </script>
 <style scoped lang="less">
 .slider {
-  position: fixed;
-  right: 0.2rem;
-  top: 1.45rem;
-  z-index: 10;
-  height: 80px;
-  width: 1.7rem;
   overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 1.73rem;
+  z-index: 10;
+  transform: translate(-50%, 0);
+  height: 30px;
+  width: 5rem;
   .swiper-slide {
-    height: 35px;
     color: #fff;
     width: 100%;
+    height: 30px;
     text-align: center;
     background: rgba(0,0,0,.5);
     border-radius: .3rem;
-    font-size: .22rem;
+    font-size: .24rem;
     white-space: nowrap;
-    line-height: 1.1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    line-height: 30px;
+    color: #FFF385;
   }
 }
 </style>
