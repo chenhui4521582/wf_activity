@@ -126,7 +126,7 @@ export default {
           this.activitiesInfo = _get(res, 'data.data', {})
         }else {
           this.$toast.show({
-            message: params.message
+            message
           })
         }
       })
