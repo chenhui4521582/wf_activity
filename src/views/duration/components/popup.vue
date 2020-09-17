@@ -164,6 +164,10 @@ export default {
       window.location.href = "//wap.beeplaying.com/earnCoin/"
     },
     recommendClick () {
+      GLOBALS.marchSetsPoint('A_H5PT0303000023', {
+        banner_id: this.activitiesInfo.taskId,
+        banner_name: '砸蛋banner'
+      })
       window.location.href = `//wap.beeplaying.com/earnCoin/#/task/detail?id=${this.activitiesInfo.taskId}`
     },
   },
