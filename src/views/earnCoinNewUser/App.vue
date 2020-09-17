@@ -261,6 +261,9 @@ export default {
       .title {
         padding: 0 .3rem 0 .25rem;
         margin-bottom: .4rem;
+        height: .4rem;
+        justify-content: space-between;
+        align-items: baseline;
         img {
           vertical-align: top;
           width: 3.95rem;
@@ -358,6 +361,8 @@ export default {
           margin-bottom: .05rem;
         }
         .num {
+          white-space: nowrap;
+          text-align: center;
           color: #FC3E22;
         }
       }
