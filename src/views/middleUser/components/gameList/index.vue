@@ -29,31 +29,18 @@ export default {
   },
   props: {
     list: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  data () {
-    return {
-      selectedGame: 0
+      type: Array,
+      default: () => ([])
+    },
+    currentGame: {
+      type: [Number, String],
+      default: 0
     }
   },
   computed: {
     gameList () {
       return this.list && this.list.sort((itemA, itemB) => { return itemA.sort - itemB.sort })
     },
-    defaultGame () {
-      let gameType = this.gameList[0].gameId
-      this.gameList.forEach(item => {
-        if (item.state === 1) {
-          gameType = item.gameId
-        }
-      })
-      return gameType
-    },
-    currentGame () {
-      return this.selectedGame || this.defaultGame
-    }
   },
   filters: {
     timeFilter (item) {
@@ -74,7 +61,10 @@ export default {
       if (!item.state) {
         return
       }
-      this.selectedGame = item.gameId
+      GLOBALS.marchSetsPoint('A_H5PT0332004185', {
+        section_id: item.gameId,
+        section_name: item.name
+      }) // H5平台-超级任务活动页-各游戏板块点击
       this.$emit('toggleGame', item.gameId)
     }
   }

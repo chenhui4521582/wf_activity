@@ -4,11 +4,13 @@
       <img src="./img/bg.png" alt="">
     </div>
     <div class="back" @click="back()"></div>
-    <rule-pop />
+    <rule-pop :info="info" />
     <article class="main-content">
-      <game-list ref="gameList" :list="gameList" @toggleGame="toggleGame" />
-      <red-packet ref="redPacket" :info="info" />
-      <task-list ref="task" :info="info" />
+      <game-list ref="gameList" :list="gameList" :current-game="currentGame"
+        @toggleGame="findTaskRspByGameType" />
+      <red-packet ref="redPacket" :info="info" :list="progressList" @gameReceive="gameReceive" />
+      <task-list ref="task" :info="info" :list="taskList" :countdown-time="countdownTime"
+        :current-game="currentGame" :open-game="openGame" @refreshTask="findTaskRspByGameType" />
     </article>
   </main>
 </template>
@@ -19,7 +21,7 @@ import RulePop from './components/rule/index'
 import TaskList from './components/task/index'
 import RedPacket from './components/redPacket/index'
 import GameList from './components/gameList/index'
-import { activityHome, findTaskRspByGameType } from './services/api'
+import { activityHome, findTaskRspByGameType, gameReceive } from './services/api'
 import _get from 'lodash.get'
 export default {
   name: 'middleUser',
@@ -34,7 +36,10 @@ export default {
       info: {},
       gameList: [],
       taskList: [],
-      currentGame: 0
+      progressList: [],
+      currentGame: 0,
+      openGame: 0,
+      countdownTime: ''
     }
   },
   mounted () {
@@ -48,19 +53,70 @@ export default {
         this.info = _get(res, 'data', {})
         this.gameList = _get(res, 'data.gameRsps', [])
         this.taskList = _get(res, 'data.taskRsps', [])
+        this.progressList = _get(res, 'data.progressList', [])
+        let gameType = this.gameList[0].gameId
+        this.gameList.forEach(item => {
+          if (item.state === 1) {
+            gameType = item.gameId
+          }
+        })
+        this.currentGame = gameType
+        this.openGame = gameType
+        this.countDown(_get(res, 'data.countdown', 0))
       }
+      GLOBALS.marchSetsPoint('P_H5PT0332', {
+        source_address: GLOBALS.getUrlParam('from') || ''
+      }) // H5平台-超级任务活动-页面加载完成
     },
     back () {
+      GLOBALS.marchSetsPoint('A_H5PT0332004183') // H5平台-超级任务活动页-返回按钮点击
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
-    async toggleGame (type) {
-      this.currentGame = type
+    async findTaskRspByGameType (type, isRefresh = false) {
+      if (this.currentGame !== type) {
+        this.currentGame = type
+      } else if (!isRefresh) {
+        return
+      }
       const res = await findTaskRspByGameType(type)
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.taskList = _get(res, 'data', [])
       }
-    }
+    },
+    async gameReceive () {
+      const res = await gameReceive()
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.progressList = _get(res, 'data', [])
+        this.$toast.show({
+          message: '领取成功',
+          duration: 3000
+        })
+      }
+    },
+    countDown (data) {
+      if (!data) {
+        this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
+        return false
+      }
+      let date = data / 1000
+      this.timer = setInterval(() => {
+        date = date - 1
+        if (date <= 0) {
+          date = 0
+          clearInterval(this.timer)
+          this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
+        }
+        let hour = Math.floor(parseInt(date / 60 / 60))
+        let minute = Math.floor(parseInt(date / 60) % 60)
+        let second = Math.floor(date % 60)
+        let countHour = hour >= 10 ? hour : '0' + hour
+        let countMinute = minute >= 10 ? minute : '0' + minute
+        let countSecond = second >= 10 ? second : '0' + second
+        this.countdownTime = `<span>${countHour}</span><span>:</span><span>${countMinute}</span><span>:</span><span>${countSecond}</span>后结束`
+      }, 1000)
+    },
   }
 }
 </script>

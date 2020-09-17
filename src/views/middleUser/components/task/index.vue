@@ -8,8 +8,11 @@
       </li>
     </ul>
     <div class="task-wrapper">
-      <h4>{{gameId|gameIdFilter}}超级任务</h4>
-      <p class="countdown-time" v-html="countdownTime"></p>
+      <h4>{{gameInfo[currentGame]||''}}超级任务</h4>
+      <p class="countdown-time" v-if="openGame===currentGame" v-html="countdownTime"></p>
+      <p class="countdown-time" v-else>
+        <span class="end">已</span><span class="end">结</span><span class="end">束</span>
+      </p>
       <ul class="task-list">
         <li v-for="(item,index) in taskList[currentGroup-1]">
           <p class="name">
@@ -17,20 +20,20 @@
           </p>
           <div class="content-wrapper">
             <div class="awards">
-              <!-- <div class="icon"><img :src="item.awardsImage|filter" alt=""></div> -->
-              <div class="icon"><img :src="item.awardsImage" alt=""></div>
-              <p>{{item.awardsName}}</p>
+              <div class="icon"><img :src="item.awardImg|filter" alt=""></div>
+              <p>{{item.awardName}}</p>
             </div>
             <div class="percent-wrap">
-              <div class="percent" :style="{width:item.finishNum/item.taskOps * 100 + '%'}">
+              <div class="percent"
+                :style="{width:item.userTaskProgress/item.taskProgress * 100 + '%'}">
               </div>
-              <div class="text-percent">{{item.finishNum}}/{{item.taskOps}}</div>
+              <div class="text-percent">{{item.userTaskProgress}}/{{item.taskProgress}}</div>
             </div>
           </div>
           <div class="btn-wrapper">
             <div class="btn undone" v-if="item.taskStatus===1" @click="goGame(item)">去完成
             </div>
-            <div class="btn receive" v-else-if="item.taskStatus===0" @click="receive(item)">
+            <div class="btn receive" v-else-if="item.taskStatus===0" @click="taskReceive(item)">
               待领取
             </div>
             <div class="btn done" v-else>已领取</div>
@@ -46,7 +49,7 @@
 import { taskReceive } from '../../services/api'
 import _get from 'lodash.get'
 export default {
-  name: 'task',
+  name: 'task-list',
   components: {
 
   },
@@ -55,9 +58,21 @@ export default {
       type: Object,
       default: () => ({})
     },
-    gameId: {
+    list: {
+      type: Array,
+      default: () => ([])
+    },
+    currentGame: {
       type: [Number, String],
       default: 0
+    },
+    openGame: {
+      type: [Number, String],
+      default: 0
+    },
+    countdownTime: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -80,20 +95,20 @@ export default {
         }
       ],
       currentGroup: 1,
-      pointVo: [],
-      taskVo: [],
-      awardInfo: {},
-      actInfo: {},
       timer: null,
-      countdownTime: null
+      gameInfo: {
+        '12': '糖果',
+        '10': '捕鱼',
+        '13': '三国'
+      }
     }
   },
   computed: {
     taskList () {
-      let statusA = this.taskVo.filter(item => item.group === 1)
-      let statusB = this.taskVo.filter(item => item.group === 2)
-      let statusC = this.taskVo.filter(item => item.group === 3)
-      return [statusA, statusB, statusC]
+      let groupA = this.list.filter(item => item.group === 1) // 活跃新星
+      let groupB = this.list.filter(item => item.group === 2) // 游戏赚金
+      let groupC = this.list.filter(item => item.group === 3) // 道具免费领
+      return [groupA, groupB, groupC]
     }
   },
   filters: {
@@ -103,16 +118,7 @@ export default {
       } else {
         return value || 0
       }
-    },
-    gameIdFilter (value) {
-      let gameInfo = {
-        '20': '捕鱼'
-      }
-      return gameInfo[value] || ''
     }
-  },
-  mounted () {
-    this.countDown(100000000)
   },
   methods: {
     percentWidth (item) {
@@ -127,80 +133,36 @@ export default {
     toggleGroup (item) {
       this.currentGroup = item.group
     },
-    async receive (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001440', { task_id: item.taskId, task_name: item.taskName })
-      const res = await taskFinish(item.taskId)
+    goGame (item) {
+      GLOBALS.marchSetsPoint('A_H5PT0332004187', {
+        task_id: item.taskId,
+        task_name: item.taskName,
+        section_id: this.currentGame,
+        section_name: this.gameInfo[this.currentGame] || ''
+      }) // H5平台-超级任务活动页-各游戏游戏板块子任务-去完成点击
+      GLOBALS.jumpOutsideGame(item.url)
+    },
+    async taskReceive (item) {
+      const res = await taskReceive({ gameType: this.currentGame, taskId: item.taskId })
       const code = _get(res, 'code', 0)
       if (code === 200) {
-        const awardRsp = _get(res, 'data.awardRsp', {})
-        this.taskVo = _get(res, 'data.taskRsps', [])
-        this.info.userPoints = _get(res, 'data.userPoint', this.info.userPoints)
-        this.getUserPoint()
-        this.awardInfo = {
-          list: [{
-            img: awardRsp.awardImg,
-            name: awardRsp.awardName
-          }],
-          desc: ''
-        }
-        this.$emit('show-pop', 'award', this.awardInfo)
+        this.$toast.show({
+          message: '领取成功',
+          duration: 3000
+        })
+        this.$emit('refreshTask', this.currentGame, true)
       }
-    },
-    async getUserPoint () {
-      const res = await userPoint()
-      const code = _get(res, 'code', 0)
-      if (code === 200) {
-        this.pointVo = _get(res, 'data', [])
-      }
-    },
-    async pointReceive (item, index) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001437', { task_id: item.id, task_name: item.awardName })
-      const res = await pointConvert(item.id)
-      const code = _get(res, 'code', 0)
-      const data = _get(res, 'data', {})
-      if (code === 200) {
-        this.pointVo[index].status = 2
-        this.awardInfo = {
-          list: [{
-            img: data.awardImg,
-            name: data.awardName
-          }],
-          desc: ''
-        }
-        this.$emit('show-pop', 'award', this.awardInfo)
-      }
-    },
-    toOpenGame (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0074001439', { task_id: item.taskId, task_name: item.taskName })
-      this.$emit('show-game')
-    },
-    countDown (data) {
-      if (!data) return false
-      let date = data / 1000
-      this.timer = setInterval(() => {
-        date = date - 1
-        if (date <= 0) {
-          date = 0
-          clearInterval(this.timer)
-          this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
-        }
-        let hour = Math.floor(parseInt(date / 60 / 60))
-        let minute = Math.floor(parseInt(date / 60) % 60)
-        let second = Math.floor(date % 60)
-        let countHour = hour >= 10 ? hour : '0' + hour
-        let countMinute = minute >= 10 ? minute : '0' + minute
-        let countSecond = second >= 10 ? second : '0' + second
-        this.countdownTime = `<span>${countHour}</span><span>:</span><span>${countMinute}</span><span>:</span><span>${countSecond}</span>后结束`
-      }, 1000)
+      GLOBALS.marchSetsPoint('A_H5PT0332004188', {
+        task_id: item.taskId,
+        task_name: item.taskName,
+        section_id: this.currentGame,
+        section_name: this.gameInfo[this.currentGame] || ''
+      }) // H5平台-超级任务活动页-各游戏游戏板块子任务-去完成点击
     }
   },
   watch: {
-    info (info) {
-      if (info) {
-        this.actInfo = JSON.parse(JSON.stringify(info))
-        this.pointVo = JSON.parse(JSON.stringify(info.pointVo))
-        this.taskVo = JSON.parse(JSON.stringify(info.taskVo))
-      }
+    currentGame (value) {
+      this.currentGroup = 1
     }
   }
 }
@@ -263,10 +225,14 @@ export default {
       justify-content: center;
       color: #02fcff;
       font-weight: bold;
-      margin: 0.3rem 0;
+      margin: 0.3rem 0 0.1rem;
       height: 0.36rem;
     }
     .task-list {
+      height: 5.6rem;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       li {
         width: 5.6rem;
         height: 1.2rem;
@@ -276,29 +242,41 @@ export default {
         margin: 0.2rem 0 0 0.76rem;
         position: relative;
         color: #fff;
-        padding: 0.28rem 0 0 0.4rem;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        flex-wrap: wrap;
+        padding-left: 0.22rem;
+        .name {
+          width: 100%;
+        }
         .content-wrapper {
           display: flex;
-          margin-top: -0.1rem;
           align-items: center;
           .awards {
             display: flex;
             align-items: center;
-            width: 1.2rem;
+            width: 2.4rem;
             white-space: nowrap;
+            font-size: 0.22rem;
             .icon {
-              width: 0.6rem;
-              height: 0.6rem;
+              min-width: 0.6rem;
+              min-height: 0.6rem;
+              position: relative;
               img {
-                min-width: 0.6rem;
-                height: 0.6rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate3d(-50%, -50%, 0);
+                max-width: 0.6rem;
+                max-height: 0.6rem;
               }
             }
           }
           .percent-wrap {
             position: relative;
-            width: 1.8rem;
+            width: 1.4rem;
             height: 0.26rem;
             background: #8a18f0;
             border-radius: 0.14rem;
@@ -321,7 +299,7 @@ export default {
         }
         .btn-wrapper {
           position: absolute;
-          right: 0.54rem;
+          right: 0.2rem;
           top: 50%;
           margin-top: -0.25rem;
           .btn {

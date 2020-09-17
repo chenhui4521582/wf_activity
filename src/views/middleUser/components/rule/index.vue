@@ -6,7 +6,7 @@
         <div class="mask"></div>
         <div class="content-wrapper">
           <div class="content">
-            1、活动时间：9/25 0:00-10/3 23:59<br />
+            1、活动时间：{{info.timeline}}<br />
             2、糖果萌消消、街机欢乐捕鱼、三国大作战各设置3天限时任务。任务开启依据时间轴，当时间结束前一个任务将自动失效，新游戏任务开启，直到9天活动时间结束；<br />
             3、3个游戏在其任务开启时所支持的金叶将会累计，达成梯度领取奖励；<br />
             4、游戏任务结束后，奖励仍可手动领取，领取后自动到账；<br />
@@ -26,8 +26,11 @@
 /* eslint-disable no-undef */
 export default {
   name: 'rule',
-  components: {
-
+  props: {
+    info: {
+      type: Object,
+      default: () => ({}),
+    }
   },
   data () {
     return {
@@ -37,6 +40,7 @@ export default {
   methods: {
     showPop () {
       this.isShowPop = true
+      GLOBALS.marchSetsPoint('A_H5PT0332004184') // H5平台-超级任务活动页-规则按钮点击
     },
     closePop () {
       this.isShowPop = false
@@ -70,7 +74,7 @@ export default {
         background-size: 100% 100%;
         box-sizing: border-box;
         position: relative;
-        line-height: 0.4rem;
+        line-height: 0.36rem;
         text-align: justify;
         .close-icon {
           position: absolute;

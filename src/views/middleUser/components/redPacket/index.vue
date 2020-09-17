@@ -8,7 +8,7 @@
             当前支持金叶:
           </span>
           <span class="number">
-            {{info.curGameProgress|conversion}}
+            {{conversion(info.curGameProgress)}}
           </span>
         </p>
         <p class="next-number">
@@ -16,7 +16,7 @@
             下个梯度解锁还需支持金叶:
           </span>
           <span class="number">
-            {{info.diffNextProgress|conversion}}
+            {{conversion(info.diffNextProgress)}}
           </span>
         </p>
       </div>
@@ -29,25 +29,24 @@
             获得<br />奖励
           </p>
         </div>
-        <div class="content-wrapper">
-          <ul>
-            <li class="percent-wrapper">
-              <div class="percent" :style="{width:percentWidth}"></div>
-            </li>
-            <li v-for="(item,index) in list" :class="{opened:item.status!==0}">
-              <p>{{item.amount|conversion}}</p>
-              <p class="red-packet-img" :class="{'shake-rotate':item.status===1}">
-                <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
-                <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
-              </p>
-              <p>{{item.awards|awardsNumberFilter}}</p>
-            </li>
-          </ul>
-        </div>
+        <ul class="content-wrapper" v-if="list&&list.length">
+          <li class="percent-wrapper" :style="{width:(0.78*list.length +0.28)+'rem'}">
+            <div class="percent" :style="{width:percentWidth}"></div>
+          </li>
+          <li v-for="(item,index) in list" :class="{opened:item.status!==0}">
+            <p>{{conversion(item.amount)}}</p>
+            <p class="red-packet-img" :class="{'shake-rotate':item.status===1}">
+              <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
+              <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
+            </p>
+            <p>{{item.awards|awardsNumberFilter}}</p>
+          </li>
+        </ul>
       </div>
     </div>
-    <img class="receive-btn need-open" src="./img/receive-icon.png" alt="领取奖励" v-if="isNeedOpen">
-    <img class="receive-btn" src="./img/not-receive-icon.png" alt="领取奖励" v-else>
+    <img class="receive-btn need-open" src="./img/receive-icon.png" alt="领取奖励" v-if="isNeedOpen"
+      @click="gameReceive">
+    <img class="receive-btn" src="./img/not-receive-icon.png" alt="无法领取奖励" v-else>
   </section>
 </template>
 
@@ -61,19 +60,16 @@ export default {
     info: {
       type: Object,
       default: () => ({})
-    }
-  },
-  data () {
-    return {
+    },
+    list: {
+      type: Array,
+      default: () => ([])
     }
   },
   computed: {
-    list () {
-      return this.info && this.info.progressList
-    },
     isNeedOpen () {
       let bool = false
-      let index = this.list.findIndex(item => item.status === 1)
+      let index = this.list && this.list.findIndex(item => item.status === 1)
       if (index > -1) {
         bool = true
       }
@@ -81,22 +77,30 @@ export default {
     },
     percentWidth () {
       let currentNumber = this.info.curGameProgress || 0
-      let basePercent = 1 / (this.list.length + 1)
-      let index = this.list.findIndex(item => item.status === 0)
+      let index = this.list && this.list.findIndex(item => item.status === 0)
       let percent = 0
       if (index > -1) {
         let prevNumber = index ? this.list[index - 1].amount : 0
         let nextNumber = this.list[index].amount
         let addPercent = (currentNumber - prevNumber) / (nextNumber - prevNumber)
-        percent = basePercent * (index + addPercent) * 100
+        percent = addPercent * 0.28 + index * 0.78
+        return `${percent}rem`
       } else {
         percent = 100
+        return `${percent}%`
       }
 
-      return `${percent}%`
     },
   },
   filters: {
+    awardsNumberFilter (value) {
+      return `${value / 10}元`
+    }
+  },
+  mounted () {
+
+  },
+  methods: {
     conversion (value) {
       if (value >= 100000000) {
         return `${Math.floor(value / 10000000) / 10}亿`
@@ -108,14 +112,12 @@ export default {
         return value || 0
       }
     },
-    awardsNumberFilter (value) {
-      return `${value / 10}元`
+    gameReceive () {
+      GLOBALS.marchSetsPoint('A_H5PT0332004186', {
+        task_name: `当前支持金叶:${this.conversion(this.info.curGameProgress)}`
+      }) // H5平台-超级任务活动页-累计支持金叶领取奖励按钮点击
+      this.$emit('gameReceive')
     }
-  },
-  mounted () {
-
-  },
-  methods: {
   }
 }
 </script>
@@ -195,15 +197,16 @@ export default {
         overflow-x: scroll;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
-      }
-      ul {
         display: flex;
         align-content: center;
         align-items: center;
+        padding-left: 0.28rem;
         li {
           font-size: 0.2rem;
           color: #d3a0ff;
-          margin-left: 0.28rem;
+          margin-right: 0.28rem;
+          width: 0.5rem;
+          display: inline-block;
           p {
             white-space: nowrap;
           }
@@ -222,7 +225,6 @@ export default {
         top: 50%;
         margin-top: -0.04rem;
         left: 0;
-        width: 117%;
         height: 0.08rem;
         background: #704feb;
         border-radius: 0.04rem;
