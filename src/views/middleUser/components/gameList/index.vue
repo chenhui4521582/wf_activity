@@ -1,19 +1,19 @@
 <template>
   <section class="game-list">
     <ul class="">
-      <li class="normal" v-for="(item,index) in list" :key="index" @click="toggleGame(item)"
-        :class="{'locked':item.state===0,'selected':currentGame===item.gameType,'end':item.state===2}">
+      <li class="normal" v-for="(item,index) in gameList" :key="index" @click="toggleGame(item)"
+        :class="{'locked':item.state===0,'selected':currentGame===item.gameId,'end':item.state===2}">
         <p class="time">{{item|timeFilter}}</p>
         <div class="img-wrapper">
           <img class="item-bg" src="./img/selected-bg.png" alt="选中状态"
-            v-if="currentGame===item.gameType">
+            v-if="currentGame===item.gameId">
           <img class="item-bg" src="./img/normal-bg.png" alt="默认状态" v-else>
           <img class="light" src="./img/light.png" alt="light" v-if="item.state===1">
           <img class="light" src="./img/locked-light.png" alt="light" v-if="item.state===0">
-          <img class="game-icon" :src="item.img" alt="游戏">
+          <img class="game-icon" :src="item.url|filter" alt="游戏">
           <img class="end-text" src="./img/end.png" alt="已结束" v-if="item.state===2">
           <img class="locked-icon" src="./img/locked.png" alt="未解锁" v-if="item.state===0">
-          <div class="need-receive" v-if="item.state===2&&item.redFlag===1">奖励待领取</div>
+          <div class="need-receive" v-if="item.state===2&&item.hasRedPoint===1">奖励待领取</div>
         </div>
         <p class="time"><span>{{item.name}}</span><span v-if="item.state===1">>></span></p>
       </li>
@@ -28,49 +28,25 @@ export default {
 
   },
   props: {
-    info: {
+    list: {
       type: Object,
       default: () => ({})
     }
   },
   data () {
     return {
-      list: [
-        {
-          img: require('../../img/game-icon.png'),
-          name: '街机欢乐捕鱼',
-          gameType: 20,
-          startTime: '2020-09-15 00:00:00',
-          endTime: '2020-09-18 23:59:59',
-          state: 2,
-          redFlag: 1
-        },
-        {
-          img: require('../../img/game-icon.png'),
-          name: '街机欢乐捕鱼',
-          gameType: 24,
-          startTime: '2020-09-15 00:00:00',
-          endTime: '2020-09-18 23:59:59',
-          state: 1
-        },
-        {
-          img: require('../../img/game-icon.png'),
-          name: '街机欢乐捕鱼',
-          gameType: 26,
-          startTime: '2020-09-15 00:00:00',
-          endTime: '2020-09-18 23:59:59',
-          state: 0
-        }
-      ],
       selectedGame: 0
     }
   },
   computed: {
+    gameList () {
+      return this.list && this.list.sort((itemA, itemB) => { return itemA.sort - itemB.sort })
+    },
     defaultGame () {
-      let gameType = this.list[0].gameType
-      this.list.forEach(item => {
+      let gameType = this.gameList[0].gameId
+      this.gameList.forEach(item => {
         if (item.state === 1) {
-          gameType = item.gameType
+          gameType = item.gameId
         }
       })
       return gameType
@@ -98,8 +74,8 @@ export default {
       if (!item.state) {
         return
       }
-      this.selectedGame = item.gameType
-      this.$emit('toggleGame', item.gameType)
+      this.selectedGame = item.gameId
+      this.$emit('toggleGame', item.gameId)
     }
   }
 }

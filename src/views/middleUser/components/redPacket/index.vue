@@ -8,7 +8,7 @@
             当前支持金叶:
           </span>
           <span class="number">
-            {{info.currentNumber|conversion}}
+            {{info.curGameProgress|conversion}}
           </span>
         </p>
         <p class="next-number">
@@ -16,32 +16,34 @@
             下个梯度解锁还需支持金叶:
           </span>
           <span class="number">
-            {{info.nextNumber|conversion}}
+            {{info.diffNextProgress|conversion}}
           </span>
         </p>
       </div>
       <div class="process-wrapper">
-        <div class="percent-wrapper">
-          <div class="percent" :style="{width:percentWidth}"></div>
+        <div class="title">
+          <p>
+            累计支持<br />金叶
+          </p>
+          <p>
+            获得<br />奖励
+          </p>
         </div>
-        <ul>
-          <li class="title">
-            <p>
-              累计支持<br />金叶
-            </p>
-            <p>
-              获得<br />奖励
-            </p>
-          </li>
-          <li v-for="(item,index) in list" :class="{opened:item.status!==1}">
-            <p>{{item.number|conversion}}</p>
-            <p class="red-packet-img" :class="{'shake-rotate':item.status===0}">
-              <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
-              <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
-            </p>
-            <p>{{item.awards|awardsNumberFilter}}</p>
-          </li>
-        </ul>
+        <div class="content-wrapper">
+          <ul>
+            <li class="percent-wrapper">
+              <div class="percent" :style="{width:percentWidth}"></div>
+            </li>
+            <li v-for="(item,index) in list" :class="{opened:item.status!==0}">
+              <p>{{item.amount|conversion}}</p>
+              <p class="red-packet-img" :class="{'shake-rotate':item.status===1}">
+                <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
+                <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
+              </p>
+              <p>{{item.awards|awardsNumberFilter}}</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <img class="receive-btn need-open" src="./img/receive-icon.png" alt="领取奖励" v-if="isNeedOpen">
@@ -56,73 +58,35 @@ export default {
 
   },
   props: {
-    // info: {
-    //   type: Object,
-    //   default: () => ({})
-    // }
+    info: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data () {
     return {
-      info: {
-        currentNumber: 120000,
-        nextNumber: 10000
-      },
-      list: [
-        {
-          awards: 5,
-          number: 50000,
-          status: 2
-        },
-        {
-          awards: 5,
-          number: 100000,
-          status: 0
-        },
-        {
-          awards: 5,
-          number: 150000,
-          status: 1
-        },
-        {
-          awards: 5,
-          number: 250000,
-          status: 1
-        },
-        {
-          awards: 5,
-          number: 350000,
-          status: 1
-        },
-        {
-          awards: 5,
-          number: 450000,
-          status: 1
-        },
-        {
-          awards: 5,
-          number: 950000,
-          status: 1
-        }
-      ]
     }
   },
   computed: {
+    list () {
+      return this.info && this.info.progressList
+    },
     isNeedOpen () {
       let bool = false
-      let index = this.list.findIndex(item => item.status === 0)
+      let index = this.list.findIndex(item => item.status === 1)
       if (index > -1) {
         bool = true
       }
       return bool
     },
     percentWidth () {
-      let currentNumber = this.info.currentNumber || 0
-      let basePercent = 0.125
-      let index = this.list.findIndex(item => item.status === 1)
+      let currentNumber = this.info.curGameProgress || 0
+      let basePercent = 1 / (this.list.length + 1)
+      let index = this.list.findIndex(item => item.status === 0)
       let percent = 0
       if (index > -1) {
-        let prevNumber = index ? this.list[index - 1].number : 0
-        let nextNumber = this.list[index].number
+        let prevNumber = index ? this.list[index - 1].amount : 0
+        let nextNumber = this.list[index].amount
         let addPercent = (currentNumber - prevNumber) / (nextNumber - prevNumber)
         percent = basePercent * (index + addPercent) * 100
       } else {
@@ -134,7 +98,11 @@ export default {
   },
   filters: {
     conversion (value) {
-      if (value >= 10000) {
+      if (value >= 100000000) {
+        return `${Math.floor(value / 10000000) / 10}亿`
+      } else if (value >= 10000000) {
+        return `${Math.floor(value / 1000000) / 10}千万`
+      } else if (value >= 10000) {
         return `${Math.floor(value / 1000) / 10}万`
       } else {
         return value || 0
@@ -207,34 +175,45 @@ export default {
     .process-wrapper {
       margin-top: 0.3rem;
       position: relative;
+      display: flex;
+      align-content: center;
+      align-items: center;
+      padding-left: 0.16rem;
+      .title {
+        text-align: left;
+        font-size: 0.2rem;
+        color: #feeb4e;
+        margin-left: 0;
+        min-width: 0.8rem;
+        p:first-child {
+          margin-bottom: 0.36rem;
+        }
+      }
+      .content-wrapper {
+        width: 5.66rem;
+        position: relative;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
       ul {
         display: flex;
         align-content: center;
         align-items: center;
-        padding-left: 0.16rem;
         li {
           font-size: 0.2rem;
           color: #d3a0ff;
           margin-left: 0.28rem;
+          p {
+            white-space: nowrap;
+          }
           .red-packet-img {
             width: 0.5rem;
             height: 0.6rem;
             margin: 0.08rem 0 0.1rem;
           }
-          &:nth-child(2) {
-            margin-left: 0.14rem;
-          }
           &.opened {
             color: #feeb4e;
-          }
-        }
-        .title {
-          text-align: left;
-          font-size: 0.2rem;
-          color: #feeb4e;
-          margin-left: 0;
-          p:first-child {
-            margin-bottom: 0.36rem;
           }
         }
       }
@@ -242,12 +221,13 @@ export default {
         position: absolute;
         top: 50%;
         margin-top: -0.04rem;
-        left: 0.86rem;
-        width: 5.66rem;
+        left: 0;
+        width: 117%;
         height: 0.08rem;
         background: #704feb;
         border-radius: 0.04rem;
         overflow: hidden;
+        margin-left: 0;
         .percent {
           width: 0;
           max-width: 100%;

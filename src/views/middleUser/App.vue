@@ -4,32 +4,36 @@
       <img src="./img/bg.png" alt="">
     </div>
     <div class="back" @click="back()"></div>
-    <rule />
+    <rule-pop />
     <article class="main-content">
-      <game-list ref="gameList" :info="info" @toggleGame="toggleGame" />
+      <game-list ref="gameList" :list="gameList" @toggleGame="toggleGame" />
       <red-packet ref="redPacket" :info="info" />
-      <task ref="task" :info="info" />
+      <task-list ref="task" :info="info" />
     </article>
   </main>
 </template>
 
 <script>
 /* eslint-disable no-undef */
-import rule from './components/rule/index'
-import task from './components/task/index'
-import redPacket from './components/redPacket/index'
-import gameList from './components/gameList/index'
+import RulePop from './components/rule/index'
+import TaskList from './components/task/index'
+import RedPacket from './components/redPacket/index'
+import GameList from './components/gameList/index'
+import { activityHome, findTaskRspByGameType } from './services/api'
+import _get from 'lodash.get'
 export default {
   name: 'middleUser',
   components: {
-    rule,
-    task,
-    redPacket,
-    gameList
+    RulePop,
+    TaskList,
+    RedPacket,
+    GameList
   },
   data () {
     return {
       info: {},
+      gameList: [],
+      taskList: [],
       currentGame: 0
     }
   },
@@ -38,12 +42,24 @@ export default {
   },
   methods: {
     async init () {
+      const res = await activityHome()
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.info = _get(res, 'data', {})
+        this.gameList = _get(res, 'data.gameRsps', [])
+        this.taskList = _get(res, 'data.taskRsps', [])
+      }
     },
     back () {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
-    toggleGame (type) {
+    async toggleGame (type) {
       this.currentGame = type
+      const res = await findTaskRspByGameType(type)
+      const code = _get(res, 'code', 0)
+      if (code === 200) {
+        this.taskList = _get(res, 'data', [])
+      }
     }
   }
 }
