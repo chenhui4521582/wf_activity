@@ -140,12 +140,13 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0303000029')
       window.location.href = "//wap.beeplaying.com/earnCoin/"
     },
-    goWithDraw ({status}) {
-      if(withdraw.status == 2) {
+    goWithDraw () {
+      console.log(this.withdraw)
+      if(this.withdraw.status == 2) {
         GLOBALS.marchSetsPoint('A_H5PT0303000032')
-      }
-      if(withdraw.status == 1) {
         window.location.href = 'https://wap.beeplaying.com/earnCoin/#/withdraw'
+      }
+      if(this.withdraw.status == 1) {
         GLOBALS.marchSetsPoint('A_H5PT0303000033')
       }
     },
