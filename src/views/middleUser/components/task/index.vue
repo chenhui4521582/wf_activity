@@ -27,7 +27,8 @@
               <div class="percent"
                 :style="{width:item.userTaskProgress/item.taskProgress * 100 + '%'}">
               </div>
-              <div class="text-percent">{{item.userTaskProgress}}/{{item.taskProgress}}</div>
+              <div class="text-percent">
+                {{item.userTaskProgress|conversion}}/{{item.taskProgress|conversion}}</div>
             </div>
           </div>
           <div class="btn-wrapper">
