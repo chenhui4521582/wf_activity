@@ -33,7 +33,7 @@
           </div>
           <div class="btn-wrap">
             <div class="btn to-finish" v-if="item.status == 1" @click="goDetail(item)">去完成</div>
-            <div class="btn award" v-if="item.status == 2">去领取</div>
+            <div class="btn award" v-if="item.status == 2" @click="goDetail(item)">去领取</div>
             <div class="btn finished" v-if="item.status == 3">已领取</div>
           </div>
         </div>
@@ -53,8 +53,9 @@
           </div>
           <div class="btn-wrap">
             <div class="btn award" v-if="withdraw.status == 2" @click="goWithDraw">去领取</div>
-            <div class="btn disable" v-if="withdraw.status == 1">金币不足</div>
+            <div class="btn disable" v-if="withdraw.status == 1" @click="goWithDraw">金币不足</div>
             <div class="btn finished" v-if="withdraw.status == 3">已领取</div>
+            <div class="num">{{withdraw.coinNum}}/3000</div>
           </div>
         </div>
       </div>
@@ -136,16 +137,36 @@ export default {
       this.showPopup = true
     },
     backHome() {
+      GLOBALS.marchSetsPoint('A_H5PT0303000029')
       window.location.href = "//wap.beeplaying.com/earnCoin/"
     },
-    goWithDraw () {
-      location.href = 'https://wap.beeplaying.com/earnCoin/#/withdraw'
+    goWithDraw ({status}) {
+      if(withdraw.status == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0303000032')
+      }
+      if(withdraw.status == 1) {
+        window.location.href = 'https://wap.beeplaying.com/earnCoin/#/withdraw'
+        GLOBALS.marchSetsPoint('A_H5PT0303000033')
+      }
     },
-    goDetail ({taskId}) {
-      location.href = `https://wap.beeplaying.com/earnCoin/#/task/detail?id=${taskId}`
+    goDetail ({taskId, status, taskName}) {
+      if(status == 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0303000030', {
+          task_id: taskId,
+          task_name: taskName
+        })
+      }
+      if(status == 2) {
+        GLOBALS.marchSetsPoint('A_H5PT0303000031', {
+          task_id: taskId,
+          task_name: taskName
+        })
+      }
+      window.location.href = `https://wap.beeplaying.com/earnCoin/#/task/detail?id=${taskId}`
     },
     goDutaionActive () {
-      location.href = 'https://wap.beeplaying.com/activities/duration.html'
+      GLOBALS.marchSetsPoint('A_H5PT0303000034')
+      window.location.href = 'https://wap.beeplaying.com/activities/duration.html'
     },
     countDownCallback () {
       this._getInfo()
@@ -153,7 +174,7 @@ export default {
   },
   mounted() {
     this._getInfo()
-    GLOBALS.marchSetsPoint('P_H5PT0321') 
+    GLOBALS.marchSetsPoint('A_H5PT0303000028')
   }
 }
 </script>
@@ -329,6 +350,14 @@ export default {
             color: .3rem;
             font-weight: bold;
           }
+        }
+      }
+      .btn-wrap {
+        .btn {
+          margin-bottom: .05rem;
+        }
+        .num {
+          color: #FC3E22;
         }
       }
     }
