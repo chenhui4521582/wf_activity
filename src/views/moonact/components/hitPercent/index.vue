@@ -19,7 +19,7 @@
             v-if="item.state == 2">完成
           </div>
           <div class="btn btn-receive" v-else-if="item.state == 1" @click="gotoact(item)">领取</div>
-          <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
+          <div class="btn btn-default" :class="{'btn-complete':actInfoData.state!=1}" v-else @click="gotocomplete(item)">去完成</div>
         </li>
         <li class="hb-dot-box" v-else>
           <span class="hb-dot hb-dot1">
@@ -56,7 +56,11 @@ export default {
     gameBetting: {
       type: Number,
       default: 0
-    }
+    },
+    actInfoData: {
+      type: Object,
+      default: null
+    },
   },
   filters: {
     conversion (value) {
@@ -160,7 +164,9 @@ export default {
       }
     },
     gotocomplete (item) {
-      this.$emit('openDropDown')
+      if(this.actInfoData.state==1){
+        this.$emit('openDropDown')
+      }
     },
     async gotoact (item) { // 领取
       GLOBALS.marchSetsPoint('A_H5PT0333004194', {

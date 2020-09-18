@@ -9,8 +9,8 @@
       <horn :noticeList="hornList"></horn>
     </div>
     <div class="current_total">
-      <div class="item">{{actInfo.jackpotInfo.timelineTotalAwards}}个话费碎片</div>
-      <div class="item">（{{actInfo.jackpotInfo.timelineTotalAmount}}个荷灯）</div>
+      <div class="item">{{actInfo.jackpotInfo&&actInfo.jackpotInfo.timelineTotalAwards||0}}个话费碎片</div>
+      <div class="item">（{{actInfo.jackpotInfo&&actInfo.jackpotInfo.timelineTotalAmount||0}}个荷灯）</div>
       <img src="./images/help.png" alt="" class="help" @click="showPop(4)">
     </div>
     <div class="wish_counttime">
@@ -28,11 +28,11 @@
         <div class="item" @click="showPop(1)">中奖记录>></div>
       </div>
       <hit-percent :gameBetting="actInfo.timelineUserAmount"
-                   :hbItems="actInfo.progressList"
+                   :hbItems="actInfo.progressList" :actInfoData="actInfo"
                    @refresh="_getInfo" @showPop="showPop" @openDropDown="$refs.dropDown.curIndex=1"></hit-percent>
     </div>
     <drop-down ref="dropDown" :actInfoData="actInfo" @showPop="showPop"
-               @refresh="_getInfo">
+               @refresh="_getInfo" v-if="actInfo.state==1">
     </drop-down>
     <comPop :popType="popType" :actInfoData="actInfo" :awardData="awardData" :awardList="awardList" ref="comPop"
             @close="closePop" @showPop="showPop" @opendown="$refs.dropDown.curIndex=1" @refresh="_getInfo"></comPop>
