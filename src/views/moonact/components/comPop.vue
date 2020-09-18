@@ -18,25 +18,19 @@
                   </div>
                 </div>
                 <div class="bonus-record" :class="{empty:!record.length}">
-                  <div class="title_items">
+                  <div class="title_items" :class="{tab0:tabIndex==0,tab1:tabIndex==1}">
                     <div class="title">日期</div>
-                    <div class="title">{{tabIndex==0?'鹊桥会场次':'排名'}}</div>
-                    <div class="title">{{tabIndex==0?'助力值':'当天累计助力'}}</div>
-                    <div class="title">{{tabIndex==0?'瓜分奖励':'排名奖励'}}</div>
+                    <div class="title" v-if="tabIndex==0">获得荷灯</div>
+                    <div class="title">奖励</div>
                     <div class="title"></div>
                   </div>
                   <div class="content">
                     <scroll :data="record">
                       <ul>
-                        <li v-for="(item,index) in record" :class="{last:record.length-1==index}">
-                          <div>{{item.applyDate}}</div>
-                          <div>
-                            <template v-if="tabIndex==0">{{item.round}}（{{item.roundFinish?'相会成功':'相会失败'}}）</template>
-                            <template v-else>{{item.rank}}</template>
-                          </div>
-                          <div>
-                            <template v-if="tabIndex==0">{{item.amount}}（{{item.teamPercent}}%）</template>
-                            <template v-else>{{item.amount}}米</template>
+                        <li v-for="(item,index) in record" :class="{last:record.length-1==index,tab0:tabIndex==0,tab1:tabIndex==1}">
+                          <div>{{item.createTime}}</div>
+                          <div v-if="tabIndex==0">
+                            {{item.amount}}
                           </div>
                           <div v-html="item.awardsName.replace('+','<br>')"></div>
                           <div>
@@ -56,126 +50,115 @@
                        :class="{selected:tabIndex==index}">{{item}}
                   </div>
                 </div>
-                <div class="info">*仅展示每场鹊桥会前10名玩家，排行顺序1-10名</div>
-                <div class="bonus-record" :class="{empty:!allRecord.length}">
+                <div class="my_info mine">
+                  <div class="title_items mine">
+                    <div class="title">我的排名</div>
+                    <div class="title">{{tabIndex==0?'今日':'昨日'}}累计荷灯</div>
+                    <div class="title">奖励</div>
+                  </div>
+                  <div class="content mine">
+                    <ul>
+                      <li>
+                        <div>{{allRecord&&allRecord.myRank}}</div>
+                        <div>{{allRecord&&allRecord.totalNum}}</div>
+                        <div>{{allRecord&&allRecord.currentAwards}}</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="bonus-record">
                   <div class="title_items">
-                    <div class="title">日期</div>
-                    <div class="title">鹊桥会场次</div>
+                    <div class="title">排名</div>
                     <div class="title">昵称</div>
-                    <div class="title">助力值</div>
-                    <div class="title">排名奖励</div>
+                    <div class="title">{{tabIndex==0?'今日':'昨日'}}累计荷灯</div>
+                    <div class="title">奖励</div>
                   </div>
                   <div class="content content_flag2">
-                    <scroll :data="allRecord" ref="scroll" :listenScroll="true" :probeType="3"
-                            @scroll="scroll">
+                    <scroll :data="allRecord&&allRecord.rankList" ref="scroll">
                       <ul>
-                        <li v-for="(item,index) in allRecord" :class="{last:allRecord.length-1==index}">
-                          <div>{{item.applyDate}}</div>
-                          <div style="white-space: normal;">{{item.round}}({{item.roundFinish?'相会成功':'相会失败'}}<template v-if="!item.roundFinish">助力值{{item.roundFinishRate}}%</template>)
-                          </div>
+                        <li v-for="(item,index) in allRecord&&allRecord.rankList" :class="{last:allRecord&&allRecord.rankList.length-1==index}">
+                          <div :class="{rank1:item.rank==1,rank2:item.rank==2,rank3:item.rank==3}"><span>{{item.rank}}</span></div>
                           <div>{{item.nickname}}</div>
-                          <div>{{item.amount?item.amount:''}}</div>
+                          <div>{{item.totalNum}}<br><i>{{item.updateTime}}</i></div>
                           <div v-html="item.awardsName.replace('+','<br>')"></div>
                         </li>
                       </ul>
                     </scroll>
                   </div>
                 </div>
+                <div class="info">荷灯数相同，先达成排名靠前</div>
               </template>
-              <template v-else-if="popType==3">
-                <div class="bonus-record" :class="{empty:!lastRecord.length}">
-                  <div class="title_items">
-                    <div class="title">排名</div>
-                    <div class="title">昵称</div>
-                    <div class="title">助力值</div>
-                    <div class="title">排名奖励</div>
-                  </div>
-                  <div class="content">
-                    <scroll :data="lastRecord" ref="scroll" :listenScroll="true" :probeType="3">
-                      <ul>
-                        <li v-for="(item,index) in lastRecord" :class="{last:lastRecord.length-1==index}">
-                          <div :class="{first:item.rank==1,second:item.rank==2,third:item.rank==3}">
-                            <span>{{item.rank}}</span>
-                          </div>
-                          <div>{{item.nickname}}</div>
-                          <div>
-                            {{item.amount}}
-                          </div>
-                          <div v-html="item.awardsName.replace('+','<br>')">
-                          </div>
-                        </li>
-                      </ul>
-                    </scroll>
-                  </div>
-                </div>
-              </template>
-              <template v-else-if="[7,8,9].includes(popType)">
+              <template v-else-if="[3,4,5].includes(popType)">
                 <scroll>
                   <div>
-                    <template v-if="popType==7">
+                    <template v-if="popType==3">
                       <p>1、活动时间：{{actInfoData.beginDate}}-{{actInfoData.endDate}}</p>
-                      <p>2、活动期间，<i>每天一键入队</i>随机加入牛郎/织女队，为牛郎/织女助力。玩家通过玩游戏支持金叶或购买活动礼包获得助力值；</p>
-                      <p>3、单次鹊桥总长度{{actInfoData.totalAmount}}米。当两组玩家助力牛郎织女【鹊桥相会成功】（牛郎织女相距0米），则两队共同瓜分大奖<i>{{actInfoData.totalAwards}}</i>。奖励以各团队助力占比瓜分（如牛郎队助力值占比两队总助力60%，则领取60%奖励）；
+                      <p>2、玩游戏或买礼包获得荷灯，荷灯自动投入祈愿池中；</p>
+                      <p>3、祈愿池每天分3个时段（0-9点、9-17点、17-24点）分别累计全服用户获得的荷灯并化成话费碎片，且还愿3次赠送月光宝盒，还愿时间分别是9点、17点、24点；
                       </p>
-                      <p>4、每天可多次助力【鹊桥相会】并多次瓜分奖励；当天最后一场鹊桥会未完成时，双方共同助力值需达成50%以上，则可瓜分一定比例奖励。否则不计奖励；</p>
-                      <p>5、每天设定个人助力榜和团队贡献榜</p>
-                      <p>·个人榜：单个玩家当天入队后累计助力值，前10名获排行大奖；</p>
-                      <p>·团队榜：每场鹊桥会中，根据玩家在团队的贡献比计算奖励；</p>
-                      <p>·单场鹊桥会达成，各队前3名分别加奖团队奖励的3%、1%、0.5%</p>
-                      <p>·单个玩家在单场鹊桥会团队贡献比需0.1%以上才可瓜分团队奖励；</p>
-                      <p>团队助力比和个人助力比均保留<i>小数点后两位</i>进行奖励核算。</p>
-                      <p>6、<i>每天需尽早匹配入队。</i>当天入队后产生的流水自动计算成助力值，并加到当天入队后的各个场次和当天个人榜，<i>入队前不计；</i>助力值无需用户进入活动页刷新</p>
-                      <p>7、团队发奖和个人榜发奖，均由玩家<i>手动领奖，过期不予补偿</i></p>
-                      <p>8、购买礼包和个人榜计入活动，均以系统统计为准。</p>
-                      <p>9、消耗金叶计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟。</p>
-                      <p>10、本次活动分多个难度，系统为您自动匹配。</p>
+                      <p>4、玩家在各时段获得的荷灯分别累计，达到荷灯数可领取固定奖励；下个祈愿池开启，上个时段累计荷灯数清零；</p>
+                      <p>5、单个时段祈愿池到指定还愿时间赠送月光宝盒，玩家在上个时段累计荷灯越多，获得宝盒机率越大，祈愿池返奖比例越大；</p>
+                      <p>6、每天设置排行榜，每天获得荷灯最多的前20名玩家获得榜单奖励；</p>
+                      <p>7、各时段累计荷灯奖励、月光宝盒奖励需手动领取。排行榜奖励由系统自动发送到账；</p>
+                      <p>8、计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战。</p>
+                      <p>9、获得的荷灯计入各活动时段时间以系统计算为准；</p>
+                      <p>10、月光宝盒奖励需系统计算，可能有延迟。请您耐心等候；</p>
+                      <p>11、本次活动分为多种难度，系统将为您匹配。</p>
                     </template>
-                    <template v-else-if="popType==8">
-                      <p class="weight">1.【本场团队预估奖励】</p>
-                      <p>=鹊桥会达成发放总奖励*当前团队助力值占比（如牛郎和织女当前收获助力10000米，所在团队助力5000米，则助力值占比50%）</p>
-                      <p>注：<i>奖励需完成鹊桥会才可发放。</i>单场鹊桥会失败，则牛郎织女助力值需达成总路程50%以上，两队可共同瓜分对应比例奖励。</p>
-                      <p class="weight">2.【个人预估奖励】</p>
-                      <p>=团队预计奖励*当前个人贡献（比如团队预计可瓜分10000元，个人助力值占比30%，则预计奖励=10000*30%）<br>*团队前3名再分别加奖团队奖励的3%、1%、0.5%</p>
-                      <p>3.入队后，单个玩家在单场鹊桥会贡献比需0.1%以上才可瓜分团队奖励。</p>
+                    <template v-else-if="popType==4">
+                      <p><em></em>祈愿池每天分3个时段<i>（0-9点、9-17点、17-24点）</i>单独累计全服用户获得的荷灯并化成话费碎片（10个话费碎片=1元话费券）。</p>
+                      <p><em></em><i>9点、17点、24点</i>赠送月光宝盒，上个时段累计荷灯越多，获得宝盒机率越大，祈愿池返奖比例越大； </p>
+                      <p><em></em>每个时段结束，下个时段开启，奖池累计荷灯和话费碎片将从0累计。</p>
                     </template>
-                    <template v-else-if="popType==9">
-                      <p>1、<i>每天一键入队</i>随机加入牛郎/织女队，助力牛郎/织女相会。玩游戏支持金叶或购买活动礼包获助力；</p>
-                      <img src="../images/comPop/gonglue/1.png" alt="" style="width:5.43rem;height: 1.26rem">
+                    <template v-else-if="popType==5">
+                      <p>1、玩游戏或买礼包获得荷灯，荷灯自动投入祈愿池中（每累计游戏支持{{actInfoData.bettingRate|filterPrice}}金叶=1个荷灯）</p>
+                      <img src="../images/comPop/gonglue/1.png" alt="" style="width:5.09rem;height: .64rem">
                       <p>
-                        2、两队助力牛郎织女【鹊桥相会成功】（即牛郎织女相距0米），则两队共同瓜分大奖。团队奖励以各团队助力占比进行瓜分；当天最后一场鹊桥会未完成时，双方共同助力值需达成50%以上，则可瓜分一定比例奖励。否则不计奖励；</p>
-                      <img src="../images/comPop/gonglue/2.png" alt="" style="width:5.45rem;height: 2.75rem">
-                      <p>3、每天设定<i>个人榜和团队贡献榜</i></p>
-                      <p>·个人榜：单个玩家当天入队后累计助力值，前10名获排行大奖；</p>
-                      <p>·团队榜：每场鹊桥会中，根据玩家在团队的贡献比计算奖励，且各队前3名额外加奖；单人在单场鹊桥会团队贡献比0.1%以上才可瓜分团队奖励；</p>
-                      <p>4、<i>每天需尽早匹配入队，入队前金叶消耗不计入活动；</i></p>
-                      <p>5、奖励均由<i>玩家手动领奖</i></p>
-                      <img src="../images/comPop/gonglue/3.png" alt="" style="width:5.48rem;height:2.16rem">
-                      <p>6、本次活动分多个难度系数，系统已为您自动匹配。</p>
+                        2、祈愿池每天分3个时段（0-9点、9-17点、17-24点）累计全服用户获得的荷灯并化成话费碎片，且还愿3次赠送月光宝盒，还愿时间分别是9点、17点、24点；</p>
+                      <img src="../images/comPop/gonglue/2.png" alt="" style="width:5.09rem;height: 3.38rem">
+                      <p>3、单时段累计荷灯领奖励 玩家在各时段获得的荷灯分别累计，达到荷灯数可领取固定奖励；下个祈愿池开启，上个时段累计荷灯数清零；</p>
+                      <img src="../images/comPop/gonglue/3.png" alt="" style="width:5.1rem;height:1.44rem">
+                      <p>4、月光宝盒奖励 单个时段祈愿池到指定还愿时间赠送月光宝盒，玩家在上个时段累计荷灯越多，获得宝盒机率越大，祈愿池返奖比例越大；</p>
+                      <img src="../images/comPop/gonglue/4.png" alt="" style="width:5.09rem;height:1.56rem">
+                      <p>5、每天设置排行榜，每天获得荷灯最多的前20名玩家获得榜单奖励；</p>
+                      <img src="../images/comPop/gonglue/5.png" alt="" style="width:5.09rem;height:1.32rem">
+                      <p>6、本次活动分为多种难度，系统将为您匹配。</p>
                     </template>
                   </div>
                 </scroll>
               </template>
-              <template v-else-if="popType==10">
+              <template v-else-if="popType==6">
                 <div class="sad_content">
-                  <img src="../images/comPop/ball.png" alt="" class="box">
-                  <p>你已新增助力值{{awardData.amount}}</p>
-                  <div class="info">助力值已自动累计到今日鹊桥会各场次和<br>个人榜~</div>
+                  <img src="../images/comPop/flower.png" alt="" class="flower">
+                  <p>荷灯*{{awardData.amount}}</p>
+                  <div class="info">新增荷灯已自动计入活动</div>
                 </div>
               </template>
-              <template v-else-if="popType==11">
+              <template v-else-if="popType==7">
                 <div class="sad_content">
-                  <img src="../images/comPop/box.png" alt="" class="box">
+                  <img src="../images/comPop/flower.png" alt="" class="flower">
                   <p>你有奖励待领取，<br>记得尽快领取~</p>
                 </div>
               </template>
-              <template v-else-if="popType==12">
+              <template v-else-if="popType==8">
                 <div class="sad_content">
-                  <img src="../images/comPop/boy.png" alt="" class="person" v-if="awardData.team">
-                  <img src="../images/comPop/girl.png" alt="" class="person" v-else>
-                  <div class="add">你已成功加入</div>
-                  <p>{{awardData.team?'牛郎助力队':'织女助力队'}}</p>
-                  <div class="info">鹊桥会将有多个场次，你的助力值会自动累计到各场次，并分别计算所得奖励哟~</div>
+                  <img :src="`${require(`../images/comPop/${awardData.awardsType||'hfq'}.png`)}`" alt="" class="hfq">
+                  <p>{{awardData.awardsName}}<template v-if="awardData.rank"><br><i>昨日排行第{{awardData.rank}}名，获得以上奖励</i></template></p>
+                  <div class="info">奖励请至个人中心查看<template v-if="awardData.awardsType!='jdk'"><br>10个话费碎片=1元话费券</template></div>
                 </div>
+              </template>
+              <template v-else-if="popType==9">
+                <div class="awardsList_content">
+                  <scroll>
+                    <div class="awardsList" :class="{lte2:awardList.length<=2,e3:awardList.length==3}">
+                      <div class="item" v-for="item in awardList">
+                        <img src="../images/comPop/hfq.png" alt="">
+                        <div class="awardsName">{{item}}个话费碎片</div>
+                      </div>
+                    </div>
+                  </scroll>
+                </div>
+                <div class="info">1个宝箱1个奖励，奖励请至个人中心查看<br>10个话费碎片=1元话费券</div>
               </template>
             </div>
           </div>
@@ -188,7 +171,7 @@
 </template>
 
 <script>
-  import {getAwardsRecord, getHistoryRankList, gainAwardsRecord, getRankListPersonal} from '../utils/api'
+  import {getAwardsRecord,gameReceive, getRankList} from '../utils/api'
 
   export default {
     name: 'comPop',
@@ -196,28 +179,8 @@
       return {
         isShowPop: false,
         record: [],
-        currentIndex: 1,
-        pageSize: 20,
-        /** 滚动到底部锁 **/
-        scrollLock: false,
-        lastRecord: [],
-        allRecord: [],
-        mineData: null,
-        games: [{
-          id: 12,
-          url: '/crush'
-        }, {
-          id: 10, url: '/fish'
-        }, {
-          id: 13, url: '/kingdom2'
-        }, {
-          id: 2, url: '/billiards'
-        }, {
-          id: 18, url: '/square'
-        }, {
-          id: 30, url: '/boom'
-        }],
-        titles: ["领奖页", "往期团队表现", "上期排行", "今日排行", "很遗憾", "大家都在玩", "活动规则", "奖励计算方式", "中奖攻略", "恭喜!!", "温馨提示", "恭喜!!"],
+        allRecord:null,
+        titles: ["领奖记录", "每日排行榜", "活动规则", "奖池说明", "活动攻略", "你已新增荷灯", "温馨提示", "恭喜获得", "恭喜获得"],
         tabIndex: 0
       }
     },
@@ -237,53 +200,21 @@
       actInfoData: {
         type: Object,
         default: null
+      },
+      awardList:{
+        type: Array,
+        default: ()=>[]
       }
     },
     computed: {
       tabs() {
-        return this.popType == 1 ? ['团队榜', '个人榜'] : ['牛郎助力组', '织女助力组']
+        return this.popType == 1 ? ['累计荷灯奖励', '月光宝盒'] : ['今日排行', '昨日排行']
       }
     },
     components: {
       scroll: () => import('./scroll')
     },
     methods: {
-      /** 列表滚动到底部重新获取数据 **/
-      scroll(pos) {
-        let height = document.querySelector('.content_flag2 ul').clientHeight
-        let boxHeight = document.querySelector('.content_flag2').clientHeight
-        let endPosition = height - boxHeight
-        if (Math.abs(Math.round(pos.y)) > endPosition) {
-          /** 添加滚动锁数据没有回来不允许加载数据**/
-          if (this.scrollLock) {
-            return false
-          }
-          this.scrollLock = true
-          setTimeout(() => {
-            // 向列表添加数据
-            this.currentIndex++
-            this._getAllList()
-          }, 100)
-        }
-      },
-      async _getAllList() {
-        let {code, data} = await getHistoryRankList({
-          pageSize: this.pageSize,
-          page: this.currentIndex,
-          value: this.tabIndex ? 0 : 1
-        })
-        if (code == 200) {
-          this.allRecord = [...this.allRecord, ...data]
-          /** 解除滚动限制 **/
-          if (data.length == this.pageSize) {
-            this.scrollLock = false
-          } else {
-            this.scrollLock = true
-          }
-          GLOBALS.marchSetsPoint('A_H5PT0323004015')//H5平台-七夕鹊桥会活动-往期表现页加载完成
-          this.isShowPop = true
-        }
-      },
       getClassName(name) {
         return `${name} flag${this.popType}`
       },
@@ -307,37 +238,30 @@
         }
       },
       async showPop() {
-        if (![1, 2, 3].includes(this.popType)) {
-          if(this.popType==10){
-            if(this.awardData&&this.awardData.amount){
+        if (![1, 2].includes(this.popType)) {
+          if (this.popType == 6) {
+            if (this.awardData && this.awardData.amount) {
               this.isShowPop = true
-            }else{
+            } else {
               this.$emit('close')
             }
-          }else{
+          } else {
             this.isShowPop = true
           }
         } else {
-          if (this.popType == 1 || this.popType == 2) {
-            if (this.awardData) {
-              this.tabIndex = this.awardData.tabIndex
-            }
-            if (this.popType == 1) {
-              let {code, data} = await getAwardsRecord(this.tabIndex == 0)
-              if (code == 200) {
-                this.record = data
-              }
-              GLOBALS.marchSetsPoint('A_H5PT0323004012')//H5平台-七夕鹊桥会活动-领奖弹窗加载完成
-              this.isShowPop = true
-            } else {
-              this._getAllList()
-            }
-          } else {
-            let {code, data} = await getRankListPersonal(false)
+          if (this.popType == 1) {
+            let {code, data} = await getAwardsRecord(this.tabIndex+1)
             if (code == 200) {
-              this.lastRecord = data
-              this.isShowPop = true
+              this.record = data
             }
+            this.isShowPop = true
+          } else {
+            this.tabIndex=this.actInfoData.state!=1?1:0//活动结束展示昨日排行
+            let {code, data} = await getRankList(this.tabIndex?'yesterday':'today')
+            if (code == 200) {
+              this.allRecord = data
+            }
+            this.isShowPop = true
           }
         }
       },
@@ -345,15 +269,12 @@
         this.$emit('close')
         this.isShowPop = false
         this.record = []
-        this.allRecord = []
-        this.lastRecord = []
-        this.currentIndex = 1
-        this.scrollLock = false
-        if (this.popType == 11 && this.awardData) {
-          this.$emit('showPop', 10, this.awardData)
+        this.allRecord = null
+        if (this.popType == 8 && this.awardData&&this.awardData.rank) {
+          this.$emit('showPop', 6, this.awardData)
         }
         if (this.popType == 1) {
-          this.$emit('refresh',false)
+          this.$emit('refresh', false)
         }
         this.tabIndex = 0
       },
@@ -368,40 +289,26 @@
         this.close()
         this.$emit('showPop', type)
       },
-      gotogame({url, id}) {
-        GLOBALS.jumpOutsideGame(url)
-      },
-      gotoindex() {
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
-      },
       async changeTab(index) {
         this.record = []
-        this.allRecord = []
-        this.lastRecord = []
-        this.currentIndex = 1
-        this.scrollLock = false
+        this.allRecord = null
         this.tabIndex = index
-        if (this.popType == 1 || this.popType == 2) {
-          if (this.popType == 1) {
-            let {code, data} = await getAwardsRecord(this.tabIndex == 0)
-            if (code == 200) {
-              this.record = data
-            }
-            this.isShowPop = true
-          } else {
-            this._getAllList()
-          }
-        } else {
-          let {code, data} = await getHistoryRankList()
+        if (this.popType == 1) {
+          let {code, data} = await getAwardsRecord(this.tabIndex+1)
           if (code == 200) {
-            this.lastRecord = data
-            this.isShowPop = true
+            this.record = data
+          }
+          this.isShowPop = true
+        } else {
+          let {code, data} = await getRankList(this.tabIndex?'yesterday':'today')
+          if (code == 200) {
+            this.allRecord = data
           }
         }
       },
       async gainAwards(item, tabIndex) {
         if (!item.received) {
-          let {code, message} = await gainAwardsRecord(tabIndex == 0, item.id)
+          let {code, message} = await gameReceive(tabIndex+1, item.id)
           if (code == 200) {
             this.$toast.show({
               message: '领取成功'
@@ -473,23 +380,31 @@
               left: 0;
               right: 0;
               margin: auto;
-              font-size: .42rem;
+              font-size: .47rem;
               font-weight: bold;
-              color: rgba(230, 75, 21, 1);
+              color: #A2191C;
               text-align: center;
               line-height: .94rem;
             }
           }
           .container_compop {
-            &.flag7, &.flag8, &.flag9 {
+            &.flag3, &.flag4, &.flag5 {
               padding: 0 .13rem;
               box-sizing: border-box;
               position: absolute;
               height: 5.3rem;
               width: 5.5rem;
+              em{
+                display: inline-block;
+                width: .1rem;
+                height: .1rem;
+                background: #FEE4BC;
+                border-radius: 50%;
+                margin-right: .1rem;
+              }
               p {
                 /*font-weight: bold;*/
-                color: rgba(255, 255, 255, 1);
+                color: #F7D5A1;
                 box-sizing: border-box;
                 font-size: .26rem;
                 line-height: .36rem;
@@ -498,14 +413,13 @@
                   text-decoration: underline;
                 }
                 i {
-                  color: #FFE795;
-                  font-weight: bold;
+                  color: #FFA811;
                 }
                 span {
                   font-weight: bold;
                 }
               }
-              &.flag8 {
+              &.flag4 {
                 p {
                   font-size: .26rem;
                   line-height: .5rem;
@@ -514,26 +428,19 @@
                   }
                 }
               }
-              &.flag9 {
-                p {
-                  font-size: .24rem;
-                  line-height: .36rem;
-                  font-weight: bold;
-                }
-                img {
-                  margin: .2rem 0;
-                }
+              img{
+                margin: .2rem 0;
               }
             }
-            &.flag1, &.flag2, &.flag3, &.flag4 {
+            &.flag1, &.flag2{
               .tabs {
                 width: 5.09rem;
                 height: .88rem;
-                background: rgba(13, 103, 154, 1);
+                background: #800202;
                 border-radius: .44rem;
                 font-size: .36rem;
                 font-weight: 400;
-                color: rgba(70, 168, 224, 1);
+                color: #E64C16;
                 overflow: hidden;
                 display: flex;
                 margin: 0 auto .2rem;
@@ -542,8 +449,8 @@
                   line-height: .88rem;
                   text-align: center;
                   &.selected {
-                    background: rgba(255, 254, 253, 1);
-                    color: rgba(230, 75, 21, 1);
+                    background: #FFFEFD;
+                    color: #F26E4B;
                   }
                 }
               }
@@ -556,13 +463,13 @@
                 .title_items {
                   display: flex;
                   height: .6rem;
-                  background: rgba(192, 225, 255, 1);
+                  background: #FFC3C3;
                   border-radius: .08rem .08rem 0 0;
                   padding: .15rem 0;
                   box-sizing: border-box;
                   .title {
                     font-size: .22rem;
-                    color: rgba(39, 141, 199, 1);
+                    color: #800102;
                     flex: 1;
                     text-align: center;
                     height: .3rem;
@@ -575,9 +482,6 @@
                     &:nth-child(2), &:nth-child(3) {
                       flex: 1.1;
                     }
-                    /*&:nth-child(1), &:nth-child(2), &:nth-child(3) {*/
-                    /*border-right: 1px solid rgba(34, 63, 107, 1);*/
-                    /*}*/
                   }
                 }
                 .content {
@@ -588,7 +492,7 @@
                   right: 0;
                   color: rgba(255, 255, 255, 1);
                   overflow: hidden;
-                  background: rgba(72, 167, 220, 1);
+                  background: #E65657;
                   border-radius: 0 0 .08rem .08rem;
                   ul {
                     display: flex;
@@ -614,17 +518,24 @@
                         &:nth-child(3) {
                           flex: 1.2;
                         }
+                        i{
+                          margin-top: .14rem;
+                          font-size: .18rem;
+                          font-weight: 400;
+                          color: #A41B1B;
+                        }
                         .btn {
                           width: .88rem;
                           height: .44rem;
                           text-align: center;
                           line-height: .44rem;
-                          background: rgba(255, 107, 49, 1);
+                          background: #6B0CC4;
                           border-radius: .22rem;
                           margin: 0 auto;
+                          color: #FFDDDD;
                           &.gray {
-                            color: rgba(72, 167, 220, 1);
-                            background: rgba(41, 87, 114, 1);
+                            color: #FF8C8D;
+                            background: #99393A;
                           }
                         }
                       }
@@ -637,55 +548,36 @@
                         margin: auto;
                         width: 5.5rem;
                         height: .01rem;
-                        background: rgba(60, 156, 211, 1);
+                        background: #C94647;
                       }
                     }
                   }
                 }
-                /*&.empty {*/
-                /*position: absolute;*/
-                /*top: 2rem;*/
-                /*bottom: 0;*/
-                /*left: 0;*/
-                /*right: 0;*/
-                /*margin: auto;*/
-                /*display: flex;*/
-                /*align-items: center;*/
-                /*justify-content: center;*/
-                /*&:before {*/
-                /*content: '';*/
-                /*position: absolute;*/
-                /*left: 0;*/
-                /*right: 0;*/
-                /*margin: auto;*/
-                /*width: 1.27rem;*/
-                /*height: 1.27rem;*/
-                /*background: url("../images/comPop/empty.png");*/
-                /*background-size: 100% 100%;*/
-                /*}*/
-                /*&:after {*/
-                /*content: '没有记录';*/
-                /*position: absolute;*/
-                /*left: 0;*/
-                /*right: 0;*/
-                /*margin: auto;*/
-                /*font-size: .24rem;*/
-                /*font-weight: 500;*/
-                /*color: rgba(207, 117, 66, 1);*/
-                /*align-self: flex-end;*/
-                /*text-align: center;*/
-                /*}*/
-                /*}*/
               }
               &.flag1 {
                 .bonus-record {
                   .title_items {
-                    .title {
-                      &:nth-child(4) {
-                        flex: 1.2;
+                    .title:nth-child(1) {
+                      flex: 1;
+                    }
+                    &.tab1{
+                      .title {
+                        &:nth-child(3) {
+                          flex: 1.2;
+                        }
+                        &:nth-child(4) {
+                          flex: .8;
+                        }
                       }
-                      &:nth-child(5) {
-                        flex: .8;
+                    }
+                    &.tab2{
+                      .title {
+                        &:nth-child(2) {
+                          flex: 1.2;
+                        }
+                        &:nth-child(3) {
+                          flex: .8;
+                        }
                       }
                     }
                   }
@@ -693,11 +585,28 @@
                     ul {
                       li {
                         div {
-                          &:nth-child(4) {
-                            flex: 1.2;
+                          &:nth-child(1) {
+                            flex: 1;
                           }
-                          &:nth-child(5) {
-                            flex: .8;
+                        }
+                        &.tab1{
+                          div {
+                            &:nth-child(3) {
+                              flex: 1.2;
+                            }
+                            &:nth-child(4) {
+                              flex: .8;
+                            }
+                          }
+                        }
+                        &.tab2{
+                          div {
+                            &:nth-child(2) {
+                              flex: 1.2;
+                            }
+                            &:nth-child(3) {
+                              flex: .8;
+                            }
                           }
                         }
                       }
@@ -706,33 +615,118 @@
                 }
               }
               &.flag2 {
-                .info {
-                  font-size: .2rem;
+                .my_info{
+                  width: 100%;
+                  height: .7rem;
+                  border-radius: .08rem .08rem 0 0;
+                  position: relative;
+                  margin: .15rem auto 0;
+                  font-size: .22rem;
                   font-weight: 400;
-                  color: rgba(133, 208, 251, 1);
-                  margin: .19rem 0 .09rem;
-                  text-align: center;
+                  color: #ffe3c5;
+                  overflow: hidden;
+                  .title_items{
+                    display: flex;
+                    align-items: center;
+                    height: .4rem;
+                    background: #FFC3C3;
+                    color: #A2181B;
+                    .title{
+                      flex: .8;
+                      text-align: center;
+                      height: .3rem;
+                      line-height: .3rem;
+                      box-sizing: border-box;
+                      &:first-child{
+                        flex: .5;
+                      }
+                    }
+                  }
+                  .content{
+                    position: absolute;
+                    height: .4rem;
+                    border-radius: 0;
+                    top: .3rem;
+                    left: 0;
+                    right: 0;
+                    overflow: hidden;
+                    background: #FFC3C3;
+                    font-weight: bold;
+                    color: #770ADD;
+                    ul{
+                      display: flex;
+                      flex-direction: column;
+                      li{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        height: .4rem;
+                        div{
+                          flex: .8;
+                          font-size: .26rem;
+                          text-align: center;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          &:first-child{
+                            flex: .5;
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
                 .bonus-record {
                   .title_items {
+                    border-radius: 0;
+                    background: #EC9C9D;
+                    height: .42rem;
+                    padding: .1rem 0;
                     .title {
-                      &:nth-child(3) {
+                      font-size: .24rem;
+                      font-weight: 400;
+                      color: #800102;
+                      &:nth-child(2) {
                         flex: 1;
                       }
-                      &:nth-child(5) {
+                      &:nth-child(4) {
                         flex: 1.2;
                       }
                     }
                   }
                   .content {
-                    height: 3.3rem;
+                    top: .42rem;
+                    height: 2.8rem;
+                    background: #E65657;
                     ul {
                       li {
                         div {
-                          &:nth-child(3) {
+                          &:nth-child(1){
+                            span{
+                              display: inline-block;
+                              width: .37rem;
+                              height: .37rem;
+                              line-height:.37rem;
+                              text-align: center;
+                            }
+                            &.rank1 span{
+                              background: #FFC103;
+                              border-radius: 50%;
+                            }
+                            &.rank2 span{
+                              background: #F8F0E4;
+                              border-radius: 50%;
+                              color: #A31A1B;
+                            }
+                            &.rank3 span{
+                              background: #793B04;
+                              border-radius: 50%;
+                            }
+                          }
+                          &:nth-child(2) {
                             flex: 1;
                           }
-                          &:nth-child(5) {
+                          &:nth-child(4) {
                             flex: 1.2;
                           }
                         }
@@ -740,56 +734,19 @@
                     }
                   }
                 }
-              }
-              &.flag3 {
-                .bonus-record {
-                  .title_items {
-                    .title {
-                      &:nth-child(1) {
-                        flex: .5;
-                      }
-                    }
-                  }
-                  .content {
-                    height: 4.7rem;
-                    ul {
-                      li {
-                        div:nth-child(1) {
-                          flex: .5;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              &.flag4 {
-                .bonus-record {
-                  .title_items {
-                    height: .72rem;
-                    .title {
-                      height: .72rem;
-                      &:nth-child(1) {
-                        flex: .5;
-                      }
-                    }
-                  }
-                  .content {
-                    height: 2.8rem;
-                    top: .72rem;
-                    ul {
-                      li {
-                        height: .72rem;
-                        line-height: 1;
-                        div:nth-child(1) {
-                          flex: .5;
-                        }
-                      }
-                    }
-                  }
+                .info{
+                  position: absolute;
+                  left: 0;
+                  right: 0;
+                  bottom: .28rem;
+                  text-align: center;
+                  font-size: .24rem;
+                  font-weight: 400;
+                  color: #FFAC64;
                 }
               }
             }
-            &.flag5, &.flag10, &.flag11, &.flag12 {
+            &.flag6, &.flag7, &.flag8 {
               position: relative;
               .sad_content {
                 position: absolute;
@@ -800,14 +757,14 @@
                 flex-direction: column;
                 justify-content: space-between;
                 align-items: center;
-                .box {
-                  width: 2.83rem;
-                  height: 2.38rem;
-                  margin-bottom: .4rem;
+                .flower {
+                  width: 2.64rem;
+                  height: 1.86rem;
+                  margin-bottom: .25rem;
                 }
-                .person {
+                .hfq {
                   width: 2.56rem;
-                  height: 2.88rem;
+                  height: 1.6rem;
                 }
                 .add {
                   font-size: .3rem;
@@ -818,19 +775,20 @@
                 p {
                   font-size: .4rem;
                   font-weight: bold;
-                  color: rgba(255, 236, 131, 1);
+                  color: #F7D5A1;
                   line-height: .4rem;
                   text-align: center;
                 }
                 .info {
-                  margin-top: .29rem;
+                  margin-top: 1.5rem;
                   font-size: .26rem;
                   font-weight: 400;
-                  color: rgba(255, 255, 255, 1);
+                  color: #FFAC64;
                   text-align: center;
+                  line-height: .4rem;
                 }
               }
-              &.flag11 {
+              &.flag7 {
                 .sad_content {
                   p {
                     font-size: .4rem;
@@ -838,36 +796,74 @@
                   }
                 }
               }
-              &.flag12 {
+              &.flag8 {
                 .sad_content {
-                  margin: .2rem auto 0;
+                  margin: 1rem auto 0;
+                  i{
+                    font-size: .3rem;
+                    font-weight: 400;
+                    color: #F7D5A1;
+                  }
+                  .info{
+                    margin-top: 1rem;
+                  }
                 }
               }
             }
-            &.flag6 {
-              .gamelist {
+            &.flag9 {
+              .awardsList_content{
+                position: relative;
+                height: 4.26rem;
+              }
+              .awardsList{
+                position: absolute;
                 display: flex;
                 flex-wrap: wrap;
-                height: 4.2rem;
-                justify-content: space-between;
-                padding: 0 0.5rem;
-                position: absolute;
-                left: .5rem;
-                right: .5rem;
-                .game {
-                  width: 1.24rem;
-                  height: 1.69rem;
+                padding: 0 .3rem;
+                box-sizing: border-box;
+                &.lte2{
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  top: 0;
+                  justify-content: center;
+                  flex-direction: column;
+                  align-items: center;
+                }
+                &.e3{
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  top: 0;
+                  justify-content: center;
+                  align-items: center;
+                }
+                .item{
+                  text-align: center;
+                  position: relative;
+                  margin-bottom: .3rem;
+                  img{
+                    width: 2.56rem;
+                    height: 1.6rem;
+                  }
+                  .awardsName{
+                    position: absolute;
+                    top: 1.5rem;
+                    left: 0;
+                    right: 0;
+                    font-size: .3rem;
+                    font-weight: 400;
+                    color: #F8D6A1;
+                  }
                 }
               }
-              .gogames {
-                font-size: 0.36rem;
-                font-weight: bold;
-                color: rgba(255, 255, 255, 1);
+              .info{
+                font-size: .26rem;
+                font-weight: 400;
+                color: #FFAC64;
                 text-align: center;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
+                margin-top: .3rem;
+                line-height: .4rem;
               }
             }
           }

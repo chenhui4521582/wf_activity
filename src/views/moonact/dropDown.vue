@@ -48,6 +48,7 @@ export default {
     },
     outHandleTab () {
       this.curIndex=1
+      GLOBALS.marchSetsPoint('A_H5PT0333004195')//H5平台-中秋祈愿池-获取荷灯页加载完成
     },
     handleTab (idx) {
       this.curIndex = idx

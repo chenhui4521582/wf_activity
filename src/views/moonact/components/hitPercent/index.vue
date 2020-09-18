@@ -1,10 +1,9 @@
 <template>
   <div class="hit-percent">
     <div class="hb-task-box">
-      <div class="percent-box"
-        :style="{background:$moduleConfig.superLotto.dropDown.inner.bg.background}">
-        <div class="percent-number"
-          :style="{width:wpercent,background:$moduleConfig.superLotto.dropDown.inner.percentBg}">
+      <div class="percent-box" :class="{e4:envelopsItem.length==4}">
+        <div class="percent-number" :class="{zero:gameBetting<=envelopsItem[0].amount}"
+          :style="{width:wpercent}">
         </div>
       </div>
       <ul>
@@ -12,14 +11,14 @@
           <h2>{{item.amount | conversion}}<img src="../../images/flower.png" alt="" style="width: .31rem;height: .25rem;margin-left: .02rem"></h2>
           <h4>(累计获得)</h4>
           <div class="hb-line">
-            <div class="item">{{item.awards}}元</div>
+            <div class="item">{{item.awards}}个</div>
             <div class="item">话费碎片</div>
           </div>
           <div class="btn btn-complete"
             :style="{color:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}"
-            v-if="item.status == 2">完成
+            v-if="item.state == 2">完成
           </div>
-          <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(item)">领取</div>
+          <div class="btn btn-receive" v-else-if="item.state == 1" @click="gotoact(item)">领取</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
         </li>
         <li class="hb-dot-box" v-else>
@@ -44,7 +43,9 @@ export default {
       hbTestData: [],
       popType: 0,
       awardData: null,
-      showLoading: false
+      showLoading: false,
+      percent1:[15,40,65,77,100],
+      percent2:[15,43,72,100]
     }
   },
   props: {
@@ -71,7 +72,6 @@ export default {
       if (!this.hbItems) {
         return []
       }
-
       // 获取最大值
       let maxItem = this.hbItems && this.hbItems.length && this.hbItems.sort((a, b) => {
         return a.amount - b.amount
@@ -82,12 +82,12 @@ export default {
       data.pop()
 
       let nArr = data.filter((item) => {
-        return item.status != 2
+        return item.state != 2
       }).sort((a, b) => {
         return a.amount - b.amount
       })
       let tArr = data.filter((item) => {
-        return item.status == 2
+        return item.state == 2
       }).sort((a, b) => {
         return a.amount - b.amount
       })
@@ -113,30 +113,35 @@ export default {
         return
       }
       if (this.hbItems && this.envelopsItem) {
-        if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].status != 0) {
+        if (this.envelopsItem && this.envelopsItem[this.envelopsItem.length - 1] && this.envelopsItem[this.envelopsItem.length - 1].state != 0) {
           return '100%'
         } else {
-          let minUnfinished = this.hbItems.filter((item) => {
-            return item.status == 0
-          }).sort((a, b) => {
-            return a.amount - b.amount
-          })[0]
-          let idArr = [...this.envelopsItem.map(c => c.sort)].indexOf(minUnfinished.sort)
+          let idArr=this.envelopsItem.findIndex(item=>this.gameBetting==item.amount)
           if (this.envelopsItem.length == 5) {
             if (idArr == -1) { // 在省略号里
-              return parseFloat(4 * 100 / 6).toFixed(2) + '%'
-            } else {
-              if (idArr == 0) {
-                return parseFloat((idArr + this.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
-              } else {
-                return parseFloat((1 / 12 + (idArr - 1) / 5 + this.gameBetting / (minUnfinished.amount) / 5) * 100) + '%'
+              if(this.gameBetting>this.envelopsItem[2].amount){
+                return '77%'
+              }else if(this.gameBetting>this.envelopsItem[1].amount){
+                return parseFloat((this.gameBetting-this.envelopsItem[1].amount)*100*0.1/(this.envelopsItem[2].amount-this.envelopsItem[1].amount)+this.percent1[1]).toFixed(2)+'%'
+              }else{
+                return parseFloat((this.gameBetting-this.envelopsItem[0].amount)*100*0.1/(this.envelopsItem[1].amount-this.envelopsItem[0].amount)+this.percent1[0]).toFixed(2)+'%'
               }
+            } else {
+              return this.percent1[idArr]+'%'
             }
           } else {
-            if (idArr == 0) {
-              return parseFloat((idArr + this.gameBetting / (minUnfinished.amount)) * 100 / 12) + '%'
+            if (idArr == -1) {
+              if(this.gameBetting>this.envelopsItem[2].amount){
+                return parseFloat((this.gameBetting-this.envelopsItem[2].amount)*100*0.13/(this.envelopsItem[3].amount-this.envelopsItem[2].amount)+this.percent2[2]).toFixed(2)+'%'
+              }else if(this.gameBetting>this.envelopsItem[1].amount){
+                return parseFloat((this.gameBetting-this.envelopsItem[1].amount)*100*0.13/(this.envelopsItem[2].amount-this.envelopsItem[1].amount)+this.percent2[1]).toFixed(2)+'%'
+              }else if(this.gameBetting>this.envelopsItem[0].amount){
+                return parseFloat((this.gameBetting-this.envelopsItem[0].amount)*100*0.13/(this.envelopsItem[1].amount-this.envelopsItem[0].amount)+this.percent2[0]).toFixed(2)+'%'
+              }else{
+                return this.percent2[0]+'%'
+              }
             } else {
-              return parseFloat((1 / 12 + (idArr - 1) * 4 / 24 + this.gameBetting / (minUnfinished.amount) * 4 / 24) * 100) + '%'
+              return this.percent2[idArr]+'%'
             }
           }
         }
@@ -155,22 +160,28 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0277003313', {
-        task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })   // H5平台-超级大赢家活动-玩游戏任务去完成点击
-      this.showPop(7)
+      this.$emit('openDropDown')
     },
     async gotoact (item) { // 领取
-      GLOBALS.marchSetsPoint('A_H5PT0277003314', {
+      GLOBALS.marchSetsPoint('A_H5PT0333004194', {
         task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })// H5平台-超级大赢家活动-玩游戏任务领取点击
+        task_name: '累计获得荷花：' + item.amount,
+        awards_id:item.id,
+        awards_name:`${item.awards}个话费碎片`
+      })//H5平台-中秋祈愿池-各时段话费碎片领取点击
       this.showLoading = true
-      gameReceive(item.sort).then((res) => {
+      gameReceive(1,item.id).then((res) => {
         if (res.code == 200) {
-          this.showPop(8, res.data)
-          this.$emit('refresh', res.data)
+          this.showPop(8,{
+            awardsName: `${item.awards}个话费碎片`
+          })
+          this.$emit('refresh')
+          GLOBALS.marchSetsPoint('A_H5PT0333004196', {
+            task_id: item.sort,
+            task_name: '累计获得荷花：' + item.amount,
+            awards_id:item.id,
+            awards_name:`${item.awards}个话费碎片`
+          })//H5平台-中秋祈愿池-累计荷灯-恭喜获得弹窗加载完成
         } else {
           this.$toast.show({
             message: res.message,
@@ -200,31 +211,34 @@ export default {
     display: flex;
   }
   .percent-box {
-    width: 5.86rem;
+    width: 5.8rem;
     height: 0.15rem;
-    background: rgba(255, 171, 129, 1);
-    border-radius: 0.08rem;
+    background: #BDAD97;
     position: absolute;
-    left: 0.3rem;
-    top: 1rem;
+    left: 0.37rem;
+    top: 1.1rem;
     border-radius: 0.08rem;
+    &.e4{
+      width: 5.65rem;
+      left: 0.45rem;
+    }
     .percent-number {
       height: 0.15rem;
       position: absolute;
       left: 0;
       top: 0;
-      background: rgba(220, 50, 42, 1);
+      background: #722CE6;
       border-radius: 0.08rem;
       max-width: 100%;
-      &:after {
+      &:not(.zero):after {
         content: '';
-        width: 0.23rem;
-        height: 0.23rem;
+        width: 0.41rem;
+        height: 0.41rem;
         background: url(./images/percent-dot.png) no-repeat;
         background-size: 100% 100%;
         position: absolute;
-        right: -0.1rem;
-        top: -0.04rem;
+        right: -.09rem;
+        top: -.12rem;
       }
     }
   }
@@ -250,6 +264,7 @@ export default {
       color: #CA6C1E;
       margin: 0 auto;
       height: .3rem;
+      line-height: .3rem;
     }
     &:last-child h4 {
       max-width: 1.2rem;
@@ -282,21 +297,20 @@ export default {
     }
     .hb-dot {
       display: block;
-      width: 0.27rem;
       height: 0.06rem;
       font-size: 0;
       i {
         display: inline-block;
-        width: 0.06rem;
-        height: 0.06rem;
-        background: rgba(220, 141, 0, 1);
+        width: 0.11rem;
+        height: 0.11rem;
+        background: #BEAC96;
         border-radius: 50%;
         &:nth-child(2) {
           margin: 0 0.04rem;
         }
       }
       &.hb-dot1 {
-        margin: 0.54rem auto 1.15rem;
+        margin: 0.8rem auto .56rem;
       }
     }
     .envelopes {
@@ -319,6 +333,7 @@ export default {
       justify-content: center;
       color: rgba(255, 255, 255, 1);
       border-radius: 0.23rem;
+      margin-top: .2rem;
       &.btn-receive {
         background: #722CE6;
       }

@@ -4,7 +4,7 @@
       <div ref="hornDivWraper">
         <ul ref="hornUl" id="hornUl" :style="hornStyles">
           <li v-for="(item,index) in noticeList" :key="index" ref="hornLi">
-            恭喜玩家{{item.nickname}}抽中{{item.awardsName}}
+            玩家{{item.nickname}}获得{{item.num}}个荷灯
           </li>
         </ul>
         <ul id="copyHornUl" :style="copyStyles"></ul>
@@ -87,14 +87,14 @@
       flex: 1;
       height: 0.38rem;
       padding: 0 0.2rem;
-      font-size: 0.22rem;
+      font-size: 0.24rem;
       > div {
         position: relative;
         overflow: hidden;
         width: 100%;
         height: 100%;
         font-weight: 500;
-        color:rgba(255,227,216,1);
+        color: #FFFFFF;
       }
     }
   }
@@ -104,6 +104,7 @@
     top: 0;
     height: 0.38rem;
     overflow: hidden;
+    display: flex;
     li {
       max-height: 0.38rem;
       line-height: 0.4rem;
@@ -127,9 +128,8 @@
     li {
       .cat {
         position: relative;
-        color: #ff7800;
         font-weight: 400;
-        color: rgba(89, 67, 177, 1);
+        color: #FFFFFF;
         font-size: 0.24rem;
       }
     }
