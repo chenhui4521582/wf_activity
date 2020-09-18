@@ -89,8 +89,7 @@ export default {
         percent = 100
         return `${percent}%`
       }
-
-    },
+    }
   },
   filters: {
     awardsNumberFilter (value) {

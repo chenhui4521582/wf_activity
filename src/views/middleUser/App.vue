@@ -51,7 +51,7 @@ export default {
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.info = _get(res, 'data', {})
-        this.gameList = _get(res, 'data.gameRsps', [])
+        this.gameList = _get(res, 'data.gameRsps', []).sort((itemA, itemB) => { return itemA.sort - itemB.sort })
         this.taskList = _get(res, 'data.taskRsps', [])
         this.progressList = _get(res, 'data.progressList', [])
         let gameType = this.gameList[0].gameId
@@ -116,7 +116,7 @@ export default {
         let countSecond = second >= 10 ? second : '0' + second
         this.countdownTime = `<span>${countHour}</span><span>:</span><span>${countMinute}</span><span>:</span><span>${countSecond}</span>后结束`
       }, 1000)
-    },
+    }
   }
 }
 </script>
