@@ -121,7 +121,6 @@ export default {
           base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
           '&pf=' + window.linkUrl.getBackUrlFlag(channel)
       }
-      return
     }
     if (item && item.url.indexOf('databiger-h5') != -1) {
       return this.trimStr(item.url) +

@@ -30,7 +30,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { taskFinish, singleBehavior } from '../../services/api'
+import { taskFinish, singleBehavior, getRingServerStatus } from '../../services/api'
 import _get from 'lodash.get'
 export default {
   name: 'taskList',
@@ -45,7 +45,8 @@ export default {
   },
   data () {
     return {
-      taskVo: this.info.taskVo
+      taskVo: this.info.taskVo,
+      ringData: null
     }
   },
   computed: {
@@ -66,9 +67,17 @@ export default {
     }
   },
   mounted () {
-
+    this.getRingServerStatus()
   },
   methods: {
+    async getRingServerStatus () {
+      let { data, code } = await getRingServerStatus()
+      if (code === 200) {
+        if (data.type === '1' || (data.distanceStop < 0 && data.distanceStart >= 0)) {
+          this.ringData = data
+        }
+      }
+    },
     percentWidth (item) {
       let userTaskProgress = item.userTaskProgress || 0
       let taskProgress = item.taskProgress || 1
@@ -81,6 +90,10 @@ export default {
     async toFinish (item) {
       if (item.url.includes('ring')) {
         await singleBehavior(10)
+        if (this.ringData) {
+          location.href = GLOBALS.getJumpToGameUrl(this.ringData.type == 2 ? '/ring2' : '/ring')
+          return
+        }
       }
       GLOBALS.marchSetsPoint('A_H5PT0312003888', { 'task_id': item.taskId, 'task_name': item.taskName }) // H5平台-累充0用户回流活动-任务去完成点击
       location.href = GLOBALS.getJumpToGameUrl(item.url)

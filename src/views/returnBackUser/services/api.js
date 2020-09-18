@@ -60,6 +60,14 @@ export const singleBehavior = async (id) => {
   return data
 }
 
+/**
+ * @description 获取套圈新版还是老板
+ * @return {Object} data
+ */
+export const getRingServerStatus = async () => {
+  const { data } = await $axios.post('//quoits-api.beeplaying.com/quoits/api/quoitsgame/serverStatus')
+  return data
+}
 const Service = {
   activityHome,
   changeRecordList,
@@ -67,6 +75,7 @@ const Service = {
   loginAward,
   redPackConvert,
   taskFinish,
-  singleBehavior
+  singleBehavior,
+  getRingServerStatus
 }
 export default Service
