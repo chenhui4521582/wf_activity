@@ -39,7 +39,8 @@ export default {
       progressList: [],
       currentGame: 0,
       openGame: 0,
-      countdownTime: ''
+      countdownTime: '',
+      apiLocked: false
     }
   },
   mounted () {
@@ -47,7 +48,12 @@ export default {
   },
   methods: {
     async init () {
+      if (this.apiLocked) {
+        return
+      }
+      this.apiLocked = true
       const res = await activityHome()
+      this.apiLocked = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.info = _get(res, 'data', {})
@@ -73,12 +79,17 @@ export default {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     async findTaskRspByGameType (type, isRefresh = false) {
+      if (this.apiLocked) {
+        return
+      }
+      this.apiLocked = true
       if (this.currentGame !== type) {
         this.currentGame = type
       } else if (!isRefresh) {
         return
       }
       const res = await findTaskRspByGameType(type)
+      this.apiLocked = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.taskList = _get(res, 'data', [])
@@ -93,7 +104,12 @@ export default {
       }
     },
     async gameReceive () {
+      if (this.apiLocked) {
+        return
+      }
+      this.apiLocked = true
       const res = await gameReceive()
+      this.apiLocked = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.progressList = _get(res, 'data', [])
