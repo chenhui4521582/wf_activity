@@ -3,8 +3,7 @@
     <ul class="tabs-wrapper">
       <li :class="{selected:currentGroup===item.group}" v-for="(item,index) in tabsList"
         :key="index" @click="toggleGroup(item)">
-        <img v-if="currentGroup===item.group" :src="item.selectedImgUrl" alt="">
-        <img v-else :src="item.imgUrl" alt="">
+        <img :src="currentGroup===item.group?item.selectedImgUrl:item.imgUrl" alt="">
       </li>
     </ul>
     <div class="task-wrapper">
@@ -106,9 +105,12 @@ export default {
   },
   computed: {
     taskList () {
-      let groupA = this.list.filter(item => item.group === 1) // 活跃新星
-      let groupB = this.list.filter(item => item.group === 2) // 游戏赚金
-      let groupC = this.list.filter(item => item.group === 3) // 道具免费领
+      // 活跃新星
+      let groupA = this.list.filter(item => item.group === 1)
+      // 游戏赚金
+      let groupB = this.list.filter(item => item.group === 2)
+      // 道具免费领
+      let groupC = this.list.filter(item => item.group === 3)
       return [groupA, groupB, groupC]
     }
   },
