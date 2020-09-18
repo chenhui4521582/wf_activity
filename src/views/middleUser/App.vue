@@ -82,6 +82,14 @@ export default {
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.taskList = _get(res, 'data', [])
+        let taskClearIndex = this.taskList.findIndex(item => item.taskStatus === 0)
+        if (taskClearIndex < 0) {
+          this.gameList.forEach(item => {
+            if (item.gameId === this.currentGame) {
+              item.hasRedPoint = 0
+            }
+          })
+        }
       }
     },
     async gameReceive () {
