@@ -82,6 +82,7 @@ export default {
     li {
       margin: 0 0.05rem;
       color: #d3a0ff;
+      transition: transform 0.2s;
       .img-wrapper {
         position: relative;
         width: 2rem;
@@ -137,6 +138,7 @@ export default {
       }
       &.selected {
         color: #00fdff;
+        transform: scale(1.1);
         .img-wrapper {
           .item-bg {
             width: 2.52rem;

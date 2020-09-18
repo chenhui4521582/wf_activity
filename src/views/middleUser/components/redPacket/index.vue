@@ -165,7 +165,7 @@ export default {
       .current-number,
       .next-number {
         height: 0.4rem;
-        line-height: 0.44rem;
+        line-height: 0.4rem;
         background: #220856;
         padding: 0 0.2rem;
         .number {
