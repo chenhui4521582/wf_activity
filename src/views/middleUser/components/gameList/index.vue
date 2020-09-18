@@ -13,7 +13,7 @@
           <img class="game-icon" :src="item.url|filter" alt="游戏">
           <img class="end-text" src="./img/end.png" alt="已结束" v-if="item.state===2">
           <img class="locked-icon" src="./img/locked.png" alt="未解锁" v-if="item.state===0">
-          <div class="need-receive" v-if="item.state===2&&item.hasRedPoint===1">奖励待领取</div>
+          <div class="need-receive" v-if="item.state===2&&item.hasRedPoint">奖励待领取</div>
         </div>
         <p class="time"><span>{{item.name}}</span><span v-if="item.state===1">>></span></p>
       </li>
