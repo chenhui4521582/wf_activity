@@ -406,7 +406,7 @@
           font-size: .26rem;
           font-weight: 400;
           color: #FFFFFF;
-          animation: toggleTip .5s infinite ease-in-out;
+          animation: toggleTip 3s infinite ease-in-out;
         }
       }
     }
@@ -443,15 +443,37 @@
   }
   @keyframes toggleTip {
     0% {
-      top: -0.05rem;
+      transform: scale(0.9);
     }
-
+    10% {
+      transform: scale(1.2);
+    }
+    20% {
+      transform: scale(0.9);
+    }
+    30% {
+      transform: scale(1.2);
+    }
+    40% {
+      transform: scale(0.9);
+    }
     50% {
-      top: -0.09rem;
+      transform: scale(1.2);
     }
-
+    60% {
+      transform: scale(0.9);
+    }
+    70% {
+      transform: scale(1.2);
+    }
+    80% {
+      transform: scale(0.9);
+    }
+    90% {
+      transform: scale(1.2);
+    }
     100% {
-      top: 0.05rem;
+      transform: scale(0.9);
     }
   }
 </style>
