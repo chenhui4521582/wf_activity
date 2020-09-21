@@ -113,7 +113,7 @@
           if (day > 0) {
             this.countTime = `${countDay}天${countHour}时${countMinute}分${countSecond}秒`
           } else {
-            this.countTime = `${hour ? countHour + ':' : ''}${countMinute}:${countSecond}`
+            this.countTime = `${countHour}:${countMinute}:${countSecond}`
           }
         }, 1000)
       },
