@@ -8,10 +8,10 @@
     <div class="horn_container" v-if="hornList.length">
       <horn :noticeList="hornList"></horn>
     </div>
-    <div class="current_total">
+    <div class="current_total" @click="showPop(4)">
       <div class="item">{{actInfo.jackpotInfo&&actInfo.jackpotInfo.timelineTotalAwards||0}}个话费碎片</div>
       <div class="item">（{{actInfo.jackpotInfo&&actInfo.jackpotInfo.timelineTotalAmount||0}}个荷灯）</div>
-      <img src="./images/help.png" alt="" class="help" @click="showPop(4)">
+      <img src="./images/help.png" alt="" class="help">
     </div>
     <div class="wish_counttime">
       <template v-if="actInfo.state==1">
