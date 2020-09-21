@@ -272,8 +272,8 @@ export default {
                 top: 50%;
                 left: 50%;
                 transform: translate3d(-50%, -50%, 0);
-                max-width: 0.6rem;
-                max-height: 0.6rem;
+                max-width: 0.5rem;
+                max-height: 0.5rem;
               }
             }
           }
