@@ -79,17 +79,12 @@ export default {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     async findTaskRspByGameType (type, isRefresh = false) {
-      if (this.apiLocked) {
-        return
-      }
-      this.apiLocked = true
       if (this.currentGame !== type) {
         this.currentGame = type
       } else if (!isRefresh) {
         return
       }
       const res = await findTaskRspByGameType(type)
-      this.apiLocked = false
       const code = _get(res, 'code', 0)
       if (code === 200) {
         this.taskList = _get(res, 'data', [])
