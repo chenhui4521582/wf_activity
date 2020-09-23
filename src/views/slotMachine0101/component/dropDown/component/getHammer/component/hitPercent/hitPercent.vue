@@ -35,6 +35,7 @@
   import Services from '../../../../../../services/services'
 
   export default {
+
     data() {
       return {
         hbItems: null,
