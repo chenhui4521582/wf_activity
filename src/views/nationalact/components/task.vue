@@ -8,7 +8,7 @@
       <div class="total">当前累计<img src="../images/star.png" alt="">:{{selectedItem.userAmount}}</div>
       <div class="percent-box">
         <div class="percent-bar" :style="{ width: (selectedItem.userAmount / selectedItem.bagAmount) * 100 + '%' }"
-             :class="{full:selectedItem.userAmount==selectedItem.bagAmount}"></div>
+             :class="{full:selectedItem.userAmount>=selectedItem.bagAmount}"></div>
         <span>{{selectedItem.userAmount}}/{{selectedItem.bagAmount}}</span>
       </div>
       <img src="../images/receive_gray.png" alt="" class="btn" v-if="!selectedItem.received">
@@ -26,7 +26,7 @@
           <div class="precent">
             <div class="percent-box">
               <div class="percent-bar" :style="{ width: (item.progress / item.condition) * 100 + '%' }"
-                   :class="{full:item.progress==item.condition}"></div>
+                   :class="{full:item.progress>=item.condition}"></div>
               <span>{{item.progress|filterPrice}}/{{item.condition|filterPrice}}</span>
             </div>
             <div class="award_name"><img src="../images/star.png" alt="">*{{item.awardsPropNum}}{{item.extendAwardsName?'+'+item.extendAwardsName:item.extendAwardsName}}
@@ -235,6 +235,7 @@
           height: 100%;
           background: #FFC043;
           border-radius: .16rem 0 0 .16rem;
+          max-width: 100%;
           &.full {
             border-radius: .16rem;
           }
