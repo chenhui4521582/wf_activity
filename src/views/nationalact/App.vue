@@ -39,6 +39,9 @@
       }
     },
     mounted() {
+      GLOBALS.marchSetsPoint('P_H5PT0334', {
+        source_address: GLOBALS.getUrlParam('from') || ''
+      })
       this._getInfo()
     },
     components: {
@@ -56,37 +59,26 @@
           this.actInfo = data
           this.isEnd=data.state!=1
           this.selectedItem=data.userBagInfo
+          if(!this.selectedItem){
+            GLOBALS.marchSetsPoint('A_H5PT0334004213')//H5平台-欢乐国庆礼-选择奖品页加载完成
+          }
         }
       },
       //弹窗
       showPop(type, data) {
         this.popType = type
         let point = ''
+        //["活动规则", "温馨提示", "大家都在玩", "恭喜获得"]
         switch (type) {
           case 1:
-            point = 'A_H5PT0323004011';
-            break;//H5平台-七夕鹊桥会活动-领奖按钮点击
+            point = 'A_H5PT0334004216';
+            break;//H5平台-欢乐国庆礼-规则按钮点击
           case 3:
-            point = 'A_H5PT0323004018';
-            break;//H5平台-七夕鹊桥会活动-个人榜-上期排行框加载完成
-          case 7:
-            point = 'A_H5PT0323004007';
-            break;//规则点击
-          case 9:
-            point = 'A_H5PT0323004008';
-            break;//中奖攻略
-          case 8:
-            point = 'A_H5PT0323004014';
-            break;//奖池计算说明
-          case 10:
-            point = 'A_H5PT0323004017';
-            break;//H5平台-七夕鹊桥会活动-新增助力值弹窗加载完成
-          case 11:
-            point = 'A_H5PT0323004019';
-            break;//H5平台-七夕鹊桥会活动-奖励待领取弹窗加载完成
-          case 12:
-            point = 'A_H5PT0323004010';
-            break;//H5平台-七夕鹊桥会活动-入队成功弹窗加载完成
+            point = 'A_H5PT0334004220';
+            break;//H5平台-欢乐国庆礼-大家都在玩弹窗加载完成
+          case 4:
+            point = 'A_H5PT0334004223';
+            break;//H5平台-欢乐国庆礼-国庆礼盒奖励领取弹窗加载完成
         }
         data && (this.awardData = data)
         point && GLOBALS.marchSetsPoint(point)
@@ -96,11 +88,12 @@
       },
       //返回上一层
       back() {
-        GLOBALS.marchSetsPoint('A_H5PT0323004006')
+        GLOBALS.marchSetsPoint('A_H5PT0334004215')//H5平台-欢乐国庆礼-返回按钮点击
         history.back(-1)
       },
       //选择任务
       selectTask(item) {
+        GLOBALS.marchSetsPoint('A_H5PT0334004217')//H5平台-欢乐国庆礼-确认选择框加载完成
         this.showPop(2, {
           bagLevel: item.bagLevel
         })
@@ -110,6 +103,7 @@
         this.popTaskItem = item
         this.selectedIndex=item.bagLevel
         this.$refs.popTask.showPop()
+        GLOBALS.marchSetsPoint('A_H5PT0334004214')//H5平台-欢乐国庆礼-各奖品任务预览框加载完成
       }
     }
   }

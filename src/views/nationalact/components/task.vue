@@ -29,7 +29,7 @@
                    :class="{full:item.progress==item.condition}"></div>
               <span>{{item.progress|filterPrice}}/{{item.condition|filterPrice}}</span>
             </div>
-            <div class="award_name"><img src="../images/star.png" alt="">*{{item.awardsPropNum}}+{{item.extendAwardsName}}
+            <div class="award_name"><img src="../images/star.png" alt="">*{{item.awardsPropNum}}{{item.extendAwardsName?'+'+item.extendAwardsName:item.extendAwardsName}}
             </div>
           </div>
         </div>
@@ -74,9 +74,17 @@
         if (!this.selectedIndex) {//非弹窗
           if (!this.isEnd && item.state != 2) {
             if (item.state == 0) {//去完成
+              GLOBALS.marchSetsPoint('A_H5PT0334004221',{
+                task_id:item.sort,
+                task_name:item.name
+              })
               item.type == 2 && (location.href = 'https://wap.beeplaying.com/xmWap/#/payment')
               item.type == 3 && this.$emit('showPop', 3)
             } else {//领取
+              GLOBALS.marchSetsPoint('A_H5PT0334004222',{
+                task_id:item.sort,
+                task_name:item.name
+              })
               let {code, data, message} = await receiveTask(item.sort)
               if (code == 200) {
                 item.state = 2
@@ -97,6 +105,10 @@
       },
       async receiveBag() {
         if (!this.selectedIndex) {//非弹窗
+          GLOBALS.marchSetsPoint('A_H5PT0334004224',{
+            task_id:this.selectedItem.bagLevel,
+            task_name:this.selectedItem.bagName
+          })
           let {code, data, message} = await receiveBag()
           if (code == 200) {
             this.$emit('showPop', 4, {

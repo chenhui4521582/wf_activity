@@ -22,8 +22,6 @@
 </template>
 
 <script>
-  // import {getAwardsRecord, getHistoryRankList, gainAwardsRecord, getRankListPersonal} from '../utils/api'
-
   export default {
     name: 'comPop',
     data() {

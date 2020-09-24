@@ -14,26 +14,21 @@
               <template v-if="popType==1">
                 <scroll>
                   <div>
-                    <p>4、每天可多次助力【鹊桥相会】并多次瓜分奖励；当天最后一场鹊桥会未完成时，双方共同助力值需达成50%以上，则可瓜分一定比例奖励。否则不计奖励；</p>
-                    <p>5、每天设定个人助力榜和团队贡献榜</p>
-                    <p>·个人榜：单个玩家当天入队后累计助力值，前10名获排行大奖；</p>
-                    <p>·团队榜：每场鹊桥会中，根据玩家在团队的贡献比计算奖励；</p>
-                    <p>·单场鹊桥会达成，各队前3名分别加奖团队奖励的3%、1%、0.5%</p>
-                    <p>·单个玩家在单场鹊桥会团队贡献比需0.1%以上才可瓜分团队奖励；</p>
-                    <p>团队助力比和个人助力比均保留<i>小数点后两位</i>进行奖励核算。</p>
-                    <p>6、<i>每天需尽早匹配入队。</i>当天入队后产生的流水自动计算成助力值，并加到当天入队后的各个场次和当天个人榜，<i>入队前不计；</i>助力值无需用户进入活动页刷新</p>
-                    <p>7、团队发奖和个人榜发奖，均由玩家<i>手动领奖，过期不予补偿</i></p>
-                    <p>8、购买礼包和个人榜计入活动，均以系统统计为准。</p>
-                    <p>9、消耗金叶计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟。</p>
-                    <p>10、本次活动分多个难度，系统为您自动匹配。</p>
+                    <p>1、活动时间：{{actInfoData.beginDate}} - {{actInfoData.endDate}}</p>
+                    <p>2、活动期间从4个国庆礼盒中选定1个，并开启对应任务；</p>
+                    <p>3、每天完成对应任务，可以获得⭐和碎片奖励；</p>
+                    <p>4、每日任务奖励需当天领取，过期不予补偿；</p>
+                    <p>5、8天累计⭐，最终获得50%以上⭐可领取50%礼盒奖励。100%达成最终领取全部礼盒奖励；</p>
+                    <p>6、活动期间内，奖励和任务一旦选定，不可中途更改目标奖励或任务；</p>
+                    <p>7、活动结束后入口仍保留两天，请及时领取奖励。</p>
                   </div>
                 </scroll>
               </template>
               <template v-else-if="popType==2">
                 <div class="sad_content">
                   <p>选择奖品后将开启相应任务，<br>活动期间不可更改哦~</p>
-                  <div class="btn_sure" @click="sureSelect">确认选择</div>
-                  <div class="btn_cancel" @click="close">我再想想</div>
+                  <div class="btn_sure" @click="sureSelect(1)">确认选择</div>
+                  <div class="btn_cancel" @click="sureSelect(0)">我再想想</div>
                 </div>
               </template>
               <template v-else-if="popType==3">
@@ -108,11 +103,6 @@
         default: null
       }
     },
-    computed: {
-      tabs() {
-        return this.popType == 1 ? ['团队榜', '个人榜'] : ['牛郎助力组', '织女助力组']
-      }
-    },
     components: {
       scroll: () => import('./scroll')
     },
@@ -149,15 +139,19 @@
       move(e) {
         e.preventDefault()
       },
-      async sureSelect() {
-        let {code,message}=await applyLevel(this.awardData.bagLevel)
-        if(code==200){
-          this.$emit('refresh')
+      async sureSelect(flag) {
+        //H5平台-欢乐国庆礼-确认选择框-我再想想点击 A_H5PT0334004219
+        GLOBALS.marchSetsPoint(flag?'A_H5PT0334004218':'A_H5PT0334004219')//H5平台-欢乐国庆礼-确认选择框-确认选择点击
+        if(flag){
+          let {code,message}=await applyLevel(this.awardData.bagLevel)
+          if(code==200){
+            this.$emit('refresh')
+          }
+          this.$toast.show({
+            message,
+            duration: 1000
+          })
         }
-        this.$toast.show({
-          message,
-          duration: 1000
-        })
         this.close()
       },
       gotogame({url, id}) {
