@@ -49,7 +49,7 @@
           </div>
           <div class="text">
             <div class="name">提现说明:</div>
-            <div class="desc">满金<span>3000</span>币 即可提现</div>
+            <div class="desc">满<span>3000</span>金币 即可提现</div>
           </div>
           <div class="btn-wrap">
             <div class="btn award" v-if="withdraw.status == 2" @click="goWithDraw">去领取</div>
