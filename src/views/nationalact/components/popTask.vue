@@ -7,17 +7,15 @@
           <div :class="getClassName('main')">
             <div :class="getClassName('container_compop')">
               <scroll>
-                <div>
-                  <task :selectedIndex="selectedIndex" :selectedItem="selectedItem"></task>
-                </div>
+                <task :selectedIndex="selectedIndex" :selectedItem="selectedItem"></task>
               </scroll>
             </div>
-          </div>
-          <div class="close" @click="close">
           </div>
         </div>
       </div>
     </transition>
+    <div class="close" @click="close">
+    </div>
   </section>
 </template>
 
@@ -89,6 +87,10 @@
     .pop {
       position: relative;
       z-index: 10;
+      border: 2px solid #FFAE66;
+      background: #AC221E;
+      border-radius: .4rem;
+      overflow: hidden;
       .wrap {
         margin: 0 auto;
         box-sizing: border-box;
@@ -108,66 +110,20 @@
             top: 0;
             height: 9rem;
             width: 6.5rem;
-            border: 2px solid #FFAE66;
-            background: #AC221E;
-            border-radius: .4rem;
-            overflow: hidden;
-            p {
-              color: rgba(255, 255, 255, 1);
-              box-sizing: border-box;
-              font-size: .26rem;
-              line-height: .36rem;
-              &.center {
-                text-align: center;
-                text-decoration: underline;
-              }
-              i {
-                color: #FFE795;
-                font-weight: bold;
-              }
-              span {
-                font-weight: bold;
-              }
-            }
           }
-          .myrank {
-            height: .97rem;
-            background: rgba(255, 255, 255, 1);
-            border: .02rem solid rgba(255, 198, 169, 1);
-            border-radius: 0 0 .2rem .2rem;
-            display: flex;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -.2rem;
-            margin: auto;
-            width: 5.86rem;
-            justify-content: space-around;
-            align-items: center;
-            text-align: center;
-            .item {
-              font-size: .22rem;
-              font-weight: 400;
-              color: rgba(87, 42, 231, 1);
-              .myrank_title {
-                margin-bottom: .15rem;
-                color: rgba(50, 30, 68, 1);
-              }
-            }
-          }
-        }
-        .close {
-          width: .6rem;
-          height: .6rem;
-          background: url("../images/close.png") no-repeat center
-            center / 100% 100%;
-          position: absolute;
-          bottom: -.8rem;
-          left: 0;
-          right: 0;
-          margin: auto;
         }
       }
+    }
+    .close {
+      width: .6rem;
+      height: .6rem;
+      background: url("../images/close.png") no-repeat center
+        center / 100% 100%;
+      position: absolute;
+      bottom: -.8rem;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
     .scalc-enter-active {
       animation: fadeAnimation 0.3s ease-in-out;

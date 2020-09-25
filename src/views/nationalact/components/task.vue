@@ -1,6 +1,6 @@
 <template>
-  <div class="task" :class="{pop:selectedIndex}">
-    <div class="task_info" :class="{pop:selectedIndex}">
+  <div class="task" :class="{pop_task:selectedIndex}">
+    <div class="task_info" :class="{pop_task:selectedIndex}">
       <div class="decoration">
         <div class="decoration_info">最终获得{{selectedItem.bagAmount/2}}<img src="../images/star.png" alt="">领取大奖的50%</div>
       </div>
@@ -18,7 +18,7 @@
       <img src="../images/title.png" alt="" class="title">
       <div class="tips">任务数据每日0点清零刷新，请及时领取奖励</div>
     </div>
-    <div class="tasks" :class="{pop:selectedIndex}" v-if="!isEnd">
+    <div class="tasks" :class="{pop_task:selectedIndex}" v-if="!isEnd">
       <div class="item" v-for="(item,index) in selectedItem.taskList"
            :class="{last:index==selectedItem.taskList.length-1}">
         <div class="task_content">
@@ -131,8 +131,7 @@
 <style lang="less" scoped>
   .task {
     padding-bottom: .44rem;
-    &.pop {
-      margin-left: -.2rem;
+    &.pop_task {
       padding-bottom: 0;
     }
     .task_info {
@@ -169,17 +168,15 @@
           }
         }
       }
-      &.pop {
+      &.pop_task {
         width: 100%;
         height: 7.36rem;
         background: url("../images/bg10.png");
         background-size: 100% 100%;
         position: relative;
         padding-top: 4.05rem;
-        box-sizing: border-box;
-        border-radius: .4rem .4rem 0 0;
       }
-      &.pop .decoration {
+      &.pop_task .decoration {
         content: '';
         width: 5.28rem;
         height: 1.35rem;
@@ -279,11 +276,12 @@
       }
     }
     .tasks {
-      width: 6.51rem;
+      width: 6.5rem;
       padding: .13rem .17rem;
       background: #AC221E;
       border-radius: .16rem;
       margin: auto;
+      box-sizing: border-box;
       .item {
         padding: 0 .18rem;
         box-sizing: border-box;
@@ -369,9 +367,6 @@
             background: #837979;
           }
         }
-      }
-      &.pop {
-        border-radius: 0 0 .4rem .4rem;
       }
     }
     p.over {
