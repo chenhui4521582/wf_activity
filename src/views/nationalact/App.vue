@@ -2,7 +2,7 @@
   <div class="national-wrap" :class="{selected: selectedItem}" v-if="actInfo">
     <img src="./images/back.png" alt="" class="back">
     <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
-    <div class="act_time" v-if="!isEnd">活动时间 {{actInfo.beginDate}}-{{actInfo.endDate}}</div>
+    <div class="act_time" v-if="!isEnd">活动时间 {{actInfo.beginDate}}-{{actInfo.endDate}}{{countdown.time}}</div>
     <div class="act_time" v-else>活动已结束</div>
     <!-- 礼包 -->
     <div class="national-bags" v-if="!selectedItem">
@@ -35,7 +35,10 @@
         selectedItem: null,
         selectedIndex:0,
         popTaskItem: null,
-        isEnd: false
+        isEnd: false,
+        countdown:{
+          time:''
+        }
       }
     },
     mounted() {
@@ -59,6 +62,11 @@
           this.actInfo = data
           this.isEnd=data.state!=1
           this.selectedItem=data.userBagInfo
+          !this.countdown.time && this.actInfo.countdown && GLOBALS.remainingTime(
+            this,
+            this.actInfo.countdown,
+            this.countdown
+          )
           if(!this.selectedItem){
             GLOBALS.marchSetsPoint('A_H5PT0334004213')//H5平台-欢乐国庆礼-选择奖品页加载完成
           }
@@ -104,6 +112,13 @@
         this.selectedIndex=item.bagLevel
         this.$refs.popTask.showPop()
         GLOBALS.marchSetsPoint('A_H5PT0334004214')//H5平台-欢乐国庆礼-各奖品任务预览框加载完成
+      }
+    },
+    watch: {
+      "countdown.time"(value) {
+        if (!value) {
+          this._getInfo()
+        }
       }
     }
   }

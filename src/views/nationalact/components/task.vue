@@ -197,7 +197,7 @@
       flex-direction: column;
       align-items: center;
       .awards_name {
-        font-size: .26rem;
+        font-size: .22rem;
         font-weight: bold;
         color: #FAED93;
         height: .54rem;
