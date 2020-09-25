@@ -14,7 +14,7 @@
         </div>
       </div>
     </transition>
-    <div class="close" @click="close">
+    <div class="close" @click="close" v-if="isShowPop">
     </div>
   </section>
 </template>
