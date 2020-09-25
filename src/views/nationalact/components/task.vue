@@ -11,7 +11,7 @@
              :class="{full:selectedItem.userAmount>=selectedItem.bagAmount}"></div>
         <span>{{selectedItem.userAmount}}/{{selectedItem.bagAmount}}</span>
       </div>
-      <img src="../images/receive_gray.png" alt="" class="btn" v-if="!selectedItem.received">
+      <img src="../images/receive_gray.png" alt="" class="btn" v-if="!isEnd||selectedItem.received||selectedItem.userAmount<selectedItem.bagAmount/2">
       <div class="btn receive" v-else @click="receiveBag">
         领取奖励
       </div>
@@ -74,16 +74,16 @@
         if (!this.selectedIndex) {//非弹窗
           if (!this.isEnd && item.state != 2) {
             if (item.state == 0) {//去完成
-              GLOBALS.marchSetsPoint('A_H5PT0334004221',{
-                task_id:item.sort,
-                task_name:item.name
+              GLOBALS.marchSetsPoint('A_H5PT0334004221', {
+                task_id: item.sort,
+                task_name: item.name
               })
               item.type == 2 && (location.href = 'https://wap.beeplaying.com/xmWap/#/payment')
               item.type == 3 && this.$emit('showPop', 3)
             } else {//领取
-              GLOBALS.marchSetsPoint('A_H5PT0334004222',{
-                task_id:item.sort,
-                task_name:item.name
+              GLOBALS.marchSetsPoint('A_H5PT0334004222', {
+                task_id: item.sort,
+                task_name: item.name
               })
               let {code, data, message} = await receiveTask(item.sort)
               if (code == 200) {
@@ -105,9 +105,9 @@
       },
       async receiveBag() {
         if (!this.selectedIndex) {//非弹窗
-          GLOBALS.marchSetsPoint('A_H5PT0334004224',{
-            task_id:this.selectedItem.bagLevel,
-            task_name:this.selectedItem.bagName
+          GLOBALS.marchSetsPoint('A_H5PT0334004224', {
+            task_id: this.selectedItem.bagLevel,
+            task_name: this.selectedItem.bagName
           })
           let {code, data, message} = await receiveBag()
           if (code == 200) {
@@ -177,6 +177,7 @@
         position: relative;
         padding-top: 4.05rem;
         box-sizing: border-box;
+        border-radius: .4rem .4rem 0 0;
       }
       &.pop .decoration {
         content: '';
@@ -368,6 +369,9 @@
             background: #837979;
           }
         }
+      }
+      &.pop {
+        border-radius: 0 0 .4rem .4rem;
       }
     }
     p.over {

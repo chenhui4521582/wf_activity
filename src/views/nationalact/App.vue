@@ -1,6 +1,6 @@
 <template>
   <div class="national-wrap" :class="{selected: selectedItem}" v-if="actInfo">
-    <img src="./images/back.png" alt="" class="back">
+    <img src="./images/back.png" alt="" class="back" @click="back">
     <img src="./images/rule.png" alt="" class="rule" @click="showPop(1)">
     <div class="act_time" v-if="!isEnd">活动时间 {{actInfo.beginDate}}-{{actInfo.endDate}}</div>
     <div class="act_time" v-else>活动已结束</div>
@@ -219,8 +219,8 @@
           margin-right: .14rem;
         }
         .giftimg {
-          width: 1.43rem;
-          height: 1.71rem;
+          width: 1.44rem;
+          height: 1.72rem;
         }
         .gift-detail {
           text-align: center;
