@@ -91,7 +91,10 @@
     </div>
     <!-- 领取按钮 -->
     <div class="btns">
-      <div class="get-btn" :class="{'get-disable': !isBatchReceive }" @click="_batchReceive">一键开蛋</div>
+      <div class="get-btn" :class="{'get-disable': !isBatchReceive }" @click="_batchReceive">
+        <img src="./img/ad-icon.png" alt="">
+        一键开蛋
+      </div>
     </div>
     <!-- popup -->
     <popup 
@@ -112,6 +115,7 @@ import Services from './services/services'
 import utils from './components/utils'
 import _get from 'lodash.get'
 import services from '../diceact/services/services'
+import AppCall from './native/index'
 export default {
   name: 'duration',
   data: ()=>({
@@ -157,7 +161,7 @@ export default {
     isBatchReceive () {
       let list = _get(this.activitiesInfo, 'levelList', [])
       return list && list.find(item => {
-        return item.status == 1
+        return item.status == 1 && ![4,8,12].includes(item.level)
       })
     }
   },
@@ -186,23 +190,53 @@ export default {
       }
       if(this.batchLock) return false
       this.batchLock = true
-      Services.batchReceive().then(res => {
-        const {code, message} = _get(res, 'data')
-        if(code == 200) {
-          this._getInfo()
-          this.batchLock = false
-          GLOBALS.marchSetsPoint('A_H5PT0321003967')
-          this.$toast.show({
-            message: `奖励领取成功`
-          })
-        }else {
-          this.$toast.show({ message }, () => {
+      let channel = localStorage.getItem('APP_CHANNEL')
+      if([100070, 100088].includes(channel)) {
+        Services.batchReceive().then(res => {
+          const {code, message} = _get(res, 'data')
+          if(code == 200) {
+            this._getInfo()
             this.batchLock = false
-          })
-        }
-      }).catch(error => {
-        this.batchLock = false
-      })
+            GLOBALS.marchSetsPoint('A_H5PT0321003967')
+            this.$toast.show({
+              message: `奖励领取成功`
+            })
+          }else {
+            this.$toast.show({ message }, () => {
+              this.batchLock = false
+            })
+          }
+        }).catch(error => {
+          this.batchLock = false
+        })
+      } else {
+        let user_info = localStorage.getItem('user_info')
+        user_info && (user_info = JSON.parse(user_info))
+        AppCall.advertiting({
+          advertitingId: 945457455,
+          userId: user_info.userId
+        }).then(res => {
+          if(res) {
+            Services.batchReceive().then(res => {
+              const {code, message} = _get(res, 'data')
+              if(code == 200) {
+                this._getInfo()
+                this.batchLock = false
+                GLOBALS.marchSetsPoint('A_H5PT0321003967')
+                this.$toast.show({
+                  message: `奖励领取成功`
+                })
+              }else {
+                this.$toast.show({ message }, () => {
+                  this.batchLock = false
+                })
+              }
+            }).catch(error => {
+              this.batchLock = false
+            })
+          }
+        })
+      }
     },
     /** 领取奖励 **/
     _itemReceive (item) {
@@ -216,15 +250,38 @@ export default {
         return false
       }
       if([4, 8, 12].indexOf(item.level) == -1) return
-      Services.itemReceive(item.level).then(res => {
-        const {code, data} = _get(res, 'data')
-        if(code == 200) {
-          this.awardNum = data
-          this.popupType = 4
-          this.showPopup = true
-          this._getInfo()
-        }
-      })
+      let channel = localStorage.getItem('APP_CHANNEL')
+      if([100070, 100088].includes(channel)) {
+        Services.itemReceive(item.level).then(res => {
+          const {code, data} = _get(res, 'data')
+          if(code == 200) {
+            this.awardNum = data
+            this.popupType = 4
+            this.showPopup = true
+            this._getInfo()
+          }
+        })
+      } else {
+        let user_info = localStorage.getItem('user_info')
+        user_info && (user_info = JSON.parse(user_info))
+        AppCall.advertiting({
+          advertitingId: 945457455,
+          userId: user_info.userId
+        }).then(res => {
+          if(res) {
+            Services.itemReceive(item.level).then(res => {
+              const {code, data} = _get(res, 'data')
+              if(code == 200) {
+                this.awardNum = data
+                this.popupType = 4
+                this.showPopup = true
+                this._getInfo()
+              }
+            })
+          }
+        })
+      }
+
     },
     /** 获取我的奖品 **/
     _getMyAward () {
@@ -248,7 +305,10 @@ export default {
     },
     countDownCallback() {
       this.activitiesInfo.state = 2
-    }
+    },
+    openAdvertiting () {
+ 
+    },
   },
   mounted() {
     this._getInfo()
@@ -680,6 +740,15 @@ export default {
       line-height: 1rem;
       background: url(./img/btn-get.png) no-repeat center top;
       background-size: 100% 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: .14rem;
+      img {
+        margin-right: .1rem;
+        width: .3rem;
+        height: .3rem;
+      }
     }
     .get-disable {
       font-size: .3rem;
