@@ -1,5 +1,4 @@
-<template>
-  <div id="app">
+Y  <div id="app">
     <!-- <div id="router-content"> -->
         <div class="national-wrap">
             <p class="back" @click="back" v-if="!isApp"></p>
