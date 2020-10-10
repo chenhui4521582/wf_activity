@@ -58,7 +58,7 @@ export default {
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
         'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
-    },
+    }
   },
   mounted () {
     GLOBALS.marchSetsPoint('P_H5PT0295', {
@@ -114,15 +114,11 @@ export default {
     right: 0;
     margin: auto;
     width: 6.72rem;
-    max-height: 9.94rem;
     background: #fff;
     padding: 0.2rem 0.26rem;
     box-sizing: border-box;
     box-shadow: 0.02rem 0.05rem 0.05rem 0 rgba(149, 11, 0, 0.29);
     border-radius: 0.46rem;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
     .item {
       display: inline-block;
       width: 3rem;
@@ -131,7 +127,6 @@ export default {
       box-sizing: border-box;
       margin-top: 0.2rem;
       background-size: 100% 100%;
-      border: 1px solid #f16d59;
       &:nth-child(2n + 1) {
         margin-right: 0.2rem;
       }
