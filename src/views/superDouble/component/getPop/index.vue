@@ -36,18 +36,32 @@
             </template>
             <template v-else>
               <div class="g-package">
-                <div class="g-package-container g2">
-
+                <div class="g-package-container g1">
+                  <ul>
+                    <li v-for="(item,index) in packagesList" @click="gotopay(item)">
+                      <img :src="require(`../../img/package${index+1}.png`)" alt="">
+                      <div class="item-text">
+                        {{item.content.split('+')[0]}}<br />
+                        <span class="content"
+                          :style="{display: 'flex',alignItems: 'center',justifyContent: 'center'}">
+                          <img src="../../img/give-icon.png"
+                            style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">
+                          {{item.content.split('+')[1]}}
+                        </span>
+                      </div>
+                      <a href="javascript:" class="btn-price">￥{{item.price}}</a>
+                    </li>
+                  </ul>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
                     <li>
-                      <span>今日累计充值:
-                        {{taskProgressInfoData.rechargeProgress.gameBetting | conversion}}</span>
+                      <span>今日购买个数:
+                        {{taskProgressInfoData.buyProgress.buyTime}}个</span>
                     </li>
                     <li>
-                      <span>累计糖豆:
-                        {{taskProgressInfoData.rechargeProgress.receiveNum }}个</span>
+                      <span>今日获得糖豆:
+                        {{taskProgressInfoData.buyProgress.returnNum }}个</span>
                     </li>
                   </ul>
                 </div>
@@ -60,9 +74,8 @@
   </div>
 </template>
 <script type="text/javascript">
-import { getPackages } from '@/views/catvip/utils/api'
 /* eslint-disable no-undef */
-import { userProgress, taskReceive, showLeaguePacksList } from '../../services/api'
+import { userProgress, taskReceive, getPackages } from '../../services/api'
 
 export default {
   data () {
@@ -106,9 +119,9 @@ export default {
       }
     },
     async getPackagesList () {
-      const { code, data } = await showLeaguePacksList()
+      const { code, data } = await getPackages(260)
       if (code === 200) {
-        this.packagesList = data
+        this.packagesList = data.mallBizConfigs
       }
     },
     gotocomplete (item, index) {
@@ -239,7 +252,7 @@ export default {
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
-      height: 2.94rem;
+      height: auto;
     }
     &.g2 {
       height: 2.24rem;
@@ -249,18 +262,20 @@ export default {
       justify-content: center;
       padding-top: 0.21rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
     li {
-      width: 1.79rem;
+      width: 1.78rem;
       height: 2.48rem;
       text-align: center;
       position: relative;
-      background: rgba(234, 181, 155, 1);
+      background: rgba(255, 67, 48, 0.1);
       border-radius: 0.1rem;
       margin-left: 0.26rem;
+      margin-bottom: 0.26rem;
       padding-top: 0.1rem;
       box-sizing: border-box;
-      &:nth-child(1) {
+      &:nth-child(3n + 1) {
         margin-left: 0;
       }
       img {
@@ -270,7 +285,7 @@ export default {
     }
     .item-text {
       font-size: 0.2rem;
-      color: #9a5619;
+      color: #e74615;
       line-height: 0.26rem;
       position: relative;
       font-weight: 500;
@@ -294,7 +309,7 @@ export default {
       width: 0.96rem;
       height: 0.39rem;
       line-height: 0.39rem;
-      background: #e74615;
+      background: #ff4330;
       border-radius: 0.2rem;
       font-size: 0.24rem;
       color: #ecf4ff;

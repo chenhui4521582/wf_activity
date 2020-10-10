@@ -35,7 +35,7 @@ export default {
         desc: 'tg',
         img: require('./img/crush-icon.png')
       },
-      showGetPop: false,
+      showGetPop: true,
       timer: null
     }
   },
@@ -74,13 +74,6 @@ export default {
         }
       }
     },
-    async showLeaguePacksList () {
-      const { code, data } = await showLeaguePacksList()
-      if (code === 200) {
-
-      }
-    },
-
     async changeActivityInfo () {
       const { code, data } = await activityInfo()
       if (code === 200) {
