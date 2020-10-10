@@ -16,7 +16,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { activityInfo } from './services/api'
+import { activityInfo, myRank } from './services/api'
 export default {
   name: 'superDouble',
   components: {
@@ -46,9 +46,10 @@ export default {
       source_address: GLOBALS.getUrlParam('from') || ''
     }) // H5平台-猩猩点灯活动-页面加载完成
     this.init()
+    this.getMyRank()
   },
   methods: {
-    async  init () {
+    async init () {
       const { code, data } = await activityInfo()
       if (code === 200) {
         this.activityInfo = data
@@ -60,6 +61,26 @@ export default {
         }, 100)
       }
     },
+
+    async getMyRank () {
+      const { code, data } = await myRank()
+      if (code === 200 && data.popup) {
+        if (data.myRank >= 1 && data.myRank <= 10) {
+          this.openPop(12, {
+            desc: data.awardsList[0].awardsType,
+            name: data.awardsList[0].awardsName,
+            rank: data.myRank
+          })
+        }
+      }
+    },
+    async showLeaguePacksList () {
+      const { code, data } = await showLeaguePacksList()
+      if (code === 200) {
+
+      }
+    },
+
     async changeActivityInfo () {
       const { code, data } = await activityInfo()
       if (code === 200) {

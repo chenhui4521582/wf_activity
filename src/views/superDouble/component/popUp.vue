@@ -28,7 +28,7 @@
                 3、本次活动分为初级、中级、高级场，级别越高，翻倍获得糖豆越多。<br />
                 4、糖豆可以通过游戏充值获得。<br />
                 5、活动期间内，玩家在指定游戏中消耗金叶子数量达到一定值即可领取活动糖豆。<br />
-                <span>（金叶消耗计入活动的游戏包括：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云，福满多，斗西游）</span><br />
+                <span>（金叶消耗计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战）</span><br />
                 6、活动期间所获得的糖豆可在“欢乐兑换专区”兑换丰厚奖励。<br />
                 7、活动设有糖豆排行榜（根据游戏消耗、游戏充值和每日任务所得糖豆排行）有奖排行榜仅限前30名玩家进榜，排行榜单会展示一天，榜首玩家可获得35000元大奖。<br />
                 8、排行榜糖豆数量一致时，先到达的排名靠前。<br />
@@ -57,8 +57,8 @@
               <p v-if="!awardList||!awardList.length">这里空空如也</p>
             </template>
             <template v-if="type===3">
-              <p class="rule-desc">（根据游戏金叶消耗、游戏充值和每日任务所得糖豆排行）</p>
-              <p>活动结束时间: {{info.endDate}}</p>
+              <p class="rule-desc">（除了游戏金叶消耗、礼包购买，翻倍获得的糖豆也计入哦！）</p>
+              <p>榜单奖励发放时间：明日0点</p>
               <ul class="rank-list">
                 <li>
                   <div>名次</div>
@@ -150,6 +150,20 @@
                 </template>
               </p>
             </template>
+            <template v-if="type===12">
+              <div class="status-img">
+                <img :class="awardInfo.desc" src="../img/hfq-icon.png" alt="">
+              </div>
+              <p class="message">
+                {{awardInfo.name}}
+              </p>
+              <p class="rank-info">
+                昨天排行第{{awardInfo.rank}}名，获得以上奖励
+              </p>
+              <p class="desc">
+                奖励将自动发放到账
+              </p>
+            </template>
           </div>
           <template v-if="type===3">
             <ul class="my-rank-info">
@@ -182,7 +196,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { userAwards, rankList, myRank } from '../services/api'
+import { userAwards, rankList } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -237,7 +251,7 @@ export default {
         case 2:
           return '我的奖励'
         case 3:
-          return '排行榜'
+          return '每日排行榜'
         case 4:
           return '请留步'
         case 5:
@@ -290,22 +304,6 @@ export default {
       this.rankInfo = _get(res, 'data', {})
       this.rankList = _get(res, 'data.rankList', [])
     },
-    async _myRank () {
-      const { code, data } = await myRank()
-      if (code === 200 && data.popup) {
-        let message = ''
-        if (data.myRank >= 1 && data.myRank <= 30) {
-          message = '奖励已发放请注意查收'
-        } else {
-          message = '您未上榜，下次继续加油哦'
-        }
-        this.$toast.show({
-          message: message,
-          duration: 3000,
-          isOneLine: true
-        })
-      }
-    },
     handleClick () {
       this.$emit('callback', this.type)
       this.closePop()
@@ -341,7 +339,6 @@ export default {
         this._userAwards()
       } else if (this.type === 3) {
         this._rankList()
-        this.info.state !== 1 && this._myRank()
       }
     },
     type (val) {
@@ -592,6 +589,39 @@ export default {
       .desc {
         position: relative;
         font-size: 0.28rem;
+      }
+    }
+    &.type-12 {
+      .content {
+        width: 6.08rem;
+        height: 6.92rem;
+        background-image: url(../img/pop-up-myrank-bg.png);
+        position: relative;
+      }
+      .message {
+        position: relative;
+        font-size: 0.36rem;
+        height: 1rem;
+        white-space: nowrap;
+      }
+      .rank-info {
+        font-size: 0.28rem;
+      }
+      .status-img {
+        position: relative;
+        width: 2.56rem;
+        height: 1.4rem;
+        margin: 0.1rem auto 0.26rem;
+        font-size: 0;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .desc {
+        position: relative;
+        font-size: 0.24rem;
+        margin-top: 0.7rem;
       }
     }
     &.type-8 {

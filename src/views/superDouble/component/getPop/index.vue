@@ -11,11 +11,14 @@
             <h4 class="s-title"><em></em>{{tItem}}</h4>
             <template v-if="tIndex===0">
               <span class="info">
-                在游戏中（欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多，斗西游）消耗金叶可获得对应数量的糖豆
+                在游戏中（糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战）消耗金叶可获得对应数量的糖豆
               </span>
               <div class="g-package">
                 <div class="g-package-container g2">
-                  <hit-percent :type="1" :gameBetting="taskProgressInfoData.gameProgress.gameBetting" :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
+                  <hit-percent :type="1"
+                    :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
+                    :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
+                    @refresh="refresh" @open-pop="openPop"></hit-percent>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
@@ -31,29 +34,10 @@
                 </div>
               </div>
             </template>
-            <template v-else-if="tIndex===1">
-              <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
-                <div class="item">
-                  <p v-if="index==0">今日完成{{item.totalNum}}个每日任务, 送1个糖豆</p>
-                  <p v-else-if="index==1">今日充值10元, 送1个糖豆</p>
-                </div>
-                <div class="item">
-                  <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
-                    去完成</div>
-                  <div class="btn btn-receive" v-else-if="item.state==1" @click="gain(item,index)">
-                    领取
-                  </div>
-                  <div class="btn btn-gained" v-else>已完成</div>
-                  <div class="btn_progress">
-                    {{item.finishNum>item.totalNum?item.totalNum:item.finishNum}}/{{item.totalNum}}
-                  </div>
-                </div>
-              </div>
-            </template>
             <template v-else>
               <div class="g-package">
                 <div class="g-package-container g2">
-                  <hit-percent :type="2" :gameBetting="taskProgressInfoData.rechargeProgress.gameBetting" :hbItems="taskProgressInfoData.rechargeProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
+
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
@@ -76,14 +60,15 @@
   </div>
 </template>
 <script type="text/javascript">
+import { getPackages } from '@/views/catvip/utils/api'
 /* eslint-disable no-undef */
-import { userProgress, taskReceive } from '../../services/api'
+import { userProgress, taskReceive, showLeaguePacksList } from '../../services/api'
 
 export default {
   data () {
     return {
-      titleArr: ['玩游戏得糖豆', '每日任务送糖豆', '每日充值送糖豆'],
-      mallBizConfigs: [],
+      titleArr: ['玩游戏得糖豆', '购买礼包获糖豆'],
+      packagesList: [],
       pUserInfo: {},
       taskProgressInfoData: null,
       popType: 0,
@@ -111,12 +96,19 @@ export default {
   },
   mounted () {
     this.taskProgressInfo()
+    this.getPackagesList()
   },
   methods: {
     async taskProgressInfo () {
       const { code, data } = await userProgress()
       if (code === 200) {
         this.taskProgressInfoData = data
+      }
+    },
+    async getPackagesList () {
+      const { code, data } = await showLeaguePacksList()
+      if (code === 200) {
+        this.packagesList = data
       }
     },
     gotocomplete (item, index) {
