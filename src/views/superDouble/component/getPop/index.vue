@@ -346,7 +346,7 @@ export default {
         top: 0.1rem;
       }
       &:not(:first-child) {
-        border-left: #ffa200 1px solid;
+        border-left: #003e5c 1px solid;
       }
     }
     &.li0 {
