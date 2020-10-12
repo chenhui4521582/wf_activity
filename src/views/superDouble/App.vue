@@ -35,7 +35,7 @@ export default {
         desc: 'tg',
         img: require('./img/crush-icon.png')
       },
-      showGetPop: true,
+      showGetPop: false,
       timer: null
     }
   },

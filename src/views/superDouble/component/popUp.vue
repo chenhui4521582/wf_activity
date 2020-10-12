@@ -152,7 +152,8 @@
             </template>
             <template v-if="type===12">
               <div class="status-img">
-                <img :class="awardInfo.desc" src="../img/hfq-icon.png" alt="">
+                <img :class="awardInfo.desc" :src="require(`../img/${awardInfo.desc}-icon.png`)"
+                  alt="">
               </div>
               <p class="message">
                 {{awardInfo.name}}
@@ -610,7 +611,7 @@ export default {
       .status-img {
         position: relative;
         width: 2.56rem;
-        height: 1.4rem;
+        height: 1.6rem;
         margin: 0.1rem auto 0.26rem;
         font-size: 0;
         img {

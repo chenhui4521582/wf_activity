@@ -183,7 +183,7 @@ export default {
         task_name: this.type === 2 ? '充值' + item.amount + '元' : '支持金叶' + item.amount
       }) // H5平台-疯狂翻倍活动-充值任务奖励领取点击
       this.showLoading = true
-      gameReceive({ sort: item.sort, type: this.type }).then((res) => {
+      gameReceive({ sort: item.sort }).then((res) => {
         if (res.code === 200) {
           this.openPop(11, res.data)
           this.$emit('refresh')

@@ -37,8 +37,8 @@ export const exchange = async (level) => {
  * @param {Number} sort 序号
  * @return {Object} data
  */
-export const gameReceive = async ({ type, sort }) => {
-  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/happy/beans/game-receive/${type}/${sort}`)
+export const gameReceive = async ({ sort }) => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/happy/beans/game-receive/${sort}`)
   return data
 }
 
