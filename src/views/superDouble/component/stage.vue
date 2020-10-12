@@ -271,6 +271,7 @@ export default {
       display: flex;
       margin: 0 0.56rem;
       position: relative;
+      transform: perspective(1000);
       .hand-btn {
         width: 0.8rem;
       }

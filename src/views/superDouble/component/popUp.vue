@@ -68,7 +68,7 @@
                     {{item.totalNum}}<br />
                     {{item.updateTime}}
                   </div>
-                  <div>{{item.awardsName.split('+')[0]}}<br />+{{item.awardsName.split('+')[1]}}
+                  <div>{{item.awardsName.split('+')[0]}}
                   </div>
                 </li>
               </ul>
@@ -370,7 +370,7 @@ export default {
     font-size: 0.24rem;
     text-align: center;
     .content {
-      margin-top: 2.2rem;
+      margin-top: 1.8rem;
       width: 6.46rem;
       height: 7.24rem;
       background-image: url(../img/pop-up-bg.png);
@@ -593,6 +593,7 @@ export default {
         height: 6.92rem;
         background-image: url(../img/pop-up-myrank-bg.png);
         position: relative;
+        margin: 1.8rem auto 0;
       }
       .message {
         position: relative;
