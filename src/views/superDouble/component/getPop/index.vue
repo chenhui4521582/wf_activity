@@ -23,11 +23,11 @@
                 <div class="g-package-info">
                   <ul class="li0">
                     <li>
-                      <span>已支持金叶:
+                      <span>今日支持金叶:
                         {{taskProgressInfoData.gameProgress.gameBetting | conversion}}</span>
                     </li>
                     <li>
-                      <span>累计糖豆:
+                      <span>今日获得糖豆:
                         {{taskProgressInfoData.gameProgress.receiveNum }}个</span>
                     </li>
                   </ul>
@@ -122,6 +122,15 @@ export default {
       const { code, data } = await getPackages(260)
       if (code === 200) {
         this.packagesList = data.mallBizConfigs
+      }
+    },
+    gotopay (item) {
+      if (item.buyFlag === 1) {
+        localStorage.setItem('originDeffer', window.location.href)
+        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+        localStorage.setItem('payment', JSON.stringify(item))
+        location.href =
+          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       }
     },
     gotocomplete (item, index) {
