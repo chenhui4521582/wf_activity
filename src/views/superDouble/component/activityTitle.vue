@@ -6,7 +6,7 @@
     <div class="horn-list-wrapper">
       <img src="../img/horn-icon.png" alt="">
       <div class="horn-list-content" v-if="hornList && hornList.length">
-        <horn :list="hornList" />
+        <horn v-if="info.state===1" :list="hornList" />
       </div>
     </div>
     <div class="btn back-btn" @click="back()">
@@ -27,6 +27,12 @@ export default {
   name: 'activityTitle',
   components: {
     horn: () => import('./horn')
+  },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data () {
     return {

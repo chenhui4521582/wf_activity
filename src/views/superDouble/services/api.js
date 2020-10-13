@@ -111,7 +111,7 @@ export const userProgress = async () => {
  * @return {Object} data
  */
 export const getPackages = async (flag) => {
-  const { data } = await $axios.post('//shop-api.beeplaying.com/shop/api/mall/getMallProductListByType/' + flag)
+  const { data } = await $axios.post(`${SHOP_API_BASE_URL}/shop/api/mall/getMallProductListByType/${flag}`)
   return data
 }
 const Service = {

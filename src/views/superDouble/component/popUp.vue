@@ -73,7 +73,7 @@
                 </li>
               </ul>
             </template>
-            <template v-if="type===4||type===5||type===6||type===7">
+            <template v-if="type===4||type===5||type===6||type===7||type===14">
               <p class="message">
                 <template v-if="type===4">
                   确定立即退出吗？<br />
@@ -89,6 +89,9 @@
                 <template v-if="type===7">
                   很遗憾，当前可兑换糖豆不足<br />
                 </template>
+                <template v-if="type===14">
+                  你与昨日排行失之交臂~<br />
+                </template>
               </p>
               <div class="status-img">
                 <img src="../img/error-icon.png" alt="">
@@ -102,6 +105,9 @@
                 </template>
                 <template v-if="type===6">
                   快去游戏中消耗金叶获取糖豆吧
+                </template>
+                <template v-if="type===14">
+                  再接再厉哦！
                 </template>
               </p>
             </template>
@@ -182,9 +188,12 @@
               </li>
             </ul>
           </template>
-          <div class="btn" v-if="btnText" @click="handleClick">{{btnText}}</div>
+          <div class="btn" v-if="btnText&&(type!==14||info.state===1)" @click="handleClick">
+            {{btnText}}</div>
         </section>
-        <div class="close-icon" :class="btnText?'':'no-btn'" @click="closePop"></div>
+        <div v-if="type!==14||info.state===1" class="close-icon" :class="btnText?'':'no-btn'"
+          @click="closePop">
+        </div>
       </section>
     </article>
   </transition>
@@ -253,6 +262,7 @@ export default {
         case 5:
         case 6:
         case 7:
+        case 14:
           return '很遗憾'
         case 8:
           return '热门游戏推荐'
@@ -274,6 +284,7 @@ export default {
         case 5:
         case 7:
         case 9:
+        case 14:
           return '知道了'
         case 6:
           return '立即去玩'
@@ -560,7 +571,8 @@ export default {
     &.type-7,
     &.type-9,
     &.type-10,
-    &.type-11 {
+    &.type-11,
+    &.type-14 {
       .light-img {
         width: 5.66rem;
         height: 5.76rem;
