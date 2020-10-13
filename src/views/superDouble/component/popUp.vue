@@ -169,7 +169,7 @@
                 <div>奖励</div>
               </li>
               <li>
-                <div>{{rankInfo.myRank?rankInfo.myRank:'30+'}}</div>
+                <div>{{rankInfo.myRank?rankInfo.myRank:'10+'}}</div>
                 <div>{{rankInfo.totalNum}}</div>
                 <div>
                   <template v-if="rankInfo.currentAwards&&rankInfo.currentAwards.includes('+')">
