@@ -2,7 +2,7 @@
   <section class="task">
     <ul class="tabs-wrapper">
       <li :class="{selected:currentGroup===item.group}" v-for="(item,index) in tabsList"
-        :key="index" @click="toggleGroup(item)">
+        :key="index" @click.stop="toggleGroup(item)">
         <img :src="currentGroup===item.group?item.selectedImgUrl:item.imgUrl" alt="">
       </li>
     </ul>

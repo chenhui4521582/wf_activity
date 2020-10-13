@@ -15,7 +15,8 @@
           <img class="locked-icon" src="./img/locked.png" alt="未解锁" v-if="item.state===0">
           <div class="need-receive" v-if="item.state===2&&item.hasRedPoint>0">奖励待领取</div>
         </div>
-        <p class="time"><span>{{item.name}}</span><span v-if="item.state===1">>></span></p>
+        <p class="time" @click.stop="goGame(item)"><span>{{item.name}}</span><span
+            v-if="item.state===1">>></span></p>
       </li>
     </ul>
   </section>
@@ -61,6 +62,9 @@ export default {
         section_name: item.name
       }) // H5平台-超级任务活动页-各游戏板块点击
       this.$emit('toggleGame', item.gameId)
+    },
+    goGame (item) {
+      item.state === 1 && GLOBALS.jumpOutsideGame(item.gamePath)
     }
   }
 }
