@@ -1,7 +1,7 @@
 <template>
   <section class="game-list">
     <ul class="">
-      <li class="normal" v-for="(item,index) in list" :key="index" @click="toggleGame(item)"
+      <li class="normal" v-for="(item,index) in list" :key="index" @click.stop="toggleGame(item)"
         :class="{'locked':item.state===0,'selected':currentGame===item.gameId,'end':item.state===2}">
         <p class="time">{{item|timeFilter}}</p>
         <div class="img-wrapper">
