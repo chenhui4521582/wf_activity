@@ -309,7 +309,7 @@ export default {
           transform: scale(1.2) translate3D(-2px, 0, 0);
         }
         .hand.animation {
-          animation: route 1200ms 600ms infinite;
+          animation: route 1200ms 650ms infinite;
         }
       }
     }

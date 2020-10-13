@@ -435,6 +435,15 @@ export default {
       }
     }
     &.type-1 {
+      .content {
+        width: 6.18rem;
+        height: 9.54rem;
+        margin: 0.6rem auto 0;
+        background-image: url(../img/rule-pop-bg.png);
+        .container {
+          height: 6.8rem;
+        }
+      }
       .rule-text {
         text-align: left;
         span {
