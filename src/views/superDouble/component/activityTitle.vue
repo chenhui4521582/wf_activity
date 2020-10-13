@@ -37,7 +37,7 @@ export default {
     this.getNoticeList()
   },
   methods: {
-    async  getNoticeList () {
+    async getNoticeList () {
       const { code, data } = await noticeList()
       if (code === 200) {
         this.hornList = data
@@ -45,7 +45,7 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0301003586') // H5平台-疯狂翻倍活动-返回按钮点击
-      window.history.go(-1)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     openPop (type) {
       switch (type) {
