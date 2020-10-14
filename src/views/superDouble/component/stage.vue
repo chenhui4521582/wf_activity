@@ -24,11 +24,13 @@
           <img v-show="selectedHand!=='left'" class="hand-btn" src="../img/left-hand-btn.png"
             alt="">
         </div>
-        <img class="hand" :class="{'selected':selectedHand==='left','animation':!selectedHand}"
+        <img class="hand"
+          :class="{'selected':selectedHand==='left','normal':selectedHand==='right','animation':!selectedHand}"
           src="../img/left-hand.png" alt="">
       </section>
       <section class="hand-content right" @click="selectHand('right')">
-        <img class="hand" :class="{'selected':selectedHand==='right','animation':!selectedHand}"
+        <img class="hand"
+          :class="{'selected':selectedHand==='right','normal':selectedHand==='left','animation':!selectedHand}"
           src="../img/right-hand.png" alt="">
         <div class="hand-btn" :class="selectedHand?'':'scale'">
           <img v-show="selectedHand!=='right'" class="hand-btn" src="../img/right-hand-btn.png"
@@ -291,11 +293,14 @@ export default {
         .scale {
           animation: scale 1200ms infinite;
         }
+        .hand.normal {
+          transform: scale(1) translate3D(0, 0, 0) rotateX(0);
+        }
         .hand.selected {
-          transform: scale(1.2) translate3D(2px, 0, 0);
+          transform: scale(1.2) translate3D(2px, 0, 0) rotateX(0);
         }
         .hand.animation {
-          animation: route 1200ms infinite;
+          animation: routeLeft 1200ms infinite;
         }
       }
       &.right {
@@ -303,13 +308,16 @@ export default {
           right: -0.4rem;
         }
         .scale {
-          animation: scale 1200ms 600ms infinite;
+          animation: scale 1200ms 650ms infinite;
+        }
+        .hand.normal {
+          transform: scale(1) translate3D(0, 0, 0) rotateX(0);
         }
         .hand.selected {
-          transform: scale(1.2) translate3D(-2px, 0, 0);
+          transform: scale(1.2) translate3D(-2px, 0, 0) rotateX(0);
         }
         .hand.animation {
-          animation: route 1200ms 650ms infinite;
+          animation: routeRight 1200ms infinite;
         }
       }
     }
@@ -339,15 +347,26 @@ export default {
     transform: scale(1);
   }
 }
-@keyframes route {
+@keyframes routeLeft {
   0% {
-    transform: translate3d(0, 0, 0) rotateX(0);
+    transform: scale(1) translate3d(0, 0, 0) rotateX(0);
   }
   50% {
-    transform: translate3d(0, 0, 0) rotateX(40deg);
+    transform: scale(1) translate3d(0, 0, 0) rotateX(40deg);
   }
   100% {
-    transform: translate3d(0, 0, 0) rotateX(0);
+    transform: scale(1) translate3d(0, 0, 0) rotateX(0);
+  }
+}
+@keyframes routeRight {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0) rotateX(40deg);
+  }
+  50% {
+    transform: scale(1) translate3d(0, 0, 0) rotateX(0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0) rotateX(40deg);
   }
 }
 </style>
