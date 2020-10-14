@@ -2,8 +2,9 @@
   <section class="task">
     <ul class="tabs-wrapper">
       <li :class="{selected:currentGroup===item.group}" v-for="(item,index) in tabsList"
-        :key="index" @click.stop="toggleGroup(item)">
-        <img :src="currentGroup===item.group?item.selectedImgUrl:item.imgUrl" alt="">
+        :key="index" @click.prevent.stop="toggleGroup(item)">
+        <img v-if="currentGroup===item.group" :src="item.selectedImgUrl" alt="">
+        <img v-else :src="item.imgUrl" alt="">
       </li>
     </ul>
     <div class="task-wrapper">
@@ -260,7 +261,7 @@ export default {
           .awards {
             display: flex;
             align-items: center;
-            width: 2.4rem;
+            width: 2.2rem;
             white-space: nowrap;
             font-size: 0.22rem;
             .icon {
@@ -295,7 +296,7 @@ export default {
               height: 0.26rem;
               line-height: 0.26rem;
               font-size: 0.2rem;
-              color: #540265;
+              color: #fff;
               text-align: center;
             }
           }
