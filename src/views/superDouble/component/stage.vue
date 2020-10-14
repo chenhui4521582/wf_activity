@@ -283,7 +283,6 @@ export default {
       }
       .hand {
         height: 3.3rem;
-        transition: all 0.2s;
         transform-origin: bottom;
       }
       &.left {
