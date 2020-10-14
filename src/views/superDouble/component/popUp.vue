@@ -191,8 +191,8 @@
           <div class="btn" v-if="btnText&&(type!==14||info.state===1)" @click="handleClick">
             {{btnText}}</div>
         </section>
-        <div v-if="type!==14||info.state===1" class="close-icon" :class="btnText?'':'no-btn'"
-          @click="closePop">
+        <div v-if="(type!==14&&type!==12)||info.state===1" class="close-icon"
+          :class="btnText?'':'no-btn'" @click="closePop">
         </div>
       </section>
     </article>
