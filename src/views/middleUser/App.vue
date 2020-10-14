@@ -151,14 +151,15 @@ export default {
   overflow-x: hidden;
   overflow-y: scroll;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   background: #4a13b9;
+  margin: auto;
   .bg {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     img {
       display: block;
@@ -175,7 +176,7 @@ export default {
   }
   .main-content {
     position: absolute;
-    width: 100vw;
+    width: 100%;
     top: 5rem;
     .time {
       color: #fff;

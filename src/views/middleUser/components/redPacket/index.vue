@@ -34,12 +34,14 @@
             <div class="percent" :style="{width:percentWidth}"></div>
           </li>
           <li v-for="(item,index) in list" :class="{opened:item.status!==0}">
-            <p>{{conversion(item.amount)}}</p>
-            <p class="red-packet-img" :class="{'shake-rotate':item.status===1}">
-              <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
-              <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
-            </p>
-            <p>{{item.awards|awardsNumberFilter}}</p>
+            <div class="red-packet-content">
+              <p>{{conversion(item.amount)}}</p>
+              <p class="red-packet-img" :class="{'shake-rotate':item.status===1}">
+                <img v-if="item.status===2" src="./img/red-packet-opened.png" alt="已解锁红包">
+                <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
+              </p>
+              <p>{{item.awards|awardsNumberFilter}}</p>
+            </div>
           </li>
         </ul>
       </div>
@@ -200,19 +202,22 @@ export default {
         align-content: center;
         align-items: center;
         padding-left: 0.28rem;
-        li {
+        li:not(.percent-wrapper) {
           font-size: 0.2rem;
           color: #d3a0ff;
-          margin-right: 0.28rem;
-          width: 0.5rem;
-          display: inline-block;
-          p {
-            white-space: nowrap;
-          }
-          .red-packet-img {
+          display: block;
+          min-width: 0.78rem;
+          max-width: 0.78rem;
+          .red-packet-content {
             width: 0.5rem;
-            height: 0.6rem;
-            margin: 0.08rem 0 0.1rem;
+            p {
+              white-space: nowrap;
+            }
+            .red-packet-img {
+              width: 0.5rem;
+              height: 0.6rem;
+              margin: 0.08rem 0 0.1rem;
+            }
           }
           &.opened {
             color: #feeb4e;
