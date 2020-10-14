@@ -26,15 +26,10 @@
                 <span>0.05%</span>的机会可连续翻至<span>128</span>倍奖励；<br />
                 <span>0.015%</span>的机会可连续翻至<span>256</span>倍奖励。<br />
                 3、本次活动分为初级、中级、高级场，级别越高，翻倍获得糖豆越多。<br />
-                4、糖豆可以通过游戏充值获得。<br />
-                5、活动期间内，玩家在指定游戏中消耗金叶子数量达到一定值即可领取活动糖豆。<br />
-                <span>（金叶消耗计入活动的游戏包括：欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云，福满多，斗西游）</span><br />
-                6、活动期间所获得的糖豆可在“欢乐兑换专区”兑换丰厚奖励。<br />
-                7、活动设有糖豆排行榜（根据游戏消耗、游戏充值和每日任务所得糖豆排行）有奖排行榜仅限前30名玩家进榜，排行榜单会展示一天，榜首玩家可获得35000元大奖。<br />
-                8、排行榜糖豆数量一致时，先到达的排名靠前。<br />
-                如有其他问题，请联系在线客服进行咨询。<br />
-                注意：<br />
-                活动结束后，未使用的糖豆将清零，请及时兑换奖励。
+                4、活动期间内，玩家通过游戏支持金叶或购买活动礼包获得糖豆。
+                （金叶消耗计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战）<br />
+                5、活动期间所获得的糖豆可在“欢乐兑换专区”兑换丰厚奖励。活动结束后糖豆清零作废，需及时消耗；<br />
+                6、活动设有每日糖豆排行榜（根据游戏消耗、礼包购买和猜大小翻倍所得糖豆排行），每天获得糖豆最多前10名玩家上榜有奖。排行榜糖豆数量一致时，先到达的排名靠前。<br />
               </p>
             </template>
             <template v-if="type===2">
@@ -57,8 +52,8 @@
               <p v-if="!awardList||!awardList.length">这里空空如也</p>
             </template>
             <template v-if="type===3">
-              <p class="rule-desc">（根据游戏金叶消耗、游戏充值和每日任务所得糖豆排行）</p>
-              <p>活动结束时间: {{info.endDate}}</p>
+              <p class="rule-desc">（除了游戏金叶消耗、礼包购买，翻倍获得的糖豆也计入哦！）</p>
+              <p>榜单奖励发放时间：明日0点</p>
               <ul class="rank-list">
                 <li>
                   <div>名次</div>
@@ -73,12 +68,12 @@
                     {{item.totalNum}}<br />
                     {{item.updateTime}}
                   </div>
-                  <div>{{item.awardsName.split('+')[0]}}<br />+{{item.awardsName.split('+')[1]}}
+                  <div>{{item.awardsName.split('+')[0]}}
                   </div>
                 </li>
               </ul>
             </template>
-            <template v-if="type===4||type===5||type===6||type===7">
+            <template v-if="type===4||type===5||type===6||type===7||type===14">
               <p class="message">
                 <template v-if="type===4">
                   确定立即退出吗？<br />
@@ -94,6 +89,9 @@
                 <template v-if="type===7">
                   很遗憾，当前可兑换糖豆不足<br />
                 </template>
+                <template v-if="type===14">
+                  你与昨日排行失之交臂~<br />
+                </template>
               </p>
               <div class="status-img">
                 <img src="../img/error-icon.png" alt="">
@@ -107,6 +105,9 @@
                 </template>
                 <template v-if="type===6">
                   快去游戏中消耗金叶获取糖豆吧
+                </template>
+                <template v-if="type===14">
+                  再接再厉哦！
                 </template>
               </p>
             </template>
@@ -150,6 +151,21 @@
                 </template>
               </p>
             </template>
+            <template v-if="type===12">
+              <div class="status-img">
+                <img :class="awardInfo.desc" :src="require(`../img/${awardInfo.desc}-icon.png`)"
+                  alt="">
+              </div>
+              <p class="message">
+                {{awardInfo.name}}
+              </p>
+              <p class="rank-info">
+                昨天排行第{{awardInfo.rank}}名，获得以上奖励
+              </p>
+              <p class="desc">
+                奖励将自动发放到账
+              </p>
+            </template>
           </div>
           <template v-if="type===3">
             <ul class="my-rank-info">
@@ -159,7 +175,7 @@
                 <div>奖励</div>
               </li>
               <li>
-                <div>{{rankInfo.myRank?rankInfo.myRank:'30+'}}</div>
+                <div>{{rankInfo.myRank?rankInfo.myRank:'10+'}}</div>
                 <div>{{rankInfo.totalNum}}</div>
                 <div>
                   <template v-if="rankInfo.currentAwards&&rankInfo.currentAwards.includes('+')">
@@ -172,9 +188,12 @@
               </li>
             </ul>
           </template>
-          <div class="btn" v-if="btnText" @click="handleClick">{{btnText}}</div>
+          <div class="btn" v-if="btnText&&(type!==14||info.state===1)" @click="handleClick">
+            {{btnText}}</div>
         </section>
-        <div class="close-icon" :class="btnText?'':'no-btn'" @click="closePop"></div>
+        <div v-if="(type!==14&&type!==12)||info.state===1" class="close-icon"
+          :class="btnText?'':'no-btn'" @click="closePop">
+        </div>
       </section>
     </article>
   </transition>
@@ -182,7 +201,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { userAwards, rankList, myRank } from '../services/api'
+import { userAwards, rankList } from '../services/api'
 import _get from 'lodash.get'
 export default {
   name: '',
@@ -237,12 +256,13 @@ export default {
         case 2:
           return '我的奖励'
         case 3:
-          return '排行榜'
+          return '每日排行榜'
         case 4:
           return '请留步'
         case 5:
         case 6:
         case 7:
+        case 14:
           return '很遗憾'
         case 8:
           return '热门游戏推荐'
@@ -264,6 +284,7 @@ export default {
         case 5:
         case 7:
         case 9:
+        case 14:
           return '知道了'
         case 6:
           return '立即去玩'
@@ -289,22 +310,6 @@ export default {
       const res = await rankList()
       this.rankInfo = _get(res, 'data', {})
       this.rankList = _get(res, 'data.rankList', [])
-    },
-    async _myRank () {
-      const { code, data } = await myRank()
-      if (code === 200 && data.popup) {
-        let message = ''
-        if (data.myRank >= 1 && data.myRank <= 30) {
-          message = '奖励已发放请注意查收'
-        } else {
-          message = '您未上榜，下次继续加油哦'
-        }
-        this.$toast.show({
-          message: message,
-          duration: 3000,
-          isOneLine: true
-        })
-      }
     },
     handleClick () {
       this.$emit('callback', this.type)
@@ -341,7 +346,6 @@ export default {
         this._userAwards()
       } else if (this.type === 3) {
         this._rankList()
-        this.info.state !== 1 && this._myRank()
       }
     },
     type (val) {
@@ -377,7 +381,7 @@ export default {
     font-size: 0.24rem;
     text-align: center;
     .content {
-      margin-top: 2.2rem;
+      margin-top: 1.8rem;
       width: 6.46rem;
       height: 7.24rem;
       background-image: url(../img/pop-up-bg.png);
@@ -442,6 +446,15 @@ export default {
       }
     }
     &.type-1 {
+      .content {
+        width: 6.18rem;
+        height: 9.54rem;
+        margin: 0.6rem auto 0;
+        background-image: url(../img/rule-pop-bg.png);
+        .container {
+          height: 6.8rem;
+        }
+      }
       .rule-text {
         text-align: left;
         span {
@@ -558,7 +571,8 @@ export default {
     &.type-7,
     &.type-9,
     &.type-10,
-    &.type-11 {
+    &.type-11,
+    &.type-14 {
       .light-img {
         width: 5.66rem;
         height: 5.76rem;
@@ -592,6 +606,40 @@ export default {
       .desc {
         position: relative;
         font-size: 0.28rem;
+      }
+    }
+    &.type-12 {
+      .content {
+        width: 6.08rem;
+        height: 6.92rem;
+        background-image: url(../img/pop-up-myrank-bg.png);
+        position: relative;
+        margin: 1.8rem auto 0;
+      }
+      .message {
+        position: relative;
+        font-size: 0.36rem;
+        height: 1rem;
+        white-space: nowrap;
+      }
+      .rank-info {
+        font-size: 0.28rem;
+      }
+      .status-img {
+        position: relative;
+        width: 2.56rem;
+        height: 1.6rem;
+        margin: 0.1rem auto 0.26rem;
+        font-size: 0;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .desc {
+        position: relative;
+        font-size: 0.24rem;
+        margin-top: 0.7rem;
       }
     }
     &.type-8 {

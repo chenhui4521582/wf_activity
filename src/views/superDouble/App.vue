@@ -1,7 +1,7 @@
 <template>
   <main class="super-double">
     <template v-if="activityInfo&&(activityInfo.state===1||activityInfo.state===2)">
-      <activity-title @open-pop="openPop" />
+      <activity-title @open-pop="openPop" :info="activityInfo" />
       <stage ref="stage" v-model="curStageInfo" :info="activityInfo" @open-pop="openPop"
         @change-activity-info="changeActivityInfo" />
       <exchange ref="exchange" :info="activityInfo" @change-activity-info="changeActivityInfo"
@@ -16,7 +16,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { activityInfo } from './services/api'
+import { activityInfo, myRank } from './services/api'
 export default {
   name: 'superDouble',
   components: {
@@ -35,8 +35,7 @@ export default {
         desc: 'tg',
         img: require('./img/crush-icon.png')
       },
-      showGetPop: false,
-      timer: null
+      showGetPop: false
     }
   },
   computed: {
@@ -48,16 +47,28 @@ export default {
     this.init()
   },
   methods: {
-    async  init () {
+    async init () {
       const { code, data } = await activityInfo()
       if (code === 200) {
         this.activityInfo = data
-        this.timer = setTimeout(() => {
-          clearTimeout(this.timer)
-          if (this.activityInfo.state !== 1) {
-            this.popType = 3
+        this.getMyRank()
+      }
+    },
+
+    async getMyRank () {
+      const { code, data } = await myRank()
+      if (code === 200) {
+        if (data.popup || this.activityInfo.state === 2) {
+          if (data.myRank >= 1 && data.myRank <= 10) {
+            this.openPop(12, {
+              desc: data.awardsList[0].awardsType,
+              name: data.awardsList[0].awardsName,
+              rank: data.myRank
+            })
+          } else {
+            this.openPop(14)
           }
-        }, 100)
+        }
       }
     },
     async changeActivityInfo () {
@@ -112,9 +123,6 @@ export default {
           break
       }
     }
-  },
-  destroyed () {
-    clearTimeout(this.timer)
   }
 }
 </script>

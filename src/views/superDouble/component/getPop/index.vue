@@ -11,59 +11,57 @@
             <h4 class="s-title"><em></em>{{tItem}}</h4>
             <template v-if="tIndex===0">
               <span class="info">
-                在游戏中（欢乐竞技台球，街机欢乐捕鱼，糖果萌消消，三国大作战，欢乐的小鸟，深海探一探，王者弹珠，众神风云 ，福满多，斗西游）消耗金叶可获得对应数量的糖豆
+                在游戏中（糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战）消耗金叶可获得对应数量的糖豆
               </span>
               <div class="g-package">
                 <div class="g-package-container g2">
-                  <hit-percent :type="1" :gameBetting="taskProgressInfoData.gameProgress.gameBetting" :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
+                  <hit-percent :type="1"
+                    :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
+                    :hbItems="taskProgressInfoData.gameProgress.progressList" :countTime="countTime"
+                    @refresh="refresh" @open-pop="openPop"></hit-percent>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
                     <li>
-                      <span>已支持金叶:
+                      <span>今日支持金叶:
                         {{taskProgressInfoData.gameProgress.gameBetting | conversion}}</span>
                     </li>
                     <li>
-                      <span>累计糖豆:
+                      <span>今日获得糖豆:
                         {{taskProgressInfoData.gameProgress.receiveNum }}个</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </template>
-            <template v-else-if="tIndex===1">
-              <div class="task_container" v-for="(item,index) in taskProgressInfoData.taskProgress">
-                <div class="item">
-                  <p v-if="index==0">今日完成{{item.totalNum}}个每日任务, 送1个糖豆</p>
-                  <p v-else-if="index==1">今日充值10元, 送1个糖豆</p>
-                </div>
-                <div class="item">
-                  <div class="btn btn_complete" v-if="item.state==0" @click="gotocomplete(item,index)">
-                    去完成</div>
-                  <div class="btn btn-receive" v-else-if="item.state==1" @click="gain(item,index)">
-                    领取
-                  </div>
-                  <div class="btn btn-gained" v-else>已完成</div>
-                  <div class="btn_progress">
-                    {{item.finishNum>item.totalNum?item.totalNum:item.finishNum}}/{{item.totalNum}}
-                  </div>
-                </div>
-              </div>
-            </template>
             <template v-else>
               <div class="g-package">
-                <div class="g-package-container g2">
-                  <hit-percent :type="2" :gameBetting="taskProgressInfoData.rechargeProgress.gameBetting" :hbItems="taskProgressInfoData.rechargeProgress.progressList" :countTime="countTime" @refresh="refresh" @open-pop="openPop"></hit-percent>
+                <div class="g-package-container g1">
+                  <ul>
+                    <li v-for="(item,index) in packagesList" @click="gotopay(item)">
+                      <img :src="require(`../../img/package${index+1}.png`)" alt="">
+                      <div class="item-text">
+                        {{item.content.split('+')[0]}}<br />
+                        <span class="content"
+                          :style="{display: 'flex',alignItems: 'center',justifyContent: 'center'}">
+                          <img src="../../img/give-icon.png"
+                            style="min-width:0.24rem;max-width:0.24rem;height:0.24rem;margin-bottom:0.04rem">
+                          {{item.content.split('+')[1]}}
+                        </span>
+                      </div>
+                      <a href="javascript:" class="btn-price">￥{{item.price}}</a>
+                    </li>
+                  </ul>
                 </div>
                 <div class="g-package-info">
                   <ul class="li0">
                     <li>
-                      <span>今日累计充值:
-                        {{taskProgressInfoData.rechargeProgress.gameBetting | conversion}}</span>
+                      <span>今日购买个数:
+                        {{taskProgressInfoData.buyProgress.buyTime}}个</span>
                     </li>
                     <li>
-                      <span>累计糖豆:
-                        {{taskProgressInfoData.rechargeProgress.receiveNum }}个</span>
+                      <span>今日获得糖豆:
+                        {{taskProgressInfoData.buyProgress.returnNum }}个</span>
                     </li>
                   </ul>
                 </div>
@@ -77,13 +75,13 @@
 </template>
 <script type="text/javascript">
 /* eslint-disable no-undef */
-import { userProgress, taskReceive } from '../../services/api'
+import { userProgress, taskReceive, getPackages } from '../../services/api'
 
 export default {
   data () {
     return {
-      titleArr: ['玩游戏得糖豆', '每日任务送糖豆', '每日充值送糖豆'],
-      mallBizConfigs: [],
+      titleArr: ['玩游戏得糖豆', '购买礼包获糖豆'],
+      packagesList: [],
       pUserInfo: {},
       taskProgressInfoData: null,
       popType: 0,
@@ -111,12 +109,28 @@ export default {
   },
   mounted () {
     this.taskProgressInfo()
+    this.getPackagesList()
   },
   methods: {
     async taskProgressInfo () {
       const { code, data } = await userProgress()
       if (code === 200) {
         this.taskProgressInfoData = data
+      }
+    },
+    async getPackagesList () {
+      const { code, data } = await getPackages(260)
+      if (code === 200) {
+        this.packagesList = data.mallBizConfigs
+      }
+    },
+    gotopay (item) {
+      if (item.buyFlag === 1) {
+        localStorage.setItem('originDeffer', window.location.href)
+        localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+        localStorage.setItem('payment', JSON.stringify(item))
+        location.href =
+          'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       }
     },
     gotocomplete (item, index) {
@@ -192,7 +206,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    top: 4rem;
+    top: 2rem;
     .cost-btn {
       top: -0.64rem;
       bottom: auto;
@@ -247,7 +261,7 @@ export default {
     border-radius: 0.15rem 0.15rem 0 0;
     font-size: 0;
     &.g1 {
-      height: 2.94rem;
+      height: auto;
     }
     &.g2 {
       height: 2.24rem;
@@ -257,18 +271,20 @@ export default {
       justify-content: center;
       padding-top: 0.21rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
     li {
-      width: 1.79rem;
+      width: 1.78rem;
       height: 2.48rem;
       text-align: center;
       position: relative;
-      background: rgba(234, 181, 155, 1);
+      background: rgba(255, 67, 48, 0.1);
       border-radius: 0.1rem;
       margin-left: 0.26rem;
+      margin-bottom: 0.26rem;
       padding-top: 0.1rem;
       box-sizing: border-box;
-      &:nth-child(1) {
+      &:nth-child(3n + 1) {
         margin-left: 0;
       }
       img {
@@ -278,7 +294,7 @@ export default {
     }
     .item-text {
       font-size: 0.2rem;
-      color: #9a5619;
+      color: #e74615;
       line-height: 0.26rem;
       position: relative;
       font-weight: 500;
@@ -302,7 +318,7 @@ export default {
       width: 0.96rem;
       height: 0.39rem;
       line-height: 0.39rem;
-      background: #e74615;
+      background: #ff4330;
       border-radius: 0.2rem;
       font-size: 0.24rem;
       color: #ecf4ff;
@@ -339,7 +355,7 @@ export default {
         top: 0.1rem;
       }
       &:not(:first-child) {
-        border-left: #ffa200 1px solid;
+        border-left: #003e5c 1px solid;
       }
     }
     &.li0 {

@@ -6,7 +6,7 @@
     <div class="horn-list-wrapper">
       <img src="../img/horn-icon.png" alt="">
       <div class="horn-list-content" v-if="hornList && hornList.length">
-        <horn :list="hornList" />
+        <horn v-if="info.state===1" :list="hornList" />
       </div>
     </div>
     <div class="btn back-btn" @click="back()">
@@ -28,6 +28,12 @@ export default {
   components: {
     horn: () => import('./horn')
   },
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data () {
     return {
       hornList: []
@@ -37,7 +43,7 @@ export default {
     this.getNoticeList()
   },
   methods: {
-    async  getNoticeList () {
+    async getNoticeList () {
       const { code, data } = await noticeList()
       if (code === 200) {
         this.hornList = data
@@ -45,7 +51,7 @@ export default {
     },
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0301003586') // H5平台-疯狂翻倍活动-返回按钮点击
-      window.history.go(-1)
+      location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     openPop (type) {
       switch (type) {
