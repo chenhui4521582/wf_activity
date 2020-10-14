@@ -2,9 +2,9 @@
   <section class="task">
     <ul class="tabs-wrapper">
       <li :class="{selected:currentGroup===item.group}" v-for="(item,index) in tabsList"
-        :key="index" @click.prevent.stop="toggleGroup(item)">
+        :key="index">
         <img v-if="currentGroup===item.group" :src="item.selectedImgUrl" alt="">
-        <img v-else :src="item.imgUrl" alt="">
+        <img v-else :src="item.imgUrl" alt="" @click.stop="toggleGroup(item)">
       </li>
     </ul>
     <div class="task-wrapper">
@@ -196,7 +196,7 @@ export default {
         max-width: none;
         top: 50%;
         left: 0;
-        transform: translateY(-50%);
+        margin-top: -0.55rem;
       }
       &.selected {
         width: 1.06rem;
@@ -204,6 +204,7 @@ export default {
         img {
           width: 1.4rem;
           height: 1.9rem;
+          margin-top: -0.95rem;
         }
       }
     }
