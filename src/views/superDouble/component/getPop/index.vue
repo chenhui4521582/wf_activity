@@ -11,7 +11,7 @@
             <h4 class="s-title"><em></em>{{tItem}}</h4>
             <template v-if="tIndex===0">
               <span class="info">
-                在游戏中（糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战）消耗金叶可获得对应数量的糖豆
+                计入活动的游戏包括：糖果萌消消、街机欢乐捕鱼、疯狂炸弹人、三国大作战、欢乐竞技台球、众神风云、破晓方块消消乐、斗西游、王者弹珠、欢乐的小鸟、天使之战；
               </span>
               <div class="g-package">
                 <div class="g-package-container g2">
@@ -80,7 +80,7 @@ import { userProgress, taskReceive, getPackages } from '../../services/api'
 export default {
   data () {
     return {
-      titleArr: ['玩游戏得糖豆', '购买礼包获糖豆'],
+      titleArr: ['每日游戏得糖豆', '购买礼包获糖豆'],
       packagesList: [],
       pUserInfo: {},
       taskProgressInfoData: null,
