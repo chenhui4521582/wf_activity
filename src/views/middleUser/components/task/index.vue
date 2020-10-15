@@ -3,8 +3,10 @@
     <ul class="tabs-wrapper">
       <li :class="{selected:currentGroup===item.group}" v-for="(item,index) in tabsList"
         :key="index">
-        <img v-if="currentGroup===item.group" :src="item.selectedImgUrl" alt="">
-        <img v-else :src="item.imgUrl" alt="" @click.stop="toggleGroup(item)">
+        <div class="tab-item"
+          :style="{backgroundImage:`url(${currentGroup===item.group?item.selectedImgUrl:item.imgUrl})`}"
+          @click.stop="toggleGroup(item)">
+        </div>
       </li>
     </ul>
     <div class="task-wrapper">
@@ -189,7 +191,8 @@ export default {
       height: 1.1rem;
       position: relative;
       margin-bottom: 0.06rem;
-      img {
+      z-index: 2;
+      .tab-item {
         position: absolute;
         width: 1.06rem;
         height: 1.1rem;
@@ -197,11 +200,15 @@ export default {
         top: 50%;
         left: 0;
         margin-top: -0.55rem;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100% 100%;
       }
       &.selected {
         width: 1.06rem;
         height: 1.3rem;
-        img {
+        z-index: 1;
+        .tab-item {
           width: 1.4rem;
           height: 1.9rem;
           margin-top: -0.95rem;
