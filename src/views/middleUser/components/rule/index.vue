@@ -22,8 +22,7 @@
               <p>
                 7、相关道具说明：</p>
               <p>
-                <span class="img-wrapper"><img
-                    src="./img/u30.png"></span><span>话费碎片，10个话费碎片=1个话费券</span>
+                <span class="img-wrapper"><img src="./img/u30.png"></span><span>话费券（单位：元）</span>
               </p>
               <p>
                 <span class="img-wrapper"><img
