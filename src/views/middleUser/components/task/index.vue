@@ -137,7 +137,9 @@ export default {
       return `${percent}%`
     },
     toggleGroup (item) {
-      this.currentGroup = item.group
+      if (this.currentGroup !== item.group) {
+        this.currentGroup = item.group
+      }
     },
     goGame (item) {
       GLOBALS.marchSetsPoint('A_H5PT0332004187', {
