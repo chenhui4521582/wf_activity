@@ -188,6 +188,9 @@ export default {
         color: #feeb4e;
         margin-left: 0;
         min-width: 0.8rem;
+        p {
+          white-space: nowrap;
+        }
         p:first-child {
           margin-bottom: 0.36rem;
         }
