@@ -52,7 +52,8 @@ export default {
   },
   methods: {
     downloadAPK(){
-       this.axios.post('//platform-api.beeplaying.com/task/api/diversion/ddw_downloadUrl').then(res=>{
+      var channelId = GLOBALS.getUrlParam("channelId") || '100039';
+       this.axios.post('//platform-api.beeplaying.com/task/api/diversion/ddw_downloadUrl/'+channelId).then(res=>{
          var path = _get(res,'data.data','')
          if(path){
            this.createIframe('https://wap.beeplaying.com'+path)
