@@ -107,7 +107,7 @@
                   快去游戏中消耗金叶获取糖豆吧
                 </template>
                 <template v-if="type===14">
-                  再接再厉哦！
+                  {{info.state===2?"活动已结束":'再接再厉哦！'}}
                 </template>
               </p>
             </template>
@@ -163,7 +163,7 @@
                 昨天排行第{{awardInfo.rank}}名，获得以上奖励
               </p>
               <p class="desc">
-                奖励将自动发放到账
+                {{info.state===2?'活动已结束,':''}}奖励将自动发放到账
               </p>
             </template>
           </div>

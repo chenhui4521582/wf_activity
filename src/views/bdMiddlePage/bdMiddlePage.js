@@ -4,6 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 // import router from './router'
+import axios from './http'
 import fastclick from 'fastclick'
 import Toast from '@/plugins/toast'
 import '@/common/js/window.js'
@@ -12,6 +13,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(Toast)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
+Vue.prototype.axios = axios
 fastclick.attach(document.body)
 Vue.filter('filter', function (url) {
   if (url && !url.includes('http')) {
