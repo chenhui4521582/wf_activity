@@ -137,7 +137,7 @@
 
 <script>
   import {getAwardsRecord, getCouponssRecord} from '../utils/api'
-
+  import base64url from 'base64-url'
   export default {
     name: 'comPop',
     data() {
@@ -297,11 +297,37 @@
         this.close()
         this.$emit('gotoprize')
       },
-      gotogame({url, id}) {
+      gotogame(item) {
+        let token = localStorage.getItem('OPEN_ACCESS_TOKEN')
+        let channel = GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL')
         GLOBALS.marchSetsPoint('A_H5PT0280003352', {
-          target_project_id: id
+          target_project_id: item.id
         })
-        GLOBALS.jumpOutsideGame(url)
+        if (item.url.includes('?external=1')) {
+          let url =
+            item.url+
+            '&channel=' +
+            channel +
+            '&token=' +
+            token +
+            '&gurl=' +
+            item.url.split('?')[0] +
+            '&pf=' + window.linkUrl.getBackUrlFlag(channel)+'&gameType='+item.id
+          window.location.href = url
+          window.localStorage.setItem('wj_gameType', item.id)
+        } else {
+          let url =
+            item.url+
+            '&channel=' +
+            channel +
+            '&token=' +
+            token +
+            '&gurl=' +
+            base64url.encode(item.url.replace('?external=1', '').replace('&external=1', '')) +
+            '&pf=' + window.linkUrl.getBackUrlFlag(channel)+'&gameType='+item.id
+          window.location.href = url
+          window.localStorage.setItem('wj_gameType', item.id)
+        }
       },
       gotoindex() {
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
