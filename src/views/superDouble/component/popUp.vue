@@ -639,7 +639,7 @@ export default {
       .desc {
         position: relative;
         font-size: 0.24rem;
-        margin-top: 0.7rem;
+        margin-top: 0.5rem;
       }
     }
     &.type-8 {
