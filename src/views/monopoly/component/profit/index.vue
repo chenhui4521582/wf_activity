@@ -1,5 +1,5 @@
 <template>
-  <div class="profit-container" :class="{full:isFull}">
+  <div class="profit-container" :class="{full:isFull}" @touchmove.prevent="">
     <div v-if="!isLoading" class="profit-inner-container">
       <div class="ranktitle" :class="{full:isFull}">
         <div class="back" @click="rankback" v-if="isFull">返回</div>
@@ -22,7 +22,7 @@
           上期开奖结果
         </div>
         <ul class="profit-icon">
-          <li v-for="(item,index) in topthreeData">
+          <li v-for="(item,index) in profitData">
             <div class="s-tx">
               <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
               <img v-if="!item.profilePhoto" :src="defaultImg | filter">
