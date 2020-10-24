@@ -1,10 +1,8 @@
 <template>
   <div class="hit-percent">
     <div class="hb-task-box">
-      <div class="percent-box"
-        :style="{background:$moduleConfig.monopoly.dropDown.inner.bg.background}">
-        <div class="percent-number"
-          :style="{width:wpercent,background:$moduleConfig.monopoly.dropDown.inner.percentBg}">
+      <div class="percent-box">
+        <div class="percent-number" :style="{width:wpercent}">
         </div>
       </div>
       <ul>
@@ -16,12 +14,10 @@
             <h4 v-else>终极档位</h4>
           </template>
           <div class="hb-line">
-            <img :src="require(`./images/icon${item.propType}.png`)" alt="">
+            <img src="./img/icon1.png" alt="">
           </div>
           <div class="envelopes">{{item.awards}}个</div>
-          <div class="btn btn-complete"
-            :style="{color:$moduleConfig.monopoly.dropDown.inner.tabs.btnDefaultStyle.background}"
-            v-if="item.status == 2">完成
+          <div class="btn btn-complete" v-if="item.status == 2">完成
           </div>
           <div class="btn btn-receive" v-else-if="item.status == 1" @click="gotoact(item)">领取</div>
           <div class="btn btn-default" v-else @click="gotocomplete(item)">去完成</div>
@@ -57,10 +53,6 @@ export default {
       default: []
     },
     gameBetting: {
-      type: Number,
-      default: 0
-    },
-    countTime: {
       type: Number,
       default: 0
     }
@@ -163,22 +155,22 @@ export default {
       }
     },
     gotocomplete (item) {
-      GLOBALS.marchSetsPoint('A_H5PT0277003313', {
-        task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })   // H5平台-超级大赢家活动-玩游戏任务去完成点击
       this.showPop(7)
+      GLOBALS.marchSetsPoint('A_H5PT0345004351', {
+        task_id: item.sort,
+        task_name: item.amount
+      }) // H5平台-欢乐大富翁-获得骰子页面-去完成按钮点击
     },
     async gotoact (item) { // 领取
-      GLOBALS.marchSetsPoint('A_H5PT0277003314', {
-        task_id: item.sort,
-        task_name: '消耗金叶' + item.amount
-      })// H5平台-超级大赢家活动-玩游戏任务领取点击
       this.showLoading = true
       gameReceive(item.sort).then((res) => {
-        if (res.code == 200) {
-          this.showPop(8, res.data)
-          this.$emit('refresh', res.data)
+        if (res.code === 200) {
+          this.$toast.show({
+            message: '领取成功',
+            duration: 2000,
+            isOneLine: true
+          })
+          this.$emit('refresh')
         } else {
           this.$toast.show({
             message: res.message,
@@ -187,12 +179,16 @@ export default {
           })
         }
         this.showLoading = false
+        GLOBALS.marchSetsPoint('A_H5PT0345004352', {
+          task_id: item.sort,
+          task_name: item.amount
+        }) // H5平台-欢乐大富翁-获得骰子页面-领取按钮点击
       }).catch(e => {
         this.showLoading = false
       })
     },
     showPop (type, awardData) {
-      this.$emit('showPop', type, awardData)
+      this.$emit('show-pop', type, awardData)
     }
   },
   components: {
@@ -210,7 +206,7 @@ export default {
   .percent-box {
     width: 5.86rem;
     height: 0.15rem;
-    background: rgba(255, 171, 129, 1);
+    background: #8dc0ff;
     border-radius: 0.08rem;
     position: absolute;
     left: 0.3rem;
@@ -221,14 +217,14 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
-      background: rgba(220, 50, 42, 1);
+      background: #3359d5;
       border-radius: 0.08rem;
       max-width: 100%;
       &:after {
         content: '';
         width: 0.23rem;
         height: 0.23rem;
-        background: url(./images/percent-dot.png) no-repeat;
+        background: url(./img/percent-dot.png) no-repeat;
         background-size: 100% 100%;
         position: absolute;
         right: -0.1rem;
@@ -245,13 +241,13 @@ export default {
       font-size: 0.2rem;
       font-weight: 500;
       padding-top: 0.28rem;
-      color: #ff4330;
+      color: #3359d5;
       height: 0.3rem;
     }
     h4 {
       font-size: 0.22rem;
       font-weight: 800;
-      color: #ff4330;
+      color: #3359d5;
       margin: 0 auto;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -286,7 +282,7 @@ export default {
         display: inline-block;
         width: 0.06rem;
         height: 0.06rem;
-        background: rgba(220, 141, 0, 1);
+        background: #4a88ff;
         border-radius: 50%;
         &:nth-child(2) {
           margin: 0 0.04rem;
@@ -299,7 +295,7 @@ export default {
     .envelopes {
       height: 0.25rem;
       font-weight: 500;
-      color: #e74615;
+      color: #3359d5;
       text-align: center;
       white-space: nowrap;
       margin-bottom: 0.08rem;
@@ -307,23 +303,23 @@ export default {
     }
     .btn {
       display: block;
-      width: 0.89rem;
-      height: 0.46rem;
+      width: 0.9rem;
+      height: 0.48rem;
       font-size: 0.24rem;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
       color: rgba(255, 255, 255, 1);
-      border-radius: 0.2rem;
+      border-radius: 0.24rem;
       &.btn-receive {
-        background: #ff4330;
+        background: #ff881f;
       }
       &.btn-default {
-        background: #f89f2c;
+        background: #83a839;
       }
       &.btn-complete {
-        color: rgba(192, 112, 2, 1);
+        color: #3388f1;
       }
     }
   }

@@ -1,34 +1,33 @@
 <template>
-  <div class="profit-container" :class="{full:isFull}" @touchmove.prevent="">
+  <div class="profit-container full">
     <div v-if="!isLoading" class="profit-inner-container">
-      <div class="ranktitle" :class="{full:isFull}">
-        <div class="back" @click="rankback" v-if="isFull">返回</div>
+      <div class="ranktitle full">
+        <div class="back" @click="rankback">返回</div>
         <img v-if="currentRankType==='today'" src="./img/today.png" class="title">
         <img v-if="currentRankType==='yesterday'" src="./img/yesterday.png" class="title">
         <div class="change-rank-type" @click="changeRankType('yesterday')"
-          v-if="isFull&&currentRankType==='today'">昨日榜单</div>
+          v-if="currentRankType==='today'">昨日榜单</div>
       </div>
       <h4 class="p-time" :class="{nodata:profitData.length==0}">
-        <template v-if="isFull">
-          活动结束，已发榜
+        <template v-if="actInfo.state===1">
+          <template v-if="currentRankType==='today'">
+            发榜时间 ：{{actInfo.endDate}}
+          </template>
         </template>
         <template v-else>
-          发榜时间 ：{{endDate}}
+          活动结束，已发榜
         </template>
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
-        <!--查看我的奖励-->
-        <div class="myprize" @click="showPop(13)" v-if="isFull">
-          上期开奖结果
-        </div>
         <ul class="profit-icon">
-          <li v-for="(item,index) in profitData">
+          <li v-for="(item,index) in topthreeData">
             <div class="s-tx">
               <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
               <img v-if="!item.profilePhoto" :src="defaultImg | filter">
             </div>
             <span class="s-text">{{item.nickname || '暂无昵称'}}</span>
-            <span class="hammer-number">{{item.totalNum}}个</span>
+            <!-- <span class="s-text">{{item.nickname || ('用户'+item.userId)}}</span> -->
+            <span class="hammer-number">{{item.totalNum}}枚</span>
             <span class="award-names">
               {{item.awardsName.split('+')[0].replace('金叶子','金叶')}}<template
                 v-if="item.awardsName.split('+')[1]"><br />+{{item.awardsName.split('+')[1].replace('元','')}}</template>
@@ -49,10 +48,11 @@
         </div>
         <div class="p-items p-items-content">
           <ul class="p-item-title">
-            <li v-for="(item,index) in profitData">
+            <li v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis awardsName">{{item.totalNum}}个<br /><i
+              <!-- <span><em class="i-ellipsis">{{item.nickname || ('用户'+item.userId)}}</em></span> -->
+              <span><em class="i-ellipsis awardsName">{{item.totalNum}}枚<br /><i
                     class="i-font-style">{{item.updateTime || ''}}</i></em></span>
               <span><em class="i-ellipsis awardsName">{{item.awardsName.split('+')[0]}}<template
                     v-if="item.awardsName.split('+')[1]">+<br />{{item.awardsName.split('+')[1]}}</template></em></span>
@@ -60,8 +60,26 @@
           </ul>
         </div>
       </div>
-      <div class="profit-footer"
-        :style="{color:$moduleConfig.monopoly.dropDown.inner.tabs.btnDefaultStyle.background}">
+      <ul class="my-rank-info">
+        <li class="my-have">
+          <p class="label">我的骰子</p>
+          <p>{{myInfo.totalNum}}</p>
+        </li>
+        <li class="my-rank">
+          <p class="label">我的排名</p>
+          <p>{{myInfo.myRank}}</p>
+        </li>
+        <li class="my-award">
+          <template v-if="currentRankType==='yesterday'||myInfo.myRank">
+            <p class="label">奖励</p>
+            <p>{{myInfo.currentAwards}}</p>
+          </template>
+          <template v-else>
+            <p class="to-top" @click="getDice">去冲榜</p>
+          </template>
+        </li>
+      </ul>
+      <div class="profit-footer">
         每天累计获得骰子数量计入排行榜前15名上榜有奖，<br />
         如最终累计的数量一样，则先达成排名靠前
       </div>
@@ -94,49 +112,45 @@ export default {
     return {
       currentRankType: 'today',
       profitData: [],
+      topthreeData: [],
+      behindThreeData: [],
       myInfo: {},
       isLoading: false,
-      defaultImg: '/cdn/common/images/common/img_photo.png',
-      popType: 0,
-      awardData: null
+      defaultImg: '/cdn/common/images/common/img_photo.png'
     }
   },
   props: {
-    isFull: {
-      type: Boolean,
-      default: false
-    },
     actInfo: {
       type: Object,
       default: () => ({})
-    },
-    endDate: {
-      type: String,
-      default: ''
     }
   },
   mounted () {
-    this.getRankList()
   },
   methods: {
-    closeOpenProfit () {
-      this.isOpen = true
-    },
-    async getRankList () {
+    async getRankList (info) {
+      if (info.state === 2) {
+        this.currentRankType = 'yesterday'
+      }
       this.isLoading = true
       const { code, data } = await rankList(this.currentRankType)
       if (code === 200) {
         this.myInfo = {
-          myRank: data.myRank,
+          myRank: data.myRank || '未上榜',
           totalNum: data.totalNum,
           currentAwards: data.currentAwards || '无'
         }
         this.profitData = data.rankList
+        this.topthreeData = this.profitData.slice(0, 3)
+        this.behindThreeData = this.profitData.slice(3, this.profitData.length)
       }
       this.isLoading = false
     },
     changeRankType (type) {
       this.currentRankType = type
+      if (type === 'yesterday') {
+        GLOBALS.marchSetsPoint('A_H5PT0345004354') // H5平台-欢乐大富翁-昨日排行按钮点击
+      }
       this.getRankList()
     },
     rankback () {
@@ -148,8 +162,12 @@ export default {
         this.$emit('close')
       }
     },
+    getDice () {
+      this.$emit('get-dice')
+      GLOBALS.marchSetsPoint('A_H5PT0345004353') // H5平台-欢乐大富翁-排行榜页面-去冲榜按钮点击
+    },
     showPop (type) {
-      this.$emit('showPop', type)
+      this.$emit('show-pop', type)
     }
   },
   watch: {}
@@ -157,16 +175,6 @@ export default {
 </script>
 <style lang="less" scoped>
 @import './index.less';
-
-.loading-wrap {
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // width: 100%;
-  // height: 100%;
-  // background-color: rgba(0, 0, 0, 0);
-  // z-index: 15;
-}
 
 .container {
   position: fixed;

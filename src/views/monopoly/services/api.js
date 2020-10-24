@@ -56,7 +56,7 @@ export const rankList = async (type) => {
  * @description 用户进度
  * @return {Object} data
  */
-export const userProgress = async (gameLevel) => {
+export const userProgress = async () => {
   const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/happy-monopoly/user-progress`)
   return data
 }

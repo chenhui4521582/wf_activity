@@ -1,13 +1,15 @@
 .profit-container {
   text-align: center;
   padding: 0.9rem 0.25rem 0;
-  width: 100%;
-  height: calc(100%);
   position: absolute;
+  right: 0;
   left: 0;
   top: 0;
+  bottom: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   z-index: 5;
   background: #feda89;
   .ranktitle {
@@ -45,9 +47,8 @@
 
   .p-time {
     font-size: 0.24rem;
-    color: #fff;
+    color: #6c4b02;
     margin: 0.2rem 0;
-    height: 0.24rem;
     &.nodata {
       margin-bottom: 1.2rem;
     }
@@ -55,9 +56,8 @@
 
   .profit-tx-container {
     width: 100%;
-    height: 4.44rem;
     position: relative;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.24rem;
     .myprize {
       position: absolute;
       right: 0;
@@ -111,11 +111,9 @@
         text-overflow: ellipsis;
         font-size: 0.18rem;
         font-weight: 400;
-        color: #5a80fb;
+        color: #ff7101;
         overflow: hidden;
         position: absolute;
-        top: 1.4rem;
-        background: #fff;
         border-radius: 20px;
         left: 0;
         right: 0;
@@ -127,11 +125,10 @@
         left: 0;
         right: 0;
         margin: auto;
-        top: 1.93rem;
         white-space: nowrap;
-        font-size: 0.2rem;
-        font-weight: 500;
-        color: #f0882b;
+        font-size: 0.24rem;
+        font-weight: bold;
+        color: #f9d5c7;
         z-index: 2;
         height: 0.35rem;
         line-height: 0.37rem;
@@ -144,7 +141,6 @@
         left: 0;
         right: 0;
         margin: auto;
-        top: 2.4rem;
         height: 0.8rem;
         display: flex;
         justify-content: center;
@@ -173,6 +169,15 @@
             z-index: 2;
           }
         }
+        .s-text {
+          top: 1.5rem;
+        }
+        .hammer-number {
+          top: 2rem;
+        }
+        .award-names {
+          top: 2.4rem;
+        }
       }
 
       &:nth-child(2) {
@@ -192,6 +197,15 @@
             top: 0;
             z-index: 2;
           }
+        }
+        .s-text {
+          top: 1.46rem;
+        }
+        .hammer-number {
+          top: 1.96rem;
+        }
+        .award-names {
+          top: 2.36rem;
         }
       }
 
@@ -213,6 +227,15 @@
             top: 0;
             z-index: 2;
           }
+        }
+        .s-text {
+          top: 1.4rem;
+        }
+        .hammer-number {
+          top: 1.92rem;
+        }
+        .award-names {
+          top: 2.32rem;
         }
       }
     }
@@ -416,33 +439,51 @@
       }
     }
   }
-
+  .my-rank-info {
+    width: 6.42rem;
+    margin: 0.22rem auto;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    background: #f27d27;
+    border-radius: 0.2rem;
+    color: #fff;
+    font-size: 0.36rem;
+    font-weight: bold;
+    .my-have {
+      min-width: 2rem;
+    }
+    .my-rank {
+      min-width: 2rem;
+    }
+    .my-award {
+      flex: 1;
+      .to-top {
+        width: 1.78rem;
+        height: 0.84rem;
+        background: url(./img/to-top.png) no-repeat center top;
+        background-size: 100% 100%;
+        font-weight: 400;
+        margin: auto;
+        box-sizing: border-box;
+        padding-top: 0.06rem;
+      }
+    }
+    .label {
+      font-size: 0.24rem;
+      font-weight: 400;
+    }
+  }
   .profit-footer {
     height: 1rem;
-    line-height: 0.4rem;
-    font-size: 0.24rem;
+    line-height: 0.34rem;
+    font-size: 0.22rem;
     font-weight: 400;
-    color: #7b370d;
+    color: #7c5600;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
-  .btn-check-profit {
-    display: block;
-    width: 2.64rem;
-    height: 0.46rem;
-    line-height: 0.46rem;
-    text-align: left;
-    text-indent: 0.19rem;
-    font-size: 0.24rem;
-    color: #8a3606;
-    background: url(./img/btn_expand.png) no-repeat;
-    background-size: 100% 100%;
-    margin: 0.12rem auto;
-    text-decoration: none;
-  }
-
   &.full {
     padding: 0.22rem 0 0 0;
     position: fixed;
