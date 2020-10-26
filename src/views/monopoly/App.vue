@@ -43,7 +43,7 @@
               <template v-if="['back','go'].includes(item.awardsType)">
                 {{item.awardsDesc}}
               </template>
-              <div class="head-icon" v-if="index===currentSort"></div>
+              <div class="head-icon bounce" v-if="index===currentSort"></div>
             </li>
           </ul>
         </section>
@@ -252,6 +252,8 @@ export default {
                   } else {
                     this.showPop(3, data.awardsList)
                   }
+                  this.onScroll()
+                  return
                 }, 2000)
               } else {
                 if (this.currentSort === 36) {
@@ -262,6 +264,8 @@ export default {
                   this.showPop(3, data.awardsList)
                 }
               }
+              this.onScroll()
+              return
             }, 1000)
           } else {
             this.isShowDice = false
@@ -269,6 +273,8 @@ export default {
             this.currentSort = data.currentSort
             this.showPop(2, data.awardsList)
           }
+          this.onScroll()
+          return
         }, 1000)
       } else {
         this.isShowDice = false
@@ -437,6 +443,8 @@ export default {
         background: url(./img/head-icon.png) no-repeat center center;
         background-size: 100% 100%;
         position: absolute;
+        animation: name duration timing-function delay iteration-count direction
+          fill-mode;
       }
       ul {
         .piece-item {
@@ -707,10 +715,9 @@ export default {
             font-weight: bold;
             color: #bc4601;
             line-height: 0.24rem;
-            text-align: left;
             box-sizing: border-box;
-            padding-left: 0.3rem;
-            padding-top: 0.04rem;
+            padding-left: 0.2rem;
+            padding-top: 0.05rem;
             .head-icon {
               top: 0rem;
               left: -1rem;
@@ -1036,5 +1043,45 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   top: 1.5rem !important;
   opacity: 0;
+}
+.bounce {
+  animation-duration: 1.5s;
+  animation-name: bounce;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  transform-origin: center bottom;
+}
+
+@keyframes bounce {
+  0%,
+  15%,
+  47%,
+  73%,
+  89%,
+  100% {
+    animation-timing-function: ease-out;
+    transform: translate3d(0, 0, 0);
+  }
+
+  30%,
+  32% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, -0.2rem, 0);
+  }
+
+  60% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, -0.12rem, 0);
+  }
+
+  82% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, -0.06rem, 0);
+  }
+
+  94% {
+    animation-timing-function: ease-in;
+    transform: translate3d(0, -0.02rem, 0);
+  }
 }
 </style>
