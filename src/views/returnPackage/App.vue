@@ -17,8 +17,8 @@
       <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
-    <article class="to-game">
-      <p>{{}}</p>
+    <article class="to-game" @click="toGame">
+      <p>{{info.userLikeGameName||'糖果'}}活动</p>
     </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm" />
     <gamelist v-model="isShowGame" />
@@ -106,6 +106,10 @@ export default {
     back () {
       GLOBALS.marchSetsPoint('A_H5PT0074001433')
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+    },
+    toGame () {
+      let url = this.info.userLikeGameUrl || '/crush/'
+      window.location.href = url + '?isFromGift=true'
     }
   }
 }
@@ -173,10 +177,20 @@ export default {
     }
   }
   .to-game {
+    position: fixed;
+    bottom: 4rem;
+    right: 0;
     width: 1.74rem;
     height: 1.74rem;
     background: url(./img/to-game-icon.png) no-repeat;
     background-size: 100% 100%;
+    box-sizing: border-box;
+    text-align: center;
+    color: #233c8e;
+    font-size: 0.18rem;
+    padding-top: 1.32rem;
+    line-height: 0.24rem;
+    z-index: 8;
   }
 }
 </style>
