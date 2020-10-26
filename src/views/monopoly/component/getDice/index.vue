@@ -2,13 +2,13 @@
   <transition name="fade">
     <article class="get-dice" v-if="isShowGetDice">
       <header>获得骰子</header>
-      <section class="get-dice-container" v-if="taskProgressInfoData">
+      <section class="get-dice-container" v-if="progressInfoData">
         <template v-for="(itemtitle,indextitle) in titleArr">
           <h4 class="s-title">
             <span class="white-dot"></span>
             <span>{{itemtitle}} </span>
-            <span class="next" v-if="indextitle==0">
-              下一梯度解锁需支持金叶：<i>{{taskProgressInfoData.gameProgress.diffNextProgress| conversion}}</i>
+            <span class="next" v-if="indextitle==0&&nextLeaf.show">
+              下一梯度解锁需支持金叶：<i>{{nextLeaf.value|conversion}}</i>
             </span>
           </h4>
           <template v-if="indextitle==0">
@@ -17,14 +17,14 @@
             </span>
             <div class="g-package">
               <div class="g-package-container g2">
-                <hit-percent :gameBetting="taskProgressInfoData.gameProgress.gameBetting"
-                  :hbItems="taskProgressInfoData.gameProgress.progressList" @refresh="refresh"
+                <hit-percent :gameBetting="progressInfoData.gameProgress.gameBetting"
+                  :hbItems="progressInfoData.gameProgress.progressList" @refresh="refresh"
                   @show-pop="showPop"></hit-percent>
               </div>
               <div class="g-package-info">
                 <ul class="li0">
                   <li>
-                    <span>今日获得骰子数：{{taskProgressInfoData.gameProgress.receiveNum }}</span>
+                    <span>今日获得骰子数：{{progressInfoData.gameProgress.receiveNum }}</span>
                   </li>
                 </ul>
               </div>
@@ -52,7 +52,7 @@
               </div>
               <div class="g-package-info">
                 <ul class="li0">
-                  <li>今日获得骰子数: {{taskProgressInfoData.buyProgress.returnNum }}</li>
+                  <li>今日获得骰子数: {{progressInfoData.buyProgress.returnNum }}</li>
                 </ul>
               </div>
             </div>
@@ -72,10 +72,14 @@ export default {
       titleArr: ['玩游戏得随机号码(每日重置)', '超值礼包额外加赠'],
       mallBizConfigs: [],
       pUserInfo: {},
-      taskProgressInfoData: null,
+      progressInfoData: null,
       popType: 0,
       awardData: null,
-      isShowGetDice: false
+      isShowGetDice: false,
+      nextLeaf: {
+        show: true,
+        value: 0
+      }
     }
   },
   filters: {
@@ -115,21 +119,27 @@ export default {
         this.mallBizConfigs = data.mallBizConfigs
       }
     },
-    async taskProgressInfo () {
+    async getProgressInfo () {
       const { code, data } = await userProgress()
       if (code === 200) {
-        this.taskProgressInfoData = data
+        this.progressInfoData = data
+        let next = this.progressInfoData.gameProgress.progressList.find(element => { return element.status === 0 })
+        if (next) {
+          this.nextLeaf = { show: true, value: next.amount - this.progressInfoData.gameProgress.gameBetting }
+        } else {
+          this.nextLeaf = { show: false, value: 0 }
+        }
       }
     },
     refresh (data) {
-      this.taskProgressInfo()
+      this.getProgressInfo()
       this.$emit('refresh')
     },
     showPop (type, data) {
       this.$emit('show-pop', type, data)
     },
     showGetDice () {
-      this.taskProgressInfo()
+      this.getProgressInfo()
       this.getShowLeaguePacksList()
       this.isShowGetDice = true
       GLOBALS.marchSetsPoint('A_H5PT0345004350') // H5平台-欢乐大富翁-获得骰子页面加载完成

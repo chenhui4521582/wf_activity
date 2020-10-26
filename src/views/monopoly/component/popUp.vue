@@ -59,7 +59,7 @@
                 <ul class="table-content">
                   <li v-for="(item,index) in awardList" :key="index">
                     <div>{{item.createTime}}</div>
-                    <div>{{item.num}}</div>
+                    <div>{{item.num||'-'}}</div>
                     <div>{{item.eventName}}</div>
                   </li>
                 </ul>

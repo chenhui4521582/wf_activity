@@ -190,7 +190,7 @@ export default {
         }
         this.onScroll()
         GLOBALS.marchSetsPoint('P_H5PT0345', { source_address: this.sourceAddress }) // H5平台-欢乐大富翁-页面加载完成
-        if (!localStorage.getItem('happyMonopoly')) {
+        if (!localStorage.getItem('happyMonopoly') && this.actInfoData.state === 1) {
           this.isShowGuide = true
           GLOBALS.marchSetsPoint('A_H5PT0345004343') // H5平台-欢乐大富翁-活动引导页加载完成
           this.guideTime = setTimeout(() => {
@@ -209,7 +209,10 @@ export default {
         })
         return
       }
-      GLOBALS.marchSetsPoint('A_H5PT0345004349') // H5平台-欢乐大富翁-投掷按钮点击
+      GLOBALS.marchSetsPoint('A_H5PT0345004349', {
+        level: this.currentStage,
+        times: this.currentTime
+      }) // H5平台-欢乐大富翁-投掷按钮点击
       this.isShowDice = true
       const res = await bet({
         gameLevel: this.currentStage,

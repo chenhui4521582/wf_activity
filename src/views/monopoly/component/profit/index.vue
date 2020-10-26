@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     async getRankList (info) {
-      if (info.state === 2) {
+      if (info && info.state === 2) {
         this.currentRankType = 'yesterday'
       }
       this.isLoading = true
