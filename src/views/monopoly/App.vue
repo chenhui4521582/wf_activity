@@ -237,7 +237,7 @@ export default {
                 } else {
                   this.currentSort = this.currentSort + data.lastGameNum
                 }
-                if (['go', 'back'].includes(this.piecesList[this.currentSort].awardsType)) {
+                if (['go', 'back', 'home'].includes(this.piecesList[this.currentSort].awardsType)) {
                   this.$toast.show({
                     message: this.piecesList[this.currentSort].awardsDesc,
                     duration: 2000,
@@ -248,9 +248,9 @@ export default {
                     this.currentSort = data.currentSort
                     if (this.currentSort === 36) {
                       this.showPop(4, data.awardsList)
-                    } else if (data.awardsList.length) {
+                    } else if (data.awardsList && data.awardsList.length) {
                       this.showPop(1, data.awardsList)
-                    } else {
+                    } else if (this.currentSort) {
                       this.showPop(3, data.awardsList)
                     }
                     this.onScroll()
@@ -259,9 +259,9 @@ export default {
                 } else {
                   if (this.currentSort === 36) {
                     this.showPop(4, data.awardsList)
-                  } else if (data.awardsList.length) {
+                  } else if (data.awardsList && data.awardsList.length) {
                     this.showPop(1, data.awardsList)
-                  } else {
+                  } else if (this.currentSort) {
                     this.showPop(3, data.awardsList)
                   }
                 }
