@@ -19,7 +19,9 @@
                 <img v-else src="./img/red-packet-locked.png" alt="未解锁红包">
               </p>
               <p style="line-height: .26rem">{{item.awardsName.replace('话费券','')}}<br>话费券</p>
-              <div class="bonus-btn" v-if="!isEnd&&showBtn" :class="{receive:item.state==1,complete:item.state===0}" @click="gameReceive(item)">{{btnNames[item.state]}}</div>
+              <div class="bonus-btn" v-if="!isEnd&&showBtn" :class="{receive:item.state==1,complete:item.state===0}"
+                   @click="gameReceive(item)">{{btnNames[item.state]}}
+              </div>
             </div>
           </li>
         </ul>
@@ -53,13 +55,13 @@
         default: false
       }
     },
-    data () {
+    data() {
       return {
         btnNames: ['去完成', '领取', '已领取']
       }
     },
     computed: {
-      isNeedOpen () {
+      isNeedOpen() {
         let bool = false
         let index = this.list && this.list.findIndex(item => item.state === 1)
         if (index > -1) {
@@ -67,16 +69,21 @@
         }
         return bool
       },
-      percentWidth () {
-        let currentNumber = this.info.curGameProgress || 0
+      percentWidth() {
+        let currentNumber = this.isEnd ? 0 : this.info.userInfo.totalNum
         let index = this.list && this.list.findIndex(item => item.state === 0)
         let percent = 0
         if (index > -1) {
           let prevNumber = index ? this.list[index - 1].amount : 0
           let nextNumber = this.list[index].amount
-          let addPercent = (currentNumber - prevNumber) / (nextNumber - prevNumber)
-          percent = addPercent * 0.28 + index * 0.78
-          return `${percent}rem`
+          let addPercent = ((currentNumber - prevNumber) / (nextNumber - prevNumber))
+          if (index == 0) {
+            percent = addPercent * 0.24
+            return `${percent}rem`
+          } else {
+            percent = (addPercent / 3 + 2 / 3) * 1.44 + (index - 1) * 1.2
+            return `${percent}rem`
+          }
         } else {
           percent = 100
           return `${percent}%`
@@ -84,15 +91,15 @@
       }
     },
     filters: {
-      awardsNumberFilter (value) {
+      awardsNumberFilter(value) {
         return `${value / 10}元`
       }
     },
-    mounted () {
+    mounted() {
 
     },
     methods: {
-      conversion (value) {
+      conversion(value) {
         if (value >= 100000000) {
           return `${Math.floor(value / 10000000) / 10}亿`
         } else if (value >= 10000000) {
@@ -103,7 +110,7 @@
           return value || 0
         }
       },
-      gameReceive (item) {
+      gameReceive(item) {
         this.$emit('gameReceive', item)
       }
     }
@@ -137,7 +144,7 @@
         height: 2.3rem;
         background: #0A0A37;
       }
-      &:not(.showBtn){
+      &:not(.showBtn) {
         height: 2.3rem;
       }
       .process-wrapper {
@@ -206,25 +213,25 @@
                   height: 0.9rem;
                 }
               }
-              .bonus-btn{
+              .bonus-btn {
                 margin-top: .18rem;
                 width: 1rem;
                 height: .52rem;
                 background: #80320C;
                 text-align: center;
-                line-height:.52rem;
-                border-radius:.26rem;
+                line-height: .52rem;
+                border-radius: .26rem;
                 &.race1 {
                   background: #3A3769;
                 }
                 &.race2 {
                   background: #A93700;
                 }
-                &.receive{
+                &.receive {
                   color: #FFFFFF;
                   background: linear-gradient(0deg, #F13E41 0%, #FF7D7F 100%);
                 }
-                &.complete{
+                &.complete {
                   color: #AD0900;
                   background: linear-gradient(0deg, #FEEB4B, #FFC257);
                 }
@@ -255,7 +262,7 @@
             top: 40%;
             background: #7C7BA8;
           }
-          &:not(.showBtn){
+          &:not(.showBtn) {
             top: 40%;
           }
           .percent {

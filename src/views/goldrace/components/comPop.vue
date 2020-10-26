@@ -46,7 +46,7 @@
                 </div>
               </template>
               <template v-else-if="popType==3">
-                <div class="tabs">
+                <div class="tabs" v-if="lastRecord.level&&lastRecord.round">
                   <div :class="getClassName('item')">
                     {{raceInfo[lastRecord.level-1]}}-第{{lastRecord.round}}场
                   </div>
@@ -87,33 +87,26 @@
                       <p>2、通过游戏流水消耗/礼包购买，获得奖杯（活动期间，每累计5万流水=1个奖杯）；</p>
                       <p>3、赛段晋级说明</p>
                       <p>①活动共分为青铜（活动第1-2天）、白银（活动第3-4天）、黄金（活动第5-6天）3个赛段。</p>
-                      <p>②活动1-2天 青铜赛两天内累计达成1000杯，可晋级参与白银赛段。未晋级到白银段的玩家，活动3-4天仍停留在青铜段，参与青铜段的排行争夺。</p>
-                      <p>活动5-6天 黄金赛所有晋级到黄金赛的玩家，均可领取奖励。前10名可领取终极大奖。排名对奖杯数无限制;</p>
+                      <p>②活动1-2天青铜赛：两天内累计达成{{actInfoData.levelInfo[0].upgradeCondition}}杯，可晋级参与白银赛段。未晋级到白银段的玩家，活动3-4天仍停留在青铜段，参与青铜段的排行争夺。</p>
+                      <P> 活动3-4天白银赛：参与银赛的玩家，两天内累计达成{{actInfoData.levelInfo[1].upgradeCondition}}杯，可晋级到黄金赛段。</P>
+                      <p>活动5-6天黄金赛：所有晋级到黄金赛的玩家，均可领取奖励。前20名可领取终极大奖。排名对奖杯数无限制;</p>
                       <p>③各赛段单场次获得的奖杯均单独累计，并参与单场排行争夺。</p>
                     </template>
                     <template v-else-if="popType==9">
-                      <img src="../img/compop/preview.png" alt="">
-                      <!--<div class="act1">-->
-                      <!--<div class="item">活动<br>1-2天</div>-->
-                      <!--<div class="item">-->
-                      <!--<div class="item1">比赛场次</div>-->
-                      <!--<div class="item1">期间累计获得 奖杯数</div>-->
-                      <!--<div class="item1">下个赛段场次 （活动第3-4天</div>-->
-                      <!--</div>-->
-                      <!--<div class="item">-->
-                      <!--<div class="item1">-->
-                      <!--青铜第1场-->
-                      <!--</div>-->
-                      <!--<div class="item1">-->
-                      <!--<div class="item1_1"><1000</div>-->
-                      <!--<div class="item1_1">≥1000</div>-->
-                      <!--</div>-->
-                      <!--<div class="item1">-->
-                      <!--<div class="item1_1">青铜- 第1场</div>-->
-                      <!--<div class="item1_1">白银- 第1场</div>-->
-                      <!--</div>-->
-                      <!--</div>-->
-                      <!--</div>-->
+                      <div class="preview">
+                        <div class="item1">
+                          <div class="item"><{{actInfoData.levelInfo[0].upgradeCondition}}</div>
+                          <div class="item">≥{{actInfoData.levelInfo[0].upgradeCondition}}</div>
+                        </div>
+                        <div class="item2">
+                          <div class="item">青铜-<br>第2场</div>
+                          <div class="item">白银-<br>第1场</div>
+                        </div>
+                        <div class="item3">
+                          <div class="item"><{{actInfoData.levelInfo[1].upgradeCondition}}</div>
+                          <div class="item">≥{{actInfoData.levelInfo[1].upgradeCondition}}</div>
+                        </div>
+                      </div>
                     </template>
                   </div>
                 </scroll>
@@ -453,9 +446,51 @@
               }
               &.flag9 {
                 padding: 0;
-                img {
+                .preview{
                   width: 4.88rem;
                   height: 5.27rem;
+                  background: url("../img/compop/preview.png");
+                  background-size: 100% 100%;
+                  position: relative;
+                  font-size: .2rem;
+                  font-weight: bold;
+                  color: #D4D3FF;
+                  .item1{
+                    position: absolute;
+                    top:.94rem;
+                    left: 2.4rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 1.6rem;
+                    .item{
+                      width:.8rem;
+                      text-align: center;
+                    }
+                  }
+                  .item2{
+                    position: absolute;
+                    top:1.64rem;
+                    left: 2.4rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 1.6rem;
+                    .item{
+                      width:.8rem;
+                      text-align: center;
+                    }
+                  }
+                  .item3{
+                    position: absolute;
+                    top:3.7rem;
+                    left: 3.25rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 1.6rem;
+                    .item{
+                      width:.75rem;
+                      text-align: center;
+                    }
+                  }
                 }
               }
             }

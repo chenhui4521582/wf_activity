@@ -1,6 +1,6 @@
 <template>
   <main class="gold-race" v-if="info">
-    <div class="bg" :class="{end:isEnd}">
+    <div class="act_content" :class="{end:isEnd}">
       <template v-if="!isEnd">
         <div class="act_info">当前赛次结束倒计时</div>
         <div class="act_time" v-html="countdownTime"></div>
@@ -12,15 +12,15 @@
     <article class="main-content">
       <div class="my-postion" :class="{end:!userInfo.showUpgradeProgress}">
         <template v-if="userInfo.showUpgradeProgress">
-          <div class="info" v-if="myrace==0">达成{{upgradeCondition}}杯晋升白银段，活动第3-4天可参与白银赛</div>
+          <div class="info" v-if="userInfo.currentLevel==1">达成{{upgradeCondition}}杯晋升白银段，活动第3-4天可参与白银赛</div>
           <div class="info" v-else>达成{{upgradeCondition}}杯晋升黄金段，活动第5天可参与黄金赛</div>
           <div class="percent-box">
             <div class="percent">
               <div class="percent-bar"
                    :style="{ width:((userInfo.totalNum-currentCondition)/(upgradeCondition-currentCondition)) * 100 + '%' }"></div>
             </div>
-            <img :src="`${require(`./img/level${myrace}.png`)}`" alt="" class="icon left">
-            <img :src="`${require(`./img/level${myrace+1}.png`)}`" alt="" class="icon right">
+            <img :src="`${require(`./img/level${userInfo.currentLevel-1}.png`)}`" alt="" class="icon left">
+            <img :src="`${require(`./img/level${userInfo.currentLevel}.png`)}`" alt="" class="icon right">
           </div>
           <div class="nums">
             <div class="item">{{currentCondition}}</div>
@@ -58,7 +58,8 @@
         <div class="race-info">
           <div class="item" v-for="(item,index) in 3" @click="selectRace(index)">
             <div class="race-desc" :class="{race0:index==0,race1:index==1,race2:index==2,currentRace:index==race}">
-              <img src="./img/flag.png" alt="" v-if="!isEnd&&index==myrace" class="flag">
+              <img src="./img/flag.png" alt=""
+                   v-if="!isEnd&&index==(userInfo.currentLevel-1<myrace?userInfo.currentLevel-1:myrace)" class="flag">
               <div class="img-bg">
                 <img :src="`${require(`./img/level${index}.png`)}`" alt="" class="icon">
               </div>
@@ -119,7 +120,7 @@
       DropDown: () => import('./dropDown.vue'),
       comPop: () => import('./components/comPop')
     },
-    data() {
+    data () {
       return {
         info: null,
         countdownTime: '',
@@ -142,11 +143,11 @@
         isOpen: true
       }
     },
-    mounted() {
+    mounted () {
       this.init(true)
     },
     methods: {
-      async init(flag = false) {
+      async init (flag = false) {
         if (this.apiLocked) {
           return
         }
@@ -160,10 +161,10 @@
           this.userInfo = this.info.userInfo
           this.myrace = this.userInfo.maxLevel - 1
           if (flag) {
-            this.race = this.myrace
+            this.race = this.userInfo.currentLevel - 1 < this.myrace ? this.userInfo.currentLevel - 1 : this.myrace
           }
-          this.currentCondition = this.myrace == 0 ? 0 : this.info.levelInfo.filter(item => item.level == this.userInfo.maxLevel)[0].upgradeCondition
-          this.upgradeCondition = this.myrace < 2 ? this.info.levelInfo.filter(item => item.level == this.userInfo.maxLevel + 1)[0].upgradeCondition : 0
+          this.currentCondition = this.userInfo.currentLevel == 1 ? 0 : this.info.levelInfo.filter(item => item.level == this.userInfo.currentLevel - 1)[0].upgradeCondition
+          this.upgradeCondition = this.info.levelInfo.filter(item => item.level == this.userInfo.currentLevel)[0].upgradeCondition
           this.countDown(_get(res, 'data.stageCountdown', 0))
           this.getLevelInfo(this.race + 1, null)
           if (this.userInfo.showUpgradePopup) {
@@ -208,12 +209,12 @@
           source_address: GLOBALS.getUrlParam('from') || ''
         }) // H5平台-黄金争夺赛-页面加载完成
       },
-      back() {
+      back () {
         GLOBALS.marchSetsPoint('A_H5PT0344004327') // H5平台-黄金争夺赛-返回按钮点击
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
       },
       // 弹窗
-      showPop(type, data) {
+      showPop (type, data) {
         this.popType = type
         let point = ''
         switch (type) {
@@ -244,7 +245,7 @@
           this.$refs.comPop.showPop()
         })
       },
-      async gameReceive(item) {
+      async gameReceive (item) {
         let points = ['A_H5PT0344004332', 'A_H5PT0344004331', '']
         points[item.state] && GLOBALS.marchSetsPoint(points[item.state], {
           task_id: item.id,
@@ -271,7 +272,7 @@
           }
         }
       },
-      countDown(data) {
+      countDown (data) {
         if (!data) {
           this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
           return false
@@ -293,7 +294,7 @@
           this.countdownTime = `<span>${countHour}</span><span>:</span><span>${countMinute}</span><span>:</span><span>${countSecond}</span>`
         }, 1000)
       },
-      async getLevelInfo(index, callack) {
+      async getLevelInfo (index, callack) {
         let {code, data} = await getLevelInfo(index)
         if (code == 200) {
           this.levelData = data
@@ -313,7 +314,7 @@
           }
         }
       },
-      operation(isProgressBtn) {
+      operation (isProgressBtn) {
         if (!this.isEnd) {
           this.$nextTick(() => {
             this.$refs.dropDown.outHandleTab()
@@ -323,7 +324,7 @@
           }
         }
       },
-      selectRace(index) {
+      selectRace (index) {
         GLOBALS.marchSetsPoint('A_H5PT0344004330', {
           level: index + 1
         })// H5平台-黄金争夺赛-铜银金赛段TAB点击
@@ -333,11 +334,11 @@
         })
       },
       // 弹窗关闭
-      closePop() {
+      closePop () {
         this.popType = 0
         this.awardData = null
       },
-      async getHistoryRankList(level, callback) {
+      async getHistoryRankList (level, callback) {
         let {code, data} = await getHistoryRankList(level)
         if (code == 200) {
           this.profitData = data.rankList
@@ -348,7 +349,7 @@
           this.getRankList()
         }
       },
-      async getRankList() {
+      async getRankList () {
         if (this.profitData.length > 3) {
           this.lastThreeData = this.profitData.slice(3)
         }
@@ -378,7 +379,7 @@
     width: 100%;
     background: #000000;
     margin: auto;
-    .bg {
+    .act_content {
       position: absolute;
       top: 0;
       left: 50%;
@@ -450,6 +451,7 @@
             height: .2rem;
             background: #FFFFFF;
             border-radius: .1rem;
+            overflow: hidden;
             .percent-bar {
               height: .2rem;
               background: linear-gradient(90deg, #2D3FFF 0%, #00FCFF 100%);

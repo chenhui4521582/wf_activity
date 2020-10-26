@@ -120,7 +120,9 @@
   }
 </script>
 <style lang="less" scoped>
-  @import "../../../../common/css/base.css";
+  i{
+    font-style: normal;
+  }
   .get-hammer {
     padding: 0 0.38rem;
     height: calc(85%);
