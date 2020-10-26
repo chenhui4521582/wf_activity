@@ -17,6 +17,9 @@
       <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
+    <article class="to-game">
+      <p>{{}}</p>
+    </article>
     <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm" />
     <gamelist v-model="isShowGame" />
     <welcome ref="welcome" />
@@ -168,6 +171,12 @@ export default {
       border-radius: 0.24rem;
       color: #1f2961;
     }
+  }
+  .to-game {
+    width: 1.74rem;
+    height: 1.74rem;
+    background: url(./img/to-game-icon.png) no-repeat;
+    background-size: 100% 100%;
   }
 }
 </style>
