@@ -6,7 +6,7 @@
         <img v-if="currentRankType==='today'" src="./img/today.png" class="title">
         <img v-if="currentRankType==='yesterday'" src="./img/yesterday.png" class="title">
         <div class="change-rank-type" @click="changeRankType('yesterday')"
-          v-if="currentRankType==='today'">昨日榜单</div>
+          v-if="currentRankType==='today'&&isNotFirstDay">昨日榜单</div>
       </div>
       <h4 class="p-time" :class="{nodata:profitData.length==0}">
         <template v-if="actInfo.state===1">
@@ -126,6 +126,20 @@ export default {
     }
   },
   mounted () {
+  },
+  computed: {
+    isNotFirstDay () {
+      try {
+        let beginDate = this.actInfo.beginDate.replace('-', '/')
+        if (new Date(beginDate).getTime() === new Date(new Date().toLocaleDateString()).getTime()) {
+          return false
+        } else {
+          return true
+        }
+      } catch (error) {
+        return true
+      }
+    }
   },
   methods: {
     async getRankList (info) {

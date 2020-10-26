@@ -324,9 +324,6 @@ export default {
     },
     toggleShowTimeList () {
       this.isShowTimeList = !this.isShowTimeList
-      if (this.isShowTimeList) {
-        GLOBALS.marchSetsPoint('A_H5PT0345004358') // H5平台-欢乐大富翁-点击投掷加号上拉框加载完成
-      }
     },
     changeTime (time) {
       this.isShowTimeList = false
