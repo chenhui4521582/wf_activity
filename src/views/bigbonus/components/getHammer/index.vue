@@ -10,6 +10,9 @@
         <h4 class="s-title"><em></em>{{itemtitle}}</h4>
         <template v-if="indextitle==0">
           <span class="info">{{$moduleConfig.superLotto.dropDown.inner.info.sideTitle}}</span>
+          <div class="next">
+            <span class="next_info">下一梯度解锁需支持金叶：<i>{{distanceLeaf|conversion}}</i></span>
+          </div>
           <div class="g-package"
                :style="{background:$moduleConfig.superLotto.dropDown.inner.tabs.btnDefaultStyle.background}">
             <div class="g-package-container g2">
@@ -50,13 +53,14 @@
   import {showLeaguePacksList, userProgress} from '../../utils/api'
 
   export default {
-    data() {
+    data () {
       return {
         mallBizConfigs: [],
         pUserInfo: {},
         taskProgressInfoData: null,
         popType: 0,
-        awardData: null
+        awardData: null,
+        distanceLeaf: 0
       }
     },
     props: {
@@ -70,7 +74,7 @@
       }
     },
     filters: {
-      conversion(value) {
+      conversion (value) {
         if (value >= 10000) {
           return `${Math.floor(value / 1000) / 10}万`
         } else {
@@ -81,35 +85,41 @@
     components: {
       hitPercent: () => import('./component/hitPercent/hitPercent.vue')
     },
-    mounted() {
+    mounted () {
       this.taskProgressInfo()
       this.getShowLeaguePacksList()
     },
     methods: {
-      gotopay(item) {
+      gotopay (item) {
         localStorage.setItem('originDeffer', window.location.href)
         localStorage.setItem('JDD_PARAM', JSON.stringify(item))
         localStorage.setItem('payment', JSON.stringify(item))
         location.href =
           'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       },
-      async getShowLeaguePacksList() {
+      async getShowLeaguePacksList () {
         const {code, data} = await showLeaguePacksList()
         if (code === 200) {
           this.mallBizConfigs = data.mallBizConfigs
         }
       },
-      async taskProgressInfo() {
+      async taskProgressInfo () {
         const {code, data} = await userProgress()
         if (code === 200) {
           this.taskProgressInfoData = data
+          let minUnfinished = this.taskProgressInfoData.progressList.filter((item) => {
+            return item.status == 0
+          }).sort((a, b) => {
+            return a.amount - b.amount
+          })[0]
+          this.distanceLeaf = minUnfinished ? (minUnfinished.amount - this.taskProgressInfoData.currentAmount) : 0
         }
       },
-      refresh() {
+      refresh () {
         this.taskProgressInfo()
         this.$emit('refresh')
       },
-      showPop(type, data) {
+      showPop (type, data) {
         this.$emit('showPop', type, data)
       }
     }
@@ -133,6 +143,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 0.12rem;
+      margin-top: .2rem;
       em {
         display: inline-block;
         width: 0.12rem;
@@ -155,7 +166,7 @@
       background: rgba(200, 162, 147, 1);
       border-radius: .26rem;
       display: flex;
-      margin-bottom: .37rem;
+      margin-bottom: .2rem;
       .item {
         font-size: .24rem;
         line-height: .52rem;
@@ -338,6 +349,24 @@
         font-weight: 400;
         color: rgba(102, 102, 102, 1);
         text-align: center;
+      }
+    }
+  }
+  .next{
+    position: relative;
+    height: .6rem;
+    top: .15rem;
+    .next_info{
+      position: absolute;
+      right: 0;
+      font-size:.2rem;
+      font-weight:bold;
+      color: #FFFFFF;
+      padding:.1rem;
+      background: #C8A293;
+      border-radius:.2rem;
+      i{
+        color: #95009E;
       }
     }
   }
