@@ -991,7 +991,7 @@ export default {
       }
       .text {
         position: absolute;
-        width: 4.04rem;
+        width: 4.7rem;
         top: 1.66rem;
         left: 50%;
         margin-left: -2.02rem;
