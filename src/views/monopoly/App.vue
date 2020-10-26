@@ -214,37 +214,49 @@ export default {
         times: this.currentTime
       }) // H5平台-欢乐大富翁-投掷按钮点击
       this.isShowDice = true
-      const res = await bet({
-        gameLevel: this.currentStage,
-        time: this.currentTime
-      })
-      const { code, data } = res
-      if (code === 200) {
-        this.gameInfo.remnantNum = data.remnantNum
-        let diceTime = setTimeout(() => {
-          clearTimeout(diceTime)
-          if (this.currentTime === 1) {
-            this.diceNumber = data.lastGameNum
-            let pieceTime = setTimeout(() => {
-              clearTimeout(pieceTime)
-              this.isShowDice = false
-              this.diceNumber = 0
-              if (this.currentSort !== 36 && this.currentSort + data.lastGameNum > 36) {
-                this.currentSort = 36 - (this.currentSort + data.lastGameNum - 36)
-              } else if (this.currentSort === 36) {
-                this.currentSort = data.currentSort
-              } else {
-                this.currentSort = this.currentSort + data.lastGameNum
-              }
-              if (['go', 'back'].includes(this.piecesList[this.currentSort].awardsType)) {
-                this.$toast.show({
-                  message: this.piecesList[this.currentSort].awardsDesc,
-                  duration: 2000,
-                  isOneLine: true
-                })
-                let time = setTimeout(() => {
-                  clearTimeout(time)
+      try {
+        const res = await bet({
+          gameLevel: this.currentStage,
+          time: this.currentTime
+        })
+        const { code, data } = res
+        if (code === 200) {
+          this.gameInfo.remnantNum = data.remnantNum
+          let diceTime = setTimeout(() => {
+            clearTimeout(diceTime)
+            if (this.currentTime === 1) {
+              this.diceNumber = data.lastGameNum
+              let pieceTime = setTimeout(() => {
+                clearTimeout(pieceTime)
+                this.isShowDice = false
+                this.diceNumber = 0
+                if (this.currentSort !== 36 && this.currentSort + data.lastGameNum > 36) {
+                  this.currentSort = 36 - (this.currentSort + data.lastGameNum - 36)
+                } else if (this.currentSort === 36) {
                   this.currentSort = data.currentSort
+                } else {
+                  this.currentSort = this.currentSort + data.lastGameNum
+                }
+                if (['go', 'back'].includes(this.piecesList[this.currentSort].awardsType)) {
+                  this.$toast.show({
+                    message: this.piecesList[this.currentSort].awardsDesc,
+                    duration: 2000,
+                    isOneLine: true
+                  })
+                  let time = setTimeout(() => {
+                    clearTimeout(time)
+                    this.currentSort = data.currentSort
+                    if (this.currentSort === 36) {
+                      this.showPop(4, data.awardsList)
+                    } else if (data.awardsList.length) {
+                      this.showPop(1, data.awardsList)
+                    } else {
+                      this.showPop(3, data.awardsList)
+                    }
+                    this.onScroll()
+                    return
+                  }, 2000)
+                } else {
                   if (this.currentSort === 36) {
                     this.showPop(4, data.awardsList)
                   } else if (data.awardsList.length) {
@@ -252,31 +264,28 @@ export default {
                   } else {
                     this.showPop(3, data.awardsList)
                   }
-                  this.onScroll()
-                  return
-                }, 2000)
-              } else {
-                if (this.currentSort === 36) {
-                  this.showPop(4, data.awardsList)
-                } else if (data.awardsList.length) {
-                  this.showPop(1, data.awardsList)
-                } else {
-                  this.showPop(3, data.awardsList)
                 }
-              }
-              this.onScroll()
-              return
-            }, 1000)
-          } else {
-            this.isShowDice = false
-            this.diceNumber = 0
-            this.currentSort = data.currentSort
-            this.showPop(2, data.awardsList)
-          }
-          this.onScroll()
-          return
-        }, 1000)
-      } else {
+                this.onScroll()
+                return
+              }, 1000)
+            } else {
+              this.isShowDice = false
+              this.diceNumber = 0
+              this.currentSort = data.currentSort
+              this.showPop(2, data.awardsList)
+            }
+            this.onScroll()
+            return
+          }, 1000)
+        } else {
+          this.isShowDice = false
+          this.$toast.show({
+            message: '请稍后重试',
+            duration: 2000,
+            isOneLine: true
+          })
+        }
+      } catch (error) {
         this.isShowDice = false
         this.$toast.show({
           message: '请稍后重试',
