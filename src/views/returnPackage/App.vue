@@ -118,13 +118,14 @@ export default {
       }
     },
     back () {
-      GLOBALS.marchSetsPoint('A_H5PT0074001433')
       let isShowedFirstBack = localStorage.getItem('returnPackageFirstBack')
       if (this.info.signInVo[1].status === 0 && !isShowedFirstBack) {
         localStorage.setItem('returnPackageFirstBack', true)
+        GLOBALS.marchSetsPoint('A_H5PT0290004359') // H5平台-回归礼包-挽留弹窗加载完成
         this.showPop('back')
         return
       }
+      GLOBALS.marchSetsPoint('A_H5PT0074001433')
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     toGame () {
