@@ -7,17 +7,12 @@
             @click="toggleTips(item)">
             <p>第{{item.day}}天</p>
             <div class="icon-wrapper"><img :src="item.status|imgGet" alt=""></div>
-            <p class="award-name">{{item.awardName}}</p>
-            <div class="tips"
-              v-if="showTips===item.day&&(item.awardName.includes('彩虹糖')||item.awardName.includes('聚宝盆'))">
-              <template v-if="item.awardName.includes('彩虹糖')">
-                糖果萌消消道具<br />
-                可以兑换收益加成的buff
-              </template>
-              <template v-if="item.awardName.includes('聚宝盆')">
-                街机欢乐捕鱼道具<br />
-                有大概率获得高额金叶子
-              </template>
+            <p class="award-name"
+              :class="{yellow:(item.status===0||item.status===1)&&item.day===2}">{{item.awardName}}
+            </p>
+            <div class="tips" v-if="showTips===item.day">
+              {{item.awardDesc.split(';')[0]}}<br />
+              {{item.awardDesc.split(';')[1]}}
             </div>
           </li>
         </ul>
@@ -214,21 +209,27 @@ export default {
       }
       .award-name {
         font-size: 0.2rem;
+        &.yellow {
+          color: #fde891;
+        }
       }
       .tips {
         position: absolute;
-        width: 2rem;
-        height: 0.56rem;
+        width: 3.08rem;
+        height: 0.76rem;
         background: url('./img/tips-bg.png') no-repeat center center;
         background-size: 100% 100%;
         left: 50%;
-        margin-left: -1rem;
+        margin-left: -1.54rem;
         bottom: 1.6rem;
         color: #21378a;
         font-size: 0.18rem;
-        text-align: center;
+        text-align: left;
         line-height: 0.2rem;
         padding-top: 0.04rem;
+        white-space: normal;
+        box-sizing: border-box;
+        padding: 0.06rem 0.1rem 0;
       }
     }
   }

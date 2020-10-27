@@ -15,7 +15,7 @@
           <div class="point-line-content" :style="{width:pointWidth}"></div>
         </div>
         <ul class="point-content">
-          <li v-for="(item,index) in pointVo" :key="item.id">
+          <li v-for="(item,index) in pointVo" :key="`point-${index}`">
             <div class="point-tips">
               {{item.points}}积分
             </div>
