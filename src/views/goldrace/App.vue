@@ -274,7 +274,7 @@
       },
       countDown (data) {
         if (!data) {
-          this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
+          this.countdownTime = ''
           return false
         }
         let date = data / 1000
@@ -283,7 +283,8 @@
           if (date <= 0) {
             date = 0
             clearInterval(this.timer)
-            this.countdownTime = '<span class="end">已</span><span class="end">结</span><span class="end">束</span>'
+            this.countdownTime = ''
+            return
           }
           let hour = Math.floor(parseInt(date / 60 / 60))
           let minute = Math.floor(parseInt(date / 60) % 60)
@@ -359,6 +360,11 @@
           this.otherData = this.profitData.slice(3, this.profitData.length - 1)
         }
         this.behindThreeData = this.profitData.slice(0, 3)
+      }
+    },
+    watch: {
+      countdownTime (val) {
+        this.init(false)
       }
     }
   }
