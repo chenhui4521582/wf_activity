@@ -67,12 +67,12 @@
         </li>
         <li class="my-rank">
           <p class="label">我的排名</p>
-          <p>{{myInfo.myRank}}</p>
+          <p>{{myInfo.myRank||'未上榜'}}</p>
         </li>
         <li class="my-award">
           <template v-if="currentRankType==='yesterday'||myInfo.myRank">
             <p class="label">奖励</p>
-            <p>{{myInfo.currentAwards}}</p>
+            <p>{{myInfo.currentAwards|| '无'}}</p>
           </template>
           <template v-else>
             <p class="to-top" @click="getDice">去冲榜</p>
@@ -150,9 +150,9 @@ export default {
       const { code, data } = await rankList(this.currentRankType)
       if (code === 200) {
         this.myInfo = {
-          myRank: data.myRank || '未上榜',
+          myRank: data.myRank,
           totalNum: data.totalNum,
-          currentAwards: data.currentAwards || '无'
+          currentAwards: data.currentAwards
         }
         this.profitData = data.rankList
         this.topthreeData = this.profitData.slice(0, 3)
