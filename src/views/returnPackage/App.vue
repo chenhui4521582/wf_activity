@@ -108,6 +108,7 @@ export default {
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
     },
     toGame () {
+      GLOBALS.marchSetsPoint('A_H5PT0290004360') // H5平台-回归礼包-专属游戏活动-icon点击
       let url = this.info.userLikeGameUrl || '/crush/'
       window.location.href = url + '?isFromGift=true'
     }
