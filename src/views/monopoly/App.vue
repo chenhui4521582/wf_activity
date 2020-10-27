@@ -248,6 +248,7 @@ export default {
                     this.currentSort = data.currentSort
                     if (this.currentSort === 36) {
                       this.showPop(4, data.awardsList)
+                      this.currentSort = 0
                     } else if (data.awardsList && data.awardsList.length) {
                       this.showPop(1, data.awardsList)
                     } else if (this.currentSort) {
@@ -259,6 +260,7 @@ export default {
                 } else {
                   if (this.currentSort === 36) {
                     this.showPop(4, data.awardsList)
+                    this.currentSort = 0
                   } else if (data.awardsList && data.awardsList.length) {
                     this.showPop(1, data.awardsList)
                   } else if (this.currentSort) {
