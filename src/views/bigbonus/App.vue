@@ -13,21 +13,21 @@
           <horn :noticeList="hornList"></horn>
         </div>
       </div>
-      <div class="gain_quan" v-if="actInfo.state==1&&actInfo.couponInfo.state!=2">
-        <img src="./images/quan.png" alt="" class="quan" v-if="countdown1.time">
-        <img src="./images/animation.gif" alt="" class="quan animation" @click="gainQuan" v-else>
-        <template v-if="countdown1.time">
-          <img src="./images/gain_quancountdown.png" alt="" class="quancountdown">
-          <div class="counttime">
-            <div class="countdown_item" v-for="item in countdown1.time.split('')">
-              <i v-if="![':'].includes(item)">{{item}}</i>
-              <template v-else>{{item}}</template>
-            </div>
-          </div>
-        </template>
-        <img src="./images/gain_quanbtn.png" alt="" v-else style="width: .89rem;height: .4rem;margin-top: .02rem"
-             @click="gainQuan">
-      </div>
+      <!--<div class="gain_quan" v-if="actInfo.state==1&&actInfo.couponInfo.state!=2">-->
+        <!--<img src="./images/quan.png" alt="" class="quan" v-if="countdown1.time">-->
+        <!--<img src="./images/animation.gif" alt="" class="quan animation" @click="gainQuan" v-else>-->
+        <!--<template v-if="countdown1.time">-->
+          <!--<img src="./images/gain_quancountdown.png" alt="" class="quancountdown">-->
+          <!--<div class="counttime">-->
+            <!--<div class="countdown_item" v-for="item in countdown1.time.split('')">-->
+              <!--<i v-if="![':'].includes(item)">{{item}}</i>-->
+              <!--<template v-else>{{item}}</template>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</template>-->
+        <!--<img src="./images/gain_quanbtn.png" alt="" v-else style="width: .89rem;height: .4rem;margin-top: .02rem"-->
+             <!--@click="gainQuan">-->
+      <!--</div>-->
       <div class="surplus_info">
         <div class="item">今日剩余抽奖券：<i>{{actInfo.userInfo.remnantNum}}</i></div>
         <div class="item" @click="showPop(1)">中奖记录>></div>
@@ -82,10 +82,10 @@
       showLoading: false,
       actInfo: null,
       awardData: null,
-      countdown: {//倒计时
+      countdown: {// 倒计时
         time: ''
       },
-      countdown1: {//倒计时
+      countdown1: {// 倒计时
         time: ''
       },
       timer: null,
@@ -98,47 +98,47 @@
       DropDown: () => import('./dropDown.vue')
     },
     methods: {
-      //弹窗关闭
-      closePop() {
+      // 弹窗关闭
+      closePop () {
         this.popType = 0
         this.awardData = null
       },
-      move(e) {
+      move (e) {
         e.preventDefault()
       },
-      //弹窗
-      showPop(type, data) {
+      // 弹窗
+      showPop (type, data) {
         this.popType = type
         let point = ''
         // ["中奖记录","抽奖券获得记录","昨日排行","今日排行","很遗憾","大家都在玩","活动规则","奖池计算说明","中奖攻略","恭喜您","温馨提示","恭喜获得！"]
         switch (type) {
           case 1:
-            point = 'A_H5PT0309003767';
-            break;//中奖记录
+            point = 'A_H5PT0309003767'
+            break// 中奖记录
           case 2:
-            point = 'A_H5PT0309003772';
-            break;//抽奖券获得记录
+            point = 'A_H5PT0309003772'
+            break// 抽奖券获得记录
           case 3:
-            point = 'A_H5PT0309003769';
-            break;//昨日排行
+            point = 'A_H5PT0309003769'
+            break// 昨日排行
           case 4:
-            point = 'A_H5PT0309003768';
-            break;//今日排行
+            point = 'A_H5PT0309003768'
+            break// 今日排行
           case 6:
-            point = 'A_H5PT0309003778';
-            break;//大家都在玩
+            point = 'A_H5PT0309003778'
+            break// 大家都在玩
           case 7:
-            point = 'A_H5PT0309003762';
-            break;//规则点击
+            point = 'A_H5PT0309003762'
+            break// 规则点击
           case 9:
-            point = 'A_H5PT0309003763';
-            break;//中奖攻略
+            point = 'A_H5PT0309003763'
+            break// 中奖攻略
           case 8:
-            point = 'A_H5PT0309003764';
-            break;//奖池计算说明
+            point = 'A_H5PT0309003764'
+            break// 奖池计算说明
           case 11:
-            point = 'A_H5PT0309003780';
-            break;//温馨提示
+            point = 'A_H5PT0309003780'
+            break// 温馨提示
         }
         data && (this.awardData = data)
         point && GLOBALS.marchSetsPoint(point)
@@ -146,13 +146,13 @@
           this.$refs.comPop.showPop()
         })
       },
-      //返回
-      backHome() {
+      // 返回
+      backHome () {
         GLOBALS.marchSetsPoint('A_H5PT0309003761')
         history.back(-1)
       },
-      //获取活动信息
-      async _getInfo() {
+      // 获取活动信息
+      async _getInfo () {
         let {code, data} = await activityInfo()
         if (code == 200) {
           this.actInfo = data
@@ -170,7 +170,7 @@
                   isRank: true
                 })
               }, 1000)
-              GLOBALS.marchSetsPoint('A_H5PT0309003781')//H5平台-奖池大满贯活动-次日上榜弹窗加载完成
+              GLOBALS.marchSetsPoint('A_H5PT0309003781')// H5平台-奖池大满贯活动-次日上榜弹窗加载完成
             } else {
               this.$toast.show({
                 message: '昨日您与排行榜失之交臂啦~',
@@ -184,7 +184,7 @@
           if (this.timer) {
             clearInterval(this.timer)
           }
-          if (this.actInfo.state == 1) {//活动期间轮询接口
+          if (this.actInfo.state == 1) { // 活动期间轮询接口
             this.timer = setInterval(() => {
               this.setJackpotAmount()
             }, 5000)
@@ -195,28 +195,28 @@
             this.countdown,
             true
           )
-          !this.countdown1.time && data.couponInfo.countdown && GLOBALS.remainingTime(
-            this,
-            data.couponInfo.countdown,
-            this.countdown1
-          )
+          // !this.countdown1.time && data.couponInfo.countdown && GLOBALS.remainingTime(
+          //   this,
+          //   data.couponInfo.countdown,
+          //   this.countdown1
+          // )
         }
       },
-      //跑马灯
-      async _getNoticeList() {
-        let {code, data, message} = await getNoticeList()
+      // 跑马灯
+      async _getNoticeList () {
+        let {code, data} = await getNoticeList()
         if (code == 200) {
           this.hornList = data
         }
       },
-      init() {
+      init () {
         this._getInfo()
       },
-      //抽奖
-      async drawLuck(item) {
-        GLOBALS.marchSetsPoint('A_H5PT0309003773')//H5平台-奖池大满贯活动-点击抽奖按钮点击
+      // 抽奖
+      async drawLuck (item) {
+        GLOBALS.marchSetsPoint('A_H5PT0309003773')// H5平台-奖池大满贯活动-点击抽奖按钮点击
         if (this.actInfo.state == 1) {
-          //券不够
+          // 券不够
           if (item.amount > this.actInfo.userInfo.remnantNum) {
             this.showPop(5)
             GLOBALS.marchSetsPoint('A_H5PT0309003774')
@@ -254,8 +254,8 @@
           })
         }
       },
-      //抢券
-      async gainQuan() {
+      // 抢券
+      async gainQuan () {
         if (!this.countdown1.time) {
           GLOBALS.marchSetsPoint('A_H5PT0309003765')
           this.showLoading = true
@@ -276,22 +276,22 @@
           }
         }
       },
-      //定时刷新奖池
-      async setJackpotAmount() {
+      // 定时刷新奖池
+      async setJackpotAmount () {
         let {code, data} = await getJackpotAmount()
         if (code == 200) {
           this.actInfo.jackpotAmount = data
         }
       }
     },
-    mounted() {
+    mounted () {
       GLOBALS.marchSetsPoint('P_H5PT0309', {
         source_address: GLOBALS.getUrlParam('from') || ''
       })
       this.init()
     },
     watch: {
-      "countdown.time"(value) {
+      'countdown.time' (value) {
         if (!value) {
           this._getInfo()
         }
@@ -338,7 +338,7 @@
         width: .88rem;
         height: .87rem;
         position: absolute;
-        top: 1.81rem;
+        top: .18rem;
         right: .13rem;
       }
       .horn_container {
