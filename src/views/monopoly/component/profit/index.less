@@ -1,0 +1,491 @@
+.profit-container {
+  text-align: center;
+  padding: 0.9rem 0.25rem 0;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  z-index: 5;
+  background: #feda89;
+  .ranktitle {
+    margin-top: 0.18rem;
+    position: relative;
+    .back,
+    .change-rank-type {
+      position: absolute;
+      top: 0;
+      height: 0.58rem;
+      box-sizing: border-box;
+      line-height: 0.58rem;
+      font-size: 0.24rem;
+      font-weight: 400;
+      color: #fff;
+    }
+    .back {
+      left: 0;
+      background: #fc7e15;
+      padding: 0 0.22rem 0 0.16rem;
+      border-radius: 0 0.28rem 0.28rem 0;
+    }
+    .change-rank-type {
+      right: 0;
+      background: #7cba11;
+      padding: 0 0.16rem 0 0.22rem;
+      border-radius: 0.28rem 0 0 0.28rem;
+    }
+    img {
+      height: 0.45rem;
+      line-height: 0.58rem;
+      margin-top: 0.06rem;
+    }
+  }
+
+  .p-time {
+    font-size: 0.24rem;
+    color: #6c4b02;
+    margin: 0.2rem 0;
+    &.nodata {
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  .profit-tx-container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 0.24rem;
+    .myprize {
+      position: absolute;
+      right: 0;
+      top: -1.5rem;
+      width: 0.55rem;
+      box-sizing: border-box;
+      border-radius: 0.2rem 0 0 0.2rem;
+      background: #d35c05;
+      display: flex;
+      align-items: center;
+      font-size: 0.24rem;
+      font-weight: bold;
+      color: #ffffff;
+      padding: 0.1rem;
+      line-height: 0.3rem;
+    }
+  }
+
+  .profit-icon {
+    height: 4.3rem;
+    width: 6.4rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    li {
+      width: 1.91rem;
+      height: 3.71rem;
+      position: absolute;
+      .s-tx {
+        width: 100%;
+        height: 1.62rem;
+        position: relative;
+        margin: 0 auto;
+
+        img {
+          border-radius: 50%;
+          position: relative;
+          z-index: 1;
+          border: none;
+          width: 1.07rem;
+          height: 1.1rem;
+          top: 0.5rem;
+        }
+      }
+      .s-text {
+        z-index: 2;
+        width: 1.42rem;
+        line-height: 0.4rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 0.18rem;
+        font-weight: 400;
+        color: #ff7101;
+        overflow: hidden;
+        position: absolute;
+        border-radius: 20px;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .hammer-number {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        white-space: nowrap;
+        font-size: 0.24rem;
+        font-weight: bold;
+        color: #f9d5c7;
+        z-index: 2;
+        height: 0.35rem;
+        line-height: 0.37rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .award-names {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 0.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.2rem;
+        font-weight: bold;
+        color: #ffffff;
+        z-index: 2;
+      }
+      &:nth-child(1) {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: "";
+            width: 1.91rem;
+            height: 3.71rem;
+            background: url(./img/rank1.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+        .s-text {
+          top: 1.5rem;
+        }
+        .hammer-number {
+          top: 2rem;
+        }
+        .award-names {
+          top: 2.4rem;
+        }
+      }
+
+      &:nth-child(2) {
+        left: 0;
+        bottom: 0;
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: "";
+            width: 1.91rem;
+            height: 3.71rem;
+            background: url(./img/rank2.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+        .s-text {
+          top: 1.46rem;
+        }
+        .hammer-number {
+          top: 1.96rem;
+        }
+        .award-names {
+          top: 2.36rem;
+        }
+      }
+
+      &:nth-child(3) {
+        height: 3.64rem;
+        right: 0;
+        bottom: 0;
+        .s-tx {
+          height: 2.04rem;
+          position: relative;
+          &:after {
+            content: "";
+            width: 1.91rem;
+            height: 3.64rem;
+            background: url(./img/rank3.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+          }
+        }
+        .s-text {
+          top: 1.4rem;
+        }
+        .hammer-number {
+          top: 1.92rem;
+        }
+        .award-names {
+          top: 2.32rem;
+        }
+      }
+    }
+  }
+  .profit-items {
+    width: 6.4rem;
+    box-sizing: border-box;
+    margin: auto;
+    position: relative;
+    .p-header {
+      position: absolute;
+      height: 1.07rem;
+      line-height: 0.3rem;
+      width: 6.4rem;
+      top: -1.07rem;
+      left: 50%;
+      transform: translateX(-50%);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.2rem 0.2rem 0 0;
+      ul {
+        width: 100%;
+        height: 0.6rem;
+        line-height: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      li {
+        font-size: 0.2rem;
+        padding: 0 0.1rem;
+        span {
+          font-size: 0.24rem;
+        }
+
+        &:nth-child(1) {
+          width: 1.4rem;
+        }
+
+        &:nth-child(2) {
+          width: 2rem;
+          border-left: 0.02rem #944d00 solid;
+          border-right: 0.02rem #944d00 solid;
+        }
+
+        &:nth-child(2) {
+          font-size: 0.2rem;
+        }
+
+        &:nth-child(3) {
+          flex: 1;
+        }
+      }
+
+      h4 {
+        font-size: 0.2rem;
+        color: #74313f;
+        margin-bottom: 0.1rem;
+      }
+
+      span {
+        font-size: 0.24rem;
+        color: #ffd669;
+        font-weight: bold;
+      }
+    }
+
+    .p-items {
+      background: #f3f6ff;
+      box-sizing: border-box;
+      &.p-items-content {
+        position: relative;
+        height: auto;
+        overflow-y: hidden;
+        font-size: 0.2rem;
+        color: #ff7101;
+        top: -0.01rem;
+        border-radius: 0 0 0.2rem 0.2rem;
+        .i-font-style {
+          font-style: normal;
+          color: #999999;
+        }
+      }
+
+      &.p-items-header {
+        width: 100%;
+        color: #fff;
+        font-size: 0.18rem;
+        background: #f27d27;
+        border-radius: 0.2rem 0.2rem 0 0;
+        li {
+          span:nth-child(1):after,
+          span:nth-child(2):after,
+          span:nth-child(3):after {
+            content: "";
+            width: 1px;
+            height: 0.15rem;
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin-top: -0.075rem;
+          }
+        }
+      }
+
+      li {
+        height: 0.68rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        position: relative;
+        &:not(:last-child) {
+          &:after {
+            content: "";
+            position: absolute;
+            width: 5.9rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            height: 1px;
+            background: rgba(209, 220, 255, 1);
+          }
+        }
+
+        span {
+          display: inline-block;
+          height: 0.68rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          em.i-ellipsis {
+            display: block;
+            font-style: normal;
+            overflow: hidden;
+            /*超出部分隐藏*/
+            white-space: nowrap;
+            /*不换行*/
+            text-overflow: ellipsis;
+            /*超出部分文字以...显示*/
+            padding: 0 0.02rem;
+            &:not(.awardsName) {
+              line-height: 0.68rem;
+            }
+          }
+
+          &:nth-child(1) {
+            width: 14.75%;
+            flex: 0 0 14.75%;
+          }
+
+          &:nth-child(2) {
+            width: 21.68%;
+            flex: 0 0 21.68%;
+          }
+
+          &:nth-child(3) {
+            width: 27.41%;
+            flex: 0 0 27.41%;
+          }
+
+          &:nth-child(4) {
+            flex: 1;
+            line-height: 0.34rem;
+          }
+        }
+
+        .icon-dot {
+          display: block;
+          width: 0.35rem;
+          height: 0.35rem;
+          line-height: 0.35rem;
+          border-radius: 50%;
+          text-align: center;
+          font-style: normal;
+          margin: 0 auto;
+          font-size: 0.24rem;
+          color: #ff3c3c;
+
+          &.icon-dot4 {
+            background: #f4c64c;
+            color: #fff;
+          }
+
+          &.icon-dot5 {
+            background: #ff8439;
+            color: #fff;
+          }
+
+          &.icon-dot6 {
+            background: #ff3c3c;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+  .my-rank-info {
+    width: 6.42rem;
+    margin: 0.22rem auto;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    background: #f27d27;
+    border-radius: 0.2rem;
+    color: #fff;
+    font-size: 0.36rem;
+    font-weight: bold;
+    .my-have {
+      min-width: 2rem;
+    }
+    .my-rank {
+      min-width: 2rem;
+    }
+    .my-award {
+      flex: 1;
+      .to-top {
+        width: 1.78rem;
+        height: 0.84rem;
+        background: url(./img/to-top.png) no-repeat center top;
+        background-size: 100% 100%;
+        font-weight: 400;
+        margin: auto;
+        box-sizing: border-box;
+        padding-top: 0.06rem;
+      }
+    }
+    .label {
+      font-size: 0.24rem;
+      font-weight: 400;
+    }
+  }
+  .profit-footer {
+    height: 1rem;
+    line-height: 0.34rem;
+    font-size: 0.22rem;
+    font-weight: 400;
+    color: #7c5600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.full {
+    padding: 0.22rem 0 0 0;
+    position: fixed;
+  }
+}
