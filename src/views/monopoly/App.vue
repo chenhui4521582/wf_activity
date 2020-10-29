@@ -35,10 +35,10 @@
                 {{item.awardsDesc.replace('随机大奖','')}}<br /><span>随机大奖</span>
               </template>
               <template v-if="item.awardsType==='jiabei'||item.awardsType==='jipaiqi'">
-                <span>斗地主</span><br />{{item.awardsDesc.replace('斗地主','')}}
+                <span>斗地主</span><br />{{item.awardsDesc.replace('斗地主','')}}x{{item.awardsNum}}
               </template>
               <template v-if="item.awardsType==='bingdong'||item.awardsType==='suoding'">
-                <span>捕鱼</span><br />{{item.awardsDesc.replace('捕鱼','')}}
+                <span>捕鱼</span><br />{{item.awardsDesc.replace('捕鱼','')}}x{{item.awardsNum}}
               </template>
               <template v-if="['back','go'].includes(item.awardsType)">
                 {{item.awardsDesc}}
