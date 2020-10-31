@@ -25,7 +25,7 @@
         <div class="popu-title">下载多多玩APP享受折扣</div>
         <div class="popu-body">用已绑定的手机号，登录多多玩APP,还是原来的账号哦！</div>
         <div class="popu-btn" v-if="isAndroid" @click="handClick"></div>
-        <div class="popu-btn" 
+        <div class="popu-btn1" 
           v-else 
           v-clipboard:copy="downLoadUrl" 
           v-clipboard:success="onCopy" 
@@ -297,6 +297,18 @@ export default {
         width: 2.55rem;
         height: .7rem;
         background: url(./img/btn.png) no-repeat center top;
+        background-size: 100% auto;
+      }
+      .popu-btn1 {
+        margin: 0 auto;
+        width: 2.55rem;
+        height: .7rem;
+        font-size: .24rem;
+        font-weight: bold;
+        text-align: center;
+        line-height: .7rem;
+        color:#dd4c11;
+        background: url(./img/popup-btn.png) no-repeat center top;
         background-size: 100% auto;
       }
       .close {
