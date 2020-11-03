@@ -108,13 +108,13 @@ export default {
           const data = _get(res, 'data', 0)
           if (code === 200) {
             this.signInVo = data.signInRsps
-            this.awardInfo = {
-              list: [{
-                img: data.awardRsp.awardImg,
-                name: data.awardRsp.awardName.includes('金叶') ? data.awardRsp.awardName : data.awardRsp.awardName + 'x' + data.awardRsp.awardNum
-              }],
-              desc: this.getAwardDesc(data.awardRsp.awardName)
-            }
+            data.awardRsp.forEach(element => {
+              this.awardInfo.list.push({
+                img: element.awardImg,
+                name: element.awardName.includes('金叶') ? element.awardName : element.awardName + 'x' + element.awardNum
+              })
+              this.getAwardDesc(element.awardName) && (this.awardInfo.desc = this.getAwardDesc(element.awardName))
+            })
             this.$emit('show-pop', 'award', this.awardInfo)
           }
           break
