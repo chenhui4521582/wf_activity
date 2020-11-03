@@ -60,7 +60,7 @@ export default {
     return {
       signInVo: [],
       showTips: 0,
-      awardInfo: {}
+      awardInfo: { list: [], desc: '' }
     }
   },
   computed: {
@@ -108,6 +108,8 @@ export default {
           const data = _get(res, 'data', 0)
           if (code === 200) {
             this.signInVo = data.signInRsps
+            this.awardInfo.list = []
+            this.awardInfo.desc = ''
             data.awardRsp && data.awardRsp.length && data.awardRsp.forEach(element => {
               this.awardInfo.list.push({
                 img: element.awardImg,
