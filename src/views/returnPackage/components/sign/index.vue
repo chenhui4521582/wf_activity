@@ -108,7 +108,7 @@ export default {
           const data = _get(res, 'data', 0)
           if (code === 200) {
             this.signInVo = data.signInRsps
-            data.awardRsp.forEach(element => {
+            data.awardRsp && data.awardRsp.length && data.awardRsp.forEach(element => {
               this.awardInfo.list.push({
                 img: element.awardImg,
                 name: element.awardName.includes('金叶') ? element.awardName : element.awardName + 'x' + element.awardNum
