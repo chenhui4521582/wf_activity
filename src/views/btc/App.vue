@@ -1,14 +1,20 @@
 <template>
   <div class="btc">
     <div class="back" @click="back">
-      <img class="inner-img" src="./img/back.png" alt="">
+      返回
     </div>
     <div class="list">
-      <div class="item" v-for="item in img" :key="item" @click="openPop">
-        <img class="inner-img" :src="item" alt="">
+      <div class="item" v-for="(item, index) in goods" :key="index" @click="openPop">
+        <img class="goods-img" :src="item.img" alt="">
+        <div class="goods-text">
+          <div class="goods-name">{{item.name}}</div>
+          <div class="goods-origin-price">原价：¥{{item.originPrice}}</div>
+        </div>
+        <div class="price-btn">¥{{item.price}}</div>
       </div>
     </div>
     <div class="explain">
+      <div class="title">更多超值优惠，尽在多多玩APP</div>
       多多玩APP由多多玩官方提供， <br>
       如有问题咨询多多玩官方客服微信：youxikefu2020
     </div>
@@ -16,10 +22,10 @@
     <div class="popup" v-if="showPop">
       <div class="popu-mask"></div>
       <div class="popu-content">
-        <div class="popu-title">下载多多玩APP 享受折扣</div>
-        <div class="popu-body">用已绑定的手机号，登录多多玩APP, 还是原来的账号。</div>
-        <div class="popu-btn" v-if="isAndroid" @click="handClick">立即下载</div>
-        <div class="popu-btn" 
+        <div class="popu-title">下载多多玩APP享受折扣</div>
+        <div class="popu-body">用已绑定的手机号，登录多多玩APP,还是原来的账号哦！</div>
+        <div class="popu-btn" v-if="isAndroid" @click="handClick"></div>
+        <div class="popu-btn1" 
           v-else 
           v-clipboard:copy="downLoadUrl" 
           v-clipboard:success="onCopy" 
@@ -31,16 +37,60 @@
   </div>
 </template>
 <script>
+import { downloadApk } from './services/api'
+import _get from 'lodash.get'
 export default {
   name: 'btc',
   data: () => ({
-    img: [
-      require('./img/item1.png'),
-      require('./img/item2.png'),
-      require('./img/item3.png'),
-      require('./img/item4.png'),
-      require('./img/item5.png'),
-      require('./img/item6.png')
+    goods: [
+      {
+        img: require('./img/item1.png'),
+        originPrice: 68,
+        name: '6.8万金叶子',
+        price: 65
+      },
+      {
+        img: require('./img/item2.png'),
+        originPrice: 88,
+        name: '8.8万金叶子',
+        price: 82
+      },
+      {
+        img: require('./img/item3.png'),
+        originPrice: 188,
+        name: '18.8万金叶子',
+        price: 178
+      },
+      {
+        img: require('./img/item4.png'),
+        originPrice: 288,
+        name: '28.8万金叶子',
+        price: 270  
+      },
+      {
+        img: require('./img/item5.png'),
+        originPrice: 688,
+        name: '68.8万金叶子',
+        price: 650
+      },
+      {
+        img: require('./img/item6.png'),
+        originPrice: 888,
+        name: '88.8万金叶子',
+        price: 840
+      },
+      {
+        img: require('./img/item7.png'),
+        originPrice: 1088,
+        name: '108.8万金叶子',
+        price: 1020
+      },
+      {
+        img: require('./img/item8.png'),
+        originPrice: 1288,
+        name: '128.8万金叶子',
+        price: 1200
+      }
     ],
     showPop: false,
     downLoadUrl: 'https://wap.beeplaying.com/ddwgame/'
@@ -59,27 +109,14 @@ export default {
       location.href = SDK.getBackUrl()
     },
     handClick () {
-      var channel = GLOBALS.getUrlParam('channel') || localStorage.getItem('APP_CHANNEL');
-      GLOBALS.marchSetsPoint('A_H5PT0313003896')
-      switch (channel) {
-        case '100096':
-          parent.location.href = "https://wap.beeplaying.com/m/apk/kucaiba-100096-1.0.7.apk";
-          break
-        case '100097':
-          parent.location.href = "https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk";
-          break
-        case '100098':
-          parent.location.href = "https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk";
-          break
-        case '100039':
-          parent.location.href = "https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk";
-          break
-        case '100042':
-          parent.location.href = "https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk";
-          break
-        default: 
-          parent.location.href = "https://wap.beeplaying.com/m/apk/duoduowan_100030_1.0.2.apk";
-      }
+      downloadApk().then( res => {
+        const {code, data} = res
+        if(code == 200) {
+          this.$toast.show({message: '正在下载多多玩，请稍候'}, () => {
+            parent.location.href = data
+          })
+        }
+      })
     },
     bottomClick () {
       GLOBALS.marchSetsPoint('A_H5PT0313003893')
@@ -116,9 +153,10 @@ export default {
 @import url('../../common/css/base.less');
 @import url('../../../static/iconfont/iconfont.css');
 .btc {
+  padding-bottom: .26rem;
   overflow: hidden;
-  height: 100vh;
-  background: url(./img/bg.png) no-repeat center top #40B66D;
+  min-height: 100vh;
+  background: url(./img/bg.png) no-repeat center top#FC685C;
   background-size: 100% auto;
   .back {
     position: absolute;
@@ -126,32 +164,91 @@ export default {
     top: .25rem;
     width: .8rem;
     height: .4rem;
+    font-size: .22rem;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #7182FF;
+    border-radius: 0px .2rem .2rem 0px;
   }
   .list {
-    margin-top: 2.48rem;
-    padding-left: .5rem;
+    margin: 2.40rem .24rem 0;
+    padding: .2rem 0 0 .25rem;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    background: #fff;
+    box-shadow: 2px 5px 5px 0px rgba(149, 11, 0, 0.29);
+    border-radius: .46rem;
     .item {
+      position: relative;
       margin: 0 .2rem .2rem 0;
+      padding-top: .16rem;
       width: 3rem;
       height: 2.2rem;
+      border: 1px solid #F16D59;
+      border-radius: .26rem;
+      display: flex;
+      justify-content: center;
+      .goods-img {
+        height: 1.1rem;
+      }
+      .goods-text {
+        white-space: nowrap;
+        .goods-name {
+          padding: .1rem 0 .15rem 0;
+          font-size: .26rem;
+          font-weight: bold;
+          color: #FA3727;
+        }
+        .goods-origin-price {
+          font-weight: bold;
+          font-size: .22rem;
+          color: #AAAAAA;
+          text-decoration: line-through;
+        }
+      }
+      .price-btn {
+        position: absolute;
+        left: 50%;
+        top: 1.3rem;
+        transform: translate(-50%, 0);
+        width: 2.58rem;
+        height: .7rem;
+        font-size: .3rem;
+        font-weight: bold;
+        color: #FF4200;
+        background: url(./img/popup-btn.png) no-repeat center center;
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
+  
   .explain {
+    .title {
+      padding: .1rem 0 .3rem;
+      font-size: .3rem;
+      color: #FDD54B;
+      font-weight: bold;
+    }
     margin-top: .2rem;
     text-align: center;
     font-size: .2rem;
-    color: #278059;
+    color: #8D0B01;
+    font-weight: bold;
   }
   .btn {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 50%;
+    top: 1.47rem;
     z-index: 1;
-    height: .97rem;
+    transform: translate(-50%, 0);
+    width: 2.55rem;
+    height: .7rem;
     background: url(./img/btn.png) no-repeat center top;
     background-size: 100% auto;
   }
@@ -177,42 +274,51 @@ export default {
       top: 50%;
       z-index: 3;
       transform: translate(-50%, -50%);
-      padding: .5rem .3rem 0;
+      padding: .34rem .3rem 0;
       width: 4.2rem;
-      height: 3.1rem;
+      height: 3.9rem;
       color: #fff;
-      background: linear-gradient(0deg,rgba(47,207,138,0.98),rgba(1,145,96,0.98));
-      border-radius: .32rem;
+      background: url(./img/popup-bg.png) no-repeat center top;
+      background-size: 100% 100%;
       .popu-title {
-        margin-bottom: .28rem;
+        margin-bottom: .6rem;
         font-weight: bold;
         text-align: center;
         font-size: .26rem;
       }
       .popu-body {
-        margin-bottom: .4rem;
-        text-align: center;
+        margin-bottom: .8rem;
+        text-align: left;
         font-size: .22rem;
+
       }
       .popu-btn {
         margin: 0 auto;
         width: 2.55rem;
-        height: .71rem;
-        line-height: .65rem;
-        text-align: center;
+        height: .7rem;
+        background: url(./img/btn.png) no-repeat center top;
+        background-size: 100% auto;
+      }
+      .popu-btn1 {
+        margin: 0 auto;
+        width: 2.55rem;
+        height: .7rem;
         font-size: .24rem;
-        color: #DF3711;
         font-weight: bold;
+        text-align: center;
+        line-height: .7rem;
+        color:#dd4c11;
         background: url(./img/popup-btn.png) no-repeat center top;
-        background-size: 100% 100%;
+        background-size: 100% auto;
       }
       .close {
         position: absolute;
         z-index: 1;
-        right: .08rem;
-        top: .08rem;
+        bottom: -.6rem;
+        left: 50%;
         width: .42rem;
-        height: .4rem;
+        height: .42rem;
+        transform: translate(-50%, 0);
         background: url(./img/popup-close.png) no-repeat center top;
         background-size: 100% 100%;
       }
