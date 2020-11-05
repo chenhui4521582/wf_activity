@@ -42,6 +42,24 @@
       </p>
     </div>
     <Modal v-model="isShowModal"></Modal>
+    <awards-dialog v-model="isShowPop" tips-txt="恭喜获得多多玩APP充值加赠" @callback="closePop"
+      confirmBtnText="继续购买">
+      <div class="awards-content">
+        <p>
+          所有加赠奖品已到账：
+        </p>
+        <ul class="awards-list">
+          <template v-for="item in awardsList">
+            <li :key="item" v-if="awardsInfo[item+'Amount']>0">
+              <div class="img-wrapper">
+                <img :src="require(`./images/${item}.png`)" alt="">
+              </div>
+              <p>{{item|nameFilter(awardsInfo)}}</p>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </awards-dialog>
     <rule v-if="isShowRule" :actInfo="actInfo" @close="isShowRule=false"></rule>
   </div>
 </template>
@@ -54,12 +72,21 @@ export default {
       actInfo: null,
       packages: [],
       isShowRule: false,
-      isShowModal: false
+      isShowModal: false,
+      isShowPop: false,
+      awardsList: ['hfq', 'jdk', 'jyz'],
+      awardsInfo: {
+        hfqAmount: 0,
+        jdkAmount: 0,
+        jyzAmount: 0,
+        popup: false
+      }
     }
   },
   components: {
     rule: () => import('./components/rule'),
-    Modal: () => import('./components/modal')
+    Modal: () => import('./components/modal'),
+    awardsDialog: () => import('@/components/awardsDialog/awardsDialog.vue')
   },
   filters: {
     amountFilter (value) {
@@ -67,6 +94,27 @@ export default {
         return value / 10000 + '万金叶子'
       }
       return value + '金叶子'
+    },
+    nameFilter (value, info) {
+      let type = ''
+      switch (value) {
+        case 'hfq':
+          type = '元话费券'
+          break
+        case 'jdk':
+          type = '元京东券'
+          break
+        case 'jyz':
+          type = '金叶'
+          break
+
+        default:
+          break
+      }
+      if (info[value + 'Amount'] > 10000) {
+        return info[value + 'Amount'] / 10000 + type
+      }
+      return info[value + 'Amount'] + type
     }
   },
   methods: {
@@ -91,6 +139,10 @@ export default {
         if (data.needGiftSet && data.needGiftSet.length) {
           this.isShowModal = true
         }
+        if (data.popupInfo && data.popupInfo.popup) {
+          this.isShowPop = true
+          this.awardsInfo = data.popupInfo
+        }
       }
     },
     async getPackages () {
@@ -109,6 +161,9 @@ export default {
     },
     download () {
       this.isShowModal = true
+    },
+    closePop () {
+      this.isShowPop = false
     }
   },
   mounted () {
@@ -263,6 +318,40 @@ export default {
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin: 0.26rem auto 0.44rem;
+    }
+  }
+
+  .awards-content {
+    text-align: center;
+    p {
+      color: #000;
+      font-size: 0.24rem;
+      margin: 0.16rem;
+    }
+    .awards-list {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 0.3rem;
+      li {
+        p {
+          color: #ff4141;
+          font-size: 0.22rem;
+          white-space: nowrap;
+        }
+        .img-wrapper {
+          width: 1.2rem;
+          height: 1.2rem;
+          border: 0.01rem solid #eee;
+          border-radius: 0.21rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            max-width: 100%;
+          }
+        }
+      }
     }
   }
 }
