@@ -20,7 +20,7 @@
         </div>
         <template
           v-if="actInfo.needGiftSet&&actInfo.needGiftSet.length&&actInfo.needGiftSet.includes(index+1)">
-          <div class="btn blue">
+          <div class="btn blue" @click.stop="download">
             下载APP,领取加赠
           </div>
         </template>
@@ -34,7 +34,7 @@
     <div class="footer">
       <template v-if="actInfo.type===1">
         <p class="ddw-text">更多超值优惠，尽在多多玩APP</p>
-        <div class="download"></div>
+        <div class="download" @click="download"></div>
       </template>
       <p>
         多多玩APP由多多玩官方提供，<br />
@@ -84,7 +84,6 @@ export default {
     async getActInfo () {
       let { code, data } = await getActInfo()
       if (code == 200) {
-        data.needGiftSet = [1, 2]
         this.actInfo = data
         if (data.state == 1) {
           this.getPackages()
@@ -96,7 +95,7 @@ export default {
     },
     async getPackages () {
       let { code, data } = await getPackages()
-      if (code == 200) {
+      if (code === 200) {
         this.packages = data.mallBizConfigs
       }
     },
@@ -107,6 +106,9 @@ export default {
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
         'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
+    },
+    download () {
+      this.isShowModal = true
     }
   },
   mounted () {

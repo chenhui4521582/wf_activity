@@ -69,7 +69,7 @@
 </template>
 <script>
 import utils from '@/common/js/utils.js'
-import { getPhoneBindInfo, bindMobilePhone, getPhoneCode } from '../utils/api'
+import { getPhoneBindInfo, bindMobilePhone, getPhoneCode, btcDownLoad } from '../utils/api'
 export default {
   name: 'Modal',
   data () {
@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     countWidth () {
-      if (this.step == 2) {
+      if (this.step === 2) {
         return `100%`
       }
       return ''
@@ -143,26 +143,12 @@ export default {
     },
     // 前往中间页
     toMiddle () {
-      let channel = localStorage.getItem('APP_CHANNEL')
-      this.$toast.show({ isOneLine: true, duration: 1500, message: '正在下载多多玩，请稍后' }, () => {
-        switch (channel) {
-          case '100096':
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/kucaiba-100096-1.0.7.apk'
-            break
-          case '100097':
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-            break
-          case '100098':
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
-            break
-          case '100039':
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-            break
-          case '100042':
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/qm_ddw_100098.apk'
-            break
-          default:
-            parent.location.href = 'https://wap.beeplaying.com/m/apk/duoduowan_100030_1.0.2.apk'
+      btcDownLoad().then(res => {
+        const { code, data } = res
+        if (code === 200) {
+          this.$toast.show({ isOneLine: true, duration: 1500, message: '正在下载多多玩，请稍候' }, () => {
+            parent.location.href = data
+          })
         }
       })
     },
@@ -197,7 +183,7 @@ export default {
         this.$toast.show({ isOneLine: true, duration: 1500, message: '请输入短信验证码' })
         return
       }
-      const { code, data, message } = await bindMobilePhone(this.phone, this.code)
+      const { code, message } = await bindMobilePhone(this.phone, this.code)
       if (code === 200) {
         this.$toast.show({ isOneLine: true, duration: 1500, message: '绑定成功' }, () => {
           this.step = 2

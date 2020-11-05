@@ -38,3 +38,10 @@ export const bindMobilePhone = async (phone, smsCode) => {
   const { data } = await $axios.post('//uic-api.beeplaying.com/uic/api/user/center/bindMobilePhone', { phone, smsCode })
   return data
 }
+/**
+ * @description 绑定手机提交
+ */
+export const btcDownLoad = async () => {
+  const { data } = await $axios.post('//ops-api.beeplaying.com/ops/api/user/move/apk-link')
+  return data
+}
