@@ -11,7 +11,7 @@
       <h4 class="p-time" :class="{nodata:profitData.length==0}">
         <template v-if="actInfo.state===1">
           <template v-if="currentRankType==='today'">
-            发榜时间 ：{{actInfo.endDate}}
+            发榜时间：次日零点
           </template>
         </template>
         <template v-else>
@@ -20,7 +20,7 @@
       </h4>
       <div class="profit-tx-container" v-if="profitData.length">
         <ul class="profit-icon">
-          <li v-for="(item,index) in topthreeData">
+          <li :key="`top-${index}`" v-for="(item,index) in topthreeData">
             <div class="s-tx">
               <img v-if="item.profilePhoto" :src="item.profilePhoto | filter">
               <img v-if="!item.profilePhoto" :src="defaultImg | filter">
@@ -48,7 +48,7 @@
         </div>
         <div class="p-items p-items-content">
           <ul class="p-item-title">
-            <li v-for="(item,index) in behindThreeData">
+            <li :key="`behind-${index}`" v-for="(item,index) in behindThreeData">
               <span><i class="icon-dot" :class="'icon-dot'+item.rank">{{item.rank}}</i></span>
               <span><em class="i-ellipsis">{{item.nickname || '暂无昵称'}}</em></span>
               <!-- <span><em class="i-ellipsis">{{item.nickname || ('用户'+item.userId)}}</em></span> -->
