@@ -43,7 +43,7 @@
     </div>
     <Modal v-model="isShowModal"></Modal>
     <awards-dialog v-model="isShowPop" tips-txt="恭喜获得多多玩APP充值加赠" @callback="closePop"
-      confirmBtnText="继续购买">
+      :confirmBtnText="actInfo.state===1?'继续购买':'朕收下了'">
       <div class="awards-content">
         <p>
           所有加赠奖品已到账：
