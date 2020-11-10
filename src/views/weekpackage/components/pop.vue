@@ -37,7 +37,7 @@
             }}加赠金叶已发送
           </div>
           <div class="discount-award">
-            <div class="discount-tips">额外送你8.5折优惠券(3天)</div>
+            <div class="discount-tips">额外送你8.5折优惠券(7天)</div>
             <div class="coupons"></div>
           </div>
           <div class="info04_btn" @click="gotocoupons">前往查看</div>
