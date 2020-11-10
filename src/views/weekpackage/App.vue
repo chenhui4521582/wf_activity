@@ -433,7 +433,7 @@ export default {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 2.8rem;
+    top: 3.2rem;
     z-index: 2;
     background-image: url('./imgs/turn-table-bg.png');
     background-size: cover;
