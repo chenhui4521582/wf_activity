@@ -143,6 +143,7 @@ export default {
     },
     // 前往中间页
     toMiddle () {
+      GLOBALS.marchSetsPoint('A_H5PT0348004399')// H5平台-B端多多玩APP充值加赠-领取加赠提示弹窗-立即下载点击
       btcDownLoad().then(res => {
         const { code, data } = res
         if (code === 200) {
@@ -170,6 +171,7 @@ export default {
     },
     // 绑定手机号码
     async saveBinding () {
+      GLOBALS.marchSetsPoint('A_H5PT0348004398')// H5平台-B端多多玩APP充值加赠-领取加赠提示弹窗-立即绑定点击
       let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/
       if (this.phone === '') {
         this.$toast.show({ isOneLine: true, duration: 1500, message: '请输入手机号码' })

@@ -20,7 +20,7 @@
         </div>
         <template
           v-if="actInfo.needGiftSet&&actInfo.needGiftSet.length&&actInfo.needGiftSet.includes(index+1)">
-          <div class="btn blue" @click.stop="download">
+          <div class="btn blue" @click.stop="download(index+1)">
             下载APP,领取加赠
           </div>
         </template>
@@ -34,7 +34,7 @@
     <div class="footer">
       <template v-if="actInfo.type===1">
         <p class="ddw-text">更多超值优惠，尽在多多玩APP</p>
-        <div class="download" @click="download"></div>
+        <div class="download" @click="download(0)"></div>
       </template>
       <p>
         多多玩APP由多多玩官方提供，<br />
@@ -131,18 +131,29 @@ export default {
     },
     async getActInfo () {
       let { code, data } = await getActInfo()
-      if (code == 200) {
+      if (code === 200) {
         this.actInfo = data
         if (data.state == 1) {
           this.getPackages()
         }
         if (data.needGiftSet && data.needGiftSet.length) {
           this.isShowModal = true
+          GLOBALS.marchSetsPoint('A_H5PT0348004397')// H5平台-B端多多玩APP充值加赠-领取加赠提示弹窗加载完成
         }
         if (data.popupInfo && data.popupInfo.popup) {
           this.isShowPop = true
           this.awardsInfo = data.popupInfo
+          GLOBALS.marchSetsPoint('A_H5PT034900441')// H5平台-C端多多玩APP充值加赠-活动页提示弹窗加载完成
         }
+      }
+      if (this.actInfo.type === 1) {
+        GLOBALS.marchSetsPoint('P_H5PT0348', {
+          source_address: GLOBALS.getUrlParam('from') || ''
+        })// H5平台-B端多多玩APP充值加赠-页面加载完成
+      } else {
+        GLOBALS.marchSetsPoint('P_H5PT0349', {
+          source_address: GLOBALS.getUrlParam('from') || ''
+        })// H5平台-C端多多玩APP充值加赠-页面加载完成
       }
     },
     async getPackages () {
@@ -153,24 +164,31 @@ export default {
     },
     gotopay (item) {
       localStorage.setItem('originDeffer', window.location.href)
-      GLOBALS.marchSetsPoint('A_H5PT0295003518', { product_price: item.price, product_id: item.productId, product_name: item.name })
+      if (this.actInfo.type === 1) {
+        GLOBALS.marchSetsPoint('A_H5PT0348004394', { product_price: item.price, product_id: item.productId, product_name: item.name })// H5平台-B端多多玩APP充值加赠-购买按钮点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT034900440', { product_price: item.price, product_id: item.productId, product_name: item.name })// H5平台-C端多多玩APP充值加赠-购买按钮点击
+      }
       localStorage.setItem('JDD_PARAM', JSON.stringify(item))
       localStorage.setItem('payment', JSON.stringify(item))
       location.href =
         'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     },
-    download () {
+    download (index) {
       this.isShowModal = true
+      if (index) {
+        GLOBALS.marchSetsPoint('A_H5PT0348004395')// H5平台-B端多多玩APP充值加赠-领取加赠按钮点击
+      } else {
+        GLOBALS.marchSetsPoint('A_H5PT0348004396')// H5平台-B端多多玩APP充值加赠-下载APP按钮点击
+      }
     },
     closePop () {
       this.isShowPop = false
+      GLOBALS.marchSetsPoint('A_H5PT034900442')// H5平台-C端多多玩APP充值加赠-活动页提示弹窗-继续购买点击
     }
   },
   mounted () {
     this.getActInfo()
-    GLOBALS.marchSetsPoint('P_H5PT0295', {
-      source_address: GLOBALS.getUrlParam('from') || ''
-    })
   }
 }
 </script>
