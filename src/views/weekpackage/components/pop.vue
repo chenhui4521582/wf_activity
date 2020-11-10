@@ -52,73 +52,73 @@
 </template>
 <script type="text/javascript">
 export default {
-  data() {
+  data () {
     return {
-      telPhone: "",
-    };
+      telPhone: ''
+    }
   },
   props: {
     type: {
       type: Number,
-      default: "0",
+      default: '0'
     },
     detail: {
       type: Object,
-      default: null,
+      default: null
     },
     finalAwards: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   computed: {
-    isRight() {
-      let reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
-      return this.telPhone && reg.test(this.telPhone);
-    },
+    isRight () {
+      let reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
+      return this.telPhone && reg.test(this.telPhone)
+    }
   },
   methods: {
-    transUint(awards) {
+    transUint (awards) {
       let finish =
         awards > 10000
-          ? parseFloat((awards / 10000).toFixed(1)) + "万"
-          : awards;
-      return finish;
+          ? parseFloat((awards / 10000).toFixed(1)) + '万'
+          : awards
+      return finish
     },
-    close() {
-      this.$emit("close");
+    close () {
+      this.$emit('close')
     },
-    async gotoshop(item) {
-      localStorage.setItem("originDeffer", window.location.href + "?flag=1");
-      GLOBALS.marchSetsPoint("A_H5PT0074001697", {
+    async gotoshop (item) {
+      localStorage.setItem('originDeffer', window.location.href + '?flag=1')
+      GLOBALS.marchSetsPoint('A_H5PT0074001697', {
         recharge_rmb: item.price,
         product_id: item.bizId,
-        product_name: item.name,
-      });
-      localStorage.setItem("JDD_PARAM", JSON.stringify(item));
-      localStorage.setItem("payment", JSON.stringify(item));
+        product_name: item.name
+      })
+      localStorage.setItem('JDD_PARAM', JSON.stringify(item))
+      localStorage.setItem('payment', JSON.stringify(item))
       location.href =
-        "https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true";
+        'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
     },
-    async gotocoupons() {
-      await GLOBALS.marchSetsPoint("A_H5PT0074001699");
+    async gotocoupons () {
+      await GLOBALS.marchSetsPoint('A_H5PT0074001699')
       if (
-        window.linkUrl.getBackUrlFlag(localStorage.getItem("APP_CHANNEL")) ==
-        "xmWap"
+        window.linkUrl.getBackUrlFlag(localStorage.getItem('APP_CHANNEL')) ==
+        'xmWap'
       ) {
-        location.href = "https://wap.beeplaying.com/xmWap/#/my/coupon";
+        location.href = 'https://wap.beeplaying.com/xmWap/#/my/coupon'
       } else {
         location.href = window.linkUrl.getBackUrl(
-          localStorage.getItem("APP_CHANNEL"),
-          "",
+          localStorage.getItem('APP_CHANNEL'),
+          '',
           false,
           true,
-          "#/couponlist"
-        );
+          '#/couponlist'
+        )
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .pop-window {
@@ -154,7 +154,7 @@ export default {
   transform: translate(-50%, -50%);
   width: 5.77rem;
   height: 8.23rem;
-  background: url("../imgs/pop/pop-bg.png");
+  background: url('../imgs/pop/pop-bg.png');
   background-size: 100% 100%;
   z-index: 11;
   .pay-tips {
@@ -191,7 +191,7 @@ export default {
     .info02 {
       width: 2.11rem;
       height: 2.11rem;
-      background: url("../imgs/pop/award-bg.png") no-repeat;
+      background: url('../imgs/pop/award-bg.png') no-repeat;
       background-size: 100% 100%;
       display: flex;
       flex-direction: column;
@@ -219,7 +219,7 @@ export default {
       position: absolute;
       width: 3.12rem;
       height: 1.68rem;
-      background-image: url("../imgs/pop/discount-bg.png");
+      background-image: url('../imgs/pop/discount-bg.png');
       background-size: cover;
       .discount-tips {
         height: 0.41rem;
@@ -234,7 +234,7 @@ export default {
         height: 0.93rem;
         width: 2.3rem;
         margin: 0.17rem auto 0;
-        background-image: url("../imgs/pop/coupon.png");
+        background-image: url('../imgs/pop/coupon.png');
         background-size: cover;
       }
     }
@@ -246,7 +246,7 @@ export default {
       font-size: 0.33rem;
       font-weight: bold;
       color: rgba(137, 66, 24, 1);
-      background: url("../imgs/pop/btn.png") no-repeat;
+      background: url('../imgs/pop/btn.png') no-repeat;
       background-size: 100% 100%;
     }
     .award-tips {
@@ -275,18 +275,18 @@ export default {
     bottom: -0.8rem;
     width: 0.57rem;
     height: 0.57rem;
-    background: url("../imgs/pop/close.png");
+    background: url('../imgs/pop/close.png');
     background-size: 100% 100%;
   }
   &.type1 {
     width: 6.04rem;
-    background: url("../imgs/pop/pop-bg.png");
+    background: url('../imgs/pop/pop-bg.png');
     background-size: 100% 100%;
     line-height: 0;
     .desc {
       top: 3.5rem;
-      left: 0.9rem;
-      right: 0.5rem;
+      left: 0;
+      right: 0;
       .info01,
       .info03 {
         font-size: 0.3rem;
@@ -297,6 +297,7 @@ export default {
           width: 0.3rem;
           height: 0.3rem;
           margin-right: 0.09rem;
+          vertical-align: bottom;
         }
       }
       .info04_btn {

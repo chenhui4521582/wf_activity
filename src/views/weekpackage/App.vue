@@ -38,16 +38,9 @@
         </div>
         <template v-if="detailData">
           <div class="turn-table-btn disabled" v-if="detailData.state == 1">
-            <img
-              src="./imgs/click-award-btn.png"
-              class="btn-lottery"
-              @click="startBtn"
-            />
+            <img src="./imgs/click-award-btn.png" class="btn-lottery" @click="startBtn" />
           </div>
-          <div
-            class="turn-table-btn disabled"
-            v-else-if="detailData.state == 4"
-          >
+          <div class="turn-table-btn disabled" v-else-if="detailData.state == 4">
             <img src="./imgs/over-icon.png" class="btn-lottery" />
           </div>
           <div class="turn-table-btn disabled" v-else @click="showdiscountpop">
@@ -67,9 +60,7 @@
         3、加赠金叶需要玩家连续7天登录平台方可领取，如期间不登录则当天奖励作废，不要忘记哟
       </p>
       <p>
-        4、成功购买折扣礼包后，玩家还能获得一张<i>8.5折优惠券</i>，优惠券<i
-          >有效期3天</i
-        >
+        4、成功购买折扣礼包后，玩家还能获得一张<i>8.5折优惠券</i>，优惠券<i>有效期7天</i>
       </p>
       <p>5、活动期间礼包仅可购买一次</p>
       <p>
@@ -77,28 +68,22 @@
       </p>
     </div>
     <!--以下都是弹窗-->
-    <pop
-      v-if="flag"
-      :type="flag"
-      :detail="detailData"
-      :finalAwards="finalAwards"
-      @close="closepop"
-    >
+    <pop v-if="flag" :type="flag" :detail="detailData" :finalAwards="finalAwards" @close="closepop">
     </pop>
   </div>
 </template>
 <script>
-import "../../common/js/window.js";
-import lottery from "./lottery";
-import pop from "./components/pop";
+import '../../common/js/window.js'
+import lottery from './lottery'
+import pop from './components/pop'
 export default {
-  data() {
+  data () {
     return {
       curChannel: null,
       curToken: null,
       countdown: {
         // 红包榜外显倒计时，最后一天显示
-        time: "",
+        time: ''
       },
       showrulepop: false,
       isOpen: false,
@@ -117,91 +102,91 @@ export default {
       isClicked: false,
       getFinalIndex: null,
       isbtnStatus: 0,
-      finalAwards: null,
-    };
+      finalAwards: null
+    }
   },
-  async mounted() {
-    this.curChannel = localStorage.getItem("APP_CHANNEL")
-      ? localStorage.getItem("APP_CHANNEL")
-      : this.getUrlParam("channel");
-    this.curToken = localStorage.getItem("ACCESS_TOKEN")
-      ? localStorage.getItem("ACCESS_TOKEN")
-      : this.getUrlParam("token");
-    await this.myDetails();
-    GLOBALS.marchSetsPoint("A_H5PT0074001693");
+  async mounted () {
+    this.curChannel = localStorage.getItem('APP_CHANNEL')
+      ? localStorage.getItem('APP_CHANNEL')
+      : this.getUrlParam('channel')
+    this.curToken = localStorage.getItem('ACCESS_TOKEN')
+      ? localStorage.getItem('ACCESS_TOKEN')
+      : this.getUrlParam('token')
+    await this.myDetails()
+    GLOBALS.marchSetsPoint('A_H5PT0074001693')
   },
   computed: {
-    countdownText() {
+    countdownText () {
       // 倒计时文案 红包榜外显倒计时，最后一天显示
       if (this.countdown.time) {
-        let hourText = this.countdown.time.split(":")[0];
-        let days = Math.floor(hourText / 24);
+        let hourText = this.countdown.time.split(':')[0]
+        let days = Math.floor(hourText / 24)
         if (days == 0) {
-          return this.countdown.time;
+          return this.countdown.time
         } else {
-          return "";
+          return ''
         }
       } else {
-        return "";
+        return ''
       }
     },
-    isHasIframe() {
-      return window != window.top;
+    isHasIframe () {
+      return window != window.top
     },
-    rotate() {
-      let rotateArr = [];
-      let d = 360 / this.awardsList.length;
+    rotate () {
+      let rotateArr = []
+      let d = 360 / this.awardsList.length
       for (let i = 1; i <= this.awardsList.length; i++) {
-        rotateArr.push("transform: rotate(" + d * i + "turn)");
+        rotateArr.push('transform: rotate(' + d * i + 'turn)')
       }
-      return rotateArr;
-    },
+      return rotateArr
+    }
   },
   methods: {
     // 获取地址栏问号后面的参数值
     getUrlParam: function (ename) {
       // var url = document.referrer;
-      var url = window.location.href;
-      var Request = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.split("?")[1];
-        var strs = str.split("&");
+      var url = window.location.href
+      var Request = new Object()
+      if (url.indexOf('?') != -1) {
+        var str = url.split('?')[1]
+        var strs = str.split('&')
         for (var i = 0; i < strs.length; i++) {
-          Request[strs[i].split("=")[0]] = strs[i].split("=")[1];
+          Request[strs[i].split('=')[0]] = strs[i].split('=')[1]
         }
       } else {
-        return "";
+        return ''
       }
-      return Request[ename];
+      return Request[ename]
     },
-    back() {
+    back () {
       location.href = window.linkUrl.getBackUrl(
-        localStorage.getItem("APP_CHANNEL") || ""
-      );
+        localStorage.getItem('APP_CHANNEL') || ''
+      )
     }, // 回到首页
-    fetch(url, params) {
-      if (url.startsWith("/ops/api")) {
-        url = "//ops-api.beeplaying.com" + url;
+    fetch (url, params) {
+      if (url.startsWith('/ops/api')) {
+        url = '//ops-api.beeplaying.com' + url
       }
-      if (url.startsWith("/wap/api")) {
-        url = "//platform-api.beeplaying.com" + url;
+      if (url.startsWith('/wap/api')) {
+        url = '//platform-api.beeplaying.com' + url
       }
-      if (url.startsWith("/shop/api")) {
-        url = "//shop-api.beeplaying.com" + url;
+      if (url.startsWith('/shop/api')) {
+        url = '//shop-api.beeplaying.com' + url
       }
-      return this.axios.post(url, params, {});
+      return this.axios.post(url, params, {})
     }, // 请求封装方法
-    async myDetails(isNeedTurn = true) {
+    async myDetails (isNeedTurn = true) {
       try {
-        const res = await this.fetch("/shop/api/compensation/activity-info");
+        const res = await this.fetch('/shop/api/compensation/activity-info')
         if (res.data.code == 200 && res.data.data) {
-          this.detailData = res.data.data;
-          this.awardsList = res.data.data.ratios;
+          this.detailData = res.data.data
+          this.awardsList = res.data.data.ratios
           if (
             (this.detailData.state == 2 || this.detailData.state == 3) &&
             isNeedTurn
           ) {
-            this.getFinalAwards(this.detailData.state);
+            this.getFinalAwards(this.detailData.state)
           }
           !this.countdown.time &&
             this.detailData.countdown &&
@@ -209,39 +194,39 @@ export default {
               this,
               this.detailData.countdown,
               this.countdown
-            );
+            )
         }
-      } catch (e) {}
+      } catch (e) { }
     }, // 获取myDetails数据
-    closepop() {
-      this.myDetails(false);
-      this.flag = 0;
+    closepop () {
+      this.myDetails(false)
+      this.flag = 0
     },
-    startBtn() {
-      if (this.isClicked) return;
-      GLOBALS.marchSetsPoint("A_H5PT0074001694");
+    startBtn () {
+      if (this.isClicked) return
+      GLOBALS.marchSetsPoint('A_H5PT0074001694')
       if (this.awardsList.length == 0) {
         this.$toast.show({
-          message: "转盘活动未开启",
-          duration: 1500,
-        });
-        return;
+          message: '转盘活动未开启',
+          duration: 1500
+        })
+        return
       }
       // 最终奖品
-      this.getFinalAwards(1);
+      this.getFinalAwards(1)
     },
-    getFinalAwards(status) {
-      let that = this;
+    getFinalAwards (status) {
+      let that = this
       if (status == 1) {
-        if (this.isClicked) return;
-        this.isClicked = true;
-        this.fetch("/shop/api/compensation/welfare-info").then((response) => {
-          let params = response.data;
+        if (this.isClicked) return
+        this.isClicked = true
+        this.fetch('/shop/api/compensation/welfare-info').then((response) => {
+          let params = response.data
           if (params.code == 200) {
-            this.finalAwards = params.data;
+            this.finalAwards = params.data
             for (let i = 0, len = that.awardsList.length; i < len; i++) {
               if (params.data.ratio == that.awardsList[i].ratio) {
-                that.getFinalIndex = i;
+                that.getFinalIndex = i
               }
             }
             lottery.operation(
@@ -249,25 +234,25 @@ export default {
               this.awardsList,
               that.getFinalIndex,
               function () {
-                that.isClicked = false;
-                that.flag = 1;
+                that.isClicked = false
+                that.flag = 1
               }
-            );
+            )
           } else {
             this.$toast.show({
               message: params.message,
-              duration: 1500,
-            });
+              duration: 1500
+            })
           }
-        });
+        })
       } else {
-        this.fetch("/shop/api/compensation/welfare-info").then((response) => {
-          let params = response.data;
+        this.fetch('/shop/api/compensation/welfare-info').then((response) => {
+          let params = response.data
           if (params.code == 200) {
-            this.finalAwards = params.data;
+            this.finalAwards = params.data
             for (let i = 0, len = that.awardsList.length; i < len; i++) {
               if (params.data.ratio == that.awardsList[i].ratio) {
-                that.getFinalIndex = i;
+                that.getFinalIndex = i
               }
             }
             setTimeout(() => {
@@ -276,59 +261,59 @@ export default {
                 this.awardsList,
                 that.getFinalIndex,
                 () => {
-                  if (status == 3 && location.href.includes("?")) {
-                    this.flag = 2;
+                  if (status == 3 && location.href.includes('?')) {
+                    this.flag = 2
                   }
                 },
                 0
-              );
-            }, 100);
+              )
+            }, 100)
           } else {
             this.$toast.show({
               message: params.message,
-              duration: 1500,
-            });
+              duration: 1500
+            })
           }
-        });
+        })
       }
     },
-    showdiscountpop() {
-      GLOBALS.marchSetsPoint("A_H5PT0074001695", {
+    showdiscountpop () {
+      GLOBALS.marchSetsPoint('A_H5PT0074001695', {
         product_id: this.finalAwards.welfare.bizId,
         product_name: this.finalAwards.welfare.name,
-        recharge_rmb: this.finalAwards.welfare.price,
-      });
+        recharge_rmb: this.finalAwards.welfare.price
+      })
       if (this.detailData.state == 2) {
-        this.flag = 1;
-        GLOBALS.marchSetsPoint("A_H5PT0074001696", {
+        this.flag = 1
+        GLOBALS.marchSetsPoint('A_H5PT0074001696', {
           product_id: this.finalAwards.welfare.bizId,
           product_name: this.finalAwards.welfare.name,
-          recharge_rmb: this.finalAwards.welfare.price,
-        });
+          recharge_rmb: this.finalAwards.welfare.price
+        })
       } else {
-        this.flag = 2;
-        GLOBALS.marchSetsPoint("A_H5PT0074001698", {
+        this.flag = 2
+        GLOBALS.marchSetsPoint('A_H5PT0074001698', {
           product_id: this.finalAwards.welfare.bizId,
           product_name: this.finalAwards.welfare.name,
-          recharge_rmb: this.finalAwards.welfare.price,
-        });
+          recharge_rmb: this.finalAwards.welfare.price
+        })
       }
-    },
+    }
   },
   components: {
-    pop,
+    pop
   },
   watch: {
-    "countdown.time": function (val) {
+    'countdown.time': function (val) {
       if (!val) {
-        this.myDetails();
+        this.myDetails()
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
-@import "../../common/css/base.css";
+@import '../../common/css/base.css';
 .banner-set {
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -338,10 +323,11 @@ export default {
   height: 22.4rem;
   left: 0;
   right: 0;
-  background: url("./imgs/bg.png");
+  background: url('./imgs/bg.png');
   background-size: 100% 100%;
   color: rgba(255, 255, 255, 1);
-  overflow-y: hidden;
+  width: 100%;
+  overflow: hidden;
 }
 .back {
   position: fixed;
@@ -349,7 +335,7 @@ export default {
   left: 0.2rem;
   width: 0.63rem;
   height: 0.63rem;
-  background: url("./imgs/back.png") no-repeat;
+  background: url('./imgs/back.png') no-repeat;
   background-size: 100% 100%;
   z-index: 10;
 }
@@ -379,7 +365,7 @@ export default {
   .counttime {
     width: 3.92rem;
     height: 0.82rem;
-    background: url("./imgs/count-time-bg.png") no-repeat;
+    background: url('./imgs/count-time-bg.png') no-repeat;
     background-size: cover;
     position: absolute;
     top: 3rem;
@@ -449,13 +435,13 @@ export default {
     transform: translateX(-50%);
     top: 2.8rem;
     z-index: 2;
-    background-image: url("./imgs/turn-table-bg.png");
+    background-image: url('./imgs/turn-table-bg.png');
     background-size: cover;
   }
   .turn-table-bg {
     width: 7.18rem;
     height: 7.3rem;
-    background-image: url("./imgs/turn-table.png");
+    background-image: url('./imgs/turn-table.png');
     background-size: cover;
     position: absolute;
     left: 50%;
@@ -468,7 +454,7 @@ export default {
       top: 0;
       width: 7.2rem;
       height: 7.3rem;
-      background: url("./imgs/flash-bg1.png") no-repeat center center / 100%
+      background: url('./imgs/flash-bg1.png') no-repeat center center / 100%
         100%;
       animation: changeBg 0.3s alternate infinite ease,
         changeBg1 0.3s infinite ease;
@@ -476,26 +462,26 @@ export default {
     @keyframes changeBg {
       0% {
         opacity: 1;
-        background: url("./imgs/flash-bg1.png") no-repeat center center / 100%
+        background: url('./imgs/flash-bg1.png') no-repeat center center / 100%
           100%;
       }
 
       100% {
         opacity: 0;
-        background: url("./imgs/flash-bg2.png") no-repeat center center / 100%
+        background: url('./imgs/flash-bg2.png') no-repeat center center / 100%
           100%;
       }
     }
     @keyframes changeBg1 {
       0% {
         opacity: 0;
-        background: url("./imgs/flash-bg1.png") no-repeat center center / 100%
+        background: url('./imgs/flash-bg1.png') no-repeat center center / 100%
           100%;
       }
 
       100% {
         opacity: 1;
-        background: url("./imgs/flash-bg2.png") no-repeat center center / 100%
+        background: url('./imgs/flash-bg2.png') no-repeat center center / 100%
           100%;
       }
     }
@@ -556,7 +542,7 @@ export default {
   .zp-bg {
     width: 7.18rem;
     height: 7.3rem;
-    background-image: url("./imgs/turn-table.png");
+    background-image: url('./imgs/turn-table.png');
     background-size: 100% 100%;
     position: absolute;
     left: 0;
