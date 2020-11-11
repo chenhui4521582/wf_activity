@@ -2,15 +2,29 @@
   <div class="pop-window">
     <div class="pop-mask" @touchmove.prevent></div>
     <div class="bonus-success">
-      <span class="title title0">活动规则</span>
+      <p class="title title0">活动规则</p>
       <div class="desc">
-        <p v-if="actInfo" style="margin-bottom: .24rem">
-          活动时间：{{actInfo.beginDate}}~{{actInfo.endDate}}</p>
-        <p>活动介绍：‘多多玩APP充值回馈’活动是多多玩给用户的专属回馈活动。</p>
-        <p>1. 用户点击礼包，即可直接以折扣价购买；</p>
-        <p>2. 购买礼包付款成功后，金叶子即可立即到账；</p>
-        <p>3. 由于金叶子为虚拟产品，购买后概不退款，请理性消费。</p>
-        <p>多多玩游戏平台对本活动具有最终解释权。</p>
+        <p v-if="actInfo">
+          活动时间：{{actInfo.beginDate}}~{{actInfo.endDate}}
+        </p>
+        <p>
+          1.在活动页面点击价格按钮，即可直接购买充值加赠礼包；
+        </p>
+        <p>
+          2.购买礼包所获的加赠礼品，需在多多玩APP手机号登录后领取；
+        </p>
+        <p>
+          3.若未绑定手机号请先绑定后，再用此手机号登录多多玩APP，加赠立即到账；
+        </p>
+        <p>
+          4.活动结束后3天内，可继续手机号登录多多玩APP领奖；超过3天仍未领取，视为放弃加赠。
+        </p>
+        <p>
+          5.登录后您可直接在多多玩APP内的活动中心，直接购买充值加赠礼包，获得加赠。
+        </p>
+        <p>
+          多多玩游戏平台对本活动具有最终解释权。
+        </p>
       </div>
       <div class="close" @click="close"></div>
     </div>
@@ -75,25 +89,27 @@ export default {
   border-radius: 0.32rem;
   z-index: 11;
   .title {
-    position: absolute;
-    top: 0.51rem;
-    left: 0.9rem;
-    right: 1.04rem;
+    width: 100%;
     font-size: 0.26rem;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     text-align: center;
+    margin: 0.3rem auto 0.36rem;
   }
   .desc {
-    position: absolute;
-    top: 1.02rem;
-    left: 0.33rem;
-    right: 0.3rem;
     font-size: 0.22rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
+    width: 100%;
+    padding: 0 0.36rem;
+    box-sizing: border-box;
+    height: 4.52rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
     p {
       line-height: 0.33rem;
+      text-align: justify;
+      word-break: break-all;
     }
   }
   .close {
