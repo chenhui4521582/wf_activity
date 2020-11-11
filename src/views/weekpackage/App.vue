@@ -371,6 +371,9 @@ export default {
     top: 3rem;
     left: 50%;
     transform: translateX(-50%);
+    div {
+      white-space: nowrap;
+    }
     .hour {
       position: absolute;
       width: 0.45rem;
