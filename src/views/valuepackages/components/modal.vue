@@ -68,6 +68,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 import utils from '@/common/js/utils.js'
 import { getPhoneBindInfo, bindMobilePhone, getPhoneCode, btcDownLoad } from '../utils/api'
 export default {
@@ -208,7 +209,7 @@ export default {
         this.$toast.show({ isOneLine: true, duration: 1500, message: '请输入正确的手机号码' })
         return
       }
-      const { code, data, message } = await getPhoneCode(this.phone)
+      const { code, message } = await getPhoneCode(this.phone)
       if (code === 200) {
         this.$toast.show({ isOneLine: true, duration: 1500, message: '短信验证码已发送，注意查收' })
         this.countdownFn()

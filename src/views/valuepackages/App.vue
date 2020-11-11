@@ -38,7 +38,8 @@
       </template>
       <p>
         多多玩APP由多多玩官方提供，<br />
-        如有问题咨询多多玩官方客服微信：<span>youxikefu2020</span>
+        如有问题咨询多多玩官方客服微信：<span v-clipboard:copy="copyText" v-clipboard:success="onCopy"
+          v-clipboard:error="onError">youxikefu2020</span>
       </p>
     </div>
     <Modal v-model="isShowModal"></Modal>
@@ -64,6 +65,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-undef */
 import { getActInfo, getPackages } from './utils/api'
 
 export default {
@@ -80,7 +82,8 @@ export default {
         jdkAmount: 0,
         jyzAmount: 0,
         popup: false
-      }
+      },
+      copyText: 'youxikefu2020'
     }
   },
   components: {
@@ -133,7 +136,7 @@ export default {
       let { code, data } = await getActInfo()
       if (code === 200) {
         this.actInfo = data
-        if (data.state == 1) {
+        if (data.state === 1) {
           this.getPackages()
         }
         if (data.needGiftSet && data.needGiftSet.length) {
@@ -185,6 +188,12 @@ export default {
     closePop () {
       this.isShowPop = false
       GLOBALS.marchSetsPoint('A_H5PT034900442')// H5平台-C端多多玩APP充值加赠-活动页提示弹窗-继续购买点击
+    },
+    onCopy () {
+      this.$toast.show({ isOneLine: true, duration: 1500, message: '复制成功' })
+    },
+    onError () {
+      this.$toast.show({ isOneLine: true, duration: 1500, message: '复制失败' })
     }
   },
   mounted () {
