@@ -129,20 +129,23 @@
           )
           if (this.actInfo.popupInfo.popup) {
             setTimeout(() => {
-              let zsNum = this.actInfo.popupInfo.popupAwards.length == 0 ? this.actInfo.popupInfo.popupAwards[0].propAmount : this.actInfo.popupInfo.popupAwards.reduce((prev, next) => prev.propAmount + next.propAmount)
+              let zsNum = 0
+              if (this.actInfo.popupInfo.popupAwards.length) {
+                zsNum = this.actInfo.popupInfo.popupAwards.length == 1 ? this.actInfo.popupInfo.popupAwards[0].propAmount : this.actInfo.popupInfo.popupAwards.reduce((prev, next) => prev.propAmount + next.propAmount)
+              }
               this.awardData = Object.assign({}, {
-                info: `金叶已到账${zsNum.propAmount ? `；<br>钻石可到财宝商店换取好礼！` : ''}`,
+                info: `金叶已到账${zsNum ? `；<br>钻石可到财宝商店换取好礼！` : ''}`,
                 btnNum: 0,
                 titlename: '恭喜获得'
               })
               this.awardList = [{
-                awardsName: `${this.actInfo.popupInfo.popupAwards[0].leafAmount}金叶`,
+                awardsName: `${this.filterPrice(this.actInfo.popupInfo.popupAwards[0].leafAmount)}金叶`,
                 awardsType: 'jyz',
                 num: this.actInfo.popupInfo.popupAwards.length
               }]
-              if (zsNum.propAmount) {
+              if (zsNum) {
                 this.awardList.push({
-                  awardsName: zsNum.propAmount + '颗钻石',
+                  awardsName: `${this.filterPrice(zsNum)}颗钻石`,
                   awardsType: 'zs'
                 })
               }
@@ -260,6 +263,13 @@
           this.$toast.show({
             message: '先解锁前端的宝箱哟~'
           })
+        }
+      },
+      filterPrice (value) {
+        if (value) {
+          return value > 10000 ? value / 10000 + '万' : value
+        } else {
+          return 0
         }
       }
     },
