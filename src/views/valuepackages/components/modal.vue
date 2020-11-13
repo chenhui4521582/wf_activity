@@ -107,6 +107,10 @@ export default {
     },
     isIOS () {
       return utils.isIOS()
+    },
+    isWechat () {
+      var U = window.navigator.userAgent.toLowerCase()
+      return !!(U.match(/MicroMessenger/i) === 'micromessenger')
     }
   },
   watch: {
@@ -148,6 +152,10 @@ export default {
       btcDownLoad().then(res => {
         const { code, data } = res
         if (code === 200) {
+          if (this.isWechat) {
+            parent.location.href = data
+            return
+          }
           this.$toast.show({ isOneLine: true, duration: 1500, message: '正在下载多多玩，请稍候' }, () => {
             parent.location.href = data
           })
