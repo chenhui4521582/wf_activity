@@ -51,3 +51,13 @@ export const userMoveSend = async (value) => {
   const { data } = await $axios.post(`${TRANS_API_BASE_URL}/trans/api/activity/userMoveSend`, { value })
   return data
 }
+/**
+ * @description 下载
+ * @return {Object} data
+ */
+export const downloadApk = async () => {
+  const { data } = await $axios.post(`${OPS_API_BASE_URL}/ops/api/user/move/apk-link`)
+  return data
+}
+
+
