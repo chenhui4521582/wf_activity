@@ -22,7 +22,7 @@
             <div class="packages">
               <div class="packages_item"
                    v-for="(item,index) in actInfo.awardPanelRsps[selectIndex].awardsRsps.slice(0,8)">
-                <template v-if="item.status==0||(animationIndex>=0&&animationIndex!=index)">
+                <template v-if="item.status==0||(item.status==0&&animationIndex>=0&&animationIndex!=index)">
                   <img :src="`${require(`./images/bubble${index>3?index-4:index}.png`)}`" alt=""">
                   <div class="awardsName"><p>{{item.awardsName}}</p></div>
                 </template>
@@ -66,7 +66,7 @@
     </article>
     <com-pop :popType="popType" ref="comPop" :actInfo="actInfo" :awardData="awardData"
              @close="closePop" @showPop="showPop" @cast="cast"
-             @reset="selectIndex=actInfo.curAwardsLevel - 1"></com-pop>
+             @reset="selectIndex=actInfo.curAwardsLevel - 1" @refresh="getActInfo"></com-pop>
     <loading v-show="showLoading" :showBar="false"></loading>
   </section>
 </template>
@@ -257,21 +257,10 @@
               let {code, data, message} = await exchagePrize()
               GLOBALS.marchSetsPoint('A_H5PT0350004449', {
                 level: this.actInfo.curAwardsLevel
-              })// H5平台-气球爆爆爆-立即投掷按钮点击并成功投掷
-              // 测试代码
-              // code = 200
-              // data = {
-              //   awardsName: 'string',
-              //   awardsImg: 'jyz',
-              //   sort: parseInt(Math.random() * 8),
-              //   giveAwards: {
-              //     awardsName: 'string',
-              //     awardsType: 'jyz'
-              //   }
-              // }
-              this.animationIndex = data.sort - 1// 炸裂动画
-              this.actInfo.awardPanelRsps[this.selectIndex].awardsRsps[this.animationIndex].status = 1
+              })
               if (code == 200) {
+                this.animationIndex = data.sort - 1// 炸裂动画
+                this.actInfo.awardPanelRsps[this.selectIndex].awardsRsps[this.animationIndex].status = 1
                 this.awardData = Object.assign(data, {
                   btnName: '收下'
                 })
@@ -280,8 +269,10 @@
                   this.showPop(3)
                   this.showLoading = false
                   GLOBALS.marchSetsPoint('A_H5PT0350004450')// H5平台-气球爆爆爆-普通奖励弹窗加载完成
-                  this.getActInfo()
-                }, 500)
+                  if (!data.giveAwards || !data.giveAwards.awardsName) {
+                    this.getActInfo()
+                  }
+                }, 1000)
               } else {
                 this.$toast.show({
                   message

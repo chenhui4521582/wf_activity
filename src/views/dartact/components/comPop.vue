@@ -162,9 +162,12 @@
         }
       },
       close () {
-        this.$emit('close', this.awardData)
         this.isShowPop = false
         this.record = []
+        if (this.awardData && this.awardData.giveAwards && this.awardData.giveAwards.awardsName) {
+        }else{
+          this.$emit('close', this.awardData)
+        }
       },
       move (e) {
         e.preventDefault()
@@ -203,6 +206,7 @@
               info: `恭喜解锁全部奖励<br>再送一份大礼`
             }))
             GLOBALS.marchSetsPoint('A_H5PT0350004451')// H5平台-气球爆爆爆-加赠奖励弹窗加载完成
+            this.$emit('refresh')
           }
         }
       }
