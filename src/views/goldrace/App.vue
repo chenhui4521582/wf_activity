@@ -171,9 +171,28 @@
             this.awardData = {
               race: this.userInfo.maxLevel - 1
             }
-            setTimeout(() => {
-              this.showPop(12)
-            }, 1500)
+            if (flag) {
+              if (this.userInfo.incrNum) {
+                this.awardData = Object.assign({
+                  popType: 10,
+                  amount: this.userInfo.incrNum
+                }, {
+                  race: this.userInfo.maxLevel - 1
+                })
+              }
+              setTimeout(() => {
+                this.showPop(12)
+              }, 1500)
+            } else {
+              if (this.userInfo.incrNum) {
+                this.awardData = {
+                  amount: this.userInfo.incrNum
+                }
+                setTimeout(() => {
+                  this.showPop(10)
+                }, 1500)
+              }
+            }
           } else if (this.info.historyRankPopup && this.info.historyRankPopup.popup) {
             this.awardData = this.info.historyRankPopup
             if (flag) {
@@ -241,6 +260,7 @@
             break// H5平台-黄金争夺赛-恭喜你上榜弹窗加载完成
         }
         point && GLOBALS.marchSetsPoint(point)
+        data && (this.awardData = data)
         setTimeout(() => {
           this.$refs.comPop.showPop()
         })
@@ -360,18 +380,6 @@
           this.otherData = this.profitData.slice(3, this.profitData.length - 1)
         }
         this.behindThreeData = this.profitData.slice(0, 3)
-      },
-      move (e) {
-        e.preventDefault()
-      },
-      fixed (isfixed) {
-        if (isfixed) {
-          document.body.style.overflow = 'hidden'
-          document.addEventListener('touchmove', this.move, {passive: false})
-        } else {
-          document.body.style.overflow = null
-          document.removeEventListener('touchmove', this.move, {passive: false})
-        }
       }
     },
     watch: {

@@ -159,7 +159,7 @@
 
   export default {
     name: 'comPop',
-    data() {
+    data () {
       return {
         isShowPop: false,
         record: [],
@@ -216,7 +216,7 @@
       }
     },
     computed: {
-      tabs() {
+      tabs () {
         return this.popType == 1 ? ['团队榜', '个人榜'] : ['牛郎助力组', '织女助力组']
       }
     },
@@ -224,10 +224,10 @@
       scroll: () => import('./scroll')
     },
     methods: {
-      getClassName(name) {
+      getClassName (name) {
         return `${name} flag${this.popType}`
       },
-      getAwardName(awardType) {
+      getAwardName (awardType) {
         switch (awardType) {
           case 'jyz':
             return '金叶子'
@@ -246,7 +246,7 @@
             break
         }
       },
-      async showPop() {
+      async showPop () {
         if (![1, 3].includes(this.popType)) {
           if (this.popType == 10) {
             if (this.awardData && this.awardData.amount) {
@@ -273,7 +273,7 @@
           }
         }
       },
-      close() {
+      close () {
         this.$emit('close')
         this.isShowPop = false
         this.record = []
@@ -281,7 +281,8 @@
         this.lastRecord = []
         this.currentIndex = 1
         this.scrollLock = false
-        if (this.popType == 13 && this.awardData) {
+        if ([12, 13].includes(this.popType) && this.awardData) {
+          console.log('99999')
           this.$emit('showPop', 10, this.awardData)
         }
         if (this.popType == 1) {
@@ -289,24 +290,24 @@
         }
         this.tabIndex = 0
       },
-      move(e) {
+      move (e) {
         e.preventDefault()
       },
-      gotopay() {
+      gotopay () {
         this.close()
         this.$emit('opendown')
       },
-      show(type) {
+      show (type) {
         this.close()
         this.$emit('showPop', type)
       },
-      gotogame({url, id}) {
+      gotogame ({url, id}) {
         GLOBALS.jumpOutsideGame(url)
       },
-      gotoindex() {
+      gotoindex () {
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL'))
       },
-      async changeTab(index) {
+      async changeTab (index) {
         this.record = []
         this.allRecord = []
         this.lastRecord = []
@@ -327,7 +328,7 @@
           }
         }
       },
-      async gainAwards(item) {
+      async gainAwards (item) {
         if (!item.received) {
           let {code, message} = await gainAwardsRecord(item.id)
           if (code == 200) {
@@ -345,7 +346,7 @@
       }
     },
     watch: {
-      isShowPop(value) {
+      isShowPop (value) {
         if (value) {
           document.body.style.overflow = 'hidden'
           document.addEventListener('touchmove', this.move, {passive: false})
