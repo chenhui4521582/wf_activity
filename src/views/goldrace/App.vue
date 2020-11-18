@@ -1,5 +1,5 @@
 <template>
-  <main class="gold-race" v-if="info">
+  <main class="gold-race" v-if="info" :class="{fixed:$refs.dropDown&&$refs.dropDown.curIndex}">
     <div class="act_content" :class="{end:isEnd}">
       <template v-if="!isEnd">
         <div class="act_info">当前赛次结束倒计时</div>
@@ -18,13 +18,14 @@
             <div class="percent">
               <div class="percent-bar"
                    :style="{ width:((userInfo.totalNum-currentCondition)/(upgradeCondition-currentCondition)) * 100 + '%' }"></div>
+              <div class="percent-value">{{userInfo.totalNum}}/{{upgradeCondition}}</div>
             </div>
             <img :src="`${require(`./img/level${userInfo.currentLevel-1}.png`)}`" alt="" class="icon left">
             <img :src="`${require(`./img/level${userInfo.currentLevel}.png`)}`" alt="" class="icon right">
           </div>
           <div class="nums">
             <div class="item">{{currentCondition}}</div>
-            <div class="item">{{userInfo.totalNum}}</div>
+            <div class="item" style="opacity: 0">{{userInfo.totalNum}}</div>
             <div class="item">{{upgradeCondition}}</div>
           </div>
         </template>
@@ -52,7 +53,7 @@
            :class="{race0:race==0,race1:race==1,race2:race==2,end:isEnd}" v-if="levelData">
         <div class="more" @click="showPop(9)">了解更多>></div>
         <div class="left_btn" :style="{backgroundImage:`url(${require(`./img/left_btn${race}.png`)})`}"
-             v-if="!isEnd&&userInfo.currentLevel>=race+1">
+             v-if="!isEnd&&levelData.round">
           {{raceInfo[levelData.level-1]}} 第{{levelData.round}}场
         </div>
         <div class="race-info">
@@ -69,7 +70,7 @@
                  :class="{race0:index==0,race1:index==1,race2:index==2,currentRace:index==race&&!isEnd}">
               <div class="info">{{timesInfo[index]}}</div>
               <div class="num" style="height: .2rem">
-                <template v-if="userInfo.currentLevel>=index+1">{{info.levelInfo[index].applyNum}}人参与</template>
+                <!--<template v-if="userInfo.currentLevel>=index+1">{{info.levelInfo[index].applyNum}}人参与</template>-->
               </div>
             </div>
           </div>
@@ -79,8 +80,7 @@
           <div class="myprize" @click="showPop(1)">我的奖励>></div>
         </div>
         <red-packet ref="redPacket" :race="race" :isEnd="isEnd" :info="info" :list="levelData.progressList"
-                    :showBtn="!isEnd&&userInfo.currentLevel>=race+1"
-                    @gameReceive="gameReceive"/>
+                    :showBtn="!isEnd&&userInfo.currentLevel==race+1" @gameReceive="gameReceive"/>
         <div class="total_btn" :class="{race0:race==0,race1:race==1,race2:race==2,end:isEnd}">
           <div class="btn">
             <template v-if="!isEnd">
@@ -211,7 +211,7 @@
       },
       back () {
         GLOBALS.marchSetsPoint('A_H5PT0344004327') // H5平台-黄金争夺赛-返回按钮点击
-        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+        history.back(-1)
       },
       // 弹窗
       showPop (type, data) {
@@ -360,11 +360,23 @@
           this.otherData = this.profitData.slice(3, this.profitData.length - 1)
         }
         this.behindThreeData = this.profitData.slice(0, 3)
+      },
+      move (e) {
+        e.preventDefault()
+      },
+      fixed (isfixed) {
+        if (isfixed) {
+          document.body.style.overflow = 'hidden'
+          document.addEventListener('touchmove', this.move, {passive: false})
+        } else {
+          document.body.style.overflow = null
+          document.removeEventListener('touchmove', this.move, {passive: false})
+        }
       }
     },
     watch: {
       countdownTime (val) {
-        this.init(false)
+        !val && this.init(false)
       }
     }
   }
@@ -380,11 +392,14 @@
     position: relative;
     font-size: 0.24rem;
     overflow-x: hidden;
-    overflow-y: scroll;
-    height: 100vh;
     width: 100%;
     background: #000000;
     margin: auto;
+    &.fixed{
+      position: fixed;
+      height: 100vh;
+      overflow: hidden;
+    }
     .act_content {
       position: absolute;
       top: 0;
@@ -426,7 +441,7 @@
     }
 
     .main-content {
-      position: absolute;
+      position: relative;
       width: 100%;
       top: 3rem;
       padding-bottom: .16rem;
@@ -461,6 +476,18 @@
             .percent-bar {
               height: .2rem;
               background: linear-gradient(90deg, #2D3FFF 0%, #00FCFF 100%);
+            }
+            .percent-value{
+              position: absolute;
+              top: .3rem;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              margin: auto;
+              height: .2rem;
+              text-align: center;
+              line-height: .2rem;
+              font-weight: bold;
             }
           }
           .icon {
@@ -663,9 +690,10 @@
         }
         .total_btn {
           display: flex;
-          padding-left: 1.5rem;
           box-sizing: border-box;
           margin: .32rem 0 .25rem;
+          display: flex;
+          justify-content: center;
           .btn {
             width: 2.8rem;
             height: .65rem;

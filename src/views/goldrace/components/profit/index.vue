@@ -18,14 +18,14 @@
               <span><i class="icon-dot" :class="'icon-dot'+item.rank"><template
                 v-if="item.rank>3">{{item.rank}}</template><img
                 :src="`${require(`../../img/rank${item.rank}.png`)}`" alt=""></i></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.nickname || ''}}</em></span>
+              <span><em class="i-ellipsis"><template v-if="item.totalNum">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></template></em></span>
               <span><em class="i-ellipsis" v-html="item.awardsName.replace('+','<br>')"></em></span>
             </li>
             <li v-if="isOpen" v-for="(item,index) in otherData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.nickname || ''}}</em></span>
+              <span><em class="i-ellipsis"><template v-if="item.totalNum">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></template></em></span>
               <span><em class="i-ellipsis" v-html="item.awardsName.replace('+','<br>')"></em></span>
             </li>
             <li v-if="!isOpen">
@@ -35,8 +35,8 @@
             </li>
             <li v-for="(item,index) in lastThreeData">
               <span><i class="icon-dot">{{item.rank}}</i></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.nickname || '暂无昵称'}}</em></span>
-              <span><em class="i-ellipsis" v-if="showBtn">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></em></span>
+              <span><em class="i-ellipsis">{{item.nickname || ''}}</em></span>
+              <span><em class="i-ellipsis"><template v-if="item.totalNum">{{item.totalNum}}个<br/><i class="i-font-style">{{item.updateTime || ''}}</i></template></em></span>
               <span><em class="i-ellipsis" v-html="item.awardsName.replace('+','<br>')"></em></span>
             </li>
           </ul>

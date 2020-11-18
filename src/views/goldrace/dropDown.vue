@@ -40,28 +40,23 @@ export default {
     }
   },
   components: {
-    getHammer: () => import('./components/getHammer'),
+    getHammer: () => import('./components/getHammer')
   },
   methods: {
     innerHandleTab (idx) {
       this.handleTab(idx + 1)
     },
     outHandleTab () {
-      this.curIndex=1
+      this.curIndex = 1
     },
     handleTab (idx) {
       this.curIndex = idx
     },
     close () {
       this.curIndex = 0
-    }
-  },
-  watch: {
-    value (val) {
-      this.curIndex = val
     },
-    curIndex (val) {
-      this.$emit('input', val)
+    move (e) {
+      e.preventDefault()
     }
   }
 }
@@ -100,8 +95,8 @@ export default {
 
 .drop-down-content {
   width: 100%;
-  height: 100%;
-  max-height: 100%;
+  /*height: 100%;*/
+  /*max-height: 100%;*/
   position: fixed;
   left: 0;
   bottom: 0;
@@ -110,7 +105,7 @@ export default {
   z-index: 12;
   background: url("./img/dropdown_bg.png");
   background-size: 100% 100%;
-  max-height: 14.4rem;
+  height: 11rem;
   .d-tab {
     overflow-y: hidden;
     width: 100%;

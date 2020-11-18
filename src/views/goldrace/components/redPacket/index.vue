@@ -5,7 +5,7 @@
         <ul class="content-wrapper" v-if="list&&list.length">
           <li class="percent-wrapper" :style="{width:(1.2*list.length)+'rem'}"
               :class="{race0:race==0,race1:race==1,race2:race==2,end:isEnd,showBtn:showBtn}">
-            <div class="percent" :style="{width:percentWidth}"
+            <div class="percent" :style="{width:!isEnd&&showBtn?percentWidth:0}"
                  :class="{race0:race==0,race1:race==1,race2:race==2,end:isEnd,showBtn:showBtn}"></div>
           </li>
           <!--opened:item.state!==0,-->
@@ -51,6 +51,10 @@
         default: false
       },
       showBtn: {
+        type: Boolean,
+        default: false
+      },
+      showComplete: {
         type: Boolean,
         default: false
       }
