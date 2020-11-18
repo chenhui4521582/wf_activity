@@ -8,7 +8,7 @@
     </div>
   </transition>
 </template>
- 
+
 <script>
 export default {
   data () {
@@ -39,7 +39,7 @@ export default {
   }
 }
 </script>
- 
+
 <style scoped>
 .box {
   position: fixed;
@@ -48,14 +48,17 @@ export default {
   padding: 0 0.3rem;
   min-width: 1.5rem;
   /*height: .7rem;*/
-  line-height: 0.7rem;
+  line-height: 0.4rem;
   border-radius: 0.1rem;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.8);
   text-align: center;
   color: #fff;
-  font-size: 16px;
+  font-size: .16rem;
   z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .oneline {
   white-space: nowrap;
