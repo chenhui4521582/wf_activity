@@ -153,7 +153,7 @@ export default {
         const { code, data } = res
         if (code === 200) {
           if (this.isWechat) {
-            parent.location.href = data
+            parent.location.href = `wap.beeplaying.com/ddwgame/?channel=${localStorage.getItem('APP_CHANNEL')}`
             return
           }
           this.$toast.show({ isOneLine: true, duration: 1500, message: '正在下载多多玩，请稍候' }, () => {
