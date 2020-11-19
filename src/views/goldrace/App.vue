@@ -353,6 +353,7 @@
         this.getLevelInfo(index + 1, () => {
           this.race = index
         })
+        this.getActInfo(false)// 刷活动信息接口
       },
       // 弹窗关闭
       closePop () {
