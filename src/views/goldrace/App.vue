@@ -160,13 +160,14 @@
           this.isEnd = this.info.state !== 1
           this.userInfo = this.info.userInfo
           this.myrace = this.userInfo.maxLevel - 1
+          let race=this.userInfo.currentLevel - 1 < this.myrace ? this.userInfo.currentLevel - 1 : this.myrace
           if (flag) {
-            this.race = this.userInfo.currentLevel - 1 < this.myrace ? this.userInfo.currentLevel - 1 : this.myrace
+            this.race = race
+            this.getLevelInfo(this.race + 1, null)
           }
           this.currentCondition = this.userInfo.currentLevel == 1 ? 0 : this.info.levelInfo.filter(item => item.level == this.userInfo.currentLevel - 1)[0].upgradeCondition
           this.upgradeCondition = this.info.levelInfo.filter(item => item.level == this.userInfo.currentLevel)[0].upgradeCondition
           this.countDown(_get(res, 'data.stageCountdown', 0))
-          this.getLevelInfo(this.race + 1, null)
           if (this.userInfo.showUpgradePopup) {
             this.awardData = {
               race: this.userInfo.maxLevel - 1
@@ -352,8 +353,8 @@
         this.rankList = []
         this.getLevelInfo(index + 1, () => {
           this.race = index
+          this.init(false)// 刷活动信息接口
         })
-        this.getActInfo(false)// 刷活动信息接口
       },
       // 弹窗关闭
       closePop () {
