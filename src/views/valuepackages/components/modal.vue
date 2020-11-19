@@ -110,7 +110,7 @@ export default {
     },
     isWechat () {
       var U = window.navigator.userAgent.toLowerCase()
-      return !!(U.match(/MicroMessenger/i) === 'micromessenger')
+      return U.includes('wechat') || U.includes('micromessenger')
     }
   },
   watch: {
@@ -495,5 +495,3 @@ export default {
   transition: opacity 0.3s;
 }
 </style>
-
-
