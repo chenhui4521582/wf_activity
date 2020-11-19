@@ -26,7 +26,7 @@
   import {activityInfo} from './utils/api'
   import qrcode from '@xkeshi/vue-qrcode'
   export default {
-    name: 'adventure',
+    name: 'wxInvitation',
     components: {
       qrcode
     },
@@ -39,10 +39,12 @@
     },
     computed: {},
     async mounted () {
+      GLOBALS.marchSetsPoint('P_H5PT0352', {
+        source_address: GLOBALS.getUrlParam('from') || ''
+      })
       let {code, data} = await activityInfo()
       if (code == 200) {
         this.actInfo = data
-        console.log(this.actInfo)
       }
     },
     methods: {
@@ -50,9 +52,11 @@
         history.back(-1)
       },
       onCopy () {
+        GLOBALS.marchSetsPoint('A_H5PT0352004486')
         this.$toast.show({message: '复制成功'})
       },
       onError () {
+        GLOBALS.marchSetsPoint('A_H5PT0352004486')
         this.$toast.show({message: '复制失败 '})
       }
     }
