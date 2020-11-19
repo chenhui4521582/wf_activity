@@ -59,9 +59,9 @@
     <pop-up v-model="showPrizeModal" @on-close="showPrizeModal=false" title="恭喜获得" :isHasDecoration="true">
       <div class="modal-container flag3">
         <div class="prizes">
-          <div class="item" v-for="item in awards">
-            <img :src="item.awardImg|filter" alt="">
-            <div class="awards_name">{{item.awardName}}</div>
+          <div class="item">
+            <img :src="awardData&&awardData.awardImg|filter" alt="">
+            <div class="awards_name">{{awardData&&awardData.awardName}}</div>
           </div>
         </div>
       </div>
@@ -103,14 +103,14 @@
             </template>
           </div>
         </template>
-        <tempalte v-else-if="popType==3||popType==6">
+        <template v-else-if="popType==3||popType==6">
           <div class="prizes" :class="{gt1:awards.length>1,flag6:popType==6}">
             <div class="item" v-for="item in awards">
               <img :src="item.awardImg|filter" alt="">
               <div class="awards_name" v-if="popType==3">{{item.awardName}}</div>
             </div>
           </div>
-        </tempalte>
+        </template>
         <template v-else-if="[4,5].includes(popType)">
           <div class="turntable-wrapper">
             <img class="bg" src="./img/turntable-bg.png" alt/>
@@ -128,7 +128,7 @@
         </template>
       </div>
       <div class="btn" slot="footer" v-if="[3,6].includes(popType)" style="width: 2.5rem;margin: auto"
-           @click="showModal=false">
+           @click="modalClose">
         朕收下了
       </div>
       <div class="btn" slot="footer" v-if="[4,5].includes(popType)"
@@ -163,7 +163,7 @@
       scroll,
       popUp
     },
-    data() {
+    data () {
       return {
         beginTime: '',
         endTime: '',
@@ -204,20 +204,21 @@
         currentDay: 0,
         drawProductIds: [],
         awards: [],
-        currentPackage: null
+        currentPackage: null,
+        awardData: null
       }
     },
-    async mounted() {
-      await this.getWheelAwards()
+    async mounted () {
       await moveInleto()
+      await this.getWheelAwards()
       this.init()
       GLOBALS.marchSetsPoint('P_H5PT0351', {source_address: this.sourceAddress})// H5平台-多多玩APP连续打卡活动-页面加载完成
     },
     computed: {
-      sourceAddress() {
+      sourceAddress () {
         return utils.getUrlParam('from')
       },
-      title() {
+      title () {
         if (this.popType == 5) {
           return `赠送${this.drawProductIds.length}次抽奖`
         } else {
@@ -226,22 +227,26 @@
       }
     },
     filters: {
-      timeFilter(time) {
+      timeFilter (time) {
         return time.split(' ')[0]
       }
     },
     methods: {
-      getClassName(name) {
+      getClassName (name) {
         return `${name} flag${this.popType}`
       },
-      modalClose() {
+      modalClose () {
         this.showModal = false
+        if (this.popType == 6 && this.drawProductIds.length) {
+          console.log(this.popType,this.drawProductIds)
+          this.openPop(5)
+        }
       },
-      back() {
+      back () {
         GLOBALS.marchSetsPoint('A_H5PT0351004476')   // 点击返回
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
-      async init() {
+      async init () {
         const res = await moveInfo()
         if (res.code == 200) {
           this.actInfo = res.data
@@ -252,26 +257,33 @@
           this.signList = res.data.clockInRspS
           this.giftList = res.data.giftBagRsps
           if (this.actInfo.state == 1) {
+            res.data.giftBagRsps.filter(item => item.drawCount > 0).map(item => {
+              for (let i = 0; i < item.drawCount; i++) {
+                this.drawProductIds.push(item.productId)
+              }
+            })
             if (res.data.showRepairClockIn) {
               this.$toast.show({
                 message: '补卡成功',
                 duration: 1500
               })
             }
-            res.data.giftBagRsps.filter(item => item.drawCount > 0).map(item => {
-              for (let i = 0; i < item.drawCount; i++) {
-                this.drawProductIds.push(item.productId)
-              }
-            })
-            if (this.drawProductIds.length) {
+            this.awards = this.actInfo.extraAwards || []
+            if (this.awards.length) {
               setTimeout(() => {
-                this.openPop(5)
+                this.openPop(6)
               }, res.data.showRepairClockIn ? 0 : 1500)
+            } else {
+              if (this.drawProductIds.length) {
+                setTimeout(() => {
+                  this.openPop(5)
+                }, res.data.showRepairClockIn ? 0 : 1500)
+              }
             }
           }
         }
       },
-      async sign() {
+      async sign () {
         GLOBALS.marchSetsPoint('A_H5PT0351004471')// HH5平台-多多玩APP连续打卡活动-立即打卡按钮点击
         if (this.todaySigned) {
           this.$toast.show({
@@ -280,10 +292,11 @@
           })
           return
         }
-        const {code, message} = await signIn()
+        const {code,data, message} = await signIn()
         if (code === 200) {
-          this.awards = _get(res, 'data', null) || []
+          this.awards = data|| []
           if (this.awards.length) {
+            this.drawProductIds = []
             this.openPop(6)
           } else {
             this.openPop(4)
@@ -296,7 +309,7 @@
           })
         }
       },
-      buyGift(item) {
+      buyGift (item) {
         GLOBALS.marchSetsPoint('A_H5PT0351004473', {
           product_id: item.productId,
           product_name: item.name,
@@ -306,16 +319,16 @@
         localStorage.setItem('originDeffer', location.href)
         location.href = 'https://wap.beeplaying.com/xmWap/#/payment/paymentlist?isBack=true'
       },
-      async getWheelAwards() {
+      async getWheelAwards () {
         let {code, data} = await getWheelAwards()
         if (code == 200) {
           this.wheelAwards = data
         }
       },
-      async openPop(type, item) {
+      async openPop (type, item) {
         // titles: ['活动规则', '我的奖品', '恭喜获得', '恭喜打卡成功', '赠送1次抽奖', `恭喜连续7日打卡成功<br>获得VIP大礼包`],
         let points = ['A_H5PT0351004475', 'A_H5PT0351004474', '', 'A_H5PT0351004477', 'A_H5PT0351004481', 'A_H5PT0351004480']
-        points[type - 1]&&GLOBALS.marchSetsPoint(points[type - 1])
+        points[type - 1] && GLOBALS.marchSetsPoint(points[type - 1])
         if (type == 2) {
           let {code, data} = await getUserAwards()
           if (code == 200) {
@@ -336,19 +349,19 @@
           this.showModal = true
         }
       },
-      closeCallback() {
+      closeCallback () {
         this.init()
       },
       // 抽奖
-      async drawPrize(sourceType, sourceId) {
+      async drawPrize (sourceType, sourceId) {
         let {code, data, message} = await drawPrize(sourceType, sourceId)
         if (code == 200) {
-          this.awards = data
+          this.awardData = data
           let dom = this.$refs.awards
           let current =
             this.wheelAwards &&
             this.wheelAwards.find((item, index) => {
-              return this.awards.sort === item.sort
+              return this.awardData.sort === item.sort
             })
           /** 打开动画 **/
           this.turntableAnimation(dom, current.sort, () => {
@@ -367,7 +380,7 @@
           this.init()
         }
       },
-      showTips(isShowBK) {
+      showTips (isShowBK) {
         if (isShowBK) {
           GLOBALS.marchSetsPoint('A_H5PT0351004472')// H5平台-多多玩APP连续打卡活动-补卡按钮点击
           this.$toast.show({
@@ -376,17 +389,17 @@
         }
       },
       // 弹窗立即抽奖
-      popDrawPrize() {
-        GLOBALS.marchSetsPoint(this.popType == 4 ?'A_H5PT0351004478':'A_H5PT0351004482')
+      popDrawPrize () {
+        GLOBALS.marchSetsPoint(this.popType == 4 ? 'A_H5PT0351004478' : 'A_H5PT0351004482')
         this.drawPrize(this.popType == 4 ? 1 : 2, this.popType == 4 ? this.currentDay : this.drawProductIds[0], true)
       },
       /** 计算转盘奖品角度 **/
-      domSort(index) {
+      domSort (index) {
         let mean = Math.floor(360 / this.wheelAwards.length)
         return `transform: rotate(${Math.floor(mean * index)}deg)`
       },
       /** 转盘动画 **/
-      turntableAnimation(dom, index, callback) {
+      turntableAnimation (dom, index, callback) {
         /** 动画没有执行完的时候 不可以再次点击**/
         if (this.animationLock) {
           return false

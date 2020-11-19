@@ -99,7 +99,7 @@
     },
     methods: {
       closeModal() {
-        this.show = false
+        // this.show = false
         this.$emit('on-close')
       },
       // 关闭弹框
