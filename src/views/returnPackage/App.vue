@@ -9,15 +9,23 @@
       <div class="time">截止时间：{{info.endDate}}</div>
       <sign ref="sign" :info="info" @show-pop="showPop" />
       <task ref="task" :info="info" @show-pop="showPop" @show-game="showGame" />
+      <section class="problem-img" v-if="isHaveBuyGift" @click="toProblemPage()"></section>
       <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
+      <section class="problem-img" v-if="!isHaveBuyGift" @click="toProblemPage()"></section>
     </article>
     <article class="main-content" v-else>
       <div class="time end-time">活动已结束，未领奖励限今日领完</div>
       <task ref="task" :info="info" @show-pop="showPop" />
+      <section class="problem-img" v-if="isHaveBuyGift" @click="toProblemPage()"></section>
       <gift ref="gift" :state="info.state" @show-pop="showPop" @findCoupon="_couponPopup" />
+      <section class="problem-img" v-if="!isHaveBuyGift" @click="toProblemPage()"></section>
       <sign ref="sign" :info="info" @show-pop="showPop" />
     </article>
-    <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm" />
+    <article class="to-game" @click="toGame">
+      <p>{{info.userLikeGameName||'糖果'}}活动</p>
+    </article>
+    <popup v-model="isShowPop" :type="popType" :awards-info="awardsInfo" @on-confirm="onConfirm"
+      @on-close="onClose" />
     <gamelist v-model="isShowGame" />
     <welcome ref="welcome" />
   </main>
@@ -51,7 +59,8 @@ export default {
       isShowPop: false,
       isShowGame: false,
       popType: 'award',
-      awardsInfo: {}
+      awardsInfo: {},
+      isHaveBuyGift: false
     }
   },
   mounted () {
@@ -72,6 +81,7 @@ export default {
       GLOBALS.marchSetsPoint('A_H5PT0074001432')
     },
     async _couponPopup () {
+      this.isHaveBuyGift = true
       const res = await couponPopup()
       const code = _get(res, 'code', 0)
       const data = _get(res, 'data', 0)
@@ -98,11 +108,33 @@ export default {
       if (this.popType === 'coupon') {
         GLOBALS.marchSetsPoint('A_H5PT0290004070') // H5平台-回归礼包-优惠券加赚弹窗-立即使用点击
         GLOBALS.jumpOutsideGame('/xmWap/#/payment/')
+      } else if (this.popType === 'back') {
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+      }
+    },
+    onClose () {
+      if (this.popType === 'back') {
+        location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
       }
     },
     back () {
+      let isShowedFirstBack = localStorage.getItem('returnPackageFirstBack')
+      if (this.info.signInVo[1].status === 0 && !isShowedFirstBack) {
+        localStorage.setItem('returnPackageFirstBack', true)
+        GLOBALS.marchSetsPoint('A_H5PT0290004359') // H5平台-回归礼包-挽留弹窗加载完成
+        this.showPop('back')
+        return
+      }
       GLOBALS.marchSetsPoint('A_H5PT0074001433')
       location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL') || '')
+    },
+    toGame () {
+      GLOBALS.marchSetsPoint('A_H5PT0290004360') // H5平台-回归礼包-专属游戏活动-icon点击
+      let url = this.info.userLikeGameUrl || '/crush/'
+      window.location.href = url + '?isFromGift=true'
+    },
+    toProblemPage () {
+      window.location.href = 'https://wj.qq.com/s2/7357044/4992/'
     }
   }
 }
@@ -168,6 +200,29 @@ export default {
       border-radius: 0.24rem;
       color: #1f2961;
     }
+  }
+  .problem-img {
+    width: 6.6rem;
+    height: 2.2rem;
+    margin: 0.28rem auto 0.3rem;
+    background: url(./img/problem-img.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  .to-game {
+    position: fixed;
+    bottom: 4rem;
+    right: 0;
+    width: 1.74rem;
+    height: 1.74rem;
+    background: url(./img/to-game-icon.png) no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    text-align: center;
+    color: #233c8e;
+    font-size: 0.18rem;
+    padding-top: 1.32rem;
+    line-height: 0.24rem;
+    z-index: 8;
   }
 }
 </style>

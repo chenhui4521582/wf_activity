@@ -6,7 +6,7 @@
         <div class="content-wrapper">
           <div class="content" :class="type">
             <div class="title">
-              <img :src="titleImg" alt="">
+              {{title}}
             </div>
             <template v-if="type==='rule'">
               <div class="text">
@@ -38,8 +38,26 @@
                 <img src="./img/use-btn.png" alt="" @click="sure()">
               </div>
             </template>
+            <template v-else-if="type==='back'">
+              <div class="container">
+                <ul class="info">
+                  <li>
+                    <div class="img-wrapper">
+                      <img src="./img/back-icon.png" alt="">
+                    </div>
+                    <p>x2</p>
+                  </li>
+                </ul>
+                <div class="desc">
+                  亲，明日完成<span>签到</span>可获得<span>双倍金叶</span>奖励，<br />千万别忘记哦
+                </div>
+              </div>
+              <div class="btn" @click="sure()">
+                <img src="./img/i-know-btn.png" alt="">
+              </div>
+            </template>
             <template v-else>
-              <div class=" container">
+              <div class="container">
                 <ul class="info">
                   <li v-for="(item,index) in awardsInfo.list">
                     <div class="img-wrapper">
@@ -100,8 +118,24 @@ export default {
     }
   },
   computed: {
-    titleImg () {
-      return require(`./img/${this.type}-title.png`)
+    title () {
+      switch (this.type) {
+        case 'award':
+          return '恭喜获得'
+        case 'buy':
+          return '购买成功'
+        case 'coupon':
+          return '优惠券赠送'
+        case 'give':
+          return '超值礼包加赠到账'
+        case 'rule':
+          return '规则'
+        case 'back':
+          return '温馨提示'
+
+        default:
+          break
+      }
     }
   },
   mounted () {
@@ -145,17 +179,19 @@ export default {
         box-sizing: border-box;
         position: relative;
         .title {
+          font-family: 'Alibaba-PuHuiTi-B';
           text-align: center;
-          img {
-            height: 0.36rem;
-          }
+          line-height: 0.36rem;
+          color: #ae2808;
+          font-size: 0.36rem;
+          font-weight: bold;
         }
+
         &.give {
           padding-top: 0.42rem;
           .title {
-            img {
-              height: 0.28rem;
-            }
+            line-height: 0.28rem;
+            font-size: 0.28rem;
           }
         }
         &.coupon {
@@ -174,6 +210,20 @@ export default {
             img {
               width: 1.9rem;
               height: 0.72rem;
+            }
+          }
+        }
+        &.back {
+          .container {
+            .info {
+              li {
+                p {
+                  margin: 0.1rem auto 0;
+                }
+              }
+            }
+            .desc {
+              line-height: 0.3rem;
             }
           }
         }
@@ -219,6 +269,9 @@ export default {
             text-align: center;
             color: #0cf1ff;
             line-height: 0.4rem;
+            span {
+              color: #feec97;
+            }
           }
         }
         .btn {
