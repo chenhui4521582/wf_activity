@@ -1,18 +1,19 @@
 <template>
   <section class="wx_invitation">
     <div class="back" @click="back"></div>
-    <div class="wx_content">
+    <div class="wx_content" v-if="actInfo">
       <div class="attention">
-        <h1>公众号：多多玩VIP</h1>
-        <div class="attention_btn">点击去关注</div>
+        <h1>公众号：{{actInfo.wechatName}}</h1>
+        <!--<div class="attention_btn">点击去关注</div>-->
       </div>
       <div class="info">长按保存二维码在微信中打开即可关注</div>
       <div class="qrcode">
-        <qrcode tag="img"  id="img" :value="qrCodeUrl" name="img"></qrcode>
+        <img :src="actInfo.wechatImg|filter" alt="" id="img">
+        <!--<qrcode tag="img"  id="img" :value="qrCodeUrl" name="img"></qrcode>-->
       </div>
       <div class="attention">
-        <h1>微信号：{{wxCode}}</h1>
-        <div class="attention_btn" v-clipboard:copy="wxCode" v-clipboard:success="onCopy"
+        <h1>微信号：{{actInfo.wechatId}}</h1>
+        <div class="attention_btn" v-clipboard:copy="actInfo.wechatId" v-clipboard:success="onCopy"
              v-clipboard:error="onError">复制
         </div>
       </div>
@@ -32,11 +33,17 @@
     data () {
       return {
         wxCode: 'duoduowan',
-        qrCodeUrl: 'https://www.baidu.com'
+        qrCodeUrl: 'https://www.baidu.com',
+        actInfo: null
       }
     },
     computed: {},
-    mounted () {
+    async mounted () {
+      let {code, data} = await activityInfo()
+      if (code == 200) {
+        this.actInfo = data
+        console.log(this.actInfo)
+      }
     },
     methods: {
       back () {
@@ -103,9 +110,13 @@
         width: 2.04rem;
         height: 2.04rem;
         margin: .23rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         #img{
-          width: 100%;
-          height: 100%;
+          width: 2.04rem;
+          height: 2.04rem;
+          margin: .23rem auto;
         }
       }
     }
