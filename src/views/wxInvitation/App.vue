@@ -45,6 +45,11 @@
       let {code, data} = await activityInfo()
       if (code == 200) {
         this.actInfo = data
+        if (this.actInfo.cdkExchanged) {
+          this.$toast.show({
+            message: '您已经参加过活动了'
+          })
+        }
       }
     },
     methods: {
