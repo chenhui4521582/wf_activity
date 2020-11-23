@@ -71,7 +71,7 @@
   @import "../../common/css/base.css";
 
   .wx_invitation {
-    width: 7.2rem;
+    width: 100%;
     height: 17.3rem;
     background: url("./img/bg.png");
     background-size: 100% 100%;
