@@ -418,7 +418,7 @@
         /** 上次度数 **/
         let provDeg = this.newNumber * this.animationRoate
         /** 奖品所在位置角度 **/
-        let awardDeg = index * Math.ceil(360 / dom.childNodes.length)
+        let awardDeg = (index-1) * Math.ceil(360 / dom.childNodes.length)
         /** 最终旋转度数 = 上次度数  + 奖品所在位置角度 + 随机度数  **/
         dom.style.transition = 'all 3.2s ease-in-out'
         dom.style.transform = `translate(-50%, 0) rotate(-${provDeg +
