@@ -13,11 +13,11 @@
               <template v-if="popType==1">
                 <scroll>
                   <div>
-                    <p v-if="actInfo">1、活动时间：{{actInfo.startDate}}-{{actInfo.endDate}}，共计三天；</p>
-                    <p>2、活动期间，每充值10元即可获得一枚游戏币（活动道具自动发放无需领取），游戏币可用于投飞镖扎气球；</p>
-                    <p>3、共计6个转盘，单个转盘共有8个气球，每击爆一个气球，就会获取对应奖励，同时该气球从转盘上消失，<i>解锁全部8个奖励后，会有额外加赠，并开启下一个转盘；</i></p>
-                    <p>4、<i>转盘按照顺序逐个解锁</i>，未解锁的转盘不可投掷；</p>
-                    <p>5、活动奖励包括：金叶子、话费券、京东券、大额优惠券等；</p>
+                    <p v-if="actInfo">一、活动时间：{{actInfo.startDate}}-{{actInfo.endDate}}，共计三天；</p>
+                    <p>二、活动期间，每充值10元即可获得一枚游戏币（活动道具自动发放无需领取），游戏币可用于投飞镖扎气球；</p>
+                    <p>三、共计6个转盘，单个转盘共有8个气球，每击爆一个气球，就会获取对应奖励，同时该气球从转盘上消失，<i>解锁全部8个奖励后，会有额外加赠，并开启下一个转盘；</i></p>
+                    <p>四、<i>转盘按照顺序逐个解锁</i>，未解锁的转盘不可投掷；</p>
+                    <p>五、活动奖励包括：金叶子、话费券、京东券、大额优惠券等。</p>
                   </div>
                 </scroll>
               </template>
@@ -99,13 +99,12 @@
               <template v-else-if="popType==6">
                 <div class="awards_list onlyone">
                   <div class="award">
-                    <div class="awardsName" style="font-size: .4rem;line-height: .5rem">
-                      领取前面所有奖励<br>才可开启当前转盘
+                    <div class="awardsName" style="font-size: .4rem;line-height: .5rem" v-html="this.awardData.info">
                     </div>
                   </div>
                 </div>
                 <div class="btns">
-                  <div class="btn" @click="reset">去解锁</div>
+                  <div class="btn" @click="reset">{{this.awardData.btnName}}</div>
                 </div>
               </template>
             </div>
@@ -317,7 +316,7 @@
                     li {
                       display: flex;
                       justify-content: space-between;
-                      height: .5rem;
+                      height: .8rem;
                       align-items: center;
                       background: #FCA973;
                       div {
@@ -431,7 +430,7 @@
                   height: .96rem;
                   background: url("../images/compop/btn0l.png");
                   background-size: 100% 100%;
-                  padding-bottom: .1rem;
+                  padding-bottom: .18rem;
                   box-sizing: border-box;
                   display: flex;
                   justify-content: center;

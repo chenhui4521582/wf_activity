@@ -288,6 +288,10 @@
           }
         } else { // 当前可解锁的转盘和显示的转盘不一致
           GLOBALS.marchSetsPoint('A_H5PT0350004452')// H5平台-气球爆爆爆-去解锁弹窗加载完成
+          this.awardData = {
+            info: this.selectIndex > this.actInfo.curAwardsLevel - 1 ? `领取前面所有奖励<br>才可开启当前转盘` : '当前转盘已经没有奖励啦',
+            btnName: this.selectIndex > this.actInfo.curAwardsLevel - 1 ? '去解锁' : '继续解锁'
+          }
           this.showPop(6)
         }
       }
