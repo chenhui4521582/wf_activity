@@ -430,7 +430,7 @@
                   height: .96rem;
                   background: url("../images/compop/btn0l.png");
                   background-size: 100% 100%;
-                  padding-bottom: .18rem;
+                  padding-bottom: .1rem;
                   box-sizing: border-box;
                   display: flex;
                   justify-content: center;
@@ -444,7 +444,7 @@
                     color: #953308;
                     background: url("../images/compop/btn0.png");
                     background-size: 100% 100%;
-                    padding-bottom: .1rem;
+                    padding-bottom: .18rem;
                     box-sizing: border-box;
                     display: flex;
                     justify-content: center;
@@ -455,7 +455,7 @@
                     margin-left: .1rem;
                     background: url("../images/compop/btn1.png");
                     background-size: 100% 100%;
-                    padding-bottom: .1rem;
+                    padding-bottom: .18rem;
                     box-sizing: border-box;
                     display: flex;
                     justify-content: center;
