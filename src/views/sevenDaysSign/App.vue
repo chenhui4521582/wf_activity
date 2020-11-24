@@ -211,7 +211,7 @@
     async mounted () {
       await moveInleto()
       await this.getWheelAwards()
-      this.init()
+      this.init(true)
       GLOBALS.marchSetsPoint('P_H5PT0351', {source_address: this.sourceAddress})// H5平台-多多玩APP连续打卡活动-页面加载完成
     },
     computed: {
@@ -246,7 +246,7 @@
         GLOBALS.marchSetsPoint('A_H5PT0351004476')   // 点击返回
         location.href = window.linkUrl.getBackUrl(localStorage.getItem('APP_CHANNEL')) + '&time=' + new Date().getTime()
       },
-      async init () {
+      async init (flag=false) {
         const res = await moveInfo()
         if (res.code == 200) {
           this.actInfo = res.data
@@ -256,7 +256,7 @@
           this.todaySigned = res.data.toDayIsClockIn
           this.signList = res.data.clockInRspS
           this.giftList = res.data.giftBagRsps
-          if (this.actInfo.state == 1) {
+          if (this.actInfo.state == 1&&flag) {
             res.data.giftBagRsps.filter(item => item.drawCount > 0).map(item => {
               for (let i = 0; i < item.drawCount; i++) {
                 this.drawProductIds.push(item.productId)
@@ -301,7 +301,7 @@
           } else {
             this.openPop(4)
           }
-          this.init()
+          this.init(false)
         } else {
           this.$toast.show({
             message: message,
@@ -350,7 +350,7 @@
         }
       },
       closeCallback () {
-        this.init()
+        this.init(false)
       },
       // 抽奖
       async drawPrize (sourceType, sourceId) {
@@ -377,7 +377,7 @@
           this.$toast.show({
             message
           })
-          this.init()
+          this.init(false)
         }
       },
       showTips (isShowBK) {
